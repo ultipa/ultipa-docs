@@ -1,0 +1,17 @@
+{
+    "name": "Ultipa Graph Database",
+    "navigation": [
+        {
+            "pages": [
+                {
+                    "path": "major-versions.md",
+                    "title": "Major Versions"
+                },
+                {
+                    "path": "release-notes.md",
+                    "title": "Release Notes"
+                }
+            ]
+        }
+    ]
+}

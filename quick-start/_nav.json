@@ -1,0 +1,45 @@
+{
+    "name": "Quick Start",
+    "navigation": [
+        {
+            "pages": [
+                {
+                    "path": "graph-data.md",
+                    "title": "Graph Data"
+                }, 
+                {
+                    "path": "graph-database.md",
+                    "title": "Graph Database"
+                }, 
+                {
+                    "path": "what-and-how.md",
+                    "title": "What and How"
+                }, 
+                {
+                    "path": "cconnect-to-server.md",
+                    "title": "Connect to Server"
+                }, 
+                {
+                    "path": "prepare-graph.md",
+                    "title": "Prepare Graph"
+                }, 
+                {
+                    "path": "uql-query.md",
+                    "title": "UQL Query"
+                }, 
+                {
+                    "path": "data-import.md",
+                    "title": "Data Import"
+                }, 
+                {
+                    "path": "data-export.md",
+                    "title": "Data Export"
+                }, 
+                {
+                    "path": "graph-modeling.md",
+                    "title": "Graph Modeling"
+                }
+            ]
+        }
+    ]
+}
