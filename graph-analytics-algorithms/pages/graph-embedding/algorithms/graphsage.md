@@ -8,7 +8,7 @@ GraphSAGE (SAmple and aggreGatE) is a versatile inductive framework. Instead of 
 
 - W.L. Hamilton, R. Ying, J. Leskovec, <a target="blank" href="https://arxiv.org/pdf/1706.02216.pdf">Inductive Representation Learning on Large Graphs</a> (2017)
 
-The GraphSAGE algorithm is to produce node embeddings using a trained GraphSAGE model. The training process is outlined in <a href="https://www.ultipa.com/document/ultipa-graph-analytics-algorithms/graphsage-train">GraphSAGE Train</a>.
+The GraphSAGE algorithm is to produce node embeddings using a trained GraphSAGE model. The training process is outlined in <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/graphsage-train">GraphSAGE Train</a>.
 
 ## Concepts
 
@@ -51,11 +51,11 @@ where each <b>feature vector</b> <i>X<sub>v</sub></i> is composed of several spe
 
 The final embeddings of the target nodes are computed through <i>K</i> iterations. In the <i>k</i>-th (<i>k = 1,2,...,K</i>) iteration, for each node <i>v ∈ B<sup>k</sup></i>:
 
-1. Aggregate the <i>(k-1)</i>-th vectors of its sampled neighbors into a neighborhood vector, using the <a href="https://www.ultipa.com/document/ultipa-graph-analytics-algorithms/graphsage-train#Aggregator-Functions">aggregator function</a> <i>AGGREGATE<sub>k</sub></i>.
+1. Aggregate the <i>(k-1)</i>-th vectors of its sampled neighbors into a neighborhood vector, using the <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/graphsage-train#Aggregator-Functions">aggregator function</a> <i>AGGREGATE<sub>k</sub></i>.
 
 <center><img width="370" src="https://img.ultipa.cn/img/2023-09-04-14-56-25-agg.jpg"></center>
 
-2. Concatenate its <i>(k-1)</i>-th vector with the aggregated neighborhood vector. This concatenated vector is then refined by going through a fully connected layer weighted by matrix <i>W<sup>k</sup></i>, followed by a non-linear <a href="https://www.ultipa.com/document/ultipa-graph-analytics-algorithms/backpropagation#Activation-Function">activation function</a> <i>σ</i> (e.g., <i>Sigmoid</i>, <i>ReLu</i>).
+2. Concatenate its <i>(k-1)</i>-th vector with the aggregated neighborhood vector. This concatenated vector is then refined by going through a fully connected layer weighted by matrix <i>W<sup>k</sup></i>, followed by a non-linear <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/backpropagation#Activation-Function">activation function</a> <i>σ</i> (e.g., <i>Sigmoid</i>, <i>ReLu</i>).
      
 <center><img width="350" src="https://img.ultipa.cn/img/2023-08-31-16-59-16-concat.jpg"></center>
 
@@ -95,7 +95,7 @@ The process of feature aggregation of our example can be illustrated as below:
 
 | <div table-width="15">Name</p> | <div table-width="14">Type</div> | <div table-width="10">Spec</div> | <div table-width="7">Default</div> | <div table-width="8">Optional</div> | Description |
 | ----- | ---- | ---- | ---- | ---- | -- |
-| model_task_id	| int | / | / | No | Task ID of the <a href="https://www.ultipa.com/document/ultipa-graph-analytics-algorithms/graphsage-train">GraphSAGE Train</a> algorithm that trained the model |
+| model_task_id	| int | / | / | No | Task ID of the <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/graphsage-train">GraphSAGE Train</a> algorithm that trained the model |
 | ids | []`_id` | / | / | Yes | ID of the nodes to generate embeddings; generate for all nodes if not set |
 | node_property_names | []`<property>` | Numeric type, must LTE | Read from the model | Yes | Node properties to form the feature vectors |
 | edge_property_name | `<property>` | Numeric type, must LTE | Read from the model | Yes | Edge property to use as edge weight; edges are unweighted if not set |

@@ -1,0 +1,86 @@
+{
+  "name": "Ultipa Transporter User Guide",
+  "navigation": [
+    {
+      "file": "introduction.md",
+      "title": "Introduction"
+    },
+    {
+      "folder": "usage-demos",
+      "pages": [
+        {
+          "file": "import-mysql.md",
+          "title": "Import MySQL"
+        },
+        {
+          "file": "import-postgresql.md",
+          "title": "Import PostgreSQL"
+        },
+        {
+          "file": "import-sqlserver.md",
+          "title": "Import SQL Server"
+        },
+        {
+          "file": "import-bigquery.md",
+          "title": "Import BigQuery"
+        },
+        {
+          "file": "import-neo4j.md",
+          "title": "Import Neo4j"
+        },
+        {
+          "file": "import-kafka.md",
+          "title": "Import Kafka"
+        },
+        {
+          "file": "import-csv.md",
+          "title": "Import CSV"
+        },
+        {
+          "file": "import-json.md",
+          "title": "Import JSON"
+        },
+        {
+          "file": "import-jsonl.md",
+          "title": "Import JSONL"
+        },
+        {
+          "file": "import-graphml.md",
+          "title": "Import GraphML"
+        },
+        {
+          "file": "import-rdf.md",
+          "title": "Import RDF"
+        }
+      ]
+    },
+    {
+      "file": "export-csv.md",
+      "title": "Export CSV"
+    },
+    {
+      "pages": [
+        {
+          "file": "import-field-config.md",
+          "title": "Import Config | Data Field"
+        },
+        {
+          "file": "import-settings.md",
+          "title": "Import Config | Settings"
+        },
+        {
+          "file": "export-field-config.md",
+          "title": "Export Config | Data Field"
+        },
+        {
+          "file": "export-settings.md",
+          "title": "Export Config | Settings"
+        }
+      ]
+    },
+    {
+      "file": "faq.md",
+      "title": "FAQ"
+    }
+  ]
+}

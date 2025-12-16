@@ -4,7 +4,7 @@
 
 ## Overview
 
-The HANP (Hop Attenuation & Node Preference) algorithm extends the traditional <a href="https://www.ultipa.com/document/ultipa-graph-analytics-algorithms/lpa">Label Propagation algorithm (LPA)</a> by incorporating a label score attenuation mechanism and considering the influence of neighbor node degree on neighbor label weight. The goal of HANP is to improve the accuracy and robustness of community detection in networks, it was proposed in 2009：
+The HANP (Hop Attenuation & Node Preference) algorithm extends the traditional <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/lpa">Label Propagation algorithm (LPA)</a> by incorporating a label score attenuation mechanism and considering the influence of neighbor node degree on neighbor label weight. The goal of HANP is to improve the accuracy and robustness of community detection in networks, it was proposed in 2009：
 
 - I.X.Y. Leung, P. Hui, P. Liò, J. Crowcroft, <a target="blank" href="https://arxiv.org/pdf/0808.2633.pdf">Towards real-time community detection in large networks</a> (2009)
 

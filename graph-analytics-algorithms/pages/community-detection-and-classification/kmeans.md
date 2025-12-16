@@ -26,7 +26,7 @@ The algorithm begins with <i>k</i> nodes as initial centroids, which can be spec
 
 ### Distance Metrics
 
-Ultipa's k-Means algorithm computes distance between a node and a centroid through <a href="https://www.ultipa.com/document/ultipa-graph-analytics-algorithms/euclidean-distance">Euclidean Distance</a> or <a href="https://www.ultipa.com/document/ultipa-graph-analytics-algorithms/cosine-similarity">Cosine Similarity</a>.
+Ultipa's k-Means algorithm computes distance between a node and a centroid through <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/euclidean-distance">Euclidean Distance</a> or <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/cosine-similarity">Cosine Similarity</a>.
 
 ### Clustering Iterations
 
@@ -48,7 +48,7 @@ The iteration ends when the clustering results stabilize to certain threshold, o
 | -- | -- | -- |-- | -- | -- |
 | start_ids	| []`_uuid`	| /	| /	| Yes | Specify nodes as the initial centroids, the length of UUID array must be equal to `k`; or let the system to choose if not set |
 | k | int | [1, \|V\|] | `1` | No | Number of desired clusters |
-| distance_type | int | `1`, `2` | `1` | Yes | Type of the distance metric: `1` for <a href="https://www.ultipa.com/document/ultipa-graph-analytics-algorithms/euclidean-distance">Euclidean Distance</a>, `2` for <a href="https://www.ultipa.com/document/ultipa-graph-analytics-algorithms/cosine-similarity">Cosine Similarity</a> |
+| distance_type | int | `1`, `2` | `1` | Yes | Type of the distance metric: `1` for <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/euclidean-distance">Euclidean Distance</a>, `2` for <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/cosine-similarity">Cosine Similarity</a> |
 | node_schema_property | []`@<schema>?.<property>` | Numeric type, must LTE | / | No | Two or more node properties to use as node features |
 | loop_num | int | ≥1 | / | No | The maximum number of iterations |
 

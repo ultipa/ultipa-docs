@@ -7,7 +7,7 @@
 Graph traversal is a search technique used to visit and explore all the nodes of a graph systematically. The primary goal of graph traversal is to uncover and examine the structure and connections of the graph. There are two common strategies for graph traversal: 
 
 - Breadth-First Seach (BFS)
-- <a href="https://www.ultipa.com/document/ultipa-graph-analytics-algorithms/dfs">Depth-First Search (DFS)</a>
+- <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/dfs">Depth-First Search (DFS)</a>
 
 The Breadth-First Search (BFS) algorithm explores a graph layer by layer and follows these steps:
 

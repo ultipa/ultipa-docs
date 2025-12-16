@@ -27,7 +27,7 @@ Ultipa's k-Truss algorithm identifies the maximal truss in each connected compon
 ## Considerations
 
 - At least 3 nodes are contained in a truss (when k≥3).
-- In a complex graph where multiple edges can exist between two nodes, the triangles in a truss are counted by edges. Please also refer to the <a href="https://www.ultipa.com/document/ultipa-graph-analytics-algorithms/triangle-counting">Triangle Counting</a> algorithm.
+- In a complex graph where multiple edges can exist between two nodes, the triangles in a truss are counted by edges. Please also refer to the <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/triangle-counting">Triangle Counting</a> algorithm.
 - The k-Truss algorithm ignores the direction of edges but calculates them as undirected edges.
 
 ## Syntax

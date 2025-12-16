@@ -4,7 +4,7 @@
 
 ## Overview
 
-Harmonic Centrality is a variant of <a href="https://ultipa.com/document/ultipa-graph-analytics-algorithms/closeness-centrality">Closeness Centrality</a>. The average shortest distance measurement proposed by harmonic centrality is compatible with infinite values which would occur in disconnected graph. Harmonic centrality was first proposed by M. Marchiori and V. Latora in 2000, and then by A. Dekker and Y. Rochat in 2005 and 2009:
+Harmonic Centrality is a variant of <a href="https://ultipa.com/docs/graph-analytics-algorithms/closeness-centrality">Closeness Centrality</a>. The average shortest distance measurement proposed by harmonic centrality is compatible with infinite values which would occur in disconnected graph. Harmonic centrality was first proposed by M. Marchiori and V. Latora in 2000, and then by A. Dekker and Y. Rochat in 2005 and 2009:
 
 - M. Marchiori, V. Latora, <a target="blank" href="https://arxiv.org/pdf/cond-mat/0008357.pdf">Harmony in the Small-World</a> (2000)
 - A. Dekker, <a target="blank" href="https://www.cmu.edu/joss/content/articles/volume6/dekker/">Conceptual Distance in Social Network Analysis</a> (2005)
@@ -16,7 +16,7 @@ Harmonic centrality takes on values between 0 to 1, nodes with higher scores hav
 
 ### Shortest Distance
 
-The shortest distance of two nodes is the number of edges contained in the shortest path between them. Please refer to <a href="https://ultipa.com/document/ultipa-graph-analytics-algorithms/closeness-centrality">Closeness Centrality</a> for more details.
+The shortest distance of two nodes is the number of edges contained in the shortest path between them. Please refer to <a href="https://ultipa.com/docs/graph-analytics-algorithms/closeness-centrality">Closeness Centrality</a> for more details.
 
 ### Harmonic Mean
 

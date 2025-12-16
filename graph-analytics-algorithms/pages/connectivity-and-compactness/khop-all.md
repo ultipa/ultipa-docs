@@ -6,7 +6,7 @@
 
 The K-Hop All algorithm identifies the neighborhood of each node within a graph. This algorithm finds extensive application in various scenarios, including relationship discovery, impact prediction, and friend suggestion.
 
-The K-Hop All algorithm can be considered as the batch execution of the UQL <a href="https://www.ultipa.com/document/ultipa-graph-query-language/k-hop">K-Hop Query</a>.
+The K-Hop All algorithm can be considered as the batch execution of the UQL <a href="https://www.ultipa.com/docs/uql/k-hop">K-Hop Query</a>.
 
 ## Considerations
 

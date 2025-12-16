@@ -14,4 +14,4 @@ Returned table header: `name` | `param` | `detail`
 
 Example result:
 
-<center><img src="https://img.ultipa.cn/2022-08-25-13-40-40-show-algo.jpg" />
+<center><img src="https://img.ultipa.cn/2022-08-25-13-40-40-show-algo.jpg" /></center>

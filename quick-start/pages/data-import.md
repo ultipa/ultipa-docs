@@ -2,7 +2,7 @@
 
 > This page shows how to use Ultipa Manager and Ultipa Transporter-Importer to import data files into a GraphSet.
 
-Graph data used in this article comply to the graph model as introduced in [Prepare Graph](https://www.ultipa.com/document/quick-start/prepare-graph)
+Graph data used in this article comply to the graph model as introduced in [Prepare Graph](https://www.ultipa.com/docs/quick-start/prepare-graph)
 
 ## Data File
 
@@ -42,7 +42,7 @@ Take importing node file CUSTOMER.csv as an example, the operation includes 5 st
 <center><img src="https://img.ultipa.cn/img/2024-02-19-17-00-18-task-settings.gif"></center>
 <center><i>Chart3: Configure basic settings for the task</i></center>
 
-Details of configuration items in **Settings** can be found in documentation of [Loader](https://www.ultipa.com/document/ultipa-manager-user-guide/loader).
+Details of configuration items in **Settings** can be found in documentation of [Loader](https://www.ultipa.com/docs/manager-user-guide/loader).
 
 4. Configure File
 
@@ -53,7 +53,7 @@ Tips when mappting data fields with properties:
 - A red triangle <font color=red>△</font> for a **Property** indicates the header does not match with any property under the selected schema, in which case the respective property will be automatically created if the data of this header are to be imported (square box at the left most end checked)
 - Configuration item 'Headless' should be checked if the CSV file is headless, in which case the first row of data indicated by the **Property** should be modified into property names as they each represent
 
-Details of configuration items in **Files** can be found in documentation of [Loader](https://www.ultipa.com/document/ultipa-manager-user-guide/loader).
+Details of configuration items in **Files** can be found in documentation of [Loader](https://www.ultipa.com/docs/manager-user-guide/loader).
 
 > Data files in this example use comma ',' as column delimiter and contain headers; header `cust_no` is system property `_id`.
 
@@ -105,7 +105,7 @@ edgeConfig:
 - Extract this package and keep all the files in one folder
 - Make sure you update the server information in the YML file with the one you deployed
 
-See annotations about parameters in the YML file, or read more about the YML file in [Import Config](https://www.ultipa.com/document/ultipa-transporter/import-ultipa-config).
+See annotations about parameters in the YML file, or read more about the YML file in [Import Config](https://www.ultipa.com/docs/transporter/import-ultipa-config).
 
 2. Run Ultipa Importer in a command line tool
 

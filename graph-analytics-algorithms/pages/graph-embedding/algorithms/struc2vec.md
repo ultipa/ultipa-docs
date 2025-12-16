@@ -8,7 +8,7 @@ Struc2Vec stands for "structure to vector". This algorithm revolutionizes graph 
 
 - L. Ribeiro, P. Saverese, D. Figueiredo, <a target="blank" href="https://arxiv.org/pdf/1704.03165v3.pdf">struc2vec: Learning Node Representations from Structural Identity</a> (2017)
 
-While <a href="https://www.ultipa.com/document/ultipa-graph-analytics-algorithms/node2vec">Node2Vec</a> captures a certain degree of structural similarity among nodes, it is limited by the depth of random walks used during the generation process. On the other hand, Struc2Vec overcomes this limitation in its framework. It ensures that nodes with similar structural characteristics are represented close to each other in the embedding space.
+While <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/node2vec">Node2Vec</a> captures a certain degree of structural similarity among nodes, it is limited by the depth of random walks used during the generation process. On the other hand, Struc2Vec overcomes this limitation in its framework. It ensures that nodes with similar structural characteristics are represented close to each other in the embedding space.
 
 The choice between Node2Vec and Struc2Vec depends on the nature of downstream tasks:
 
@@ -79,7 +79,7 @@ The random walks have a fixed and relatively short depth (number of steps), and 
 
 #### 4. Train the model
 
-The node sequences obtained from the random walks serve as input to the <a href="https://www.ultipa.com/document/ultipa-graph-analytics-algorithms/skip-gram">Skip-gram</a> model. <a href="https://www.ultipa.com/document/ultipa-graph-analytics-algorithms/gradient-descent">SGD</a>  is used to optimize the model's parameters based on the prediction error, and the model is <a href="https://www.ultipa.com/document/ultipa-graph-analytics-algorithms/skip-gram-optimization">optimized</a> by techniques such as negative sampling and subsampling.
+The node sequences obtained from the random walks serve as input to the <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/skip-gram">Skip-gram</a> model. <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/gradient-descent">SGD</a>  is used to optimize the model's parameters based on the prediction error, and the model is <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/skip-gram-optimization">optimized</a> by techniques such as negative sampling and subsampling.
 
 ## Considerations
 
