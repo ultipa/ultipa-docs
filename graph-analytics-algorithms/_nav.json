@@ -1,0 +1,315 @@
+{
+    "name": "Graph Analytics & Algorithms",
+    "navigation": [
+        {
+            "folder": "Using Algorithms",
+            "pages": [
+                {
+                    "file": "show-algos.md",
+                    "title": "Show Algorithms"
+                }, 
+                {
+                    "file": "install-and-uninstall.md",
+                    "title": "Install and Uninstall"
+                }, 
+                {
+                    "file": "run-algos.md",
+                    "title": "Run Algorithms"
+                }, 
+                {
+                    "file": "algo-results-stats.md",
+                    "title": "Algorithm Results and Statistics"
+                }
+            ]
+        },
+        {
+            "folder": "Centrality",
+            "pages": [
+                {
+                    "file": "degree-centrality.md",
+                    "title": "Degree Centrality"
+                },
+                {
+                    "file": "closeness-centrality.md",
+                    "title": "Closeness Centrality"
+                },
+                {
+                    "file": "harmonic-centrality.md",
+                    "title": "Harmonic Centrality"
+                },
+                {
+                    "file": "graph-centrality.md",
+                    "title": "Graph Centrality"
+                },
+                {
+                    "file": "betweenness-centrality.md",
+                    "title": "Betweenness Centrality"
+                },
+                {
+                    "file": "eigenvector-centrality.md",
+                    "title": "Eigenvector Centrality"
+                },
+                {
+                    "file": "celf.md",
+                    "title": "CELF"
+                },
+                {
+                    "file": "pagerank.md",
+                    "title": "PageRank"
+                },
+                {
+                    "file": "article-rank.md",
+                    "title": "ArticleRank"
+                },
+                {
+                    "file": "hits.md",
+                    "title": "HITS"
+                },
+                {
+                    "file": "sybil-rank.md",
+                    "title": "SybilRank"
+                }
+            ]
+        },
+        {
+            "folder": "Similarity",
+            "pages": [
+                {
+                    "file": "jaccard-similarity.md",
+                    "title": "Jaccard Similarity"
+                },
+                {
+                    "file": "overlap-similarity.md",
+                    "title": "Overlap Similarity"
+                },
+                {
+                    "file": "cosine-similarity.md",
+                    "title": "Cosine Similarity"
+                },
+                {
+                    "file": "pearson-correlation-coefficient.md",
+                    "title": "Pearson Correlation Coefficient"
+                },
+                {
+                    "file": "euclidean-distance.md",
+                    "title": "Euclidean Distance"
+                }
+            ]
+        },
+        {
+            "folder": "Connectivity & Compactness",
+            "pages": [
+                {
+                    "file": "khop-all.md",
+                    "title": "K-Hop All"
+                },
+                {
+                    "file": "bipartite.md",
+                    "title": "Bipartite Graph"
+                },
+                {
+                    "file": "hyperanf.md",
+                    "title": "HyperANF"
+                },
+                {
+                    "file": "connected-component.md",
+                    "title": "Connected Component"
+                },
+                {
+                    "file": "triangle-counting.md",
+                    "title": "Triangle Counting"
+                },
+                {
+                    "file": "induced-subgraph.md",
+                    "title": "Induced Subgraph"
+                },
+                {
+                    "file": "k-core.md",
+                    "title": "k-Core"
+                },
+                {
+                    "file": "k-truss.md",
+                    "title": "k-Truss"
+                },
+                {
+                    "file": "p-cohesion.md",
+                    "title": "p-Cohesion"
+                },
+                {
+                    "file": "k-edge-connected-components.md",
+                    "title": "k-Edge Connected Components"
+                },
+                {
+                    "file": "clustering-coefficient.md",
+                    "title": "Local Clustering Coefficient"
+                },
+                {
+                    "file": "topological-sort.md",
+                    "title": "Topological Sort"
+                }
+            ]
+        },
+        {
+            "folder": "Pathfinding",
+            "pages": [
+                {
+                    "file": "dijkstra-sssp.md",
+                    "title": "Dijkstra's Single-Source Shortest Path"
+                },
+                {
+                    "file": "delta-stepping-sssp.md",
+                    "title": "Delta-Stepping Single-Source Shortest Path"
+                },
+                {
+                    "file": "spfa.md",
+                    "title": "Shortest Path Faster Algorithm (SPFA)"
+                },
+                {
+                    "file": "mst.md",
+                    "title": "Minimum Spanning Tree"
+                },
+                {
+                    "file": "bfs.md",
+                    "title": "Breadth-First Search (BFS)"
+                },
+                {
+                    "file": "dfs.md",
+                    "title": "Depth-First Search (DFS)"
+                }
+            ]
+        },
+        {
+            "folder": "Topological Link Prediction",
+            "pages": [
+                {
+                    "file": "adamic-adar.md",
+                    "title": "AA Index"
+                },
+                {
+                    "file": "common-neighbors.md",
+                    "title": "Common Neighbors"
+                },
+                {
+                    "file": "preferential-attachment.md",
+                    "title": "Preferential Attachment"
+                },
+                {
+                    "file": "resource-allocation.md",
+                    "title": "Resource Allocation"
+                },
+                {
+                    "file": "total-neighbors.md",
+                    "title": "Total Neighbors"
+                }
+            ]
+        },
+        {
+            "folder": "Community Detection & Classification",
+            "pages": [
+                {
+                    "file": "louvain.md",
+                    "title": "Louvain"
+                },
+                {
+                    "file": "leiden.md",
+                    "title": "Leiden"
+                },
+                {
+                    "file": "lpa.md",
+                    "title": "Label Propagation"
+                },
+                {
+                    "file": "hanp.md",
+                    "title": "HANP"
+                },
+                {
+                    "file": "kmeans.md",
+                    "title": "k-Means"
+                },
+                {
+                    "file": "knn.md",
+                    "title": "kNN (k-Nearest Neighbors)"
+                },
+                {
+                    "file": "k-1-coloring.md",
+                    "title": "K-1 Coloring"
+                },
+                {
+                    "file": "conductance.md",
+                    "title": "Conductance"
+                }
+            ]
+        },
+        {
+            "folder": "Graph Embedding",
+            "pages": [
+                {
+                    "folder": "Algorithms",
+                    "pages": [
+                        {
+                            "file": "random-walk.md",
+                            "title": "Random Walk"
+                        },
+                        {
+                            "file": "node2vec-walk.md",
+                            "title": "Node2Vec Walk"
+                        },
+                        {
+                            "file": "node2vec.md",
+                            "title": "Node2Vec"
+                        },
+                        {
+                            "file": "struc2vec-walk.md",
+                            "title": "Struc2Vec Walk"
+                        },
+                        {
+                            "file": "struc2vec.md",
+                            "title": "Struc2Vec"
+                        },
+                        {
+                            "file": "graphsage.md",
+                            "title": "GraphSAGE"
+                        },
+                        {
+                            "file": "graphsage-train.md",
+                            "title": "GraphSAGE Train"
+                        },
+                        {
+                            "file": "line.md",
+                            "title": "LINE"
+                        },
+                        {
+                            "file": "fastrp.md",
+                            "title": "Fast Random Projection"
+                        }
+                    ]
+                },
+                {
+                    "folder": "Background Knowledge",
+                    "pages": [
+                        {
+                            "file": "summary-of-graph-embedding.md",
+                            "title": "Summary of Graph Embedding"
+                        },
+                        {
+                            "file": "gradient-descent.md",
+                            "title": "Gradient Descent"
+                        },
+                        {
+                            "file": "backpropagation.md",
+                            "title": "Backpropagation"
+                        },
+                        {
+                            "file": "skip-gram.md",
+                            "title": "Skip-gram"
+                        },
+                        {
+                            "file": "skip-gram-optimization.md",
+                            "title": "Skip-gram Optimization"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
