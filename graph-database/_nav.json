@@ -4,11 +4,11 @@
         {
             "pages": [
                 {
-                    "path": "major-versions.md",
+                    "file": "major-versions.md",
                     "title": "Major Versions"
                 },
                 {
-                    "path": "release-notes.md",
+                    "file": "release-notes.md",
                     "title": "Release Notes"
                 }
             ]

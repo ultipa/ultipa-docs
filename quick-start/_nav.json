@@ -4,39 +4,39 @@
         {
             "pages": [
                 {
-                    "path": "graph-data.md",
+                    "file": "graph-data.md",
                     "title": "Graph Data"
                 }, 
                 {
-                    "path": "graph-database.md",
+                    "file": "graph-database.md",
                     "title": "Graph Database"
                 }, 
                 {
-                    "path": "what-and-how.md",
+                    "file": "what-and-how.md",
                     "title": "What and How"
                 }, 
                 {
-                    "path": "cconnect-to-server.md",
+                    "file": "connect-to-server.md",
                     "title": "Connect to Server"
                 }, 
                 {
-                    "path": "prepare-graph.md",
+                    "file": "prepare-graph.md",
                     "title": "Prepare Graph"
                 }, 
                 {
-                    "path": "uql-query.md",
+                    "file": "uql-query.md",
                     "title": "UQL Query"
                 }, 
                 {
-                    "path": "data-import.md",
+                    "file": "data-import.md",
                     "title": "Data Import"
                 }, 
                 {
-                    "path": "data-export.md",
+                    "file": "data-export.md",
                     "title": "Data Export"
                 }, 
                 {
-                    "path": "graph-modeling.md",
+                    "file": "graph-modeling.md",
                     "title": "Graph Modeling"
                 }
             ]
