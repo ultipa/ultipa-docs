@@ -2,6 +2,14 @@
   "name": "Graph Analytics & Algorithms",
   "navigation": [
     {
+      "pages": [
+        {
+          "file": "introduction.md",
+          "title": "Introduction"
+        }
+      ]
+    },
+    {
       "folder": "using-algorithms",
       "pages": [
         {
