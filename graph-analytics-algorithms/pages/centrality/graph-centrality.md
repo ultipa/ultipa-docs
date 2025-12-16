@@ -12,7 +12,7 @@ Graph centrality takes on values between 0 to 1, nodes with higher scores are cl
 
 ### Shortest Distance
 
-The shortest distance of two nodes is the number of edges contained in the shortest path between them. Please refer to <a href="https://ultipa.com/document/ultipa-graph-analytics-algorithms/closeness-centrality">Closeness Centrality</a> for more details.
+The shortest distance of two nodes is the number of edges contained in the shortest path between them. Please refer to <a href="https://ultipa.com/docs/graph-analytics-algorithms/closeness-centrality">Closeness Centrality</a> for more details.
 
 ### Graph Centrality
 

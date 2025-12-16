@@ -3,8 +3,8 @@
 > This page demonstrates several types of graph query on how they are composed in UQL and what does the query result look like in Ultipa Manager.
 
 GraphSet used in this article:
-- Graph model is as demonstrated by Chart1 in [Prepare Graph](https://www.ultipa.com/document/quick-start/prepare-graph)
-- Graph data can be downloaded from [Data Import](https://www.ultipa.com/document/quick-start/data-import)
+- Graph model is as demonstrated by Chart1 in [Prepare Graph](https://www.ultipa.com/docs/quick-start/prepare-graph)
+- Graph data can be downloaded from [Data Import](https://www.ultipa.com/docs/quick-start/data-import)
 
 For those who don't have an Ultipa server environment:
 - Click the 'Run' button on top of each code box to check the query result
@@ -42,7 +42,7 @@ find().nodes({@merchant}) as mySecondQuery
 return mySecondQuery{*} limit 10
 ```
 
-- The curly braces `{}` and its content held by `nodes()` (as well as `n()` and many other parameters, review [Graph Data - Describe Nodes](https://www.ultipa.com/document/quick-start/graph-data)) is called <u>filtering condition</u>
+- The curly braces `{}` and its content held by `nodes()` (as well as `n()` and many other parameters, review [Graph Data - Describe Nodes](https://www.ultipa.com/docs/quick-start/graph-data)) is called <u>filtering condition</u>
 
 Below is the execution result of this UQL:
 
@@ -129,7 +129,7 @@ The target of the above UQL is 'find 10 different merchants who receive payments
 
 ## Think in 'Template'
 
-Template query is an advanced type of graph query by accurately describing each node and edge in a path. It employs parameters `n()`, `e()` and `nf()` aforementioned in [Graph Data](https://www.ultipa.com/document/quick-start/graph-data).
+Template query is an advanced type of graph query by accurately describing each node and edge in a path. It employs parameters `n()`, `e()` and `nf()` aforementioned in [Graph Data](https://www.ultipa.com/docs/quick-start/graph-data).
 
 ### Chains
 

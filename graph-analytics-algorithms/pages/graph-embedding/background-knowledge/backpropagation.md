@@ -5,7 +5,7 @@ Backpropagation (or BP), stands for Error Backward Propagation, constitutes a co
 The BP algorithm encompasses two main stages:
 
 - <b>Forward Propagation:</b> Input data is fed into the input layer of a neural network or model. It then passes through one or multiple hidden layers before generating output from the output layer.
-- <b>Backpropagation:</b> The generated output is compared with the actual or expected value. Subsequently, the error is conveyed from the output layer through the hidden layers and back to the input layer. During this process, the weights of the model are adjusted using the <a href="https://www.ultipa.com/document/ultipa-graph-analytics-algorithms/gradient-descent">gradient descent</a> technique.
+- <b>Backpropagation:</b> The generated output is compared with the actual or expected value. Subsequently, the error is conveyed from the output layer through the hidden layers and back to the input layer. During this process, the weights of the model are adjusted using the <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/gradient-descent">gradient descent</a> technique.
 
 The iterative weight adjustments constitute the training process of the neural network. We will further explain with a concrete example.
 
@@ -96,7 +96,7 @@ where <math><mi>m</mi></math> is the number of samples. Calculate the error of t
 
 A smaller value of the loss function corresponds to higher model accuracy. The fundamental goal of model training is to minimize the value of the loss function to the greatest extent possible.
 
-Consider the input and output as constants, while regarding the weights as variables within the loss function. Then the objective is to adjust the weights that result in the lowest value of the loss function - this is where the <a href="https://www.ultipa.com/document/ultipa-graph-analytics-algorithms/gradient-descent">gradient descent</a> technique comes to play.
+Consider the input and output as constants, while regarding the weights as variables within the loss function. Then the objective is to adjust the weights that result in the lowest value of the loss function - this is where the <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/gradient-descent">gradient descent</a> technique comes to play.
 
 In this example, the batch gradient descent (BGD) is used, i.e., all samples are involved in the calculation of the gradient. Set the learning rate <math><mi>η</mi><mo>=</mo><mn>0.5</mn></math>.
 
@@ -104,7 +104,7 @@ In this example, the batch gradient descent (BGD) is used, i.e., all samples are
 
 Adjust the weights <math><msub><mi>w</mi><mn>1</mn></msub></math> and <math><msub><mi>w</mi><mn>2</mn></msub></math> respectively.
 
-Calculate the partial derivative of <math><mi>E</mi></math> with respect to <math><msub><mi>w</mi><mn>1</mn></msub></math> with the <a href="https://www.ultipa.com/document/ultipa-graph-analytics-algorithms/gradient-descent#Chain-Rule">chain rule</a>:
+Calculate the partial derivative of <math><mi>E</mi></math> with respect to <math><msub><mi>w</mi><mn>1</mn></msub></math> with the <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/gradient-descent#Chain-Rule">chain rule</a>:
 
 <center><img width="180" src="https://img.ultipa.cn/2022-09-27-15-21-41-back1.jpg"></center>
 
@@ -219,7 +219,7 @@ The weight <math><msub><mi>w</mi><mn>2</mn></msub></math> can be adjusted in a s
 
 Adjust the weights <math><msub><mi>v</mi><mn>11</mn></msub></math> ~ <math><msub><mi>v</mi><mn>32</mn></msub></math> respectively.
 
-Calculate the partial derivative of <math><mi>E</mi></math> with respect to <math><msub><mi>v</mi><mn>11</mn></msub></math> with the <a href="https://www.ultipa.com/document/ultipa-graph-analytics-algorithms/gradient-descent#Chain-Rule">chain rule</a>:
+Calculate the partial derivative of <math><mi>E</mi></math> with respect to <math><msub><mi>v</mi><mn>11</mn></msub></math> with the <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/gradient-descent#Chain-Rule">chain rule</a>:
 
 <center><img width="230" src="https://img.ultipa.cn/2022-09-27-15-55-13-back3.jpg"></center>
 

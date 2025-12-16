@@ -28,7 +28,7 @@ Below is an example of the threat model with trust seeds:
 
 ### Early-Terminated Random Walk
 
-In an undirected graph, if a <a href="https://www.ultipa.com/document/ultipa-graph-analytics-algorithms/random-walk">random walk</a>'s transition probability to a neighbor node is uniformly distributed, when the number of steps is sufficient, the probability of landing at each node would converge to be proportional to its degree. The number of steps that a random walk needs to reach the stationary distribution is called the graph's <i>mixing time</i>.
+In an undirected graph, if a <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/random-walk">random walk</a>'s transition probability to a neighbor node is uniformly distributed, when the number of steps is sufficient, the probability of landing at each node would converge to be proportional to its degree. The number of steps that a random walk needs to reach the stationary distribution is called the graph's <i>mixing time</i>.
 
 SybilRank relies on the observation that an <i>early-terminated random walk</i> starting from a non-Sybil node (trust seed) has higher landing probability to land at a non-Sybil node than a Sybil node, as the walk is unlikely to traverse one of the relatively few attack edges. That is to say, there is a significant difference between the mixing time of the non-Sybil region <i>G<sub>H</sub></i> and the entire graph.
 

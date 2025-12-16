@@ -6,7 +6,7 @@
 
 Eigenvector centrality measures the power or influence of a node. In a directed network, the power of a node comes from its incoming neighbors. Thus, the eigenvector centrality score of a node depends not only on how many in-links it has, but also on how powerful its incoming neighbors are. Connections from high-scoring nodes contribute more to the score of the node than connections from low-scoring nodes. In the disease spreading  scenario, a node with higher eigenvector centrality is more likely to be close to the source of infection, which needs special precautions.
 
-The well-known <a href="https://www.ultipa.com/document/ultipa-graph-analytics-algorithms/pagerank-articlerank">PageRank</a> is a variant of eigenvector centrality.
+The well-known <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/pagerank-articlerank">PageRank</a> is a variant of eigenvector centrality.
 
 Eigenvector centrality takes on values between 0 to 1, nodes with higher scores are more influential in the network.
 

@@ -1,0 +1,66 @@
+{
+  "name": "Ultipa Manager User Guide",
+  "navigation": [
+    {
+      "file": "introduction.md",
+      "title": "Introduction"
+    },
+    {
+      "file": "logon-to-manager.md",
+      "title": "Logon to Manager"
+    },
+    {
+      "file": "connect-to-ultipa-graph.md",
+      "title": "Connect to Ultipa Graph"
+    },
+    {
+      "file": "interface-overview.md",
+      "title": "Interface Overview"
+    },
+    {
+      "folder": "modules",
+      "pages": [
+        {
+          "file": "graph.md",
+          "title": "Graph"
+        },
+        {
+          "file": "schema.md",
+          "title": "Schema"
+        },
+        {
+          "file": "algos.md",
+          "title": "Algos"
+        },
+        {
+          "file": "auths.md",
+          "title": "Auths"
+        },
+        {
+          "file": "loader.md",
+          "title": "Loader"
+        },
+        {
+          "file": "widget.md",
+          "title": "Widget"
+        }
+      ]
+    },
+    {
+      "file": "uql-editor.md",
+      "title": "UQL Editor"
+    },
+    {
+      "file": "result-pane.md",
+      "title": "Result Pane"
+    },
+    {
+      "file": "settings.md",
+      "title": "Settings"
+    },
+    {
+      "file": "release-notes.md",
+      "title": "Release Notes"
+    }
+  ]
+}

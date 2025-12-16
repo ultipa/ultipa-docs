@@ -4,7 +4,7 @@
 
 ## Overview
 
-Diverging from the classic <a href="https://www.ultipa.com/document/ultipa-graph-analytics-algorithms/random-walk">random walk</a>, the Node2Vec Walk is a biased random walk which can explore neighborhoods in a BFS as well as DFS fashion. Please refer to the <a href="https://www.ultipa.com/document/ultipa-graph-analytics-algorithms/node2vec">Node2Vec</a> algorithm for details.
+Diverging from the classic <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/random-walk">random walk</a>, the Node2Vec Walk is a biased random walk which can explore neighborhoods in a BFS as well as DFS fashion. Please refer to the <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/node2vec">Node2Vec</a> algorithm for details.
 
 ## Considerations
 

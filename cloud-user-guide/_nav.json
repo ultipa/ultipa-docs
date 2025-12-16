@@ -1,0 +1,34 @@
+{
+  "name": "Ultipa Cloud User Guide",
+  "navigation": [
+    {
+      "file": "introduction.md",
+      "title": "Introduction"
+    },
+    {
+      "folder": "quick-start",
+      "pages": [
+        {
+          "file": "create-instance.md",
+          "title": "Create Instance"
+        },
+        {
+          "file": "connect-to-ultipa-tools.md",
+          "title": "Connect to Ultipa Tools"
+        },
+        {
+          "file": "manage-instance.md",
+          "title": "Manage Instance"
+        }
+      ]
+    },
+    {
+      "file": "api.md",
+      "title": "API"
+    },
+    {
+      "file": "subscribe-via-aws-marketplace.md",
+      "title": "Subscribe via AWS Marketplace"
+    }
+  ]
+}
