@@ -182,22 +182,3 @@ ex:subject7 ex:predicate8 "2024-08-21T00:00:00Z"^^xsd:dateTime .
 
 <center><img width="800" src="https://img.ultipa.cn/img/2024-10-17-15-56-35-All-paths-and-nodes.png "></center>
 <center><i>From RDF to Ultipa</i></center>
-
-## Export CSV
-
-Export CSV files (without header) from Ultipa graphset <i>shareholding</i> to folder <i>exportData</i> located in SFTP or local directory:
-
-<center><img width="800" src="https://img.ultipa.cn/img/2023-12-12-14-48-34-ultipa-csv.png"></center>
-<center><i>From Ultipa to CSV</i></center>
-
-## 1. Generate sample configuration file
-
-<p run-tag="false" graph="" tit= "Terminal" ></p>
-
-```bash
-./ultipa-exporter --sample
-```
-
-## 2. Modify configuration file
-
-<p tit= "export.sample.yml" type="yaml"></p>

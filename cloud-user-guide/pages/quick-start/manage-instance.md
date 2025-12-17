@@ -42,7 +42,7 @@ When the status of the instance is Active, click **Action > Stop** to stop it. T
 
 <center><img src="https://img.ultipa.cn/img/2024-08-01-15-53-49-stop-the-instance.png"></center><br> 
 
-> <b>Note</b>: When an instance is stopped, it is only charged for storage usage. 
+>  When an instance is stopped, it is only charged for storage usage. 
 
 ## Restart
 
@@ -76,7 +76,7 @@ Scroll down to Account Setting, and click **Recover** to restore all data to a b
 
 <center><img src="https://img.ultipa.cn/img/2024-07-15-10-44-44-recover.png"></center><br> 
 
-> <b>Note</b>: After recovered to a backup version, the instance will be automatically restarted.
+>  After recovered to a backup version, the instance will be automatically restarted.
 
 ### Empty
 
@@ -84,7 +84,7 @@ Scroll down to Account Setting, and click **Empty** to clean all data in the ins
 
 <center><img src="https://img.ultipa.cn/img/2024-07-15-15-59-40-empty.png"></center><br>
 
-> <b>Note</b>: "Empty" does not clear backups. You can recover instance data to a selected backup version.
+>  "Empty" does not clear backups. You can recover instance data to a selected backup version.
 
 ### Change Instance Size
 
@@ -96,7 +96,7 @@ On the pop-up window, select the new configuration you want, and then click **Up
 
 <center><img src="https://img.ultipa.cn/img/2024-07-15-10-59-50-change-instance-size.png"></center><br>
 
-> <b>Note</b>: After changing the instance size, the instance will be automatically restarted.
+>  After changing the instance size, the instance will be automatically restarted.
 
 ### Change Storage Size
 

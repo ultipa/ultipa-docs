@@ -18,7 +18,7 @@ Enter the username "root" and your password and then connection to Ultipa CLI is
 
 <center><img src="https://img.ultipa.cn/img/2024-08-01-15-22-19-cli-connected.jpg"></center><br>
 
-> <b>Note</b>:For details about Ultipa CLI, see <a href="/docs/tools/cli" target="_blank">**Ultipa CLI**</a>.
+> For details about Ultipa CLI, see <a href="/docs/tools/cli" target="_blank">**Ultipa CLI**</a>.
 
 ## Connect to Ultipa Manager
 
@@ -43,10 +43,10 @@ The green bar indicates that the instance is successfully connected to Ultipa Ma
 
 <center><img src="https://img.ultipa.cn/img/2024-08-01-15-34-00-open-instance.png"></center><br>
 
-> <b>Note</b>: In case of changing the listening port after a successful connection to Ultipa Manager, you need to delete the existing connection that uses the previous listening port and create a new connection using the new listening port.
+>  In case of changing the listening port after a successful connection to Ultipa Manager, you need to delete the existing connection that uses the previous listening port and create a new connection using the new listening port.
 
 Click **Open** to start your work in Ultipa Manager.
 
 <center><img src="https://img.ultipa.cn/img/2024-08-01-15-37-01-welcome-to-manager.png"></center><br>
 
-> <b>Note</b>:For details about Ultipa Manager, see <a href="/docs/manager-user-guide/introduction" target="_blank">**Ultipa Manager**</a>.
+> For details about Ultipa Manager, see <a href="/docs/manager-user-guide/introduction" target="_blank">**Ultipa Manager**</a>.

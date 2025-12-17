@@ -6,65 +6,22 @@
       "title": "Introduction"
     },
     {
-      "folder": "restful-api",
-      "title": "RESTful API",
       "navigation": [
         {
-          "file": "change-log.md",
-          "title": "Change Log"
-        },
-        {
-          "file": "prerequisites.md",
-          "title": "Prerequisites"
-        },
-        {
-          "file": "start-api-service.md",
-          "title": "Start API Service"
-        },
-        {
-          "file": "api-basic-info.md",
-          "title": "API Basic Info"
-        },
-        {
-          "file": "login-ultipa-service.md",
-          "title": "Login Ultipa Service"
-        },
-        {
-          "file": "send-uql.md",
-          "title": "Send UQL"
-        },
-        {
-          "file": "send-uql-limit-returns.md",
-          "title": "Send UQL Limit Returns"
-        },
-        {
-          "file": "insert-nodes.md",
-          "title": "Insert Nodes"
-        },
-        {
-          "file": "insert-edges.md",
-          "title": "Insert Edges"
-        },
-        {
-          "file": "update-nodes.md",
-          "title": "Update Nodes"
-        },
-        {
-          "file": "update-edges.md",
-          "title": "Update Edges"
+          "file": "restful-api.md",
+          "title": "RESTful API"
         }
       ]
     },
     {
       "folder": "java",
-      "title": "Java",
       "navigation": [
         {
-          "file": "installation.md",
+          "file": "java-installation.md",
           "title": "Installation"
         },
         {
-          "file": "connection.md",
+          "file": "java-connection.md",
           "title": "Connection"
         },
         {
@@ -72,75 +29,74 @@
           "title": "Database Querying",
           "navigation": [
             {
-              "file": "request-configuration.md",
+              "file": "java-request-configuration.md",
               "title": "Request Configuration"
             },
             {
-              "file": "querying-methods.md",
+              "file": "java-querying-methods.md",
               "title": "Querying Methods"
             },
             {
-              "file": "uql-execution.md",
+              "file": "java-uql-execution.md",
               "title": "UQL Execution"
             },
             {
-              "file": "graphset-management.md",
+              "file": "java-graphset-management.md",
               "title": "Graphset Management"
             },
             {
-              "file": "schema-property-management.md",
+              "file": "java-schema-property-management.md",
               "title": "Schema and Property Management"
             },
             {
-              "file": "data-insertion-deletion.md",
+              "file": "java-data-insertion-deletion.md",
               "title": "Data Insertion and Deletion"
             },
             {
-              "file": "query-acceleration.md",
+              "file": "java-query-acceleration.md",
               "title": "Query Acceleration"
             },
             {
-              "file": "algorithm-management.md",
+              "file": "java-algorithm-management.md",
               "title": "Algorithm Management"
             },
             {
-              "file": "downloads-exports.md",
+              "file": "java-downloads-exports.md",
               "title": "Downloads and Exports"
             },
             {
-              "file": "process-task-management.md",
+              "file": "java-process-task-management.md",
               "title": "Process and Task Management"
             },
             {
-              "file": "access-management.md",
+              "file": "java-access-management.md",
               "title": "Access Management"
             },
             {
-              "file": "others.md",
+              "file": "java-others.md",
               "title": "Others"
             }
           ]
         },
         {
-          "file": "result-processing.md",
+          "file": "java-result-processing.md",
           "title": "Result Processing"
         },
         {
-          "file": "types-mapping.md",
+          "file": "java-types-mapping.md",
           "title": "Types Mapping"
         }
       ]
     },
     {
       "folder": "python",
-      "title": "Python",
       "navigation": [
         {
-          "file": "installation.md",
+          "file": "python-installation.md",
           "title": "Installation"
         },
         {
-          "file": "connection.md",
+          "file": "python-connection.md",
           "title": "Connection"
         },
         {
@@ -148,75 +104,74 @@
           "title": "Database Querying",
           "navigation": [
             {
-              "file": "request-configuration.md",
+              "file": "python-request-configuration.md",
               "title": "Request Configuration"
             },
             {
-              "file": "querying-methods.md",
+              "file": "python-querying-methods.md",
               "title": "Querying Methods"
             },
             {
-              "file": "uql-execution.md",
+              "file": "python-uql-execution.md",
               "title": "UQL Execution"
             },
             {
-              "file": "graphset-management.md",
+              "file": "python-graphset-management.md",
               "title": "Graphset Management"
             },
             {
-              "file": "schema-property-management.md",
+              "file": "python-schema-property-management.md",
               "title": "Schema and Property Management"
             },
             {
-              "file": "data-insertion-deletion.md",
+              "file": "python-data-insertion-deletion.md",
               "title": "Data Insertion and Deletion"
             },
             {
-              "file": "query-acceleration.md",
+              "file": "python-query-acceleration.md",
               "title": "Query Acceleration"
             },
             {
-              "file": "algorithm-management.md",
+              "file": "python-algorithm-management.md",
               "title": "Algorithm Management"
             },
             {
-              "file": "downloads-exports.md",
+              "file": "python-downloads-exports.md",
               "title": "Downloads and Exports"
             },
             {
-              "file": "process-task-management.md",
+              "file": "python-process-task-management.md",
               "title": "Process and Task Management"
             },
             {
-              "file": "access-management.md",
+              "file": "python-access-management.md",
               "title": "Access Management"
             },
             {
-              "file": "others.md",
+              "file": "python-others.md",
               "title": "Others"
             }
           ]
         },
         {
-          "file": "result-processing.md",
+          "file": "python-result-processing.md",
           "title": "Result Processing"
         },
         {
-          "file": "types-mapping.md",
+          "file": "python-types-mapping.md",
           "title": "Types Mapping"
         }
       ]
     },
     {
       "folder": "go",
-      "title": "Go",
       "navigation": [
         {
-          "file": "installation.md",
+          "file": "go-installation.md",
           "title": "Installation"
         },
         {
-          "file": "connection.md",
+          "file": "go-connection.md",
           "title": "Connection"
         },
         {
@@ -224,75 +179,75 @@
           "title": "Database Querying",
           "navigation": [
             {
-              "file": "request-configuration.md",
+              "file": "go-request-configuration.md",
               "title": "Request Configuration"
             },
             {
-              "file": "querying-methods.md",
+              "file": "go-querying-methods.md",
               "title": "Querying Methods"
             },
             {
-              "file": "uql-execution.md",
+              "file": "go-uql-execution.md",
               "title": "UQL Execution"
             },
             {
-              "file": "graphset-management.md",
+              "file": "go-graphset-management.md",
               "title": "Graphset Management"
             },
             {
-              "file": "schema-property-management.md",
+              "file": "go-schema-property-management.md",
               "title": "Schema and Property Management"
             },
             {
-              "file": "data-insertion-deletion.md",
+              "file": "go-data-insertion-deletion.md",
               "title": "Data Insertion and Deletion"
             },
             {
-              "file": "query-acceleration.md",
+              "file": "go-query-acceleration.md",
               "title": "Query Acceleration"
             },
             {
-              "file": "algorithm-management.md",
+              "file": "go-algorithm-management.md",
               "title": "Algorithm Management"
             },
             {
-              "file": "downloads-exports.md",
+              "file": "go-downloads-exports.md",
               "title": "Downloads and Exports"
             },
             {
-              "file": "process-task-management.md",
+              "file": "go-process-task-management.md",
               "title": "Process and Task Management"
             },
             {
-              "file": "access-management.md",
+              "file": "go-access-management.md",
               "title": "Access Management"
             },
             {
-              "file": "others.md",
+              "file": "go-others.md",
               "title": "Others"
             }
           ]
         },
         {
-          "file": "result-processing.md",
+          "file": "go-result-processing.md",
           "title": "Result Processing"
         },
         {
-          "file": "types-mapping.md",
+          "file": "go-types-mapping.md",
           "title": "Types Mapping"
         }
       ]
     },
     {
       "folder": "nodejs",
-      "title": "Node.js",
+      "name": "Node.js",
       "navigation": [
         {
-          "file": "installation.md",
+          "file": "nodejs-installation.md",
           "title": "Installation"
         },
         {
-          "file": "connection.md",
+          "file": "nodejs-connection.md",
           "title": "Connection"
         },
         {
@@ -300,75 +255,75 @@
           "title": "Database Querying",
           "navigation": [
             {
-              "file": "request-configuration.md",
+              "file": "nodejs-request-configuration.md",
               "title": "Request Configuration"
             },
             {
-              "file": "querying-methods.md",
+              "file": "nodejs-querying-methods.md",
               "title": "Querying Methods"
             },
             {
-              "file": "uql-execution.md",
+              "file": "nodejs-uql-execution.md",
               "title": "UQL Execution"
             },
             {
-              "file": "graphset-management.md",
+              "file": "nodejs-graphset-management.md",
               "title": "Graphset Management"
             },
             {
-              "file": "schema-property-management.md",
+              "file": "nodejs-schema-property-management.md",
               "title": "Schema and Property Management"
             },
             {
-              "file": "data-insertion-deletion.md",
+              "file": "nodejs-data-insertion-deletion.md",
               "title": "Data Insertion and Deletion"
             },
             {
-              "file": "query-acceleration.md",
+              "file": "nodejs-query-acceleration.md",
               "title": "Query Acceleration"
             },
             {
-              "file": "algorithm-management.md",
+              "file": "nodejs-algorithm-management.md",
               "title": "Algorithm Management"
             },
             {
-              "file": "downloads-exports.md",
+              "file": "nodejs-downloads-exports.md",
               "title": "Downloads and Exports"
             },
             {
-              "file": "process-task-management.md",
+              "file": "nodejs-process-task-management.md",
               "title": "Process and Task Management"
             },
             {
-              "file": "access-management.md",
+              "file": "nodejs-access-management.md",
               "title": "Access Management"
             },
             {
-              "file": "others.md",
+              "file": "nodejs-others.md",
               "title": "Others"
             }
           ]
         },
         {
-          "file": "result-processing.md",
+          "file": "nodejs-result-processing.md",
           "title": "Result Processing"
         },
         {
-          "file": "types-mapping.md",
+          "file": "nodejs-types-mapping.md",
           "title": "Types Mapping"
         }
       ]
     },
     {
       "folder": "csharp",
-      "title": "C#",
+      "name": "C#",
       "navigation": [
         {
-          "file": "installation.md",
+          "file": "csharp-installation.md",
           "title": "Installation"
         },
         {
-          "file": "connection.md",
+          "file": "csharp-connection.md",
           "title": "Connection"
         },
         {
@@ -376,61 +331,61 @@
           "title": "Database Querying",
           "navigation": [
             {
-              "file": "request-configuration.md",
+              "file": "csharp-request-configuration.md",
               "title": "Request Configuration"
             },
             {
-              "file": "querying-methods.md",
+              "file": "csharp-querying-methods.md",
               "title": "Querying Methods"
             },
             {
-              "file": "uql-execution.md",
+              "file": "csharp-uql-execution.md",
               "title": "UQL Execution"
             },
             {
-              "file": "graphset-management.md",
+              "file": "csharp-graphset-management.md",
               "title": "Graphset Management"
             },
             {
-              "file": "schema-property-management.md",
+              "file": "csharp-schema-property-management.md",
               "title": "Schema and Property Management"
             },
             {
-              "file": "data-insertion-deletion.md",
+              "file": "csharp-data-insertion-deletion.md",
               "title": "Data Insertion and Deletion"
             },
             {
-              "file": "query-acceleration.md",
+              "file": "csharp-query-acceleration.md",
               "title": "Query Acceleration"
             },
             {
-              "file": "algorithm-management.md",
+              "file": "csharp-algorithm-management.md",
               "title": "Algorithm Management"
             },
             {
-              "file": "downloads-exports.md",
+              "file": "csharp-downloads-exports.md",
               "title": "Downloads and Exports"
             },
             {
-              "file": "process-task-management.md",
+              "file": "csharp-process-task-management.md",
               "title": "Process and Task Management"
             },
             {
-              "file": "access-management.md",
+              "file": "csharp-access-management.md",
               "title": "Access Management"
             },
             {
-              "file": "others.md",
+              "file": "csharp-others.md",
               "title": "Others"
             }
           ]
         },
         {
-          "file": "result-processing.md",
+          "file": "csharp-result-processing.md",
           "title": "Result Processing"
         },
         {
-          "file": "types-mapping.md",
+          "file": "csharp-types-mapping.md",
           "title": "Types Mapping"
         }
       ]

@@ -51,7 +51,7 @@ Comparison of different database types is shown below:
 
 In this step, you can change the database type between Shared and Standard, and set Region and Instance Size according to your needs. 
 
-> <b>Note</b>: Region and Instance Size are fixed for Shared type but modifiable for Standard type.
+>  Region and Instance Size are fixed for Shared type but modifiable for Standard type.
 
 Click **Next: Settings** after confirmation.
 
@@ -112,4 +112,4 @@ Enter relevant information of your credit card and click **Submit**.
 
 <center><img src="https://img.ultipa.cn/img/2024-07-12-16-38-10-payment-method.jpg"></center><br>
 
-> <b>Note</b>:You may also susbcribe to our service via AWS Marketplace. For details, see <a href="/docs/cloud-user-guide/subscribe-via-aws-marketplace/" target="_blank">**Subscribe via AWS Marketplace**</a>.
+> You may also susbcribe to our service via AWS Marketplace. For details, see <a href="/docs/cloud-user-guide/subscribe-via-aws-marketplace/" target="_blank">**Subscribe via AWS Marketplace**</a>.

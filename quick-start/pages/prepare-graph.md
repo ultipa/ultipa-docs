@@ -25,7 +25,7 @@ In Ultipa Manager, a UQL, take this 'create graph' as an example, can be compose
 <center><img src="https://img.ultipa.cn/img/2024-02-19-12-05-06-create-graph-ui.gif"></center>
 <center><i>Chart3: Create graphset via UI operations</i></center>
 
-> Note: To switch to the new graphset after it is created, click the 'Select' button of the graphset as shown in Chart3. This is not achieved by UQL, but a function of SDK employed by Ultipa Manager.
+> To switch to the new graphset after it is created, click the 'Select' button of the graphset as shown in Chart3. This is not achieved by UQL, but a function of SDK employed by Ultipa Manager.
 
 ### Create Graph Model
 
