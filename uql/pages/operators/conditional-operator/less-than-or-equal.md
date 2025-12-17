@@ -1,4 +1,9 @@
-# Constant
+# Less Than or Equal
+
+- Expression: `<value1>` <= `<value2>`
+- Operand: string, number, time
+
+## Constant
 
 Example: Judge whether "2020-01-04" is less than or equal to "2020-04-27"
 <p run-tag="true" graph="uql_manual_graph_2"></p>
@@ -98,10 +103,3 @@ return n{*}
 |-------|-------|-------|-----------------|
 | P002  |   2   |  27   | test@ultipa.com |
 ```
-
-
-## Greater Than or Equal
-
-- Expression: `<value1>` >= `<value2>`
-- Operand: string, number, time
-

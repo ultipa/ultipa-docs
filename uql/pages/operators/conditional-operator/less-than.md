@@ -94,10 +94,3 @@ return n{*}
 ```bash
 No return data
 ```
-
-
-## Greater Than
-
-- Expression: `<value1>` > `<value2>`
-- Operand: string, number, time
-

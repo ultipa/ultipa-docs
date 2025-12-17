@@ -35,7 +35,7 @@ The lower the conductance, the better the identified community is. As the exampl
 ### File Writeback
 
 | Spec | Content |
-| --- | --- | --- |
+| --- | --- |
 | filename | `_id`,`degree` |
 
 ### Direct Return 

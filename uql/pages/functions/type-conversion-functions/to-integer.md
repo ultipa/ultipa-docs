@@ -33,5 +33,3 @@ return toInteger("-34.5ABC")
 ```
 
 Result: -34
-## toFloat()
-

@@ -1,4 +1,9 @@
-# Constant
+# Between or Equal
+
+- Expression: `<value>` <=> [`<lower>`, `<upper>`]
+- Operand: string, number, time
+
+## Constant
 
 Example: Judge whether "abc" is in the closed interval ["123", "abc"] 
 <p run-tag="true" graph="uql_manual_graph_2"></p>
@@ -98,4 +103,3 @@ return n{*}
 |-------|-------|-------|-----------------|
 | P002  |   2   |  27   | test@ultipa.com |
 ```
-

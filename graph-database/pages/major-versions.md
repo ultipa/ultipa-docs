@@ -1,6 +1,6 @@
 # Major Versions
 
-# v4 Ultipa Blaze
+## v4 Ultipa Blaze
 
 **First Release:** Q1 2023<br>
 **Keywords:** Demi-schema, Plug-n-play Algorithm, Product Matrix<br>
@@ -54,7 +54,7 @@ A highlight should be spotted on one product among all that have been published 
 
 With its last update in 2023-Q1, Ultipa Grid has boasted a variety of new features and optimizations to enhance its performance and robustness, including lower memory cost, more efficient K-Hop and Shortest Path calculations, an advanced query optimizer, and the HTAP & Grid (Name Sever) architecture, making it easier and more efficient for users to manage and analyze their business in large graph datasets.
 
-# v3 Ultipa HTAP
+## v3 Ultipa HTAP
 
 **First Release:** 2021<br>
 **Keywords:** HTAP Graph Data Processing, Enterprise Stability, Upgraded UQL<br>
@@ -96,7 +96,7 @@ With a bunch of original products upgraded and adapted to the current engine ver
 
 Ultipa HTAP has been optimized for performance and stability, with improvements to HDC engine performance and reduced memory usage. It now guarantees 90 * 24 high TPS writing and computing, ensuring maximum stability and reliability. It is well-suited for a wide range of use cases in data science, analytics, and research. With its advanced features and optimizations, it delivers unprecedented performance, scalability, and reliability.
 
-# v2 Ultipa Colossus
+## v2 Ultipa Colossus
 
 **First Release:** 2020<br>
 **Keywords:** UQL 1.0, 30+ Algorithms, Storage Engine<br>
@@ -132,7 +132,7 @@ Ultipa Manager v2.x and Ultipa Transporter v2.x are the upgraded versions of the
 
 Ultipa Colossus retains the powerfulness and versatility from its predecessor while delivering significant improvements. With its advanced features and capabilities listed above, it is well-suited for a wide range of use cases in research, analytics, and data science.
 
-# v1 Ultipa Genesis
+## v1 Ultipa Genesis
 
 **First Release:** December, 2019<br>
 **Keywords:** High Density Graph Computing Engine<br>
@@ -170,7 +170,7 @@ With Ultipa Transporter v1.x, loading massive datasets becomes effortless. For i
 
 Ultipa Genesis heralds a paradigm shift in graph computing, delivering unmatched performance, scalability, and flexibility.
 
-# v0.5 Ultipa Alpha
+## v0.5 Ultipa Alpha
 
 **First Release:** June, 2019<br>
 **Keywords:** Graph Computing, Next-Gen Scalable Graph Database<br>

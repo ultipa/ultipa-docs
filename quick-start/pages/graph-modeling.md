@@ -73,7 +73,7 @@ System property `_id` is the unique node identifier in a graphset (not belonging
 
 | Property Name | Data Type | Property Type	|
 | -	| -	| -	|
-| <font color=#aaaaaa>\_id</font> | <font color=#aaaaaa>string</font> | <font color=#aaaaaa>系统属性</font> |
+| <font color=#aaaaaa>\_id</font> | <font color=#aaaaaa>string</font> | <font color=#aaaaaa>System property</font> |
 | merchant_name	| string | Custom property |
 | type | string | Custom property |
 | ... | ... | ... |
