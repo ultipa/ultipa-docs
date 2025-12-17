@@ -8,7 +8,7 @@ The result pane can be split into multiple screens. Each screen contains a **Too
 
 Click the **List** icon to display results in table(s).
 
-> The List view is used by default for the NODE, EDGE, TABLE, and ATTR results. The TABLE and ATTR results can only be displayed in the List view. <a href="https://www.ultipa.com/docs/uql/data-type">Learn more about the types of results</a>
+> The List view is used by default for the NODE, EDGE, TABLE, and ATTR results. The TABLE and ATTR results can only be displayed in the List view. <a href="/docs/uql/data-type">Learn more about the types of results</a>
 
 For the NODE, EDGE and PATH results, the List view provides options to **Edit** or **Delete** the nodes and edges. The TABLE and ATTR results are not editable.
 
@@ -36,7 +36,7 @@ The circular layout allows for easy identification of central nodes that have de
 
 The tree layout effectively represents hierarchical structures, it is ideal for visualizing tree-like data. However, since the root node is determined by the longest path in the query results, some rearrangements might be needed for specific contexts.
 
-> The Force-directed layout is used by default for the PATH results containing 200 nodes for fewer. Only the NODE and PATH results can be displayed in the Force-directed, Circular, and Tree layouts.  <a href="https://www.ultipa.com/docs/uql/data-type">Learn more about the types of results</a>
+> The Force-directed layout is used by default for the PATH results containing 200 nodes for fewer. Only the NODE and PATH results can be displayed in the Force-directed, Circular, and Tree layouts.  <a href="/docs/uql/data-type">Learn more about the types of results</a>
 
 ### Operations on Nodes
 
@@ -46,7 +46,7 @@ The tree layout effectively represents hierarchical structures, it is ideal for 
 
 **2. Left-click.** Left-click on a node brings up a circular menu with three options:
 
-- **Spread:** Spread from the node. This is equivalent to executing the query `spread().src(<node>).depth(<N>) limit <M>`, where the `<N>` and `<M>` are set in the **Depth** and **Limit** in <a href="https://www.ultipa.com/docs/manager-user-guide/settings">Settings</a> accordingly.
+- **Spread:** Spread from the node. This is equivalent to executing the query `spread().src(<node>).depth(<N>) limit <M>`, where the `<N>` and `<M>` are set in the **Depth** and **Limit** in <a href="/docs/manager-user-guide/settings">Settings</a> accordingly.
 - **Edit:** Edit the node.
 - **Delete:** Delete the node.
 
@@ -90,7 +90,7 @@ The tree layout effectively represents hierarchical structures, it is ideal for 
 
 Click the **3D** icon to display results as a graph in a 3D space.
 
-> The 3D layout is used by default for the PATH results containing more than 200 nodes. Only the NODE and PATH results can be displayed in the 3D layout.  <a href="https://www.ultipa.com/docs/uql/data-type">Learn more about the types of results</a>
+> The 3D layout is used by default for the PATH results containing more than 200 nodes. Only the NODE and PATH results can be displayed in the 3D layout.  <a href="/docs/uql/data-type">Learn more about the types of results</a>
 
 The 3D layout adds depth and spatial positioning to nodes and edges, reducing overlaps compared to 2D layouts. You can interact with the 3D layout by rotating, zooming, and navigating the graph from different perspectives. 
 

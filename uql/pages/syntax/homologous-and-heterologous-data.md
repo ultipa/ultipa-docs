@@ -2,7 +2,7 @@
 
 ## Overview
 
-In a UQL statement, multiple clauses are often involved, through which data retrieved from the database or constructed within the statement is sequentially passed and processed. <a href="https://www.ultipa.com/docs/uql/alias/">Aliases</a> are utilized to represent data, allowing clauses to call upon them for usage or further processing.
+In a UQL statement, multiple clauses are often involved, through which data retrieved from the database or constructed within the statement is sequentially passed and processed. <a href="/docs/uql/alias/">Aliases</a> are utilized to represent data, allowing clauses to call upon them for usage or further processing.
 
 The data may contain multiple entries, which can be viewed for illustrative purposes as multiple rows, with each row containing one data entry. When a clause (especially a chained clause) calls aliases, the corresponding querying or computation is performed row by row.
 

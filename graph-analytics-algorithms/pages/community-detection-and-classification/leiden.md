@@ -4,16 +4,16 @@
 
 ## Overview
 
-The Leiden algorithm is a community detection algorithm designed to maximize modularity in a graph. It was developed to address potential issues in the results obtained by the popular <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/louvain">Louvain</a> algorithm, where some communities may not be well-connected or even disconnected. The Leiden algorithm is faster compared to the Louvain algorithm and guarantees to produce partitions in which all communities are internally connected. The algorithm is also named after the location of its authors.
+The Leiden algorithm is a community detection algorithm designed to maximize modularity in a graph. It was developed to address potential issues in the results obtained by the popular <a href="/docs/graph-analytics-algorithms/louvain">Louvain</a> algorithm, where some communities may not be well-connected or even disconnected. The Leiden algorithm is faster compared to the Louvain algorithm and guarantees to produce partitions in which all communities are internally connected. The algorithm is also named after the location of its authors.
 
-- V.A. Traag, L. Waltman, N.J. van Eck, <a target="balnk" href="https://arxiv.org/pdf/1810.08473.pdf">From Louvain to Leiden: guaranteeing well-connected communities</a> (2019)
+- V.A. Traag, L. Waltman, N.J. van Eck, <a target="_balnk" href="https://arxiv.org/pdf/1810.08473.pdf">From Louvain to Leiden: guaranteeing well-connected communities</a> (2019)
 - V.A. Traag, P. Van Dooren, Y. Nesterov, <a target="blank" href="https://arxiv.org/pdf/1104.3083v1.pdf">Narrow scope for resolution-limit-free community detection</a> (2011)
 
 ## Concepts
 
 ### Modularity
 
-The concept of modularity is explained in the <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/louvain">Louvain</a> algorithm. The modularity formula used in the Leiden algorithm is extended to handle different levels of community granularity:
+The concept of modularity is explained in the <a href="/docs/graph-analytics-algorithms/louvain">Louvain</a> algorithm. The modularity formula used in the Leiden algorithm is extended to handle different levels of community granularity:
 
 <center><img width=330 src="https://img.ultipa.cn/img/2023-08-10-14-17-41-leiden-modularity.jpg" /></center>
 
@@ -25,7 +25,7 @@ The Leiden algorithm starts from a singleton partition, in which each node is in
 
 #### First Phase: Fast Modularity Optimization
 
-Unlike the first phase of the <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/louvain">Louvain</a> algorithm, which keeps visiting all nodes in the graph until no node movements can increase the modularity; the Leiden algorithm takes a more efficient approach, it only visits all nodes once, afterwards it visits only nodes whose neighborhood has changed. To do that, the Leiden algorithm maintains a queue and initializes it by adding all nodes in the graph in a random order.
+Unlike the first phase of the <a href="/docs/graph-analytics-algorithms/louvain">Louvain</a> algorithm, which keeps visiting all nodes in the graph until no node movements can increase the modularity; the Leiden algorithm takes a more efficient approach, it only visits all nodes once, afterwards it visits only nodes whose neighborhood has changed. To do that, the Leiden algorithm maintains a queue and initializes it by adding all nodes in the graph in a random order.
 
 Then repeat the following steps until the queue is empty: 
 - Remove the first node from the front of the queue. 
@@ -80,7 +80,7 @@ After the refinement phase is concluded, communities in P often are split into m
 
 #### Third Phase: Community Aggregation
 
-The aggregate graph is created based on P<sub>refined</sub>. However, the partition for the aggregate graph is based on P. The aggregation process is the same as <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/louvain">Louvain</a>.
+The aggregate graph is created based on P<sub>refined</sub>. However, the partition for the aggregate graph is based on P. The aggregation process is the same as <a href="/docs/graph-analytics-algorithms/louvain">Louvain</a>.
 
 <div align=center drawio-diagram='6566' drawio-name="draw_6f703198f7754ec4bcebd6168a3f9068.jpg"><img src="https://img.ultipa.cn/draw/draw_6f703198f7754ec4bcebd6168a3f9068.jpg?v='1691655725180'"/></div>
 <center>P - color blocks, P<sub>refined</sub> - node colors</center><br>

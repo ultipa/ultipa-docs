@@ -4,7 +4,7 @@
 
 ## Overview
 
-ArticleRank has been derived from <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/pagerank">PageRank</a> to measure the influence of journal articles.
+ArticleRank has been derived from <a href="/docs/graph-analytics-algorithms/pagerank">PageRank</a> to measure the influence of journal articles.
 
 - J. Li, P. Willett, <a target="blank" href="https://eprints.whiterose.ac.uk/10323/1/Willett_10323.pdf">ArticleRank: a PageRank-based Alternative to Numbers of Citations for Analysing Citation Networks</a> (2009)
 
@@ -14,7 +14,7 @@ ArticleRank has been derived from <a href="https://www.ultipa.com/docs/graph-ana
 
 Similar to links between webpages, citations between articles (books, reports, etc.) represent authoritativeness and high quality. It is normally assumed that the greater the number of citations that an article receives, the greater impact that article has within its particular research area. 
 
-However, not all articles are equally important. Hence, this approach based on <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/pagerank">PageRank</a> was proposed to rank articles.
+However, not all articles are equally important. Hence, this approach based on <a href="/docs/graph-analytics-algorithms/pagerank">PageRank</a> was proposed to rank articles.
 
 ArticleRank retains the basic PageRank methodology while making some modifications. When an article passes its rank among its forward links, it does not divide the rank equally by the out-degree of that article, but by the sum of the out-degree of that article and the average out-degree of all articles. The rank of article <i>u</i> after one iteration is:
 
@@ -42,7 +42,7 @@ In comparison with WWW, some features have to be considered for citation network
 | init_value | float | >0 | `0.2` | Yes | The same initial rank for all nodes |
 | loop_num | int | >=1 | `5` | Yes | Number of iterations |
 | damping | float | (0,1) | `0.8` | Yes | Damping factor |
-| weaken | int | `1`, `2` | `1` | No | For ArticleRank, keep it as `2`; `1` means to run <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/pagerank">PageRank</a> |
+| weaken | int | `1`, `2` | `1` | No | For ArticleRank, keep it as `2`; `1` means to run <a href="/docs/graph-analytics-algorithms/pagerank">PageRank</a> |
 | limit | int | ≥-1 | `-1` | Yes | Number of results to return, `-1` to return all results |
 | order | string | `asc`, `desc` | / | Yes | Sort nodes by the rank |
   

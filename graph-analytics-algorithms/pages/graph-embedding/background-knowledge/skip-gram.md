@@ -1,6 +1,6 @@
 # Skip-gram
 
-The Skip-gram (SG) model is a prominent approach designed for creating word embeddings in the field of natural language processing (NLP). It has also been used in graph embedding algorithms such as  <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/node2vec">Node2Vec</a> and <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/struc2vec">Struc2Vec</a> to generate node embeddings.
+The Skip-gram (SG) model is a prominent approach designed for creating word embeddings in the field of natural language processing (NLP). It has also been used in graph embedding algorithms such as  <a href="/docs/graph-analytics-algorithms/node2vec">Node2Vec</a> and <a href="/docs/graph-analytics-algorithms/struc2vec">Struc2Vec</a> to generate node embeddings.
 
 ## Background
 
@@ -14,7 +14,7 @@ In the realm of graph embedding, the inception of <i>DeepWalk</i> in 2014 marked
 
 - B. Perozzi, R. Al-Rfou, S. Skiena, <a target="blank" href="https://arxiv.org/pdf/1403.6652.pdf">DeepWalk: Online Learning of Social Representations</a> (2014)
 
-Subsequent graph embedding methods such as  <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/node2vec">Node2Vec</a> and <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/struc2vec">Struc2Vec</a> have enhanced the DeepWalk approach while still leveraging the Skip-gram framework.
+Subsequent graph embedding methods such as  <a href="/docs/graph-analytics-algorithms/node2vec">Node2Vec</a> and <a href="/docs/graph-analytics-algorithms/struc2vec">Struc2Vec</a> have enhanced the DeepWalk approach while still leveraging the Skip-gram framework.
 
 We will illustrate the Skip-gram model using the context of its original application in natural language processing.
 
@@ -76,7 +76,7 @@ The architecture of the Skip-gram model is depicted as above, where:
 - <math><msub><mi>W</mi><mrow><mi>V</mi><mo>×</mo><mi>N</mi></mrow></msub></math> is the input→hidden weight matrix, and <math><mi>N</mi></math> is the dimension of word embeddings.
 - <math><msub><mi>h</mi><mrow><mi>N</mi><mo>×</mo><mn>1</mn></mrow></msub></math> is the hidden layer vector.
 - <math><msub><mrow><mi>W</mi><mo>&#x2032;</mo></mrow><mrow><mi>N</mi><mo>×</mo><mi>V</mi></mrow></msub></math> is the hidden→output weight matrix. <math><mi>W</mi><mo>&#x2032;</mo></math> and <math><mi>W</mi></math> are different, <math><mi>W</mi><mo>&#x2032;</mo></math> is not the transpose of <math><mi>W</mi></math>.
-- <math><msub><mi>u</mi><mrow><mi>V</mi><mo>×</mo><mn>1</mn></mrow></msub></math> is the vector before applying the <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/backpropagation#Activation-Function">activation function</a> <i>Softmax</i>.
+- <math><msub><mi>u</mi><mrow><mi>V</mi><mo>×</mo><mn>1</mn></mrow></msub></math> is the vector before applying the <a href="/docs/graph-analytics-algorithms/backpropagation#Activation-Function">activation function</a> <i>Softmax</i>.
 - The output vectors <math><msub><mi>y</mi><mi>c</mi></msub></math> (<math><mi>c</mi><mo>=</mo><mn>1</mn><mi>,&nbsp;</mi><mn>2</mn><mi>,&nbsp;</mi><mi>...</mi><mi>,&nbsp;</mi><mi>C</mi></math>) are also referred to as <i>panels</i>, <math><mi>C</mi></math> panels correspond to <math><mi>C</mi></math> context words of the target word. 
 
 <b>Softmax</b>: Softmax function as an activation function, serving to normalize a numerical vector into a probability distribution vector. In this transformed vector, the summation of all probabilities equals <math><mn>1</mn></math>. The formula for Softmax is as follows:
@@ -129,7 +129,7 @@ The <math><mn>C</mn></math> words with the highest probabilities are considered 
 
 ## Backpropagation
 
-To adjust the weights in <math><mi>W</mi></math> and <math><mi>W</mi><mo>&#x2032;</mo></math>, <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/gradient-descent">SGD</a> is used to <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/backpropagation">backpropagate</a> the errors.
+To adjust the weights in <math><mi>W</mi></math> and <math><mi>W</mi><mo>&#x2032;</mo></math>, <a href="/docs/graph-analytics-algorithms/gradient-descent">SGD</a> is used to <a href="/docs/graph-analytics-algorithms/backpropagation">backpropagate</a> the errors.
 
 ### Loss Function
 
@@ -175,7 +175,7 @@ Calculate the partial derivative of <math><mi>E</mi></math> with respect to <mat
 
 <center><img width="650" src="https://img.ultipa.cn/img/2023-08-22-17-56-47-pd1.jpg"></center>
 
-Adjust <math><msubsup><mi>w</mi><mrow><mi>i</mi><mi>j</mi></mrow><mo>&#x2032;</mo></msubsup></math> according to the <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/gradient-descent#Basic-Form">learning rate</a> <math><mi>η</mi></math>:
+Adjust <math><msubsup><mi>w</mi><mrow><mi>i</mi><mi>j</mi></mrow><mo>&#x2032;</mo></msubsup></math> according to the <a href="/docs/graph-analytics-algorithms/gradient-descent#Basic-Form">learning rate</a> <math><mi>η</mi></math>:
 
 <center><img width="235" src="https://img.ultipa.cn/img/2023-08-22-17-58-47-new1.jpg"></center>
 
@@ -245,7 +245,7 @@ Calculate the partial derivative of <math><mi>E</mi></math> with respect to <mat
 
 <center><img width="400" src="https://img.ultipa.cn/img/2023-08-23-10-08-08-pd2.jpg"></center>
 
-Adjust <math><msub><mi>w</mi><mrow><mi>k</mi><mi>i</mi></mrow></msub></math> according to the <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/gradient-descent#Basic-Form">learning rate</a> <math><mi>η</mi></math>:
+Adjust <math><msub><mi>w</mi><mrow><mi>k</mi><mi>i</mi></mrow></msub></math> according to the <a href="/docs/graph-analytics-algorithms/gradient-descent#Basic-Form">learning rate</a> <math><mi>η</mi></math>:
 
 <center><img width="300" src="https://img.ultipa.cn/img/2023-08-23-10-09-55-new2.jpg"></center>
 

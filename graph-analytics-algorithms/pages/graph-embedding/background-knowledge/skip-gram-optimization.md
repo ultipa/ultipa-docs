@@ -2,7 +2,7 @@
 
 ## Overview
 
-The <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/skip-gram">basic Skip-gram model</a> is almost impractical due to various computational demands. 
+The <a href="/docs/graph-analytics-algorithms/skip-gram">basic Skip-gram model</a> is almost impractical due to various computational demands. 
 
 The sizes of matrices <math><mi>W</mi></math> and <math><mi>W</mi><mo>&#x2032;</mo></math> depend on the vocabulary size (e.g., <math><mi>V</mi><mo>=</mo><mn>10000</mn></math>) and the embedding dimension (e.g., <math><mi>N</mi><mo>=</mo><mn>300</mn></math>), where each matrix often contains millions of weights (e.g., <math><mi>V</mi><mo>⋅</mo><mi>N</mi><mo>=</mo><mn>3</mn></math> million) each! The neural network of Skip-gram is thus made very large, demanding a vast number of training samples to tune these weights.
 
@@ -127,6 +127,6 @@ Take the partial derivative of <math><mi>E</mi></math> with respect to <math><ms
 
 <center><img width="250" src="https://img.ultipa.cn/img/2023-08-23-17-43-12-e.jpg"></center>
 
-The process of updating weights in matrices <math><mi>W</mi><mo>&#x2032;</mo></math> and <math><mi>W</mi></math> is straightforward. You may refer to the <a href="https://ultipa.com/docs/graph-analytics-algorithms/skip-gram">original form</a> of Skip-gram. However, only weights <math><msubsup><mi>w</mi><mn>11</mn><mo>&#x2032;</mo></msubsup></math>, <math><msubsup><mi>w</mi><mn>21</mn><mo>&#x2032;</mo></msubsup></math>, <math><msubsup><mi>w</mi><mn>13</mn><mo>&#x2032;</mo></msubsup></math>, <math><msubsup><mi>w</mi><mn>23</mn><mo>&#x2032;</mo></msubsup></math>, <math><msubsup><mi>w</mi><mn>18</mn><mo>&#x2032;</mo></msubsup></math>, <math><msubsup><mi>w</mi><mn>28</mn><mo>&#x2032;</mo></msubsup></math>, <math><msubsup><mi>w</mi><mrow><mn>1</mn><mi>,</mi><mn>10</mn></mrow><mo>&#x2032;</mo></msubsup></math> and <math><msubsup><mi>w</mi><mrow><mn>2</mn><mi>,</mi><mn>10</mn></mrow><mo>&#x2032;</mo></msubsup></math> in <math><mi>W</mi><mo>&#x2032;</mo></math> and weights <math><msub><mi>w</mi><mn>21</mn></msub></math> and <math><msub><mi>w</mi><mn>21</mn></msub></math> in <math><mi>W</mi></math> are updated.
+The process of updating weights in matrices <math><mi>W</mi><mo>&#x2032;</mo></math> and <math><mi>W</mi></math> is straightforward. You may refer to the <a href="/docs/graph-analytics-algorithms/skip-gram">original form</a> of Skip-gram. However, only weights <math><msubsup><mi>w</mi><mn>11</mn><mo>&#x2032;</mo></msubsup></math>, <math><msubsup><mi>w</mi><mn>21</mn><mo>&#x2032;</mo></msubsup></math>, <math><msubsup><mi>w</mi><mn>13</mn><mo>&#x2032;</mo></msubsup></math>, <math><msubsup><mi>w</mi><mn>23</mn><mo>&#x2032;</mo></msubsup></math>, <math><msubsup><mi>w</mi><mn>18</mn><mo>&#x2032;</mo></msubsup></math>, <math><msubsup><mi>w</mi><mn>28</mn><mo>&#x2032;</mo></msubsup></math>, <math><msubsup><mi>w</mi><mrow><mn>1</mn><mi>,</mi><mn>10</mn></mrow><mo>&#x2032;</mo></msubsup></math> and <math><msubsup><mi>w</mi><mrow><mn>2</mn><mi>,</mi><mn>10</mn></mrow><mo>&#x2032;</mo></msubsup></math> in <math><mi>W</mi><mo>&#x2032;</mo></math> and weights <math><msub><mi>w</mi><mn>21</mn></msub></math> and <math><msub><mi>w</mi><mn>21</mn></msub></math> in <math><mi>W</mi></math> are updated.
 null
 null

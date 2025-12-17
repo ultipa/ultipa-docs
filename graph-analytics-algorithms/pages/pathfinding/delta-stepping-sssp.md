@@ -64,7 +64,7 @@ By dividing the nodes into buckets and processing them in parallel, the Delta-St
 
 ## Considerations
 
-- The Delta-Stepping SSSP algorithm is only applicable to graphs with non-negative edge weights. If negative weights are present, the Delta-Stepping SSSP algorithm might produce false results. In this case, a different algorithm like the <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/spfa/">SPFA</a> should be used.
+- The Delta-Stepping SSSP algorithm is only applicable to graphs with non-negative edge weights. If negative weights are present, the Delta-Stepping SSSP algorithm might produce false results. In this case, a different algorithm like the <a href="/docs/graph-analytics-algorithms/spfa/">SPFA</a> should be used.
 - If there are multiple shortest paths exist between two nodes, all of them will be found.
 - In disconnected graphs, the algorithm only outputs the shortest paths from the source node to all nodes belonging to the same connected component as the source node.
 

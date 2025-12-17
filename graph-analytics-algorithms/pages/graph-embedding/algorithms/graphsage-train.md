@@ -4,15 +4,15 @@
 
 ## Overview
 
-The GraphSAGE Train algorithm is employed to train the GraphSAGE model. The training process occurs in a fully unsupervised setting and involves the use of techniques such as <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/gradient-descent">SGD</a> and <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/backpropagation">backpropagation</a> techniques.
+The GraphSAGE Train algorithm is employed to train the GraphSAGE model. The training process occurs in a fully unsupervised setting and involves the use of techniques such as <a href="/docs/graph-analytics-algorithms/gradient-descent">SGD</a> and <a href="/docs/graph-analytics-algorithms/backpropagation">backpropagation</a> techniques.
 
-The trained GraphSAGE model can be used to generate node embeddings. This inductive framework is also capable of producing embeddings for newly joined nodes without necessitating model re-training. For detailed information on how to use GraphSAGE model for this purpose, please refer to the <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/graphsage">GraphSAGE</a> algorithm.
+The trained GraphSAGE model can be used to generate node embeddings. This inductive framework is also capable of producing embeddings for newly joined nodes without necessitating model re-training. For detailed information on how to use GraphSAGE model for this purpose, please refer to the <a href="/docs/graph-analytics-algorithms/graphsage">GraphSAGE</a> algorithm.
 
 ## Concepts
 
 ### GraphSAGE: Learning the Parameters
 
-According to the <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/graphsage#GraphSAGE:-Embedding-Generation">embedding generation</a> (forward propagation) algorithm of GraphSAGE, we need to tune the parameters of <i>K</i> aggregator functions (denoted as <i>AGGREGATE<sub>k</sub></i>) and <i>K</i> weight matrices (denoted as <i>W<sup>k</sup></i>).
+According to the <a href="/docs/graph-analytics-algorithms/graphsage#GraphSAGE:-Embedding-Generation">embedding generation</a> (forward propagation) algorithm of GraphSAGE, we need to tune the parameters of <i>K</i> aggregator functions (denoted as <i>AGGREGATE<sub>k</sub></i>) and <i>K</i> weight matrices (denoted as <i>W<sup>k</sup></i>).
 
 The <b>loss function</b> is designed to encourages nearby nodes to have similar embeddings, while enforcing the embeddings of disparate nodes to be highly distinct:
 
@@ -21,7 +21,7 @@ The <b>loss function</b> is designed to encourages nearby nodes to have similar 
 where,
 
 - <i>v</i> is a node that co-occurs near <i>u</i> on fixed-length <i>random walk</i>.
-- <i>v<sub>n</sub></i> is a negative sample, <i>Q</i> is the number of negative samples, <i>P<sub>n</sub></i> is the <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/skip-gram-optimization#Negative-Sampling">negative sampling</a> distribution.
+- <i>v<sub>n</sub></i> is a negative sample, <i>Q</i> is the number of negative samples, <i>P<sub>n</sub></i> is the <a href="/docs/graph-analytics-algorithms/skip-gram-optimization#Negative-Sampling">negative sampling</a> distribution.
 - <i>σ</i> is the sigmoid function.
 - <i>Z</i> is the embedding of node generated from the GraphSAGE model.
 

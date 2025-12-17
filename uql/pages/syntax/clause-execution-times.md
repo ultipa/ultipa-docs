@@ -2,9 +2,9 @@
 
 ## Overview 
 
-When a chained clause calls an alias or multiple <a href="https://www.ultipa.com/docs/uql/homologous-and-heterologous-data/">homologous</a> aliases, the number of times that clause executes equals the number of entries contained in the data represented by the alias. Each execution processes one data entry, while system optimizations may apply based on the actual situation. For the query clauses, each execution of the query is also referred to as a <b>subquery</b>.
+When a chained clause calls an alias or multiple <a href="/docs/uql/homologous-and-heterologous-data/">homologous</a> aliases, the number of times that clause executes equals the number of entries contained in the data represented by the alias. Each execution processes one data entry, while system optimizations may apply based on the actual situation. For the query clauses, each execution of the query is also referred to as a <b>subquery</b>.
 
-However, when a chained clause calls <a href="https://www.ultipa.com/docs/uql/homologous-and-heterologous-data/">heterologous</a> aliases, the number of times that clause executes depends on the alias with the fewest data entries.
+However, when a chained clause calls <a href="/docs/uql/homologous-and-heterologous-data/">heterologous</a> aliases, the number of times that clause executes depends on the alias with the fewest data entries.
 
 ## General
 

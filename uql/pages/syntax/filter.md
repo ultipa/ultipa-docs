@@ -55,18 +55,18 @@ return p
 
 Note: The second node template `n()` calls the alias defined in the first node template.
 
-> Generally, properties referenced in the filter can be used directly without any indexing. However, different types of indexing should be contemplated when seeking to expedite the query process. Please refer to <a href="https://www.ultipa.com/docs/uql/acceleration">Acceleration</a> for more information.
+> Generally, properties referenced in the filter can be used directly without any indexing. However, different types of indexing should be contemplated when seeking to expedite the query process. Please refer to <a href="/docs/uql/acceleration">Acceleration</a> for more information.
 
 ### Inter-Step Filter
 
-In a template-based query clause, you can employ the system aliases <a href="https://www.ultipa.com/docs/uql/alias#prev_n">prev_n</a> and <a href="https://www.ultipa.com/docs/uql/alias#prev_e">prev_e</a> to facilitate inter-step filtering.
+In a template-based query clause, you can employ the system aliases <a href="/docs/uql/alias#prev_n">prev_n</a> and <a href="/docs/uql/alias#prev_e">prev_e</a> to facilitate inter-step filtering.
 
 ```js
 n({@card}).e({@transfersTo.time > prev_e.time})[3].n({@card}) as p
 return p
 ```
 
-> The properties referenced by `prev_n` and `prev_e` (such as the *time* property in the example) must be <a href="https://www.ultipa.com/docs/uql/lte">LTE</a>-ed for acceleration.
+> The properties referenced by `prev_n` and `prev_e` (such as the *time* property in the example) must be <a href="/docs/uql/lte">LTE</a>-ed for acceleration.
 
 The methods `path_ascend()` and `path_descend()` in certain path query commands like `ab()` serve the same purpose of inter-step comparison, and they necessitate the subject property to be LTE-ed as well. However, the input for these methods does not take the form of a filter.
 
@@ -77,7 +77,7 @@ return p{*}
 
 ### Full-Text Filter
 
-In any query clause, nodes and edges can be filtered using a created <a href="https://www.ultipa.com/docs/uql/full-text">full-text index</a>.
+In any query clause, nodes and edges can be filtered using a created <a href="/docs/uql/full-text">full-text index</a>.
 
 ```js
 find().nodes({~content CONTAINS "graph computing parallel"}) as n

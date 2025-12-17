@@ -134,7 +134,7 @@ Result:
 
 ### Provide Point-Type Value
 
-Use the <a href="https://www.ultipa.com/docs/uql/point">point()</a> function to specify the value of a point-type property. 
+Use the <a href="/docs/uql/point">point()</a> function to specify the value of a point-type property. 
 
 ```js
 insert().into(@city).nodes([
@@ -144,7 +144,7 @@ insert().into(@city).nodes([
 
 ### Provide Blob-Type Value
 
-Use the <a href="https://www.ultipa.com/docs/uql/cast-to-raw">castToRaw()</a> function to specify the value of a blob-type property. 
+Use the <a href="/docs/uql/cast-to-raw">castToRaw()</a> function to specify the value of a blob-type property. 
 
 ```js
 insert().into(@city).nodes([

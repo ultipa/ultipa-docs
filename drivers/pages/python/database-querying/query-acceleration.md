@@ -1,6 +1,6 @@
 # Query Acceleration
 
-This section introduces methods on a `Connection` object for managing the LTE status for properties, and their indexes and full-text indexes. These mechanisms can be employed to <a href="https://www.ultipa.com/docs/uql/acceleration">accelerate queries</a>.
+This section introduces methods on a `Connection` object for managing the LTE status for properties, and their indexes and full-text indexes. These mechanisms can be employed to <a href="/docs/uql/acceleration">accelerate queries</a>.
 
 Each example focuses solely on the method's usage. For a complete code example, please refer to the <a href="#Full-Example">full example</a>.
 

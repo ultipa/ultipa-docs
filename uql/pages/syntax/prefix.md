@@ -11,7 +11,7 @@ UQL support the following **prefix** keywords for a clause or the entire UQL sta
 | `EXPLAIN` | Return the operation plan of the entire UQL statement without executing it. | Entire UQL statement |
 | `PROFILE` | Return the operation plan of the entire UQL statement and the time cost for each step during its execution. | Entire UQL statement |
 | `DEBUG` | Return the number of calls and time cost for each step in the operation plan of the entire UQL statement during its execution. | Entire UQL statement |
-| `EXEC TASK` | Send the entire UQL statement to the <a href="https://www.ultipa.com/docs/uql/analytics-node">analytics node</a> (algo node) of the cluster for execution | Entire UQL statement |
+| `EXEC TASK` | Send the entire UQL statement to the <a href="/docs/uql/analytics-node">analytics node</a> (algo node) of the cluster for execution | Entire UQL statement |
 
 > Prefix keywords are all case insensitive.
 

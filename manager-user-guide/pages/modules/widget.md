@@ -269,7 +269,7 @@ You can also enable the **\<iframe\>** option, providing an `<iframe>` element t
 | shortCutId | ID of the shortcut | / |
 | params | All variables and their values set in the Test form | / |
 | theme | Display theme | `light`, `dark` |
-| colorStyleSelected | ID of the currently selected <a href="https://www.ultipa.com/docs/manager-user-guide/result-pane#Style">style</a> | / | 
+| colorStyleSelected | ID of the currently selected <a href="/docs/manager-user-guide/result-pane#Style">style</a> | / | 
 | shareToken | Cookie generated for using the widget in another webpage | / |
 
 The `<iframe>` element is regenerated when you uncheck and re-check the **\<iframe\>** option or change the expiration date.

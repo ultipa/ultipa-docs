@@ -6,7 +6,7 @@
 
 Closeness centrality of a node is measured by the average shortest distance from the node to all other reachable nodes. The closer a node is to all other nodes, the more central the node is. This algorithm is widely used in applications such as discovering key social nodes and finding best locations for functional places.
 
-> Closeness Centrality algorithm is best to be applied in connected graph. For disconnected graph, its variant, the <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/harmonic-centrality">Harmonic Centrality</a>, is recommended.
+> Closeness Centrality algorithm is best to be applied in connected graph. For disconnected graph, its variant, the <a href="/docs/graph-analytics-algorithms/harmonic-centrality">Harmonic Centrality</a>, is recommended.
 
 Closeness centrality takes on values between 0 to 1, nodes with higher scores have shorter distances to all other nodes. 
 
@@ -18,7 +18,7 @@ Closeness centrality was originally defined by Alex Bavelas in 1950:
 
 ### Shortest Distance
 
-The shortest distance of two nodes is the number of edges contained in the shortest path between them. Shortest path is searched by the BFS principle, if node A is regarded as the start node and node B is one of the K-hop neighbors of node A, then K is the shortest distance between A and B. Please read <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/khop-all">K-Hop All</a> for the details about BFS and K-hop neighbor.
+The shortest distance of two nodes is the number of edges contained in the shortest path between them. Shortest path is searched by the BFS principle, if node A is regarded as the start node and node B is one of the K-hop neighbors of node A, then K is the shortest distance between A and B. Please read <a href="/docs/graph-analytics-algorithms/khop-all">K-Hop All</a> for the details about BFS and K-hop neighbor.
 
 <div align=center drawio-diagram='1451' drawio-name="draw_c40a965f5b194538bcccd9b73d07e6d8.jpg"><img src="https://img.ultipa.cn/draw/draw_c40a965f5b194538bcccd9b73d07e6d8.jpg?v='1645510498262'"/></div>
 

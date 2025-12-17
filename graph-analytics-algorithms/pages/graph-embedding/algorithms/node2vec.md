@@ -4,7 +4,7 @@
 
 ## Overview
 
-Node2Vec is a semi-supervised algorithm designed for feature learning of nodes in graphs while efficiently preserving their neighborhoods. It introduces a versatile search strategy that can explore both the BFS and DFS neighborhoods of nodes. It also extends the <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/skip-gram">Skip-gram</a> model to graphs for training node embeddings. Node2Vec was developed by A. Grover and J. Leskovec at Stanford University in 2016.
+Node2Vec is a semi-supervised algorithm designed for feature learning of nodes in graphs while efficiently preserving their neighborhoods. It introduces a versatile search strategy that can explore both the BFS and DFS neighborhoods of nodes. It also extends the <a href="/docs/graph-analytics-algorithms/skip-gram">Skip-gram</a> model to graphs for training node embeddings. Node2Vec was developed by A. Grover and J. Leskovec at Stanford University in 2016.
 
 - A. Grover, J. Leskovec, <a target="blank" href="https://arxiv.org/pdf/1607.00653.pdf">node2vec: Scalable Feature Learning for Networks</a> (2016)
 
@@ -68,7 +68,7 @@ Through the two parameters, Node2Vec provides a way of controlling the trade-off
 
 #### 2. Node Embeddings
 
-The node sequences obtained from the random walks serve as input to the <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/skip-gram">Skip-gram</a> model. <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/gradient-descent">SGD</a>  is used to optimize the model's parameters based on the prediction error, and the model is <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/skip-gram-optimization">optimized</a> by techniques such as negative sampling and subsampling. 
+The node sequences obtained from the random walks serve as input to the <a href="/docs/graph-analytics-algorithms/skip-gram">Skip-gram</a> model. <a href="/docs/graph-analytics-algorithms/gradient-descent">SGD</a>  is used to optimize the model's parameters based on the prediction error, and the model is <a href="/docs/graph-analytics-algorithms/skip-gram-optimization">optimized</a> by techniques such as negative sampling and subsampling. 
 
 ## Considerations
 

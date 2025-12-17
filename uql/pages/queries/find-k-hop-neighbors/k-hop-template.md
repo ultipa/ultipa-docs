@@ -4,7 +4,7 @@
 
 The k-hop template clause `khop().n()...n()` utilizes a path template to query for **k-hop neighbors** of the start nodes in the paths. 
 
-With the defined path template, the value of k depends on the shortest distance between two nodes, same as explained in the <a href="https://www.ultipa.com/docs/uql/k-hop/">k-hop clause</a>. Additionally, the returned nodes must satisfy the condition set for the destination nodes in the path template.
+With the defined path template, the value of k depends on the shortest distance between two nodes, same as explained in the <a href="/docs/uql/k-hop/">k-hop clause</a>. Additionally, the returned nodes must satisfy the condition set for the destination nodes in the path template.
 
 ### K-Hop vs. K-Hop Template
 

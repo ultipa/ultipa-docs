@@ -4,11 +4,11 @@ Ultipa Drivers are a combination of specifications for developers to introduce o
 
 Programming languages already supported are listed below:
 
-- [RESTful API](https://www.ultipa.com/docs/drivers/restful-api)
-- [Java](https://www.ultipa.com/docs/drivers/java-installation)
-- [Python](https://www.ultipa.com/docs/drivers/python-installation)
-- [Go](https://www.ultipa.com/docs/drivers/go-installation)
-- [Node.js](https://www.ultipa.com/docs/drivers/nodejs-installation)
-- [C#](https://www.ultipa.com/docs/drivers/csharp-installation)
+- [RESTful API](/docs/drivers/restful-api)
+- [Java](/docs/drivers/java-installation)
+- [Python](/docs/drivers/python-installation)
+- [Go](/docs/drivers/go-installation)
+- [Node.js](/docs/drivers/nodejs-installation)
+- [C#](/docs/drivers/csharp-installation)
 
 For detailed information of Ultipa Drivers please contact [Ultipa Team](mailto:support@ultipa.com).

@@ -22,7 +22,7 @@ show().node_index()
 show().edge_index()
 ```
 
-> You may need to <a href="https://www.ultipa.com/docs/uql/graphset#Compact-Graph">compact the graph</a> in order to see the right size of the index.
+> You may need to <a href="/docs/uql/graphset#Compact-Graph">compact the graph</a> in order to see the right size of the index.
 
 ## Create Index
 

@@ -253,7 +253,7 @@ Data structure of the value:
 }
 ```
 
-> To specify a valid return format in the RETURN clause, please refer to the table provided [here](https://ultipa.com/docs/uql/return#Valid-Return-Format).
+> To specify a valid return format in the RETURN clause, please refer to the table provided [here](/docs/uql/return#Valid-Return-Format).
 
 ## Null
 
@@ -287,7 +287,7 @@ Any **numerical computation** (`+`, `-`, `*`, `/`, `%`) involving null will resu
 Any **aggregation operation** (`count()`, `sum()`, `max()`, `min()`, `avg()`, `stddev()`, `collect()`) involving null will disregard rows with null values.
 
 **Functions** and **operators** related to null: 
-- [coalesce()](https://www.ultipa.com/docs/uql/coalesce)
-- [ifnull()](https://www.ultipa.com/docs/uql/ifnull)
-- [IS NULL](https://www.ultipa.com/docs/uql/is-null)
-- [IS NOT NULL](https://www.ultipa.com/docs/uql/is-not-null).
+- [coalesce()](/docs/uql/coalesce)
+- [ifnull()](/docs/uql/ifnull)
+- [IS NULL](/docs/uql/is-null)
+- [IS NOT NULL](/docs/uql/is-not-null).

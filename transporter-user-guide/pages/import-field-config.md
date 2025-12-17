@@ -101,11 +101,11 @@ Classify data sources by whether carrying field name and field type:
 `properties` can <sup>1)</sup> configure the un-carried field name and type, <sup>2)</sup> modify the carried field name and type, and <sup>3)</sup> add prefix to field value.
 
 Validity of field names:
-- Refer to [Naming Convention](https://www.ultipa.com/docs/uql/property) of property
+- Refer to [Naming Convention](/docs/uql/property) of property
 
 Validity of field type:
 - System properties: `_id`, `_uuid`, `_from`, `_to`, `_from_uuid`, `_to_uuid`
-- Custom properties please refer to [Data Types of Property](https://www.ultipa.com/docs/uql/data-type)
+- Custom properties please refer to [Data Types of Property](/docs/uql/data-type)
 - Fields to be ignored: `_ignore`
 
 Field types that support prefix: `_id`, `_from`, `_to`
@@ -134,7 +134,7 @@ properties:
     # A field whose 'type' is omitted will be set to 'string' type
 ```
 
-> When a headerless CSV file has less `- name` configured than its actual columns, error will prompt by default, or set  [fitToHeader](https://www.ultipa.com/docs/transporter/import-settings) under `settings` to 'true' so as to ignore the last couple of columns not configured.
+> When a headerless CSV file has less `- name` configured than its actual columns, error will prompt by default, or set  [fitToHeader](/docs/transporter/import-settings) under `settings` to 'true' so as to ignore the last couple of columns not configured.
 
 
 When configuring field types for a CSV file with header but no type, the order of`-name` is not necessary and normally impossible to be consistent with data columns in the file. Such as:

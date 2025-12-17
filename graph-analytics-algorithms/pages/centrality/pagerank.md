@@ -65,7 +65,7 @@ Damping factor can also be understood as the probability that a web surfer rando
 | init_value | float | >0 | `0.2` | Yes | The same initial rank for all nodes |
 | loop_num | int | >=1 | `5` | Yes | Number of iterations |
 | damping | float | (0,1) | `0.8` | Yes | Damping factor |
-| weaken | int | `1`, `2` | `1` | Yes | For PageRank, keep it as `1`; `2` means to run <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/article-rank">ArticleRank </a> |
+| weaken | int | `1`, `2` | `1` | Yes | For PageRank, keep it as `1`; `2` means to run <a href="/docs/graph-analytics-algorithms/article-rank">ArticleRank </a> |
 | limit | int | ≥-1 | `-1` | Yes | Number of results to return, `-1` to return all results |
 | order | string | `asc`, `desc` | / | Yes | Sort nodes by the rank |
   

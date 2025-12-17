@@ -149,7 +149,7 @@ Here are the naming conventions for properties:
 - Contains 2 to 64 characters.
 - Not allowed to start with a tilde symbol `~`.
 - Not allowed to contain backquote symbol `` ` ``.
-- Not allowed to use any <a href="https://www.ultipa.com/docs/uql/reserved-words">reserved words</a>.
+- Not allowed to use any <a href="/docs/uql/reserved-words">reserved words</a>.
 
 All properties under one schema must have distinct names. Different schemas may contain properties with the same name.
 

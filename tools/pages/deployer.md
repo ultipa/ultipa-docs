@@ -1,6 +1,6 @@
 # Deployer
 
-> This article introduces the minimum procedure of using Ultipa Deployer to deploy Ultipa HTAP cluster. For deployment without Ultipa Deployer please refer to [Deployment Procedure](https://www.ultipa.com/docs/tools/deployment-procedure).
+> This article introduces the minimum procedure of using Ultipa Deployer to deploy Ultipa HTAP cluster. For deployment without Ultipa Deployer please refer to [Deployment Procedure](/docs/tools/deployment-procedure).
 
 ## Hardware Requirement 
 
