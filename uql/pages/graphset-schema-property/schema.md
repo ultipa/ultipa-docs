@@ -71,7 +71,7 @@ Here are the naming conventions for schemas:
 - Contains 2 to 64 characters.
 - Not allowed to start with a tilde symbol `~`.
 - Not allowed to contain backquote symbol `` ` ``.
-- Not allowed to use any <a href="https://www.ultipa.com/docs/uql/reserved-words">reserved words</a>.
+- Not allowed to use any <a href="/docs/uql/reserved-words">reserved words</a>.
 
 All node schemas in a graphset must have distinct names, and the same applies for edge schemas. A node schema and an edge schema may share the same name.
 

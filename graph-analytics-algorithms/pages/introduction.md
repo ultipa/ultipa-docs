@@ -5,77 +5,77 @@ Ultipa offers an ever-growing rich set of algorithms for graph analytics purpose
 This manual contains the following content:
 
 - <b>Using Algorithms</b>
-  - <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/show-algos">Show Algorithms</a>
-  - <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/install-and-uninstall">Install and Uninstall</a>
-  - <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/run-algos">Run Algorithms</a>
-  - <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/algo-results-stats">Algorithm Results and Statistics</a>
+  - <a href="/docs/graph-analytics-algorithms/show-algos">Show Algorithms</a>
+  - <a href="/docs/graph-analytics-algorithms/install-and-uninstall">Install and Uninstall</a>
+  - <a href="/docs/graph-analytics-algorithms/run-algos">Run Algorithms</a>
+  - <a href="/docs/graph-analytics-algorithms/algo-results-stats">Algorithm Results and Statistics</a>
 - <b>Centrality Algorithms</b>
-  - <a href="https://ultipa.com/docs/graph-analytics-algorithms/degree-centrality">Degree Centrality</a>
-  - <a href="https://ultipa.com/docs/graph-analytics-algorithms/closeness-centrality">Closeness Centrality</a>
-  - <a href="https://ultipa.com/docs/graph-analytics-algorithms/harmonic-centrality">Harmonic Centrality</a>
-  - <a href="https://ultipa.com/docs/graph-analytics-algorithms/graph-centrality">Graph Centrality</a>
-  - <a href="https://ultipa.com/docs/graph-analytics-algorithms/betweenness-centrality">Betweenness Centrality</a>
-  - <a href="https://ultipa.com/docs/graph-analytics-algorithms/eigenvector-centrality">Eigenvector Centrality</a>
-  - <a href="https://ultipa.com/docs/graph-analytics-algorithms/celf">CELF</a>
-  - <a href="https://ultipa.com/docs/graph-analytics-algorithms/pagerank">PageRank</a>
-  - <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/article-rank">ArticleRank</a>
-  - <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/hits">HITS</a>
-  - <a href="https://ultipa.com/docs/graph-analytics-algorithms/sybil-rank">SybilRank</a>
+  - <a href="/docs/graph-analytics-algorithms/degree-centrality">Degree Centrality</a>
+  - <a href="/docs/graph-analytics-algorithms/closeness-centrality">Closeness Centrality</a>
+  - <a href="/docs/graph-analytics-algorithms/harmonic-centrality">Harmonic Centrality</a>
+  - <a href="/docs/graph-analytics-algorithms/graph-centrality">Graph Centrality</a>
+  - <a href="/docs/graph-analytics-algorithms/betweenness-centrality">Betweenness Centrality</a>
+  - <a href="/docs/graph-analytics-algorithms/eigenvector-centrality">Eigenvector Centrality</a>
+  - <a href="/docs/graph-analytics-algorithms/celf">CELF</a>
+  - <a href="/docs/graph-analytics-algorithms/pagerank">PageRank</a>
+  - <a href="/docs/graph-analytics-algorithms/article-rank">ArticleRank</a>
+  - <a href="/docs/graph-analytics-algorithms/hits">HITS</a>
+  - <a href="/docs/graph-analytics-algorithms/sybil-rank">SybilRank</a>
 - <b>Similarity algorithms</b>
-  - <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/jaccard-similarity">Jaccard Similarity</a>
-  - <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/overlap-similarity">Overlap Similarity</a> 
-  - <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/cosine-similarity">Cosine Similarity</a> 
-  - <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/pearson-correlation-coefficient">Pearson Correlation Coefficient</a> 
-  - <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/euclidean-distance">Euclidean Distance</a> 
+  - <a href="/docs/graph-analytics-algorithms/jaccard-similarity">Jaccard Similarity</a>
+  - <a href="/docs/graph-analytics-algorithms/overlap-similarity">Overlap Similarity</a> 
+  - <a href="/docs/graph-analytics-algorithms/cosine-similarity">Cosine Similarity</a> 
+  - <a href="/docs/graph-analytics-algorithms/pearson-correlation-coefficient">Pearson Correlation Coefficient</a> 
+  - <a href="/docs/graph-analytics-algorithms/euclidean-distance">Euclidean Distance</a> 
 - <b>Connectivity & Compactness Algorithms</b>
-  - <a href="https://ultipa.com/docs/graph-analytics-algorithms/khop-all">K-Hop All</a>
-  - <a href="https://ultipa.com/docs/graph-analytics-algorithms/bipartite">Bipartite Graph</a>
-  - <a href="https://ultipa.com/docs/graph-analytics-algorithms/hyperanf">HyperANF</a>
-  - <a href="https://ultipa.com/docs/graph-analytics-algorithms/connected-component">Connected Component</a>
-  - <a href="https://ultipa.com/docs/graph-analytics-algorithms/triangle-counting">Triangle Counting</a>
-  - <a href="https://ultipa.com/docs/graph-analytics-algorithms/induced-subgraph">Induced Subgraph</a>
-  - <a href="https://ultipa.com/docs/graph-analytics-algorithms/k-core">k-Core</a>
-  - <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/k-truss">k-Truss</a>
-  - <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/p-cohesion">p-Cohesion</a>
-  - <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/k-edge-connected-components">k-Edge Connected Components</a>
-  - <a href="https://ultipa.com/docs/graph-analytics-algorithms/clustering-coefficient">Local Clustering Coefficient</a>
-  - <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/topological-sort">Topological Sort</a>
+  - <a href="/docs/graph-analytics-algorithms/khop-all">K-Hop All</a>
+  - <a href="/docs/graph-analytics-algorithms/bipartite">Bipartite Graph</a>
+  - <a href="/docs/graph-analytics-algorithms/hyperanf">HyperANF</a>
+  - <a href="/docs/graph-analytics-algorithms/connected-component">Connected Component</a>
+  - <a href="/docs/graph-analytics-algorithms/triangle-counting">Triangle Counting</a>
+  - <a href="/docs/graph-analytics-algorithms/induced-subgraph">Induced Subgraph</a>
+  - <a href="/docs/graph-analytics-algorithms/k-core">k-Core</a>
+  - <a href="/docs/graph-analytics-algorithms/k-truss">k-Truss</a>
+  - <a href="/docs/graph-analytics-algorithms/p-cohesion">p-Cohesion</a>
+  - <a href="/docs/graph-analytics-algorithms/k-edge-connected-components">k-Edge Connected Components</a>
+  - <a href="/docs/graph-analytics-algorithms/clustering-coefficient">Local Clustering Coefficient</a>
+  - <a href="/docs/graph-analytics-algorithms/topological-sort">Topological Sort</a>
 - <b>Pathfinding</b>
-  - <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/dijkstra-sssp">Dijkstra's Single-Source Shortest Path</a>
-  - <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/delta-stepping-sssp">Delta-Stepping Single-Source Shortest Path</a>
-  - <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/spfa">Shortest Path Faster Algorithm (SPFA)</a>
-  - <a href="https://ultipa.com/docs/graph-analytics-algorithms/mst">Minimum Spanning Tree</a>
-  - <a href="https://ultipa.com/docs/graph-analytics-algorithms/bfs">Breadth-First Seach (BFS)</a>
-  - <a href="https://ultipa.com/docs/graph-analytics-algorithms/dfs">Depth First Search (DFS)</a>
+  - <a href="/docs/graph-analytics-algorithms/dijkstra-sssp">Dijkstra's Single-Source Shortest Path</a>
+  - <a href="/docs/graph-analytics-algorithms/delta-stepping-sssp">Delta-Stepping Single-Source Shortest Path</a>
+  - <a href="/docs/graph-analytics-algorithms/spfa">Shortest Path Faster Algorithm (SPFA)</a>
+  - <a href="/docs/graph-analytics-algorithms/mst">Minimum Spanning Tree</a>
+  - <a href="/docs/graph-analytics-algorithms/bfs">Breadth-First Seach (BFS)</a>
+  - <a href="/docs/graph-analytics-algorithms/dfs">Depth First Search (DFS)</a>
 - <b>Topological Link Prediction</b>
-  - <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/adamic-adar">AA Index</a>
-  - <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/common-neighbors">Common Neighbors</a>
-  - <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/preferential-attachment">Preferential Attachment</a>
-  - <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/resource-allocation">Resource Allocation</a>
-  - <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/total-neighbors">Total Neighbors</a>  
+  - <a href="/docs/graph-analytics-algorithms/adamic-adar">AA Index</a>
+  - <a href="/docs/graph-analytics-algorithms/common-neighbors">Common Neighbors</a>
+  - <a href="/docs/graph-analytics-algorithms/preferential-attachment">Preferential Attachment</a>
+  - <a href="/docs/graph-analytics-algorithms/resource-allocation">Resource Allocation</a>
+  - <a href="/docs/graph-analytics-algorithms/total-neighbors">Total Neighbors</a>  
 - <b>Community Detection & Classification Algorithms</b>
-  - <a href="https://ultipa.com/docs/graph-analytics-algorithms/louvain">Louvain</a>
-  - <a href="https://ultipa.com/docs/graph-analytics-algorithms/leiden">Leiden</a>
-  - <a href="https://ultipa.com/docs/graph-analytics-algorithms/lpa">Label Propagation</a>
-  - <a href="https://ultipa.com/docs/graph-analytics-algorithms/hanp">HANP</a>
-  - <a href="https://ultipa.com/docs/graph-analytics-algorithms/kmeans">k-Means</a>
-  - <a href="https://ultipa.com/docs/graph-analytics-algorithms/knn">kNN (k-Nearest Neighbors)</a>
+  - <a href="/docs/graph-analytics-algorithms/louvain">Louvain</a>
+  - <a href="/docs/graph-analytics-algorithms/leiden">Leiden</a>
+  - <a href="/docs/graph-analytics-algorithms/lpa">Label Propagation</a>
+  - <a href="/docs/graph-analytics-algorithms/hanp">HANP</a>
+  - <a href="/docs/graph-analytics-algorithms/kmeans">k-Means</a>
+  - <a href="/docs/graph-analytics-algorithms/knn">kNN (k-Nearest Neighbors)</a>
 - <b>Graph Embedding Algorithms</b>
   - Algorithms
-    - <a href="https://ultipa.com/docs/graph-analytics-algorithms/random-walk">Random Walk</a>
-    - <a href="https://ultipa.com/docs/graph-analytics-algorithms/node2vec-walk">Node2Vec Walk</a>
-    - <a href="https://ultipa.com/docs/graph-analytics-algorithms/node2vec">Node2Vec</a>
-    - <a href="https://ultipa.com/docs/graph-analytics-algorithms/struc2vec-walk">Struc2Vec Walk</a>
-    - <a href="https://ultipa.com/docs/graph-analytics-algorithms/struc2vec">Struc2Vec</a>
-    - <a href="https://ultipa.com/docs/graph-analytics-algorithms/graphsage">GraphSAGE</a>
-    - <a href="https://ultipa.com/docs/graph-analytics-algorithms/graphsage-train">GraphSAGE Train</a>
-    - <a href="https://ultipa.com/docs/graph-analytics-algorithms/line">LINE</a>
-    - <a href="https://ultipa.com/docs/graph-analytics-algorithms/fastrp">Fast Random Projection</a>
+    - <a href="/docs/graph-analytics-algorithms/random-walk">Random Walk</a>
+    - <a href="/docs/graph-analytics-algorithms/node2vec-walk">Node2Vec Walk</a>
+    - <a href="/docs/graph-analytics-algorithms/node2vec">Node2Vec</a>
+    - <a href="/docs/graph-analytics-algorithms/struc2vec-walk">Struc2Vec Walk</a>
+    - <a href="/docs/graph-analytics-algorithms/struc2vec">Struc2Vec</a>
+    - <a href="/docs/graph-analytics-algorithms/graphsage">GraphSAGE</a>
+    - <a href="/docs/graph-analytics-algorithms/graphsage-train">GraphSAGE Train</a>
+    - <a href="/docs/graph-analytics-algorithms/line">LINE</a>
+    - <a href="/docs/graph-analytics-algorithms/fastrp">Fast Random Projection</a>
   - Background Knowledge
-    - <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/summary-of-graph-embedding">Summary of Graph Embedding</a>
-    - <a href="https://ultipa.com/docs/graph-analytics-algorithms/gradient-descent">Gradient Descent</a>
-    - <a href="https://ultipa.com/docs/graph-analytics-algorithms/backpropagation">Backpropagation</a>
-    - <a href="https://ultipa.com/docs/graph-analytics-algorithms/skip-gram">Skip-gram</a>
-    - <a href="https://ultipa.com/docs/graph-analytics-algorithms/skip-gram-optimization">Skip-gram Optimization</a>
+    - <a href="/docs/graph-analytics-algorithms/summary-of-graph-embedding">Summary of Graph Embedding</a>
+    - <a href="/docs/graph-analytics-algorithms/gradient-descent">Gradient Descent</a>
+    - <a href="/docs/graph-analytics-algorithms/backpropagation">Backpropagation</a>
+    - <a href="/docs/graph-analytics-algorithms/skip-gram">Skip-gram</a>
+    - <a href="/docs/graph-analytics-algorithms/skip-gram-optimization">Skip-gram Optimization</a>
 
 If you have any questions about the manual, please do not hesitate to contact our [team](mailto:support@ultipa.com). Documentation license: <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="blank">Creative Commons 4.0</a>

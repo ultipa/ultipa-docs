@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `subgraph([<path_template1>, <path_template2>, ...])` statement describes and searches subgraphs conform to a structure formed by multiple <a target="blank" href="https://www.ultipa.com/docs/uql/path-template">path template</a>. These path templates typically intersect at nodes or edges, achieved through the reuse of aliases to establish shared elements within the subgraph.
+The `subgraph([<path_template1>, <path_template2>, ...])` statement describes and searches subgraphs conform to a structure formed by multiple <a target="blank" href="/docs/uql/path-template">path template</a>. These path templates typically intersect at nodes or edges, achieved through the reuse of aliases to establish shared elements within the subgraph.
 
 <div align=center drawio-diagram='13974' drawio-name="draw_b0d2c31b24cb4f728686a4543f0723af.jpg"><img src="https://img.ultipa.cn/draw/draw_b0d2c31b24cb4f728686a4543f0723af.jpg?v='1732695711564'"/></div>
 

@@ -6,7 +6,7 @@ All the algorithms are hot-pluggable, allowing you to seamlessly add or remove a
 
 ## Ultipa Graph Algorithms
 
-Ultipa offers an extensive array of standard <a href="https://www.ultipa.com/docs/graph-analytics-algorithms">graph algorithms</a> designed to meet various analytical needs.
+Ultipa offers an extensive array of standard <a href="/docs/graph-analytics-algorithms">graph algorithms</a> designed to meet various analytical needs.
 
 In the <b>Algos</b> section, the installed algorithms are organized into several categories.
 

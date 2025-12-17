@@ -20,7 +20,7 @@ This manual covers the usage of Ultipa CLI, a cross-platform command line tool f
 ./ultipa_cli.exe -h 192.168.1.88:61095 -u user1 -p 12dfa36
 ```
 
-2. Send UQL (refer to [Ultipa Query Language Guide](https://www.ultipa.com/docs/uql/introduction)) 
+2. Send UQL (refer to [Ultipa Query Language Guide](/docs/uql/introduction)) 
 ```bash
 show().graph()
 ```

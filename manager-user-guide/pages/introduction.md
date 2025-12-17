@@ -10,19 +10,19 @@ Ultipa Manager offers the following key features:
 
 ### Connect to Ultipa Graph
 
-The <b>Instances</b> page serves as the central hub for managing all database instances within one Ultipa Manager deployment. Users can seamlessly connect to or switch between running instances. <a href="https://www.ultipa.com/docs/manager-user-guide/connect-to-ultipa-graph">Read More</a>
+The <b>Instances</b> page serves as the central hub for managing all database instances within one Ultipa Manager deployment. Users can seamlessly connect to or switch between running instances. <a href="/docs/manager-user-guide/connect-to-ultipa-graph">Read More</a>
 
 ### Run UQL
 
-The <b>UQL Editor</b> is where users write graph queries, algorithms and control commands with UQL. The editor highlights syntax and offer suggestions as users’ type. <a href="https://www.ultipa.com/docs/manager-user-guide/uql-editor">Read More</a>
+The <b>UQL Editor</b> is where users write graph queries, algorithms and control commands with UQL. The editor highlights syntax and offer suggestions as users’ type. <a href="/docs/manager-user-guide/uql-editor">Read More</a>
 
 ### Result Pane
 
-The <b>Result Pane</b> is where the query results are visualzied. It provides various formats, layouts and styles, along with different tools that allows users to interact with their data. <a href="https://www.ultipa.com/docs/manager-user-guide/result-pane">Read More</a>
+The <b>Result Pane</b> is where the query results are visualzied. It provides various formats, layouts and styles, along with different tools that allows users to interact with their data. <a href="/docs/manager-user-guide/result-pane">Read More</a>
 
 ### Loader
 
-The <b>Loader</b> module facilitates the data load from diverse sources to Ultipa Graph, as well as the mapping to nodes and edges. It supports both serial and parallel bulk actions. <a href="https://www.ultipa.com/docs/manager-user-guide/loader">Read More</a>
+The <b>Loader</b> module facilitates the data load from diverse sources to Ultipa Graph, as well as the mapping to nodes and edges. It supports both serial and parallel bulk actions. <a href="/docs/manager-user-guide/loader">Read More</a>
 
 ### Widget
 

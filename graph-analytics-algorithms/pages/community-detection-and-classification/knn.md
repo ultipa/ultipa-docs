@@ -14,7 +14,7 @@ Although containing the word <i>neighbor</i> in its name, kNN does not explicitl
 
 ### Similarity Metric
 
-Ultipa's kNN algorithm computes pair-wise <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/cosine-similarity">cosine similarity</a> between the target node and all other nodes in the graph, then selects the <i>k</i> nodes with the highest similarity to the target node.
+Ultipa's kNN algorithm computes pair-wise <a href="/docs/graph-analytics-algorithms/cosine-similarity">cosine similarity</a> between the target node and all other nodes in the graph, then selects the <i>k</i> nodes with the highest similarity to the target node.
 
 ### Vote on Classification
 
@@ -30,7 +30,7 @@ If multiple labels occur with the highest frequency, the label of the node with 
 | <div table-width="16">Name</div> | <div table-width="18">Type</div> | <div table-width="16">Spec</div> | <div table-width="7">Default</div> | <div table-width="8">Optional</div> | Description |
 | -- | -- | -- |-- | -- | -- |
 | node_id | `_uuid`	| / | / | No | UUID of the target node |
-| node_schema_property | []`@<schema>?.<property>` | Numeric type, must LTE, must be of the same schema as the target node | / | No | Two or more node properties to compute the <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/cosine-similarity">cosine similarity</a> |
+| node_schema_property | []`@<schema>?.<property>` | Numeric type, must LTE, must be of the same schema as the target node | / | No | Two or more node properties to compute the <a href="/docs/graph-analytics-algorithms/cosine-similarity">cosine similarity</a> |
 | top_k | int | >0 | / | No | The number of the nearest nodes to select |
 | target_schema_property | `@<schema>?.<property>` | Numeric/String type, must LTE, must be of the same schema as the target node | / | No | Node property to use as the class label |
 

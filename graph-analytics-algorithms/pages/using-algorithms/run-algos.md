@@ -36,7 +36,7 @@ Ultipa algorithm supports four types of execution methods, and you need to speci
 
 | <div table-width="11">Execution Method</div> | <div table-width="10">Execution Parameter</div> | Description | <div table-width="18">Further Processing <sup>(1)</sup></div> | 
 | --- | --- | --- | --- |
-| Task Writeback | `write()` | Run the algorithm as <a href="https://www.ultipa.com/docs/uql/backend-task">task</a>; you can specify that algorithm results are written back to file (RPC interface) or property, and any algorithm statistics, if available, are written to task information | Not supported |
+| Task Writeback | `write()` | Run the algorithm as <a href="/docs/uql/backend-task">task</a>; you can specify that algorithm results are written back to file (RPC interface) or property, and any algorithm statistics, if available, are written to task information | Not supported |
 | Direct Return | / | Return algorithm results and statistics directly | Not supported |
 | Stream Return | `stream()` | Return algorithm results as data stream | Supported |
 | Stats Return | `stats()` | Return algorithm statistics as data stream | Not Supported |

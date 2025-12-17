@@ -6,7 +6,7 @@ The <b>Auths</b> module is where you can manage the users, privileges, and polic
 
 ### Name, Password
 
-Please refer to the requirements outlined on <a href="https://www.ultipa.com/docs/uql/user">this page</a>.
+Please refer to the requirements outlined on <a href="/docs/uql/user">this page</a>.
 
 ### System Privileges, Graphset Privileges
 
@@ -15,7 +15,7 @@ In Ultipa Graph, database privileges encompass both system privileges and graphs
 - System privileges: Allow users to execute UQLs concerning the management of privilege, policy, user, graphset, and process at the database instance level.
 - Graphset privileges: Allow users to execute UQLs concerning the management of schema, property, index, metadata, path, algorithm, and task at the graphset level.
 
-More information can be found on <a href="https://www.ultipa.com/docs/uql/privilege">this page</a>.
+More information can be found on <a href="/docs/uql/privilege">this page</a>.
 
 ### Policy
 
@@ -31,6 +31,6 @@ However, it's important to note that even if a UI option is disabled, the user m
 
 ## Policy
 
-A policy is a custom combination of system and graph privileges designed for a specific user role. Additionally, a policy can contain sub policies. Detailed information can be found <a href="https://www.ultipa.com/docs/uql/policy">here</a>.
+A policy is a custom combination of system and graph privileges designed for a specific user role. Additionally, a policy can contain sub policies. Detailed information can be found <a href="/docs/uql/policy">here</a>.
 
 <center><img width="300" src="https://img.ultipa.cn/img/2023-08-24-17-54-12-auth2.jpg" ></center>

@@ -112,4 +112,4 @@ Enter relevant information of your credit card and click **Submit**.
 
 <center><img src="https://img.ultipa.cn/img/2024-07-12-16-38-10-payment-method.jpg"></center><br>
 
-> <b>Note</b>:You may also susbcribe to our service via AWS Marketplace. For details, see <a href="https://www.ultipa.com/docs/cloud-user-guide/subscribe-via-aws-marketplace/" target="_blank">**Subscribe via AWS Marketplace**</a>.
+> <b>Note</b>:You may also susbcribe to our service via AWS Marketplace. For details, see <a href="/docs/cloud-user-guide/subscribe-via-aws-marketplace/" target="_blank">**Subscribe via AWS Marketplace**</a>.

@@ -6,8 +6,8 @@
 
 The Louvain algorithm is a widely recognized and extensively used algorithm for community detection in graphs. It is named after the location of its authors - Vincent D. Blondel et al. from Université catholique de Louvain in Belgium. The primary objective of the algorithm is to maximize the modularity of the graph, and it has gained popularity due to its high efficiency and the quality of its results.
 
-- V.D. Blondel, J. Guillaume, R. Lambiotte, E. Lefebvre, <a target="balnk" href="http://arxiv.org/pdf/0803.0476.pdf">Fast unfolding of communities in large networks</a> (2008)
-- H. Lu, <a target="balnk" href="https://arxiv.org/pdf/1410.1237.pdf">Parallel Heuristics for Scalable Community Detection</a> (2014)
+- V.D. Blondel, J. Guillaume, R. Lambiotte, E. Lefebvre, <a target="_balnk" href="http://arxiv.org/pdf/0803.0476.pdf">Fast unfolding of communities in large networks</a> (2008)
+- H. Lu, <a target="_balnk" href="https://arxiv.org/pdf/1410.1237.pdf">Parallel Heuristics for Scalable Community Detection</a> (2014)
 
 ## Concepts
 

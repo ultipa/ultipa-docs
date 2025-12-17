@@ -49,7 +49,7 @@ Features of these UQLs:
 
 Please create all the schemas and their properties listed in Chart1.
 
-Details of creating graph model can be found in documentation of [GraphSet](https://www.ultipa.com/docs/uql/graphset), [Schema](https://www.ultipa.com/docs/uql/schema), [Property](https://www.ultipa.com/docs/uql/property).
+Details of creating graph model can be found in documentation of [GraphSet](/docs/uql/graphset), [Schema](/docs/uql/schema), [Property](/docs/uql/property).
 
 ## Metadata
 
@@ -62,7 +62,7 @@ Metadata is a general term for <u>nodes and edges</u> in the graph, it is also a
 
 Nodes have two system properties `_id` and `_uuid`, they both are the <u>unique identifiers</u> inhered in each node, but with different data type.
 
-Click and read about [Unique Identifier](https://www.ultipa.com/docs/uql/unique-identifier) of metadata.
+Click and read about [Unique Identifier](/docs/uql/unique-identifier) of metadata.
 
 Below UQLs all insert some node(s) into schema <i>customer</i>:
 ```js
@@ -89,7 +89,7 @@ Features of these UQLs:
 - Custom properties not provided will be set to null
 - `_id` and `_uuid ` not provided will be auto-generated
 
-Details of inserting metadata can be found in documentation of [Insert](https://www.ultipa.com/docs/uql/insert), [Overwrite](https://www.ultipa.com/docs/uql/overwrite), [Upsert](https://www.ultipa.com/docs/uql/upsert).
+Details of inserting metadata can be found in documentation of [Insert](/docs/uql/insert), [Overwrite](/docs/uql/overwrite), [Upsert](/docs/uql/upsert).
 
 ### Insert Edges
 
@@ -125,9 +125,9 @@ Similar to inserting nodes, these UQLs have below features:
 - `_uuid` not provided will be auto-generated
 - Must provide `_from` and `_to` (or `_from_uuid` and `_to_uuid`) that represent nodes already existent
 
-Details of inserting metadata can be found in documentation of [Insert](https://www.ultipa.com/docs/uql/insert), [Overwrite](https://www.ultipa.com/docs/uql/overwrite), [Upsert](https://www.ultipa.com/docs/uql/upsert).
+Details of inserting metadata can be found in documentation of [Insert](/docs/uql/insert), [Overwrite](/docs/uql/overwrite), [Upsert](/docs/uql/upsert).
 
-For batch import of data from CSV files or other databases, please refer to article [Data Import](https://www.ultipa.com/docs/quick-start/data-import).
+For batch import of data from CSV files or other databases, please refer to article [Data Import](/docs/quick-start/data-import).
 
 ### Update Metadata
 
@@ -158,8 +158,8 @@ update().edges({@transfer._from == "CU001"}).set({result: "success"})
 
 Features of these UQLs:
 - Start with command `update()`
-- Describe in `nodes()` or `edges()` the metadata to be updated (review article [Graph Data](https://www.ultipa.com/docs/quick-start/graph-data) on how to describe nodes and edges in UQL)
+- Describe in `nodes()` or `edges()` the metadata to be updated (review article [Graph Data](/docs/quick-start/graph-data) on how to describe nodes and edges in UQL)
 - Organize in an object in `set()` the property values to be updated, properties not provided will not be updated
 - `_id` and `_uuid` are not allowed to be updated
 
-> Command `update()` is used to modify property values of metadata, but not to rename properties. Renaming properties, schemas, or graphsets belongs to the category of modifying graph models, see details in documentation of [GraphSet](https://www.ultipa.com/docs/uql/graphset), [Schema](https://www.ultipa.com/docs/uql/schema), [Property](https://www.ultipa.com/docs/uql/property).
+> Command `update()` is used to modify property values of metadata, but not to rename properties. Renaming properties, schemas, or graphsets belongs to the category of modifying graph models, see details in documentation of [GraphSet](/docs/uql/graphset), [Schema](/docs/uql/schema), [Property](/docs/uql/property).

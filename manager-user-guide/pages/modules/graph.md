@@ -16,7 +16,7 @@ The list of all graphs showcases the *ID*, *Name*, number of *Node*, number of *
   - **Export Nodes:** Export all or part of the nodes (in CSV) by specifying the schemas and properties.
   - **Export Edges:** Export all or part of the edges (in CSV) by specifying the schemas and properties.
 - **Edit:** Modify the name and description of the graphset.
-- **Mount**/**Unmount:** Mount the graphset to the memory or unmount the graphset from the memory. <a href="https://www.ultipa.com/docs/uql/graphset">Learn more about Mount/Unmount</a>
+- **Mount**/**Unmount:** Mount the graphset to the memory or unmount the graphset from the memory. <a href="/docs/uql/graphset">Learn more about Mount/Unmount</a>
 - **Delete**
   - **Node:** Delete all nodes but keep node schemas and properties.
   - **Edge:** Delete all edges but keep edge schemas and properties. 

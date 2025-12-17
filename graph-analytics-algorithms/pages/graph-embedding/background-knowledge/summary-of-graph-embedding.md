@@ -21,7 +21,7 @@ To provide an illustration, below shows the results (on the right) of running no
 
 The notion of <i>closeness</i> among the embeddings generally refers to how near the vectors representing nodes or other graph elements are in the embedding space. In essence, embeddings that exhibit spatial proximity in the vector space are indicative of a degree of similarity within the original graph.
 
-In practice, gauging the closeness of embeddings involves employing diverse distance or similarity metrics, such as <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/euclidean-distance">Euclidean Distance</a> and <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/cosine-similarity">Cosine Similarity</a>.
+In practice, gauging the closeness of embeddings involves employing diverse distance or similarity metrics, such as <a href="/docs/graph-analytics-algorithms/euclidean-distance">Euclidean Distance</a> and <a href="/docs/graph-analytics-algorithms/cosine-similarity">Cosine Similarity</a>.
 
 ### Embedding Dimension
 
@@ -53,7 +53,7 @@ We have a bunch of graph algorithms cater to diverse graph analysis purposes. Wh
 
 This is where graph embedding comes to play. By creating low-dimensional representations, embeddings provide richer and more adaptable inputs for a wide spectrum of analyses and tasks. These learned vectors bolster the efficiency and accuracy of graph analytics, outperforming direct execution within the high-dimensional graph domain.
 
-Consider the case of node similarity analysis. Conventional similarity algorithms generally fall into two categories: neighborhood-based similarity and property-based similarity. The former, exemplified by <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/jaccard-similarity">Jaccard Similarity</a> and <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/overlap-similarity">Overlap Similarity</a>, relies on the 1-hop neighborhood of nodes and compute similarity scores. The latter, represented by <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/euclidean-distance">Euclidean Distance</a> and <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/cosine-similarity">Cosine Similarity</a>, uses multiple numeric node properties to calculate the similarity scores based on property values.
+Consider the case of node similarity analysis. Conventional similarity algorithms generally fall into two categories: neighborhood-based similarity and property-based similarity. The former, exemplified by <a href="/docs/graph-analytics-algorithms/jaccard-similarity">Jaccard Similarity</a> and <a href="/docs/graph-analytics-algorithms/overlap-similarity">Overlap Similarity</a>, relies on the 1-hop neighborhood of nodes and compute similarity scores. The latter, represented by <a href="/docs/graph-analytics-algorithms/euclidean-distance">Euclidean Distance</a> and <a href="/docs/graph-analytics-algorithms/cosine-similarity">Cosine Similarity</a>, uses multiple numeric node properties to calculate the similarity scores based on property values.
 
 While these methods have their merits, they often capture only surface-level node features, thus limiting their applicability. In contrast, embedding nodes with latent and advanced information from the graph enriches the input data for these similarity algorithms. This fusion empowers the algorithms to consider more sophisticated relationships, leading to more meaningful analyses.
 

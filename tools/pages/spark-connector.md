@@ -102,7 +102,7 @@ Result:
 
 ### Read by UQL
 
-Retrieve data using a UQL query statement. The UQL query for reading must contain the RETURN clause, and you can return data with the type of ATTR or TABLE. Other types such as NODE, EDGE and PATH are not supported. <a href="https://www.ultipa.com/docs/uql/data-types#Returned-Data">Learn more about the types of returned data</a>
+Retrieve data using a UQL query statement. The UQL query for reading must contain the RETURN clause, and you can return data with the type of ATTR or TABLE. Other types such as NODE, EDGE and PATH are not supported. <a href="/docs/uql/data-types#Returned-Data">Learn more about the types of returned data</a>
 
 Example: Read data in the graphset *Test* returned by a UQL statement
 

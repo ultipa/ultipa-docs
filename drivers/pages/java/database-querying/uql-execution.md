@@ -4,7 +4,7 @@ This section introduces the `uql()` and `uqlStream()` methods on a `Connection` 
 
 Each example focuses solely on the method's usage. For a complete code example, please refer to the <a href="#Full-Example">full example</a>.
 
-> UQL (Ultipa Query Language) is the language designed for fully interacting with Ultipa graph databases. For detailed information on UQL, refer to the <a href="https://www.ultipa.com/docs/uql/">documentation</a>.
+> UQL (Ultipa Query Language) is the language designed for fully interacting with Ultipa graph databases. For detailed information on UQL, refer to the <a href="/docs/uql/">documentation</a>.
 
 ## uql()
 

@@ -18,7 +18,7 @@ One natural measure of the 'cohesion' of a group is the relative frequency of ti
 
 The p-Cohesion model offers two distinct advantages compared to other cohesive subgraph models:
 - With a large <i>p</i> value, a p-cohesion ensures not only inner-cohesiveness, but also outer-sparseness. 
-- In many scenarios, considering the percentage of neighbors rather than a fixed number of neighbors (such as the <i>k</i> value in <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/k-core">k-Core</a>) is more appropriate due to variations in node degrees. 
+- In many scenarios, considering the percentage of neighbors rather than a fixed number of neighbors (such as the <i>k</i> value in <a href="/docs/graph-analytics-algorithms/k-core">k-Core</a>) is more appropriate due to variations in node degrees. 
 
 Below shows an example graph. Suppose <i>p</i> = 0.6, a grey label is put next to each node indicating the smallest number of neighbors required for the node to stay in a p-cohesion.
 

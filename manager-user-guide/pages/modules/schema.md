@@ -35,7 +35,7 @@ The number of properties and the count of nodes (or edges) for the schema are di
 **Operations**:
 
 - **Data Type Tag**: The data type of a property cannot be changed once it's created.
-- **LTE**/**UFE**: Load the property to the engine (LTE) or unload the property from the engine (UFE). The icon of an LTE-ed property will be highlighted. <a href="https://www.ultipa.com/docs/uql/lte">Learn more about LTE/UFE</a>
+- **LTE**/**UFE**: Load the property to the engine (LTE) or unload the property from the engine (UFE). The icon of an LTE-ed property will be highlighted. <a href="/docs/uql/lte">Learn more about LTE/UFE</a>
 - **Edit**: Modify the name and description of the property.
 - **Delete**: Delete the property.
 

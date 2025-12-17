@@ -49,7 +49,7 @@ This serves as the objective function that needs to be minimized during training
 
 #### LINE with Second-order Proximity
 
-To model the second-order proximity, LINE defines two roles for each node - one as the node itself, another as "context" for other nodes (this concept originates from the <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/skip-gram">Skip-gram</a> model). Accordingly, two vector representations are introduced for each node.
+To model the second-order proximity, LINE defines two roles for each node - one as the node itself, another as "context" for other nodes (this concept originates from the <a href="/docs/graph-analytics-algorithms/skip-gram">Skip-gram</a> model). Accordingly, two vector representations are introduced for each node.
 
 For each edge <i>(i,j)∈E</i>, LINE defines the probability of "context" <i>v<sub>j</sub></i> be observed by node <i>v<sub>i</sub></i> as
 
@@ -61,7 +61,7 @@ The corresponding empirical probability can be defined as
 
 <center><img width="140" src="https://img.ultipa.cn/img/2023-11-22-17-57-12-e-p2.jpg"></center>
 
-where <i>w<sub>ij</sub></i> is weight of edge <i>(i,j)</i>, <i>d<sub>i</sub></i> is the <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/degree-centrality#Weighted-Degree">weighted degree</a> of node <i>v<sub>i</sub></i>.
+where <i>w<sub>ij</sub></i> is weight of edge <i>(i,j)</i>, <i>d<sub>i</sub></i> is the <a href="/docs/graph-analytics-algorithms/degree-centrality#Weighted-Degree">weighted degree</a> of node <i>v<sub>i</sub></i>.
 
 Similarly, the <a href="https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence" target="blank">KL-divergence</a> is adopted to measure the difference between two distributions:
 
@@ -73,11 +73,11 @@ This serves as the objective function that needs to be minimized during training
 
 #### Negative Sampling
 
-To improve the computation efficiency, LINE adopts the <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/skip-gram-optimization#Negative-Sampling">negative sampling</a> approach which samples multiple negative edges according to some noisy distribution for each edge <i>(i,j)</i>. Specifically, the two objective functions are adjusted as:
+To improve the computation efficiency, LINE adopts the <a href="/docs/graph-analytics-algorithms/skip-gram-optimization#Negative-Sampling">negative sampling</a> approach which samples multiple negative edges according to some noisy distribution for each edge <i>(i,j)</i>. Specifically, the two objective functions are adjusted as:
 
 <center><img width="430" src="https://img.ultipa.cn/img/2023-11-23-15-36-55-ng.jpg"></center>
 
-where <i>σ</i> is the <a href="https://www.ultipa.com/docs/graph-analytics-algorithms/backpropagation#Activation-Function">sigmoid function</a>, <i>K</i> is the number of negative edges drawn from the noise distribution <i>P<sub>n</sub>(v) ∝ d<sub>v</sub><sup>3/4</sup></i>, <i>d<sub>v</sub></i> is the weighted degree of node <i>v</i>.
+where <i>σ</i> is the <a href="/docs/graph-analytics-algorithms/backpropagation#Activation-Function">sigmoid function</a>, <i>K</i> is the number of negative edges drawn from the noise distribution <i>P<sub>n</sub>(v) ∝ d<sub>v</sub><sup>3/4</sup></i>, <i>d<sub>v</sub></i> is the weighted degree of node <i>v</i>.
 
 #### Edge-Sampling
 

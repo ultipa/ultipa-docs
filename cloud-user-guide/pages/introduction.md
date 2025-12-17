@@ -12,7 +12,7 @@ Ultipa Cloud is a database-as-a-service (DBaaS) and an end-to-end solution that 
 
 In **Ultipa Graph**, you can create, view and manage your instances.
 
-For detailed operations, please refer to <a href="https://www.ultipa.com/docs/cloud-user-guide/create-instance" target="_blank">**Quick Start**</a>.
+For detailed operations, please refer to <a href="/docs/cloud-user-guide/create-instance" target="_blank">**Quick Start**</a>.
 
 
 ### Billings
@@ -25,7 +25,7 @@ In **Billings**, you can get a comprehensive view of the **Bills**, set the **Pa
 
 <center><img src="https://img.ultipa.cn/img/2024-08-09-10-45-58-account&mfa.png"></center><br> 
 
-In **Accounts**, you can view and edit account information, including **Basic Information** and **Contact Information**, enable <a href="#MFA">**MFA**</a> to secure your account, and set <a href="https://www.ultipa.com/docs/cloud-user-guide/api/" target="_blank">**API Keys**</a> to operate your Ultipa Cloud instances without the need to log in to Ultipa Cloud.
+In **Accounts**, you can view and edit account information, including **Basic Information** and **Contact Information**, enable <a href="#MFA">**MFA**</a> to secure your account, and set <a href="/docs/cloud-user-guide/api/" target="_blank">**API Keys**</a> to operate your Ultipa Cloud instances without the need to log in to Ultipa Cloud.
 
 #### MFA
 

@@ -2,7 +2,7 @@
 
 A path template `n().e()...n()` can apply filters on each node and edge of a path independently. Paths with circle can be filtered out, and the number of result of subquery can be limited.
 
-> For the usage of basic templates `n()`, `e()` and so on, please refer to <a href="https://www.ultipa.com/docs/uql/basic-templates">Basic Templates</a>.
+> For the usage of basic templates `n()`, `e()` and so on, please refer to <a href="/docs/uql/basic-templates">Basic Templates</a>.
 
 Syntax:
 - Statement alias: supported (PATH)

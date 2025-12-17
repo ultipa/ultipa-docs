@@ -202,4 +202,4 @@ The table below shows the example calls of aliases of different types:
 
 > Alias with the type of TABLE cannot be called in UQL.
 
-More call formats are supported in the `RETURN` clause. Please click [here](https://www.ultipa.com/docs/uql/return#Valid-Return-Format) for more information.
+More call formats are supported in the `RETURN` clause. Please click [here](/docs/uql/return#Valid-Return-Format) for more information.

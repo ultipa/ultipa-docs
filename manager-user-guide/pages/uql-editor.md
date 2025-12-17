@@ -53,4 +53,4 @@ In the list of **Widgets**, you can pin commonly used widgets to the **Pinned** 
 
 <center><img src="https://img.ultipa.cn/img/2024-01-09-11-29-15-widget.jpg" ></center>
 
-> Manage all widgets with the <a href="https://www.ultipa.com/docs/manager-user-guide/widget">Widget</a> module.
+> Manage all widgets with the <a href="/docs/manager-user-guide/widget">Widget</a> module.
