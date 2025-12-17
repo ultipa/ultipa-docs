@@ -1,4 +1,6 @@
-# Overview
+# toFloat()
+
+## Overview
 
 The `toFloat()` function converts a value to a single-precision floating-point number.
 
@@ -31,5 +33,3 @@ return toFloat("3.1415926ABC")
 ```
 
 Result: 3.141593
-## toDouble()
-

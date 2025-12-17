@@ -105,4 +105,3 @@ A property belongs to a schema and is used to describe an attribute of a node or
 ### Unique Identifier (UID)
 
 System properties that are used as the unique identifiers of nodes and edges, including the `_id` and `_uuid` of nodes, and `_uuid` of edges.
-# Syntax

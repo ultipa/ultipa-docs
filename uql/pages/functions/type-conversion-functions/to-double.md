@@ -1,4 +1,6 @@
-# Overview
+# toDouble()
+
+## Overview
 
 The `toDouble()` function converts a value to a double-precision floating-point number.
 

@@ -20,3 +20,42 @@ insert().into(@professor).nodes([{_id:"P001",_uuid:1,age:53,email:"test@yahoo.cn
 insert().into(@student).nodes([{_id:"S001",_uuid:3,age:27,email:"test@yeah.net"},{_id:"S002",_uuid:4,age:20,email:"test@w3.org"},{_id:"S003",_uuid:5,age:25,email:"test@gmail.com"}])
 ```
 
+## Schema
+
+Example: Find nodes of @student 
+<p run-tag="true" graph="uql_manual_graph_2"></p> 
+
+```js
+find().nodes({@student}) as n
+return n{*} 
+```
+<p tit="Result"></p>
+
+```bash
+|---------------- @student ---------------|
+|  _id  | _uuid |  age  |       email     |
+|-------|-------|-------|-----------------|
+| S001  |   3   |  27   | test@yeah.net   |
+| S002  |   4   |  20   | test@w3.org     |
+| S003  |   5   |  25   | test@gmail.com  |
+```
+Analysis: This filter is equivalent to `{this.@ == "student"}`
+
+## Schema & Property
+
+Example: Find nodes of @student, whose age is 27
+<p run-tag="true" graph="uql_manual_graph_2"></p> 
+
+```js
+find().nodes({@student.age == 27}) as n
+return n{*} 
+```
+<p tit="Result"></p>
+
+```bash
+|---------------- @student ---------------|
+|  _id  | _uuid |  age  |       email     |
+|-------|-------|-------|-----------------|
+| S001  |   3   |  27   | test@yeah.net   |
+```
+Analysis: This filter is equivalent to `{@student && age == 27}`.

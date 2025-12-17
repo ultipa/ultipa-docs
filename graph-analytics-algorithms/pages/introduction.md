@@ -40,6 +40,7 @@ This manual contains the following content:
   - <a href="/docs/graph-analytics-algorithms/k-edge-connected-components">k-Edge Connected Components</a>
   - <a href="/docs/graph-analytics-algorithms/clustering-coefficient">Local Clustering Coefficient</a>
   - <a href="/docs/graph-analytics-algorithms/topological-sort">Topological Sort</a>
+  - <a href="/docs/graph-analytics-algorithms/schema-overview">Schema Overview</a>
 - <b>Pathfinding</b>
   - <a href="/docs/graph-analytics-algorithms/dijkstra-sssp">Dijkstra's Single-Source Shortest Path</a>
   - <a href="/docs/graph-analytics-algorithms/delta-stepping-sssp">Delta-Stepping Single-Source Shortest Path</a>

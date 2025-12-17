@@ -365,4 +365,4 @@ In our example, <math><mi>k</mi><mo>=</mo><mn>2</mn></math>, hence, <math><msub>
 
 ## Optimization
 
-We have explored the fundamentals of the Skip-gram model. Nevertheless, incorporating optimizations is imperative to ensure the model's computational complexity remains viable and pragmatic for real-world applications. Click <a href="https://www.ultipa.com/document/ultipa-graph-analytics-algorithms/skip-gram-optimization">here</a> to continue reading.
+We have explored the fundamentals of the Skip-gram model. Nevertheless, incorporating optimizations is imperative to ensure the model's computational complexity remains viable and pragmatic for real-world applications. Click <a href="/docs/graph-analytics-algorithms/skip-gram-optimization">here</a> to continue reading.
