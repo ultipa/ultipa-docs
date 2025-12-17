@@ -51,12 +51,12 @@
         {
           "file": "import-rdf.md",
           "title": "Import RDF"
+        },
+        {
+          "file": "export-csv.md",
+          "title": "Export CSV"
         }
       ]
-    },
-    {
-      "file": "export-csv.md",
-      "title": "Export CSV"
     },
     {
       "pages": [

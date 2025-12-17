@@ -9,7 +9,7 @@ This manual covers the usage of Ultipa CLI, a cross-platform command line tool f
     - Windows: [PowerShell](https://learn.microsoft.com/en-us/powershell/)
 - A version of [Ultipa CLI](https://www.ultipa.com/download) compatible with your operating system (Version 4.x.x is recommended for the best experience in Graph Blaze)
 
-> Note: sign up for an Ultipa Account in order to access Ultipa Download Centre, remove download restrictions if popped by your browser in order to continue the download process.
+> Sign up for an Ultipa Account in order to access Ultipa Download Centre, remove download restrictions if popped by your browser in order to continue the download process.
 
 ## Operation Procedure
 

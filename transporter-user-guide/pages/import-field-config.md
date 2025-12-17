@@ -276,7 +276,7 @@ edgeConfig:
 
 ## Valid Field Value in CSV
 
-### string、text
+### string, text
 
 - When `quotes` under `settings` is set to `false` (default value), a double-quotation is recognized as the field boundary, two consecutive double-quotations are recognized as a double-quotation within the field value. Such as:
 <p tit= "CSV"></p>
@@ -312,7 +312,7 @@ ghi,"g",quotes set to true
 0.000
 ```
 
-### datetime、timestamp
+### datetime, timestamp
 
 <p tit= "CSV"></p>
 
