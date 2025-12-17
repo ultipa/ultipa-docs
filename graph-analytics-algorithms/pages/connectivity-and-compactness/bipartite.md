@@ -89,3 +89,4 @@ Results: <i>result</i>
 
 | bipartite_result |
 | -- |
+| 1 |

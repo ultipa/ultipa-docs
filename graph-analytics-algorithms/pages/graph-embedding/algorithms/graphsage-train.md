@@ -98,3 +98,4 @@ algo(graph_sage_train).params({
 })
 ```
 
+Results: File <i>SAGE_model.json</i>; this model can be used in the <a href="https://www.ultipa.com/document/ultipa-graph-analytics-algorithms/graphsage">GraphSAGE</a> algorithm to generate node embeddings

@@ -38,4 +38,3 @@ RETURN table(ads.cate, count(ads.cate))
 ```
 
 This UQL puts all @user nodes of the no.4 age group into batches, each containing 100 nodes. Nodes in each batch are automatically collected into an array and passed into the path template query, which is executed for multiple times independently. Afterward, the final results of the path template query are combined and used in the subsequent clauses.
-null

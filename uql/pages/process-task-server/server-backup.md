@@ -63,5 +63,3 @@ db.backup.restore("<backup_name>")
 // To restore current Ultipa instance to a certain increment of a certain backup
 db.backup.restore("<backup_name>", backup_id) 
 ```
-
-null

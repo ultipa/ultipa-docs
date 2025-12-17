@@ -185,3 +185,4 @@ Results: <i>table(nodes._id, PR.rank)</i>
 | G | 1.15624 |
 | F | 1.037742 |
 | N | 0.842146 |
+| I | 0.67812 |

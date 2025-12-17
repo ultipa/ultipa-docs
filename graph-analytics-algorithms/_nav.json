@@ -155,6 +155,10 @@
         {
           "file": "topological-sort.md",
           "title": "Topological Sort"
+        },
+        {
+          "file": "schema-overview.md",
+          "title": "Schema Overview"
         }
       ]
     },

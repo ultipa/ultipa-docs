@@ -120,3 +120,4 @@ algo(graph_sage).params({
 })
 ```
 
+Results: Embedding for each node is written to a new property named <i>embedding_graphSage</i>

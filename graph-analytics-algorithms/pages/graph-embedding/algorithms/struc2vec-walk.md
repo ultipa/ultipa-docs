@@ -110,3 +110,4 @@ Results: <i>walks</i>
 <tr><td>[10, 7, 6, 5, 3, 4]</td></tr>
 <tr><td>[10, 7, 8, 7, 6, 5]</td></tr>
 <tr><td>[10, 7, 6, 4, 6, 7]</td></tr>
+<table>

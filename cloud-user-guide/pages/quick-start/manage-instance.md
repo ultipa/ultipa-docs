@@ -122,5 +122,3 @@ As each instance requires an independent root password, scroll down to **Account
 Click **Action > Terminate**, enter the instance name and click **Terminate**. 
 
 <center><img src="https://img.ultipa.cn/img/2024-08-01-16-04-05-terminate.jpg"></center><br>
-
-null

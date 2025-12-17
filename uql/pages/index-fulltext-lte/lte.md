@@ -45,4 +45,3 @@ UFE().edge_property(@<schema>.<property>)
 // To unload a certain edge property (if has) under all edge schemas in the current graphset
 UFE().edge_property(@*.<property>)
 ```
-null

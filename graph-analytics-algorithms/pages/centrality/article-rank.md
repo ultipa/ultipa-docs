@@ -151,3 +151,4 @@ Results: <i>table(nodes._id, AR.rank)</i>
 | -- | -- |
 | book4 | 0.42830801 |
 | book5 | 0.37592599 |
+| book6 | 0.31992599 |

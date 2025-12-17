@@ -62,4 +62,3 @@ delete().nodes({@user.age > 26}).limit(2)
 ```
 
 This deletes the `@user` nodes whose `age` property values are greater than 26, limited to two nodes.
-null

@@ -38,5 +38,3 @@ return pedges(p)
 [{"uuid":"2","from":"F002","to":"F001","from_uuid":"2","to_uuid":"1","schema":"hold","values":{"portion":"0.7"}},{"uuid":"3","from":"H001","to":"F002","from_uuid":"3","to_uuid":"2","schema":"hold","values":{"portion":"0.4"}}]
 [{"uuid":"2","from":"F002","to":"F001","from_uuid":"2","to_uuid":"1","schema":"hold","values":{"portion":"0.7"}},{"uuid":"4","from":"H002","to":"F002","from_uuid":"4","to_uuid":"2","schema":"hold","values":{"portion":"0.6"}}]
 ```
-
-null

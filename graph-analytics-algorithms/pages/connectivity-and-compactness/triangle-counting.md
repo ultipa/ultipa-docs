@@ -184,3 +184,4 @@ Results: <i>sta</i>
 
 | triangle_count |
 | -- |
+| 3 |

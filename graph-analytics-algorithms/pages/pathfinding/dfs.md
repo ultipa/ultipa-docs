@@ -70,4 +70,3 @@ C,A
 B,B
 A,B
 ```
-null

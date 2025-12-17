@@ -235,3 +235,4 @@ Results: <i>count</i>
 
 | community_count |
 | --- | 
+| 2 |

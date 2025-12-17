@@ -33,4 +33,3 @@ with split(mov.genre, " ") as genreList
 uncollect genreList as genre
 return DISTINCT genre
 ```
-null

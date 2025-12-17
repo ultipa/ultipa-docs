@@ -39,4 +39,3 @@ And an example statistics of the Lovain algorithm, which contains the number of 
 | community_count | modularity |
 | --------------- | ---------- |
 | 3 | 0.43 |
-null

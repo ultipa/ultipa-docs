@@ -51,5 +51,3 @@ The lower the conductance, the better the identified community is. As the exampl
 | --- | --- | --- | --- |
 | 0 | int	| Community ID	| `community_id` |
 | 1 | float | Conductance | `conductance` |
-
-null

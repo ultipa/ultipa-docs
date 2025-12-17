@@ -249,3 +249,4 @@ Results: <i>count</i>
 
 | label_count |
 | -- |
+| 5 |

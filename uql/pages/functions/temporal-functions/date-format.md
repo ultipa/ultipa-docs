@@ -74,4 +74,3 @@ Display the times of reviews in a desired format.
 find().nodes({@review}) as n
 return dateFormat(n.time,"%e %b, %G")
 ```
-null

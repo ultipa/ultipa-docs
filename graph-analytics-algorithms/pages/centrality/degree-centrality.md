@@ -172,3 +172,4 @@ Results: <i>stats</i>
 
 | total_degree | average_degree |
 | ------------ | -------------- |
+| 10 | 1.25 |

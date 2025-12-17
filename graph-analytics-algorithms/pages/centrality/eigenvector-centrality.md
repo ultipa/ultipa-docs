@@ -178,3 +178,4 @@ Results: <i>table(r, count(r))</i>
 | r | count(r) |
 | -- | -- |
 | attention	| 3 |
+| normal | 4 |

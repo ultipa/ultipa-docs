@@ -163,4 +163,3 @@ algo(fastRP).params({
 }).stream() as embeddings
 return embeddings
 ```
-null

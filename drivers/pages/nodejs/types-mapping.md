@@ -691,4 +691,3 @@ console.log(myAttr.values);
 ```bash
 [ 1978, 1989, 1982, 2007, 1973 ]
 ```
-null

@@ -314,4 +314,3 @@ drop()
   .node_property(@card.branch)
   .edge_property(@*.time)
 ```
-null

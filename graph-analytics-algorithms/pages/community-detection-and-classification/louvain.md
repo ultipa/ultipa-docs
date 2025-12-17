@@ -338,3 +338,4 @@ For medium-sized graphset with tens of millions of nodes and edges, Ultipa's Lou
 
 <center><img src="https://img.ultipa.cn/2022-09-05-09-32-59-louvain-execution-time.png"/></center>
 
+This is the records of the modularity and execution time of the Louvain algorithm running on a graph with 5 million nodes and 100 million edges. The computation process takes approximately 1 minute, and additional operations, such as writing back to the database or generating a disk file, add around 1 minute to the total execution time.
