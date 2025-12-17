@@ -30,5 +30,3 @@ return n.name
 Alice
 Eric
 ```
-
-null

@@ -279,4 +279,3 @@ The `<iframe>` element is regenerated when you uncheck and re-check the **\<ifra
 You can export any widget as a ZIP file from the widget card. Click the **Import** button on the Widget main page to import a widget.
 
 <center><img src="https://img.ultipa.cn/img/2024-01-03-18-09-29-import-export.jpg"/></center>
-null

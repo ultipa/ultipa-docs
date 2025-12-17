@@ -121,3 +121,4 @@ where lcc.centrality == 1
 return count(lcc)
 ```
 
+Results: <i>2</i>

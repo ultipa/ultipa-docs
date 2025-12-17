@@ -71,6 +71,3 @@ The `OPTIONAL` prefix guarantees that each clause execution yields some result. 
 - In part (b), the second query execution for color black returns null. 
 
 <div align=center drawio-diagram='15246' drawio-name='draw_94a0d194dc5742ddb61d5606e5de1d97.jpg'><img src="https://img.ultipa.cn/draw/draw_94a0d194dc5742ddb61d5606e5de1d97.jpg?v='1712828151874'"/></div>
-null
-# Graphset | Schema | Property
-

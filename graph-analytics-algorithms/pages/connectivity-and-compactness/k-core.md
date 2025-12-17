@@ -116,3 +116,4 @@ Results: <i>nodes</i>
 | E | 5 |
 | D | 4 |
 | C | 2 |
+| B | 3 |

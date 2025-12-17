@@ -134,3 +134,4 @@ Results: <i>walks</i>
 <tr><td>[1, 2, 1, 3, 5]</td></tr>
 <tr><td>[1, 3, 4, 6, 7]</td></tr>
 <tr><td>[1, 3, 4, 6, 5]</td></tr>
+<table>

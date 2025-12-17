@@ -137,3 +137,4 @@ where bc.centrality == 0
 return count(bc)
 ```
 
+Results: 2

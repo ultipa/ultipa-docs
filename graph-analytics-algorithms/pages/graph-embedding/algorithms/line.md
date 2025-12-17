@@ -188,3 +188,4 @@ algo(line).params({
   limit: 100
 }).stream() as embeddings
 return embeddings
+```

@@ -104,3 +104,4 @@ find().edges(e) as edges
 return max(edges.score)
 ```
 
+Results: 5

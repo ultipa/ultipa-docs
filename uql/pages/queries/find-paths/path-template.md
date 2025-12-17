@@ -241,4 +241,3 @@ return p{*}
 A001 ----> A003 ----> A004
 ```
 Analysis: Porperty <i>@transfer.time</i> should be loaded to engine (LTE).
-null

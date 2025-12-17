@@ -206,3 +206,4 @@ algo(node2vec).params({
   min_frequency: 3
 }).stream() as embeddings
 return embeddings
+```

@@ -59,6 +59,3 @@ return a, b
 4
 5
 ```
-
-null
-null

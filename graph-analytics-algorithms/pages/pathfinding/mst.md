@@ -128,3 +128,4 @@ find().edges(mstUUID) as edges
 return sum(edges.distance)
 ```
 
+Results: <i>5.65</i>

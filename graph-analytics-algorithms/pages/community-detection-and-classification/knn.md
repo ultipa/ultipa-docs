@@ -147,3 +147,4 @@ Results: <i>table(images._id, label.attribute_value)</i>
 | image3 | Gold |
 | image4 | Silver |
 | image5 | Gold |
+| image6 | Gold |

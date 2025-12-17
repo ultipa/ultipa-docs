@@ -169,3 +169,4 @@ Results: <i>walks</i>
 <tr><td>[3, 1, 3, 5, 3]</td></tr>
 <tr><td>[2, 1, 3, 4, 6]</td></tr>
 <tr><td>[1, 2, 1, 2, 1]</td></tr>
+</table>

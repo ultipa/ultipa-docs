@@ -327,3 +327,4 @@ The remaining weights can be adjusted in a similar way by calculating the partia
 
 Apply the adjusted weights into the model and proceed with forward propagation using the same three samples. In this iteration, the resulting error <math><mi>E</mi></math> is reduced to <math><mn>0.192</mn></math>.
 
+The Backpropagation algorithm iteratively performs the forward and back-propagation steps to train the model. This process continues until either the designated training count or time limit is reached, or when the error decreases to a predefined threshold.

@@ -106,4 +106,3 @@ let sdkUsage = async () => {
 
 sdkUsage().then(console.log).catch(console.log);
 ```
-null

@@ -607,4 +607,3 @@ System.out.println(attr.getValues());
 ```bash
 [14655, 14655, 14655, 14655, 434760]
 ```
-null

@@ -178,6 +178,3 @@ drop().user("<name>")
 ## Reset Admin User
 
 Resetting admin user needs to be done on Ultipa Server with `ultipa-reset-user` tool, which is not in the scope of UQL operation.
-null
-# Trigger
-

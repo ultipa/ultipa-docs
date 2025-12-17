@@ -175,3 +175,4 @@ In a multi-variable composite function, the <a href="#Partial-Derivative">partia
 
 For example, <math><mi>s</mi><mi>(</mi><mi>x</mi><mo>,</mo><mi>y</mi><mi>)</mi><mo>=</mo><mi>(</mi><mn>2</mn><mi>x</mi><mo>+</mo><mn>y</mn><mi>)</mi><mi>(</mi><mi>y</mi><mo>-</mo><mn>3</mn><mi>)</mi></math> is composed of <math><mi>s</mi><mi>(</mi><mi>f</mi><mo>,</mo><mi>g</mi><mi>)</mi><mo>=</mo><mi>f</mi><mi>g</mi></math> and <math><mi>f</mi><mi>(</mi><mi>x</mi><mo>,</mo><mi>y</mi><mi>)</mi><mo>=</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>y</mn></math> and <math><mi>g</mi><mi>(</mi><mi>x</mi><mo>,</mo><mi>y</mi><mi>)</mi><mo>=</mo><mi>y</mi><mo>-</mo><mn>3</mn></math>:
 
+<center><img width="500" src="https://img.ultipa.cn/img/2023-08-17-14-26-58-eg4.jpg"></center>

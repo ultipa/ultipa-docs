@@ -229,3 +229,4 @@ algo(leiden).params({
   min_modularity_increase: 0.1
 }).stats() as stats
 return stats
+```

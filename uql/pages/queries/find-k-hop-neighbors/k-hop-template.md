@@ -175,4 +175,3 @@ Result:
 |-----|-------|
 | France | null |
 | USA | Zoe Saldaña |
-null

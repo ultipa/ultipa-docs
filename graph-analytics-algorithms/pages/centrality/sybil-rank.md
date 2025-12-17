@@ -194,4 +194,3 @@ Results: <i>table(nodes._id, trust.rank)</i>
 | S4 | 3.6111109 |
 | S2 | 4.4560180 |
 | S3 | 4.7106481 |
-null

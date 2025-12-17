@@ -85,4 +85,3 @@ Conn = Connection.NewConnection(defaultConfig=ultipaConfig)
 response = Conn.test()
 print(response.status.code)
 ```
-null

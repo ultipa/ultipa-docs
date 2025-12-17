@@ -44,6 +44,3 @@ return table(n.name, ifnull(n.try3, n.try2))
 | Eric   | 61                     |
 | Pepe   | null                   |
 ```
-
-null
-null
