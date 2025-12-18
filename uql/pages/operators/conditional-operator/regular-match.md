@@ -9,12 +9,12 @@
 Example: judge if String "adfAWa" is composed of uncapitalized letters
 
 
-```js
+```uql
 return "Ultipa" =~ "^[a-z]+$"
 ```
 <p tit="Result"></p>
 
-```bash
+```
 0
 ```
 
@@ -23,12 +23,12 @@ return "Ultipa" =~ "^[a-z]+$"
 Example: Convert 'Graph Database' to lowercase and judge whether it is composed of uncapitalized letters
 
 
-```js
+```uql
 return lower("Ultipa.com") =~ "^[a-z]+$"
 ```
 <p tit="Result"></p>
 
-```bash
+```
 0
 ```
 
@@ -37,13 +37,13 @@ return lower("Ultipa.com") =~ "^[a-z]+$"
 Example: Judge each row of an alias whether it is composed of uncapitalized letters
  
 
-```js
+```uql
 uncollect ["Ultipa.com", "grAph", "graph"] as a
 return a =~ "^[a-z]+$"
 ```
 <p tit="Result"></p>
 
-```bash
+```
 0
 0
 1
@@ -55,7 +55,7 @@ Sample graph: (to be used for the following examples)
 Run below UQLs one by one in an empty graphset to create graph data:
 <p tit="" fold="true"></p>
 
-```js
+```uql
 create().node_schema("professor").node_schema("student")
 create().node_property(@*, "age", int32).node_property(@*, "email", string)
 insert().into(@professor).nodes([{_id:"P001",_uuid:1,age:53,email:"test@yahoo.cn"},{_id:"P002",_uuid:2,age:27,email:"test@ultipa.com"}])
@@ -67,13 +67,13 @@ insert().into(@student).nodes([{_id:"S001",_uuid:3,age:27,email:"test@yeah.net"}
 Example: Find nodes whose email is in format xxx@xxx.com or xxx@xxx.cn 
 
 
-```js
+```uql
 find().nodes({email =~ "^[a-zA-Z0-9_.-]+@[a-zA-Z0-9]+\.(com|cn)$"}) as n
 return n{*} 
 ```
 <p tit="Result"></p>
 
-```bash
+```
 |--------------- @professor --------------|
 |  _id  | _uuid |  age  |       email     |
 |-------|-------|-------|-----------------|
@@ -89,13 +89,13 @@ return n{*}
 Example: Find nodes of @professor, whose email is in format xxx@xxx.com or xxx@xxx.cn 
 
 
-```js
+```uql
 find().nodes({@professor.email =~ "^[a-zA-Z0-9_.-]+@[a-zA-Z0-9]+\.(com|cn)$"}) as n
 return n{*} 
 ```
 <p tit="Result"></p>
 
-```bash
+```
 |--------------- @professor --------------|
 |  _id  | _uuid |  age  |       email     |
 |-------|-------|-------|-----------------|

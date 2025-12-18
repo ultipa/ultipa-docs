@@ -16,7 +16,7 @@ The `JSON_decode()` function converts a JSON-formatted string to an object and r
 
 ## Example of Result
 
-```js
+```uql
 return JSON_decode('{"name":"Lisa","age":23}')
 ```
 
@@ -26,7 +26,7 @@ Result: {"name":"Lisa","age":23}
 
 Parse JSON-formatted data into usable object format, and dynamically update nodes based on the keys of the parsed object.
 
-```js
+```uql
 UNCOLLECT ['{"name":"Lisa","age":23}', '{"name":"Paul","age":35}'] as strings
 with JSON_decode(strings) as object
 update().nodes({name == object.name}).set({age: object.age})

@@ -13,25 +13,25 @@ Returns：
 Example: Calculate the radian of tangent value 1
  
 
-```js
+```uql
 return atan(1) * 180 / pi()
 ```
 <p tit="Result"></p>
 
-```bash
+```
 45
 ```
 
 Example: Calculate the radian of each row (tangent value) of an alias
  
 
-```js
+```uql
 uncollect [1, -0.5, 0] as a
 return atan(a)
 ```
 <p tit="Result"></p>
 
-```bash
+```
 0.785398163397448
 -0.463647609000806
 0

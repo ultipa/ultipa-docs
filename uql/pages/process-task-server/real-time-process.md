@@ -19,7 +19,7 @@ Returned table header: `process_id` | `process_uql` | `duration` (the id, UQL st
 Syntax:
 <p tit="Syntax"></p>
 
-```js
+```uql
 // To show all real-time processes in the current Ultipa instance
 top()
 ```
@@ -31,7 +31,7 @@ A stopped process cannot be restarted.
 Syntax:
 <p tit="Syntax"></p>
 
-```js
+```uql
 // To kill all real-time processes in the current Ultipa instance
 kill("*")
 

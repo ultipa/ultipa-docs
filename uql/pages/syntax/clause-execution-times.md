@@ -25,7 +25,7 @@ The `CALL` clause can be used to perform processing for each row of the data ind
 
 **Example:** Each data entry of `users` is processed individually by the `CALL` clause. If `users` has N entries, the `CALL` clause will execute N times; within each execution of the `CALL` clause, the path query clause and the `SKIP` clause execute once each.
 
-```js
+```uql
 find().nodes({@user}) as users
 call {
   with users
@@ -42,7 +42,7 @@ The `BATCH` clause partitions data into smaller batches for sequential processin
 
 **Example:** The (maximum) 5000 nodes in `users` are put into 50 batches, each containing 100 nodes. Nodes in each batch are automatically collected into an array and passed into the path template query, which is thus executed for 50 times.
 
-```js
+```uql
 find().nodes({@user.age_level == 4}) limit 5000 as users
 BATCH 100
 n(users).e().n({@ad} as ads)

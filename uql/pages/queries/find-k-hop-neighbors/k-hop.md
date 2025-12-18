@@ -40,7 +40,7 @@ Run these UQLs row by row in an empty graphset to create this graph:
 
 <p tit="" fold="true"></p>
 
-```js
+```uql
 create().edge_property(@default, "weight", int32)
 insert().into(@default).nodes([{_id:"A", _uuid:1}, {_id:"B", _uuid:2}, {_id:"C", _uuid:3}, {_id:"D", _uuid:4}, {_id:"E", _uuid:5}, {_id:"F", _uuid:6}])
 insert().into(@default).edges([{_uuid:1, _from_uuid:1, _to_uuid:3, weight:1}, {_uuid:2, _from_uuid:5, _to_uuid:2 , weight:1}, {_uuid:3, _from_uuid:1, _to_uuid:5 , weight:4}, {_uuid:4, _from_uuid:4, _to_uuid:3 , weight:2}, {_uuid:5, _from_uuid:5, _to_uuid:4 , weight:3}, {_uuid:6, _from_uuid:2, _to_uuid:1 , weight:2}, {_uuid:7, _from_uuid:6, _to_uuid:1 , weight:4}])
@@ -52,7 +52,7 @@ Find the 3-hop neighbors of node D.
 
 
  
-```js
+```uql
 khop().src({_id == "D"}).depth(3) as n
 return n{*}
 ```
@@ -67,7 +67,7 @@ Find 1-hop to 3-hop neighbors of node D.
 
 
  
-```js
+```uql
 khop().src({_id == "D"}).depth(:3) as n
 return n{*}
 ```
@@ -88,7 +88,7 @@ Find the 1- to 2-hop neighbors of node D. Return node D at the same time.
 
 
  
-```js
+```uql
 khop().src({_id == "D"}).depth(0:2) as n
 return n{*}
 ```
@@ -109,7 +109,7 @@ Find the 3-hop neighbors of node D while excluding node E.
 
 
  
-```js
+```uql
 khop().src({_id == "D"}).depth(3).node_filter({_id != "E"}) as n
 return n{*}
 ```
@@ -129,7 +129,7 @@ Find the 3-hop neighbors of node D while excluding edge 5.
 
 
  
-```js
+```uql
 khop().src({_id == "D"}).depth(3).edge_filter({_uuid != 5}) as n
 return n{*}
 ```
@@ -150,7 +150,7 @@ Find the 1- to 2-hop neighbors of node D while ensuring that all edges that pass
 
 
  
-```js
+```uql
 khop().src({_id == "D"}).depth(:2).direction(right) as n
 return n{*}
 ```
@@ -167,7 +167,7 @@ Find the 1-hop neighbors of nodes D and F.
 
 
  
-```js
+```uql
 find().nodes({_id in ["D", "F"]}) as start
 khop().src(start).depth(1).direction(right) as n
 return table(start._id, n._id)
@@ -186,7 +186,7 @@ Find three 1- to 3-hop neighbors of node D.
 
 
  
-```js
+```uql
 khop().src({_id == "D"}).depth(:3).limit(3) as n
 return n{*}
 ```
@@ -207,7 +207,7 @@ Find the 2-hop neighbors of nodes A and D while ensuring that all edges that pas
 
 
  
-```js
+```uql
 find().nodes({_id in ["A", "D"]}) as start
 optional khop().src(start).depth(2).direction(right) as n
 return table(start._id, n._id)

@@ -13,25 +13,25 @@ Returns：
 Example: Calculate the radian of sine value 0.5
  
 
-```js
+```uql
 return asin(0.5) * 180 / pi()
 ```
 <p tit="Result"></p>
 
-```bash
+```
 30
 ```
 
 Example: Calculate the radian of each row (sine value) of an alias
  
 
-```js
+```uql
 uncollect [1, -0.5, 0] as a
 return asin(a)
 ```
 <p tit="Result"></p>
 
-```bash
+```
 1.5707963267949
 -0.523598775598299
 0

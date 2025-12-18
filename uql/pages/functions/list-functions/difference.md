@@ -15,14 +15,14 @@ Returns：
 Exalmple: Direct calculate
 
 
-```js
+```uql
 uncollect [[1,2,2],[2,4,5]] as a
 uncollect [[2,4,7],[4,5,7]] as b
 return table(toString(a), toString(b), toString(difference(a, b)))
 ```
 <p tit="Result"></p>
 
-```bash
+```
 | toString(a) | toString(b) | toString(difference(a, b)) |
 |-------------|-------------|----------------------------|
 | [1,2,2]     | [2,4,7]     | [1,2]                      |
@@ -32,7 +32,7 @@ return table(toString(a), toString(b), toString(difference(a, b)))
 Exalmple: Multiply and calculate
 
 
-```js
+```uql
 uncollect [[1,2,2],[2,4,5]] as a
 uncollect [[2,4,7],[4,5,7]] as b
 with difference(a, b) as c
@@ -40,7 +40,7 @@ return table(toString(a), toString(b), toString(c))
 ```
 <p tit="Result"></p>
 
-```bash
+```
 | toString(a) | toString(b) | toString(c) |
 |-------------|-------------|-------------|
 | [1,2,2]     | [2,4,7]     | [1,2]       |
@@ -55,7 +55,7 @@ Sample graph: (to be used for the following examples)
 Run below UQLs one by one in an empty graphset to create graph data:
 <p tit="" fold="true"></p>
 
-```js
+```uql
 create().node_schema("student").node_schema("course")
 create().node_property(@*, "name").node_property(@student, "age", int32).node_property(@course, "credit", int32)
 insert().into(@student).nodes([{_id:"S001", _uuid:1, name:"Jason", age:25}, {_id:"S002", _uuid:2, name:"Lina", age:23}, {_id:"S003", _uuid:3, name:"Eric", age:24}, {_id:"S004", _uuid:4, name:"Emma", age:26}, {_id:"S005", _uuid:5, name:"Pepe", age:24}])
@@ -66,7 +66,7 @@ insert().into(@default).edges([{_uuid:1, _from_uuid:1, _to_uuid:6}, {_uuid:2, _f
 Example: Find the students that select French but not Math
 
 
-```js
+```uql
 khop().src({name == "French"}).depth(1) as n1
 with collect(n1) as l1
 khop().src({name == "Math"}).depth(1) as n2
@@ -75,7 +75,7 @@ return difference(l1, l2)
 ```
 <p tit="Result"></p>
 
-```bash
+```
 [
   {"id":"","uuid":"1","schema":"student","values":{}}
 ]

@@ -8,7 +8,7 @@ The `update()` clauses is used to update values of properties (except `_id` and 
 
 <p tit="Syntax"></p> 
 
-```js
+```uql
 // Update nodes
 update().nodes(<filter>)
   .set({<property1>: <value1>, <property2>: <value2> ...})
@@ -33,7 +33,7 @@ Run these UQLs row by row in an empty graphset to create this graph:
 
 <p tit="" fold="true"></p>
 
-```js
+```uql
 create().node_schema("user").edge_schema("follow")
 create().node_property(@user, "name").node_property(@user, "age", int32).edge_property(@follow, "time", datetime)
 insert().into(@user).nodes([{_id:"U001", _uuid:1, name:"Jason", age:30}, {_id:"U002", _uuid:2, name:"Tim"}, {_id:"U003", _uuid:3, name:"Grace", age:25}, {_id:"U004", _uuid:4, name:"Ted", age:26}])
@@ -44,7 +44,7 @@ insert().into(@follow).edges([{_uuid:1, _from_uuid:4, _to_uuid:1, time:"2021-9-1
 
 ### Update Nodes
 
-```js
+```uql
 update().nodes({name == "Tim"}).set({name: "Tom"})
 ```
 
@@ -52,7 +52,7 @@ This updates the `name` property of nodes whose `name` is Tim. The node with `_i
 
 ### Update Edges
 
-```js
+```uql
 update().edges({time > "2021-5-1"}).set({time: dateAdd(time, 1, "day")}) as edges
 return edges{*}
 ```
@@ -68,7 +68,7 @@ Result:
 
 ### Update All Nodes/Edges
 
-```js
+```uql
 update().nodes().set({age: age + 1}) as n
 return table(n.name, n.age)
 ```
@@ -84,7 +84,7 @@ Result:
 
 ### Update Limited Nodes/Edges
 
-```js
+```uql
 update().nodes({@user}).set({name: lower(name)}).limit(2) as nodes
 return nodes{*}
 ```

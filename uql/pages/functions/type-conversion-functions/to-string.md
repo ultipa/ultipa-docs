@@ -16,13 +16,13 @@ The `toString()` function converts a value to a string.
 
 ## Example of Result
 
-```js
+```uql
 return toString([24, 20, 12])
 ```
 
 Result: [24,20,12]
 
-```js
+```uql
 return toString(0.000000001)
 ```
 

@@ -17,7 +17,7 @@ The `JSON_merge()` function merges two JSON-formatted strings into a new JSON-fo
 
 ## Example of Result
 
-```js
+```uql
 return JSON_merge('{"name":"Lisa","age":23}','{"name":"Lisa","age":30,"interest":"football"}')
 ```
 
@@ -29,7 +29,7 @@ Result: {"age":30,"interest":"football","name":"Lisa"}
 
 Consolidate information from different sources into a single JSON object, preserving unique keys and their corresponding values.
 
-```js
+```uql
 with '{
   "name": "John Doe",
   "age": 30,

@@ -19,7 +19,7 @@ UQL support the following **prefix** keywords for a clause or the entire UQL sta
 
 ### EXPLAIN
 
-```js
+```uql
 explain n({@movie} as movies).e({@filmedIn}).n({@country.name == "US"}) as paths  
 group by  movies.genre 
 return movies.genre, count(movies)
@@ -29,7 +29,7 @@ return movies.genre, count(movies)
 
 ### PROFILE
 
-```js
+```uql
 profile n({@movie} as movies).e({@filmedIn}).n({@country.name == "US"}) as paths  
 group by  movies.genre 
 return movies.genre, count(movies)
@@ -39,7 +39,7 @@ return movies.genre, count(movies)
 
 ### DEBUG
 
-```js
+```uql
 debug n({@movie} as movies).e({@filmedIn}).n({@country.name == "US"}) as paths  
 group by  movies.genre 
 return movies.genre, count(movies)

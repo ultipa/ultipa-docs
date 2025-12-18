@@ -16,7 +16,7 @@ The `ltrim()` function removes any leading spaces of a string and returns the mo
 
 ## Example of Result
 
-```js
+```uql
 return ltrim("    cloud")
 ```
 
@@ -26,7 +26,7 @@ Result: cloud
 
 Remove any leading spaces from the input before saving it into the database.
 
-```js
+```uql
 with " johndoe@gmail.com" as input
 insert().into(@user).nodes({email: ltrim(input)})
 ```

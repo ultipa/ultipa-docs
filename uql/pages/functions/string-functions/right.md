@@ -17,7 +17,7 @@ The `right()` function returns a substring of a given string, containing a speci
 
 ## Example of Result
 
-```js
+```uql
 return right("a database", 4)
 ```
 
@@ -27,7 +27,7 @@ Result: base
 
 Extract the last 4 characters of the certificate numbers.
 
-```js
+```uql
 find().nodes({@certificate}) as cert
 return right(cert.no, 4)
 ```

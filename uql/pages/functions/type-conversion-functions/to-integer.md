@@ -22,13 +22,13 @@ For unsupported value types, the function returns `null`.
 
 ## Example of Result
 
-```js
+```uql
 return toInteger(-3456.7)
 ```
 
 Result: -3456
 
-```js
+```uql
 return toInteger("-34.5ABC")
 ```
 

@@ -18,7 +18,7 @@ For instance, splice heterologous return values <i>a</i> and <i>b</i>:
 
 <div align=center drawio-diagram='2781' drawio-name="draw_329de20bec2f4b6e97214f5d3334abeb.jpg"><img src="https://img.ultipa.cn/draw/draw_329de20bec2f4b6e97214f5d3334abeb.jpg?v='1681108084497'"/></div>
 
-```js
+```uql
 uncollect [1,2,3]) as a
 uncollect [3,4,5]) as b
 return a, b
@@ -34,7 +34,7 @@ Sample graph: (to be used for the following examples)
 Run below UQLs one by one to in an empty graphset to create graph data:
 <p tit="" fold="true"></p>
 
-```js
+```uql
 create().node_schema("student").node_schema("course")
 create().node_property(@*, "name").node_property(@student, "age", int32).node_property(@course, "credit", int32)
 insert().into(@student).nodes([{_id:"S001", _uuid:1, name:"Jason", age:25}, {_id:"S002", _uuid:2, name:"Lina", age:23}, {_id:"S003", _uuid:3, name:"Eric", age:24}, {_id:"S004", _uuid:4, name:"Emma", age:26}, {_id:"S005", _uuid:5, name:"Pepe", age:24}])
@@ -48,14 +48,14 @@ insert().into(@default).edges([{_uuid:1, _from_uuid:1, _to_uuid:6}, {_uuid:2, _f
 Example: Find students no elder than 24-year-old that select French, also find students no younger than 24-year-old that select Math, return these students
  
 
-```js
+```uql
 n({@course.name == "French"}).e().n({@student.age <= 24} as n) return n.name
 union all
 n({@course.name == "Math"}).e().n({@student.age >= 24} as n) return n.name
 ```
 <p tit="Result"></p> 
 
-```bash
+```
 Lina
 Eric
 Pepe

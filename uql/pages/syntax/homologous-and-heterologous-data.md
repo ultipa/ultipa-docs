@@ -14,7 +14,7 @@ Data derived from one clause are referred to as <b>homologous</b>, and data prod
 
 <div align=center drawio-diagram='13951' drawio-name="draw_c51d7c1be9b64044a1f37f986e3155b4.jpg"><img src="https://img.ultipa.cn/draw/draw_c51d7c1be9b64044a1f37f986e3155b4.jpg?v='1712817465319'"/></div>
 
-```js
+```uql
 n().e()[:2].n(as tail).limit(5) as path
 with length(path) as length
 return path, tail, length
@@ -24,7 +24,7 @@ return path, tail, length
 
 <div align=center drawio-diagram='13952' drawio-name="draw_2c08a8dbb7194778b90dbd716c7deda0.jpg"><img src="https://img.ultipa.cn/draw/draw_2c08a8dbb7194778b90dbd716c7deda0.jpg?v='1712819140345'"/></div>
 
-```js
+```uql
 find().nodes() as n
 return (n.score1 + n.score2) / 2 as mean
 ```
@@ -37,7 +37,7 @@ Aggregation functions condense data into a single row while discarding the other
 
 <div align=center drawio-diagram='14952' drawio-name="draw_cf6eac59a2b44d4a9330a92bb5a986e5.jpg"><img src="https://img.ultipa.cn/draw/draw_cf6eac59a2b44d4a9330a92bb5a986e5.jpg?v='1712819999857'"/></div>
 
-```js
+```uql
 find().nodes() as n
 return n, min(n.score1) as minS1
 ```
@@ -68,7 +68,7 @@ When heterologous data enter into the same clause, they are typically automatica
 
 <div align=center drawio-diagram='15026' drawio-name="draw_6701775b658c4c48aa2f6406cf9de822.jpg"><img src="https://img.ultipa.cn/draw/draw_6701775b658c4c48aa2f6406cf9de822.jpg?v='1712824155012'"/></div>
 
-```js
+```uql
 find().nodes({_uuid in [1, 3]}) as n1
 find().nodes({_uuid in [2, 4, 5]}) as n2
 n(n1).e().n(n2) as path

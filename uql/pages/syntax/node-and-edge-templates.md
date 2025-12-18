@@ -25,7 +25,7 @@ Example: The paths below with a length of 3 can be expressed as `n().e().n().e()
 
 <div align=center drawio-diagram='15258' drawio-name="draw_3905814a5acd43b99b4ae4e9217bfa2b.jpg"><img src="https://img.ultipa.cn/draw/draw_3905814a5acd43b99b4ae4e9217bfa2b.jpg?v='1713162847728'"/></div>
 
-```js
+```uql
 n({@mgr}).re({@manage}).n({@cst} as n1)
   .re({@has}).n({@acct} as n2)
   .re({@buy} as e1).n({@product}) as p
@@ -36,7 +36,7 @@ Particularly, it's supported to use `n()` independently.
 
 Example: Find all *@account* nodes.
 
-```js
+```uql
 n({@account} as acc)
 return acc
 ```
@@ -47,7 +47,7 @@ Example: The paths below have the same types of edges and nodes from step 2 to s
 
 <div align=center drawio-diagram='15259' drawio-name='draw_b7d7706938b240b6a68c4feee18058de.jpg'><img src="https://img.ultipa.cn/draw/draw_b7d7706938b240b6a68c4feee18058de.jpg?v='1713162969568'"/></div>
 
-```js
+```uql
 n({@cst}).re({@has}).n({@acct} as n1)
   .re({@transfer}).nf({@acct})[3].n({@acct} as n2)
   .le({@has}).n({@cst}) as p
@@ -60,7 +60,7 @@ Example: You can use the multi-edge template `e().nf()[:3]` to limit the number 
 
 <div align=center drawio-diagram='15260' drawio-name="draw_81cdfd464952422390f0e676d83d71ca.jpg"><img src="https://img.ultipa.cn/draw/draw_81cdfd464952422390f0e676d83d71ca.jpg?v='1713163450134'"/></div>
 
-```js
+```uql
 n({@cst} as n1).re({@has}).n({@acct} as c1)
   .re({@transfer})[:3].n({@acct} c1)
   .le({@has}).n({@cst}) as p

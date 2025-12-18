@@ -16,7 +16,7 @@ The `lower()` function converts all letters within a string to lowercase, leavin
 
 ## Example of Result
 
-```js
+```uql
 return lower("ABc536")
 ```
 
@@ -26,7 +26,7 @@ Result: abc536
 
 Retrieve users whose *city* property values, when converted to lowercase, match "new york".
 
-```js
+```uql
 find().nodes({lower(@user.city) == "new york"}) as n
 return n{*}
 ```

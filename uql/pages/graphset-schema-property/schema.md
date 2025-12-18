@@ -12,7 +12,7 @@ The symbol `@` is used in UQL to denote a schema. The expression `@<schema>` spe
 
 ## Show Schema
 
-```js
+```uql
 // Show all schemas in the graphset
 show().schema()
 
@@ -50,7 +50,7 @@ The `properties` only contains custom properties; system properties are not incl
 
 ## Create Schema
 
-```js
+```uql
 // Create a node schema named movie in the graphset, and provide description
 create().node_schema("movie", "The movies added by the admin")
 
@@ -77,7 +77,7 @@ All node schemas in a graphset must have distinct names, and the same applies fo
 
 When the schema name contains characters other than letters (A-Z, a-z), numbers (0-9) and underscores (`_`), the schema name must be wrapped with a pair of backquotes (`` ` ``) when being used.
 
-```js
+```uql
 find().nodes({@`movie*`}) as n
 return n
 ```
@@ -86,13 +86,13 @@ return n
 
 Create three node schemas at the same time, but one of the names (*default*) is duplicated with an existing node schema.
 
-```js
+```uql
 create().node_schema("new_1").node_schema("default").node_schema("new_2")
 ```
 
 The creation of the node schema *new_1*, which was specified before the duplicated schema, succeeds. However, the one (*new_2*) specified after the duplicated schema fails, with the error message `Schema already exist!` returned.
 
-```js
+```uql
 TRY create().node_schema("new_1").node_schema("default").node_schema("new_2")
 ```
 
@@ -100,7 +100,7 @@ The creation of the schemas is the same as above, though the error message is sh
 
 ## Alter Schema
 
-```js
+```uql
 // Alter name and description of the node schema currently named movie
 alter().node_schema(@movie)
   .set({name: "Adm_movie", description: "Movies added by the admin"})
@@ -113,7 +113,7 @@ alter().edge_schema(@filmedIn).set({description: "The country where a movie is f
 
 Dropping a schema means to delete the schema, along with any nodes or edges belonging to that schema. The two default schemas cannot be dropped.
 
-```js
+```uql
 // Drop the node schema named movie
 drop().node_schema(@movie)
 

@@ -9,7 +9,7 @@ LTE is short for Load to Engine, it loads disk-based properties into Ultipa's hi
 Syntax:
 <p tit="Syntax"></p>
 
-```js
+```uql
 // To load a certain node property under a certain node schema in the current graphset
 LTE().node_property(@<schema>.<property>)
 
@@ -32,7 +32,7 @@ UFE is short for Unload from Engine, it unloads properties not needed for query 
 Syntax:
 <p tit="Syntax"></p>
 
-```js
+```uql
 // To unload a certain node property under a certain node schema in the current graphset
 UFE().node_property(@<schema>.<property>)
 

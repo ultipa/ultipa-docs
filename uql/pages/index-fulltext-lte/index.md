@@ -11,7 +11,7 @@ Returned table header: `name` | `properties` | `schema` | `status` | `size` (Nam
 Syntax:
 <p tit="Syntax"></p>
 
-```js
+```uql
 // To show all indexes in the current graphset (node indexes and edges indexes in separate tables)
 show().index() 
 
@@ -31,7 +31,7 @@ System properties UID, FROM and TO and custom properties of <i>decimal</i> type 
 Syntax:
 <p tit="Syntax"></p>
 
-```js
+```uql
 // To create index for a certain property of a certain node schema in the current graphset
 create().node_index(@<schema>.<property>)
 
@@ -54,12 +54,12 @@ create()
 ```
 
 Example: Create index for <i>@card</i> property <i>balance</i>
-```js
+```uql
 create().node_index(@card.balance)
 ```
 
 Example: Create index for <i>@transaction</i> property <i>amount</i>
-```js
+```uql
 create().edge_index(@transaction.amount)
 ```
 
@@ -70,7 +70,7 @@ Deleting a property will also delete its index.
 Syntax:
 <p tit="Syntax"></p>
 
-```js
+```uql
 // To delete index for a certain property of a certain node schema from the current graphset
 drop().node_index(@<schema>.<property>)
 
@@ -93,12 +93,12 @@ drop()
 ```
 
 Example: Delete the index for <i>@card</i> property <i>balance</i>
-```js
+```uql
 drop().node_index(@card.balance)
 ```
 
 Example: Delete the index for <i>@transaction</i> property <i>amount</i>
-```js
+```uql
 drop().edge_index(@transaction.amount)
 ```
 

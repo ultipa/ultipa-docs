@@ -18,7 +18,7 @@ The `substring()` function returns a substring extracted from the given string, 
 
 ## Example of Result
 
-```js
+```uql
 return substring("a database", 2, 4)
 ```
 
@@ -28,7 +28,7 @@ Result: data
 
 Extract the first 150 characters of the post content as a preview.
 
-```js
+```uql
 find().nodes({@post.title == "High Density Parallel Computing"}) as post
 return substring(post.content, 0, 150)
 ```

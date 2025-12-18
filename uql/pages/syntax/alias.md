@@ -29,7 +29,7 @@ The name for a custom alias should:
 
 When an alias contains any characters other than letters, numbers and underscores, it must be wrapped with a pair of backquote (\`) when used in UQL. Here is an example:
 
-```js
+```uql
 find().nodes() as `my-Nodes`
 return `my-Nodes`
 ```
@@ -50,14 +50,14 @@ There are three system aliases in UQL:
 
 In the node or edge filter, you can generally omit the use of `this`, which represents the current node or edge. For example, the node filter `{balance > 5000}` in the following UQL is actually equivalent to `{this.balance > 5000}`.
 
-```js
+```uql
 find().nodes({balance > 5000}) as n
 return n
 ```
 
 However, `this` cannot be omitted when there is any ambiguity. This occurs when a custom alias and a property share the same name. In the example below, *balance* is the name for both the alias and a node property. Using `this` in the filter clearly indicates that *balance* refers to the node property. If `{balance > 5000}` is written in this case, the alias *balance* is used instead.
 
-```js
+```uql
 ... as balance
 find().nodes({this.balance > 5000})
 ...
@@ -79,7 +79,7 @@ find().nodes({this.balance > 5000})
 
 It's important to highlight that all the nodes referenced by `prev_n` must possess the property called upon by `prev_n`. Consider the example below which searches for the "@actor - [@actsIn] - @movie" paths and matches that the rating of the @movie node must be exceed that of @actor node. If @actor lacks the rating property, the query will not yield any results.
 
-```js
+```uql
 n({@actor}).e({@actsIn}).n({@movie.rating > prev_n.rating})
 return p{*}
 ```
@@ -100,7 +100,7 @@ return p{*}
 
 It's important to highlight that all the edges referenced by `prev_e` must possess the property called upon by `prev_e`. Consider the example below which searches for the "holder - [@holds] - @card - [@transfersTo] - @card - [@transfersTo] - @card - [@holds] - holder" paths and ensures that the transaction time ascends. However, the `prev_e` also involves the first @holds edge, if @holds lacks the time property, the query will not yield any results.
 
-```js
+```uql
 n({@user} as holder)
   .e({@holds}).n({@card})
   .e({@transfersTo.time > prev_e.time})[:2]
@@ -120,7 +120,7 @@ In UQL, two default aliases are predefined:
 
 You can employ these default aliases directly without defining them:
 
-```js
+```uql
 find().nodes({@account})
 return nodes{*}
 ```
@@ -133,7 +133,7 @@ In some UQL clauses, you can define alias for the entire clause (known as **clau
  
 Example: Define alias for the `find().edges()` clause
  
-```js
+```uql
 find().edges({@direct}) as e
 return e
 ```
@@ -142,14 +142,14 @@ It's not allowed to define alias for the methods `find()` or `edges()` separatel
  
 Example: Define aliases for the `autonet().src().dest().depth()` clause and one of its methods `src()`
  
-```js
+```uql
 autonet().src({age < 60} as startNodes).dest({@event}).depth(:3) as paths
 return startNodes, paths
 ```
  
 Example: Define aliases for the `find().nodes()` clause and the `WITH` clause:
  
-```js
+```uql
 find().nodes({@account}) as a
 with min(a.age) as minAge
 find().nodes({@account.age == minAge}) as b
@@ -165,7 +165,7 @@ The type of an alias is determined by the data it represents. Below is an exampl
 - The alias *signups* represents edges and is of the type EDGE.
 - The alias *p* represents paths and is of the type PATH.
 
-```js
+```uql
 find().nodes({@user}) as users
 with max(users.age) as maxAge
 n({@user.age == maxAge}).e({@signsUp} as signups).n({@course}) as p

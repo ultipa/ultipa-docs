@@ -16,7 +16,7 @@ The `month()` function extracts the month of the year from a time value.
 
 ## Example of Result
 
-```js
+```uql
 return month("2022-10-5")
 ```
 
@@ -26,7 +26,7 @@ Result: 10
 
 Retrieve reviews posted in October 2018.
 
-```js
+```uql
 find().nodes({year(@review.time) == 2018 && month(@review.time) == 10}) as n
 return n{*}
 ```

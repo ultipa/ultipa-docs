@@ -14,7 +14,7 @@ Sample graph: (to be used for the following examples)
 Run below UQLs one by one in an empty graphset to create graph data:
 <p tit="" fold="true"></p>
 
-```js
+```uql
 create().node_schema("firm").node_schema("human").edge_schema("hold")
 create().edge_property(@hold, "portion", double)
 insert().into(@firm).nodes([{_id:"F001", _uuid:1}, {_id:"F002", _uuid:2}])
@@ -27,13 +27,13 @@ insert().into(@hold).edges([{_uuid:1, _from_uuid:3, _to_uuid:1, portion:0.3}, {_
 Example: Calculate the share holding path of each UBO from F001, return the NODE list of each path
 
 
-```js
+```uql
 n({_id == "F001"}).le()[:5].n({@human} as UBO) as p
 return pnodes(p)
 ```
 <p tit="Result"></p>
 
-```bash
+```
 [{"id":"F001","uuid":"1","schema":"firm","values":{}},{"id":"H001","uuid":"3","schema":"human","values":{}}]
 [{"id":"F001","uuid":"1","schema":"firm","values":{}},{"id":"F002","uuid":"2","schema":"firm","values":{}},{"id":"H001","uuid":"3","schema":"human","values":{}}]
 [{"id":"F001","uuid":"1","schema":"firm","values":{}},{"id":"F002","uuid":"2","schema":"firm","values":{}},{"id":"H002","uuid":"4","schema":"human","values":{}}]

@@ -5,12 +5,12 @@ When a UQL (whether it is a real-time process or a backend task) is expected to 
 `Syntax`: use prefix `EXEC TASK`
 <p tit="Syntax"></p>
 
-```js
+```uql
 exec task <uql>
 ```
 
 Example:
-```js
+```uql
 exec task n().e().n() as p return p{*}
 ```
 

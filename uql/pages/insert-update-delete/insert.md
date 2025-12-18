@@ -8,7 +8,7 @@ The `insert().into()` clause facilitates the insertion of new nodes or edges wit
 
 <p tit="Syntax"></p> 
 
-```js
+```uql
 // Insert nodes
 insert().into(@<schema>).nodes([
   {<property1>: <value1>, <property2>: <value2>, ...},
@@ -46,7 +46,7 @@ Run these UQLs row by row in an empty graphset to create this graph:
 
 <p tit="" fold="true"></p>
 
-```js
+```uql
 create().node_schema("user").edge_schema("follow")
 create().node_property(@user, "name").node_property(@user, "age", int32).edge_property(@follow, "time", datetime)
 insert().into(@user).nodes([{_id:"U001", _uuid:1, name:"Jason", age:30}, {_id:"U002", _uuid:2, name:"Tim"}, {_id:"U003", _uuid:3, name:"Grace", age:25}, {_id:"U004", _uuid:4, name:"Ted", age:26}])
@@ -57,7 +57,7 @@ insert().into(@follow).edges([{_uuid:1, _from_uuid:4, _to_uuid:1, time:"2021-9-1
 
 ### Insert Single Node
 
-```js
+```uql
 insert().into(@user).nodes({_id: "U005", name: "Alice"})
 ```
 
@@ -69,7 +69,7 @@ A new node is inserted with the following properties:
 
 ### Insert Single Edge
 
-```js
+```uql
 insert().into(@follow).edges({_from: "U002", _to: "U001", time: "2023-8-9"})
 ```
 
@@ -81,7 +81,7 @@ A new edge is inserted with the following properties:
 
 ### Insert Multiple Nodes
 
-```js
+```uql
 insert().into(@user).nodes([
   {name: "Lee", age: 12},
   {_uuid: 10, name: "Alex"},
@@ -99,7 +99,7 @@ Three new nodes are inserted with the following properties:
 
 ### Insert Multiple Edges
 
-```js
+```uql
 insert().into(@follow).edges([
   {_from_uuid: 1, _to_uuid: 2},
   {_uuid: 9, _from: "U004", _to: "U003", time: "2023-9-10"},
@@ -117,7 +117,7 @@ Three new edges are inserted with the following properties:
 
 ### Return Inserted Data
 
-```js
+```uql
 insert().into(@user).nodes([
   {_id: "U006", name: "Joy"},
   {_id: "U007", age: 41}
@@ -136,7 +136,7 @@ Result:
 
 Use the <a href="/docs/uql/point">point()</a> function to specify the value of a point-type property. 
 
-```js
+```uql
 insert().into(@city).nodes([
   { location: point({latitude: 132.1, longitude: -1.5}) }
 ])
@@ -146,7 +146,7 @@ insert().into(@city).nodes([
 
 Use the <a href="/docs/uql/cast-to-raw">castToRaw()</a> function to specify the value of a blob-type property. 
 
-```js
+```uql
 insert().into(@city).nodes([
   {profile_img: castToRaw("data:image/png;base64,iVBO0KGf8/9hAHNCSVQI=")}
 ])
@@ -158,7 +158,7 @@ Provide a list with elements enclosed in `[ ]` and separated with `,`. The data 
 
 Here's an example of inserting a node while providing the value for a list-type (`float[]`) property `ratings`:
 
-```js
+```uql
 insert().into(@city).nodes([
   {ratings: [3.2, 6.7, 5.6, 5.6]}
 ])
@@ -170,7 +170,7 @@ Provide a set with elements enclosed in `[ ]` and separated with `,`. The data t
 
 Here's an example of inserting a node while providing the value for a set-type (`set(string)`) property `tags`:
 
-```js
+```uql
 insert().into(@city).nodes([
   {tags: ["hot", "art", "food"]}
 ])

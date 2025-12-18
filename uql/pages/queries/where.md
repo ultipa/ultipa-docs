@@ -16,7 +16,7 @@ For instance, compare <i>n1</i> and <i>n2</i> that are heterologous, return them
 
 <div align=center drawio-diagram='13989' drawio-name='draw_3b5d84f665c44041ba9dc1c1ab39a9ce.jpg'><img src="https://img.ultipa.cn/draw/draw_3b5d84f665c44041ba9dc1c1ab39a9ce.jpg?v='1703131062595'"/></div>
 
-```js
+```uql
 find().nodes({shape == "square"}) as n1
 find().nodes({shape == "round"}) as n2
 where n1.color == n2.color
@@ -31,7 +31,7 @@ Sample graph: (to be used for the following examples)
 Run below UQLs one by one in an empty graphset to create graph data:
 <p tit="" fold="true"></p>
 
-```js
+```uql
 create().node_schema("student").node_schema("course")
 create().node_property(@*, "name").node_property(@student, "age", int32).node_property(@course, "credit", int32)
 insert().into(@student).nodes([{_id:"S001", _uuid:1, name:"Jason", age:25}, {_id:"S002", _uuid:2, name:"Lina", age:23}, {_id:"S003", _uuid:3, name:"Eric", age:24}, {_id:"S004", _uuid:4, name:"Emma", age:26}, {_id:"S005", _uuid:5, name:"Pepe", age:24}])
@@ -43,14 +43,14 @@ insert().into(@default).edges([{_uuid:1, _from_uuid:1, _to_uuid:6}, {_uuid:2, _f
 Example: Find 1-step paths @course-@student, if the <i>credit</i> of course is 4, or the <i>age</i> of student is 24, then return the path
  
 
-```js
+```uql
 n({@course} as a).e().n({@student} as b) as p
 where a.credit == 4 || b.age == 24
 return p{*}
 ```
 <p tit="Result"></p> 
 
-```bash
+```
 French <---- Jason
 French <---- Lina
 French <---- Eric
@@ -65,7 +65,7 @@ Example: find an intermediate card with alias 'agent' that satisfies conditions 
 
 <div align=center drawio-diagram='2853' drawio-name='draw_03126f9d4de842cea8862f837f35904b.jpg'><img src="https://img.ultipa.cn/draw/draw_03126f9d4de842cea8862f837f35904b.jpg?v='1660009744934'"/></div>
 
-```js
+```uql
 n({_id == "CA002"}).re().n({@card} as agent).re().n({_id == "CA001"})
 where n(agent).e()[*:2].n({_id == "CA003"})
 return agent{*}
@@ -74,7 +74,7 @@ return agent{*}
 Analysis: WHERE further filters data columns "agent": it judges if the shortest paths from "agent" to Card CA003 exist, if true, then it passes "agent" to later "return" 
 
 The example above can be put in a subgraph template as shown below:
-```js
+```uql
 subgraph([
   n({_id == "CA002"}).re().n({@card} as agent).re().n({_id == "CA001"}),
   n(agent).e()[*:2].n({_id == "CA003"})

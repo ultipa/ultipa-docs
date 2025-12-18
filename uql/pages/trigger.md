@@ -20,7 +20,7 @@ Returned table header: `id`|`name`|`schema`|`description`|`when`|`operation`|`uq
 Syntax:
 <p tit="Syntax"></p>
 
-```js
+```uql
 // To show all triggers in the current graphset (node triggers and edge triggers in separate tables)
 show().trigger() 
 
@@ -36,7 +36,7 @@ show().edge_trigger()
 Syntax:
 <p tit="Syntax"></p>
 
-```js
+```uql
 // To create trigger for a certain node schema in the current graphset
 create().node_trigger("<name>", @<schema>, "<desc?>")
   .<before|after>("<insert|update|upsert|delete>")
@@ -49,7 +49,7 @@ create().edge_trigger("<name>", @<schema>, "<desc?>")
 ```
 
 Example: Create trigger for nodes of @student, converting value of property <i>name</i> to uppercase before insert operation
-```js
+```uql
 create().node_trigger("AutoUpperCase", @student).before("insert").on(
   "
   with node
@@ -65,7 +65,7 @@ Deleting a schema will also delete its trigger.
 Syntax:
 <p tit="Syntax"></p>
 
-```js
+```uql
 // To delete a certain node trigger
 drop().node_trigger("<name>")
 
@@ -75,12 +75,12 @@ drop().edge_trigger("<name>")
 ```
 
 Example: Delete node trigger 'AutoUpperCase' 
-```js
+```uql
 drop().node_trigger("AutoUpperCase")
 ```
 
 Example: Delete edge trigger 'AutoFloor' 
-```js
+```uql
 drop().edge_trigger("AutoFloor")
 ```
 
@@ -89,7 +89,7 @@ drop().edge_trigger("AutoFloor")
 After creating a trigger, compose and execute UQL based on the specified schema and operation type.
 
 Example: Use trigger to automatically abstract the year from a <i>datetime</i> edge property and insert as another edge proeprty
-```js
+```uql
 // Create edge trigger 'AbstractYear'
 create().edge_trigger("AbstractYear", @studyAt).before("insert").on(
   "
@@ -99,14 +99,14 @@ create().edge_trigger("AbstractYear", @studyAt).before("insert").on(
 )
 ```
 
-```js
+```uql
 // Insert an edge of @studyAt and return this edge
 insert().into(@studyAt).edges([{GPA: 4.3, graduateDate: "2022-06-03", _from: "STU001", _to: "UNV003"}]) as n
 return n{*}
 ```
 <p tit="Result"></p>
 
-```bash
+```
 |------------------------------ @studyAt ----------------------------|
 | _uuid | _from  |  _to   | GPA |     graduateDate    | graduateYear |
 |-------|--------|--------|-----|---------------------|--------------|

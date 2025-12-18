@@ -13,25 +13,25 @@ Returns：
 Example: Calculate the tangent value of degree 45°
  
 
-```js
+```uql
 return tan(45 * pi() / 180)
 ```
 <p tit="Result"></p>
 
-```bash
+```
 1
 ```
 
 Example: Calculate the tangent value of each row (radian) of an alias
  
 
-```js
+```uql
 uncollect [1, 2.5, 3] as a
 return tan(a)
 ```
 <p tit="Result"></p>
 
-```bash
+```
 1.5574077246549
 -0.74702229723866
 -0.142546543074278

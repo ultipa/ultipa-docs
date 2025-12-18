@@ -13,7 +13,7 @@ Sample graph: (to be used for the following examples)
 Run below UQLs one by one in an empty graphset to create graph data:
 <p tit="" fold="true"></p>
 
-```js
+```uql
 create().node_schema("professor").node_schema("student")
 create().node_property(@*, "age", int32).node_property(@*, "email", string)
 insert().into(@professor).nodes([{_id:"P001",_uuid:1,age:53,email:"test@yahoo.cn"},{_id:"P002",_uuid:2,age:27,email:"test@ultipa.com"}])
@@ -25,13 +25,13 @@ insert().into(@student).nodes([{_id:"S001",_uuid:3,age:27,email:"test@yeah.net"}
 Example: Find nodes of @student 
  
 
-```js
+```uql
 find().nodes({@student}) as n
 return n{*} 
 ```
 <p tit="Result"></p>
 
-```bash
+```
 |---------------- @student ---------------|
 |  _id  | _uuid |  age  |       email     |
 |-------|-------|-------|-----------------|
@@ -46,13 +46,13 @@ Analysis: This filter is equivalent to `{this.@ == "student"}`
 Example: Find nodes of @student, whose age is 27
  
 
-```js
+```uql
 find().nodes({@student.age == 27}) as n
 return n{*} 
 ```
 <p tit="Result"></p>
 
-```bash
+```
 |---------------- @student ---------------|
 |  _id  | _uuid |  age  |       email     |
 |-------|-------|-------|-----------------|

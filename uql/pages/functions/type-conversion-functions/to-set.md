@@ -16,13 +16,13 @@ The `toSet()` function deduplicates the elements in a list and converts it to a 
 
 ## Example of Result
 
-```js
+```uql
 return toSet([1,2,3,4,3,2])
 ```
 
 Result: [4,3,1,2]
 
-```js
+```uql
 return toSet("abc")
 ```
 

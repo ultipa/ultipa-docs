@@ -13,13 +13,13 @@ Returns：
 Example: Round up each row of an alias
  
 
-```js
+```uql
 uncollect [1, -2.5, 3.7] as a
 return ceil(a)
 ```
 <p tit="Result"></p>
 
-```bash
+```
 1
 -2
 4

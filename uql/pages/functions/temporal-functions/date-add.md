@@ -18,7 +18,7 @@ The `dateAdd()` function adds a specified time interval to a given time and retu
 
 ## Example of Result
 
-```js
+```uql
 return dateAdd("1970-01-01 10:00:00", -1, "hour")
 ```
 
@@ -28,7 +28,7 @@ Result: 1970-01-01 09:00:00
 
 Extend all memberships by 3 days and 12 hours.
 
-```js
+```uql
 update().nodes({@membership}).set({
   expiry: dateAdd(dateAdd(expiry, 3, "day"), 12, "hour")
 })

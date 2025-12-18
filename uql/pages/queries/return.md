@@ -14,7 +14,7 @@ For instance, assemble 3 return values, of which <i>n1</i> is heterologous with 
 
 <div align=center drawio-diagram='13990' drawio-name='draw_f847d00a55324b3db604a6b5a2f8b07e.jpg'><img src="https://img.ultipa.cn/draw/draw_f847d00a55324b3db604a6b5a2f8b07e.jpg?v='1703131131890'"/></div>
 
-```js
+```uql
 find().nodes() as n1 limit 5
 n(3).e()[2].n(as n2) as path
 return n1, pnodes(path), dedup(n2.color)
@@ -29,7 +29,7 @@ Sample graph: (to be used for the following examples)
 Run below UQLs one by one in an empty graphset to create graph data:
 <p tit="" fold="true"></p>
 
-```js
+```uql
 create().node_schema("account").node_schema("movie").edge_schema("rate").edge_schema("wishlist")
 create().node_property(@*, "name").node_property(@account, "age", int32).node_property(@movie, "year", int32).edge_property(@rate, "score", int32)
 insert().into(@account).nodes([{_id:"S001", _uuid:1, name:"Pepe", age:24}, {_id:"S002", _uuid:2, name:"Lina", age:23}, {_id:"S003", _uuid:3, name:"Emma", age:26}])
@@ -43,13 +43,13 @@ insert().into(@wishlist).edges([{_uuid:3, _from_uuid:2, _to_uuid:4}, {_uuid:4, _
 Example: Carry all properties
  
 
-```js
+```uql
 find().nodes({@account}) as n
 return n{*} 
 ```
 <p tit="Result"></p> 
 
-```bash
+```
 |-------- @account ---------|
 | _id  | _uuid | name | age |
 |------|-------|------|-----|
@@ -61,13 +61,13 @@ return n{*}
 Example: Carry some custom properties
  
 
-```js
+```uql
 find().nodes() as n
 return n{name, year} 
 ```
 <p tit="Result"></p> 
 
-```bash
+```
 |------ @account -----|
 | _id  | _uuid | name |
 |------|-------|------|
@@ -86,13 +86,13 @@ Analysis: NODE only carries the properties that it has.
 Example: Carry only system properties
  
 
-```js
+```uql
 find().nodes({@movie}) as n
 return n 
 ```
 <p tit="Result"></p> 
 
-```bash
+```
 |--- @movie ---|
 | _id  | _uuid |
 |------|-------|
@@ -106,13 +106,13 @@ return n
 Example: Carry all properties
  
 
-```js
+```uql
 find().edges({@rate}) as e
 return e{*} 
 ```
 <p tit="Result"></p> 
 
-```bash
+```
 |------------------------ @rate -----------------------|
 | _uuid | _from | _to  | _from_uuid | _to_uuid | score |
 |-------|-------|------|------------|----------|-------|
@@ -123,13 +123,13 @@ return e{*}
 Example: Carry only system properties
  
 
-```js
+```uql
 find().edges() as e
 return e 
 ```
 <p tit="Result"></p> 
 
-```bash
+```
 |-------------------- @rate -------------------|
 | _uuid | _from | _to  | _from_uuid | _to_uuid |
 |-------|-------|------|------------|----------|
@@ -148,13 +148,13 @@ return e
 Example: Carry some custom properties
  
 
-```js
+```uql
 n({@account}).e({@rate}).n({@movie}) as p
 return p{name}{*}
 ```
 <p tit="Result"></p> 
 
-```bash
+```
 [
   {
     "nodes":[
@@ -182,13 +182,13 @@ return p{name}{*}
 Example: Carry only system properties
  
 
-```js
+```uql
 n({@movie}).e({@rate}).n({@account}).e({@wishlist}).n({@movie}) as p
 return p
 ```
 <p tit="Result"></p> 
 
-```bash
+```
 [
   {
     "nodes":[
@@ -210,13 +210,13 @@ return p
 Example: Find 1-step path @account-@movie, assemble the <i>name</i> of accounts and movies into a table
  
 
-```js
+```uql
 n({@account} as a).e({@wishlist}).n({@movie} as b)
 return table(a.name, b.name)
 ```
 <p tit="Result"></p> 
 
-```bash
+```
 | a.name | b.name |
 |--------|--------|
 | Lina   | Léon   | 
@@ -228,7 +228,7 @@ return table(a.name, b.name)
 Example: Return custom properties of nodes independently
  
 
-```js
+```uql
 find().nodes() as n
 return n.name, n.age, n.year 
 ```
@@ -267,7 +267,7 @@ Analysis: A `null` will be returned when calling a property that is not existent
 Example: Assemble the <i>name</i> of 1-Hop neighbors of each movie into a list
  
 
-```js
+```uql
 khop().n({@movie} as a).e().n() as b
 group by a
 return a.name, collect(b.name)

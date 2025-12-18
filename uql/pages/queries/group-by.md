@@ -12,7 +12,7 @@ For instance, apply mult-level grouping to <i>path</i>, first by the shape of in
 
 <div align=center drawio-diagram='13984' drawio-name='draw_7df57b2e0a9e46b396eca05bd512aa3d.jpg'><img src="https://img.ultipa.cn/draw/draw_7df57b2e0a9e46b396eca05bd512aa3d.jpg?v='1703130884165'"/></div>
 
-```js
+```uql
 n(as n1).re().n(as n2) as path
 group by n1.shape, n2.color
 return path, count(path)
@@ -24,7 +24,7 @@ Sample graph: (to be used for the following examples)
 Run below UQLs one by one in an empty graphset to create graph data:
 <p tit="" fold="true"></p>
 
-```js
+```uql
 create().node_schema("country").node_schema("movie").node_schema("director").edge_schema("filmedIn").edge_schema("direct")
 create().node_property(@*, "name")
 insert().into(@country).nodes([{_id:"C001", _uuid:1, name:"France"}, {_id:"C002", _uuid:2, name:"USA"}])
@@ -39,14 +39,14 @@ insert().into(@direct).edges([{_uuid:6, _from_uuid:6, _to_uuid:3}, {_uuid:7, _fr
 Example: Find 2-step paths @country-@movie-@director, group by director and count the number of paths in each group
  
 
-```js
+```uql
 n({@country}).e().n({@movie}).e().n({@director} as n)
 group by n
 return table(n.name, count(n))
 ```
 <p tit="Result"></p> 
 
-```bash
+```
 |     n.name    | count(n) |
 |---------------|----------|
 | Luc Besson    | 2        |
@@ -59,14 +59,14 @@ Analysis: An aggregation is executed within each group only if the aggregation f
 Example: Find 2-step paths @country-@movie-@director, group by country and then by director, count the number of paths in each group
  
 
-```js
+```uql
 n({@country} as a).e().n({@movie}).e().n({@director} as b)
 group by a, b
 return table(a.name, b.name, count(a))
 ```
 <p tit="Result"></p> 
 
-```bash
+```
 | a.name |     b.name    | count(a) |
 |--------|---------------|----------|
 | France | Luc Besson    | 1        |

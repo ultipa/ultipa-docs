@@ -16,7 +16,7 @@ The `year()` function extracts the year from a time value.
 
 ## Example of Result
 
-```js
+```uql
 return year("2022-10-5")
 ```
 
@@ -26,7 +26,7 @@ Result: 2022
 
 Retrieve reviews posted in 2018.
 
-```js
+```uql
 find().nodes({year(@review.time) == 2018}) as n
 return n{*}
 ```

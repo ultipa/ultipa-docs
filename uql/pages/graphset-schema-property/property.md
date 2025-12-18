@@ -74,7 +74,7 @@ You can create custom properties for each schema, such as *name*, *type*, and *t
 
 ## Show Property
 
-```js
+```uql
 // Show properties of all schemas in the graphset
 show().property()
 
@@ -114,7 +114,7 @@ The returned result only contains custom properties; system properties are not i
 
 <p tit="Syntax"></p> 
 
-```js
+```uql
 // Create a property for one node schema in the graphset
 create().node_property(@<schema>, "<name>", <type?>, "<desc?>").encrypt()
 
@@ -155,7 +155,7 @@ All properties under one schema must have distinct names. Different schemas may 
 
 When the property name contains characters other than letters (A-Z, a-z), numbers (0-9) and underscores (`_`), the property name must be wrapped with a pair of backquotes (`` ` ``) when being used.
 
-```js
+```uql
 find().nodes({`Last-name` == "White"}) as n
 return n
 ```
@@ -164,7 +164,7 @@ return n
 
 Supported interger data types include `int32`, `uint32`, `int64` and `uint64`.
 
-```js
+```uql
 create().node_property(@course, "credits", int32, "Credits of the course")
 ```
 
@@ -172,7 +172,7 @@ create().node_property(@course, "credits", int32, "Credits of the course")
 
 Supported decimal data types include `float`, `double` and `decimal`.
 
-```js
+```uql
 create()
   .node_property(@record, "score", float, "Score of the record")
   .edge_property(@connects, "weight",  "decimal(25,10)", "Weight of the relation")
@@ -186,7 +186,7 @@ Specifically, the type of `decimal(<precision>, <scale>)` must be declared withi
 
 Supported textual data types include `string` and `text`.
 
-```js
+```uql
 create()
   .node_property(@post, "title")
   .node_property(@post, "content", text, "Main content of the post").encrypt()
@@ -198,7 +198,7 @@ create()
 
 Supported temporal data types include `timestamp` and `datetime`.
 
-```js
+```uql
 create()
   .node_property(@post, "createdOn", timestamp, "When the post is first created")
   .node_property(@post, "publishedOn", datetime, "When the post is published")
@@ -208,7 +208,7 @@ create()
 
 Supported point data type is `point`.
 
-```js
+```uql
 create().node_property(@city, "position", point, "City location: latitude and longitude")
 ```
 
@@ -216,7 +216,7 @@ create().node_property(@city, "position", point, "City location: latitude and lo
 
 Supported blob data type is `blob`.
 
-```js
+```uql
 create()
   .node_property(@user, "profileImg", blob, "Store user profile image as binary large object")
 ```
@@ -225,7 +225,7 @@ create()
 
 Supported list data types include `int32[]`, `int64[]`, `uint32[]`, `uint64[]`, `float[]`, `double[]`, `string[]`, `text[]`, `datetime[]` and `timestamp[]`.
 
-```js
+```uql
 create()
   .node_property(@user, "interests", "string[]", "Store user interest tags as a list of strings")
 ```
@@ -236,7 +236,7 @@ Specifically, the type of list `<element_type>[]` must be declared within two qu
 
 Supported set data types include `set(int32)`, `set(int64)`, `set(uint32)`, `set(uint64)`, `set(float)`, `set(double)`, `set(string)`, `set(text)`, `set(datetime)` and `set(timestamp)`.
 
-```js
+```uql
 create()
   .node_property(@user, "heights", "set(float)", "Store user heights history as a set")
 ```
@@ -245,7 +245,7 @@ Specifically, the type of set `set(<element_type>)` must be declared within two 
 
 ### Create a Property for All Schemas
 
-```js
+```uql
 create().edge_property(@*, "time", datetime)
 ```
 
@@ -255,7 +255,7 @@ Instead of specifying one specific schema name, use `@*` to denote all node or e
 
 Create three edge properties at the same time, but one of the names (*time*) is duplicated with an existing property.
 
-```js
+```uql
 create()
   .edge_property(@default, "weight", int32)
   .edge_property(@default, "time", datetime)
@@ -264,7 +264,7 @@ create()
 
 The creation of the property *weight*, which was specified before the duplicated property, succeeds. However, the one (*status*) specified after the duplicated property fails, with the error message `Property exists!` returned.
 
-```js
+```uql
 TRY create()
   .edge_property(@default, "weight", int32)
   .edge_property(@default, "time", datetime)
@@ -275,7 +275,7 @@ The creation of the properties is the same as above, though the error message is
 
 ## Alter Property
 
-```js
+```uql
 // Alter name and description of the node property @user.status in the graphset
 alter().node_property(@user.status).set({name: "Status", description: "Active or Inactive"})
 
@@ -296,7 +296,7 @@ The data type is not subject to change once a property is created.
 
 Dropping a property entails deleting the property along with all associated property values, LTE-ed values saved in memory, and indexes and full-text indexes created on disk for that property.
 
-```js
+```uql
 // Drop the node property @card.branch from the graphset
 drop().node_property(@card.branch)
 

@@ -17,7 +17,7 @@ The `left()` function returns a substring of a given string, containing a specif
 
 ## Example of Result
 
-```js
+```uql
 return left("a database", 6)
 ```
 
@@ -27,7 +27,7 @@ Result: a data
 
 Extract the first 4 characters of the certificate numbers.
 
-```js
+```uql
 find().nodes({@certificate}) as cert
 return left(cert.no, 4)
 ```

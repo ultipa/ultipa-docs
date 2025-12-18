@@ -16,7 +16,7 @@ The `day()` function extracts the day of the month from a time value.
 
 ## Example of Result
 
-```js
+```uql
 return day("2022-10-05")
 ```
 
@@ -26,7 +26,7 @@ Result: 5
 
 Retrieve reviews posted on 11 October each year.
 
-```js
+```uql
 find().nodes({month(@review.time) == 10 && day(@review.time) == 11}) as n
 return n{*}
 ```

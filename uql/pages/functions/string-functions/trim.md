@@ -16,7 +16,7 @@ The `trim()` function removes any leading and trailing spaces of a string and re
 
 ## Example of Result
 
-```js
+```uql
 return trim("  cloud service   ")
 ```
 
@@ -26,7 +26,7 @@ Result: cloud service
 
 Remove any leading and trailing spaces from the input before saving it into the database.
 
-```js
+```uql
 with " johndoe@gmail.com  " as input
 insert().into(@user).nodes({email: trim(input)})
 ```

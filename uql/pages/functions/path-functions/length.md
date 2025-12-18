@@ -14,7 +14,7 @@ Sample graph: (to be used for the following examples)
 Run below UQLs one by one in an empty graphset to create graph data:
 <p tit="" fold="true"></p>
 
-```js
+```uql
 create().node_schema("firm").node_schema("human").edge_schema("hold")
 create().edge_property(@hold, "portion", double)
 insert().into(@firm).nodes([{_id:"F001", _uuid:1}, {_id:"F002", _uuid:2}])
@@ -27,13 +27,13 @@ insert().into(@hold).edges([{_uuid:1, _from_uuid:3, _to_uuid:1, portion:0.3}, {_
 Example: Calculate the share holding path of each UBO from F001, return their respective lengths
 
 
-```js
+```uql
 n({_id == "F001"}).le()[:5].n({@human} as UBO) as p
 return table(UBO._id, length(p))
 ```
 <p tit="Result"></p>
 
-```bash
+```
 | UBO._id | length(p) |
 |---------|-----------|
 | H002    | 2         |

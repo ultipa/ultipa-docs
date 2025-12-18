@@ -18,7 +18,7 @@ The `dateDiff()` function calculates the time interval in the specified unit bet
 
 ## Example of Result
 
-```js
+```uql
 return dateDiff("1970-01-01 10:00:00", "1970-01-01 12:00:20", "minute")
 ```
 
@@ -28,7 +28,7 @@ Result: -120
 
 Retrieve employees who have worked for over 730 days.
 
-```js
+```uql
 find().nodes({@employee}) as e
 where dateDiff(now(), e.startDate, "day") > 730
 return table(e.name, e.startDate) order by e.startDate

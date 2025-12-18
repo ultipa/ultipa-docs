@@ -16,7 +16,7 @@ The `rtrim()` function removes any trailing spaces of a string and returns the m
 
 ## Example of Result
 
-```js
+```uql
 return rtrim("cloud    ")
 ```
 
@@ -26,7 +26,7 @@ Result: cloud
 
 Remove any trailing spaces from the input before saving it into the database.
 
-```js
+```uql
 with "johndoe@gmail.com " as input
 insert().into(@user).nodes({email: rtrim(input)})
 ```

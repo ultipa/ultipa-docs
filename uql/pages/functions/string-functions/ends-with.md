@@ -17,7 +17,7 @@ The `endsWith()` function checks whether a string ends with a specified substrin
 
 ## Example of Result
 
-```js
+```uql
 return endsWith("ultipa.com", "com")
 ```
 
@@ -27,7 +27,7 @@ Result: 1
 
 Find webpages with URLs that conclude with ".com". 
 
-```js
+```uql
 find().nodes({endsWith(@webpage.url, ".com")}) as n
 return n{*}
 ```

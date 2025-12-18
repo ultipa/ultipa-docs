@@ -16,7 +16,7 @@ The `dayOfWeek()` function returns a number (from 1 to 7) indicating the day of 
 
 ## Example of Result
  
-```js
+```uql
 return dayOfWeek("2023-04-30 22:30:35")
 ```
 
@@ -26,7 +26,7 @@ Result: 1
 
 Display the day of week for each review.
 
-```js
+```uql
 find().nodes({@review}) as n
 return case dayOfWeek(n.time)
 when 1 then "Sunday"

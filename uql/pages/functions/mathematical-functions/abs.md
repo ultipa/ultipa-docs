@@ -13,13 +13,13 @@ Returns：
 Example: Calculate the absolute value of each row of an alias
  
 
-```js
+```uql
 uncollect [1, -2.5, 3.7] as a
 return abs(a)
 ```
 <p tit="Result"></p>
 
-```bash
+```
 1
 2.5
 3.7

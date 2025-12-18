@@ -13,13 +13,13 @@ Returns：
 Example: Round down each row of an alias 
  
 
-```js
+```uql
 uncollect [1, -2.5, 3.7] as a
 return floor(a)
 ```
 <p tit="Result"></p>
 
-```bash
+```
 1
 -3
 3

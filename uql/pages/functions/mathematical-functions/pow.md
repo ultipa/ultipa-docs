@@ -14,14 +14,14 @@ Returns：
 Example: Direct calculate
  
 
-```js
+```uql
 uncollect [3,4] as a
 uncollect [1,2] as b
 return table(a, b, pow(a,b))
 ```
 <p tit="Result"></p>
 
-```bash
+```
 | a | b | pow(a,b) |
 |---|---|----------|
 | 3 | 1 | 3        |
@@ -31,7 +31,7 @@ return table(a, b, pow(a,b))
 Example: Multiply and calculate
  
 
-```js
+```uql
 uncollect [3,4] as a
 uncollect [1,2] as b
 with pow(a,b) as c
@@ -39,7 +39,7 @@ return table(a, b, c)
 ```
 <p tit="Result"></p>
 
-```bash
+```
 | a | b | c  |
 |---|---|----|
 | 3 | 1 | 3  |

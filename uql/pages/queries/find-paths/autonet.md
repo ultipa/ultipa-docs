@@ -43,7 +43,7 @@ Sample graph: (to be used for the following examples)
 Run below UQLs one by one in an empty graphset to create graph data:
 <p tit="" fold="true"></p>
 
-```js
+```uql
 create().edge_property(@default, "weight", int32)
 insert().into(@default).nodes([{_id:"A", _uuid:1}, {_id:"B", _uuid:2}, {_id:"C", _uuid:3}, {_id:"D", _uuid:4}, {_id:"E", _uuid:5}, {_id:"F", _uuid:6}])
 insert().into(@default).edges([{_uuid:1, _from_uuid:1, _to_uuid:3, weight:1}, {_uuid:2, _from_uuid:5, _to_uuid:2 , weight:1}, {_uuid:3, _from_uuid:1, _to_uuid:5 , weight:4}, {_uuid:4, _from_uuid:4, _to_uuid:3 , weight:2}, {_uuid:5, _from_uuid:5, _to_uuid:4 , weight:3}, {_uuid:6, _from_uuid:2, _to_uuid:1 , weight:2}, {_uuid:7, _from_uuid:6, _to_uuid:1 , weight:4}])
@@ -55,13 +55,13 @@ insert().into(@default).edges([{_uuid:1, _from_uuid:1, _to_uuid:3, weight:1}, {_
 Example: Find 1~3-step paths from [A,B] to [D,E], carry all properties
  
 
-```js
+```uql
 autonet().src({_id in ["A","B"]}).dest({_id in ["D","E"]}).depth(:3) as p
 return p{*}
 ```
 <p tit="Result"></p>
 
-```bash
+```
 A --3--> E --5--> D
 A --1--> C <--4-- D
 A <--6-- B <--2-- E --5--> D
@@ -80,14 +80,14 @@ B <--2-- E
 Example: Find shortest paths from [A,B] to [D,E] within 3 steps, carry all properties
  
 
-```js
+```uql
 autonet().src({_id in ["A","B"]}).dest({_id in ["D","E"]}).depth(3)
   .shortest() as p
 return p{*}
 ```
 <p tit="Result"></p>
 
-```bash
+```
 A --1--> C <--4-- D
 A --3--> E --5--> D
 A --3--> E
@@ -100,13 +100,13 @@ B <--2-- E
 Example: Find 1~3-step paths from [A,B] to [D,E], return 1 path for each pair of nodes, carry all properties
  
 
-```js
+```uql
 autonet().src({_id in ["A","B"]}).dest({_id in ["D","E"]}).depth(:3).limit(1) as p
 return p{*}
 ```
 <p tit="Result"></p>
 
-```bash
+```
 A <--6-- B <--2-- E --5--> D
 A <--6-- B <--2-- E
 B <--2-- E --5--> D
@@ -118,13 +118,13 @@ B <--2-- E
 Example: Find 1~3-step paths among [A,B,C], carry all properties
  
 
-```js
+```uql
 autonet().src({_id in ["A","B","C"]}).depth(:3) as p
 return p{*}
 ```
 <p tit="Result"></p>
 
-```bash
+```
 A --3--> E --2--> B
 A <--6-- B
 A --3--> E --5--> D --4--> C
@@ -139,14 +139,14 @@ B <--2-- E <--3-- A --1--> C
 Example: Find shortest paths among [A,B,C] within 3 steps, carry all properties
  
 
-```js
+```uql
 autonet().src({_id in ["A","B","C"]}).depth(3)
   .shortest() as p
 return p{*}
 ```
 <p tit="Result"></p>
 
-```bash
+```
 A <--6-- B
 A --1--> C
 B --6--> A --1--> C
@@ -157,13 +157,13 @@ B --6--> A --1--> C
 Example: Find 1~3-step paths among [A,B,C], return 1 path for each pair of nodes, carry all properties
  
 
-```js
+```uql
 autonet().src({_id in ["A","B","C"]}).depth(:3).limit(1) as p
 return p{*}
 ```
 <p tit="Result"></p>
 
-```bash
+```
 A <--6-- B
 A --1--> C
 B <--2-- E <--3-- A --1--> C

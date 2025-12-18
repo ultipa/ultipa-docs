@@ -8,12 +8,12 @@
 Example: Judge whether "2020-01-04" is less than "2020-04-27"
  
 
-```js
+```uql
 return "2020-01-04" < "2020-04-27"
 ```
 <p tit="Result"></p>
 
-```bash
+```
 1
 ```
 
@@ -22,12 +22,12 @@ return "2020-01-04" < "2020-04-27"
 Example: Judge whether PI is less than 3
  
 
-```js
+```uql
 return pi() < 3
 ```
 <p tit="Result"></p>
 
-```bash
+```
 0
 ```
 
@@ -36,13 +36,13 @@ return pi() < 3
 Example: Judge each row of an alias whether it is less than 2
  
 
-```js
+```uql
 uncollect [1,2,3,2,2] as a
 return a < 2
 ```
 <p tit="Result"></p>
 
-```bash
+```
 1
 0
 0
@@ -56,7 +56,7 @@ Sample graph: (to be used for the following examples)
 Run below UQLs one by one in an empty graphset to create graph data:
 <p tit="" fold="true"></p>
 
-```js
+```uql
 create().node_schema("professor").node_schema("student")
 create().node_property(@*, "age", int32).node_property(@*, "email", string)
 insert().into(@professor).nodes([{_id:"P001",_uuid:1,age:53,email:"test@yahoo.cn"},{_id:"P002",_uuid:2,age:27,email:"test@ultipa.com"}])
@@ -68,13 +68,13 @@ insert().into(@student).nodes([{_id:"S001",_uuid:3,age:27,email:"test@yeah.net"}
 Example: Find nodes whose age is less than 27
  
 
-```js
+```uql
 find().nodes({age < 27}) as n
 return n{*} 
 ```
 <p tit="Result"></p>
 
-```bash
+```
 |---------------- @student ---------------|
 |  _id  | _uuid |  age  |       email     |
 |-------|-------|-------|-----------------|
@@ -85,12 +85,12 @@ return n{*}
 Example: Find nodes of @professor, whose age is less than 27
  
 
-```js
+```uql
 find().nodes({@professor.age < 27}) as n
 return n{*} 
 ```
 <p tit="Result"></p>
 
-```bash
+```
 No return data
 ```
