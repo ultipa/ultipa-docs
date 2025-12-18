@@ -106,7 +106,7 @@ The node sequences obtained from the random walks serve as input to the <a href=
 | --- | --- |
 | filename | `_id`,`embedding_result` |
 
-```js
+```uql
 algo(node2vec).params({
   walk_length: 10,
   walk_num: 20,
@@ -134,7 +134,7 @@ algo(node2vec).params({
 | -- | -- | -- | -- |
 | property | `embedding_result` | Node Property | `string` |
 
-```js
+```uql
 algo(node2vec).params({
   walk_length: 10,
   walk_num: 20,
@@ -162,7 +162,7 @@ algo(node2vec).params({
 | ---- | --- | --- | ---- |
 | 0 | []perNode | Node and its embeddings | `_uuid`, `embedding_result` |
 
-```js
+```uql
 algo(node2vec).params({
   walk_length: 10,
   walk_num: 20,
@@ -188,7 +188,7 @@ return embeddings
 | ---- | --- | --- | ---- |
 | 0 | []perNode | Node and its embeddings | `_uuid`, `embedding_result` |
 
-```js
+```uql
 algo(node2vec).params({
   walk_length: 10,
   walk_num: 20,

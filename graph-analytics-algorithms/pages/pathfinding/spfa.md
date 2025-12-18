@@ -86,7 +86,7 @@ The example graph is as follows:
 </tbody>
 </table>
 
-```js
+```uql
 algo(sssp).params({
   uuids: 1,
   edge_schema_property: '@default.value',
@@ -103,7 +103,7 @@ Results: File <i>costs</i>
 
 <p tit="File"></p>
 
-```js
+```
 A,0
 B,2
 C,5
@@ -113,7 +113,7 @@ F,-4
 G,0
 ```
 
-```js
+```uql
 algo(sssp).params({
   uuids: 1,
   edge_schema_property: '@default.value',
@@ -131,7 +131,7 @@ Results: File <i>paths</i>
 
 <p tit="File"></p>
 
-```js
+```
 A--[101]--B--[104]--C
 A--[101]--B--[105]--D
 A--[101]--B
@@ -170,7 +170,7 @@ A--[101]--B--[103]--F
 </tbody>
 </table>
 
-```js
+```uql
 algo(sssp).params({
   uuids: 1,
   edge_schema_property: 'value',
@@ -190,7 +190,7 @@ Results: <i>costs</i>
 | 4 | 6 |
 | 6 | 4 |
 
-```js
+```uql
 algo(sssp).params({
   ids: 'A',
   edge_schema_property: '@default.value',
@@ -239,7 +239,7 @@ Results: <i>paths</i>
 </tbody>
 </table>
 
-```js
+```uql
 algo(sssp).params({
   ids: 'A',
   edge_schema_property: '@default.value',
@@ -257,7 +257,7 @@ Results: <i>costs</i>
 | 5 | -3 |
 | 6 | -4 |
 
-```js
+```uql
 algo(sssp).params({
   ids: 'A',
   edge_schema_property: '@default.value',

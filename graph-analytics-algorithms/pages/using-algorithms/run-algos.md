@@ -22,7 +22,7 @@ Example: `algo(degree).params()`
 
 Some algorithms (e.g., Degree Centrality, PageRank, K-Hop All, Louvain) support the usage of `node_filter()` and `edge_filter()` to specify the nodes or edges to participate in the calcualatin.
 
-```js
+```uql
 // Compute the degree of the node with UUID 1 in the subgraph composed of @account nodes
 algo(degree).params({ 
   uuids: 1
@@ -53,7 +53,7 @@ To write the algorithm results back to one or more files, you need to configure 
 
 Syntax: Wrap the `file` object in `write()`, the configuration items in the `file` object are detailed in the introduction of each algorithm
 
-```js
+```uql
 algo(connected_component).params({
   cc_type: 1
 }).write({
@@ -74,7 +74,7 @@ Property writeback is a full-volume operation, i.e., written back to all nodes o
 
 Syntax: Wrap the `db` object in `write()`, the configuration items in the `db` object are detailed in the introduction of each algorithm
 
-```js
+```uql
 algo(closeness_centrality).params().write({
   db:{
     property: "centrality"
@@ -88,7 +88,7 @@ For algorithms with statistics, it is supported to define two aliases, the first
 
 Syntax: Define alias(es) directly and assemble it with a RETURN clause
 
-```js
+```uql
 algo(degree).params({
   direction: 'out'
 }) as a1, a2 
@@ -101,7 +101,7 @@ Only one alias can be defined, which generally represents the algorithm result. 
 
 Syntax: Use `stream()` and define an alias
 
-```js
+```uql
 algo(closeness_centrality).params().stream() as cc
 where cc.centrality > 0.5
 return cc._uuid
@@ -113,7 +113,7 @@ Only one alias can be defined, which represents statistics. After defining an al
 
 Syntax: Use `stats()` and define an alias
 
-```js
+```uql
 algo(lpa).params({
   node_label_property: @default.name,
   k: 1,

@@ -116,7 +116,7 @@ The example graph is as follows:
 | filename_ids | `community_id`,`_id`,`_id`,... | Community ID and the ID of nodes in it |
 | filename_num | `community_id`,`count` | Community ID and the number of nodes in it |
 
-```js
+```uql
 algo(louvain).params({ 
   phase1_loop_num: 5, 
   min_modularity_increase: 0.1,
@@ -135,7 +135,7 @@ Results: Files <i>communityID</i>, <i>ids</i>, <i>num</i>
 
 <p tit="File: communityID"></p>
 
-```js
+```uql
 M,2
 N,2
 K,2
@@ -154,7 +154,7 @@ B,13
 
 <p tit="File: ids"></p>
 
-```js
+```uql
 8,J,I,H,F,
 12,C,E,D,A,
 2,M,N,K,L,
@@ -163,7 +163,7 @@ B,13
 
 <p tit="File: num"></p>
 
-```js
+```uql
 8,4
 12,4
 2,4
@@ -176,7 +176,7 @@ B,13
 | --- | --- | --- | --- |
 | property | `community_id` | Node property | `uint32` |
 
-```js
+```uql
 algo(louvain).params({ 
   phase1_loop_num: 5, 
   min_modularity_increase: 0.1,
@@ -198,7 +198,7 @@ Results: The community ID of each node is written to a new property named <i>com
 | 0 | []perNode	| Node and its community ID	| `_uuid`, `community_id` |
 | 1 | KV | Number of communities, modularity | `community_count`, `modularity` |
 
-```js
+```uql
 algo(louvain).params({ 
   phase1_loop_num: 6, 
   min_modularity_increase: 0.5,
@@ -261,7 +261,7 @@ Results: <i>results</i> and <i>stats</i>
 </tbody>
 </table>
 
-```js
+```uql
 algo(louvain).params({ 
   phase1_loop_num: 6, 
   min_modularity_increase: 0.5,
@@ -280,7 +280,7 @@ Results: <i>table(results.community_id, max(results._uuid))</i>
 | 2 | 14 |
 | 8 | 10 |
 
-```js
+```uql
 algo(louvain).params({ 
   phase1_loop_num: 5, 
   min_modularity_increase: 0.1,
@@ -306,7 +306,7 @@ Results: <i>results</i>
 | ------------- | ---- | ----------- | ----------- |
 | 0 | KV | Number of communities, modularity | `community_count`, `modularity` |
 
-```js
+```uql
 algo(louvain).params({ 
   phase1_loop_num: 5, 
   min_modularity_increase: 0.1

@@ -56,7 +56,7 @@ The example graph is as follows:
 | --- | --- | --- |
 | filename | subgraph`N`: `_id`,`_id`,... | Nodes that are contained in each p-cohesion subgraph |
 
-```js
+```uql
 algo(p_cohesion).params({
   ids: ['A', 'I'],
   p: 0.7
@@ -72,7 +72,7 @@ Results: File <i>cohesion</i>
 
 <p tit="File"></p>
 
-```js
+```
 subgraph0:D,C,B,F,A,E,
 subgraph1:D,C,F,B,H,E,A,I,
 ```

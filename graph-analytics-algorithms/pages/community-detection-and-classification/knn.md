@@ -46,7 +46,7 @@ The example graph has 6 image nodes (edges are ignored), and each node has prope
 | --- | --- | ---  |
 | filename | First row: `attribute_value`<br>Second row and later: `_id`,`similarity` | First row: The elected class label<br>Second row and later: ID of the nearest node and its cosine similarity with the target node |
 
-```js
+```uql
 algo(knn).params({
   node_id: 1,
   node_schema_property: ['d1', 'd2', 'd3', 'd4'],
@@ -63,7 +63,7 @@ Results: File <i>knn</i>
 
 <p tit="File"></p>
 
-```js
+```
 Gold
 top k : image4,0.538975
 image3,0.705072
@@ -78,7 +78,7 @@ image2,0.85516
 | 0 | KV | The elected class label and its number of occurrences among the <i>k</i> nearest neighbors | `attribute_value`, `count` |
 | 1 | []perNode | The nearest node and its cosine similarity with the target node | `node`, `similarity` |
 
-```js
+```uql
 algo(knn).params({
   node_id: 1,
   node_schema_property: ['d1', 'd2', 'd3', 'd4'],
@@ -107,7 +107,7 @@ Results: <i>a1</i> and <i>a2</i>
 | --- | --- | --- | --- |
 | 0 | KV | The elected class label and its number of occurrences among the <i>k</i> nearest neighbors | `attribute_value`, `count` |
 
-```js
+```uql
 algo(knn).params({
   node_id: 2,
   node_schema_property: ['@image.d1', '@image.d2', '@image.d3', '@image.d4'],
@@ -123,7 +123,7 @@ end
 
 Results: false
 
-```js
+```uql
 find().nodes({@image}) as images
 call {
     with images._uuid as target

@@ -60,7 +60,7 @@ The example graph is as follows:
 | filename_ids | `community_id`,`_id`,`_id`,... |
 | filename_num | `community_id`,`count` |
 
-```js
+```uql
 algo(connected_component).params({
   cc_type: 1
 }).write({
@@ -77,7 +77,7 @@ Results: Files <i>f1</i>, <i>f2</i>, <i>f3</i>
 
 <p tit="File: f1"></p>
 
-```js
+```uql
 Alice,0
 Bill,0
 Bob,0
@@ -90,14 +90,14 @@ Mike,6
 
 <p tit="File: f2"></p>
 
-```js
+```uql
 0,Alice,Bill,Bob,Sam,Joe,Anna,
 6,Cathy,Mike,
 ```
 
 <p tit="File: f3"></p>
 
-```js
+```uql
 0,6
 6,2
 ```
@@ -108,7 +108,7 @@ Mike,6
 | --- | --- | --- | --- |
 | property | `community_id` | Node property | `int64` |
 
-```js
+```uql
 algo(connected_component).params().write({
   db:{ 
     property: 'wcc_id'
@@ -126,7 +126,7 @@ Results: The community ID of each node is written to a new property named <i>wcc
 | 0 | []perNode | Node and its community ID | `_uuid`, `community_id` |
 | 1 | KV | Number of communities | `community_count` |
 
-```js
+```uql
 algo(connected_component).params({
   cc_type: 2
 }) as r1, r2
@@ -181,7 +181,7 @@ Results: <i>r1</i> and <i>r2</i>
 </tbody>
 </table>
 
-```js
+```uql
 algo(connected_component).params({
   cc_type: 2
 }).stream() as r
@@ -201,7 +201,7 @@ Results: <i>r</i>
 | 2 | 6 |
 | 1 | 7 |
 
-```js
+```uql
 algo(connected_component).params({
   cc_type: 2,
   order: 'asc'
@@ -226,7 +226,7 @@ Results: <i>r</i>
 | --- | --- | --- | --- |
 | 0	| KV | Number of communities | `community_count` |
 
-```js
+```uql
 algo(connected_component).params().stats() as count
 return count
 ```

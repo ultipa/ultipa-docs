@@ -32,7 +32,7 @@ The example graph is as follows:
 | --- | --- | --- |
 | filename | `_id`,`_id`,... | IDs of visited nodes |
 
-```js
+```uql
 algo(random_walk_struc2vec).params({
   walk_length: 5,
   walk_num: 1,
@@ -48,7 +48,7 @@ Results: File <i>walks</i>
 
 <p tit="File"></p>
 
-```js
+```
 J,G,I,G,
 I,H,I,H,G,
 H,G,H,I,H,
@@ -67,7 +67,7 @@ A,B,A,D,
 | --------- | --- | ----------- | -------- |
 | 0 | []perWalk | Array of UUIDs of visited nodes | `[_uuid, _uuid, ...]` |
 
-```js
+```uql
 algo(random_walk_struc2vec).params({
   ids: ['J'],
   walk_length: 6,
@@ -92,7 +92,7 @@ Results: <i>walks</i>
 | --------- | --- | ----------- | -------- |
 | 0 | []perWalk | Array of UUIDs of visited nodes | `[_uuid, _uuid, ...]` |
 
-```js
+```uql
 algo(random_walk_struc2vec).params({
   ids: ['J'],
   walk_length: 6,

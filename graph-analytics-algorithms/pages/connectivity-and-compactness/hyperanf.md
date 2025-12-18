@@ -119,7 +119,7 @@ The example graph is as below:
 | --- | --- | --- | --- |
 | 0 | KV | The estimated Average graph distance | `hyperANF_result` |
 
-```js
+```uql
 algo(hyperANF).params({
   loop_num: 5,
   register_num: 4
@@ -139,7 +139,7 @@ Results: <i>distance</i>
 | --- | --- | --- | --- |
 | 0 | KV | The estimated Average graph distance | `hyperANF_result` |
 
-```js
+```uql
 algo(hyperANF).params({
   loop_num: 7,
   register_num: 5
@@ -155,7 +155,7 @@ Results: 3
 | --- | --- | --- | --- |
 | 0 | KV | The estimated Average graph distance | `hyperANF_result` |
 
-```js
+```uql
 algo(hyperANF).params({
   loop_num: 7,
   register_num: 10

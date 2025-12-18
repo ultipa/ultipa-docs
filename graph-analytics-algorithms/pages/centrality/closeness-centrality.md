@@ -72,7 +72,7 @@ The example graph is as follows:
 | --- | --- |
 | filename | `_id`,`centrality` |
 
-```js 
+```uql 
 algo(closeness_centrality).params().write({
   file:{ 
     filename: 'centrality'
@@ -84,7 +84,7 @@ Results: File <i>centrality</i>
 
 <p tit="File"></p>
 
-```js
+```
 LA,0.583333
 LB,0.636364
 LC,0.5
@@ -101,7 +101,7 @@ LH,0.368421
 | --- | --- | --- | --- |
 | property | `centrality` | Node property | `float` |
 
-```js
+```uql
 algo(closeness_centrality).params().write({
   db:{ 
     property: 'cc'
@@ -117,7 +117,7 @@ Results: Centrality score for each node is written to a new property named <i>cc
 | --- | --- | --- | --- |
 | 0 | []perNode | Node and its centrality | `_uuid`, `centrality` |
 
-```js
+```uql
 algo(closeness_centrality).params({
   direction: 'out',
   order: 'desc',
@@ -140,7 +140,7 @@ Results: <i>cc</i>
 | --- | --- | --- | --- |
 | 0 | []perNode | Node and its centrality | `_uuid`, `centrality` |
 
-```js
+```uql
 algo(closeness_centrality).params({
   direction: 'in'
 }).stream() as cc

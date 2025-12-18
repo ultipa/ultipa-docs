@@ -65,7 +65,7 @@ The example graph is a small social network, nodes represent users, and edges re
 | --- | --- |
 | filename | `_id`,`centrality` |
 
-```js
+```uql
 algo(betweenness_centrality).params().write({
   file:{ 
     filename: 'centrality'
@@ -77,7 +77,7 @@ Results: File <i>centrality</i>
 
 <p tit="File"></p>
 
-```js
+```
 Billy,0
 Jay,0.0666667
 May,0.0666667
@@ -93,7 +93,7 @@ Sue,0
 | --- | --- | --- | --- |
 | property | `centrality` | Node property | `float` |
 
-```js
+```uql
 algo(betweenness_centrality).params().write({
   db:{ 
     property: 'bc'
@@ -109,7 +109,7 @@ Results: Centrality score for each node is written to a new property named <i>bc
 | --- | --- | --- | --- |
 | 0 | []perNode | Node and its centrality | `_uuid`, `centrality` |
 
-```js
+```uql
 algo(betweenness_centrality).params({
   order: 'desc',
   limit: 3
@@ -131,7 +131,7 @@ Results: <i>bc</i>
 | --- | --- | --- | --- |
 | 0 | []perNode | Node and its centrality | `_uuid`, `centrality` |
 
-```js
+```uql
 algo(betweenness_centrality).params().stream() as bc
 where bc.centrality == 0
 return count(bc)

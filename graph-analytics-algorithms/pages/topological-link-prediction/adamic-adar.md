@@ -48,7 +48,7 @@ The example graph is as follows:
 | --- | --- |
 | filename | `node1`,`node2`,`num` |
 
-```js
+```uql
 algo(topological_link_prediction).params({
   uuids: [3],
   uuids2: [1,5,7]
@@ -63,7 +63,7 @@ Results: File <i>aa</i>
 
 <p tit="File"></p>
 
-```js
+```
 C,A,1.660964
 C,E,3.321928
 C,G,2.095903
@@ -75,7 +75,7 @@ C,G,2.095903
 | ----- | ---- | ----------- | ----------- |
 | 0 | []perNodePair | Node pair and its similarity | `node1`, `node2`, `num` |
 
-```js
+```uql
 algo(topological_link_prediction).params({
   ids: 'C',
   ids2: ['A','C','E','G'],
@@ -98,7 +98,7 @@ Results: <i>aa</i>
 | ----- | ---- | ----------- | ----------- |
 | 0 | []perNodePair | Node pair and its similarity | `node1`, `node2`, `num` |
 
-```js
+```uql
 find().nodes() as n
 with collect(n._id) as nID
 algo(topological_link_prediction).params({

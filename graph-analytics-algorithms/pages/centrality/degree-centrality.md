@@ -54,7 +54,7 @@ The example is a social network, edge property <i>@follow.score</i> can be used 
 | --- | --- |
 | filename | `_id`,`degree` |
 
-```js
+```uql
 algo(degree).params().write({
   file:{ 
     filename: 'degree_all'
@@ -67,7 +67,7 @@ Results: File <i>degree_all</i>
 
 <p tit="File"></p>
 
-```js
+```
 Tim,0
 Bill,1
 Bob,2
@@ -84,7 +84,7 @@ Mike,3
 | --- | --- | --- | --- |
 | property | `degree` | Node property | `double` |
 
-```js
+```uql
 algo(degree).params({
   edge_schema_property: '@follow.score'
 }).write({
@@ -104,7 +104,7 @@ Results: Degree for each node is written to a new property named <i>degree</i>, 
 | 0 | []perNode | Node and its degree | `_uuid`, `degree` |
 | 1 | KV | Total and average degree of all nodes | `total_degree`, `average_degree` |
 
-```js
+```uql
 algo(degree).params({ 
   edge_schema_property: '@follow.score',
   order: 'desc' 
@@ -136,7 +136,7 @@ Results: <i>degree</i> and <i>stats</i>
 | 0 | []perNode | Node and its degree | `_uuid`, `degree` |
 
 Example: Find 1-hop neighbors of the node with the highest degree, return all information of those neighbors
-```js
+```uql
 algo(degree).params({
   order: 'desc',
   limit: 1 
@@ -161,7 +161,7 @@ Results: <i>neighbors</i>
 | ----- | ---- | ----------- | ----------- |
 | 0 | KV | Total and average degree of all nodes | `total_degree`, `average_degree` |
 
-```js
+```uql
 algo(degree).params({
   direction: 'out'
 }).stats() as stats

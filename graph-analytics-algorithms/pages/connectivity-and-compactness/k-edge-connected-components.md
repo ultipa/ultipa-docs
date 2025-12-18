@@ -56,7 +56,7 @@ The example graph is as follows:
 | --- | --- | --- |
 | filename | `_id`,`_id`,... | The IDs of nodes that are contained in each k-edge connected component |
 
-```js
+```uql
 algo(kcc).params({
   k: 3
 }).write({
@@ -70,7 +70,7 @@ Results: File <i>result</i>
 
 <p tit="File"></p>
 
-```js
+```
 F,G,I,H,
 J,K,M,L,
 ```

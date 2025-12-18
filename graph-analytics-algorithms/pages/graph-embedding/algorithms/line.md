@@ -112,7 +112,7 @@ Since the edge weights are included in both objectives, these weights will be mu
 | --- | --- |
 | filename | `_id`,`embedding_result` |
 
-```js
+```uql
 algo(line).params({
   dimension: 20,
   train_total_num: 10,
@@ -134,7 +134,7 @@ algo(line).params({
 | -- | -- | -- | -- |
 | property | `embedding_result` | Node Property | `string` |
 
-```js
+```uql
 algo(line).params({
   edge_schema_property: '@branch.distance',
   dimension: 20,
@@ -156,7 +156,7 @@ algo(line).params({
 | ---- | --- | --- | ---- |
 | 0 | []perNode | Node and its embeddings | `_uuid`, `embedding_result` |
 
-```js
+```uql
 algo(line).params({
   edge_schema_property: '@branch.distance',
   dimension: 20,
@@ -176,7 +176,7 @@ return embeddings
 | ---- | --- | --- | ---- |
 | 0 | []perNode | Node and its embeddings | `_uuid`, `embedding_result` |
 
-```js
+```uql
 algo(line).params({
   edge_schema_property: '@branch.distance',
   dimension: 20,

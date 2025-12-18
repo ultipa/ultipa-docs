@@ -27,7 +27,7 @@ The example graph is as follows:
 | -- | -- | -- | -- |
 | 0	| []perGroup | Statistics showing the number of edges of a specific schema between two node schemas	| `node schema(src)`, `edge schema`, `node schema(dest)`, `count` |
 
-```js
+```uql
 algo(schema_overview).params() as result 
 return result
 ```
@@ -47,7 +47,7 @@ Results: *result*
 | -- | -- | -- | -- |
 | 0	| []perGroup | Statistics showing the number of edges of a specific schema between two node schemas	| `node schema(src)`, `edge schema`, `node schema(dest)`, `count` |
 
-```js
+```uql
 algo(schema_overview).params().stream() as result
 where result.`node schema(src)` = "account" 
 return result

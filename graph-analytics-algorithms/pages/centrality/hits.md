@@ -68,7 +68,7 @@ The example graph is as follows:
 | --- | --- |
 | filename | `_id`,`authority`,`hub` |
 
-```js
+```uql
 algo(hits_centrality).params({}).write({
   file: {
     filename: 'rank'
@@ -80,7 +80,7 @@ Results: File <i>rank</i>
 
 <p tit="File"></p>
 
-```js
+```
 H,0.000000,0.000000
 G,0.213196,0.190701
 F,0.426420,0.000000
@@ -98,7 +98,7 @@ A,0.852796,0.190701
 | authority | `authority` | Node property | `double` |
 | hub | `hub` | Node property | `double` |
 
-```js
+```uql
 algo(hits_centrality).params({
   max_loop_num: 20,
   tolerance: 0.0001
@@ -118,7 +118,7 @@ Results: Authority weight for each node is written to a new property named <i>au
 | ------------- | ---- | ----------- | ----------- |
 | 0 | []perNode | Node and its authority and hub weight | `_uuid`, `authority`, `hub` |
 
-```js
+```uql
 algo(hits_centrality).params() as rank
 return rank
 ```
@@ -142,7 +142,7 @@ Results: <i>rank</i>
 | ------------- | ---- | ----------- | ----------- |
 | 0 | []perNode | Node and its authority and hub weight | `_uuid`, `authority`, `hub` |
 
-```js
+```uql
 algo(hits_centrality).params({
   max_loop_num: 20,
   tolerance: 0.0001

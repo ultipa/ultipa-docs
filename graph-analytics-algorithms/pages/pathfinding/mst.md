@@ -61,7 +61,7 @@ The example graph is as below, node <i>A</i> is an electric center, node <i>B~H<
 | --- | --- | --- |
 | filename | `_id--[_uuid]--_id` | One-step path in the MST:<br>(start node)--(edge)--(end node) |
 
-```js
+```uql
 algo(mst).params({
   uuids: [1],
   edge_schema_property: 'distance'
@@ -76,7 +76,7 @@ Results: File <i>solution</i>
 
 <p tit="File"></p>
 
-```js
+```
 A--[107]--H
 A--[108]--E
 E--[111]--G
@@ -92,7 +92,7 @@ C--[103]--D
 | --- | --- | --- |
 | 0 | []path | One-step path in the MST: <br>`_uuid` (start node) -- [`_uuid`] (edge) -- `_uuid` (end node) |
 
-```js
+```uql
 algo(mst).params({
   ids: 'A',
   edge_schema_property: '@connect.distance'
@@ -118,7 +118,7 @@ Results: <i>mst</i>
 | --- | --- | --- |
 | 0 | []path | One-step path in the MST: <br>`_uuid` (start node) -- [`_uuid`] (edge) -- `_uuid` (end node) |
 
-```js
+```uql
 algo(mst).params({
   uuids: [1],
   edge_schema_property: 'distance'

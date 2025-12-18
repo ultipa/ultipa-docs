@@ -76,7 +76,7 @@ The example graph is as follows, nodes are of schema <i>user</i>, edges are of s
 | --- | --- |
 | filename | `_id`,`label_1`,`probability_1`,...`label_k`,`probability_k` |
 
-```js
+```uql
 algo(lpa).params({
   k: 2,
   loop_num: 5,
@@ -93,7 +93,7 @@ Results: File <i>lpa</i>
 
 <p tit="File"></p>
 
-```js
+```
 O,1,0.599162,2,0.400838,
 N,1,0.634582,2,0.365418,
 M,1,0.610834,2,0.389166,
@@ -117,7 +117,7 @@ A,14,0.768171,12,0.231829,
 | --- | --- | --- | --- |
 | property | `label_1`, `probability_1`, ... `label_k`, `probability_k` | Node property | Label: `string`,<br>Label probability: `float` |
 
-```js
+```uql
 algo(lpa).params({
   node_label_property: 'interest',
   edge_weight_property: '@connect.strength',
@@ -140,7 +140,7 @@ Results: The labels and the corresponding probability of each node is written to
 | 0 | []perNode | Node and its labels, label probabilities | `_uuid`, `label_1`, `probability_1`, ... `label_k`, `probability_k` |
 | 1	| KV | Number of labels | `label_count` |
 
-```js
+```uql
 algo(lpa).params({
   node_label_property: '@user.interest',
   node_weight_property: '@user.level'
@@ -168,7 +168,7 @@ Results: <i>res</i>
 | 2 | piano | 1.000000 |
 | 1 | piano | 1.000000 |
 
-```js
+```uql
 algo(lpa).params({
   node_label_property: 'interest',
   k: 2
@@ -206,7 +206,7 @@ Results: <i>res</i> and <i>stats</i>
 | --- | --- | --- | --- |
 | 0 | []perNode | Node and its labels, label probabilities | `_uuid`, `label_1`, `probability_1`, ... `label_k`, `probability_k` |
 
-```js
+```uql
 algo(lpa).params({
   node_label_property: '@user.interest',
   node_weight_property: '@user.level',
@@ -235,7 +235,7 @@ Results: <i>table(lpa.label_1, labelCount)</i>
 | --- | --- | --- | --- |
 | 0	| KV | Number of labels | `label_count` |
 
-```js
+```uql
 algo(lpa).params({
   node_label_property: 'interest',
   edge_weight_property: 'strength',
