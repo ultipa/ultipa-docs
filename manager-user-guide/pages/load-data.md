@@ -88,7 +88,7 @@ Example files:
 
 <p tit="account.csv" ></p>
 
-```js
+```csv
 _id:_id,username:string,brithYear:int32
 U001,risotto4cato,1978
 U002,jibber-jabber,1989
@@ -97,7 +97,7 @@ U003,LondonEYE,1982
 
 <p tit="follows.csv" ></p>
 
-```js
+```csv
 _from,_to,timestamp
 risotto4cato,jibber-jabber,1634962465
 LondonEYE,jibber-jabber,1634962587
@@ -105,7 +105,7 @@ LondonEYE,jibber-jabber,1634962587
 
 <p tit="account.json" ></p>
 
-```js
+```json
 [
   {
 	"_id": "U001",
@@ -127,7 +127,7 @@ LondonEYE,jibber-jabber,1634962587
 
 <p tit="follows.json" ></p>
 
-```js
+```json
 [
   {
 	"from": "risotto4cato",
