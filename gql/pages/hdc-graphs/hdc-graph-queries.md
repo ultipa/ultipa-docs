@@ -137,4 +137,3 @@ EXEC{
   RETURN p
 } ON hdcGraph_no_weight
 ```
-null

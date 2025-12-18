@@ -157,4 +157,3 @@ Result:
 | -- | -- |
 | mochaeach | C02 |
 | lionbower | C01 |
-null
