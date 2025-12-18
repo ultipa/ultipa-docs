@@ -1,14 +1,14 @@
 # Betweenness Centrality
 
-<div><span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ File Writeback</b></span> <span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ Property Writeback</b></span> <span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ Direct Return</b></span> <span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ Stream Return</b></span> <span class="flag" style="background-color:#eff1f5;color: #000000;"><b>✕ Stats</b></span></div>
+<div><span class="flag" style="background:#014d4e;color:#fff;"><b>HDC</b></span> <span class="flag" style="background:#014d4e;color:#fff;"><b>Distributed</b></span></div>
 
 ## Overview
 
-Betweenness centrality measures the probability that a node lies in the shortest paths between any other two nodes. Proposed by Linton C. Freeman in 1977, this algorithm effectively detects the 'bridge' or 'medium' nodes between multiple parts of the graph. 
+Betweenness centrality measures the likelihood of a node being on the shortest paths between any two other nodes. This metric effectively identifies "bridge" nodes that facilitate connectivity between different parts of a graph.
 
-Betweenness centrality takes on values between 0 to 1, nodes with larger scores have stronger impact on the flow or connectivity of the network.
+Betweenness centrality values range from 0 to 1, with higher scores indicating nodes that exert greater influence over the flow and connectivity of the network.
 
-Related materials are as below:
+References:
 
 - L.C. Freeman, <a href="https://www.researchgate.net/profile/Linton-Freeman-2/publication/216637282_A_Set_of_Measures_of_Centrality_Based_on_Betweenness/links/54415c660cf2a76a3cc7e199/A-Set-of-Measures-of-Centrality-Based-on-Betweenness.pdf" target="_blank">A Set of Measures of Centrality Based on Betweenness</a> (1977)
 - L.C. Freeman, <a href="https://www.albany.edu/~ravi/pdfs/freeman_1978.pdf" target="_blank">Centrality in Social Networks Conceptual Clarification</a> (1978)
@@ -17,124 +17,245 @@ Related materials are as below:
 
 ### Shortest Path
 
-For every pair of nodes in a connected graph, there exists at least one shortest path between the two nodes such that either the number of edges that the path passes through (for unweighted graphs) or the sum of the weights of the edges (for weighted graphs) is minimized. 
-
-<div align='center' drawio-diagram='1465' drawio-name="draw_5c95ee7a59464081af24a920c65ab070.jpg"><img src="https://img.ultipa.cn/draw/draw_5c95ee7a59464081af24a920c65ab070.jpg?v='1686813915142'"/></div>
-
-In the unweighted graph above, we can find three shortest paths between the red and green nodes, and two of them contain the yellow node, so the probability that the yellow node lies in the shortest paths of the red-green node pair is `2 / 3 = 0.6667`.
+The shortest paths between two nodes are the paths that contain the fewest edges. When considering edge weights, the (weighted) shortest paths are those with the lowest total weight sum.
 
 ### Betweenness Centrality
 
-Betweenness centrality score of a node is defined by this formula:
+The betweenness centrality of a node `x` is computed by:
 
-<div align=center><img width=300 src="https://img.ultipa.cn/img/2023-03-07-14-12-39-bc.jpg"></div>
+<div align=center><img width=170 src="https://img.ultipa.cn/img/2025-04-30-12-19-59-bc.jpg"></div>
 
-where `x` is the target node, `i` and `j` are two distinct nodes in the graph (`x` itself is excluded), `σ` is the number of shortest paths of pair `ij`, `σ(x)` is the number of shortest paths of pair `ij` that pass through `x`, `σ(x)/σ` is the probability that `x` lies in the shortest paths of pair `ij` (which is 0 if `i` and `j` are not connected), `k` is the number of nodes in the graph, `(k-1)(k-2)/2` is the number of `ij` node pairs.
+where,
 
-<div align=center drawio-diagram='1467' drawio-name="draw_7ee226215cd64f2f987e8bb4bf76d4b7.jpg"><img src="https://img.ultipa.cn/draw/draw_7ee226215cd64f2f987e8bb4bf76d4b7.jpg?v='1643281463997'"/></div>
+- `i` and `j` are two distinct nodes in the graph, excluding `x`.
+- <code>σ<sub>ij</sub></code> is the total number of shortest paths between `i` and `j`.
+- <code>σ<sub>ij</sub>(x)</code> is the number of shortest paths between `i` and `j` that pass through node `x`.
+- <code>σ<sub>ij</sub>(x)/σ<sub>ij</sub></code> gives the probability that `x` lies in the shortest paths between `i` and `j`. Note that if `i` and `j` are not connected, <code>σ<sub>ij</sub>(x)/σ<sub>ij</sub></code> is 0.
 
-Calculate betweenness centrality of the red node in this graph. There are 5 nodes in total, thus `(5-1)*(5-2)/2 = 6` node pairs except the red node, the probabilities that the red node lies in the shortest paths between all node pairs are 0, 1/2, 2/2, 0, 2/3 and 0 respectively, so its betweenness centrality score is `(0 + 1/2 + 2/2 + 0 + 2/3 + 0) / 6 = 0.3611`.
+The final value is normalized by the factor `(k – 1)(k – 2)/2`, where `k` is the total number of nodes in the graph. This normalization ensures the result lies within a fixed range, making it comparable across graphs of different sizes.
 
-> Betweenness Centrality algorithm consumes considerable computing resources. For a graph with <i>V</i> nodes, it is recommended to perform (uniform) sampling when <i>V</i> > 10,000, and the suggested number of samples is the base-10 logarithm of the number of nodes (`log(V)`).<br><br>For each execution of the algorithm, sampling is performed only once, centrality scores of all nodes are computed based on the shortest paths between all sample nodes.
+<center><img src="https://img.ultipa.cn/img/2025-04-30-14-13-19-bc.jpg"></center>
 
-## Considerations
+The betweenness centrality of node `A` is computed as: `(1/2 + 1 + 2/3 + 1/2 + 1 + 2/3) / (4 * 3 / 2) = 0.722222`.
 
-- The betweenness centrality score of isolated nodes is 0.
-- The Betweenness Centrality algorithm ignores the direction of edges but calculates them as undirected edges. In undirected graph of `k` nodes, there are `(k-1)(k-2)/2` node pairs for each target node.
+### Sampling
 
-## Syntax
+This algorithm requires substantial computational resources when applied to large graphs. When the number of nodes in a graph exceeds 10,000, it is recommended to sample nodes or edges for approximate computation. The algorithm performs a single uniform sampling.
 
-- Command: `algo(betweenness_centrality)`
-- Parameters:
+## Example Graph
 
-| <div table-width="13">Name</div> | <div table-width="7">Type</div> | <div table-width="10">Spec</div> | <div table-width="7">Default</div> | <div table-width="8">Optional</div> | >Description |
-| -- | -- | -- |-- | -- | -- |
-| sample_size | int | `-1`, `-2`, [1, V] | `-2` | Yes | Number of samples to compute centrality scores; `-1` means to sample `log(V)` nodes; `-2` means not to perform sampling; a number within [1, V] means to sample the set number of nodes |
-| limit | int | ≥-1 | `-1` | Yes | Number of results to return, `-1` to return all results |
-| order | string | `asc`, `desc` | / | Yes | Sort nodes by the centrality score |
+<div align=center drawio-diagram='19737' drawio-name="draw_53c335c0f34b425c98e738b0ae1b1129.jpg"><img src="https://img.ultipa.cn/draw/draw_53c335c0f34b425c98e738b0ae1b1129.jpg?v='1740626013932'"/></div>
 
-## Examples
+Run the following statements on an empty graph to define its structure and insert data:
 
-The example graph is a small social network, nodes represent users, and edges represent the relationship of know:
+<div tab="code">
 
-<div align=center drawio-diagram='4941' drawio-name="draw_1740726ba6764a969783089016141bbe.jpg"><img src="https://img.ultipa.cn/draw/draw_1740726ba6764a969783089016141bbe.jpg?v='1733825691907'"/></div>
-
-### File Writeback
-
-| Spec | Content |
-| --- | --- |
-| filename | `_id`,`centrality` |
+```gql
+ALTER GRAPH CURRENT_GRAPH ADD NODE {
+  user ()
+};
+ALTER GRAPH CURRENT_GRAPH ADD EDGE {
+  know ()-[{strength int32}]->()
+};
+INSERT (Sue:user {_id: "Sue"}),
+       (Dave:user {_id: "Dave"}),
+       (Ann:user {_id: "Ann"}),
+       (Mark:user {_id: "Mark"}),
+       (May:user {_id: "May"}),
+       (Jay:user {_id: "Jay"}),
+       (Billy:user {_id: "Billy"}),
+       (Dave)-[:know {strength: 1}]->(Sue),
+       (Dave)-[:know {strength: 3}]->(Ann),
+       (Mark)-[:know {strength: 2}]->(Dave),
+       (May)-[:know {strength: 1}]->(Mark),
+       (May)-[:know {strength: 2}]->(Jay),
+       (Jay)-[:know {strength: 2}]->(Ann);
+```
 
 ```uql
-algo(betweenness_centrality).params().write({
-  file:{ 
-    filename: 'centrality'
+create().node_schema("user").edge_schema("know");
+create().edge_property(@know, "strength", int32);
+insert().into(@user).nodes([{_id:"Sue"}, {_id:"Dave"}, {_id:"Ann"}, {_id:"Mark"}, {_id:"May"}, {_id:"Jay"}, {_id:"Billy"}]);
+insert().into(@know).edges([{_from:"Dave", _to:"Sue", strength:1}, {_from:"Dave", _to:"Ann", strength:3}, {_from:"Mark", _to:"Dave", strength:2}, {_from:"May", _to:"Mark", strength:1}, {_from:"May", _to:"Jay", strength:2}, {_from:"Jay", _to:"Ann", strength:2}]);
+```
+
+</div>
+
+## Creating HDC Graph
+
+To load the entire graph to the HDC server `hdc-server-1` as `my_hdc_graph`:
+
+<div tab="code">
+  
+```gql
+CREATE HDC GRAPH my_hdc_graph ON "hdc-server-1" OPTIONS {
+  nodes: {"*": ["*"]},
+  edges: {"*": ["*"]},
+  direction: "undirected",
+  load_id: true,
+  update: "static"
+}
+```
+
+```uql
+hdc.graph.create("my_hdc_graph", {
+  nodes: {"*": ["*"]},
+  edges: {"*": ["*"]},
+  direction: "undirected",
+  load_id: true,
+  update: "static"
+}).to("hdc-server-1")
+```
+
+</div>
+
+## Parameters
+
+Algorithm name: `betweenness_centrality`
+
+| <div table-width="18">Name</div> | <div table-width="9">Type</div> | <div table-width="7">Spec</div> | <div table-width="7">Default</div> | <div table-width="8">Optional</div> | Description |
+| -- | -- | -- |-- | -- | -- |
+| `edge_schema_property` | []"`<@schema.?><property>`" | / | / | Yes | Numeric edge properties used as weights, summing values across the specified properties; edges without this property are ignored. |
+| `impl_type` | String | `dijkstra`, `spfa` | `dijkstra` | Yes | Specifies the weighted shortest paths to be computed by the <a target="_blank" href="/docs/graph-analytics-algorithms/dijkstra-sssp">Dijkstra</a> or <a target="_blank" href="/docs/graph-analytics-algorithms/spfa">SPFA</a> shortest path algorithm. This is only valid when `edge_schema_property` is used. |
+| `sample_size` | Integer | `-1`, `-2`, `[1, \|V\|]` | `-2` | Yes | Sets to `-1` to sample <code>log<sub>10</sub>(\|V\|)</code> nodes (`\|V\|` is total number of nodes in the graph), or sets a custom number between `[1, \|V\|]`; sets to `-2` to perform no sampling. |
+| `max_path_length` | Integer | >0 | / | Yes | Limits the shortest paths considered to those with a length no greater than this value. Note that this doesn't affect the total number of node pairs evaluated. | 
+| `return_id_uuid` | String | `uuid`, `id`, `both` | `uuid` | Yes | Includes `_uuid`, `_id`, or both to represent nodes in the results. |
+| `limit` | Integer | ≥-1 | `-1` | Yes | Limits the number of results returned; `-1` includes all results. |
+| `order` | String | `asc`, `desc` | / | Yes | Sorts the results by `betweenness_centrality`. |
+
+## File Writeback
+
+<div tab="code">
+  
+```gql
+CALL algo.betweenness_centrality.write("my_hdc_graph", {
+  return_id_uuid: "id"
+}, {
+  file: {
+    filename: "betweenness_centrality"
   }
 })
 ```
 
-Results: File <i>centrality</i>
+```uql
+algo(betweenness_centrality).params({
+  projection: "my_hdc_graph",
+  return_id_uuid: "id"
+}).write({
+  file: {
+    filename: "betweenness_centrality"
+  }
+})
+```
 
-<p tit="File"></p>
+</div>
+
+Result:
+
+<p tit="File: betweenness_centrality" ></p>
 
 ```
+_id,betweenness_centrality
+Dave,0.666667
 Billy,0
-Jay,0.0666667
-May,0.0666667
-Mark,0.133333
-Ann,0.133333
-Dave,0.333333
+May,0.133333
+Mark,0.266667
+Jay,0.133333
+Ann,0.266667
 Sue,0
 ```
 
-### Property Writeback
+## DB Writeback
 
-| Spec | Content | Write to | Data Type |
-| --- | --- | --- | --- |
-| property | `centrality` | Node property | `float` |
+Writes the `betweenness_centrality` values from the results to the specified node property. The property type is `float`.
+
+<div tab="code">
+
+```gql
+CALL algo.betweenness_centrality.write("my_hdc_graph", {}, 
+{
+  db: {
+    property: "bc"
+  }
+})
+```
 
 ```uql
-algo(betweenness_centrality).params().write({
+algo(betweenness_centrality).params({
+  projection: "my_hdc_graph"
+}).write({
   db:{ 
     property: 'bc'
   }
 })
 ```
 
-Results: Centrality score for each node is written to a new property named <i>bc</i>
+</div>
 
-### Direct Return
+## Full Return
 
-| Alias Ordinal | Type | <div table-width="30">Description</div> | Column Name |
-| --- | --- | --- | --- |
-| 0 | []perNode | Node and its centrality | `_uuid`, `centrality` |
-
-```uql
-algo(betweenness_centrality).params({
-  order: 'desc',
+<div tab="code">
+  
+```gql
+CALL algo.betweenness_centrality.run("my_hdc_graph", {
+  max_path_length: 2,
+  return_id_uuid: "id",
+  order: "desc",
   limit: 3
-}) as bc
-return bc
+}) YIELD bc
+RETURN bc
 ```
-
-Results: <i>bc</i>
-
-| \_uuid | centrality |
-| -- | -- |
-| 2	| 0.33333299 |
-| 4	| 0.13333300 |
-| 3	| 0.13333300 |
-
-### Stream Return
-
-| Alias Ordinal | Type | <div table-width="30">Description</div> | Column Name |
-| --- | --- | --- | --- |
-| 0 | []perNode | Node and its centrality | `_uuid`, `centrality` |
 
 ```uql
-algo(betweenness_centrality).params().stream() as bc
-where bc.centrality == 0
-return count(bc)
+exec{
+  algo(betweenness_centrality).params({
+    max_path_length: 2,
+    return_id_uuid: "id",
+    order: "desc",
+    limit: 3
+  }) as bc
+  return bc
+} on my_hdc_graph
 ```
 
-Results: 2
+</div>
+
+Result:
+
+| \_id | betweenness_centrality |
+| -- | -- |
+| Dave | 0.4 |
+| May | 0.133333 |
+| Mark | 0.133333 |
+
+## Stream Return
+
+<div tab="code">
+  
+```gql
+CALL algo.betweenness_centrality.stream("my_hdc_graph", {
+  return_id_uuid: "id",
+  edge_schema_property: "strength"
+}) YIELD r
+FILTER r.betweenness_centrality > 0.6
+RETURN r
+```
+
+```uql
+exec{
+  algo(betweenness_centrality).params({
+    return_id_uuid: "id",
+    edge_schema_property: "strength"
+  }).stream() as r
+  where r.betweenness_centrality > 0.6
+  return r
+} on my_hdc_graph
+````
+
+</div>
+
+Result:
+
+| \_id | betweenness_centrality |
+| -- | -- |
+| Dave | 0.6 |

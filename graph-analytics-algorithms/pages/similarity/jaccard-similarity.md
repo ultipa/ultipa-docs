@@ -1,12 +1,12 @@
 # Jaccard Similarity
 
-<div><span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ File Writeback</b></span> <span class="flag" style="background-color:#eff1f5;color: #000000;"><b>✕ Property Writeback</b></span> <span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ Direct Return</b></span> <span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ Stream Return</b></span> <span class="flag" style="background-color:#eff1f5;color: #000000;"><b>✕ Stats</b></span></div>
+<div><span class="flag" style="background:#014d4e;color:#fff;"><b>HDC</b></span></div>
 
 ## Overview
 
 Jaccard similarity, or Jaccard index, was proposed by Paul Jaccard in 1901. It’s a metric of similarity for two sets of data. In the graph, collecting the neighbors of a node into a set, two nodes are considered similar if their neighborhood sets are similar.
 
-Jaccard similarity ranges from 0 to 1; 1 means that two sets are exactly the same, 0 means that the two sets do not have any element in common. 
+Jaccard similarity ranges from 0 to 1, where 1 indicates that two sets are identical, and 0 indicates that they share no common elements. 
 
 ## Concepts
 
@@ -46,14 +46,14 @@ The formula for Weighted Jaccard Similarity is given by:
 
 <div align=center drawio-diagram='14724' drawio-name="draw_a59802aecd0449ddab9758f8e705ac49.jpg"><img src="https://img.ultipa.cn/draw/draw_a59802aecd0449ddab9758f8e705ac49.jpg?v='1705740462299'"/></div>
 
-In this weighted graph, the union of the 1-hop neighborhood sets N<sub>u</sub> and N<sub>v</sub> is {a,b,c,d,e,f}. Set each element in the union set to the sum of the edge weights between the target node and the corresponding node, or 0 if there are no edges between them:
+In this weighted graph, the union of the 1-hop neighborhood sets N<sub>u</sub> and N<sub>v</sub> is {a,b,c,d,e,f}. For each element in the union set, assign a value equal to the sum of the edge weights between the target node and the corresponding node; assign 0 if no edge exists between them:
 
 | | a | b | c | d | e | f |
 | -- | -- | -- | -- | -- | -- | -- |
 | N'<sub>u</sub> | 1 | 1 | 1 | 1 | 0.5 | 0 |
 | N'<sub>v</sub> | 0 | 0 | 0 | 0.5 | 1.5 + 0.1 =1.6 | 1 |
 
-Therefore, the Weight Overlap Similarity between nodes *u* and *v* is `(0+0+0+0.5+0.5+0) / (1+1+1+1+1.6+1) = 0.151515`.
+Therefore, the Weighted Jaccard Similarity between nodes *u* and *v* is `(0+0+0+0.5+0.5+0) / (1+1+1+1+1.6+1) = 0.151515`.
 
 > Please ensure that the sum of the edge weights between the target node and the neighboring node is greater than or equal to 0.
 
@@ -62,163 +62,291 @@ Therefore, the Weight Overlap Similarity between nodes *u* and *v* is `(0+0+0+0.
 - The Jaccard Similarity algorithm ignores the direction of edges but calculates them as undirected edges.
 - The Jaccard Similarity algorithm ignores any self-loop.
 
-## Syntax
+## Example Graph
 
-- Command: `algo(similarity)`
-- Parameters:
+<div align=center drawio-diagram='19789' drawio-name="draw_88628c848eaf439d9e0ef22c64b336f9.jpg"><img src="https://img.ultipa.cn/draw/draw_88628c848eaf439d9e0ef22c64b336f9.jpg?v='1734417643677'"/></div>
 
-| <div table-width="12">Name</div> | <div table-width="9">Type</div> | <div table-width="9">Spec</div> | <div table-width="8">Default</div> | <div table-width="8">Optional</div> | Description |
-| -- | -- | -- |-- | -- | -- |
-| ids / uuids | []`_id` / []`_uuid` | / | / | No | ID/UUID of the first group of nodes to calculate |
-| ids2 / uuids2 | []`_id` / []`_uuid` | / | / | Yes | ID/UUID of the second group of nodes to calculate |
-| type | string | `jaccard` | `cosine` | No | Type of similarity; for Jaccard Similarity, keep it as `jaccard` |
-| edge_weight_property | `@<schema>?.<property>` | Numeric type, must LTE | / | Yes | The edge property to use as edge weight, where the weights of multiple edges between two nodes are summed up |
-| limit | int | ≥-1 | `-1` | Yes | Number of results to return, `-1` to return all results |
-| top_limit	| int | ≥-1 | `-1` | Yes | In the selection mode, limit the maximum number of results returned for each node specified in `ids`/`uuids`, `-1` to return all results with similarity > 0; in the pairing mode, this parameter is invalid |
+Run the following statements on an empty graph to define its structure and insert data:
 
-The algorithm has two calculation modes:
+<div tab="code">
 
-1. <b>Pairing: </b>when both `ids`/`uuids` and `ids2`/`uuids2` are configured, pairing each node in `ids`/`uuids` with each node in `ids2`/`uuids2` (ignore the same node) and computing pair-wise similarities.
-2. <b>Selection: </b>when only `ids`/`uuids` is configured, for each target node in it, computing pair-wise similarities between it and all other nodes in the graph. The returned results include all or limited number of nodes that have similarity > 0 with the target node and is ordered by the descending similarity.
-
-## Examples
-
-The example graph is as follows:
-
-<div align=center drawio-diagram='4945' drawio-name="draw_778b922b62784ff4a266b79b629f2e9c.jpg"><img src="https://img.ultipa.cn/draw/draw_778b922b62784ff4a266b79b629f2e9c.jpg?v='1680598814622'"/></div>
-
-### File Writeback
-
-| Spec | Content |
-| --- | --- |
-| filename | `node1`,`node2`,`similarity` |
+```gql
+ALTER GRAPH CURRENT_GRAPH ADD NODE {
+  user (),
+  sport()
+};
+ALTER GRAPH CURRENT_GRAPH ADD EDGE {
+  like ()-[{weight int32}]->()
+};
+INSERT (userA:user {_id: "userA"}),
+       (userB:user {_id: "userB"}),
+       (userC:user {_id: "userC"}),
+       (userD:user {_id: "userD"}),
+       (running:sport {_id: "running"}),
+       (tennis:sport {_id: "tennis"}),
+       (baseball:sport {_id: "baseball"}),
+       (swimming:sport {_id: "swimming"}),
+       (badminton:sport {_id: "badminton"}),
+       (iceball:sport {_id: "iceball"}),
+       (userA)-[:like {weight: 2}]->(tennis),
+       (userA)-[:like {weight: 1}]->(baseball),
+       (userA)-[:like {weight: 3}]->(swimming),
+       (userA)-[:like {weight: 2}]->(badminton),
+       (userB)-[:like {weight: 1}]->(running),
+       (userB)-[:like {weight: 3}]->(swimming),
+       (userC)-[:like {weight: 2}]->(swimming),
+       (userD)-[:like {weight: 1}]->(running),
+       (userD)-[:like {weight: 2}]->(badminton),
+       (userD)-[:like {weight: 2}]->(iceball);
+```
 
 ```uql
-algo(similarity).params({
-  ids: 'userC',
-  ids2: ['userA', 'userB', 'userD'],
-  type: 'jaccard'
-}).write({
-  file:{ 
-    filename: 'sc'
+create().node_schema("user").node_schema("sport").edge_schema("like");
+create().edge_property(@like, "weight", int32);
+insert().into(@user).nodes([{_id:"userA"}, {_id:"userB"}, {_id:"userC"}, {_id:"userD"}]);
+insert().into(@sport).nodes([{_id:"running"}, {_id:"tennis"}, {_id:"baseball"}, {_id:"swimming"}, {_id:"badminton"}, {_id:"iceball"}]);
+insert().into(@like).edges([{_from:"userA", _to:"tennis", weight:2}, {_from:"userA", _to:"baseball", weight:1}, {_from:"userA", _to:"swimming", weight:3}, {_from:"userA", _to:"badminton", weight:2}, {_from:"userB", _to:"running", weight:1}, {_from:"userB", _to:"swimming", weight:3}, {_from:"userC", _to:"swimming", weight:2}, {_from:"userD", _to:"running", weight:1}, {_from:"userD", _to:"badminton", weight:2}, {_from:"userD", _to:"iceball", weight:2}]);
+```
+
+</div>
+
+## Creating HDC Graph
+
+To load the entire graph to the HDC server `hdc-server-1` as `my_hdc_graph`:
+
+<div tab="code">
+  
+```gql
+CREATE HDC GRAPH my_hdc_graph ON "hdc-server-1" OPTIONS {
+  nodes: {"*": ["*"]},
+  edges: {"*": ["*"]},
+  direction: "undirected",
+  load_id: true,
+  update: "static"
+}
+```
+
+```uql
+hdc.graph.create("my_hdc_graph", {
+  nodes: {"*": ["*"]},
+  edges: {"*": ["*"]},
+  direction: "undirected",
+  load_id: true,
+  update: "static"
+}).to("hdc-server-1")
+```
+
+</div>
+
+## Parameters
+
+Algorithm name: `similarity`
+
+<table>
+  <colgroup>
+    <col style="width:12%">
+    <col style="width:10%">
+    <col style="width:10%">
+    <col style="width:8%">
+    <col style="width:8%">
+    <col style="width:25%">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Spec</th>
+      <th>Default</th>
+      <th>Optional</th>
+      <th style = "text-align: center" colspan=2;>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>ids</code>/<code>uuids</code></td>
+      <td><code>_id</code>/<code>_uuid</code></td>
+      <td><center>/</center></td>
+      <td><center>/</center></td>
+      <td>Yes</td>
+      <td>Specifies the first group of nodes by their <code>_id</code> or <code>_uuid</code>. If unset, all nodes in the graph are used as the first group of nodes.</td>
+      <td rowspan = "2">
+      The algorithm supports two calculation modes: <br><br><ul><li><b>Pairing mode:</b> When both <code>ids</code>/<code>uuids</code> and <code>ids2</code>/<code>uuids2</code> are set, each node in <code>ids</code>/<code>uuids</code> is paired with each node in <code>ids2</code>/<code>uuids2</code> (excluding self-pairs), and their pairwise similarities are computed.</li><li><b>Selection mode:</b> When only <code>ids</code>/<code>uuids</code> is set, the algorithm computes similarities between each specified node and all other nodes in the graph. Results include all (or a limited number of) nodes with a similarity > 0, sorted in descending order.</li></ul>
+      </td>
+    </tr>
+    <tr>
+      <td><code>ids2</code>/<code>uuids2</code></td>
+      <td><code>_id</code>/<code>_uuid</code></td>
+      <td><center>/</center></td>
+      <td><center>/</center></td>
+      <td>Yes</td>
+      <td>Specifies the second group of nodes for pairwise similarity by their <code>_id</code> or <code>_uuid</code>. If only <code>ids2</code>/<code>uuids2</code> is set (and <code>ids</code>/<code>uuids</code> is not), the algorithm returns no result.</td>
+    </tr>
+    <tr>
+      <td><code>type</code></td>
+      <td>String</td>
+      <td><code>jaccard</code></td>
+      <td><code>cosine</code></td>
+      <td>No</td>
+      <td colspan = "2">Specifies the type of similarity to compute; for Jaccard Similarity, keep it as <code>jaccard</code>.</td>
+    </tr>
+    <tr>
+      <td><code>edge_weight_property</code></td>
+      <td>[]"<code>&lt;@schema.?&gt;&lt;property&gt;</code>"</td>
+      <td><center>/</center></td>
+      <td><center>/</center></td>
+      <td>Yes</td>
+      <td colspan = "2">Specifies numeric edge properties to be used as edge weights by summing their values; edges without these properties are ignored.</td>
+    </tr>
+    <tr>
+      <td><code>return_id_uuid</code></td>
+      <td>String</td>
+      <td><code>uuid</code>,<code>id</code>,<code>both</code></td>
+      <td><code>uuid</code></td>
+      <td>Yes</td>
+      <td colspan = "2">Includes <code>_uuid</code>, <code>_id</code>, or both to represent nodes in the results.</td>
+    </tr>
+    <tr>
+      <td><code>order</code></td>
+      <td>String</td>
+      <td><code>asc</code>,<code>desc</code></td>
+      <td><center>/</center></td>
+      <td>Yes</td>
+      <td colspan = "2">Sorts the results by <code>similarity</code>.</td>
+    </tr>
+    <tr>
+      <td><code>limit</code></td>
+      <td>Integer</td>
+      <td>≥-1</td>
+      <td><code>-1</code></td>
+      <td>Yes</td>
+      <td colspan = "2">Limits the number of results returned. Set to <code>-1</code> to include all results.</td>
+    </tr>
+    <tr>
+      <td><code>top_limit</code></td>
+      <td>Integer</td>
+      <td>≥-1</td>
+      <td><code>-1</code></td>
+      <td>Yes</td>
+      <td colspan = "2">Limits the number of results returned for each node specified with <code>ids</code>/<code>uuids</code> in selection mode. Set to <code>-1</code> to include all results with a similarity greater than 0. This parameter is invalid in pairing mode.</td>
+    </tr>
+  </tbody>      
+</table>
+
+## File Writeback
+
+<div tab="code">
+  
+```gql
+CALL algo.similarity.write("my_hdc_graph", {
+  return_id_uuid: "id",
+  ids: "userC",
+  ids2: ["userA", "userB", "userD"],
+  type: "jaccard"
+}, {
+  file: {
+    filename: "jaccard"
   }
 })
 ```
 
-Results: File <i>sc</i>
+```uql
+algo(similarity).params({
+  projection: "my_hdc_graph",
+  return_id_uuid: "id",
+  ids: "userC",
+  ids2: ["userA", "userB", "userD"],
+  type: "jaccard"  
+}).write({
+  file: {
+    filename: "jaccard"
+  }
+})
+```
 
-<p tit="File"></p>
+</div>
+
+Result:
+
+<p tit="File: jaccard"></p>
 
 ```
+_id1,_id2,similarity
 userC,userA,0.25
 userC,userB,0.5
 userC,userD,0
 ```
 
-```uql
-algo(similarity).params({
-  uuids: [1,2,3,4],
-  type: 'jaccard'
-}).write({
-  file:{ 
-    filename: 'list'
-  }
-})
+## Full Return
+
+<div tab="code">
+  
+```gql
+CALL algo.similarity.run("my_hdc_graph", {
+  return_id_uuid: "id",
+  ids: ["userA","userB"], 
+  ids2: ["userB","userC","userD"],
+  type: "jaccard"
+}) YIELD jacc
+RETURN jacc
 ```
-
-Results: File <i>list</i>
-
-<p tit="File"></p>
-
-```
-userA,userC,0.25
-userA,userB,0.2
-userA,userD:0.166667
-userB,userC:0.5
-userB,userD,0.25
-userB,userA,0.2
-userC,userB,0.5
-userC,userA,0.25
-userD,userB:0.25
-userD,userA:0.166667
-```
-
-### Direct Return
-
-| <div table-width='15'>Alias Ordinal</div> | <div table-width='15'>Type</div> | Description | Columns |
-| --- | --- | --- | --- |
-| 0 | []perNodePair | Node pair and its similarity | `node1`, `node2`, `similarity` |
 
 ```uql
-algo(similarity).params({ 
-  uuids: [1,2], 
-  uuids2: [2,3,4],
-  type: 'jaccard'
-}) as jacc
-return jacc
+exec{
+  algo(similarity).params({
+    return_id_uuid: "id",
+    ids: ["userA","userB"], 
+    ids2: ["userB","userC","userD"],
+    type: "jaccard"
+  }) as jacc
+  return jacc
+} on my_hdc_graph
 ```
 
-Results: <i>jacc</i>
+</div>
 
-| node1	| node2	| similarity |
-| ----- | ----- | ---------- |
-| 1	| 2 | 0.2 |
-| 1	| 3	| 0.25 |
-| 1	| 4	| 0.166666666666667 |
-| 2 | 3 | 0.5 |
-| 2 | 4 | 0.25 |
+Result:
+
+| \_id1 | \_id2 | similarity |
+| -- | -- | -- |
+| userA | userB | 0.2 |
+| userA | userC | 0.25 |
+| userA | userD | 0.166667 |
+| userB | userC | 0.5 |
+| userB | userD | 0.25 |
+
+## Stream Return
+
+<div tab="code">
+  
+```gql
+CALL algo.similarity.stream("my_hdc_graph", {
+  return_id_uuid: "id",
+  ids: ["userA"], 
+  type: "jaccard",
+  edge_weight_property: "weight",
+  top_limit: 2    
+}) YIELD jacc
+RETURN jacc
+```
 
 ```uql
-algo(similarity).params({
-  uuids: [1,2],
-  type: 'jaccard',
-  top_limit: 1
-}) as top
-return top
+exec{
+  algo(similarity).params({
+    return_id_uuid: "id",
+    ids: ["userA"], 
+    type: "jaccard",
+    edge_weight_property: "weight",
+    top_limit: 2  
+  }).stream() as jacc
+  return jacc
+} on my_hdc_graph
 ```
 
-Results: <i>top</i>
+</div>
 
-| node1	| node2	| similarity |
-| ----- | ----- | ---------- |
-| 1 | 3 | 0.25 |
-| 2 | 3 | 0.5 |
+Result: 
 
-### Stream Return
-
-| <div table-width='15'>Alias Ordinal</div> | <div table-width='15'>Type</div> | Description | Columns |
-| --- | --- | --- | --- |
-| 0 | []perNodePair | Node pair and its similarity | `node1`, `node2`, `similarity` |
-
-```uql
-algo(similarity).params({ 
-  uuids: [3], 
-  uuids2: [1,2,4],
-  type: 'jaccard'
-}).stream() as jacc
-where jacc.similarity > 0
-return jacc
-```
-
-Results: <i>jacc</i>
-
-| node1	| node2	| similarity |
-| ----- | ----- | ---------- |
-| 3	| 1	| 0.25 |
-| 3	| 2 | 0.5 |
-
-```uql
-algo(similarity).params({
-  uuids: [1],
-  type: 'jaccard',
-  top_limit: 2
-}).stream() as top
-return top
-```
-
-Results: <i>top</i>
-
-| node1	| node2	| similarity |
-| ----- | ----- | ---------- |
-| 1	| 3	| 0.25 |
-| 1	| 2 | 0.2 |
+| \_id1 | \_id2 | similarity |
+| -- | -- | -- |
+| userA | userB | 0.333333 |
+| userA | userC | 0.25 |

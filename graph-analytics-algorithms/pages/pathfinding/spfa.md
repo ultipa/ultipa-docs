@@ -1,26 +1,26 @@
 # Shortest Path Faster Algorithm (SPFA)
 
-<div><span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ File Writeback</b></span> <span class="flag" style="background-color:#eff1f5;color: #000000;"><b>✕ Property Writeback</b></span> <span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ Direct Return</b></span> <span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ Stream Return</b></span> <span class="flag" style="background-color:#eff1f5;color: #000000;"><b>✕ Stats</b></span></div>
+<div><span class="flag" style="background:#014d4e;color:#fff;"><b>HDC</b></span></div>
 
 ## Overview
 
-The Shortest Path Faster Algorithm (SPFA) is an improvement of the Bellman–Ford algorithm which computes the shortest path between a source node and all reachable nodes (i.e., single-source shortest paths) in a graph. The algorithm is particularly suitable for graphs that contain negative-weight edges.
+The Shortest Path Faster Algorithm (SPFA) is an improvement of the Bellman–Ford algorithm which computes the shortest paths from a source node to all other reachable nodes (i.e., single-source shortest paths) in a graph. It is especially well-suited for graphs with negative-weight edges.
 
-The SPFA algorithm was first published by E.F. Moore in 1959, but the name, “Shortest Path Faster Algorithm (SPFA),” was given by FanDing Duan who rediscovered the algorithm in 1994.
+The algorithm was first published by E.F. Moore in 1959, but it was later rediscovered and popularized under the name "Shortest Path Faster Algorithm (SPFA)" by FanDing Duan in 1994. 
 
-- F. Duan, <a target="blank" href="https://xueshu.baidu.com/usercenter/paper/show?paperid=39798c8bf2d1b5236cdaae3152d490ed&site=xueshu_se">关于最短路径的SPFA快速算法 [About the SPFA algorithm]</a> (1994)
+- F. Duan, <a target="_blank" href="https://xueshu.baidu.com/usercenter/paper/show?paperid=39798c8bf2d1b5236cdaae3152d490ed&site=xueshu_se">关于最短路径的SPFA快速算法 [About the SPFA algorithm]</a> (1994)
 
 ## Concepts
 
 ### Shortest Path Faster Algorithm (SPFA)
 
-Given a graph <i>G = (V, E)</i> and a source node <i>s∈V</i>, array <i>d[]</i> is used to store the distances of the shortest paths from <i>s</i> to all nodes. Initialize all elements in <i>d[]</i> by infinity except for <i>d[s] = 0</i>.
+Given a graph <i>G = (V, E)</i> and a source node <i>s∈V</i>, array <i>d[]</i> is used to store the distances of the shortest paths from <i>s</i> to all nodes. Initialize all elements in <i>d[]</i> to infinity, except for <i>d[s] = 0</i>.
 
-The basic idea of SPFA is the same as the <a target="blank" href="https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm">Bellman–Ford algorithm</a> in that each node is used as a candidate to relax its adjacent nodes. The improvement over the latter is that instead of trying all nodes unnecessary, SPFA maintains a first-in, first-out queue <i>Q</i> to store candidate nodes and only adds a node to the queue if it is relaxed. 
+The basic idea of SPFA is the same as the <a target="_blank" href="https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm">Bellman–Ford algorithm</a> in that each node is used as a candidate to relax its adjacent nodes. However, SPFA improves efficiency by avoiding unnecessary iterations over all nodes. Instead, it maintains a first-in, first-out queue <i>Q</i> to store candidate nodes, and a node is added to the queue only when it has been relaxed. 
 
 > The term <i>relaxation</i> refers to the process of updating the distance of a node <i>v</i> that is connected to node <i>u</i> to a potential shorter distance by considering the path through node <i>u</i>. Specifically, the distance of node v is updated to <i>d[v] = d[u] + w(u,v)</i>, where <i>w(u,v)</i> is the weight of the edge <i>(u,v)</i>. This update is performed only if the current <i>d[v]</i> is greater than <i>d[u] + w(u,v)</i>.
 
-At the begining of the algorithm, all nodes have the distance as infinity except for the source node as 0. The source node is viewed as first relaxed and pushed into the queue.
+At the begining of the algorithm, all nodes are assigned an initial distance of infinity, except for the source node, which is set to 0. The source node is viewed as first relaxed and pushed into the queue.
 
 During each iteration, SPFA dequeues a node <i>u</i> from <i>Q</i> as a candidate. For each edge <i>(u,v)</i> in the graph, if node <i>v</i> can be relaxed, the following steps are performed:
 
@@ -35,245 +35,266 @@ The steps below illustrate how to compute the SPFA with source node <i>A</i> and
 
 ## Considerations
 
-- The SPFA can handle graphs with negative edge weights under the conditions that (1) the source node cannot access any node within a <i>negative cycle</i>, and (2) the shortest paths are directed. A negative cycle is a cycle where the sum of the edge weights is negative. When negative cycles are present or the shortest paths are undirected when negative weights exist, the algorithm will output infinite results. This happens because it repeatedly traverses through the negative cycle or negative edge, leading to continually decreasing costs each time.
-- If there are multiple shortest paths exist between two nodes, all of them will be found.
+- SPFA can handle graphs with negative edge weights under the conditions that (1) the source node does not have access to any node within a <i>negative cycle</i>, and (2) the shortest paths are directed. A negative cycle is a cycle where the sum of the edge weights is negative. If the graph contains such cycles or if shortest paths are undirected when negative weights exist, SPFA will output infinite results. This occurs because the algorithm can repeatedly traverse the negative cycle or edge, continually lowering the path cost each time.
+- If multiple shortest paths exist between two nodes, the algorithm will find all of them.
 - In disconnected graphs, the algorithm only outputs the shortest paths from the source node to all nodes belonging to the same connected component as the source node.
 
-## Syntax
+## Example Graph
 
-- Command: `algo(sssp)`
-- Parameters:
+<div align=center drawio-diagram='19978' drawio-name='draw_0750d2ce44a14b9bb8e526b14c363d5f.jpg'><img src="https://img.ultipa.cn/draw/draw_0750d2ce44a14b9bb8e526b14c363d5f.jpg?v='1735031394043'"/></div>
 
-| <div table-width="15">Name</div> | <div table-width="8">Type</div> | <div table-width="9">Spec</div> | <div table-width="9">Default</div> | <div table-width="8">Optional</div> | Description |
+Run the following statements on an empty graph to define its structure and insert data:
+
+<div tab="code">
+
+```gql
+ALTER EDGE default ADD PROPERTY {
+  value int32
+};
+INSERT (A:default {_id: "A"}),
+       (B:default {_id: "B"}),
+       (C:default {_id: "C"}),
+       (D:default {_id: "D"}),
+       (E:default {_id: "E"}),
+       (F:default {_id: "F"}),
+       (G:default {_id: "G"}),
+       (A)-[:default {value: 2}]->(B),
+       (A)-[:default {value: 4}]->(F),
+       (B)-[:default {value: 3}]->(C),
+       (B)-[:default {value: 3}]->(D),
+       (B)-[:default {value: 6}]->(F),
+       (D)-[:default {value: 2}]->(E),
+       (D)-[:default {value: 2}]->(F),
+       (E)-[:default {value: 3}]->(G),
+       (F)-[:default {value: 1}]->(E);
+```
+
+```uql
+create().edge_property(@default, "value", int32);
+insert().into(@default).nodes([{_id:"A"}, {_id:"B"}, {_id:"C"}, {_id:"D"}, {_id:"E"}, {_id:"F"}, {_id:"G"}]);
+insert().into(@default).edges([{_from:"A", _to:"B", value:2}, {_from:"A", _to:"F", value:4}, {_from:"B", _to:"F", value:6}, {_from:"B", _to:"C", value:3}, {_from:"B", _to:"D", value:3}, {_from:"D", _to:"F", value:2}, {_from:"F", _to:"E", value:1}, {_from:"D", _to:"E", value:2}, {_from:"E", _to:"G", value:3}]);
+```
+
+</div>
+
+## Creating HDC Graph
+
+To load the entire graph to the HDC server `hdc-server-1` as `my_hdc_graph`:
+
+<div tab="code">
+  
+```gql
+CREATE HDC GRAPH my_hdc_graph ON "hdc-server-1" OPTIONS {
+  nodes: {"*": ["*"]},
+  edges: {"*": ["*"]},
+  direction: "undirected",
+  load_id: true,
+  update: "static"
+}
+```
+
+```uql
+hdc.graph.create("my_hdc_graph", {
+  nodes: {"*": ["*"]},
+  edges: {"*": ["*"]},
+  direction: "undirected",
+  load_id: true,
+  update: "static"
+}).to("hdc-server-1")
+```
+
+</div>
+
+## Parameters
+
+Algorithm name: `sssp`
+
+| <div table-width="17">Name</div> | <div table-width="9">Type</div> | <div table-width="8">Spec</div> | <div table-width="9">Default</div> | <div table-width="5">Optional</div> | Description |
 | -- | -- | -- |-- | -- | -- |
-| ids / uuids | `_id` / `_uuid` | / | / | No | ID/UUID of the single source node |
-| direction | string | `in`, `out` | / | Yes | Direction of the shortest path, ignore the edge direction if not set |
-| edge_schema_property | []`@schema?.property` | Numeric type, must LTE	| / | Yes | One or multiple edge properties to be used as edge weights, where the values of multiple properties are summed up; treat the graph as unweighted if not set |
-| record_path | int | `0`, `1` | `0` | Yes | `1` to return the shortest paths, `0` to return the shortest distances |
-| sssp_type | string | `spfa` | `dijkstra` | No | To run the SPFA, keep it as `spfa` |
-| limit | int | ≥-1 | `-1` | Yes | Number of results to return, `-1` to return all results |
-| order	| string | `asc`, `desc` | / | Yes | Sort nodes by the shortest distance from the source node |
+| `ids` | `_id` | / | / | No | Specifies a single source node by its `_id`. |
+| `uuids` | `_uuid` | / | / | No | Specifies a single source node by its `_uuid`. |
+| `direction` | String | `in`, `out` | / | Yes | Specifies that the shortest paths should only contain incoming edges (`in`) or outgoing edges (`out`); edge direction is ignored if it is unset. |
+| `edge_schema_property` | []"`<@schema.?><property>`"| / | / | Yes | Specifies numeric edge properties used as weights by summing their values. Only properties of numeric type are considered, and edges without these properties are ignored. |
+| `record_path` | Integer | `0`, `1` | `0` | Yes | Whether to include the shortest paths in the results; sets to `1` to return the `totalCost` and the shortest paths, or to `0` to return the `totalCost` only. |
+| `impl_type` | String | `spfa` | `beta` | No | Specifies the implementation type of the SSSP algorithm; for the SPFA, keep it as `spfa`; `beta` is Ultipa's default shortest path algorithm. |
+| `return_id_uuid` | String | `uuid`, `id`, `both` | `uuid` | Yes | Includes `_uuid`, `_id`, or both to represent nodes in the results. Edges can only be represented by `_uuid`. |
+| `limit` | Integer | ≥-1 | `-1` | Yes | Limits the number of results returned. Set to `-1` to include all results. |
+| `order` | String | `asc`, `desc` | / | Yes | Sorts the results by `totalCost`. |
 
-## Examples
+## File Writeback
 
-The example graph is as follows:
-
-<div align=center drawio-diagram='6551' drawio-name="draw_1f867733d9644c89bd785f5390e8e4fc.jpg"><img src="https://img.ultipa.cn/draw/draw_1f867733d9644c89bd785f5390e8e4fc.jpg?v='1691466119634'"/></div>
-
-### File Writeback
-
-<table>
-<thead>
-<tr>
-  <th style="width:10%">Spec</th>
-  <th style="width:15%"><code>record_path</code></th>
-  <th style="width:18%">Content</th>
-  <th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td rowspan="2">filename</td>
-  <td>0</td>
-  <td><code>_id</code>,<code>totalCost</code></td>
-  <td>The shortest distance/cost from the source node to each other node</td>
-</tr>
-<tr>
-  <td>1</td>
-  <td><code>_id</code>--<code>_uuid</code>--<code>_id</code></td>
-  <td>The shortest path from the source node to each other node, the path is represented by the alternating ID of nodes and UUID of edges that form the path</td>
-</tr>
-</tbody>
-</table>
-
-```uql
-algo(sssp).params({
-  uuids: 1,
-  edge_schema_property: '@default.value',
-  direction: 'out',
-  sssp_type: 'spfa'
-}).write({
+<div tab="code">
+  
+```gql
+CALL algo.sssp.write("my_hdc_graph", {
+  ids: "A",
+  edge_schema_property: "@default.value",
+  impl_type: "spfa",
+  return_id_uuid: "id"
+}, {
   file: {
-    filename: 'costs'
+    filename: "costs"
   }
 })
 ```
 
-Results: File <i>costs</i>
+```uql
+algo(sssp).params({
+  projection: "my_hdc_graph",
+  ids: "A",
+  edge_schema_property: "@default.value",
+  impl_type: "spfa",
+  return_id_uuid: "id"
+}).write({
+  file: {
+      filename: "costs"
+  }
+})
+```
 
-<p tit="File"></p>
+</div>
+
+Result:
+
+<p tit="File: costs"></p>
 
 ```
-A,0
-B,2
-C,5
+_id,totalCost
 D,5
-E,-3
-F,-4
-G,0
-```
+F,4
+B,2
+E,5
+C,5
+G,8
+```  
 
-```uql
-algo(sssp).params({
-  uuids: 1,
-  edge_schema_property: '@default.value',
-  direction: 'out',
-  sssp_type: 'spfa',
-  record_path: 1
-}).write({
+<div tab="code">
+  
+```gql
+CALL algo.sssp.write("my_hdc_graph", {
+  ids: "A",
+  edge_schema_property: "@default.value",
+  impl_type: "spfa",
+  record_path: 1,
+  return_id_uuid: "id"
+}, {
   file: {
-    filename: 'paths'
+    filename: "paths"
   }
 })
 ```
 
-Results: File <i>paths</i>
-
-<p tit="File"></p>
-
-```
-A--[101]--B--[104]--C
-A--[101]--B--[105]--D
-A--[101]--B
-A
-A--[101]--B--[103]--F--[107]--E--[109]--G
-A--[101]--B--[103]--F--[107]--E
-A--[101]--B--[103]--F
-```
-
-### Direct Return
-
-<table>
-<thead>
-<tr>
-  <th style="width:8%">Alias Ordinal</th>
-  <th style="width:15%"><code>record_path</code></th>
-  <th style="width:11%">Type</th>
-  <th>Description</th>
-  <th style="width:18%">Columns</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td rowspan="2">0</td>
-  <td>0</td>
-  <td>[]perNode</td>
-  <td>The shortest cost/distance from the source node to each other node</td>
-  <td><code>_uuid</code>, <code>totalCost</code></td>
-</tr>
-<tr>
-  <td>1</td>
-  <td>[]perPath</td>
-  <td>The shortest path from the source node to each other node, the path is represented by the alternating UUID of nodes and UUID of edges that form the path</td>
-  <td>/</td>
-</tr>
-</tbody>
-</table>
-
 ```uql
 algo(sssp).params({
-  uuids: 1,
+  projection: "my_hdc_graph",
+  ids: "A",
+  edge_schema_property: "@default.value",
+  impl_type: "spfa",
+  record_path: 1,
+  return_id_uuid: "id"
+}).write({
+  file: {
+      filename: "paths"
+  }
+})
+```
+
+</div>
+
+Result:
+
+<p tit="File: costs"></p>
+
+```
+totalCost,_ids
+8,A--[102]--F--[107]--E--[109]--G
+5,A--[101]--B--[105]--D
+5,A--[102]--F--[107]--E
+5,A--[101]--B--[104]--C
+4,A--[102]--F
+2,A--[101]--B
+```
+
+## Full Return
+
+<div tab="code">
+  
+```gql
+CALL algo.sssp.run("my_hdc_graph", {
+  ids: 'A',
   edge_schema_property: 'value',
-  sssp_type: 'spfa',
+  impl_type: 'spfa',
   record_path: 0,
-  direction: 'in'
-}) as costs
-return costs
+  return_id_uuid: 'id',
+  order: 'desc'
+}) YIELD r
+RETURN r
 ```
 
-Results: <i>costs</i>
+```uql
+exec{
+  algo(sssp).params({
+    ids: 'A',
+    edge_schema_property: 'value',
+    impl_type: 'spfa',
+    record_path: 0,
+    return_id_uuid: 'id',
+    order: 'desc'
+  }) as r
+  return r
+} on my_hdc_graph
+```
 
-| \_uuid | totalCost |
+</div>
+
+Result:
+
+| \_id | totalCost |
 | -- | -- |
-| 1 | 0 |
-| 2 | -2 |
-| 4 | 6 |
-| 6 | 4 |
+| G | 8 |
+| D | 5 |
+| E | 5 |
+| C | 5 |
+| F | 4 |
+| B | 2 |
 
-```uql
-algo(sssp).params({
+## Stream Return
+
+<div tab="code">
+  
+```gql
+CALL algo.sssp.stream("my_hdc_graph", {
   ids: 'A',
   edge_schema_property: '@default.value',
-  sssp_type: 'spfa',
-  direction: 'in',
-  record_path: 1
-}) as paths
-return paths
+  impl_type: 'spfa',
+  record_path: 1,
+  return_id_uuid: 'id'
+}) YIELD r
+RETURN r
 ```
-
-Results: <i>paths</i>
-
-<table>
-<tr><td>1--[102]--6--[106]--4</td></tr>
-<tr><td>1--[102]--6</td></tr>
-<tr><td>1</td></tr>
-<tr><td>1--[102]--6--[103]--2</td></tr>
-</table>
-
-### Stream Return
-
-<table>
-<thead>
-<tr>
-  <th style="width:8%">Alias Ordinal</th>
-  <th style="width:15%"><code>record_path</code></th>
-  <th style="width:11%">Type</th>
-  <th>Description</th>
-  <th style="width:18%">Columns</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td rowspan="2">0</td>
-  <td>0</td>
-  <td>[]perNode</td>
-  <td>The shortest cost/distance from the source node to each other node</td>
-  <td><code>_uuid</code>, <code>totalCost</code></td>
-</tr>
-<tr>
-  <td>1</td>
-  <td>[]perPath</td>
-  <td>The shortest path from the source node to each other node, the path is represented by the alternating UUID of nodes and UUID of edges that form the path</td>
-  <td>/</td>
-</tr>
-</tbody>
-</table>
 
 ```uql
-algo(sssp).params({
-  ids: 'A',
-  edge_schema_property: '@default.value',
-  sssp_type: 'spfa',
-  direction: 'out'
-}).stream() as costs
-where costs.totalCost < 0
-return costs
+exec{
+  algo(sssp).params({
+    ids: 'A',
+    edge_schema_property: '@default.value',
+    impl_type: 'spfa',
+    record_path: 1,
+    return_id_uuid: 'id'
+  }).stream() as r
+  return r
+} on my_hdc_graph
 ```
 
-Results: <i>costs</i>
+</div>
 
-| \_uuid | totalCost |
+Result:
+
+| <div table-width="15">totalCost</div> | \_ids |
 | -- | -- |
-| 5 | -3 |
-| 6 | -4 |
-
-```uql
-algo(sssp).params({
-  ids: 'A',
-  edge_schema_property: '@default.value',
-  sssp_type: 'spfa',
-  direction: 'out',
-  record_path: 1
-}).stream() as p
-where length(p) <> [0,3]
-return p
-```
-
-Results: <i>p</i>
-
-<table>
-<tr><td>1--[101]--2--[104]--3</td></tr>  
-<tr><td>1--[101]--2--[105]--4</td></tr>
-<tr><td>1--[101]--2</td></tr>
-<tr><td>1--[101]--2--[103]--6</td></tr>
-</table>
+| 8 | ["A","102","F","107","E","109","G"] |
+| 5 | ["A","101","B","105","D"] |
+| 5 | ["A","102","F","107","E"] |
+| 5 | ["A","101","B","104","C"] |
+| 4 | ["A","102","F"] |
+| 2 | ["A","101","B"] |

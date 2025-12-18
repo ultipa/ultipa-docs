@@ -1,181 +1,293 @@
 # Eigenvector Centrality
 
-<div><span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ File Writeback</b></span> <span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ Property Writeback</b></span> <span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ Direct Return</b></span> <span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ Stream Return</b></span> <span class="flag" style="background-color:#eff1f5;color: #000000;"><b>✕ Stats</b></span></div>
+<div><span class="flag" style="background:#014d4e;color:#fff;"><b>HDC</b></span></div>
 
 ## Overview
 
-Eigenvector centrality measures the power or influence of a node. In a directed network, the power of a node comes from its incoming neighbors. Thus, the eigenvector centrality score of a node depends not only on how many in-links it has, but also on how powerful its incoming neighbors are. Connections from high-scoring nodes contribute more to the score of the node than connections from low-scoring nodes. In the disease spreading  scenario, a node with higher eigenvector centrality is more likely to be close to the source of infection, which needs special precautions.
+Eigenvector centrality quantifies a node's influence within a graph. A node's importance is determined by its neighbors—it is both influenced by them and exerts influence on them. However, not all connections are equal; a node's centrality increases if it is connected to other highly influential nodes.
 
-The well-known <a href="/docs/graph-analytics-algorithms/pagerank-articlerank">PageRank</a> is a variant of eigenvector centrality.
-
-Eigenvector centrality takes on values between 0 to 1, nodes with higher scores are more influential in the network.
+Eigenvector centrality takes on values between 0 to 1, nodes with higher centralities are more influential in the network.
 
 ## Concepts
 
 ### Eigenvector Centrality
 
-The power (score) of each node can be computed in a recursive way. Take the graph below as as example, adjacent matrix <i>A</i> reflects the in-links of each node. Initialzing that each node has score of 1 and it is represented by vector <i>s<sup>(0)</sup></i>.
+The influence of a node is computed in a recursive way. Consider the graph below, and assume that nodes receive influence through incoming edges. In the adjacency matrix `A`, element <code>A<sub>ij</sub></code> reflects the number of incoming edges of node `i`. Initially, each node is randomly assigned a centrality value — all set to 1 as an example —represented by the vector <code>c<sup>(0)</sup></code>.
 
-<div align='center' drawio-diagram='4804' drawio-name="draw_208487f47ddb41f9a1b34ce9d2fa3cf9.jpg"><img src="https://img.ultipa.cn/draw/draw_208487f47ddb41f9a1b34ce9d2fa3cf9.jpg?v='1678936654378'"/></div>
+<div align=center drawio-diagram='21603' drawio-name='draw_0d5e31e7737d4bb6bf28675c0f5663fc.jpg'><img src="https://img.ultipa.cn/draw/draw_0d5e31e7737d4bb6bf28675c0f5663fc.jpg?v='1741071873707'"/></div>
 
-In each round of power transition, update the score of each node by the sum of scores of all its incoming neighbors. After one round, vector <i>s<sup>(1)</sup> = As<sup>(0)</sup></i> is as follows, L2-normalization is applied to rescale:
+In each round of influence propagation, a node's centrality is updated as the sum of centralities of all its incoming neighbors. In the first round, this operation is equivalent to multiplying the vector <code>c<sup>(0)</sup></code> by the matrix `A`, i.e., <code>c<sup>(1)</sup> = Ac<sup>(0)</sup></code>. Afterward, the L2-normalization is applied to rescale the vector <code>c<sup>(1)</sup></code>:
 
-<div align='center' drawio-diagram='4815' drawio-name="draw_17a857457591418caa239b28d635624b.jpg"><img src="https://img.ultipa.cn/draw/draw_17a857457591418caa239b28d635624b.jpg?v='1678936701338'"/></div>
+<div align=center drawio-diagram='21604' drawio-name='draw_23738a8ded4b4356a1afa0b769b1a2d6.jpg'><img src="https://img.ultipa.cn/draw/draw_23738a8ded4b4356a1afa0b769b1a2d6.jpg?v='1741071942869'"/></div>
 
-After <i>k</i> iterations, <i>s<sup>(k)</sup> = As<sup>(k-1)</sup> = A<sup>k</sup>s<sup>(0)</sup></i>. As <i>k</i> grows, <i>s<sup>(k)</sup></i> stabilizes. In this example, the stablization is reached after ~20 rounds.
+After `k` rounds, <code>c<sup>(k)</sup></code> is computed by <code>c<sup>(k)</sup> = Ac<sup>(k-1)</sup></code>. As `k` grows, <code>c<sup>(k)</sup></code> stabilizes. In this example, stabilization is reached after approximately 20 rounds. The elements in <code>c<sup>(k)</sup></code> represent the centrality of the corresponding nodes.
 
-<div align='center' drawio-diagram='4849' drawio-name="draw_5eab57fb02c247c2aab160ef7818c3d1.jpg"><img src="https://img.ultipa.cn/draw/draw_5eab57fb02c247c2aab160ef7818c3d1.jpg?v='1678936747670'"/></div>
+<div align=center drawio-diagram='21605' drawio-name='draw_7270dddbdf974ea8b14f7557e8a999be.jpg'><img src="https://img.ultipa.cn/draw/draw_7270dddbdf974ea8b14f7557e8a999be.jpg?v='1741072067963'"/></div>
 
-In fact, <i>s<sup>(k)</sup></i> converges to the <b>eigenvector</b> of matrix <i>A</i> that corresponds to the largest absolute eigenvalue, hence elements in <i>s<sup>(k)</sup></i> is referred to as <b>eigenvector centrality</b>.
+The algorithm continues until the sum of changes of all elements in <code>c<sup>(k)</sup></code> converges to within some tolerance, or the maximum iteration rounds is met.
 
 ### Eigenvalue and Eigenvector
 
-Given <i>A</i> is an <i>n x n</i> square matrix, <i>λ</i> is a constant, <i>x</i> is an non-zero <i>n x 1</i> vector. If the equation <i>Ax = λx</i> is true, then <i>λ</i> is called the <b>eigenvalue</b> of <i>A</i>, and <i>x</i> is the <b>eigenvector</b> of <i>A</i> that corresponds to the eigenvalue <i>λ</i>.
+Given that `A` is an n x n square matrix, `λ` is a constant, and `x` is a non-zero n x 1 vector. If the equation `Ax = λx` is true, then `λ` is called the <b>eigenvalue</b> of `A`, and `x` is the <b>eigenvector</b> of `A` that corresponds to `λ`.
+
+The above adjacency matrix `A` has four eigenvalues <code>λ<sub>1</sub></code>, <code>λ<sub>2</sub></code>, <code>λ<sub>3</sub></code> and <code>λ<sub>4</sub></code> that correspond to eigenvectors <code>x<sub>1</sub></code>, <code>x<sub>2</sub></code>, <code>x<sub>3</sub></code> and <code>x<sub>4</sub></code>, respectively. <code>x<sub>1</sub></code> is the eigenvector of the eigenvalue <code>λ<sub>1</sub></code> which has the largtest absolute value. <code>λ<sub>1</sub></code> is the **dominant eigenvalue**, and <code>x<sub>1</sub></code> the **dominant eigenvector**.
 
 <div align='center' drawio-diagram='4811' drawio-name="draw_d8ddda94a4a44baba2ad54f2b363ee5a.jpg"><img src="https://img.ultipa.cn/draw/draw_d8ddda94a4a44baba2ad54f2b363ee5a.jpg?v='1678937639519'"/></div>
 
-The above matrix <i>A</i> has 4 eigenvalues <i>λ<sub>1</sub></i>, <i>λ<sub>2</sub></i>, <i>λ<sub>3</sub></i> and <i>λ<sub>4</sub></i> that correspond to eigenvectors <i>x<sub>1</sub></i>, <i>x<sub>2</sub></i>, <i>x<sub>3</sub></i> and <i>x<sub>4</sub></i> respectively. <i>x<sub>1</sub></i> is the eigenvector corresponding to the <b>dominate eigenvalue</b> <i>λ<sub>1</sub></i> that has the largtest absolute value.
-
-According to the <a target="blank" href="https://en.wikipedia.org/wiki/Perron%E2%80%93Frobenius_theorem">Perron-Forbenius theorem</a>, if matrix <i>A</i> has eigenvalues <i>|λ<sub>1</sub>| > |λ<sub>2</sub>| ≥ |λ<sub>3</sub>| ≥ ... ≥ |λ<sub>n</sub>|</i>, as <i>k → ∞</i>, the direction of <i>s<sup>(k)</sup> = A<sup>k</sup>s<sup>(0)</sup></i> converges to <i>x<sub>1</sub></i>, and <i>s<sup>(0)</sup></i> can be any nonzero vector.
-
-### Power Iteration
-
-For the best computation efficiency and accuracy, this algorithm adopts the <b>power iteration</b> approach to compute the dominate eigenvector (<i>x<sub>1</sub></i>) of matrix <i>A</i>：
-
-- s<sup>(1)</sup> = As<sup>(0)</sup>
-- s<sup>(2)</sup> = As<sup>(1)</sup> = A<sup>2</sup>s<sup>(0)</sup>
-- ...
-- s<sup>(k)</sup> = As<sup>(k-1)</sup> = A<sup>k</sup>s<sup>(0)</sup>
-
-The algorithm continues until <i>s<sup>(k)</sup></i> converges to within some tolerance, or the maximum iteration rounds is met.
+In fact, as `k` grows, <code>c<sup>(k)</sup></code> always converges to <code>x<sub>1</sub></code>, regardless of how <code>c<sup>(0)</sup></code> is initialized. This phenomenon is explained by the <a target="_blank" href="https://en.wikipedia.org/wiki/Perron%E2%80%93Frobenius_theorem">Perron–Frobenius theorem</a>. Therefore, computing the eigenvector centrality of nodes in a graph is equivalent to finding the dominant eigenvector of the adjacency matrix `A`.
 
 ## Considerations
 
-- The algorithm uses the sum of adjacency matrix and unit matrix (i.e., <b><i>A = A + I</i></b>) rather than the adjacency matrix only in order to guarantee the covergence.
-- The eigenvector centrality score of nodes with no in-link converges to 0.
-- Self-loop is counted as one in-link, its weight counted only once (weighted graph).
+- To solve the influence leak problem in acyclic digraphs, the algorithm adopts the sum of adjacency matrix and unit matrix (i.e., `A = A + I`) rather than the adjacency matrix itself.
+- A self-loop counts as one in-link and one out-link.
 
-## Syntax
+## Example Graph
 
-- Command: `algo(eigenvector_centrality)`
-- Parameters:
+<div align=center drawio-diagram='19738' drawio-name='draw_2ed941b377eb4cbc9d841d65e013c117.jpg'><img src="https://img.ultipa.cn/draw/draw_2ed941b377eb4cbc9d841d65e013c117.jpg?v='1733817784894'"/></div>
 
-| <div table-width="16">Name</div> | <div table-width="7">Type</div> | <div table-width="9">Spec</div> | <div table-width="7">Default</div> | <div table-width="8">Optional</div> | Description |
+Run the following statements on an empty graph to define its structure and insert data:
+
+<div tab="code">
+
+```gql
+ALTER GRAPH CURRENT_GRAPH ADD NODE {
+  web ()
+};
+ALTER GRAPH CURRENT_GRAPH ADD EDGE {
+  link ()-[{value float}]->()
+};
+INSERT (web1:web {_id: "web1"}),
+       (web2:web {_id: "web2"}),
+       (web3:web {_id: "web3"}),
+       (web4:web {_id: "web4"}),
+       (web5:web {_id: "web5"}),
+       (web6:web {_id: "web6"}),
+       (web7:web {_id: "web7"}),
+       (web1)-[:link {value: 2}]->(web1),
+       (web1)-[:link {value: 1}]->(web2),
+       (web2)-[:link {value: 0.8}]->(web3),
+       (web3)-[:link {value: 0.5}]->(web1),
+       (web3)-[:link {value: 1.1}]->(web2),
+       (web3)-[:link {value: 1.2}]->(web4),
+       (web3)-[:link {value: 0.5}]->(web5),
+       (web5)-[:link {value: 0.5}]->(web3),
+       (web6)-[:link {value: 2}]->(web6);
+```
+
+```uql
+create().node_schema("web").edge_schema("link");
+create().edge_property(@link, "value", float);
+insert().into(@web).nodes([{_id:"web1"}, {_id:"web2"}, {_id:"web3"}, {_id:"web4"}, {_id:"web5"}, {_id:"web6"}, {_id:"web7"}]);
+insert().into(@link).edges([{_from:"web1", _to:"web1",value:2}, {_from:"web1", _to:"web2",value:1}, {_from:"web2", _to:"web3",value:0.8}, {_from:"web3", _to:"web1",value:0.5}, {_from:"web3", _to:"web2",value:1.1}, {_from:"web3", _to:"web4",value:1.2}, {_from:"web3", _to:"web5",value:0.5}, {_from:"web5", _to:"web3",value:0.5}, {_from:"web6", _to:"web6",value:2}]);
+```
+
+</div>
+
+## Creating HDC Graph
+
+To load the entire graph to the HDC server `hdc-server-1` as `my_hdc_graph`:
+
+<div tab="code">
+  
+```gql
+CREATE HDC GRAPH my_hdc_graph ON "hdc-server-1" OPTIONS {
+  nodes: {"*": ["*"]},
+  edges: {"*": ["*"]},
+  direction: "undirected",
+  load_id: true,
+  update: "static"
+}
+```
+
+```uql
+hdc.graph.create("my_hdc_graph", {
+  nodes: {"*": ["*"]},
+  edges: {"*": ["*"]},
+  direction: "undirected",
+  load_id: true,
+  update: "static"
+}).to("hdc-server-1")
+```
+
+</div>
+
+## Parameters
+
+Algorithm name: `eigenvector_centrality`
+
+| <div table-width="18">Name</div> | <div table-width="9">Type</div> | <div table-width="7">Spec</div> | <div table-width="8">Default</div> | <div table-width="8">Optional</div> | Description |
 | -- | -- | -- |-- | -- | -- |
-| max_loop_num | int | ≥1 | `20` | Yes | Maximum rounds of iterations; the algorithm ends after running for all rounds, even though the condition of `tolerance` is not met |
-| tolerance | float | (0,1) | `0.001` | Yes | When all scores change less than the tolerance between iterations, the result is considered stable and the algorithm ends |
-| edge_weight_property | `@<schema>?.<property>` | Numeric type, must LTE | / | Yes | Edge property(-ies) to use as edge weight(s), where the values of multiple properties are summed up |
-| direction | string | `in`, `out` | / | Yes |	Constructs the adjacent matrix A with the in-links (`in`) or our-links (`out`) of each node |
-| limit | int | ≥-1 | `-1` | Yes | Number of results to return, `-1` to return all results |
-| order | string | `asc`, `desc` | / | Yes | Sort nodes by the centrality score |
+| `max_loop_num` | Integer | ≥1 | `20` | Yes | The maximum number of iteration rounds. The algorithm terminates after all iterations are completed. |
+| `tolerance` | Float | (0,1) | `0.001` | Yes | The algorithm terminates when the changes in all scores between iterations are less than the specified `tolerance`, indicating that the result is stable. |
+| `edge_weight_property` | "`<@schema.?><property>`" | / | / | Yes | A numeric edge property used as weights in the adjacency matrix `A`; edges without this property are ignored. |
+| `direction` | String | `in`, `out` | / | Yes | Constructs the adjacency matrix `A` with the in-links (`in`) or out-links (`out`) of each node. |
+| `return_id_uuid` | String | `uuid`, `id`, `both` | `uuid` | Yes | Includes `_uuid`, `_id`, or both to represent nodes in the results. |
+| `limit` | Integer | ≥-1 | `-1` | Yes | Limits the number of results returned; `-1` includes all results. |
+| `order` | String | `asc`, `desc` | / | Yes | Sorts the results by `eigenvector_centrality`. |
 
-## Examples
+## File Writeback
 
-The example is a web network, edge property <i>@link.value</i> can be used as weights:
-
-<div align=center drawio-diagram='4812' drawio-name="draw_4d40d5a1a26b48ceb17f2d2d31ea4b8d.jpg"><img src="https://img.ultipa.cn/draw/draw_4d40d5a1a26b48ceb17f2d2d31ea4b8d.jpg?v='1733826309356'"/></div>
-
-### File Writeback
-
-| Spec | Content |
-| --- | --- |
-| filename | `_id`,`rank` |
-
-```uql
-algo(eigenvector_centrality).params({
-  max_loop_num: 15,
-  tolerance: 0.01,
-  direction: "in"
-}).write({
-    file: {
-      filename: 'rank'
-    }
-})
-```
-
-Results: File <i>rank</i>
-
-<p tit="File"></p>
-
-```
-web7,4.63007e-06
-web6,0.0198426
-web5,0.255212
-web3,0.459901
-web4,0.255214
-web2,0.573512
-web1,0.573511
-```
-
-### Property Writeback
-
-| Spec | Content | Write to | Data Type |
-| --- | --- | --- | --- |
-| property | `rank` | Node property | `float` |
-
-```uql
-algo(eigenvector_centrality).params({
-  edge_weight_property: 'value'  
-}).write({
-    db: {
-      property: 'ec'
-    }
-})
-```
-Results: Centrality score for each node is written to a new property named <i>ec</i>
-
-### Direct Return
-
-| Alias Ordinal | Type | <div table-width="30">Description</div> | Columns |
-| ------------- | ---- | ----------- | ----------- |
-| 0 | []perNode | Node and its centrality | `_uuid`, `rank` |
-
-```uql
-algo(eigenvector_centrality).params({
-  max_loop_num: 20,
-  tolerance: 0.01,
-  edge_weight_property: '@link.value',
+<div tab="code">
+  
+```gql  
+CALL algo.eigenvector_centrality.write("my_hdc_graph", {
+  return_id_uuid: "id",
+  max_loop_num: 50,
+  tolerance: 0.000001,
   direction: "in",
-  order: 'desc'
-}) as ec 
-return ec
+  order: "desc"
+}, {
+  file: {
+    filename: "eigenvector_centrality"
+  }
+})
 ```
 
-Results: <i>ec</i>
-
-| \_uuid | rank |
-| -- | -- |
-| 1	| 0.73133802 |
-| 6	| 0.48346400 |
-| 2	| 0.43551901 |
-| 3	| 0.17412201 |
-| 4	| 0.098612003 |
-| 5	| 0.041088000 |
-| 7	| 0.0000000 |
-
-### Stream Return
-
-| Alias Ordinal | Type | <div table-width="30">Description</div> | Columns |
-| ------------- | ---- | ----------- | ----------- |
-| 0 | []perNode | Node and its centrality | `_uuid`, `rank` |
-
-Example: Calculate weighted eigenvector centrality for all nodes, count the number of nodes with score above 0.4 or otherwise respectively
 ```uql
 algo(eigenvector_centrality).params({
-  edge_weight_property: '@link.value',
-  direction: "in"
-}).stream() as ec
-with case
-when ec.rank > 0.4 then 'attention'
-when ec.rank <= 0.4 then 'normal'
-END as r
-group by r
-return table(r, count(r))
+  projection: "my_hdc_graph",
+  return_id_uuid: "id",
+  max_loop_num: 50,
+  tolerance: 0.000001,
+  direction: "in",
+  order: "desc"
+}).write({
+  file: {
+    filename: "eigenvector_centrality"
+  }
+})
 ```
 
-Results: <i>table(r, count(r))</i>
+</div>
 
-| r | count(r) |
+Result:
+
+<p tit="File: eigenvector_centrality"></p>
+
+```
+_id,eigenvector_centrality
+web1,0.573612
+web2,0.573612
+web3,0.460001
+web5,0.255281
+web4,0.255281
+web6,1.35778e-05
+web7,6.32265e-15
+```
+
+## DB Writeback
+
+Writes the `eigenvector_centrality` values from the results to the specified node property. The property type is `double`.
+
+<div tab="code">
+  
+```gql  
+CALL algo.eigenvector_centrality.write("my_hdc_graph", {
+  edge_weight_property: "@link.value"
+}, {
+  db: {
+    property: "ec"
+  }
+})
+```
+
+```uql
+algo(eigenvector_centrality).params({
+  projection: "my_hdc_graph",
+  edge_weight_property: "@link.value"
+}).write({
+  db:{ 
+    property: 'ec'
+  }
+})
+```
+
+</div>
+  
+## Full Return
+
+<div tab="code">
+  
+```gql  
+CALL algo.eigenvector_centrality.run("my_hdc_graph", {
+  return_id_uuid: "id",    
+  max_loop_num: 300,
+  tolerance: 0.000001,
+  edge_weight_property: "value",
+  direction: "in",
+  order: "desc"
+}) YIELD ec
+RETURN ec
+```
+
+```uql
+exec{
+  algo(eigenvector_centrality).params({
+    return_id_uuid: "id",    
+    max_loop_num: 300,
+    tolerance: 0.000001,
+    edge_weight_property: "value",
+    direction: "in",
+    order: "desc"
+  }) as ec
+  return ec
+} on my_hdc_graph
+```
+
+</div>
+
+Result:
+
+| \_id | eigenvector_centrality |
 | -- | -- |
-| attention	| 3 |
-| normal | 4 |
+| web1 | 0.835474799052068 |
+| web2 | 0.497522870627321 |
+| web3 | 0.198903901628052 |
+| web4 | 0.112638313459419 |
+| web5 | 0.046932628743156 |
+| web6 | 0.000173115768280974 |
+| web7 | 3.67918716589409e-105 |
+
+## Stream Return
+
+<div tab="code">
+  
+```gql  
+CALL algo.eigenvector_centrality.stream("my_hdc_graph", {
+  return_id_uuid: "id",    
+  max_loop_num: 300,
+  tolerance: 0.000001,
+  edge_weight_property: "value",
+  direction: "in",
+  order: "desc"
+}) YIELD ec
+RETURN ec
+```
+
+```uql
+exec{
+  algo(eigenvector_centrality).params({
+    return_id_uuid: "id",    
+    max_loop_num: 300,
+    tolerance: 0.000001,
+    edge_weight_property: "value",
+    direction: "in",
+    order: "desc"
+  }).stream() as ec
+  return ec
+} on my_hdc_graph
+```
+
+</div>
+  
+Result:
+
+| \_id | eigenvector_centrality |
+| -- | -- |
+| web1 | 0.835474799052068 |
+| web2 | 0.497522870627321 |
+| web3 | 0.198903901628052 |
+| web4 | 0.112638313459419 |
+| web5 | 0.046932628743156 |
+| web6 | 0.000173115768280974 |
+| web7 | 3.67918716589409e-105 |

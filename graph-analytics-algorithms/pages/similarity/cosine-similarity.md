@@ -1,13 +1,13 @@
 # Cosine Similarity
 
-<div><span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ File Writeback</b></span> <span class="flag" style="background-color:#eff1f5;color: #000000;"><b>✕ Property Writeback</b></span> <span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ Direct Return</b></span> <span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ Stream Return</b></span> <span class="flag" style="background-color:#eff1f5;color: #000000;"><b>✕ Stats</b></span></div>
+<div><span class="flag" style="background:#014d4e;color:#fff;"><b>HDC</b></span></div>
 
 ## Overview
 
-In cosine similarity, data objects in a dataset are treated as vectors, and it uses the cosine value of the angle between two vectors to indicate the similarity between them. In the graph, specifying <i>N</i> numeric properties (features) of nodes to form N-dimensional vectors, two nodes are considered similar if their vectors are similar.
+In cosine similarity, data objects in a dataset are treated as vectors, and it uses the cosine value of the angle between two vectors to indicate the similarity between them. In the graph, <i>N</i> numeric node properties (features) are specified to form N-dimensional vectors; two nodes are considered similar if their vectors are similar.
 
-Cosine similarity ranges from -1 to 1; 1 means that the two vectors have the same direction, -1 means that the two vectors have the opposite direction.
-
+Cosine similarity ranges from -1 to 1, where 1 indicates that the two vectors point in the same direction, and -1 indicates they point in opposite directions.
+ 
 <div align=center drawio-diagram='4963' drawio-name="draw_3f64dd50cd0a4e6695fae0cacda3892c.jpg"><img src="https://img.ultipa.cn/draw/draw_3f64dd50cd0a4e6695fae0cacda3892c.jpg?v='1681111944016'"/></div>
 
 In 2-dimensional space, the cosine similarity between vectors A(a<sub>1</sub>, a<sub>2</sub>) and B(b<sub>1</sub>, b<sub>2</sub>) is computed as:
@@ -22,179 +22,282 @@ The following diagram shows the relationship between vectors A and B in 2D and 3
 
 <div align=center drawio-diagram='4946' drawio-name="draw_16853a553f024f75b352985ae55be8c9.jpg"><img src="https://img.ultipa.cn/draw/draw_16853a553f024f75b352985ae55be8c9.jpg?v='1680746413239'"/></div>
 
-Generalize to N-dimensional space, the cosine similarity is computed as:
+Generalized to N-dimensional space, cosine similarity is computed as:
 
 <center><img width=420 src="https://img.ultipa.cn/2022-03-16-15-04-04-cosineS.png"></center>
 
 ## Considerations
 
-- Theoretically, the calculation of cosine similarity between two nodes does not depend on their connectivity.
+- Theoretically, the calculation of cosine similarity between two nodes is independent of their connectivity in the graph.
 - The value of cosine similarity is independent of the length of the vectors, but only the direction of the vectors.
 
-## Syntax
+## Example Graph
 
-- Command: `algo(similarity)`
-- Parameters:
+<div align=center drawio-diagram='19792' drawio-name='draw_bc765c50cae2418590031a17fdcb6fe4.jpg'><img src="https://img.ultipa.cn/draw/draw_bc765c50cae2418590031a17fdcb6fe4.jpg?v='1733988639804'"/></div>
 
-| <div table-width="15">Name</div> | <div table-width="9">Type</div> | <div table-width="9">Spec</div> | <div table-width="8">Default</div> | <div table-width="8">Optional</div> | Description |
-| -- | -- | -- |-- | -- | -- |
-| ids / uuids | []`_id` / []`_uuid` | / | / | No | ID/UUID of the first group of nodes to calculate |
-| ids2 / uuids2 | []`_id` / []`_uuid` | / | / | Yes | ID/UUID of the second group of nodes to calculate |
-| type | string | `cosine` | `cosine` | Yes | Type of similarity; for Cosine Similarity, keep it as `cosine` |
-| node_schema_property | []`@<schema>?.<property>` | Numeric type, must LTE | / | No | Specify two or more node properties to form the vectors, all properties must belong to the same (one) schema |
-| limit | int | ≥-1 | `-1` | Yes | Number of results to return, `-1` to return all results |
-| top_limit	| int | ≥-1 | `-1` | Yes | In the selection mode, limit the maximum number of results returned for each node specified in `ids`/`uuids`, `-1` to return all results with similarity > 0; in the pairing mode, this parameter is invalid |
+Run the following statements on an empty graph to define its structure and insert data:
 
-The algorithm has two calculation modes:
+<div tab="code">
 
-1. <b>Pairing: </b>when both `ids`/`uuids` and `ids2`/`uuids2` are configured, pairing each node in `ids`/`uuids` with each node in `ids2`/`uuids2` (ignore the same node) and computing pair-wise similarities.
-2. <b>Selection: </b>when only `ids`/`uuids` is configured, for each target node in it, computing pair-wise similarities between it and all other nodes in the graph. The returned results include all or limited number of nodes that have similarity > 0 with the target node and is ordered by the descending similarity.
-
-## Examples
-
-The example graph has 4 products (edges are ignored), each product has properties <i>price</i>, <i>weight</i>, <i>weight</i> and <i>height</i>:
-
-<div align='center' drawio-diagram='3123' drawio-name='draw_5cb4504e589a45b7b1d33d7b784e4b77.jpg'><img src="https://img.ultipa.cn/draw/draw_5cb4504e589a45b7b1d33d7b784e4b77.jpg?v='1662111270178'"/></div>
-
-### File Writeback
-
-| Spec | Content |
-| --- | --- |
-| filename | `node1`,`node2`,`similarity` |
+```gql
+ALTER GRAPH CURRENT_GRAPH ADD NODE {
+  product ({price int32, weight int32, width int32, height int32})
+};
+INSERT (:product {_id:"product1", price:50, weight:160, width:20, height:152}),
+       (:product {_id:"product2", price:42, weight:90, width:30, height:90}),
+       (:product {_id:"product3", price:24, weight:50, width:55, height:70}),
+       (:product {_id:"product4", price:38, weight:20, width:32, height:66});
+```
 
 ```uql
-algo(similarity).params({
-  uuids: [1], 
-  uuids2: [2,3,4],
-  node_schema_property: ['price', 'weight', 'width', 'height']
-}).write({
-  file:{ 
-    filename: 'cs_result'
+create().node_schema("product");
+create().node_property(@product, "price", int32).node_property(@product, "weight", int32).node_property(@product, "width", int32).node_property(@product, "height", int32);
+insert().into(@product).nodes([{_id:"product1", price:50, weight:160, width:20, height:152}, {_id:"product2", price:42, weight:90, width:30, height:90}, {_id:"product3", price:24, weight:50, width:55, height:70}, {_id:"product4", price:38, weight:20, width:32, height:66}]);
+```
+
+</div>
+
+## Creating HDC Graph
+
+To load the entire graph to the HDC server `hdc-server-1` as `my_hdc_graph`:
+
+<div tab="code">
+  
+```gql
+CREATE HDC GRAPH my_hdc_graph ON "hdc-server-1" OPTIONS {
+  nodes: {"*": ["*"]},
+  edges: {"*": ["*"]},
+  direction: "undirected",
+  load_id: true,
+  update: "static"
+}
+```
+
+```uql
+hdc.graph.create("my_hdc_graph", {
+  nodes: {"*": ["*"]},
+  edges: {"*": ["*"]},
+  direction: "undirected",
+  load_id: true,
+  update: "static"
+}).to("hdc-server-1")
+```
+
+</div>
+
+## Parameters
+
+Algorithm name: `similarity`
+
+<table>
+  <colgroup>
+    <col style="width:12%">
+    <col style="width:10%">
+    <col style="width:10%">
+    <col style="width:8%">
+    <col style="width:8%">
+    <col style="width:25%">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Spec</th>
+      <th>Default</th>
+      <th>Optional</th>
+      <th style = "text-align: center" colspan=2;>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>ids</code>/<code>uuids</code></td>
+      <td><code>_id</code>/<code>_uuid</code></td>
+      <td><center>/</center></td>
+      <td><center>/</center></td>
+      <td>Yes</td>
+      <td>Specifies the first group of nodes by their <code>_id</code> or <code>_uuid</code>. If unset, all nodes in the graph are used as the first group of nodes.</td>
+      <td rowspan = "2">
+      The algorithm supports two calculation modes: <br><br><ul><li><b>Pairing mode:</b> When both <code>ids</code>/<code>uuids</code> and <code>ids2</code>/<code>uuids2</code> are set, each node in <code>ids</code>/<code>uuids</code> is paired with each node in <code>ids2</code>/<code>uuids2</code> (excluding self-pairs), and their pairwise similarities are computed.</li><li><b>Selection mode:</b> When only <code>ids</code>/<code>uuids</code> is set, the algorithm computes similarities between each specified node and all other nodes in the graph. Results include all (or a limited number of) nodes with a similarity > 0, sorted in descending order.</li></ul>
+      </td>
+    </tr>
+    <tr>
+      <td><code>ids2</code>/<code>uuids2</code></td>
+      <td><code>_id</code>/<code>_uuid</code></td>
+      <td><center>/</center></td>
+      <td><center>/</center></td>
+      <td>Yes</td>
+      <td>Specifies the second group of nodes for pairwise similarity by their <code>_id</code> or <code>_uuid</code>. If only <code>ids2</code>/<code>uuids2</code> is set (and <code>ids</code>/<code>uuids</code> is not), the algorithm returns no result.</td>
+    </tr>
+    <tr>
+      <td><code>type</code></td>
+      <td>String</td>
+      <td><code>cosine</code></td>
+      <td><code>cosine</code></td>
+      <td>No</td>
+      <td colspan = "2">Specifies the type of similarity to compute; for Cosine Similarity, keep it as <code>cosine</code>.</td>
+    </tr>
+    <tr>
+      <td><code>node_schema_property</code></td>
+      <td>[]"<code>&lt;@schema.?&gt;&lt;property&gt;</code>"</td>
+      <td><center>/</center></td>
+      <td><center>/</center></td>
+      <td>No</td>
+      <td colspan = "2">Specifies numeric node properties to form a vector for each node; all specified properties must belong to the same label (schema).</td>
+    </tr>
+    <tr>
+      <td><code>return_id_uuid</code></td>
+      <td>String</td>
+      <td><code>uuid</code>,<code>id</code>,<code>both</code></td>
+      <td><code>uuid</code></td>
+      <td>Yes</td>
+      <td colspan = "2">Includes <code>_uuid</code>, <code>_id</code>, or both to represent nodes in the results.</td>
+    </tr>
+    <tr>
+      <td><code>order</code></td>
+      <td>String</td>
+      <td><code>asc</code>,<code>desc</code></td>
+      <td><center>/</center></td>
+      <td>Yes</td>
+      <td colspan = "2">Sorts the results by <code>similarity</code>.</td>
+    </tr>
+    <tr>
+      <td><code>limit</code></td>
+      <td>Integer</td>
+      <td>≥-1</td>
+      <td><code>-1</code></td>
+      <td>Yes</td>
+      <td colspan = "2">Limits the number of results returned. Set to <code>-1</code> to include all results.</td>
+    </tr>
+    <tr>
+      <td><code>top_limit</code></td>
+      <td>Integer</td>
+      <td>≥-1</td>
+      <td><code>-1</code></td>
+      <td>Yes</td>
+      <td colspan = "2">Limits the number of results returned for each node specified with <code>ids</code>/<code>uuids</code> in selection mode. Set to <code>-1</code> to include all results with a similarity greater than 0. This parameter is invalid in pairing mode.</td>
+    </tr>
+  </tbody>      
+</table>
+
+## File Writeback
+
+<div tab="code">
+  
+```gql
+CALL algo.similarity.write("my_hdc_graph", {
+  return_id_uuid: "id",
+  ids: "product1",
+  ids2: ["product2", "product3", "product4"],
+  node_schema_property: ["price", "weight", "width", "height"],
+  type: "cosine"
+}, {
+  file: {
+    filename: "cosine"
   }
 })
 ```
 
-Results: File <i>cs_result</i>
+```uql
+algo(similarity).params({
+  projection: "my_hdc_graph",
+  return_id_uuid: "id",
+  ids: "product1",
+  ids2: ["product2", "product3", "product4"],
+  node_schema_property: ["price", "weight", "width", "height"],
+  type: "cosine"
+}).write({
+  file: {
+    filename: "cosine"
+  }
+})
+```
 
-<p tit="File"></p>
+</div>
+
+Result:
+
+<p tit="File: cosine"></p>
 
 ```
+_id1,_id2,similarity
 product1,product2,0.986529
 product1,product3,0.878858
 product1,product4,0.816876
 ```
 
-```uql
-algo(similarity).params({
-  uuids: [1,2,3,4],
-  node_schema_property: ['price', 'weight', 'width', 'height'],
-  type: 'cosine'
-}).write({
-  file:{ 
-    filename: 'list'
-  }
-})
+## Full Return
+
+<div tab="code">
+  
+```gql
+CALL algo.similarity.run("my_hdc_graph", {
+  return_id_uuid: "id",
+  ids: ["product1","product2"], 
+  ids2: ["product2","product3","product4"],
+  node_schema_property: ["price", "weight", "width", "height"],
+  type: "cosine"
+}) YIELD cs
+RETURN cs
 ```
-
-Results: File <i>list</i>
-
-<p tit="File"></p>
-
-```
-product1,product2,0.986529
-product1,product3,0.878858
-product1,product4,0.816876
-product2,product1,0.986529
-product2,product3,0.934217
-product2,product4,0.881988
-product3,product2,0.934217
-product3,product4,0.930153
-product3,product1,0.878858
-product4,product3,0.930153
-product4,product2,0.881988
-product4,product1,0.816876
-```
-
-### Direct Return
-
-| <div table-width='15'>Alias Ordinal</div> | <div table-width='15'>Type</div> | Description | Columns |
-| --- | --- | --- | --- |
-| 0 | []perNodePair | Node pair and its similarity | `node1`, `node2`, `similarity` |
 
 ```uql
-algo(similarity).params({
-  uuids: [1,2], 
-  uuids2: [2,3,4],
-  node_schema_property: ['price', 'weight', 'width', 'height'],
-  type: 'cosine'
-}) as cs
-return cs
+exec{
+  algo(similarity).params({
+    return_id_uuid: "id",
+    ids: ["product1","product2"], 
+    ids2: ["product2","product3","product4"],
+    node_schema_property: ["price", "weight", "width", "height"],
+    type: "cosine"
+  }) as cs
+  return cs
+} on my_hdc_graph
 ```
 
-Results: <i>cs</i>
+</div>
 
-| node1	| node2	| similarity |
-| ----- | ----- | ---------- |
-| 1	| 2	| 0.986529413529119 |
-| 1	| 3	| 0.878858407519654 |
-| 1	| 4	| 0.816876150267203 |
-| 2 | 3 | 0.934216530725663 |
-| 2 | 4 | 0.88198819302226 |
+Result:
+
+| \_id1 | \_id2 | similarity |
+| -- | -- | -- |
+| product1 | product2 | 0.986529 |
+| product1 | product3 | 0.878858 |
+| product1 | product4 | 0.816876 |
+| product2 | product3 | 0.934217 |
+| product2 | product4 | 0.881988 |
+
+## Stream Return
+
+<div tab="code">
+  
+```gql
+CALL algo.similarity.stream("my_hdc_graph", {
+  return_id_uuid: "id",
+  ids: ["product1", "product3"], 
+  node_schema_property: ["price", "weight", "width", "height"],
+  type: "cosine",
+  top_limit: 1    
+}) YIELD top
+RETURN top
+```
 
 ```uql
-algo(similarity).params({
-  uuids: [1,2],
-  type: 'cosine',
-  node_schema_property: ['price', 'weight', 'width', 'height'],
-  top_limit: 1
-}) as top
-return top
+exec{
+  algo(similarity).params({
+    return_id_uuid: "id",
+    ids: ["product1", "product3"], 
+    node_schema_property: ["price", "weight", "width", "height"],
+    type: "cosine",
+    top_limit: 1        
+  }).stream() as cs
+  return cs
+} on my_hdc_graph
 ```
 
-Results: <i>top</i>
+</div>
 
-| node1	| node2	| similarity |
-| ----- | ----- | ---------- |
-| 1 | 2 | 0.986529413529119 |
-| 2 | 1 | 0.986529413529119 |
+Result: 
 
-### Stream Return
-
-| <div table-width='15'>Alias Ordinal</div> | <div table-width='15'>Type</div> | Description | Columns |
-| --- | --- | --- | --- |
-| 0 | []perNodePair | Node pair and its similarity | `node1`, `node2`, `similarity` |
-
-```uql
-algo(similarity).params({
-  uuids: [3], 
-  uuids2: [1,2,4],
-  node_schema_property: ['@product.price', '@product.weight', '@product.width'],
-  type: 'cosine'
-}).stream() as cs
-where cs.similarity > 0.8
-return cs
-```
-
-Results: <i>cs</i>
-
-| node1	| node2	| similarity |
-| ----- | ----- | ---------- |
-| 3	| 2	| 0.883292081301959 |
-| 3	| 4 | 0.877834381494613 |
-
-```uql
-algo(similarity).params({
-  uuids: [1,3],
-  node_schema_property: ['price', 'weight', 'width', 'height'],
-  type: 'cosine',
-  top_limit: 1
-}).stream() as top
-return top
-```
-
-Results: <i>top</i>
-
-| node1	| node2	| similarity |
-| ----- | ----- | ---------- |
-| 1 | 2 | 0.986529413529119 |
-| 3 | 2 | 0.934216530725663 |
+| \_id1 | \_id2 | similarity |
+| -- | -- | -- |
+| product1 | product2 | 0.986529 |
+| product3 | product2 | 0.934217 |
