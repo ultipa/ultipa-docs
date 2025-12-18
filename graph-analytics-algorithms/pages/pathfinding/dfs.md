@@ -1,19 +1,19 @@
 # Depth-First Search (DFS)
 
-<div><span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ File Writeback</b></span> <span class="flag" style="background-color:#eff1f5;color: #000000;"><b>✕ Property Writeback</b></span> <span class="flag" style="background-color:#eff1f5;color: #000000;"><b>✕ Direct Return</b></span> <span class="flag" style="background-color:#eff1f5;color: #000000;"><b>✕ Stream Return</b></span> <span class="flag" style="background-color:#eff1f5;color: #000000;"><b>✕ Stats</b></span></div>
+<div><span class="flag" style="background:#014d4e;color:#fff;"><b>HDC</b></span></div>
 
 ## Overview
 
-Graph traversal is a search technique used to visit and explore all the nodes of a graph systematically. The primary goal of graph traversal is to uncover and examine the structure and connections of the graph. There are two common strategies for graph traversal: 
+Graph traversal is a search technique used to systematically visit and explore all the nodes in a graph. Its primary goal is to reveal and examine the structure and connections of the graph. There are two common strategies for graph traversal:
 
-- <a href="/docs/graph-analytics-algorithms/bfs">Breadth-First Seach (BFS)</a>
+- <a target="_blank" href="/docs/graph-analytics-algorithms/bfs">Breadth-First Search (BFS)</a>
 - Depth-First Search (DFS)
 
-The Depth-First Search (DFS) algorithm operates based on the backtracking principle and follows these steps:
+The Depth-First Search (DFS) algorithm is based on the principle of backtracking and proceeds as follows:
 
-1. Create a <i>stack</i> (last in, first out) to keep track of visited nodes.
+1. Create a <i>stack</i> (last-in, first-out) to keep track of visited nodes.
 2. Start from a selected node, push it into the stack, and mark it as visited.
-3. Push any unvisited neighbor of the node at the top of the stack into the stack, and mark it as visited. If there are multiple unvisited neighbors, choose one arbitrarily or based on a certain order. 
+3. Push any unvisited neighbor of the node on the top of the stack into the stack, and mark it as visited. If multiple unvisited neighbors exist, select one arbitrarily or according to a predefined order.
 4. Repeat step 3 until there are no more unvisited neighbors to push into the stack. 
 5. When there are no new nodes to visit, backtrack to the previous node (the one from which the current node was explored) by popping the top node from the stack.
 6. Repeat steps 3, 4 and 5 until the stack is empty.
@@ -24,49 +24,118 @@ Below is an example of traversing the graph using the DFS approach, starting fro
 
 ## Considerations
 
-- Only nodes that are in the same connected component as the start node can be traversed. Nodes in different connect components will not be included in the traversal results.
+- Only nodes within the same connected component as the start node will be traversed. Nodes in other connected components are excluded from the traversal results.
 
-## Syntax
+## Example Graph
 
-- Command: `algo(traverse)`
-- Parameters:
+<div align=center drawio-diagram='20005' drawio-name='draw_e160cf27e5c64f57a5fbd4faa56ce10d.jpg'><img src="https://img.ultipa.cn/draw/draw_e160cf27e5c64f57a5fbd4faa56ce10d.jpg?v='1735109792822'"/></div>
 
-| <div table-width="15">Name</div> | <div table-width="8">Type</div> | <div table-width="10">Spec</div> | <div table-width="7">Default</div> | <div table-width="8">Optional</div> | Description |
+Run the following statements on an empty graph to define its structure and insert data:
+
+<div tab="code">
+
+```gql
+INSERT (A:default {_id: "A"}),
+       (B:default {_id: "B"}),
+       (C:default {_id: "C"}),
+       (D:default {_id: "D"}),
+       (E:default {_id: "E"}),
+       (F:default {_id: "F"}),
+       (G:default {_id: "G"}),
+       (A)-[:default]->(B),
+       (A)-[:default]->(D),
+       (B)-[:default]->(E),
+       (C)-[:default]->(A),
+       (E)-[:default]->(F),
+       (F)-[:default]->(C),
+       (G)-[:default]->(D);
+```
+
+```uql
+insert().into(@default).nodes([{_id:"A"}, {_id:"B"}, {_id:"C"}, {_id:"D"}, {_id:"E"}, {_id:"F"}, {_id:"G"}]);
+insert().into(@default).edges([{_from:"G", _to:"D"}, {_from:"A", _to:"D"}, {_from:"A", _to:"B"}, {_from:"B", _to:"E"}, {_from:"E", _to:"F"}, {_from:"F", _to:"C"}, {_from:"C", _to:"A"}]);
+```
+
+</div>
+
+## Creating HDC Graph
+
+To load the entire graph to the HDC server `hdc-server-1` as `my_hdc_graph`:
+
+<div tab="code">
+  
+```gql
+CREATE HDC GRAPH my_hdc_graph ON "hdc-server-1" OPTIONS {
+  nodes: {"*": ["*"]},
+  edges: {"*": ["*"]},
+  direction: "undirected",
+  load_id: true,
+  update: "static"
+}
+```
+
+```uql
+hdc.graph.create("my_hdc_graph", {
+  nodes: {"*": ["*"]},
+  edges: {"*": ["*"]},
+  direction: "undirected",
+  load_id: true,
+  update: "static"
+}).to("hdc-server-1")
+```
+
+</div>
+
+## Parameters
+
+Algorithm name: `traverse`
+
+| <div table-width="18">Name</div> | <div table-width="9">Type</div> | <div table-width="8">Spec</div> | <div table-width="8">Default</div> | <div table-width="9">Optional</div> | Description |
 | -- | -- | -- |-- | -- | -- |
-| ids / uuids | `_id` / `_uuid` | / | / | No | ID/UUID of the start node to traverse the graph |
-| direction | string | `in`, `out` | / | Yes | Direction of edges when traversing the graph |
-| traverse_type | string | `dfs` | `bfs` | No | To traverse the graph in the DFS approach, keep it as `dfs` |
+| `ids` | `_id` | / | / | No | Specifies the node to start traversal by its `_id`. |
+| `uuids` | `_uuid` | / | / | No | Specifies the node to start traversal by its `_uuid`. |
+| `direction` | String | `in`, `out` | / | Yes | Specifies to traverse through only incoming edges (`in`) or outgoing edges (`out`). |
+| `traverse_type` | String | `dfs` | `bfs` | No | To traverse the graph in the DFS fashion, keep it as `dfs`. |
+| `return_id_uuid` | String | `uuid`, `id`, `both` | `uuid` | Yes | Includes `_uuid`, `_id`, or both to represent nodes in the results. |
 
-## Examples
+## File Writeback
 
-<div align=center drawio-diagram='6706' drawio-name='draw_6bbb8777500c4df6a1f62ee19cfbd821.jpg'><img src="https://img.ultipa.cn/draw/draw_6bbb8777500c4df6a1f62ee19cfbd821.jpg?v='1693899454238'"/></div>
-
-### File Writeback
-
-| <div table-width="15">Spec</div> | <div table-width="15">Content</div> | Description |
-| --- | --- | --- |
-| filename | `_id,_id` | The visited node (toNode), and the node from which it is visited (fromNode) |
+<div tab="code">
+  
+```gql  
+CALL algo.traverse.write("my_hdc_graph", {
+  return_id_uuid: "id",
+  ids: ['B'],
+  direction: 'in',
+  traverse_type: 'dfs'
+}, {
+  file: {
+    filename: "visited_nodes"
+  }
+})
+```
 
 ```uql
 algo(traverse).params({
+  projection: "my_hdc_graph",
+  return_id_uuid: "id",
   ids: ['B'],
   direction: 'in',
   traverse_type: 'dfs'
 }).write({
   file: {
-      filename: 'result'
+    filename: "visited_nodes"
   }
 })
 ```
 
-Results: File <i>result</i>
+</div>
 
-<p tit="File"></p>
+Result:
+
+<p tit="File: visited_nodes"></p>
 
 ```
-F,C
-E,F
-C,A
-B,B
-A,B
+nodes
+B,A,C,F,E,
 ```

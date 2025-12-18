@@ -1,16 +1,16 @@
 # Delta-Stepping Single-Source Shortest Path
 
-<div><span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ File Writeback</b></span> <span class="flag" style="background-color:#eff1f5;color: #000000;"><b>✕ Property Writeback</b></span> <span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ Direct Return</b></span> <span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ Stream Return</b></span> <span class="flag" style="background-color:#eff1f5;color: #000000;"><b>✕ Stats</b></span></div>
+<div><span class="flag" style="background:#014d4e;color:#fff;"><b>HDC</b></span></div>
 
 ## Overview
 
-The <b>single-source shortest path (SSSP)</b> problem is that of computing, for each node that is reachable from the source node, the shortest path with the minimum total edge weights among all possible paths; or in the case of unweighted graphs, the shortest path with the minimum number of edges. The cost (or distance) of the shortest path is the total edge weights or the number of edges.
+The <b>single-source shortest path (SSSP)</b> problem involves finding the shortest paths from a given source node to all other reachable nodes in a graph. In weighted graphs, the shortest path minimizes the total edge weights; in unweighted graphs, it minimizes the number of edges (hops). The cost or distance of a path refers to this total weight or count.
 
-The Delta-Stepping algorithm can be viewed as a variant of Dijkstra's algorithm with its potential for parallelism. 
+The Delta-Stepping algorithm is a parallelizable variant of Dijkstra's algorithm, designed to improve performance on large graphs by dividing work into manageable steps.
 
 Related material of the algorithm:
 
-- U. Meyer, P.Sanders, <a target="blank" href="https://www.cs.utexas.edu/~pingali/CS395T/2013fa/papers/delta-stepping.pdf">Δ-Stepping: A Parallel Single Source Shortest Path Algorithm</a> (1998)
+- U. Meyer, P. Sanders, <a target="_blank" href="https://www.cs.utexas.edu/~pingali/CS395T/2013fa/papers/delta-stepping.pdf">Δ-Stepping: A Parallel Single Source Shortest Path Algorithm</a> (1998)
 
 ## Concepts
 
@@ -25,7 +25,7 @@ The Delta-Stepping Single-Source Shortest Path (SSSP) algorithm introduces the c
 
 Below is the description of the basic Delta-Stepping SSSP algorithm, along with an example to compute the weighted shortest paths in an undirected graph starting from the source node <i>b</i>, and <i>Δ</i> is set to 3:
 
-1\. At the begining of the algorithm, all nodes have the distance as infinity except for the source node as 0. The source node is assigned to bucket <i>B[0]</i>.
+1\. At the begining of the algorithm, all nodes are assigned an initial distance of infinity, except for the source node, which is set to 0. The source node is then placed into bucket <i>B[0]</i>.
 
 <div align=center drawio-diagram='6338' drawio-name="draw_5efe262b9d55403bb207d91f98978610.jpg"><img src="https://img.ultipa.cn/draw/draw_5efe262b9d55403bb207d91f98978610.jpg?v='1690868991937'"/></div>
 
@@ -60,257 +60,275 @@ Below is the description of the basic Delta-Stepping SSSP algorithm, along with 
 
 <center><span style="color: #82B366">Remove node <i>f</i> from <i>B[3]</i>:<br>Light-edge neighbor <i>e</i> cannot be relaxed.<br>Heavy-edge neighbor <i>g</i> cannot be relaxed.<br>The algorithm ends here since all buckets are empty.</span></center><br>
 
-By dividing the nodes into buckets and processing them in parallel, the Delta-Stepping algorithm can exploit the available computational resources more efficiently, making it suitable for large-scale graphs and parallel computing environments.
+By dividing nodes into buckets and processing them in parallel, the Delta-Stepping algorithm efficiently leverages available computational resources, making it well-suited for large-scale graphs and parallel computing environments.
 
 ## Considerations
 
-- The Delta-Stepping SSSP algorithm is only applicable to graphs with non-negative edge weights. If negative weights are present, the Delta-Stepping SSSP algorithm might produce false results. In this case, a different algorithm like the <a href="/docs/graph-analytics-algorithms/spfa/">SPFA</a> should be used.
-- If there are multiple shortest paths exist between two nodes, all of them will be found.
+- The Delta-Stepping SSSP algorithm is only applicable to graphs with non-negative edge weights. If negative weights are present, the Delta-Stepping SSSP algorithm might produce false results. In this case, a different algorithm like the <a target="_blank" href="/docs/graph-analytics-algorithms/spfa/">SPFA</a> should be used.
+- If multiple shortest paths exist between two nodes, the algorithm will find all of them.
 - In disconnected graphs, the algorithm only outputs the shortest paths from the source node to all nodes belonging to the same connected component as the source node.
 
-## Syntax
+## Example Graph
 
-- Command: `algo(sssp)`
-- Parameters:
+<div align=center drawio-diagram='19977' drawio-name='draw_6a00bd2616f94d09b627f90daaa5ff5f.jpg'><img src="https://img.ultipa.cn/draw/draw_6a00bd2616f94d09b627f90daaa5ff5f.jpg?v='1735030269000'"/></div>
 
-| <div table-width="15">Name</div> | <div table-width="8">Type</div> | <div table-width="16">Spec</div> | <div table-width="9">Default</div> | <div table-width="8">Optional</div> | Description |
+Run the following statements on an empty graph to define its structure and insert data:
+
+<div tab="code">
+
+```gql
+ALTER EDGE default ADD PROPERTY {
+  value int32
+};
+INSERT (A:default {_id: "A"}),
+       (B:default {_id: "B"}),
+       (C:default {_id: "C"}),
+       (D:default {_id: "D"}),
+       (E:default {_id: "E"}),
+       (F:default {_id: "F"}),
+       (G:default {_id: "G"}),
+       (A)-[:default {value: 2}]->(B),
+       (A)-[:default {value: 4}]->(F),
+       (B)-[:default {value: 3}]->(C),
+       (B)-[:default {value: 3}]->(D),
+       (B)-[:default {value: 6}]->(F),
+       (D)-[:default {value: 2}]->(E),
+       (D)-[:default {value: 2}]->(F),
+       (E)-[:default {value: 3}]->(G),
+       (F)-[:default {value: 1}]->(E);
+```
+
+```uql
+create().edge_property(@default, "value", int32);
+insert().into(@default).nodes([{_id:"A"}, {_id:"B"}, {_id:"C"}, {_id:"D"}, {_id:"E"}, {_id:"F"}, {_id:"G"}]);
+insert().into(@default).edges([{_from:"A", _to:"B", value:2}, {_from:"A", _to:"F", value:4}, {_from:"B", _to:"F", value:6}, {_from:"B", _to:"C", value:3}, {_from:"B", _to:"D", value:3}, {_from:"D", _to:"F", value:2}, {_from:"F", _to:"E", value:1}, {_from:"D", _to:"E", value:2}, {_from:"E", _to:"G", value:3}]);
+```
+
+</div>
+
+## Creating HDC Graph
+
+To load the entire graph to the HDC server `hdc-server-1` as `my_hdc_graph`:
+
+<div tab="code">
+  
+```gql
+CREATE HDC GRAPH my_hdc_graph ON "hdc-server-1" OPTIONS {
+  nodes: {"*": ["*"]},
+  edges: {"*": ["*"]},
+  direction: "undirected",
+  load_id: true,
+  update: "static"
+}
+```
+
+```uql
+hdc.graph.create("my_hdc_graph", {
+  nodes: {"*": ["*"]},
+  edges: {"*": ["*"]},
+  direction: "undirected",
+  load_id: true,
+  update: "static"
+}).to("hdc-server-1")
+```
+
+</div>
+
+## Parameters
+
+Algorithm name: `sssp`
+
+| <div table-width="17">Name</div> | <div table-width="9">Type</div> | <div table-width="8">Spec</div> | <div table-width="9">Default</div> | <div table-width="5">Optional</div> | Description |
 | -- | -- | -- |-- | -- | -- |
-| ids / uuids | `_id` / `_uuid` | / | / | No | ID/UUID of the single source node |
-| direction | string | `in`, `out` | / | Yes | Direction of the shortest path, ignore the edge direction if not set |
-| edge_schema_property | []`@schema?.property` | Numeric type, must LTE	| / | Yes | One or multiple edge properties to be used as edge weights, where the values of multiple properties are summed up; treat the graph as unweighted if not set |
-| record_path | int | `0`, `1` | `0` | Yes | `1` to return the shortest paths, `0` to return the shortest distances |
-| sssp_type | string | `delta_stepping` | `dijkstra` | No | To run the Delta-Stepping SSSP algorithm, keep it as `delta_stepping` |
-| delta | float | >0 | `2` | Yes | The value of delta |
-| limit | int | ≥-1 | `-1` | Yes | Number of results to return, `-1` to return all results |
-| order	| string | `asc`, `desc` | / | Yes | Sort nodes by the shortest distance from the source node |
+| `ids` | `_id` | / | / | No | Specifies a single source node by its `_id`. |
+| `uuids` | `_uuid` | / | / | No | Specifies a single source node by its `_uuid`. |
+| `direction` | String | `in`, `out` | / | Yes | Specifies that the shortest paths should only contain incoming edges (`in`) or outgoing edges (`out`); edge direction is ignored if it is unset. |
+| `edge_schema_property` | []"`<@schema.?><property>`"| / | / | Yes | Specifies numeric edge properties used as weights by summing their values. Only properties of numeric type are considered, and edges without these properties are ignored. |
+| `record_path` | Integer | `0`, `1` | `0` | Yes | Whether to include the shortest paths in the results; sets to `1` to return the `totalCost` and the shortest paths, or to `0` to return the `totalCost` only. |
+| `impl_type` | String | `delta_stepping` | `beta` | No | Specifies the implementation type of the SSSP algorithm; for the Delta-Stepping SSSP, keep it as `delta_stepping`; `beta` is Ultipa's default shortest path algorithm. |
+| `delta` | Float |	>0	| `2` |	Yes	| The value of *delta*; only valid when `impl_type` is set to `delta_stepping`. |
+| `return_id_uuid` | String | `uuid`, `id`, `both` | `uuid` | Yes | Includes `_uuid`, `_id`, or both to represent nodes in the results. Edges can only be represented by `_uuid`. |
+| `limit` | Integer | ≥-1 | `-1` | Yes | Limits the number of results returned. Set to `-1` to include all results. |
+| `order` | String | `asc`, `desc` | / | Yes | Sorts the results by `totalCost`. |
 
-## Examples
+## File Writeback
 
-The example graph is as follows:
-
-<div align=center drawio-diagram='6538' drawio-name='draw_a491e2167bcc45ae9b56d15f1625cd49.jpg'><img src="https://img.ultipa.cn/draw/draw_a491e2167bcc45ae9b56d15f1625cd49.jpg?v='1691401614194'"/></div>
-
-### File Writeback
-
-<table>
-<thead>
-<tr>
-  <th style="width:10%">Spec</th>
-  <th style="width:15%"><code>record_path</code></th>
-  <th style="width:18%">Content</th>
-  <th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td rowspan="2">filename</td>
-  <td>0</td>
-  <td><code>_id</code>,<code>totalCost</code></td>
-  <td>The shortest distance/cost from the source node to each other node</td>
-</tr>
-<tr>
-  <td>1</td>
-  <td><code>_id</code>--<code>_uuid</code>--<code>_id</code></td>
-  <td>The shortest path from the source node to each other node, the path is represented by the alternating ID of nodes and UUID of edges that form the path</td>
-</tr>
-</tbody>
-</table>
-
-```uql
-algo(sssp).params({
-  uuids: 1,
-  edge_schema_property: '@default.value',
-  sssp_type: 'delta_stepping',
-  delta: 2
-}).write({
+<div tab="code">
+  
+```gql
+CALL algo.sssp.write("my_hdc_graph", {
+  ids: "A",
+  edge_schema_property: "@default.value",
+  impl_type: "delta_stepping",
+  return_id_uuid: "id"
+}, {
   file: {
-    filename: 'costs'
+    filename: "costs"
   }
 })
 ```
 
-Results: File <i>costs</i>
+```uql
+algo(sssp).params({
+  projection: "my_hdc_graph",
+  ids: "A",
+  edge_schema_property: "@default.value",
+  impl_type: "delta_stepping",
+  return_id_uuid: "id"
+}).write({
+  file: {
+      filename: "costs"
+  }
+})
+```
 
-<p tit="File"></p>
+</div>
+
+Result:
+
+<p tit="File: costs"></p>
 
 ```
+_id,totalCost
 G,8
-F,4
-E,5
 D,5
-C,5
+F,4
 B,2
-A,0
+E,5
+C,5
 ```
 
-```uql
-algo(sssp).params({
-  uuids: 1,
+<div tab="code">
+  
+```gql
+CALL algo.sssp.write("my_hdc_graph", {
+  ids: "A",
   edge_schema_property: '@default.value',
-  sssp_type: 'delta_stepping',
+  impl_type: 'delta_stepping',
   delta: 2,
-  record_path: 1
-}).write({
+  record_path: 1,
+  return_id_uuid: "id"
+}, {
   file: {
-    filename: 'paths'
+    filename: "paths"
   }
 })
 ```
 
-Results: File <i>paths</i>
-
-<p tit="File"></p>
-
-```
-A--[102]--F--[107]--E--[109]--G
-A--[102]--F--[107]--E
-A--[101]--B--[105]--D
-A--[101]--B--[104]--C
-A--[102]--F
-A--[101]--B
-A
-```
-
-### Direct Return
-
-<table>
-<thead>
-<tr>
-  <th style="width:8%">Alias Ordinal</th>
-  <th style="width:15%"><code>record_path</code></th>
-  <th style="width:11%">Type</th>
-  <th>Description</th>
-  <th style="width:18%">Columns</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td rowspan="2">0</td>
-  <td>0</td>
-  <td>[]perNode</td>
-  <td>The shortest cost/distance from the source node to each other node</td>
-  <td><code>_uuid</code>, <code>totalCost</code></td>
-</tr>
-<tr>
-  <td>1</td>
-  <td>[]perPath</td>
-  <td>The shortest path from the source node to each other node, the path is represented by the alternating UUID of nodes and UUID of edges that form the path</td>
-  <td>/</td>
-</tr>
-</tbody>
-</table>
-
 ```uql
 algo(sssp).params({
-  uuids: 1,
+  projection: "my_hdc_graph",
+  ids: "A",
   edge_schema_property: '@default.value',
-  sssp_type: 'delta_stepping',
+  impl_type: 'delta_stepping',
   delta: 2,
-  order: 'desc'
-}) as costs
-return costs
-```
-
-Results: <i>costs</i>
-
-| \_uuid | totalCost |
-| -- | -- |
-| 7 | 8 |
-| 5 | 5 |
-| 4 | 5 |
-| 3 | 5 |
-| 6 | 4 |
-| 2 | 2 |
-| 1 | 0 |
-
-```uql
-algo(sssp).params({
-  uuids: 1,
-  edge_schema_property: '@default.value',
-  direction: 'out',
   record_path: 1,
-  sssp_type: 'delta_stepping',
-  delta: 2,
-  order: 'asc'
-}) as paths
-return paths
+  return_id_uuid: "id"
+}).write({
+  file: {
+      filename: "paths"
+  }
+})
 ```
 
-Results: <i>paths</i>
+</div>
 
-<table>
-<tr><td>1</td></tr>
-<tr><td>1--[101]--2</td></tr>
-<tr><td>1--[102]--6</td></tr>
-<tr><td>1--[102]--6--[107]--5</td></tr>
-<tr><td>1--[101]--2--[105]--4</td></tr>
-<tr><td>1--[101]--2--[104]--3</td></tr>
-<tr><td>1--[102]--6--[107]--5--[109]--7</td></tr>
-</table>
+Result:
 
-### Stream Return
+<p tit="File: costs"></p>
 
-<table>
-<thead>
-<tr>
-  <th style="width:8%">Alias Ordinal</th>
-  <th style="width:15%"><code>record_path</code></th>
-  <th style="width:11%">Type</th>
-  <th>Description</th>
-  <th style="width:18%">Columns</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td rowspan="2">0</td>
-  <td>0</td>
-  <td>[]perNode</td>
-  <td>The shortest cost/distance from the source node to each other node</td>
-  <td><code>_uuid</code>, <code>totalCost</code></td>
-</tr>
-<tr>
-  <td>1</td>
-  <td>[]perPath</td>
-  <td>The shortest path from the source node to each other node, the path is represented by the alternating UUID of nodes and UUID of edges that form the path</td>
-  <td>/</td>
-</tr>
-</tbody>
-</table>
+```
+totalCost,_ids
+8,A--[102]--F--[107]--E--[109]--G
+5,A--[101]--B--[105]--D
+5,A--[102]--F--[107]--E
+5,A--[103]--B--[104]--C
+4,A--[102]--F
+2,A--[101]--B
+```
+
+## Full Return
+
+<div tab="code">
+  
+```gql
+CALL algo.sssp.run("my_hdc_graph", {
+  ids: 'A',
+  edge_schema_property: 'value',
+  impl_type: 'delta_stepping',
+  delta: 3,
+  record_path: 0,
+  return_id_uuid: 'id',
+  order: 'desc'
+}) YIELD r
+RETURN r
+```
 
 ```uql
-algo(sssp).params({
-  uuids: 1,
-  edge_schema_property: '@default.value',
-  sssp_type: 'delta_stepping'
-}).stream() as costs
-where costs.totalCost <> [0,5]
-return costs
+exec{
+  algo(sssp).params({
+    ids: 'A',
+    edge_schema_property: 'value',
+    impl_type: 'delta_stepping',
+    delta: 3,
+    record_path: 0,
+    return_id_uuid: 'id',
+    order: 'desc'
+  }) as r
+  return r
+} on my_hdc_graph
 ```
 
-Results: <i>costs</i>
+</div>
 
-| \_uuid | totalCost |
+Result:
+
+| \_id | totalCost |
 | -- | -- |
-| 6 | 4 |
-| 2 | 2 |
+| G | 8 |
+| D | 5 |
+| E | 5 |
+| C | 5 |
+| F | 4 |
+| B | 2 |
 
-```uql
-algo(sssp).params({
-  uuids: 1,
+## Stream Return
+
+<div tab="code">
+  
+```gql
+CALL algo.sssp.stream("my_hdc_graph", {
+  ids: 'A',
   edge_schema_property: '@default.value',
-  sssp_type: 'delta_stepping',
-  record_path: 1
-}).stream() as p
-where length(p) <> [0,3]
-return p
+  impl_type: 'delta_stepping',
+  record_path: 1,
+  return_id_uuid: 'id'
+}) YIELD r
+RETURN r
 ```
 
-Results: <i>p</i>
+```uql
+exec{
+  algo(sssp).params({
+    ids: 'A',
+    edge_schema_property: '@default.value',
+    impl_type: 'delta_stepping',
+    record_path: 1,
+    return_id_uuid: 'id'
+  }).stream() as r
+  return r
+} on my_hdc_graph
+```
 
-<table>
-<tr><td>1--[102]--6--[107]--5</td></tr>  
-<tr><td>1--[101]--2--[105]--4</td></tr>
-<tr><td>1--[101]--2--[104]--3</td></tr>
-<tr><td>1--[102]--6</td></tr>
-<tr><td>1--[101]--2</td></tr>
-</table>
+</div>
+
+Result:
+
+| <div table-width="15">totalCost</div> | \_ids |
+| -- | -- |
+| 8 | ["A","102","F","107","E","109","G"] |
+| 5 | ["A","101","B","105","D"] |
+| 5 | ["A","102","F","107","E"] |
+| 5 | ["A","101","B","104","C"] |
+| 4 | ["A","102","F"] |
+| 2 | ["A","101","B"] |

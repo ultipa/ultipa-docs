@@ -1,12 +1,12 @@
 # HITS
 
-<div><span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ File Writeback</b></span> <span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ Property Writeback</b></span> <span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ Direct Return</b></span> <span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ Stream Return</b></span> <span class="flag" style="background-color:#eff1f5;color: #000000;"><b>✕ Stats</b></span></div>
+<div><span class="flag" style="background:#014d4e;color:#fff;"><b>HDC</b></span></div>
 
 ## Overview
 
 The HITS (Hyperlink-Induced Topic Search) algorithm was developed by L.M. Kleinberg in 1999 with the purpose of improving the quality of search methods on the World Wide Web (WWW). HITS makes use of the mutual reinforcing relationship between <i>authorities</i> and <i>hubs</i> to evaluate and rank a set of linked entities.
 
-- L.M. Kleinberg, <a target="blank" href="https://www.cs.cornell.edu/home/kleinber/auth.pdf">Authoritative Sources in a Hyperlinked Environment</a> (1999)
+- L.M. Kleinberg, <a target="_blank" href="https://www.cs.cornell.edu/home/kleinber/auth.pdf">Authoritative Sources in a Hyperlinked Environment</a> (1999)
 
 ## Concepts
 
@@ -14,13 +14,13 @@ The HITS (Hyperlink-Induced Topic Search) algorithm was developed by L.M. Kleinb
 
 In WWW, hyperlinks represent some latent human judgment: the creator of page <i>p</i>, by including a link to page <i>q</i>, has in some measure conferred authority on <i>q</i>. Instructively, a node with large in-degree is viewed as an <b>authority</b>.
 
-If a node points to considerable number of authoritative nodes, it is referred to as a <b>hub</b>. 
+If a node points to a considerable number of authoritative nodes, it is referred to as a <b>hub</b>. 
 
-As illustrated in the graph below, red nodes are good authorities, green nodes are good hubs.
+As illustrated in the graph below, red nodes represent good authorities, while green nodes represent good hubs.
 
 <div align="center" drawio-diagram='3907' drawio-name='draw_2ed110856aed4603a573d6aeaa79610b.jpg'><img src="https://img.ultipa.cn/draw/draw_2ed110856aed4603a573d6aeaa79610b.jpg?v='1672217278797'"/></div>
 
-Hubs and authorities exhibit what could be called a mutually reinforcing relationship: a good hub points to many good authorities; a good authority is pointed to by many good hubs.
+Hubs and authorities exhibit a mutually reinforcing relationship: a good hub points to many good authorities; a good authority is pointed to by many good hubs.
 
 ### Compute Authorities and Hubs
 
@@ -38,68 +38,152 @@ At the end of one iteration, normalize all <i>x</i> values and all <i>y</i> valu
 
 <center><img width="250" src="https://img.ultipa.cn/img/2023-03-29-11-11-42-norm.jpg" /></center>
 
-The algorithm continues until the change of all <i>x</i> values and <i>y</i> values converges to within some tolerance, or the maximum iteration rounds is met. In the experiments of the original author, the convergence is quite rapid, 20 iterations are normally sufficient.
+The algorithm iterates until the changes in all <i>x</i> and <i>y</i> values converge within a specific tolerance, or until the maximum number of iterations is reached. In the experiments of the original author, the convergence is quite rapid, 20 iterations are normally sufficient.
 
 ## Considerations
 
 - In HITS algorithm, self-loops are ignored.
-- Authority weight of nodes with no in-links is 0, hub weight of nodes with out-links is 0.
+- Nodes with no in-links are assigned an authority weight of 0, while nodes with no out-links are assigned a hub weight of 0.
 
-## Syntax
+## Example Graph
 
-- Command: `algo(hits_centrality)`
-- Parameters:
+<div align=center drawio-diagram='19742' drawio-name='draw_1afd6d26761942feba61b9b39ca0b412.jpg'><img src="https://img.ultipa.cn/draw/draw_1afd6d26761942feba61b9b39ca0b412.jpg?v='1733821758235'"/></div>
 
-| <div table-width="16">Name</div> | <div table-width="7">Type</div> | <div table-width="9">Spec</div> | <div table-width="7">Default</div> | <div table-width="8">Optional</div> | Description |
-| -- | -- | -- |-- | -- | -- |
-| max_loop_num | int | >=1 | `20` | Yes | Maximum rounds of iterations; the algorithm ends after running for all rounds, even though the condition of `tolerance` is not met |
-| tolerance | float | (0,1) | `0.001` | Yes | When all authority weights and hub weights change less than the tolerance between iterations, the result is considered stable and the algorithm ends |
-| limit | int | ≥-1 | `-1` | Yes | Number of results to return, `-1` to return all results |
-  
-## Examples
+Run the following statements on an empty graph to define its structure and insert data:
 
-The example graph is as follows:
+<div tab="code">
 
-<div align=center drawio-diagram='4900' drawio-name="draw_533f96d36b594838b20d4ff9666bd730.jpg"><img src="https://img.ultipa.cn/draw/draw_533f96d36b594838b20d4ff9666bd730.jpg?v='1733880862334'"/></div>
-
-### File Writeback
-
-| Spec | Content |
-| --- | --- |
-| filename | `_id`,`authority`,`hub` |
+```gql
+INSERT (A:default {_id: "A"}),
+       (B:default {_id: "B"}),
+       (C:default {_id: "C"}),
+       (D:default {_id: "D"}),
+       (E:default {_id: "E"}),
+       (F:default {_id: "F"}),
+       (G:default {_id: "G"}),
+       (H:default {_id: "H"}),
+       (A)-[:default]->(F),
+       (B)-[:default]->(A),
+       (C)-[:default]->(A),
+       (C)-[:default]->(B),
+       (D)-[:default]->(A),
+       (D)-[:default]->(F),
+       (E)-[:default]->(A),
+       (E)-[:default]->(G),
+       (F)-[:default]->(H),
+       (G)-[:default]->(F);
+```
 
 ```uql
-algo(hits_centrality).params({}).write({
+insert().into(@default).nodes([{_id:"A"}, {_id:"B"}, {_id:"C"}, {_id:"D"}, {_id:"E"}, {_id:"F"}, {_id:"G"}, {_id:"H"}]);
+insert().into(@default).edges([{_from:"C", _to:"A"}, {_from:"C", _to:"B"}, {_from:"B", _to:"A"}, {_from:"E", _to:"A"}, {_from:"E", _to:"G"}, {_from:"A", _to:"F"}, {_from:"D", _to:"A"}, {_from:"D", _to:"F"}, {_from:"F", _to:"H"}, {_from:"G", _to:"F"}]);
+```
+
+</div>
+
+## Creating HDC Graph
+
+To load the entire graph to the HDC server `hdc-server-1` as `my_hdc_graph`:
+
+<div tab="code">
+  
+```gql
+CREATE HDC GRAPH my_hdc_graph ON "hdc-server-1" OPTIONS {
+  nodes: {"*": ["*"]},
+  edges: {"*": ["*"]},
+  direction: "undirected",
+  load_id: true,
+  update: "static"
+}
+```
+
+```uql
+hdc.graph.create("my_hdc_graph", {
+  nodes: {"*": ["*"]},
+  edges: {"*": ["*"]},
+  direction: "undirected",
+  load_id: true,
+  update: "static"
+}).to("hdc-server-1")
+```
+
+</div>
+
+## Parameters
+
+Algorithm name: `hits_centrality`
+
+| <div table-width="19">Name</div> | <div table-width="9">Type</div> | <div table-width="7">Spec</div> | <div table-width="8">Default</div> | <div table-width="5">Optional</div> | Description |
+| -- | -- | -- |-- | -- | -- |
+| `max_loop_num` | Integer | ≥1 | `20` | Yes | The maximum number of iteration rounds. The algorithm will terminate after completing all rounds. |
+| `tolerance` | Float | (0,1) | `0.001` | Yes | The algorithm terminates when the changes in all authority and hub weights between iterations are less than the specified `tolerance`, indicating that the result is stable. |
+| `return_id_uuid` | String | `uuid`, `id`, `both` | `uuid` | Yes | Includes `_uuid`, `_id`, or both values to represent nodes in the results. |
+| `limit` | Integer | ≥-1 | `-1` | Yes | Limits the number of results returned. Set to `-1` to include all results. |
+
+## File Writeback
+
+<div tab="code">
+  
+```gql  
+CALL algo.hits_centrality.write("my_hdc_graph", {
+  return_id_uuid: "id"
+}, {
   file: {
-    filename: 'rank'
+    filename: "ranks"
   }
 })
 ```
 
-Results: File <i>rank</i>
+```uql
+algo(hits_centrality).params({
+  return_id_uuid: "id",
+  projection: "my_hdc_graph"
+}).write({
+  file: {
+    filename: "ranks"
+  }
+})
+```
 
-<p tit="File"></p>
+</div>
+
+Result:
+
+<p tit="File: ranks"></p>
 
 ```
-H,0.000000,0.000000
-G,0.213196,0.190701
-F,0.426420,0.000000
-E,0.000000,0.476726
-D,0.000000,0.572083
-C,0.000000,0.476726
+_id,authority,hub
+D,0,0.572083
+F,0.42642,1.43197e-11
+H,3.20199e-11,0
 B,0.213196,0.381382
 A,0.852796,0.190701
+E,0,0.476726
+C,0,0.476726
+G,0.213196,0.190701
 ```
 
-### Property Writeback
+## DB Writeback
 
-| Spec | Content | Write to | Data Type |
-| --- | --- | --- | --- |
-| authority | `authority` | Node property | `double` |
-| hub | `hub` | Node property | `double` |
+Writes the `authority` and `hub` values from the results to the specified node property. The property types are both `double`.
+
+<div tab="code">
+  
+```gql  
+CALL algo.hits_centrality.write("my_hdc_graph", {
+  max_loop_num: 20,
+  tolerance: 0.0001
+}, {
+  db: {
+    authority: 'auth',
+    hub: 'hub'
+  }
+})
+```
 
 ```uql
 algo(hits_centrality).params({
+  projection: "my_hdc_graph",
   max_loop_num: 20,
   tolerance: 0.0001
 }).write({
@@ -109,58 +193,79 @@ algo(hits_centrality).params({
   }
 })
 ```
+  
+</div>
 
-Results: Authority weight for each node is written to a new property named <i>auth</i>, hub weight for each node is written to a new property named <i>hub</i>
+## Full Return 
 
-### Direct Return
-
-| <div table-width="15">Alias Ordinal</div>| <div table-width="11">Type</div> | Description | Columns |
-| ------------- | ---- | ----------- | ----------- |
-| 0 | []perNode | Node and its authority and hub weight | `_uuid`, `authority`, `hub` |
-
-```uql
-algo(hits_centrality).params() as rank
-return rank
+<div tab="code">
+  
+```gql  
+CALL algo.hits_centrality.run("my_hdc_graph", {
+  return_id_uuid: "id"
+}) YIELD r
+RETURN r
 ```
 
-Results: <i>rank</i>
-
-| \_uuid | authority | hub |
-| -- | -- | -- |
-| 8	| 3.20199049138017e-11 | 0 |
-| 7	| 0.213196444093741 | 0.190700611234451 |
-| 6	| 0.426419530029166 | 1.43197368054726e-11 |
-| 5	| 0 | 0.476726292571473 |
-| 4	| 0 | 0.572082555485605 |
-| 3 | 0 | 0.476726292571473 |
-| 2	| 0.213196444093741 | 0.381381944251153 |
-| 1	| 0.852795952652963 | 0.190700611234451 |
-
-### Stream Return
-
-| <div table-width="15">Alias Ordinal</div>| <div table-width="11">Type</div> | Description | Columns |
-| ------------- | ---- | ----------- | ----------- |
-| 0 | []perNode | Node and its authority and hub weight | `_uuid`, `authority`, `hub` |
-
 ```uql
-algo(hits_centrality).params({
+exec{
+  algo(hits_centrality).params({
+    return_id_uuid: "id"
+  }) as r
+  return r
+} on my_hdc_graph
+```
+
+</div>
+
+Result:
+
+| \_id | authority | hub |
+| -- | -- | -- |
+| D | 0 | 0.572083 |
+| F | 0.42642 | 0 |
+| H | 0 | 0 |
+| B | 0.213196 | 0.381382 |
+| A | 0.852796 | 0.190701 |
+| E | 0 | 0.476726 |
+| C | 0 | 0.476726 |
+| G | 0.213196 | 0.190701 |
+
+## Stream Return
+
+<div tab="code">
+  
+```gql  
+CALL algo.hits_centrality.stream("my_hdc_graph", {
+  return_id_uuid: "id",
   max_loop_num: 20,
   tolerance: 0.0001
-}).stream() as rank
-find().nodes({_uuid == rank._uuid}) as nodes
-order by rank.hub desc
-return table(nodes._id, rank.hub)
+}) YIELD r
+RETURN r._id, r.hub ORDER BY r.hub DESC
 ```
 
-Results: <i>table(nodes._id, rank.hub)</i>
+```uql
+exec{
+  algo(hits_centrality).params({
+    return_id_uuid: "id",
+    max_loop_num: 20,
+    tolerance: 0.0001
+  }).stream() as r
+  return r._id, r.hub order by r.hub
+} on my_hdc_graph
+```
 
-| nodes.\_id | rank.hub |
+</div>
+
+Result:
+
+| r.\_id | r.hub |
 | -- | -- |
-| D | 0.572082555485605 |
-| E | 0.476726292571473 |
-| C | 0.476726292571473 |
-| B | 0.381381944251153 |
-| G | 0.190700611234451 |
-| A | 0.190700611234451 |
-| F | 1.43197368054726e-11 |
+| D | 0.572083 |
+| E | 0.476726 |
+| C | 0.476726 |
+| B | 0.381382 |
+| A | 0.190701 |
+| G | 0.190701 |
+| F | 0 |
 | H | 0 |

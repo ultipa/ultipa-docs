@@ -6,27 +6,22 @@
         {
           "file": "introduction.md",
           "title": "Introduction"
-        }
-      ]
-    },
-    {
-      "folder": "using-algorithms",
-      "pages": [
-        {
-          "file": "show-algos.md",
-          "title": "Show Algorithms"
         },
         {
-          "file": "install-and-uninstall.md",
-          "title": "Install and Uninstall"
+          "file": "managing-hdc-graphs.md",
+          "title": "Managing HDC Graphs"
         },
         {
-          "file": "run-algos.md",
-          "title": "Run Algorithms"
+          "file": "managing-distributed-projections.md",
+          "title": "Managing Distributed Projections"
         },
         {
-          "file": "algo-results-stats.md",
-          "title": "Algorithm Results and Statistics"
+          "file": "installing-algorithms.md",
+          "title": "Installing Algorithms"
+        },
+        {
+          "file": "running-algorithms.md",
+          "title": "Running Algorithms"
         }
       ]
     },
@@ -58,6 +53,10 @@
           "title": "Eigenvector Centrality"
         },
         {
+          "file": "katz-centrality.md",
+          "title": "Katz Centrality"
+        },
+        {
           "file": "celf.md",
           "title": "CELF"
         },
@@ -68,6 +67,10 @@
         {
           "file": "article-rank.md",
           "title": "ArticleRank"
+        },
+        {
+          "file": "textrank.md",
+          "title": "TextRank"
         },
         {
           "file": "hits.md",
@@ -105,15 +108,15 @@
       ]
     },
     {
-      "folder": "connectivity-and-compactness",
+      "folder": "connectivity-compactness",
       "name": "Connectivity & Compactness",
       "pages": [
         {
-          "file": "khop-all.md",
+          "file": "k-hop-all.md",
           "title": "K-Hop All"
         },
         {
-          "file": "bipartite.md",
+          "file": "bipartite-graph.md",
           "title": "Bipartite Graph"
         },
         {
@@ -149,7 +152,7 @@
           "title": "k-Edge Connected Components"
         },
         {
-          "file": "clustering-coefficient.md",
+          "file": "local-clustering-coefficient.md",
           "title": "Local Clustering Coefficient"
         },
         {
@@ -178,7 +181,7 @@
           "title": "Shortest Path Faster Algorithm (SPFA)"
         },
         {
-          "file": "mst.md",
+          "file": "minimum-spanning-tree.md",
           "title": "Minimum Spanning Tree"
         },
         {
@@ -217,7 +220,7 @@
       ]
     },
     {
-      "folder": "community-detection-and-classification",
+      "folder": "community-detection",
       "name": "Community Detection & Classification",
       "pages": [
         {
@@ -229,7 +232,7 @@
           "title": "Leiden"
         },
         {
-          "file": "lpa.md",
+          "file": "label-propagation.md",
           "title": "Label Propagation"
         },
         {
@@ -237,7 +240,7 @@
           "title": "HANP"
         },
         {
-          "file": "kmeans.md",
+          "file": "k-means.md",
           "title": "k-Means"
         },
         {
@@ -245,7 +248,7 @@
           "title": "kNN (k-Nearest Neighbors)"
         },
         {
-          "file": "k-1-coloring.md",
+          "file": "k1-coloring.md",
           "title": "K-1 Coloring"
         },
         {
@@ -258,70 +261,52 @@
       "folder": "graph-embedding",
       "pages": [
         {
-          "folder": "algorithms",
-          "pages": [
-            {
-              "file": "random-walk.md",
-              "title": "Random Walk"
-            },
-            {
-              "file": "node2vec-walk.md",
-              "title": "Node2Vec Walk"
-            },
-            {
-              "file": "node2vec.md",
-              "title": "Node2Vec"
-            },
-            {
-              "file": "struc2vec-walk.md",
-              "title": "Struc2Vec Walk"
-            },
-            {
-              "file": "struc2vec.md",
-              "title": "Struc2Vec"
-            },
-            {
-              "file": "graphsage.md",
-              "title": "GraphSAGE"
-            },
-            {
-              "file": "graphsage-train.md",
-              "title": "GraphSAGE Train"
-            },
-            {
-              "file": "line.md",
-              "title": "LINE"
-            },
-            {
-              "file": "fastrp.md",
-              "title": "Fast Random Projection"
-            }
-          ]
+          "file": "random-walk.md",
+          "title": "Random Walk"
         },
         {
-          "folder": "background-knowledge",
-          "pages": [
-            {
-              "file": "summary-of-graph-embedding.md",
-              "title": "Summary of Graph Embedding"
-            },
-            {
-              "file": "gradient-descent.md",
-              "title": "Gradient Descent"
-            },
-            {
-              "file": "backpropagation.md",
-              "title": "Backpropagation"
-            },
-            {
-              "file": "skip-gram.md",
-              "title": "Skip-gram"
-            },
-            {
-              "file": "skip-gram-optimization.md",
-              "title": "Skip-gram Optimization"
-            }
-          ]
+          "file": "node2vec-walk.md",
+          "title": "Node2Vec Walk"
+        },
+        {
+          "file": "node2vec.md",
+          "title": "Node2Vec"
+        },
+        {
+          "file": "struc2vec-walk.md",
+          "title": "Struc2Vec Walk"
+        },
+        {
+          "file": "struc2vec.md",
+          "title": "Struc2Vec"
+        },
+        {
+          "file": "line.md",
+          "title": "LINE"
+        },
+        {
+          "file": "fastrp.md",
+          "title": "Fast Random Projection"
+        },
+        {
+          "file": "summary-of-graph-embedding.md",
+          "title": "Summary of Graph Embedding"
+        },
+        {
+          "file": "gradient-descent.md",
+          "title": "Gradient Descent"
+        },
+        {
+          "file": "backpropagation.md",
+          "title": "Backpropagation"
+        },
+        {
+          "file": "skip-gram.md",
+          "title": "Skip-gram"
+        },
+        {
+          "file": "skip-gram-optimization.md",
+          "title": "Skip-gram Optimization"
         }
       ]
     }

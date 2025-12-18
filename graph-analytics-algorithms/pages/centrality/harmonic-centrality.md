@@ -1,34 +1,34 @@
 # Harmonic Centrality
 
-<div><span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ File Writeback</b></span> <span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ Property Writeback</b></span> <span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ Direct Return</b></span> <span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ Stream Return</b></span> <span class="flag" style="background-color:#eff1f5;color: #000000;"><b>✕ Stats</b></span><div>
+<div><span class="flag" style="background:#014d4e;color:#fff;"><b>HDC</b></span></div>
 
 ## Overview
 
-Harmonic Centrality is a variant of <a href="/docs/graph-analytics-algorithms/closeness-centrality">Closeness Centrality</a>. The average shortest distance measurement proposed by harmonic centrality is compatible with infinite values which would occur in disconnected graph. Harmonic centrality was first proposed by M. Marchiori and V. Latora in 2000, and then by A. Dekker and Y. Rochat in 2005 and 2009:
+Harmonic Centrality is a variant of <a target="_blank" href="/doc/graph-analytics-algorithms/closeness-centrality">Closeness Centrality</a>. The average shortest distance measurement proposed by harmonic centrality is compatible with infinite values which would occur in a disconnected graph. Harmonic centrality was first proposed by M. Marchiori and V. Latora in 2000, and then by A. Dekker and Y. Rochat in 2005 and 2009:
 
-- M. Marchiori, V. Latora, <a target="blank" href="https://arxiv.org/pdf/cond-mat/0008357.pdf">Harmony in the Small-World</a> (2000)
-- A. Dekker, <a target="blank" href="https://www.cmu.edu/joss/content/articles/volume6/dekker/">Conceptual Distance in Social Network Analysis</a> (2005)
-- Y. Rochat, <a target="blank" href="https://docslib.org/doc/524811/closeness-centrality-extended-to-unconnected-graphs-the-harmonic-centrality-index">Closeness Centrality Extended to Unconnected Graphs: The Harmonic Centrality Index</a> (2009)
+- M. Marchiori, V. Latora, <a target="_blank" href="https://arxiv.org/pdf/cond-mat/0008357.pdf">Harmony in the Small-World</a> (2000)
+- A. Dekker, <a target="_blank" href="https://www.cmu.edu/joss/content/articles/volume6/dekker/">Conceptual Distance in Social Network Analysis</a> (2005)
+- Y. Rochat, <a target="_blank" href="https://docslib.org/doc/524811/closeness-centrality-extended-to-unconnected-graphs-the-harmonic-centrality-index">Closeness Centrality Extended to Unconnected Graphs: The Harmonic Centrality Index</a> (2009)
 
-Harmonic centrality takes on values between 0 to 1, nodes with higher scores have shorter distances to all other nodes. 
+Harmonic centrality ranges from 0 to 1; higher scores indicate that a node is closer to other nodes in the graph.
 
 ## Concepts
 
 ### Shortest Distance
 
-The shortest distance of two nodes is the number of edges contained in the shortest path between them. Please refer to <a href="/docs/graph-analytics-algorithms/closeness-centrality">Closeness Centrality</a> for more details.
+The shortest distance between two nodes is defined as the number of edges in the shortest path connecting them. Please refer to <a target="_blank" href="/doc/graph-analytics-algorithms/closeness-centrality">Closeness Centrality</a> for more details.
 
 ### Harmonic Mean
 
-Harmonic mean is the inverse of the arithmetic mean of the inverses of the variables. The formula for calculating the arithmetic mean `A` and the harmonic mean `H` is as follows:
+The harmonic mean is the reciprocal of the arithmetic mean of the reciprocals of the variables. The formula for calculating the arithmetic mean `A` and the harmonic mean `H` is as follows:
 
 <center><img width="300" src="https://img.ultipa.cn/2022-08-08-11-08-40-mean.jpg"></center>
 
 A classic application of harmonic mean is to calculate the average speed when traveling back and forth at different speeds. Suppose there is a round trip, the forward and backward speeds are 30 km/h and 10 km/h respectively. What is the average speed for the entire trip?
 
-The arithmetic mean `A = (30+10)/2 = 20 km/h` does not seem reasonable in this case. Since the backward journey takes three times as long as the forward, during most time of the entire trip the speed stays at 10 km/h, so we expect the average speed to be closer to 10 km/h. 
+The arithmetic mean `A = (30+10)/2 = 20 km/h` is not appropriate in this case. Since the backward journey takes three times as long as the forward, during most time of the entire trip the speed stays at 10 km/h, so we expect the average speed to be closer to 10 km/h. 
 
-Assuming that one-way distance is 1, then the average speed that takes travel time into consideration is `2/(1/30+1/10) = 15 km/h`, and this is the harmonic mean, it is adjusted by the time spent during each journey.
+Assuming the one-way distance is 1, the average speed that takes travel time into consideration is `2/(1/30+1/10) = 15 km/h`. This value, the harmonic mean, is adjusted by the time spent during each journey.
 
 ### Harmonic Centrality
 
@@ -48,111 +48,226 @@ The harmonic centrality of node <i>a</i> in the above graph is `(1 + 1/2 + 1/+�
 
 - The harmonic centrality score of isolated nodes is 0. 
 
-## Syntax
+## Example Graph
 
-- Command: `algo(harmonic_centrality)`
-- Parameters:
+<div align=center drawio-diagram='19734' drawio-name="draw_9505cf4d05b6463aac6c69057482c569.jpg"><img src="https://img.ultipa.cn/draw/draw_9505cf4d05b6463aac6c69057482c569.jpg?v='1735028023494'"/></div>
 
-| <div table-width="13">Name</div> | <div table-width="8">Type</div> | <div table-width="10">Spec</div> | <div table-width="7">Default</div> | <div table-width="8">Optional</div> | Description |
+Run the following statements on an empty graph to define its structure and insert data:
+
+<div tab="code">
+
+```gql
+ALTER GRAPH CURRENT_GRAPH ADD NODE {
+  user ()
+};
+ALTER GRAPH CURRENT_GRAPH ADD EDGE {
+  vote ()-[{score uint32}]->()
+};
+INSERT (A:user {_id: "A"}),
+       (B:user {_id: "B"}),
+       (C:user {_id: "C"}),
+       (D:user {_id: "D"}),
+       (E:user {_id: "E"}),
+       (F:user {_id: "F"}),
+       (G:user {_id: "G"}),
+       (H:user {_id: "H"}),
+       (A)-[:vote {score: 2}]->(B),
+       (A)-[:vote {score: 3}]->(E),
+       (B)-[:vote {score: 4}]->(B),
+       (B)-[:vote {score: 2}]->(C),
+       (C)-[:vote {score: 3}]->(A),
+       (D)-[:vote {score: 1}]->(A),
+       (F)-[:vote {score: 1}]->(G);
+```
+
+```uql
+create().node_schema("user").edge_schema("vote");
+create().edge_property(@vote, "score", uint32);
+insert().into(@user).nodes([{_id:"A"},{_id:"B"},{_id:"C"},{_id:"D"},{_id:"E"},{_id:"F"},{_id:"G"},{_id:"H"}]);
+insert().into(@vote).edges([{_from:"A", _to:"B", score:2}, {_from:"A", _to:"E", score:3}, {_from:"B", _to:"B", score:4}, {_from:"B", _to:"C", score:2}, {_from:"C", _to:"A", score:3}, {_from:"D", _to:"A", score:1}, {_from:"F", _to:"G", score:1}]);
+```
+
+</div>
+
+## Creating HDC Graph
+
+To load the entire graph to the HDC server `hdc-server-1` as `my_hdc_graph`:
+
+<div tab="code">
+  
+```gql
+CREATE HDC GRAPH my_hdc_graph ON "hdc-server-1" OPTIONS {
+  nodes: {"*": ["*"]},
+  edges: {"*": ["*"]},
+  direction: "undirected",
+  load_id: true,
+  update: "static"
+}
+```
+
+```uql
+hdc.graph.create("my_hdc_graph", {
+  nodes: {"*": ["*"]},
+  edges: {"*": ["*"]},
+  direction: "undirected",
+  load_id: true,
+  update: "static"
+}).to("hdc-server-1")
+```
+
+</div>
+
+## Parameters
+
+Algorithm name: `harmonic_centrality`
+
+| <div table-width="18">Name</div> | <div table-width="9">Type</div> | <div table-width="8">Spec</div> | <div table-width="7">Default</div> | <div table-width="5">Optional</div> | Description |
 | -- | -- | -- |-- | -- | -- |
-| ids / uuids | []`_id` / []`_uuid` | / | / | Yes | ID/UUID of the nodes to calculate, calculate for all nodes if not set |
-| direction | string | `in`, `out` | / | Yes | Direction of all edges in each shortest path, `in` for incoming direction, `out` for outgoing direction |
-| sample_size | int | `-1`, `-2`, [1, V] | `-2` | Yes | Number of samples to compute centrality scores; `-1` means to sample `log(V)` nodes; `-2` means not to perform sampling; a number within [1, V] means to sample the set number of nodes; `sample_size` is only valid when `ids` (`uuids`) is ignored or when it specifies all nodes |
-| limit | int | ≥-1 | `-1` | Yes | Number of results to return, `-1` to return all results |
-| order | string | `asc`, `desc` | / | Yes | Sort nodes by the centrality score |
+| `ids` | []`_id` | / | / | Yes | Specifies nodes for computation by their `_id`. If unset, computation includes all nodes. |
+| `uuids` | []`_uuid` | / | / | Yes | Specifies nodes for computation by their `_uuid`. If unset, computation includes all nodes. |
+| `direction` | String | `in`, `out` | / | Yes |  Specifies that all edges in the shortest paths must be either incoming (`in`) or outgoing (`out`). |
+| `edge_schema_property` | []"`<@schema.?><property>`" | / | / | Yes | Specifies numeric edge properties used as weights by summing their values. Only properties of numeric type are considered, and edges without these properties are ignored. |
+| `impl_type` | String | `dijkstra`, `delta_stepping`, `spfa`, `beta` | `beta` | Yes | 	Specifies the algorithm used to compute weighted shortest paths: <a target="_blank" href="/docs/graph-analytics-algorithms/dijkstra-sssp">Dijkstra</a>, <a target="_blank" href="/docs/graph-analytics-algorithms/delta-stepping-sssp">Delta-Stepping</a>, <a target="_blank" href="/docs/graph-analytics-algorithms/spfa">SPFA</a> or the default (`beta`) Ultipa algorithm. Valid only when `edge_schema_property` is specified. |
+| `sample_size` | Integer | `-1`, `-2`, `[1, \|V\|]` | `-2` | Yes | Specifies the sampling strategy for computation:<br><ul><li>`-1`: Sample `log(\|V\|)` nodes</li><li>`[1, \|V\|]`: Sample a specific number of nodes (`\|V\|` is the total number of nodes in the graph)</li><li>`-2`: Disable sampling </li></ul>Valid only when all nodes are involved in the computation. |
+| `return_id_uuid` | String | `uuid`, `id`, `both` | `uuid` | Yes | Includes `_uuid`, `_id`, or both in the results to represent nodes. |
+| `limit` | Integer | ≥-1 | `-1` | Yes | Limits the number of results returned. Set to `-1` to include all results. |
+| `order` | String | `asc`, `desc` | / | Yes | Sorts the results by `harmonic_centrality`. |
 
-## Examples
+## File Writeback
 
-The example graph is as follows:
-
-<div align=center drawio-diagram='4938' drawio-name="draw_176185fd18ce40dab6984017fa7fe258.jpg"><img src="https://img.ultipa.cn/draw/draw_176185fd18ce40dab6984017fa7fe258.jpg?v='1733824393469'"/></div>
-
-### File Writeback
-
-| Spec | Content |
-| --- | --- |
-| filename | `_id`,`centrality` |
-
-```uql 
-algo(harmonic_centrality).params().write({
-  file:{ 
-    filename: 'centrality'
+<div tab="code">
+  
+```gql
+CALL algo.harmonic_centrality.write("my_hdc_graph", {
+  return_id_uuid: "id",
+  order: "desc"
+}, {
+  file: {
+    filename: "harmonic"
   }
 })
 ```
 
-Results: File <i>centrality</i>
-
-<p tit="File"></p>
-
-```
-LH,0
-LG,0.142857
-LF,0.142857
-LE,0.357143
-LD,0.357143
-LC,0.428571
-LB,0.428571
-LA,0.571429
+```uql
+algo(harmonic_centrality).params({
+  projection: "my_hdc_graph",
+  return_id_uuid: "id",
+  order: "desc"
+}).write({
+  file: {
+    filename: "harmonic"
+  }
+})
 ```
 
-### Property Writeback
+</div>
 
-| Spec | Content | Write to | Data Type |
-| --- | --- | --- | --- |
-| property | `centrality` | Node property | `float` |
+Result:
+
+<p tit="File: harmonic"></p>
+
+```
+_id,harmonic_centrality
+A,0.571429
+B,0.428571
+C,0.428571
+D,0.357143
+E,0.357143
+F,0.142857
+G,0.142857
+H,0
+```
+
+## DB Writeback
+
+Writes the `harmonic_centrality` values from the results to the specified node property. The property type is `float`.
+
+<div tab="code">
+
+```gql
+CALL algo.harmonic_centrality.write("my_hdc_graph", {}, 
+{
+  db: {
+    property: "hc"
+  }
+})
+```
 
 ```uql
-algo(harmonic_centrality).params().write({
+algo(harmonic_centrality).params({
+  projection: "my_hdc_graph"
+}).write({
   db:{ 
     property: 'hc'
   }
 })
 ```
 
-Results: Centrality score for each node is written to a new property named <i>hc</i>
+</div>
 
-### Direct Return
+## Full Return
 
-| Alias Ordinal | Type | <div table-width="30">Description</div> | Columns |
-| ------------- | ---- | ----------- | ----------- |
-| 0 | []perNode | Node and its centrality | `_uuid`, `centrality` |
-
-```uql
-algo(harmonic_centrality).params({
-  direction: 'out',
-  order: 'desc',
-  limit: 3
-}) as hc
-return hc
+<div tab="code">
+  
+```gql
+CALL algo.harmonic_centrality.run("my_hdc_graph", {
+  return_id_uuid: "id",
+  ids: ["A", "B"],
+  edge_schema_property: "score"
+}) YIELD hc
+RETURN hc
 ```
 
-Results: <i>hc</i>
-
-| \_uuid | centrality |
-| -- | -- |
-| 1	| 0.35714301 |
-| 4	| 0.33333299 |
-| 3	| 0.28571400 |
-
-### Stream Return
-
-| Alias Ordinal | Type | <div table-width="30">Description</div> | Columns |
-| ------------- | ---- | ----------- | ----------- |
-| 0 | []perNode | Node and its centrality | `_uuid`, `centrality` |
-
 ```uql
-algo(harmonic_centrality).params({
-  direction: 'in'
-}).stream() as hc
-where hc.centrality == 0
-return hc
+exec{
+  algo(harmonic_centrality).params({
+    return_id_uuid: "id",
+    ids: ["A", "B"],
+    edge_schema_property: "score"
+  }) as hc
+  return hc
+} on my_hdc_graph
 ```
 
-Results: <i>hc</i>
+</div>
 
-| \_uuid | centrality |
+Result:
+
+| \_id | harmonic_centrality |
 | -- | -- |
-| 8	| 0.0000000 |
-| 6	| 0.0000000 |
-| 4	| 0.0000000 |
+| A | 0.309523 |
+| B | 0.219048 |
+
+## Stream Return
+
+<div tab="code">
+  
+```gql
+CALL algo.harmonic_centrality.stream("my_hdc_graph", {
+  direction: "in",
+  return_id_uuid: "id"
+}) YIELD hc
+FILTER hc.harmonic_centrality = 0
+RETURN hc
+```
+
+```uql
+exec{
+  algo(harmonic_centrality).params({
+    direction: "in",
+    return_id_uuid: "id"
+  }).stream() as hc
+  where hc.harmonic_centrality == 0
+  return hc
+} on my_hdc_graph
+````
+
+</div>
+
+Result:
+
+| \_id | harmonic_centrality |
+| -- | -- |
+| D | 0 |
+| F | 0 |
+| H | 0 |

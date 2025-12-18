@@ -1,26 +1,26 @@
 # ArticleRank
 
-<div><span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ File Writeback</b></span> <span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ Property Writeback</b></span> <span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ Direct Return</b></span> <span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ Stream Return</b></span> <span class="flag" style="background-color:#eff1f5;color: #000000;"><b>✕ Stats</b></span></div>
+<div><span class="flag" style="background:#014d4e;color:#fff;"><b>HDC</b></span></div>
 
 ## Overview
 
-ArticleRank has been derived from <a href="/docs/graph-analytics-algorithms/pagerank">PageRank</a> to measure the influence of journal articles.
+ArticleRank has been derived from <a target = "_blank" href="/docs/graph-analytics-algorithms/pagerank">PageRank</a> to measure the influence of journal articles.
 
-- J. Li, P. Willett, <a target="blank" href="https://eprints.whiterose.ac.uk/10323/1/Willett_10323.pdf">ArticleRank: a PageRank-based Alternative to Numbers of Citations for Analysing Citation Networks</a> (2009)
+- J. Li, P. Willett, <a target="_blank" href="https://www.emerald.com/insight/content/doi/10.1108/00012530911005544/full/html">ArticleRank: a PageRank-based Alternative to Numbers of Citations for Analysing Citation Networks</a> (2009)
 
 ## Concepts
 
 ### ArticleRank
 
-Similar to links between webpages, citations between articles (books, reports, etc.) represent authoritativeness and high quality. It is normally assumed that the greater the number of citations that an article receives, the greater impact that article has within its particular research area. 
+Like links between webpages, citations between articles (e.g., books or reports) indicate authority and quality. It is generally assumed that the more citations an article receives, the greater its perceived impact within its research domain. 
 
-However, not all articles are equally important. Hence, this approach based on <a href="/docs/graph-analytics-algorithms/pagerank">PageRank</a> was proposed to rank articles.
+However, not all articles are equally important. Hence, this approach based on <a target="_blank" href="/docs/graph-analytics-algorithms/pagerank">PageRank</a> was proposed to rank articles.
 
 ArticleRank retains the basic PageRank methodology while making some modifications. When an article passes its rank among its forward links, it does not divide the rank equally by the out-degree of that article, but by the sum of the out-degree of that article and the average out-degree of all articles. The rank of article <i>u</i> after one iteration is:
 
 <center><img width=450 src="https://img.ultipa.cn/img/2023-03-23-17-47-45-ar.jpg"></center>
 
-where <i>B<sub>u</sub></i> is the backlink set of <i>u</i>, <i>d</i> is the damping factor. This change of the denominator reduces the bias that an article with very small out-degree makes a greater contribution to its forward links.
+where <i>B<sub>u</sub></i> is the backlink set of <i>u</i>, <i>d</i> is the damping factor. This change in the denominator reduces the bias that makes articles with few out-links seem to contribute more to their forward links.
 
 > The denominator of Ultipa's ArticleRank is different from the original paper while the core idea is the same.
 
@@ -29,126 +29,250 @@ where <i>B<sub>u</sub></i> is the backlink set of <i>u</i>, <i>d</i> is the damp
 In comparison with WWW, some features have to be considered for citation networks, such as:
 
 - An article cannot cite itself, i.e., there is no self-loop in the network.
-- Two articles cannot cite each other, i.e., an article cannot be both the forward link and the backlink of another article.
-- The citations in a published article will not change, i.e., the forward links of an article is fixed.
+- Mutual citations are not allowed; an article cannot be both a forward link and a backlink at the same time.
+- Citations in a published article are fixed, meaning its forward links remain static.
 
-## Syntax
+## Example Graph
 
-- Command: `algo(page_rank)`
-- Parameters:
+<div align=center drawio-diagram='19741' drawio-name='draw_6c32787d5acc41c6bff6286aa0316ee7.jpg'><img src="https://img.ultipa.cn/draw/draw_6c32787d5acc41c6bff6286aa0316ee7.jpg?v='1733821155263'"/></div>
 
-| <div table-width="13">Name</div> | <div table-width="7">Type</div> | <div table-width="10">Spec</div> | <div table-width="7">Default</div> | <div table-width="8">Optional</div> | Description |
-| -- | -- | -- |-- | -- | -- |
-| init_value | float | >0 | `0.2` | Yes | The same initial rank for all nodes |
-| loop_num | int | >=1 | `5` | Yes | Number of iterations |
-| damping | float | (0,1) | `0.8` | Yes | Damping factor |
-| weaken | int | `1`, `2` | `1` | No | For ArticleRank, keep it as `2`; `1` means to run <a href="/docs/graph-analytics-algorithms/pagerank">PageRank</a> |
-| limit | int | ≥-1 | `-1` | Yes | Number of results to return, `-1` to return all results |
-| order | string | `asc`, `desc` | / | Yes | Sort nodes by the rank |
-  
-## Examples
+Run the following statements on an empty graph to define its structure and insert data:
 
-The example graph is as follows:
+<div tab="code">
 
-<div align=center drawio-diagram='4882' drawio-name="draw_3567da410d274c708999de9375e546cb.jpg"><img src="https://img.ultipa.cn/draw/draw_3567da410d274c708999de9375e546cb.jpg?v='1733880744652'"/></div>
-
-### File Writeback
-
-| Spec | Content |
-| --- | --- |
-| filename | `_id`,`rank` |
+```gql
+ALTER GRAPH CURRENT_GRAPH ADD NODE {
+  book ()
+};
+ALTER GRAPH CURRENT_GRAPH ADD EDGE {
+  cite ()-[]->()
+};
+INSERT (book1:book {_id: "book1"}),
+       (book2:book {_id: "book2"}),
+       (book3:book {_id: "book3"}),
+       (book4:book {_id: "book4"}),
+       (book5:book {_id: "book5"}),
+       (book6:book {_id: "book6"}),
+       (book7:book {_id: "book7"}),       
+       (book1)-[:cite]->(book4),
+       (book1)-[:cite]->(book5),
+       (book2)-[:cite]->(book4),
+       (book3)-[:cite]->(book4),
+       (book4)-[:cite]->(book5),
+       (book4)-[:cite]->(book6);
+```
 
 ```uql
-algo(page_rank).params({
+create().node_schema("book").edge_schema("cite");
+insert().into(@book).nodes([{_id:"book1"}, {_id:"book2"}, {_id:"book3"}, {_id:"book4"}, {_id:"book5"}, {_id:"book6"}, {_id:"book7"}]);
+insert().into(@cite).edges([{_from:"book1", _to:"book4"}, {_from:"book1", _to:"book5"}, {_from:"book2", _to:"book4"}, {_from:"book3", _to:"book4"}, {_from:"book4", _to:"book5"}, {_from:"book4", _to:"book6"}]);
+```
+
+</div>
+
+## Creating HDC Graph
+
+To load the entire graph to the HDC server `hdc-server-1` as `my_hdc_graph`:
+
+<div tab="code">
+  
+```gql
+CREATE HDC GRAPH my_hdc_graph ON "hdc-server-1" OPTIONS {
+  nodes: {"*": ["*"]},
+  edges: {"*": ["*"]},
+  direction: "undirected",
+  load_id: true,
+  update: "static"
+}
+```
+
+```uql
+hdc.graph.create("my_hdc_graph", {
+  nodes: {"*": ["*"]},
+  edges: {"*": ["*"]},
+  direction: "undirected",
+  load_id: true,
+  update: "static"
+}).to("hdc-server-1")
+```
+
+</div>
+
+## Parameters
+
+Algorithm name: `page_rank`
+
+| <div table-width="18">Name</div> | <div table-width="10">Type</div> | <div table-width="7">Spec</div> | <div table-width="7">Default</div> | <div table-width="5">Optional</div> | Description |
+| -- | -- | -- |-- | -- | -- |
+| `init_value` | Float | >0 | `0.2` | Yes | The initial rank assigned to all nodes. |
+| `loop_num` | Integer | ≥1 | `5` | Yes | The maximum number of iteration rounds. The algorithm terminates after all iterations are completed. |
+| `damping` | Float | (0,1) | `0.8` | Yes | The damping factor. |
+| `weaken` | Integer | `1`, `2` | `1` | Yes | Keeps it as `2` for ArticleRank. Sets to `1` will run <a target = "_blank" href="/docs/graph-analytics-algorithms/pagerank">PageRank</a>. |
+| `return_id_uuid` | String | `uuid`, `id`, `both` | `uuid` | Yes | Includes `_uuid`, `_id`, or both values to represent nodes in the results. |
+| `limit` | Integer | ≥-1 | `-1` | Yes | Limits the number of results returned; `-1` includes all results. |
+| `order` | String | `asc`, `desc` | / | Yes | Sorts the results by `rank`. |
+
+## File Writeback
+
+<div tab="code">
+  
+```gql  
+CALL algo.page_rank.write("my_hdc_graph", {
+  return_id_uuid: "id",
   init_value: 1,
   loop_num: 50,
   damping: 0.8,
   weaken: 2,
-  order: 'desc'
-}).write({
-    file: {filename: 'rank'}
+  order: "desc"
+}, {
+  file: {
+    filename: "article_rank"
+  }
 })
 ```
 
-Results: File <i>rank</i>
+```uql
+algo(page_rank).params({
+  projection: "my_hdc_graph",
+  return_id_uuid: "id",
+  init_value: 1,
+  loop_num: 50,
+  damping: 0.8,
+  weaken: 2,
+  order: "desc"
+}).write({
+  file: {
+    filename: "article_rank"
+  }
+})
+```
 
-<p tit="File"></p>
+</div>
+
+Result:
+
+<p tit="File: article_rank" ></p>
 
 ```
+_id,rank
 book4,0.428308
 book5,0.375926
 book6,0.319926
-book7,0.2
-book3,0.2
 book2,0.2
+book3,0.2
+book7,0.2
 book1,0.2
 ```
 
-### Property Writeback
+## DB Writeback
 
-| Spec | Content | Write to | Data Type |
-| --- | --- | --- | --- |
-| property | `rank` | Node property | `float` |
+Writes the `rank` values from the results to the specified node property. The property type is `float`.
 
-```uql
-algo(page_rank).params({
+<div tab="code">
+  
+```gql  
+CALL algo.page_rank.write("my_hdc_graph", {
   loop_num: 50,
-  weaken: 2
-}).write({
-  db:{property: 'AR'}
+  weaken: 2 
+}, {
+  db: {
+    property: "rank"
+  }
 })
 ```
 
-Results: Rank for each node is written to a new property named <i>AR</i>
-
-### Direct Return
-
-| Alias Ordinal| Type | Description | Columns |
-| --------- | ---- | ----------- | ----------- |
-| 0 | []perNode | Node and its rank | `_uuid`, `rank` |
-
 ```uql
 algo(page_rank).params({
+  projection: "my_hdc_graph",
+  loop_num: 50,
+  weaken: 2  
+}).write({
+  db:{ 
+    property: 'rank'
+  }
+})
+```
+
+</div>
+
+## Full Return
+
+<div tab="code">
+  
+```gql  
+CALL algo.page_rank.run("my_hdc_graph", {
+  return_id_uuid: "id",
   init_value: 1,
   loop_num: 50,
   damping: 0.8,
   weaken: 2,
-  order: 'desc',
+  order: "desc",
   limit: 3
-}) as AR 
-return AR
+}) YIELD AR
+RETURN AR
 ```
 
-Results: <i>PR</i>
-
-| \_uuid | rank |
-| -- | -- |
-| 4 | 0.42830801 |
-| 5 | 0.37592599 |
-| 6 | 0.31992599 |
-
-### Stream Return
-
-| Alias Ordinal| Type | Description | Columns |
-| ------------- | ---- | ----------- | ----------- |
-| 0 | []perNode | Node and its rank | `_uuid`, `rank` |
-
 ```uql
-algo(page_rank).params({
+exec{
+  algo(page_rank).params({
+    return_id_uuid: "id",
+    init_value: 1,
+    loop_num: 50,
+    damping: 0.8,
+    weaken: 2,
+    order: "desc",
+    limit: 3
+  }) as AR
+  return AR
+} on my_hdc_graph
+```
+  
+</div>
+
+Result:
+
+| \_id | rank |
+| -- | -- |
+| book4 | 0.428308 |
+| book5 | 0.375926 |
+| book6 | 0.319926 |
+
+## Stream Return
+
+<div tab="code">
+  
+```gql  
+CALL algo.page_rank.stream("my_hdc_graph", {
+  return_id_uuid: "id",
   loop_num: 50,
   damping: 0.8,
   weaken: 2,
-  order: 'desc',
+  order: "desc",
   limit: 3
-}).stream() as AR 
-find().nodes({_uuid == AR._uuid}) as nodes
-return table(nodes._id, AR.rank)
+}) YIELD AR
+RETURN AR
 ```
 
-Results: <i>table(nodes._id, AR.rank)</i>
+```uql
+exec{
+  algo(page_rank).params({
+    return_id_uuid: "id",
+    loop_num: 50,
+    damping: 0.8,
+    weaken: 2,
+    order: "desc",
+    limit: 3
+  }).stream() as AR
+  return AR
+} on my_hdc_graph
+````
 
-| nodes.\_id | AR.rank |
+</div>
+
+Result:
+
+| \_id | rank |
 | -- | -- |
-| book4 | 0.42830801 |
-| book5 | 0.37592599 |
-| book6 | 0.31992599 |
+| book4 | 0.428308 |
+| book5 | 0.375926 |
+| book6 | 0.319926 |

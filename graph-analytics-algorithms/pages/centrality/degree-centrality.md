@@ -1,6 +1,6 @@
 # Degree Centrality
 
-<div><span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ File Writeback</b></span> <span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ Property Writeback</b></span> <span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ Direct Return</b></span> <span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ Stream Return</b></span> <span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ Stats</b></span></div>
+<div><span class="flag" style="background:#014d4e;color:#fff;"><b>HDC</b></span> <span class="flag" style="background:#014d4e;color:#fff;"><b>Distributed</b></span></div>
 
 ## Overview
 
@@ -14,7 +14,7 @@ The number of incoming edges a node has is called its <b>in-degree</b>; accordin
 
 <div align=center drawio-diagram='1443' drawio-name="draw_c79beb875cd64cdfa0e3cb4647110abb.jpg"><img src="https://img.ultipa.cn/draw/draw_c79beb875cd64cdfa0e3cb4647110abb.jpg?v='1642759847524'"/></div>
 
-In this graph, the red node has in-degree of 4 and out-degree of 3, and its degree is 7. Directed self-loop is regarded as an incoming edge and an outgoing edge.
+In this graph, the red node has in-degree of 4 and out-degree of 3, and its degree is 7. A directed self-loop is regarded as both an incoming and an outgoing edge.
 
 ### Weighted Degree
 
@@ -26,67 +26,162 @@ In this weighted graph, the red node has weighted in-degree of `0.5 + 0.3 + 2 + 
 
 ## Considerations
 
-- Degree of isolated node only depends on its self-loop. If it has no self-loop, degree is 0.
-- Every self-loop is counted as 2 edges attaching to its node. Directed self-loop is viewed as an incoming edge and an outgoing edge.
+- The degree of an isolated node depends only on its self-loop. If it has no self-loop, degree is 0.
+- Every self-loop is counted as two edges attaching to its node. Directed self-loop is viewed as an incoming edge and an outgoing edge.
 
-## Syntax
+## Example Graph
 
-- Command: `algo(degree)`
-- Parameters:
+<div align=center drawio-diagram='19442' drawio-name='draw_cece848c2c7548dab62312fa5c57f0a3.jpg'><img src="https://img.ultipa.cn/draw/draw_cece848c2c7548dab62312fa5c57f0a3.jpg?v='1730948974639'"/></div>
 
-| Name | Type | <div table-width="7">Spec</div> | <div table-width="7">Default</div> | <div table-width="8">Optional</div> | <div table-width="30">Description</div> |
+Run the following statements on an empty graph to define its structure and insert data:
+
+<div tab="code">
+
+```gql
+ALTER GRAPH CURRENT_GRAPH ADD NODE {
+  user ()
+};
+ALTER GRAPH CURRENT_GRAPH ADD EDGE {
+  follow ()-[{score float}]->()
+};
+INSERT (Mike:user {_id: "Mike"}),
+       (Cathy:user {_id: "Cathy"}),
+       (Anna:user {_id: "Anna"}),
+       (Joe:user {_id: "Joe"}),
+       (Sam:user {_id: "Sam"}),
+       (Bob:user {_id: "Bob"}),
+       (Bill:user {_id: "Bill"}),
+       (Tim:user {_id: "Tim"}),
+       (Mike)-[:follow {score: 1.9}]->(Cathy),
+       (Cathy)-[:follow {score: 1.8}]->(Mike),
+       (Mike)-[:follow {score: 1.2}]->(Anna),
+       (Cathy)-[:follow {score: 2.6}]->(Anna),
+       (Cathy)-[:follow {score: 0.2}]->(Joe),
+       (Joe)-[:follow {score: 4.2}]->(Anna),
+       (Bob)-[:follow {score: 1.7}]->(Joe),
+       (Sam)-[:follow {score: 3.5}]->(Bob),
+       (Sam)-[:follow {score: 0.8}]->(Anna),
+       (Bill)-[:follow {score: 2.3}]->(Anna);
+```
+
+```uql
+create().node_schema("user").edge_schema("follow");
+create().edge_property(@follow, "score", float);
+insert().into(@user).nodes([{_id:"Mike"},{_id:"Cathy"},{_id:"Anna"},{_id:"Joe"},{_id:"Sam"},{_id:"Bob"},{_id:"Bill"},{_id:"Tim"}]);
+insert().into(@follow).edges([{_from:"Mike", _to:"Cathy", score:1.9}, {_from:"Cathy", _to:"Mike", score:1.8}, {_from:"Mike", _to:"Anna", score:1.2},{_from:"Cathy", _to:"Anna", score:2.6},{_from:"Cathy", _to:"Joe", score:0.2},{_from:"Joe", _to:"Anna", score:4.2},{_from:"Bob", _to:"Joe", score:1.7},{_from:"Sam", _to:"Bob", score:3.5},{_from:"Sam", _to:"Anna", score:0.8},{_from:"Bill", _to:"Anna", score:2.3}]);
+```
+
+</div>
+
+## Running on HDC Graphs
+
+### Creating HDC Graph
+
+To load the entire graph to the HDC server `hdc-server-1` as `my_hdc_graph`:
+
+<div tab="code">
+  
+```gql
+CREATE HDC GRAPH my_hdc_graph ON "hdc-server-1" OPTIONS {
+  nodes: {"*": ["*"]},
+  edges: {"*": ["*"]},
+  direction: "undirected",
+  load_id: true,
+  update: "static"
+}
+```
+
+```uql
+hdc.graph.create("my_hdc_graph", {
+  nodes: {"*": ["*"]},
+  edges: {"*": ["*"]},
+  direction: "undirected",
+  load_id: true,
+  update: "static"
+}).to("hdc-server-1")
+```
+
+</div>
+
+### Parameters
+
+Algorithm name: `degree`
+
+| <div table-width="14">Name</div> | <div table-width="10">Type</div> | <div table-width="7">Spec</div> | <div table-width="7">Default</div> | <div table-width="5">Optional</div> | Description |
 | -- | -- | -- |-- | -- | -- |
-| ids / uuids | []`_id` / []`_uuid` | / | / | Yes | ID/UUID of the nodes to calculate, calculate for all nodes if not set |
-| edge_schema_property | []`@<schema>?.<property>` | Numeric type, must LTE | / | Yes | Edge property(-ies) to use as edge weight(s), where the values of multiple properties are summed up |
-| direction | string | `in`, `out` | / | Yes | `in` for in-degree, `out` for out-degree |
-| limit | int | ≥-1 | `-1` | Yes | Number of results to return, `-1` to return all results |
-| order | string | `asc`, `desc` | / | Yes | Sort nodes by the size of degree |
-
-## Examples
-
-The example is a social network, edge property <i>@follow.score</i> can be used as weights:
-
-<div align='center' drawio-diagram='4936' drawio-name='draw_8b86fa9e21e145d181c9d11dbcb59081.jpg'><img src="https://img.ultipa.cn/draw/draw_8b86fa9e21e145d181c9d11dbcb59081.jpg?v='1680579330133'"/></div>
+| `ids` | []`_id` | / | / | Yes | Specifies nodes for computation by their `_id`. If unset, computation includes all nodes. |
+| `uuids` | []`_uuid` | / | / | Yes | Specifies nodes for computation by their `_uuid`. If unset, computation includes all nodes. |
+| `edge_schema_property` | []"`<@schema.?><property>`" | / | / | Yes | Specifies numeric edge properties used to compute weighted degrees by summing their values. Only properties of numeric type are considered, and edges without these properties are ignored. |
+| `direction` | String | `in`, `out` | / | Yes | Specifies `in` for in-degrees, `out` for out-degrees. If unset, general degree is computed. |
+| `return_id_uuid` | String | `uuid`, `id`, `both` | `uuid` | Yes | Includes `_uuid`, `_id`, or both values in the results to represent nodes. |
+| `limit` | Integer | ≥-1 | `-1` | Yes | Limits the number of results returned. Set to `-1` to include all results. |
+| `order` | String | `asc`, `desc` | / | Yes | Sorts the results by `degree_centrality`. |
 
 ### File Writeback
 
-| Spec | Content |
-| --- | --- |
-| filename | `_id`,`degree` |
-
-```uql
-algo(degree).params().write({
-  file:{ 
-    filename: 'degree_all'
+<div tab="code">
+  
+```gql  
+CALL algo.degree.write("my_hdc_graph", {
+  return_id_uuid: "id",
+  order: "desc"
+}, {
+  file: {
+    filename: "degree"
   }
 })
 ```
 
-Statistics: total_degree = 20, average_degree = 2.25<br>
-Results: File <i>degree_all</i>
+```uql
+algo(degree).params({
+  projection: "my_hdc_graph",
+  return_id_uuid: "id",
+  order: "desc"
+}).write({
+  file: {
+    filename: "degree"
+  }
+})
+```
 
-<p tit="File"></p>
+</div>
+
+Result:
+
+<p tit="File: degree"></p>
 
 ```
-Tim,0
-Bill,1
-Bob,2
-Sam,2
-Joe,3
+_id,degree_centrality
 Anna,5
 Cathy,4
+Joe,3
 Mike,3
+Bob,2
+Sam,2
+Bill,1
+Tim,0
 ```
 
-### Property Writeback
+### DB Writeback
 
-| Spec | Content | Write to | Data Type |
-| --- | --- | --- | --- |
-| property | `degree` | Node property | `double` |
+Writes the `degree_centrality` values from the results to the specified node property. The property type is `double`.
+
+<div tab="code">
+  
+```gql
+CALL algo.degree.write("my_hdc_graph", {
+  edge_schema_property: 'score'
+}, {
+  db: {
+    property: "degree"
+  }
+})
+```
 
 ```uql
 algo(degree).params({
-  edge_schema_property: '@follow.score'
+  projection: "my_hdc_graph",
+  edge_schema_property: 'score'
 }).write({
   db:{ 
     property: 'degree'
@@ -94,82 +189,192 @@ algo(degree).params({
 })
 ```
 
-Statistics: total_degree = 40.4, average_degree = 5.05<br>
-Results: Degree for each node is written to a new property named <i>degree</i>, statistics is returned at the same time
+</div>
 
-### Direct Return
+### Full Return
 
-| <div table-width="15">Alias Ordinal</div> | <div table-width="12">Type</div> | Description | Columns |
-| ------------- | ---- | ----------- | ----------- |
-| 0 | []perNode | Node and its degree | `_uuid`, `degree` |
-| 1 | KV | Total and average degree of all nodes | `total_degree`, `average_degree` |
-
-```uql
-algo(degree).params({ 
-  edge_schema_property: '@follow.score',
-  order: 'desc' 
-}) as degree, stats
-return degree, stats
+<div tab="code">
+  
+```gql
+CALL algo.degree.run("my_hdc_graph", {
+  edge_schema_property: 'score',
+  return_id_uuid: "id",
+  order: 'desc'
+}) YIELD r
+RETURN r
 ```
 
-Results: <i>degree</i> and <i>stats</i>
+```uql
+exec{
+  algo(degree).params({
+    edge_schema_property: 'score',
+    return_id_uuid: "id",
+    order: 'desc'
+  }) as r
+  return r
+} on my_hdc_graph
+```
 
-| \_uuid | degree |
-| ------ | ------ |
-| 3 | 11.1 |
-| 2 | 6.5 |
-| 4 | 6.1 |
-| 6 | 5.2 |
-| 1 | 4.9 |
-| 5 | 4.3 |
-| 7 | 2.3 |
-| 8 | 0 |
+</div>
 
-| total_degree | average_degree |
-| ------------ | -------------- |
-| 40.4 | 5.05 |
+Result:
+
+| \_id | degree_centrality |
+| -- | -- |
+| Anna | 11.1 |
+| Cathy | 6.5 |
+| Joe | 6.1 |
+| Bob | 5.2 |
+| Mike | 4.9 |
+| Sam | 4.3 |
+| Bill | 2.3 |
+| Tim | 0 |
 
 ### Stream Return
 
-| <div table-width="15">Alias Ordinal</div> | <div table-width="12">Type</div> | Description | Columns |
-| ------------- | ---- | ----------- | ----------- |
-| 0 | []perNode | Node and its degree | `_uuid`, `degree` |
+To find neighbors of the node with the highest out-degree:
 
-Example: Find 1-hop neighbors of the node with the highest degree, return all information of those neighbors
-```uql
-algo(degree).params({
-  order: 'desc',
-  limit: 1 
-}).stream() as results
-khop().src({_uuid == results._uuid}).depth(1) as neighbors
-return neighbors{*}
+<div tab="code">
+  
+```gql
+CALL algo.degree.stream("my_hdc_graph", {
+  direction: "out",
+  order: "desc",
+  limit: 1
+}) YIELD outTop1
+MATCH (src WHERE src._uuid = outTop1._uuid)-(neigh)
+RETURN DISTINCT neigh._id
 ```
 
-Results: <i>neighbors</i>
+```uql
+exec{
+  algo(degree).params({
+    direction: "out",
+    order: "desc",
+    limit: 1 
+  }).stream() as outTop1
+  khop().src({_uuid == outTop1._uuid}).depth(1) as neigh
+  return neigh._id
+} on my_hdc_graph
+```
 
-| \_id | \_uuid |
-| -- | -- |
-| Bill | 7 |
-| Sam | 5 |
-| Joe | 4 |
-| Cathy | 2 |
-| Mike | 1 |
+</div>
 
-### Stats Return
+Result:
 
-| <div table-width="15">Alias Ordinal</div> | <div table-width="6">Type</div> | Description | Columns |
-| ----- | ---- | ----------- | ----------- |
-| 0 | KV | Total and average degree of all nodes | `total_degree`, `average_degree` |
+| neigh.\_id |
+| -- |
+| Anna |
+| Joe |
+| Mike |
+
+## Running on Distributed Projections
+
+### Creating Distributed Projection
+
+To project the entire graph to its shard servers as `myProj`:
+
+<div tab="code">
+
+```gql
+CREATE PROJECTION myProj OPTIONS {
+  nodes: {"*": ["*"]}, 
+  edges: {"*": ["*"]},
+  direction: "undirected",
+  load_id: true
+}
+```
+  
+```uql
+create().projection("myProj", {
+  nodes: {"*": ["*"]}, 
+  edges: {"*": ["*"]},
+  direction: "undirected",
+  load_id: true
+})
+```
+
+</div>
+
+### Parameters
+
+Algorithm name: `degree`
+
+| <div table-width="14">Name</div> | <div table-width="10">Type</div> | <div table-width="7">Spec</div> | <div table-width="5">Default</div> | <div table-width="5">Optional</div> | Description |
+| -- | -- | -- |-- | -- | -- |
+| `edge_schema_property` | "`<@schema.?><property>`" | / | / | Yes | Specifies numeric edge properties used to compute weighted degrees. Only properties of numeric type are considered, and edges without these properties are ignored. |
+| `direction` | String | `in`, `out` | / | Yes | Specifies `in` for in-degrees, `out` for out-degrees. If unset, general degree is computed. |
+| `limit` | Integer | ≥-1 | `-1` | Yes | Limits the number of results returned. Set to `-1` to include all results. |
+| `order` | String | `asc`, `desc` | / | Yes | Sorts the results by `degree_centrality`. |
+
+### File Writeback
+
+<div tab="code">
+  
+```gql  
+CALL algo.degree.write("myProj", {
+  order: "desc"
+}, {
+  file: {
+    filename: "degree"
+  }
+})
+```
 
 ```uql
 algo(degree).params({
-  direction: 'out'
-}).stats() as stats
-return stats
+  projection: "myProj",
+  order: "desc"
+}).write({
+  file: {
+    filename: "degree"
+  }
+})
 ```
 
-Results: <i>stats</i>
+</div>
 
-| total_degree | average_degree |
-| ------------ | -------------- |
-| 10 | 1.25 |
+Result:
+
+<p tit="File: degree"></p>
+
+```
+_id,degree_centrality
+Anna,5
+Cathy,4
+Joe,3
+Mike,3
+Bob,2
+Sam,2
+Bill,1
+Tim,0
+```
+
+### DB Writeback
+
+Writes the `degree_centrality` values from the results to the specified node property. The property type is `double`.
+
+<div tab="code">
+  
+```gql
+CALL algo.degree.write("myProj", {
+  edge_schema_property: 'score'
+}, {
+  db: {
+    property: "degree"
+  }
+})
+```
+
+```uql
+algo(degree).params({
+  projection: "myProj",
+  edge_schema_property: 'score'
+}).write({
+  db:{ 
+    property: 'degree'
+  }
+})
+```
+  
+</div>

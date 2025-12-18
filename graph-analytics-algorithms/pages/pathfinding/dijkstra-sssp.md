@@ -1,12 +1,12 @@
 # Dijkstra's Single-Source Shortest Path
 
-<div><span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ File Writeback</b></span> <span class="flag" style="background-color:#eff1f5;color: #000000;"><b>✕ Property Writeback</b></span> <span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ Direct Return</b></span> <span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ Stream Return</b></span> <span class="flag" style="background-color:#eff1f5;color: #000000;"><b>✕ Stats</b></span></div>
+<div><span class="flag" style="background:#014d4e;color:#fff;"><b>HDC</b></span></div>
 
 ## Overview
 
-The <b>single-source shortest path (SSSP)</b> problem is that of computing, for each node that is reachable from the source node, the shortest path with the minimum total edge weights among all possible paths; or in the case of unweighted graphs, the shortest path with the minimum number of edges. The cost (or distance) of the shortest path is the total edge weights or the number of edges.
+The <b>single-source shortest path (SSSP)</b> problem involves finding the shortest paths from a given source node to all other reachable nodes in a graph. In weighted graphs, the shortest path minimizes the total edge weights; in unweighted graphs, it minimizes the number of edges (hops). The cost or distance of a path refers to this total weight or count.
 
-The original Dijkstra's algorithm was conceived by Dutch computer scientist Edsger W. Dijkstra in 1956 to find the shortest path between two given nodes. Single-source shortest path is a common variant, facilitating effective path planning and network analysis.
+The concept was introduced by Dutch computer scientist Edsger W. Dijkstra in 1956, originally to determine the shortest path between two nodes. The single-source shortest path is a common variant, facilitating efficient path planning and network analysis.
 
 ## Concepts
 
@@ -14,11 +14,11 @@ The original Dijkstra's algorithm was conceived by Dutch computer scientist Edsg
 
 Below is the basic implementation of the Dijkstra's Single-Source Shortest Path algorithm, along with an example to compute the weighted shortest paths in an undirected graph starting from the source node <i>b</i>:
 
-1\. Create a priority queue to store nodes and their corresponding distances from the source node. Initialize the distance of the source node as 0 and the distances of all other nodes as infinity. All node are marked as unvisited.
+1\. Create a priority queue to store nodes and their corresponding distances from the source node. Initialize the distance of the source node as 0 and the distances of all other nodes as infinity. All nodes are marked as unvisited.
 
 <div align=center drawio-diagram='6315' drawio-name="draw_4571683ba8384a1f966b9c8aedc12f2b.jpg"><img src="https://img.ultipa.cn/draw/draw_4571683ba8384a1f966b9c8aedc12f2b.jpg?v='1689215708126'"/></div>
 
-2\. Extract the node with the minimum distance from the queue and mark it as visited, relax all its <i>unvisited</i> neighbors.
+2\. Extract the node with the minimum distance from the queue, mark it as visited, and relax each of its <i>unvisited</i> neighbors.
 
 <div align=center drawio-diagram='6318' drawio-name="draw_f48205a154934dc7bee0a7a74a929206.jpg"><img src="https://img.ultipa.cn/draw/draw_f48205a154934dc7bee0a7a74a929206.jpg?v='1689215747833'"/></div>
 
@@ -26,7 +26,7 @@ Below is the basic implementation of the Dijkstra's Single-Source Shortest Path 
 
 > The term <i>relaxation</i> refers to the process of updating the distance of a node <i>v</i> that is connected to node <i>u</i> to a potential shorter distance by considering the path through node <i>u</i>. Specifically, the distance of node v is updated to <i>dist(v) = dist(u) + w(u,v)</i>, where <i>w(u,v)</i> is the weight of the edge <i>(u,v)</i>. This update is performed only if the current <i>dist(v)</i> is greater than <i>dist(u) + w(u,v)</i>.
   
-> Once a node has been marked as visited, its shortest path has been fixed and its distance will not change during the rest of the algorithm. The algorithm only updates the distances of node that have not been visited yet.
+> Once a node is marked as visited, its shortest path is fixed, and its distance will no longer change throughout the remainder of the algorithm. The algorithm only updates the distances of nodes that have not yet been visited.
 
 3\. Repeat step 2 until all nodes are visited.
 
@@ -56,246 +56,266 @@ Below is the basic implementation of the Dijkstra's Single-Source Shortest Path 
 
 ## Considerations
 
-- The Dijkstra's algorithm is only applicable to graphs with non-negative edge weights. If negative weights are present, the Dijkstra's algorithm might produce false results. In this case, a different algorithm like the <a href="/docs/graph-analytics-algorithms/spfa/">SPFA</a> should be used.
-- If there are multiple shortest paths exist between two nodes, all of them will be found.
-- In disconnected graphs, the algorithm only outputs the shortest paths from the source node to all nodes belonging to the same connected component as the source node.
+- The Dijkstra's algorithm applies only to graphs with non-negative edge weights. If negative weights exist, Dijkstra's algorithm may yield incorrect results. In this case, a different algorithm like the <a target="_blank"  href="/docs/graph-analytics-algorithms/spfa/">SPFA</a> should be used instead.
+- If multiple shortest paths exist between two nodes, the algorithm will find all of them.
+- In disconnected graphs, the algorithm only outputs the shortest paths from the source node to nodes within the same connected component.
 
-## Syntax
+## Example Graph
 
-- Command: `algo(sssp)`
-- Parameters:
+<div align=center drawio-diagram='19967' drawio-name="draw_7af94365879e4db296e631ae113fa4c9.jpg"><img src="https://img.ultipa.cn/draw/draw_7af94365879e4db296e631ae113fa4c9.jpg?v='1734942494454'"/></div>
 
-| <div table-width="15">Name</div> | <div table-width="8">Type</div> | <div table-width="9">Spec</div> | <div table-width="9">Default</div> | <div table-width="8">Optional</div> | Description |
+Run the following statements on an empty graph to define its structure and insert data:
+
+<div tab="code">
+
+```gql
+ALTER EDGE default ADD PROPERTY {
+  value int32
+};
+INSERT (A:default {_id: "A"}),
+       (B:default {_id: "B"}),
+       (C:default {_id: "C"}),
+       (D:default {_id: "D"}),
+       (E:default {_id: "E"}),
+       (F:default {_id: "F"}),
+       (G:default {_id: "G"}),
+       (A)-[:default {value: 2}]->(B),
+       (A)-[:default {value: 4}]->(F),
+       (B)-[:default {value: 3}]->(C),
+       (B)-[:default {value: 3}]->(D),
+       (B)-[:default {value: 6}]->(F),
+       (D)-[:default {value: 2}]->(E),
+       (D)-[:default {value: 2}]->(F),
+       (E)-[:default {value: 3}]->(G),
+       (F)-[:default {value: 1}]->(E);
+```
+
+```uql
+create().edge_property(@default, "value", int32);
+insert().into(@default).nodes([{_id:"A"}, {_id:"B"}, {_id:"C"}, {_id:"D"}, {_id:"E"}, {_id:"F"}, {_id:"G"}]);
+insert().into(@default).edges([{_from:"A", _to:"B", value:2}, {_from:"A", _to:"F", value:4}, {_from:"B", _to:"F", value:6}, {_from:"B", _to:"C", value:3}, {_from:"B", _to:"D", value:3}, {_from:"D", _to:"F", value:2}, {_from:"F", _to:"E", value:1}, {_from:"D", _to:"E", value:2}, {_from:"E", _to:"G", value:3}]);
+```
+
+</div>
+
+## Creating HDC Graph
+
+To load the entire graph to the HDC server `hdc-server-1` as `my_hdc_graph`:
+
+<div tab="code">
+  
+```gql
+CREATE HDC GRAPH my_hdc_graph ON "hdc-server-1" OPTIONS {
+  nodes: {"*": ["*"]},
+  edges: {"*": ["*"]},
+  direction: "undirected",
+  load_id: true,
+  update: "static"
+}
+```
+
+```uql
+hdc.graph.create("my_hdc_graph", {
+  nodes: {"*": ["*"]},
+  edges: {"*": ["*"]},
+  direction: "undirected",
+  load_id: true,
+  update: "static"
+}).to("hdc-server-1")
+```
+
+</div>
+
+## Parameters
+
+Algorithm name: `sssp`
+
+| <div table-width="17">Name</div> | <div table-width="9">Type</div> | <div table-width="8">Spec</div> | <div table-width="9">Default</div> | <div table-width="5">Optional</div> | Description |
 | -- | -- | -- |-- | -- | -- |
-| ids / uuids | `_id` / `_uuid` | / | / | No | ID/UUID of the single source node |
-| direction | string | `in`, `out` | / | Yes | Direction of the shortest path, ignore the edge direction if not set |
-| edge_schema_property | []`@schema?.property` | Numeric type, must LTE	| / | Yes | One or multiple edge properties to be used as edge weights, where the values of multiple properties are summed up; treat the graph as unweighted if not set |
-| record_path | int | `0`, `1` | `0` | Yes | `1` to return the shortest paths, `0` to return the shortest distances |
-| sssp_type | string | `dijkstra` | `dijkstra` | Yes | To run the Dijkstra's SSSP algorithm, keep it as `dijkstra` |
-| limit | int | ≥-1 | `-1` | Yes | Number of results to return, `-1` to return all results |
-| order	| string | `asc`, `desc` | / | Yes | Sort nodes by the shortest distance from the source node |
+| `ids` | `_id` | / | / | No | Specifies a single source node by its `_id`. |
+| `uuids` | `_uuid` | / | / | No | Specifies a single source node by its `_uuid`. |
+| `direction` | String | `in`, `out` | / | Yes | Specifies that the shortest paths should only contain incoming edges (`in`) or outgoing edges (`out`); edge direction is ignored if it is unset. |
+| `edge_schema_property` | []"`<@schema.?><property>`"| / | / | Yes | Specifies numeric edge properties used as weights by summing their values. Only properties of numeric type are considered, and edges without these properties are ignored. |
+| `record_path` | Integer | `0`, `1` | `0` | Yes | Whether to include the shortest paths in the results; sets to `1` to return the `totalCost` and the shortest paths, or to `0` to return the `totalCost` only. |
+| `impl_type` | String | `dijkstra` | `beta` | No | Specifies the implementation type of the SSSP algorithm; for the Dijkstra's SSSP, keep it as `dijkstra`; `beta` is Ultipa's default shortest path algorithm. |
+| `return_id_uuid` | String | `uuid`, `id`, `both` | `uuid` | Yes | Includes `_uuid`, `_id`, or both to represent nodes in the results. Edges can only be represented by `_uuid`. |
+| `limit` | Integer | ≥-1 | `-1` | Yes | Limits the number of results returned. Set to `-1` to include all results. |
+| `order` | String | `asc`, `desc` | / | Yes | Sorts the results by `totalCost`. |
 
-## Examples
+## File Writeback
 
-The example graph is as follows:
-
-<div align=center drawio-diagram='6536' drawio-name="draw_5428a498201d400ba015e05b2f4235f0.jpg"><img src="https://img.ultipa.cn/draw/draw_5428a498201d400ba015e05b2f4235f0.jpg?v='1691395226766'"/></div>
-
-### File Writeback
-
-<table>
-<thead>
-<tr>
-  <th style="width:10%">Spec</th>
-  <th style="width:15%"><code>record_path</code></th>
-  <th style="width:18%">Content</th>
-  <th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td rowspan="2">filename</td>
-  <td>0</td>
-  <td><code>_id</code>,<code>totalCost</code></td>
-  <td>The shortest distance/cost from the source node to each other node</td>
-</tr>
-<tr>
-  <td>1</td>
-  <td><code>_id</code>--<code>_uuid</code>--<code>_id</code></td>
-  <td>The shortest path from the source node to each other node, the path is represented by the alternating ID of nodes and UUID of edges that form the path</td>
-</tr>
-</tbody>
-</table>
-
-```uql
-algo(sssp).params({
-  uuids: 1,
-  edge_schema_property: '@default.value'
-}).write({
+<div tab="code">
+  
+```gql
+CALL algo.sssp.write("my_hdc_graph", {
+  ids: "A",
+  edge_schema_property: "@default.value",
+  impl_type: "dijkstra",
+  return_id_uuid: "id"
+}, {
   file: {
-    filename: 'costs'
+    filename: "costs"
   }
 })
 ```
 
-Results: File <i>costs</i>
+```uql
+algo(sssp).params({
+  projection: "my_hdc_graph",
+  ids: "A",
+  edge_schema_property: "@default.value",
+  impl_type: "dijkstra",
+  return_id_uuid: "id"
+}).write({
+  file: {
+      filename: "costs"
+  }
+})
+```
 
-<p tit="File"></p>
+</div>
+
+Result:
+
+<p tit="File: costs"></p>
 
 ```
-G,8
-F,4
-E,5
+_id,totalCost
 D,5
-C,5
+F,4
 B,2
-A,0
-```
+E,5
+C,5
+G,8
+```  
 
-```uql
-algo(sssp).params({
-  uuids: 1,
-  edge_schema_property: '@default.value',
-  sssp_type: 'dijkstra',
-  record_path: 1
-}).write({
+<div tab="code">
+  
+```gql
+CALL algo.sssp.write("my_hdc_graph", {
+  ids: "A",
+  edge_schema_property: "@default.value",
+  impl_type: "dijkstra",
+  record_path: 1,
+  return_id_uuid: "id"
+}, {
   file: {
-    filename: 'paths'
+    filename: "paths"
   }
 })
 ```
 
-Results: File <i>paths</i>
-
-<p tit="File"></p>
-
-```
-A--[102]--F--[107]--E--[109]--G
-A--[102]--F--[107]--E
-A--[101]--B--[105]--D
-A--[101]--B--[104]--C
-A--[102]--F
-A--[101]--B
-A
-```
-
-### Direct Return
-
-<table>
-<thead>
-<tr>
-  <th style="width:8%">Alias Ordinal</th>
-  <th style="width:15%"><code>record_path</code></th>
-  <th style="width:11%">Type</th>
-  <th>Description</th>
-  <th style="width:18%">Columns</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td rowspan="2">0</td>
-  <td>0</td>
-  <td>[]perNode</td>
-  <td>The shortest cost/distance from the source node to each other node</td>
-  <td><code>_uuid</code>, <code>totalCost</code></td>
-</tr>
-<tr>
-  <td>1</td>
-  <td>[]perPath</td>
-  <td>The shortest path from the source node to each other node, the path is represented by the alternating UUID of nodes and UUID of edges that form the path</td>
-  <td>/</td>
-</tr>
-</tbody>
-</table>
-
 ```uql
 algo(sssp).params({
-  uuids: 1,
-  edge_schema_property: '@default.value',
-  sssp_type: 'dijkstra',
+  projection: "my_hdc_graph",
+  ids: "A",
+  edge_schema_property: "@default.value",
+  impl_type: "dijkstra",
+  record_path: 1,
+  return_id_uuid: "id"
+}).write({
+  file: {
+      filename: "paths"
+  }
+})
+```
+
+</div>
+
+Result:
+
+<p tit="File: costs"></p>
+
+```
+totalCost,_ids
+8,A--[102]--F--[107]--E--[109]--G
+5,A--[101]--B--[105]--D
+5,A--[102]--F--[107]--E
+5,A--[101]--B--[104]--C
+4,A--[102]--F
+2,A--[101]--B
+```
+
+## Full Return
+
+<div tab="code">
+  
+```gql
+CALL algo.sssp.run("my_hdc_graph", {
+  ids: 'A',
+  edge_schema_property: 'value',
+  impl_type: 'dijkstra',
   record_path: 0,
+  return_id_uuid: 'id',
   order: 'desc'
-}) as costs
-return costs
+}) YIELD r
+RETURN r
 ```
 
-Results: <i>costs</i>
-
-| \_uuid | totalCost |
-| -- | -- |
-| 7 | 8 |
-| 5 | 5 |
-| 4 | 5 |
-| 3 | 5 |
-| 6 | 4 |
-| 2 | 2 |
-| 1 | 0 |
-
 ```uql
-algo(sssp).params({
+exec{
+  algo(sssp).params({
+    ids: 'A',
+    edge_schema_property: 'value',
+    impl_type: 'dijkstra',
+    record_path: 0,
+    return_id_uuid: 'id',
+    order: 'desc'
+  }) as r
+  return r
+} on my_hdc_graph
+```
+
+</div>
+
+Result:
+
+| \_id | totalCost |
+| -- | -- |
+| G | 8 |
+| D | 5 |
+| E | 5 |
+| C | 5 |
+| F | 4 |
+| B | 2 |
+
+## Stream Return
+
+<div tab="code">
+  
+```gql
+CALL algo.sssp.stream("my_hdc_graph", {
   ids: 'A',
   edge_schema_property: '@default.value',
-  direction: 'out',
-  record_path: 1, 
-  order: 'asc'
-}) as paths
-return paths
+  impl_type: 'dijkstra',
+  record_path: 1,
+  return_id_uuid: 'id'
+}) YIELD r
+RETURN r
 ```
-
-Results: <i>paths</i>
-
-<table>
-<tr><td>1</td></tr>
-<tr><td>1--[101]--2</td></tr>
-<tr><td>1--[102]--6</td></tr>
-<tr><td>1--[102]--6--[107]--5</td></tr>
-<tr><td>1--[101]--2--[105]--4</td></tr>
-<tr><td>1--[101]--2--[104]--3</td></tr>
-<tr><td>1--[102]--6--[107]--5--[109]--7</td></tr>
-</table>
-
-### Stream Return
-
-<table>
-<thead>
-<tr>
-  <th style="width:8%">Alias Ordinal</th>
-  <th style="width:15%"><code>record_path</code></th>
-  <th style="width:11%">Type</th>
-  <th>Description</th>
-  <th style="width:18%">Columns</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td rowspan="2">0</td>
-  <td>0</td>
-  <td>[]perNode</td>
-  <td>The shortest cost/distance from the source node to each other node</td>
-  <td><code>_uuid</code>, <code>totalCost</code></td>
-</tr>
-<tr>
-  <td>1</td>
-  <td>[]perPath</td>
-  <td>The shortest path from the source node to each other node, the path is represented by the alternating UUID of nodes and UUID of edges that form the path</td>
-  <td>/</td>
-</tr>
-</tbody>
-</table>
 
 ```uql
-algo(sssp).params({
-  uuids: 1,
-  edge_schema_property: '@default.value',
-  sssp_type: 'dijkstra'
-}).stream() as costs
-where costs.totalCost <> [0,5]
-return costs
+exec{
+  algo(sssp).params({
+    ids: 'A',
+    edge_schema_property: '@default.value',
+    impl_type: 'dijkstra',
+    record_path: 1,
+    return_id_uuid: 'id'
+  }).stream() as r
+  return r
+} on my_hdc_graph
 ```
 
-Results: <i>costs</i>
+</div>
 
-| \_uuid | totalCost |
+Result:
+
+| <div table-width="15">totalCost</div> | \_ids |
 | -- | -- |
-| 6 | 4 |
-| 2 | 2 |
-
-```uql
-algo(sssp).params({
-  ids: 'A',
-  edge_schema_property: '@default.value',
-  record_path: 1
-}).stream() as p
-where length(p) <> [0,3]
-return p
-```
-
-Results: <i>p</i>
-
-<table>
-<tr><td>1--[102]--6--[107]--5</td></tr>  
-<tr><td>1--[101]--2--[105]--4</td></tr>
-<tr><td>1--[101]--2--[104]--3</td></tr>
-<tr><td>1--[102]--6</td></tr>
-<tr><td>1--[101]--2</td></tr>
-</table>
+| 8 | ["A","102","F","107","E","109","G"] |
+| 5 | ["A","101","B","105","D"] |
+| 5 | ["A","102","F","107","E"] |
+| 5 | ["A","101","B","104","C"] |
+| 4 | ["A","102","F"] |
+| 2 | ["A","101","B"] |

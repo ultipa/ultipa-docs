@@ -1,12 +1,12 @@
 # Pearson Correlation Coefficient
 
-<div><span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ File Writeback</b></span> <span class="flag" style="background-color:#eff1f5;color: #000000;"><b>✕ Property Writeback</b></span> <span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ Direct Return</b></span> <span class="flag" style="background-color:#014d4e;color: #ffffff;"><b>✓ Stream Return</b></span> <span class="flag" style="background-color:#eff1f5;color: #000000;"><b>✕ Stats</b></span></div>
+<div><span class="flag" style="background:#014d4e;color:#fff;"><b>HDC</b></span></div>
 
 ## Overview
 
 The Pearson correlation coefficient is the most common way of measuring the strength and direction of the linear relationship between two quantitative variables. In the graph, nodes are quantified by <i>N</i> numeric properties (features) of them.
 
-For two variables <i>X= (x<sub>1</sub>, x<sub>2</sub>, ..., x<sub>n</sub>)</i> and <i>Y = (y<sub>1</sub>, y<sub>2</sub>, ..., y<sub>n</sub>)</i> , Pearson correlation coefficient (<i>r</i>) is defined as the ratio of the covariance of them and the product of their standard deviations:
+For two variables <i>X= (x<sub>1</sub>, x<sub>2</sub>, ..., x<sub>n</sub>)</i> and <i>Y = (y<sub>1</sub>, y<sub>2</sub>, ..., y<sub>n</sub>)</i> , Pearson correlation coefficient (<i>r</i>) is defined as the ratio of the covariance of them to the product of their standard deviations:
 
 <center><img width=400 src="https://img.ultipa.cn/img/2023-05-30-10-05-44-pearson.jpg"></center>
 
@@ -20,173 +20,275 @@ The Pearson correlation coefficient ranges from -1 to 1:
 
 ## Considerations
 
-- Theoretically, the calculation of Pearson correlation coefficient between two nodes does not depend on their connectivity.
+- Theoretically, the calculation of Pearson correlation coefficient between two nodes is independent of their connectivity.
 
-## Syntax
+## Example Graph
 
-- Command: `algo(similarity)`
-- Parameters:
+<div align=center drawio-diagram='19793' drawio-name='draw_98317bd8658e4657868a30973dd5ab0a.jpg'><img src="https://img.ultipa.cn/draw/draw_98317bd8658e4657868a30973dd5ab0a.jpg?v='1733994356512'"/></div>
 
-| <div table-width="15">Name</div> | <div table-width="9">Type</div> | <div table-width="10">Spec</div> | <div table-width="8">Default</div> | <div table-width="8">Optional</div> | Description |
-| -- | -- | -- |-- | -- | -- |
-| ids / uuids | []`_id` / []`_uuid` | / | / | No | ID/UUID of the first group of nodes to calculate |
-| ids2 / uuids2 | []`_id` / []`_uuid` | / | / | Yes | ID/UUID of the second group of nodes to calculate |
-| type | string | `pearson` | `cosine` | No | Type of similarity; for Pearson Correlation Coefficient, keep it as `pearson` |
-| node_schema_property | []`@<schema>?.<property>` | Numeric type, must LTE | / | No | Specify two or more node properties to form the vectors, all properties must belong to the same (one) schema |
-| limit | int | ≥-1 | `-1` | Yes | Number of results to return, `-1` to return all results |
-| top_limit	| int | ≥-1 | `-1` | Yes | In the selection mode, limit the maximum number of results returned for each node specified in `ids`/`uuids`, `-1` to return all results with similarity > 0; in the pairing mode, this parameter is invalid |
+Run the following statements on an empty graph to define its structure and insert data:
 
-The algorithm has two calculation modes:
+<div tab="code">
 
-1. <b>Pairing: </b>when both `ids`/`uuids` and `ids2`/`uuids2` are configured, pairing each node in `ids`/`uuids` with each node in `ids2`/`uuids2` (ignore the same node) and computing pair-wise similarities.
-2. <b>Selection: </b>when only `ids`/`uuids` is configured, for each target node in it, computing pair-wise similarities between it and all other nodes in the graph. The returned results include all or limited number of nodes that have similarity > 0 with the target node and is ordered by the descending similarity.
-
-## Examples
-
-The example graph has 4 products (edges are ignored), each product has properties <i>price</i>, <i>weight</i>, <i>weight</i> and <i>height</i>:
-
-<div align='center' drawio-diagram='3123' drawio-name='draw_5cb4504e589a45b7b1d33d7b784e4b77.jpg'><img src="https://img.ultipa.cn/draw/draw_5cb4504e589a45b7b1d33d7b784e4b77.jpg?v='1662111270178'"/></div>
-
-### File Writeback
-
-| Spec | Content |
-| --- | --- |
-| filename | `node1`,`node2`,`similarity` |
+```gql
+ALTER GRAPH CURRENT_GRAPH ADD NODE {
+  product ({price int32, weight int32, width int32, height int32})
+};
+INSERT (:product {_id:"product1", price:50, weight:160, width:20, height:152}),
+       (:product {_id:"product2", price:42, weight:90, width:30, height:90}),
+       (:product {_id:"product3", price:24, weight:50, width:55, height:70}),
+       (:product {_id:"product4", price:38, weight:20, width:32, height:66});
+```
 
 ```uql
-algo(similarity).params({
-  uuids: [1], 
-  uuids2: [2,3,4],
-  node_schema_property: ['price', 'weight', 'width', 'height'],
-  type: 'pearson'
-}).write({
-  file:{ 
-    filename: 'pearson'
+create().node_schema("product");
+create().node_property(@product, "price", int32).node_property(@product, "weight", int32).node_property(@product, "width", int32).node_property(@product, "height", int32);
+insert().into(@product).nodes([{_id:"product1", price:50, weight:160, width:20, height:152}, {_id:"product2", price:42, weight:90, width:30, height:90}, {_id:"product3", price:24, weight:50, width:55, height:70}, {_id:"product4", price:38, weight:20, width:32, height:66}]);
+```
+
+</div>
+
+## Creating HDC Graph
+
+To load the entire graph to the HDC server `hdc-server-1` as `my_hdc_graph`:
+
+<div tab="code">
+  
+```gql
+CREATE HDC GRAPH my_hdc_graph ON "hdc-server-1" OPTIONS {
+  nodes: {"*": ["*"]},
+  edges: {"*": ["*"]},
+  direction: "undirected",
+  load_id: true,
+  update: "static"
+}
+```
+
+```uql
+hdc.graph.create("my_hdc_graph", {
+  nodes: {"*": ["*"]},
+  edges: {"*": ["*"]},
+  direction: "undirected",
+  load_id: true,
+  update: "static"
+}).to("hdc-server-1")
+```
+
+</div>
+
+## Parameters
+
+Algorithm name: `similarity`
+
+<table>
+  <colgroup>
+    <col style="width:12%">
+    <col style="width:10%">
+    <col style="width:10%">
+    <col style="width:8%">
+    <col style="width:8%">
+    <col style="width:25%">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Spec</th>
+      <th>Default</th>
+      <th>Optional</th>
+      <th style = "text-align: center" colspan=2;>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>ids</code>/<code>uuids</code></td>
+      <td><code>_id</code>/<code>_uuid</code></td>
+      <td><center>/</center></td>
+      <td><center>/</center></td>
+      <td>Yes</td>
+      <td>Specifies the first group of nodes by their <code>_id</code> or <code>_uuid</code>. If unset, all nodes in the graph are used as the first group of nodes.</td>
+      <td rowspan = "2">
+      The algorithm supports two calculation modes: <br><br><ul><li><b>Pairing mode:</b> When both <code>ids</code>/<code>uuids</code> and <code>ids2</code>/<code>uuids2</code> are set, each node in <code>ids</code>/<code>uuids</code> is paired with each node in <code>ids2</code>/<code>uuids2</code> (excluding self-pairs), and their pairwise similarities are computed.</li><li><b>Selection mode:</b> When only <code>ids</code>/<code>uuids</code> is set, the algorithm computes similarities between each specified node and all other nodes in the graph. Results include all (or a limited number of) nodes with a similarity > 0, sorted in descending order.</li></ul>
+      </td>
+    </tr>
+    <tr>
+      <td><code>ids2</code>/<code>uuids2</code></td>
+      <td><code>_id</code>/<code>_uuid</code></td>
+      <td><center>/</center></td>
+      <td><center>/</center></td>
+      <td>Yes</td>
+      <td>Specifies the second group of nodes for pairwise similarity by their <code>_id</code> or <code>_uuid</code>. If only <code>ids2</code>/<code>uuids2</code> is set (and <code>ids</code>/<code>uuids</code> is not), the algorithm returns no result.</td>
+    </tr>
+    <tr>
+      <td><code>type</code></td>
+      <td>String</td>
+      <td><code>pearson</code></td>
+      <td><code>cosine</code></td>
+      <td>No</td>
+      <td colspan = "2">Specifies the type of similarity to compute; for Pearson Correlation Coefficient, keep it as <code>pearson</code>.</td>
+    </tr>
+    <tr>
+      <td><code>node_schema_property</code></td>
+      <td>[]"<code>&lt;@schema.?&gt;&lt;property&gt;</code>"</td>
+      <td><center>/</center></td>
+      <td><center>/</center></td>
+      <td>No</td>
+      <td colspan = "2">Specifies numeric node properties to form a vector for each node; all specified properties must belong to the same label (schema).</td>
+    </tr>
+    <tr>
+      <td><code>return_id_uuid</code></td>
+      <td>String</td>
+      <td><code>uuid</code>,<code>id</code>,<code>both</code></td>
+      <td><code>uuid</code></td>
+      <td>Yes</td>
+      <td colspan = "2">Includes <code>_uuid</code>, <code>_id</code>, or both to represent nodes in the results.</td>
+    </tr>
+    <tr>
+      <td><code>order</code></td>
+      <td>String</td>
+      <td><code>asc</code>,<code>desc</code></td>
+      <td><center>/</center></td>
+      <td>Yes</td>
+      <td colspan = "2">Sorts the results by <code>similarity</code>.</td>
+    </tr>
+    <tr>
+      <td><code>limit</code></td>
+      <td>Integer</td>
+      <td>≥-1</td>
+      <td><code>-1</code></td>
+      <td>Yes</td>
+      <td colspan = "2">Limits the number of results returned. Set to <code>-1</code> to include all results.</td>
+    </tr>
+    <tr>
+      <td><code>top_limit</code></td>
+      <td>Integer</td>
+      <td>≥-1</td>
+      <td><code>-1</code></td>
+      <td>Yes</td>
+      <td colspan = "2">Limits the number of results returned for each node specified with <code>ids</code>/<code>uuids</code> in selection mode. Set to <code>-1</code> to include all results with a similarity greater than 0. This parameter is invalid in pairing mode.</td>
+    </tr>
+  </tbody>      
+</table>
+
+## File Writeback
+
+<div tab="code">
+  
+```gql
+CALL algo.similarity.write("my_hdc_graph", {
+  return_id_uuid: "id",
+  ids: "product1",
+  ids2: ["product2", "product3", "product4"],
+  node_schema_property: ["price", "weight", "width", "height"],
+  type: "pearson"
+}, {
+  file: {
+    filename: "pearson"
   }
 })
 ```
 
-Results: File <i>pearson</i>
+```uql
+algo(similarity).params({
+  projection: "my_hdc_graph",
+  return_id_uuid: "id",
+  ids: "product1",
+  ids2: ["product2", "product3", "product4"],
+  node_schema_property: ["price", "weight", "width", "height"],
+  type: "pearson"
+}).write({
+  file: {
+    filename: "pearson"
+  }
+})
+```
 
-<p tit="File"></p>
+</div>
+
+Result:
+
+<p tit="File: pearson"></p>
 
 ```
+_id1,_id2,similarity
 product1,product2,0.998785
 product1,product3,0.474384
 product1,product4,0.210494
 ```
 
-```uql
-algo(similarity).params({
-  uuids: [1,2,3,4],
-  node_schema_property: ['price', 'weight', 'width', 'height'],
-  type: 'pearson'
-}).write({
-  file:{ 
-    filename: 'list'
-  }
-})
+## Full Return
+
+<div tab="code">
+  
+```gql
+CALL algo.similarity.run("my_hdc_graph", {
+  return_id_uuid: "id",
+  ids: ["product1","product2"], 
+  ids2: ["product2","product3","product4"],
+  node_schema_property: ["price", "weight", "width", "height"],
+  type: "pearson"
+}) YIELD p
+RETURN p
 ```
-
-Results: File <i>list</i>
-
-<p tit="File"></p>
-
-```
-product1,product2,0.998785
-product1,product3,0.474384
-product1,product4,0.210494
-product2,product1,0.998785
-product2,product3,0.507838
-product2,product4,0.253573
-product3,product2,0.507838
-product3,product1,0.474384
-product3,product4,0.474021
-product4,product3,0.474021
-product4,product2,0.253573
-product4,product1,0.210494
-```
-
-### Direct Return
-
-| <div table-width='15'>Alias Ordinal</div> | <div table-width='15'>Type</div> | Description | Columns |
-| --- | --- | --- | --- |
-| 0 | []perNodePair | Node pair and its similarity | `node1`, `node2`, `similarity` |
 
 ```uql
-algo(similarity).params({
-  uuids: [1,2], 
-  uuids2: [2,3,4],
-  node_schema_property: ['price', 'weight', 'width', 'height'],
-  type: 'pearson'
-}) as p
-return p
+exec{
+  algo(similarity).params({
+    return_id_uuid: "id",
+    ids: ["product1","product2"], 
+    ids2: ["product2","product3","product4"],
+    node_schema_property: ["price", "weight", "width", "height"],
+    type: "pearson"
+  }) as p
+  return p
+} on my_hdc_graph
 ```
 
-Results: <i>p</i>
+</div>
 
-| node1	| node2	| similarity |
-| ----- | ----- | ---------- |
-| 1	| 2	| 0.998785121601255 |
-| 1	| 3	| 0.474383803132863 |
-| 1	| 4	| 0.210494150169583 |
-| 2 | 3 | 0.50783775659896 |
-| 2 | 4 | 0.253573071269506 |
+Result:
+
+| \_id1 | \_id2 | similarity |
+| -- | -- | -- |
+| product1 | product2 | 0.998785 |
+| product1 | product3 | 0.474384 |
+| product1 | product4 | 0.210494 |
+| product2 | product3 | 0.507838 |
+| product2 | product4 | 0.253573 |
+
+## Stream Return
+
+<div tab="code">
+  
+```gql
+CALL algo.similarity.stream("my_hdc_graph", {
+  return_id_uuid: "id",
+  ids: ["product1", "product3"], 
+  node_schema_property: ["price", "weight", "width", "height"],
+  type: "pearson",
+  top_limit: 1    
+}) YIELD top
+RETURN top
+```
 
 ```uql
-algo(similarity).params({
-  uuids: [1,2],
-  type: 'pearson',
-  node_schema_property: ['price', 'weight', 'width', 'height'],
-  top_limit: 1
-}) as top
-return top
+exec{
+  algo(similarity).params({
+    return_id_uuid: "id",
+    ids: ["product1", "product3"], 
+    node_schema_property: ["price", "weight", "width", "height"],
+    type: "pearson",
+    top_limit: 1        
+  }).stream() as top
+  return top
+} on my_hdc_graph
 ```
 
-Results: <i>top</i>
+</div>
 
-| node1	| node2	| similarity |
-| ----- | ----- | ---------- |
-| 1 | 2 | 0.998785121601255 |
-| 2 | 1 | 0.998785121601255 |
+Result: 
 
-### Stream Return
-
-| <div table-width='15'>Alias Ordinal</div> | <div table-width='15'>Type</div> | Description | Columns |
-| --- | --- | --- | --- |
-| 0 | []perNodePair | Node pair and its similarity | `node1`, `node2`, `similarity` |
-
-```uql
-algo(similarity).params({
-  uuids: [3], 
-  uuids2: [1,2,4],
-  node_schema_property: ['@product.price', '@product.weight', '@product.width'],
-  type: 'pearson'
-}).stream() as p
-where p.similarity > 0
-return p
-```
-
-Results: <i>p</i>
-
-| node1	| node2	| similarity |
-| ----- | ----- | ---------- |
-| 3	| 1	| 0.167101674410905 |
-| 3	| 2	| 0.181677473801374 |
-
-```uql
-algo(similarity).params({
-  uuids: [1,3],
-  node_schema_property: ['price', 'weight', 'width', 'height'],
-  type: 'pearson',
-  top_limit: 1
-}).stream() as top
-return top
-```
-
-Results: <i>top</i>
-
-| node1	| node2	| similarity |
-| ----- | ----- | ---------- |
-| 1 | 2 | 0.998785121601255 |
-| 3 | 2 | 0.50783775659896 |
+| \_id1 | \_id2 | similarity |
+| -- | -- | -- |
+| product1 | product2 | 0.998785 |
+| product3 | product2 | 0.507838 |
