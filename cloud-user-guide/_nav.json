@@ -1,26 +1,21 @@
 {
-  "name": "Ultipa Cloud User Guide",
+  "name": "Ultipa Cloud",
   "navigation": [
     {
-      "file": "introduction.md",
-      "title": "Introduction"
+      "file": "quick-start.md",
+      "title": "Quick Start"
     },
     {
-      "folder": "quick-start",
-      "pages": [
-        {
-          "file": "create-instance.md",
-          "title": "Create Instance"
-        },
-        {
-          "file": "connect-to-ultipa-tools.md",
-          "title": "Connect to Ultipa Tools"
-        },
-        {
-          "file": "manage-instance.md",
-          "title": "Manage Instance"
-        }
-      ]
+      "file": "graph-powerhouse.md",
+      "title": "Graph Powerhouse"
+    },
+    {
+      "file": "manager.md",
+      "title": "Manager"
+    },
+    {
+      "file": "billings.md",
+      "title": "Billings"
     },
     {
       "file": "api.md",

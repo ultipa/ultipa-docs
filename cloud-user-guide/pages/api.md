@@ -1,173 +1,301 @@
 # API
 
-## Overview
+The Cloud API allows you to control your instances without the need to log in to the Ultipa Cloud dashboard.
 
-**Ultipa Cloud API** enables you to operate your Ultipa Cloud instances without the need to log in to Ultipa Cloud. 
-
-## API
+## API Overview
 
 ### Base URL
 
-The base URL of Ultipa Cloud API is `https://cloud.ultipa.com/open/dbaas/v1/instance`.
+The base URL for the Cloud API of both **Graph Powerhouse** and **Graph Blaze** instances is `https://cloud.ultipa.com/open/dbaas/v1/cluster`.
+
+The base URL for the Cloud API of **Manager** instances is `https://cloud.ultipa.com/open/dbaas/v1/manager`.
 
 ### API Keys
 
-On **Accounts**, scroll down to **API Keys** to create or manage your API keys.
+API keys are required to authenticate API requests.
 
-One API key should be included in each request header, with the key name as `api_key`.
+Go to **Accounts > API Keys** in Ultipa Cloud to create or manage your keys. When creating a key, be sure to download and store it securely for future use.
 
-### Request Limit
+Each API request must include an API key in the request header, using the key name `api_key`.
 
-The API request limit is set to 80 requests per minute.
+## List Instances
 
-## Requests
+### HTTP Request
 
-### List Instances
-
-**HTTP Request**
-
-To list instances, submit a `GET` request to the following endpoint:
+To list **Graph Powerhouse** and **Graph Blaze** instances, submit a `GET` request to the following endpoint:
 
 <p tit="http"></p>
 
-```
-https://cloud.ultipa.com/open/dbaas/v1/instance/list
+```js
+https://cloud.ultipa.com/open/dbaas/v1/cluster/list
 ```
 
-**Request Header**
+To list **Manager** instances, submit a `GET` request to the following endpoint:
+
+<p tit="http"></p>
+
+```js
+https://cloud.ultipa.com/open/dbaas/v1/manager/list
+```
+
+### Request Header
 
 | <div table-width=15>Key</div> | <div table-width=7>Type</div> | <div table-width=7>Default</div> | <div table-width=9>Required</div> | Description |
-| --- | --- | --- | --- | --- | 
-| `api_key` | String | / | Yes | Your Ultipa Cloud API key |
+| --- | --- | --- | --- | --- |
+| `api_key` | String | / | Yes | Your Ultipa Cloud API key. |
 
-**Request Params**
+### Request Parameters
 
-Example `GET` request with parameters: 
+| <div table-width=20>Parameter</div> | <div table-width=7>Type</div> | <div table-width=7>Default</div> | <div table-width=9>Required</div> | Description |
+| --- | --- | --- | --- | --- |
+| `page` | Integer | `1` | No | The page number in the response body. |
+| `size` | Integer | `20` | No | The number of items displayed per page in the response body. |
+| `instanceStateFilter` | Integer | `1` | No | Filter for cluster status:<br><ul><li>`1`: My Instances</li><li>`2`: Active Instances</li><li>`3`: Stopped Instances</li><li>`4`: Terminated Instances</li></ul> |
+| `directions` | String | `desc` | No | Sorting order of elements in the response body: `desc` or `asc`. |
+| `sorts` | String | `created_at` | No | Field for sorting elements in the response body. |
 
-<p tit="http"></p>
+### Request Example
 
+<p tit="HTTP Request"></p>
+
+```js
+GET https://cloud.ultipa.com/open/dbaas/v1/cluster/list??page=1&size=20&instanceStateFilter=1&directions=desc&sorts=created_at&componentType=GRAPH_V5`
+Authorization: Bearer api_key:{Your Ultipa Cloud API key}
+Accept: application/json
 ```
-https://cloud.ultipa.com/open/dbaas/v1/instance/list?instanceStateFilter=2&search=ultipa-abc123&page=1&size=1
-```
 
-| <div table-width=20>Key</div> | <div table-width=7>Type</div> | <div table-width=7>Default</div> | <div table-width=9>Required</div> | Description |
-| --- | --- | --- | --- | --- | 
-| `instanceStateFilter` | Int32 | `1` | No | Filter instances by their states: `1` for My Instances, `2` for Active (Running) Instances, `3` for Stopped Instances, `4` for Terminated Instances |
-| `search` | String | / | No | Specify instance ID or name |
-| `page` | Int32 | `1` | No | Filter page number in the response body |
-| `size` | Int32 | `999` | No | Set the size (items per page) in the returned page of the response body |
+### Response Example
 
-**Example Response Body**
-
-```json
+```js
 {
     "code": 200,
     "message": "success",
     "data": {
         "page": 1,
-        "size": 2,
+        "size": 20,
         "totalPages": 1,
         "totalElements": 2,
         "list": [
             {
-                "instanceId": "ultipa-abc123",
-                "instanceState": "STOPPED",
-                "name": "Community"
+                "clusterId": "ultipa-abc123",
+                "clusterState": "STOPPING",
+                "name": "test2",
+                "instanceList": [
+                    {
+                        "name": "xxxxxxxx_NAME_SERVER-1",
+                        "instanceState": "STOPPING",
+                        "type": "Name server"
+                    },
+                    {
+                        "name": "xxxxxxxx_META_SERVER-1",
+                        "instanceState": "STOPPING",
+                        "type": "Meta server"
+                    },
+                    {
+                        "name": "xxxxxxxx_SHARD_SERVER-1-1",
+                        "instanceState": "STOPPING",
+                        "type": "Shard server"
+                    }
+                ]
             },
             {
-                "instanceId": "ultipa-abc456",
-                "instanceState": "RUNNING",
-                "name": "Course Lab"
+                "clusterId": "ultipa-abc456",
+                "clusterState": "STOPPING",
+                "name": "Graph Powerhouse 0",
+                "instanceList": [
+                    {
+                        "name": "xxxxxxxxxxxx_NAME_SERVER-1",
+                        "instanceState": "STOPPING",
+                        "type": "Name server"
+                    },
+                    {
+                        "name": "xxxxxxxxxxxx_META_SERVER-1",
+                        "instanceState": "STOPPING",
+                        "type": "Meta server"
+                    },
+                    {
+                        "name": "xxxxxxxxxxxx_SHARD_SERVER-1-1",
+                        "instanceState": "STOPPING",
+                        "type": "Shard server"
+                    }
+                ]
             }
         ]
     }
 }
 ```
 
-### View Instance State
+## View Instance State
 
-**HTTP Request**
+### HTTP Request
 
-To view instance states, submit a `POST` request to the following endpoint:
+To view the state of **Graph Powerhouse** and **Graph Blaze** instances, submit a `POST` request to the following endpoint:
 
 <p tit="http"></p>
 
-```
-https://cloud.ultipa.com/open/dbaas/v1/instance/state
+```js
+https://cloud.ultipa.com/open/dbaas/v1/cluster/state
 ```
 
-**Request Header**
+To view the state of **Manager** instances, submit a `POST` request to the following endpoint:
+
+<p tit="http"></p>
+
+```js
+https://cloud.ultipa.com/open/dbaas/v1/manager/state
+```
+
+### Request Header
 
 | <div table-width=15>Key</div> | <div table-width=7>Type</div> | <div table-width=7>Default</div> | <div table-width=9>Required</div> | Description |
-| --- | --- | --- | --- | --- | 
-| `api_key` | String | / | Yes | Your Ultipa Cloud API key |
+| --- | --- | --- | --- | --- |
+| `api_key` | String | / | Yes | Your Ultipa Cloud API key. |
 
-**Request Body**
+### Request Body
 
-```json
+<p tit="JSON"></p>
+
+```js
 {
-    "instanceIds": ["ultipa-abc123", "ultipa-abc456"]
+    "clusterIds": ["ultipa-abc123", "ultipa-abc456"]
 }
 ```
 
 | <div table-width=15>Key</div> | <div table-width=9>Type</div> | <div table-width=7>Default</div> | <div table-width=9>Required</div> | Description |
-| --- | --- | --- | --- | --- | 
-| `instanceIds` | []String | / | Yes | Specify instances by their IDs |
+| --- | --- | --- | --- | --- |
+| `clusterIds` or `managerIds` | Array | / | Yes | The IDs of the instances. |
 
-**Example Response Body**
+### Request Example
 
-```json
+<p tit="HTTP Request"></p>
+
+```js
+POST https://cloud.ultipa.com/open/dbaas/v1/cluster/state
+Authorization: Bearer api_key:{Your Ultipa Cloud API key}
+Content-Type: application/json
+
+{
+  "clusterIds": [
+    "ultipa-abc123",
+    "ultipa-abc456"
+  ]
+}
+```
+
+### Response Example
+
+```js
 {
     "code": 200,
     "message": "success",
     "data": [
         {
-            "instanceId": "ultipa-abc123",
-            "instanceState": "RUNNING",
-            "name": "Course Lab"
+            "clusterId": "ultipa-abc123",
+            "clusterState": "STOPPING",
+            "name": "test2",
+            "instanceList": [
+                {
+                    "name": "xxxxxxxxxxxxxxxxx_NAME_SERVER-1",
+                    "instanceState": "STOPPING",
+                    "type": "Name server"
+                },
+                {
+                    "name": "xxxxxxxxxxxxxxxxx_META_SERVER-1",
+                    "instanceState": "STOPPING",
+                    "type": "Meta server"
+                },
+                {
+                    "name": "xxxxxxxxxxxxxxxxxs_SHARD_SERVER-1-1",
+                    "instanceState": "STOPPING",
+                    "type": "Shard server"
+                }
+            ]
         },
         {
-            "instanceId": "ultipa-abc456",
-            "instanceState": "STOPPED",
-            "name": "Community"
+            "clusterId": "ultipa-abc456",
+            "clusterState": "STOPPING",
+            "name": "Graph Powerhouse 0",
+            "instanceList": [
+                {
+                    "name": "xxxxxxxxxxxxxyyyyyy_NAME_SERVER-1",
+                    "instanceState": "STOPPING",
+                    "type": "Name server"
+                },
+                {
+                    "name": "xxxxxxxxxxxxxyyyyyy_META_SERVER-1",
+                    "instanceState": "STOPPING",
+                    "type": "Meta server"
+                },
+                {
+                    "name": "xxxxxxxxxxxxxyyyyyy_SHARD_SERVER-1-1",
+                    "instanceState": "STOPPING",
+                    "type": "Shard server"
+                }
+            ]
         }
     ]
 }
 ```
 
-### Start an Instance
+## Start an Instance
 
-**HTTP Request**
+### HTTP Request
 
-To start an instance, submit a `POST` request to the following endpoint:
+To start a **Graph Powerhouse** or **Graph Blaze** instance, submit a `POST` request to the following endpoint:
 
 <p tit="http"></p>
 
-```
-https://cloud.ultipa.com/open/dbaas/v1/instance/start
+```js
+https://cloud.ultipa.com/open/dbaas/v1/cluster/start
 ```
 
-**Request Header**
+To start a **Manager** instance, submit a `POST` request to the following endpoint:
+
+<p tit="http"></p>
+
+```js
+https://cloud.ultipa.com/open/dbaas/v1/manager/start
+```
+
+### Request Header
 
 | <div table-width=15>Key</div> | <div table-width=7>Type</div> | <div table-width=7>Default</div> | <div table-width=9>Required</div> | Description |
-| --- | --- | --- | --- | --- | 
-| `api_key` | String | / | Yes | Your Ultipa Cloud API key |
+| --- | --- | --- | --- | --- |
+| `api_key` | String | / | Yes | Your Ultipa Cloud API key. |
 
-**Request Body**
+### Request Body
 
-```json
+<p tit="JSON"></p>
+
+```js
 {
-    "instanceId": "ultipa-abc123"
+    "clusterId": "ultipa-abc123"
 }
 ```
 
 | <div table-width=15>Key</div> | <div table-width=9>Type</div> | <div table-width=7>Default</div> | <div table-width=9>Required</div> | Description |
-| --- | --- | --- | --- | --- | 
-| `instanceId` | String | / | Yes | Specify the instance by its ID |
+| --- | --- | --- | --- | --- |
+| `clusterId` or `managerId` | String | / | Yes | The ID of the instance. |
 
-**Response Body**
+### Request Example
 
-```json
+<p tit="HTTP Request"></p>
+
+```js
+POST https://cloud.ultipa.com/open/dbaas/v1/cluster/start
+Authorization: Bearer api_key:{Your Ultipa Cloud API key}
+Content-Type: application/json
+
+{
+    "clusterId": "ultipa-abc123"
+}
+```
+
+### Response Example
+
+<p tit="JSON"></p>
+
+```js
 {
     "code": 200,
     "message": "success",
@@ -175,39 +303,63 @@ https://cloud.ultipa.com/open/dbaas/v1/instance/start
 }
 ```
 
-### Stop an Instance
+## Stop a Cluster
 
-**HTTP Request**
+### HTTP Request
 
-To stop an instance, submit a `POST` request to the following endpoint:
+To stop a **Graph Powerhouse** or **Graph Blaze** instance, submit a `POST` request to the following endpoint:
 
 <p tit="http"></p>
 
-```
-https://cloud.ultipa.com/open/dbaas/v1/instance/stop
+```js
+https://cloud.ultipa.com/open/dbaas/v1/cluster/stop
 ```
 
-**Request Header**
+To stop a **Manager** instance, submit a `POST` request to the following endpoint:
+
+<p tit="http"></p>
+
+```js
+https://cloud.ultipa.com/open/dbaas/v1/manager/stop
+```
+
+### Request Header
 
 | <div table-width=15>Key</div> | <div table-width=7>Type</div> | <div table-width=7>Default</div> | <div table-width=9>Required</div> | Description |
-| --- | --- | --- | --- | --- | 
-| `api_key` | String | / | Yes | Your Ultipa Cloud API key |
+| --- | --- | --- | --- | --- |
+| `api_key` | String | / | Yes | Your Ultipa Cloud API key. |
 
-**Request Body**
+### Request Body
 
-```json
+<p tit="JSON"></p>
+
+```js
 {
-    "instanceId": "ultipa-abc123"
+    "clusterId": "ultipa-abc123"
 }
 ```
 
 | <div table-width=15>Key</div> | <div table-width=9>Type</div> | <div table-width=7>Default</div> | <div table-width=9>Required</div> | Description |
-| --- | --- | --- | --- | --- | 
-| `instanceId` | String | / | Yes | Specify the instance by its ID |
+| --- | --- | --- | --- | --- |
+| `clusterId` or `managerId` | String | / | Yes | The ID of the instance. |
 
-**Response Body**
+### Request Example
 
-```json
+<p tit="HTTP Request"></p>
+
+```js
+POST https://cloud.ultipa.com/open/dbaas/v1/cluster/stop
+Authorization: Bearer api_key:{Your Ultipa Cloud API key}
+Content-Type: application/json
+
+{
+    "clusterId": "ultipa-abc123"
+}
+```
+
+### Response Example
+
+```js
 {
     "code": 200,
     "message": "success",
@@ -219,11 +371,10 @@ https://cloud.ultipa.com/open/dbaas/v1/instance/stop
 
 | <div table-width="10">Code</div> | <div table-width="40">Message</div> | Description |
 | --- | --- | --- |
-| 403 | Forbidden | The given API key does not have permission to perform the request |
-| 405 | Operation not allowed | The current state of the instance does not allow the request |
-| 408 | Login to this account is banned. If you have any questions, please email support@ultipa.com | Your account has been banned |
-| 409 | The account has been canceled | Your account has been canceled |
-| 1217 | The instance does not exist | The specified instance does not exist |
-| 1301 | Unable to verify identity | You did not provide an API key in the request, or the key is null |
-| 1302 | Key is invalid or has been revoked | The API key does not exist or is invalid |
-| 1303 | Key requests are frequent, please try again later. | The number of requests has exceeded the API request limit |
+| 403 | Forbidden | The given API key does not have permission to perform the request. |
+| 405 | Operation not allowed | The current state of the instance does not allow the request. |
+| 408 | Login to this account is banned. If you have any questions, please email support@ultipa.com | Your account has been banned. |
+| 409 | The account has been canceled | Your account has been canceled. |
+| 1301 | Unable to verify identity | You did not provide an API key in the request, or the key is null. |
+| 1302 | Key is invalid or has been revoked | The API key does not exist or is invalid. |
+| 1303 | Key requests are frequent, please try again later. | The number of requests has exceeded the API request limit. |
