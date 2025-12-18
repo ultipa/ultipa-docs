@@ -15,7 +15,7 @@ Acquire data from tables <i>entity</i> and <i>relation</i> in BigQuery project <
 
 ## 2. Modify configuration file
 
-<p tit="import.sample.bigQuery.yml" type="yaml"></p>
+<p tit="import.sample.bigQuery.yml"></p>
 
 ```yml
 # Configure data source type

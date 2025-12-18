@@ -17,7 +17,7 @@ Read node files <i>person.csv</i> and <i>company.csv</i> and edge file <i>holdin
 
 ### 2. Modify configuration file
 
-<p tit="import.sample.csv.yml" type="yaml"></p>
+<p tit="import.sample.csv.yml"></p>
 
 ```yml
 # Configure data source type
@@ -112,7 +112,7 @@ Read node files <i>person.csv</i> and <i>company.csv</i> and edge file <i>holdin
 
 ### 2. Modify configuration file
 
-<p tit="import.sample.csv.yml" type="yaml"></p>
+<p tit="import.sample.csv.yml"></p>
 
 ```yml
 # Configure data source type
@@ -191,7 +191,7 @@ Read node files <i>person.csv</i> and <i>company.csv</i> and edge file <i>holdin
 
 ### 2. Modify configuration file
 
-<p tit="import.sample.csv.yml" type="yaml"></p>
+<p tit="import.sample.csv.yml"></p>
 
 ```yml
 # Configure data source type
@@ -285,7 +285,7 @@ Read CSV files in SFTP or local directory, import into Ultipa graphset <i>shareh
 
 ### 2. Modify configuration file
 
-<p tit="import.sample.csv.yml" type="yaml"></p>
+<p tit="import.sample.csv.yml"></p>
 
 ```yml
 # Configure data source type

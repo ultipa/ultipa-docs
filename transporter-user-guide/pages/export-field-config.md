@@ -4,8 +4,6 @@
 
 - Confgure schemas under `nodeConfig` and `edgeConfig`:
 
-<p tit="YML" type="yaml"></p>
-
 ```yml
 nodeConfig:
 
@@ -35,8 +33,6 @@ edgeConfig:
 ```
 
 ## Example
-<p tit="YML" type="yaml"></p>
-
 ```yml
 ...
 nodeConfig:

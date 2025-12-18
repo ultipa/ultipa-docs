@@ -4,8 +4,6 @@
 
 Configure schemas and/or CSV folders under `nodeConfig` and `edgeConfig`:
 
-<p tit="YML" type="yaml"></p>
-
 ```yml
 nodeConfig:
 
@@ -63,8 +61,6 @@ edgeConfig:
 
 ## Details of `properties`
 
-<p tit="YML" type="yaml"></p>
-
 ```yml
 nodeConfig:
   - schema:
@@ -113,16 +109,13 @@ Field types that support prefix: `_id`, `_from`, `_to`
 ### Example: Configure field name and type
 
 When configuring field names and types for a headerless CSV, the order of `-name` should be consistent with data columns in the file. Such as:
-<p tit="CSV"></p>
 
-```js
+```csv
 A2CMX45JPSCTUJ,5,The Best Cable
 A3EIML9QZO5NZZ,5,awesome
 A3C9F3SZWLWDZF,2,worse than previous one
 A1C60KQ8VJZBS5,4,Makes changing strings a breeze
 ```
-
-<p tit="YML" type="yaml"></p>
 
 ```yml
 properties:
@@ -138,17 +131,13 @@ properties:
 
 
 When configuring field types for a CSV file with header but no type, the order of`-name` is not necessary and normally impossible to be consistent with data columns in the file. Such as:
-<p tit="CSV"></p>
-
-```js
+```csv
 _id,rating,comment
 A2CMX45JPSCTUJ,5,The Best Cable
 A3EIML9QZO5NZZ,5,awesome
 A3C9F3SZWLWDZF,2,worse than previous one
 A1C60KQ8VJZBS5,4,Makes changing strings a breeze
 ```
-
-<p tit="YML" type="yaml"></p>
 
 ```yml
 properties:
@@ -160,7 +149,6 @@ properties:
 ```
 
 When configuring field types for JSON and JSONL file, omitting  `type` and omitting `- name` have different processing logic. Such as:
-<p tit="JSON"></p>
 
 ```json
 [
@@ -170,8 +158,6 @@ When configuring field types for JSON and JSONL file, omitting  `type` and omitt
   {"_id":"A1C60KQ8VJZBS5", "rating":4, "comment":"Makes changing strings a breeze"}
 ]
 ```
-
-<p tit="YML" type="yaml"></p>
 
 ```yml
 properties:
@@ -185,17 +171,14 @@ properties:
 ### Example: Modify field name and type
 
 When the filed names and/or types of data source are invalid in Ultipa system, or are not consistent with the target property, use `new_name` and `type` to modify. `type` should not be omitted in this case even though the target property is <i>string</i> type. Such as: 
-<p tit="CSV"></p>
 
-```js
+```csv
 _id:_id,rating:int32,comment:string
 A2CMX45JPSCTUJ,5,The Best Cable
 A3EIML9QZO5NZZ,5,awesome
 A3C9F3SZWLWDZF,2,worse than previous one
 A1C60KQ8VJZBS5,4,Makes changing strings a breeze
 ```
-
-<p tit="YML" type="yaml"></p>
 
 ```yml
 properties:
@@ -210,9 +193,10 @@ properties:
 ### Example: Add prefix to field value
 
 In case the node IDs from the data source are not unique graph wise, use `prefix` to condition these IDs and the related FROMs and TOs, namely, only process data fields that are `_id`, `_from` or `_to`. Such as:
+
 <p tit="person.csv"></p>
 
-```js
+```csv
 id,name
 1,Hubert Pirtle
 2,John Fowler
@@ -220,7 +204,7 @@ id,name
 ```
 <p tit="company.csv"></p>
 
-```js
+```csv
 id,name
 1,VoxelCloud
 2,Lifeforce Ventures
@@ -229,15 +213,13 @@ id,name
 
 <p tit="holding.csv"></p>
 
-```js
+```csv
 personID,companyID,shareInt
 1,3,59
 2,1,10
 3,1,23
 3,2,47
 ```
-
-<p tit="YML" type="yaml"></p>
 
 ```yml
 ...
@@ -279,9 +261,7 @@ edgeConfig:
 ### string, text
 
 - When `quotes` under `settings` is set to `false` (default value), a double-quotation is recognized as the field boundary, two consecutive double-quotations are recognized as a double-quotation within the field value. Such as:
-<p tit="CSV"></p>
-
-```js
+```csv
 field1:string,field2:text,field3:string
 abc,"a,b,c",no double quotation in this field
 def,"d,e,f","a double quotation "" in this field"
@@ -289,9 +269,7 @@ ghi,"g,h,i",quotes set to false
 ```
 
 - When `quotes` under `settings` is set to `true`, double-quotations of any quantity at anywhere will be recognized as double-quotations within the field value, in which case double-quotations cannot be used as field boundaries. Such as:
-<p tit="CSV"></p>
-
-```js
+```csv
 field1:string,field2:text,field3:string
 abc,"a",no double quotation in this field
 def,"d",a double quotation " in this field
@@ -300,9 +278,7 @@ ghi,"g",quotes set to true
 
 ### decimal
 
-<p tit="CSV"></p>
-
-```js
+```csv
 "decimal:decimal(5,3)"
 99.999
 0.999
@@ -314,9 +290,7 @@ ghi,"g",quotes set to true
 
 ### datetime, timestamp
 
-<p tit="CSV"></p>
-
-```js
+```csv
 time1:datetime,time2:datetime,time3:timestamp,time4:timestamp
 1987-11-02,1987-11-02 01:25:52,1987-11-02T01:25:52+0400,562785952000
 2001-08-14,2001-08-14 13:43:16,2001-08-14T13:43:16-1100,997767796000
@@ -339,9 +313,7 @@ time1:datetime,time2:datetime,time3:timestamp,time4:timestamp
 
 ### list
 
-<p tit="CSV"></p>
-
-```js
+```csv
 list1:int32[],list2:string[]
 "[1,3,3]","[possitive,rebuy]"
 "[2,1,4]","[negative]"
@@ -353,9 +325,7 @@ list1:int32[],list2:string[]
 
 ### set
 
-<p tit="CSV"></p>
-
-```js
+```csv
 set1:set(int32),set2:set(string)
 "[1,3]","[possitive,rebuy]"
 "[2,1,4]","[negative]"
@@ -365,9 +335,7 @@ set1:set(int32),set2:set(string)
 
 ### point
 
-<p tit="CSV"></p>
-
-```js
+```csv
 point1:point,point2:point,point3:point,point4:point
 POINT(39.9 116.3),"{latitude:39.9,longitude:116.3}","[39.9,116.3]","39.9,116.3"
 POINT(40.7 -74),"{latitude:40.7,longitude:-74}","[40.7,-74]","40.7,-74"
