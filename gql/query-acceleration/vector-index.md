@@ -1,4 +1,4 @@
-## Vector Index
+# Vector Index
 
 ## Overview
 
@@ -16,9 +16,9 @@ In the context of machine learning and natural language processing (NLP), the te
 
 You can create embeddings for both structured data (e.g., text) and unstructured data (e.g., images, graphs) using various models. Some popular models include:
 
-- <a target="blank" href="https://platform.openai.com/docs/guides/embeddings/embedding-models">OpenAI</a>: A collection of models to turn text into embeddings.
-- <a target="blank" href="https://www.ultipa.com/document/ultipa-graph-analytics-algorithms/node2vec">Node2Vec</a>: A model that generates embeddings for graph nodes based on their relationships.
-- <a target="blank" href="https://en.wikipedia.org/wiki/Residual_neural_network">ResNet</a> (Residual Networks): A series of models for generating image embeddings.
+- <a target="_blank" href="https://platform.openai.com/docs/guides/embeddings/embedding-models">OpenAI</a>: A collection of models to turn text into embeddings.
+- <a target="_blank" href="/docs/ultipa-graph-analytics-algorithms/node2vec">Node2Vec</a>: A model that generates embeddings for graph nodes based on their relationships.
+- <a target="_blank" href="https://en.wikipedia.org/wiki/Residual_neural_network">ResNet</a> (Residual Networks): A series of models for generating image embeddings.
 
 ### Why Embeddings
 
@@ -53,7 +53,7 @@ Vector search refers to the process of finding vectors that are most similar to 
 
 ## Example Graph
 
-The example graph consists of 10 `Book` nodes, each containing the properties `name`, `author`, `summary`, and `summaryEmbedding`. The `summaryEmbedding` holds the 384-dimensional text embeddings of the summary, generated using the `all-MiniLM-L6-v2` model from <a target="blank" href="https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2">Hugging Face</a>.
+The example graph consists of 10 `Book` nodes, each containing the properties `name`, `author`, `summary`, and `summaryEmbedding`. The `summaryEmbedding` holds the 384-dimensional text embeddings of the summary, generated using the `all-MiniLM-L6-v2` model from <a target="_blank" href="https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2">Hugging Face</a>.
 
 <div tab="code">
 
@@ -130,7 +130,7 @@ CREATE VECTOR INDEX "summary_embedding" ON NODE Book (summaryEmbedding) OPTIONS 
 | `similarity_function` | String | `L2` | The similarity function used to assess the similarity of two vectors. Supports `L2`, `COSINE`, and `IP`. <a href="#Vector-Search">Learn more</a>  |
 | `index_type` | String | `FLAT` | The method used to organize and search the vectors in the index. Supports `FLAT`, `IVF_FLAT`, `IVF_SQ8`, `HNSW`, `HNSW_SQ`, `HNSW_PQ`, `HNSW_PRQ`, and `SCANN`. <a href="#Annex:-Index-Types">Learn more</a> |
 | `dimensions` | Integer | `128` | The dimensions of the vectors to be indexed. Only vectors of the configured dimension are indexed, and querying the index with a vector of a different dimensions will return an error. |
-| `vector_server` | String | / | The name of the <a target="blank" href="https://www.ultipa.com/document/gql/vector-servers">vector server</a> that hosts the vector index. |
+| `vector_server` | String | / | The name of the <a target="_blank" href="/docs/gql/vector-servers">vector server</a> that hosts the vector index. |
 
 ## Dropping a Vector Index
 

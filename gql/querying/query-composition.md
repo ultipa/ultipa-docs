@@ -10,15 +10,15 @@ GQL supports the following statement for querying the database:
 
 | <div table-width="15">Statement</div> | Description | <div table-width="18">Supported Clauses</div> |
 | -- | -- | -- |
-| <a href="https://www.ultipa.com/docs/gql/match">MATCH</a> | Retrieves nodes, edges, and paths from the graph using <a target="_blank" href="https://www.ultipa.com/docs/gql/graph-pattern-matching">patterns</a>. | `WHERE`, `YIELD` |
-| <a href="https://www.ultipa.com/docs/gql/filter">FILTER</a> | Discards records in the intermediate result table that do not satisfy the specified conditions. |
-| <a href="https://www.ultipa.com/docs/gql/let">LET</a> | Defines variables and adds corresponding columns to the intermediate result table. |
-| <a href="https://www.ultipa.com/docs/gql/for">FOR</a> | Unnests a list into individual rows. |
-| <a href="https://www.ultipa.com/docs/gql/order-by">ORDER BY</a> | Sorts records in the intermediate result or output table. |
-| <a href="https://www.ultipa.com/docs/gql/limit">LIMIT</a> | Restricts the number of records to be retained in the intermediate result or output table. |
-| <a href="https://www.ultipa.com/docs/gql/skip">SKIP</a> | Discards a specified number of records from the beginning of the intermediate result or output table. |
-| <a href="https://www.ultipa.com/docs/gql/call">CALL</a> | Invokes an inline procedure or named procedure. | `YIELD` |
-| <a href="https://www.ultipa.com/docs/gql/return">RETURN</a> | Specifies the columns to include in the output table. | `GROUP BY` |
+| <a href="/docs/gql/match">MATCH</a> | Retrieves nodes, edges, and paths from the graph using <a target="_blank" href="/docs/gql/graph-pattern-matching">patterns</a>. | `WHERE`, `YIELD` |
+| <a href="/docs/gql/filter">FILTER</a> | Discards records in the intermediate result table that do not satisfy the specified conditions. |
+| <a href="/docs/gql/let">LET</a> | Defines variables and adds corresponding columns to the intermediate result table. |
+| <a href="/docs/gql/for">FOR</a> | Unnests a list into individual rows. |
+| <a href="/docs/gql/order-by">ORDER BY</a> | Sorts records in the intermediate result or output table. |
+| <a href="/docs/gql/limit">LIMIT</a> | Restricts the number of records to be retained in the intermediate result or output table. |
+| <a href="/docs/gql/skip">SKIP</a> | Discards a specified number of records from the beginning of the intermediate result or output table. |
+| <a href="/docs/gql/call">CALL</a> | Invokes an inline procedure or named procedure. | `YIELD` |
+| <a href="/docs/gql/return">RETURN</a> | Specifies the columns to include in the output table. | `GROUP BY` |
 
 ## Linear Query
 
@@ -57,10 +57,10 @@ UNION
 MATCH (n:User) RETURN n
 ```
 
-<a href="https://www.ultipa.com/docs/gql/composite-query">Learn more about composite query →</a>
+<a href="/docs/gql/composite-query">Learn more about composite query →</a>
 
 ## Advanced Linear Composition with NEXT
 
 The `NEXT` statement chains multiple linear or composite query statements, enabling more complex queries.
 
-<a href="https://www.ultipa.com/docs/gql/next">Learn more about NEXT →</a>
+<a href="/docs/gql/next">Learn more about NEXT →</a>

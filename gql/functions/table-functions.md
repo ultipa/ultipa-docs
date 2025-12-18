@@ -1,4 +1,4 @@
-## Table Functions
+# Table Functions
 
 ## Example Graph
 
@@ -51,4 +51,3 @@ Result:
 | -- | -- | -- | -- |
 | <span style="color:#999;">UUID of node</span> | Optimizing Queries | <span style="color:#999;">UUID of edge</span> | 1 |
 | <span style="color:#999;">UUID of node</span> | Efficient Graph Search | <span style="color:#999;">UUID of edge</span> | 2 |
-null

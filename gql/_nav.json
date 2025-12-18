@@ -1,0 +1,307 @@
+{
+  "name": "GQL",
+  "navigation": [
+    {
+      "file": "introduction.md",
+      "title": "Introduction"
+    },
+    {
+      "folder": "graph-pattern-matching",
+      "pages": [
+        {
+          "file": "graph-pattern-matching.md",
+          "title": "Overview"
+        },
+        {
+          "file": "node-and-edge-patterns.md",
+          "title": "Node and Edge Patterns"
+        },
+        {
+          "file": "path-patterns.md",
+          "title": "Path Patterns"
+        },
+        {
+          "file": "quantified-paths.md",
+          "title": "Quantified Paths"
+        },
+        {
+          "file": "shortest-paths.md",
+          "title": "Shortest Paths"
+        },
+        {
+          "file": "graph-patterns.md",
+          "title": "Graph Patterns"
+        }
+      ]
+    },
+    {
+      "folder": "graph-management",
+      "pages": [
+        {
+          "file": "graph.md",
+          "title": "Overview"
+        },
+        {
+          "file": "typed-graph.md",
+          "title": "Typed Graph"
+        },
+        {
+          "file": "open-graph.md",
+          "title": "Open Graph"
+        },
+        {
+          "file": "graph-sharding-and-storage.md",
+          "title": "Graph Sharding and Storage"
+        },
+        {
+          "file": "constraints.md",
+          "title": "Constraints"
+        }
+      ]
+    },
+    {
+      "folder": "data-modification",
+      "pages": [
+        {
+          "file": "unique-identifiers.md",
+          "title": "Unique Identifiers"
+        },
+        {
+          "file": "insert.md",
+          "title": "INSERT"
+        },
+        {
+          "file": "insert-overwrite.md",
+          "title": "INSERT OVERWRITE"
+        },
+        {
+          "file": "upsert.md",
+          "title": "UPSERT"
+        },
+        {
+          "file": "set.md",
+          "title": "SET"
+        },
+        {
+          "file": "remove.md",
+          "title": "REMOVE"
+        },
+        {
+          "file": "delete.md",
+          "title": "DELETE"
+        }
+      ]
+    },
+    {
+      "folder": "querying",
+      "pages": [
+        {
+          "file": "query-composition.md",
+          "title": "Query Composition"
+        },
+        {
+          "file": "result-table-and-visualization.md",
+          "title": "Result Table and Visualization"
+        },
+        {
+          "file": "match.md",
+          "title": "MATCH"
+        },
+        {
+          "file": "optional-match.md",
+          "title": "OPTIONAL MATCH"
+        },
+        {
+          "file": "filter.md",
+          "title": "FILTER"
+        },
+        {
+          "file": "let.md",
+          "title": "LET"
+        },
+        {
+          "file": "for.md",
+          "title": "FOR"
+        },
+        {
+          "file": "order-by.md",
+          "title": "ORDER BY"
+        },
+        {
+          "file": "limit.md",
+          "title": "LIMIT"
+        },
+        {
+          "file": "skip.md",
+          "title": "SKIP"
+        },
+        {
+          "file": "call.md",
+          "title": "CALL"
+        },
+        {
+          "file": "return.md",
+          "title": "RETURN"
+        },
+        {
+          "file": "composite-query.md",
+          "title": "Composite Query"
+        },
+        {
+          "file": "next.md",
+          "title": "NEXT"
+        }
+      ]
+    },
+    {
+      "folder": "functions",
+      "pages": [
+        {
+          "file": "all-functions.md",
+          "title": "All Functions"
+        },
+        {
+          "file": "scalar-functions.md",
+          "title": "Scalar Functions"
+        },
+        {
+          "file": "path-functions.md",
+          "title": "Path Functions"
+        },
+        {
+          "file": "aggregate-functions.md",
+          "title": "Aggregate Functions"
+        },
+        {
+          "file": "mathematical-functions.md",
+          "title": "Mathematical Functions"
+        },
+        {
+          "file": "trigonometric-functions.md",
+          "title": "Trigonometric Functions"
+        },
+        {
+          "file": "string-functions.md",
+          "title": "String Functions"
+        },
+        {
+          "file": "list-functions.md",
+          "title": "List Functions"
+        },
+        {
+          "file": "datetime-functions.md",
+          "title": "Datetime Functions"
+        },
+        {
+          "file": "spatial-functions.md",
+          "title": "Spatial Functions"
+        },
+        {
+          "file": "table-functions.md",
+          "title": "Table Functions"
+        }
+      ]
+    },
+    {
+      "file": "operators.md",
+      "title": "Operators"
+    },
+    {
+      "file": "predicates.md",
+      "title": "Predicates"
+    },
+    {
+      "file": "expressions.md",
+      "title": "Expressions"
+    },
+    {
+      "folder": "query-acceleration",
+      "pages": [
+        {
+          "file": "index.md",
+          "title": "Index"
+        },
+        {
+          "file": "full-text-index.md",
+          "title": "Full-text Index"
+        },
+        {
+          "file": "vector-index.md",
+          "title": "Vector Index"
+        }
+      ]
+    },
+    {
+      "folder": "hdc-graphs",
+      "name": "HDC Graphs",
+      "pages": [
+        {
+          "file": "managing-hdc-graphs.md",
+          "title": "Managing HDC Graphs"
+        },
+        {
+          "file": "hdc-graph-queries.md",
+          "title": "HDC Graph Queries"
+        }
+      ]
+    },
+    {
+      "file": "transaction.md",
+      "title": "Transaction"
+    },
+    {
+      "file": "trigger.md",
+      "title": "Trigger"
+    },
+    {
+      "folder": "gql-execution",
+      "pages": [
+        {
+          "file": "process.md",
+          "title": "Process"
+        },
+        {
+          "file": "job.md",
+          "title": "Job"
+        },
+        {
+          "file": "execution-plan.md",
+          "title": "Execution Plan"
+        }
+      ]
+    },
+    {
+      "folder": "syntax",
+      "pages": [
+        {
+          "file": "variables.md",
+          "title": "Variables"
+        },
+        {
+          "file": "values-and-types.md",
+          "title": "Values and Types"
+        },
+        {
+          "file": "comments.md",
+          "title": "Comments"
+        },
+        {
+          "file": "reserved-words.md",
+          "title": "Reserved Words"
+        },
+        {
+          "file": "syntactic-notation.md",
+          "title": "Syntactic Notation"
+        }          
+      ]
+    },
+    {
+      "file": "access-control.md",
+      "title": "Access Control"
+    },
+    {
+      "file": "gql-conformance.md",
+      "title": "GQL Conformance"
+    }
+  ]
+}

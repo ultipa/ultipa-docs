@@ -1,4 +1,4 @@
-## Full-text Index
+# Full-text Index
 
 ## Overview
 

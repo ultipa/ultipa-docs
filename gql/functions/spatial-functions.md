@@ -1,4 +1,4 @@
-## Spatial Functions
+# Spatial Functions
 
 ## Example Graph
 

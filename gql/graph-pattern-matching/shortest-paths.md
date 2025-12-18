@@ -1,4 +1,4 @@
-## Shortest Paths
+# Shortest Paths
 
 ## Overview
 
@@ -11,16 +11,16 @@ Shortest paths between two nodes are those with the fewest number of edges. You 
 | `SHORTEST k` | Selects any `k` (non-negative integer) shortest paths from each partition. If a partition has fewer than `k` shortest paths, continue selecting the second shortest, third shortest, and so on, until the required number is reached or no more paths are available. |
 | `SHORTEST k GROUP` | Groups the paths in each partition by length, sorts the groups in ascending order, and selects all paths from the first `k` groups in each partition. |
 
-The shortest path selectors are typically used with variable-length <a target="_blank" href="https://www.ultipa.com/docs/gql/quantified-paths">quantified paths</a>. When a shortest path selector is used, the path mode is compulsively set to `TRAIL` where repeated edges are not allowed.
+The shortest path selectors are typically used with variable-length <a target="_blank" href="/docs/gql/quantified-paths">quantified paths</a>. When a shortest path selector is used, the path mode is compulsively set to `TRAIL` where repeated edges are not allowed.
 
 ## Note on Shortest Path Algorithms
 
 Ultipa’s graph algorithm library includes the following shortest path algorithms:
 
-- <a target="_blank" href="https://www.ultipa.com/docs/graph-analytics-algorithms/dijkstra-sssp">Dijkstra SSSP</a>
-- <a target="_blank" href="https://www.ultipa.com/docs/graph-analytics-algorithms/delta-stepping-sssp">Delta-Stepping SSSP</a>
-- <a target="_blank" href="https://www.ultipa.com/docs/graph-analytics-algorithms/spfa">SPFA</a>
-- <a target="_blank" href="https://www.ultipa.com/docs/graph-analytics-algorithms/mst">Minimum Spanning Tree</a>
+- <a target="_blank" href="/docs/graph-analytics-algorithms/dijkstra-sssp">Dijkstra SSSP</a>
+- <a target="_blank" href="/docs/graph-analytics-algorithms/delta-stepping-sssp">Delta-Stepping SSSP</a>
+- <a target="_blank" href="/docs/graph-analytics-algorithms/spfa">SPFA</a>
+- <a target="_blank" href="/docs/graph-analytics-algorithms/mst">Minimum Spanning Tree</a>
 
 These algorithms are recommended for computing **weighted shortest paths** (i.e., cheapest paths) or when calculating shortest paths over the full graph or a subgraph that has been loaded into an HDC server.
 

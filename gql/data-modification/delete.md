@@ -1,4 +1,4 @@
-## DELETE
+# DELETE
 
 ## Overview
 
@@ -91,4 +91,3 @@ To delete any two edges:
 MATCH ()-[e]->() LIMIT 2
 DELETE e
 ```
-null

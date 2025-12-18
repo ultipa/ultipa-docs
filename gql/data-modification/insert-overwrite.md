@@ -1,4 +1,4 @@
-## INSERT OVERWRITE
+# INSERT OVERWRITE
 
 ## Overview
 
@@ -34,7 +34,7 @@ For example, the `EDGE KEY` constraint applies to the property `eID`:
 ALTER EDGE * ADD CONSTRAINT EDGE KEY ON eID STRING
 ```
 
-<a target="_blank" href="https://www.ultipa.com/docs/gql/constraints#EDGE-KEY">Learn more about the EDGE KEY constraint →</a>
+<a target="_blank" href="/docs/gql/constraints#EDGE-KEY">Learn more about the EDGE KEY constraint →</a>
 
 ```gql
 MATCH (n1:User {name: "mochaeach"}), (n2:User {name: "Brainy"})

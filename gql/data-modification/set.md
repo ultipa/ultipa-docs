@@ -1,4 +1,4 @@
-## SET
+# SET
 
 ## Overview
 
@@ -138,7 +138,7 @@ MATCH (n:User {name: 'rowlock'})
 SET n:Player, n:Employee
 ```
 
-> To remove labels from nodes or edges, use the <a target="_blank" href="https://www.ultipa.com/docs/gql/remove">REMOVE</a> statement.
+> To remove labels from nodes or edges, use the <a target="_blank" href="/docs/gql/remove">REMOVE</a> statement.
 
 ### Updating a Property
 

@@ -1,4 +1,4 @@
-## HDC Graph Queries
+# HDC Graph Queries
 
 ## Overview
 

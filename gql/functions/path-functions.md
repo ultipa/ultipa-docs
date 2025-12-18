@@ -1,4 +1,4 @@
-## Path Functions
+# Path Functions
 
 ## Example Graph
 

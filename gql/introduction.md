@@ -2,9 +2,9 @@
 
 **GQL** (Graph Query Language) is a database language designed for modeling, querying and modifying data in graph database.
 
-As the first standardized database language since SQL's introduction in 1987, GQL marks a major milestone in data management. The first version of the GQL standard was officially released by the ISO/IEC in April 2024. See Ultipa's <a target="blank" href="https://www.ultipa.com/docs/gql/gql-conformance">GQL Conformance</a>.
+As the first standardized database language since SQL's introduction in 1987, GQL marks a major milestone in data management. The first version of the GQL standard was officially released by the ISO/IEC in April 2024. See Ultipa's <a target="_blank" href="/docs/gql/gql-conformance">GQL Conformance</a>.
 
-To get started with GQL, check out our <a target="blank" href="https://www.ultipa.com/docs/quick-start/what-is-gql">Quick Start</a>. You can also explore and practice GQL for free in our <a target="blank" href="https://www.ultipa.com/gql-playground">GQL Playground</a>.
+To get started with GQL, check out our <a target="_blank" href="/docs/quick-start/what-is-gql">Quick Start</a>. You can also explore and practice GQL for free in our <a target="_blank" href="https://www.ultipa.com/gql-playground">GQL Playground</a>.
 
 ## GQL Execution Context
 

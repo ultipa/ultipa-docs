@@ -1,4 +1,4 @@
-## Aggregate Functions
+# Aggregate Functions
 
 ## Overview
 

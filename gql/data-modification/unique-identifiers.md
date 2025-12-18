@@ -23,4 +23,4 @@ Each **edge** has a built-in unique identifier: `_uuid`. Meanwhile, each edge co
 
 ## User-Defined
 
-You can specify the `EDGE KEY` constraint on one or more edge properties to serve as the unique identifiers for edges. Learn more about the <a target="_blank" href="https://www.ultipa.com/docs/gql/constraints#EDGE-KEY">EDGE KEY constraint</a>.
+You can specify the `EDGE KEY` constraint on one or more edge properties to serve as the unique identifiers for edges. Learn more about the <a target="_blank" href="/docs/gql/constraints#EDGE-KEY">EDGE KEY constraint</a>.

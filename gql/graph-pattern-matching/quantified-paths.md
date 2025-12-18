@@ -1,4 +1,4 @@
-## Quantified Paths
+# Quantified Paths
 
 ## Overview
 

@@ -319,7 +319,7 @@ Determines whether a character string value is normalized. GQL supports the foll
 
 **Details**
 
-- The `<normal form>` defaults to `NFC`. Other available <a href="https://www.ultipa.com/document/gql/character-string-functions#normalize()">normalization forms</a> are `NFD`, `NFKC` and `NFKD`.
+- The `<normal form>` defaults to `NFC`. Other available <a href="/docs/gql/character-string-functions#normalize()">normalization forms</a> are `NFD`, `NFKC` and `NFKD`.
 
 ```gql
 RETURN "Å" IS NORMALIZED AS normRes
