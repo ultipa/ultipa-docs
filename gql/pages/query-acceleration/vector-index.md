@@ -201,4 +201,3 @@ Result:
 | `HNSW_PQ` | It uses `PQ` (Product Quantization) to enhance the `HNSW` method by compressing the vectors, resulting in a more memory-efficient structure with good performance. |
 | `HNSW_PRQ` | It combines the benefits of `HNSW_PQ` with a re-ranking mechanism to improve accuracy after an initial fast search. This method ensures both speed and high precision. |
 | `SCANN` | `SCANN` (Scalable Nearest Neighbor) is an advanced method developed by Google for efficient nearest neighbor search. It utilizes techniques like quantization and partitioning to provide extremely fast retrieval speeds, especially on very large datasets. |
-null

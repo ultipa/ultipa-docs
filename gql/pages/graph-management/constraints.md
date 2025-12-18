@@ -261,4 +261,3 @@ Properties with the `NOT NULL` or `UNIQUE` constraints can be renamed. However, 
 ### Dropping Properties
 
 A property with a constraint cannot be dropped until all the related constraints are deleted.
-null

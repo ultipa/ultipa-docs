@@ -255,6 +255,7 @@
     },
     {
       "folder": "gql-execution",
+      "name": "GQL Execution",
       "pages": [
         {
           "file": "process.md",

@@ -200,4 +200,3 @@ RETURN e
 MATCH DIFFERENT EDGES ()-[e]->()<-[e]-()
 RETURN e
 ```
-null

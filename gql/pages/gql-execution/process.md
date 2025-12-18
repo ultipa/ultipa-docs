@@ -1,6 +1,4 @@
-# GQL Execution
-
-## Process
+# Process
 
 ## Overview
 
