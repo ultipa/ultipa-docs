@@ -1,0 +1,338 @@
+# Reserved Words
+
+Reserved words in GQL are terms with predefined meanings that influence query behavior. GQL has the following reserved words written in uppercases. When any of these words have uppercase letters replaced by lowercase, they are still recognized as reserved words.
+
+Reserved words are not recommended to be used as identifiers for **variables**, **node/edge schemas (labels)**, and **properties**.
+
+## A
+
+- `ABS`
+- `ABSTRACT`
+- `ACOS`
+- `AGGREGATE`
+- `AGGREGATES`
+- `ALL`
+- `ALL_DIFFERENT`
+- `ALTER`
+- `AND`
+- `ANY`
+- `ARRAY`
+- `AS`
+- `ASC`
+- `ASCENDING` 
+- `ASIN`
+- `AT` 
+- `ATAN` 
+- `AVG`
+
+## B
+
+- `BIG` 
+- `BIGINT`
+- `BINARY` 
+- `BOOL` 
+- `BOOLEAN` 
+- `BOTH` 
+- `BTRIM` 
+- `BY` 
+- `BYTE_LENGTH` 
+- `BYTES`
+
+## C
+
+- `CALL` 
+- `CARDINALITY` 
+- `CASE` 
+- `CAST` 
+- `CATALOG`
+- `CEIL` 
+- `CEILING` 
+- `CHAR` 
+- `CHAR_LENGTH` 
+- `CHARACTER_LENGTH`
+- `CHARACTERISTICS`
+- `CLEAR`
+- `CLONE`
+- `CLOSE`
+- `COALESCE` 
+- `COLLECT_LIST` 
+- `COMMIT` 
+- `CONSTRAINT`
+- `COPY` 
+- `COS` 
+- `COSH` 
+- `COT`
+- `COUNT`
+- `CREATE`
+- `CURRENT_DATE`
+- `CURRENT_GRAPH`
+- `CURRENT_PROPERTY_GRAPH`
+- `CURRENT_ROLE`
+- `CURRENT_SCHEMA`
+- `CURRENT_TIME`
+- `CURRENT_TIMESTAMP`
+- `CURRENT_USER`
+
+## D
+
+- `DATA`
+- `DATE`
+- `DATETIME`
+- `DAY`
+- `DEC`
+- `DECIMAL`
+- `DEGREES`
+- `DELETE`
+- `DESC`
+- `DESCENDING`
+- `DETACH`
+- `DIRECTORY`
+- `DISTINCT`
+- `DOUBLE`
+- `DROP`
+- `DRYRUN`
+- `DURATION`
+- `DURATION_BETWEEN`
+
+## E
+
+- `ELEMENT_ID`
+- `ELSE`
+- `END`
+- `EXACT`
+- `EXCEPT`
+- `EXISTS`
+- `EXISTING`
+- `EXP`
+
+## F
+
+- `FILTER`
+- `FINISH`
+- `FLOAT`
+- `FLOAT16`
+- `FLOAT32`
+- `FLOAT64`
+- `FLOAT128` 
+- `FLOAT256`
+- `FLOOR`
+- `FOR`
+- `FROM`
+- `FUNCTION`
+
+## G
+
+- `GQLSTATUS` 
+- `GRANT`
+- `GROUP`
+
+## H
+
+- `HAVING`
+- `HOME_GRAPH`
+- `HOME_PROPERTY_GRAPH`
+- `HOME_SCHEMA`
+- `HOUR`
+
+## I
+
+- `IF`
+- `IMPLIES`
+- `IN`
+- `INFINITY`
+- `INSERT`
+- `INSTANT`
+- `INT` 
+- `INTEGER`
+- `INT8`
+- `INTEGER8`
+- `INT16`
+- `INTEGER16`
+- `INT32`
+- `INTEGER32`
+- `INT64`
+- `INTEGER64`
+- `INT128`
+- `INTEGER128`
+- `INT256`
+- `INTEGER256`
+- `INTERSECT`
+- `INTERVAL`
+- `IS`
+
+## L
+
+- `LEADING`
+- `LEFT`
+- `LET`
+- `LIKE`
+- `LIMIT`
+- `LIST`
+- `LN`
+- `LOCAL`
+- `LOCAL_DATETIME`
+- `LOCAL_TIME`
+- `LOCAL_TIMESTAMP`
+- `LOG`
+- `LOG10`
+- `LOWER`
+- `LTRIM`
+
+## M
+
+- `MATCH`
+- `MAX`
+- `MIN`
+- `MINUTE`
+- `MOD`
+- `MONTH`
+
+## N
+
+- `NEXT`
+- `NODETACH`
+- `NORMALIZE`
+- `NOT`
+- `NOTHING`
+- `NULL`
+- `NULLS`
+- `NULLIF`
+- `NUMBER`
+- `NUMERIC`
+
+## O
+
+- `OCTET_LENGTH`
+- `OF`
+- `OFFSET`
+- `ON`
+- `OPEN`
+- `OPTIONAL`
+- `OR`
+- `ORDER`
+- `OTHERWISE`
+
+## P
+
+- `PARAMETER` 
+- `PARAMETERS`
+- `PARTITION`
+- `PATH`
+- `PATH_LENGTH`
+- `PATHS`
+- `PERCENTILE_CONT`
+- `PERCENTILE_DISC`
+- `POWER`
+- `PRECISION`
+- `PROCEDURE`
+- `PRODUCT`
+- `PROJECT`
+- `PROPERTY_EXISTS`
+
+## Q
+
+- `QUERY`
+
+## R
+
+- `RADIANS`
+- `REAL`
+- `RECORD`
+- `RECORDS`
+- `REFERENCE`
+- `REMOVE`
+- `RENAME`
+- `REPLACE`
+- `RESET`
+- `RETURN`
+- `REVOKE`
+- `RIGHT`
+- `ROLLBACK`
+- `RTRIM`
+
+## S
+
+- `SAME`
+- `SCHEMA`
+- `SECOND`
+- `SELECT`
+- `SESSION` 
+- `SESSION_USER` 
+- `SET` 
+- `SIGNED`
+- `SIN`
+- `SINH`
+- `SIZE`
+- `SKIP`
+- `SMALL`
+- `SMALLINT`
+- `SQRT`
+- `START`
+- `STDDEV_POP`
+- `STDDEV_SAMP`
+- `STRING`
+- `SUBSTRING`
+- `SUM`
+- `SYSTEM_USER`
+
+## T
+
+- `TAN`
+- `TANH`
+- `TEMPORAL`
+- `THEN`
+- `TIME`
+- `TIMESTAMP`
+- `TRAILING`
+- `TRIM`
+- `TRUE`
+- `TYPED`
+
+## U
+
+- `UBIGINT`
+- `UINT`
+- `UINT8`
+- `UINT16`
+- `UINT32`
+- `UINT64`
+- `UINT128`
+- `UINT256`
+- `UNION`
+- `UNIQUE`
+- `UNIT`
+- `UNKNOWN`
+- `UNSIGNED`
+- `UPPER`
+- `USE`
+- `USMALLINT`
+
+## V
+
+- `VALUE`
+- `VALUES`
+- `VARBINARY`
+- `VARCHAR`
+- `VARIABLE`
+
+## W
+
+- `WHEN`
+- `WHERE`
+- `WHITESPACE`
+- `WITH`
+
+## X
+
+- `XOR`
+
+## Y
+
+- `YEAR` 
+- `YIELD`
+
+## Z
+
+- `ZONED`
+- `ZONED_DATETIME`
+- `ZONED_TIME`

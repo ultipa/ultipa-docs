@@ -1,4 +1,4 @@
-## Execution Plan
+# Execution Plan
 
 ## Overview
 
@@ -51,4 +51,3 @@ Sample `profile_info` output:
 | ----2 | WITH | 2 | 8μs | 121 |
 | ------3 | LIMIT_SKIP | 3 | 1μs | 121 |
 | --------4 | NODE_SCAN | 4 | 440μs | 121 |
-null

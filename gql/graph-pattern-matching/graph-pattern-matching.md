@@ -10,8 +10,8 @@ A graph pattern is an assembly of smaller components. A **graph pattern** is a l
 
 You may follow the sequence below to learn how to write graph patterns in GQL:
 
-- <a href="https://www.ultipa.com/docs/gql/node-and-edge-patterns">Node and Edge Patterns</a>
-- <a href="https://www.ultipa.com/docs/gql/path-patterns">Path Patterns</a>
-- <a href="https://www.ultipa.com/docs/gql/quantified-paths">Quantified Paths</a>
-- <a href="https://www.ultipa.com/docs/gql/shortest-paths">Shortest Paths</a>
-- <a href="https://www.ultipa.com/docs/gql/graph-patterns">Graph Patterns</a>
+- <a href="/docs/gql/node-and-edge-patterns">Node and Edge Patterns</a>
+- <a href="/docs/gql/path-patterns">Path Patterns</a>
+- <a href="/docs/gql/quantified-paths">Quantified Paths</a>
+- <a href="/docs/gql/shortest-paths">Shortest Paths</a>
+- <a href="/docs/gql/graph-patterns">Graph Patterns</a>

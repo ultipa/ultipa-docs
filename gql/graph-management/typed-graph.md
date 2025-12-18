@@ -1,4 +1,4 @@
-## Typed Graph
+# Typed Graph
 
 ## Overview
 
@@ -7,7 +7,7 @@ The **typed graph** is constrained by its **graph type** (or schema), which impo
 In a typed graph,
 
 - Each node or edge belongs to exactly one schema.
-- Each schema is associated with a set of properties; each property is defined with a specific <a target="_blank" href="https://www.ultipa.com/docs/gql/values-and-types#Property-Value-Types">value type</a>.
+- Each schema is associated with a set of properties; each property is defined with a specific <a target="_blank" href="/docs/gql/values-and-types#Property-Value-Types">value type</a>.
 
 For typed graphs, node and edge schemas, along with their properties, must be explicitly defined.  This definition can occur either during graph creation or later, and can be easily altered as necessary throughout the graph's lifecycle.
 

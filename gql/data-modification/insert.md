@@ -1,10 +1,10 @@
-## INSERT
+# INSERT
 
 ## Overview
 
 The `INSERT` statement allows you to add new nodes and edges into the graph using node and edge patterns.
 
-Different from <a target="_blank" href="https://www.ultipa.com/docs/gql/graph-pattern-matching">graph pattern matching</a>, `INSERT` supports variable declarations, label/schema expressions, and property specifications in node and edge patterns; while `WHERE` clauses are not allowed. Only basic concatenations of node and edge patterns are permitted, and the indication of edge direction is necessary.
+Different from <a target="_blank" href="/docs/gql/graph-pattern-matching">graph pattern matching</a>, `INSERT` supports variable declarations, label/schema expressions, and property specifications in node and edge patterns; while `WHERE` clauses are not allowed. Only basic concatenations of node and edge patterns are permitted, and the indication of edge direction is necessary.
 
 Ultipa supports both typed graphs and open graphs. Their data insertion syntax is similar, but with important differences in requirements.
 
@@ -25,7 +25,7 @@ CREATE GRAPH g1 {
 }
 ```
 
-<a target="_blank" href="https://www.ultipa.com/docs/gql/typed-graph">Learn more about typed graphs →</a>
+<a target="_blank" href="/docs/gql/typed-graph">Learn more about typed graphs →</a>
 
 ### Open Graph
 
@@ -39,7 +39,7 @@ To create an open graph:
 CREATE GRAPH g2 ANY
 ```
 
-<a target="_blank" href="https://www.ultipa.com/docs/gql/open-graph">Learn more about open graphs →</a>
+<a target="_blank" href="/docs/gql/open-graph">Learn more about open graphs →</a>
 
 ## Inserting Nodes
 
@@ -117,7 +117,7 @@ INSERT (waveBliss:User {name: 'waveBliss'}),
 
 ## Property Value Examples
 
-Ultipa supports a wide range of property types. You can view the complete list at <a target="_blank" href="https://www.ultipa.com/docs/gql/values-and-types#Property-Value-Types">here</a>.
+Ultipa supports a wide range of property types. You can view the complete list at <a target="_blank" href="/docs/gql/values-and-types#Property-Value-Types">here</a>.
 
 Below are examples of property values for different types. These examples assume a typed graph, where properties are explicitly defined with specific types. In open graphs, property value types are open too, but the examples can still serve as a useful reference for assigning values.
 

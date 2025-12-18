@@ -1,4 +1,4 @@
-## Result Table and Visualization
+# Result Table and Visualization
 
 Even though GQL operates on graphs, its results are still logically represented as tables composed of records (rows).
 
@@ -165,6 +165,6 @@ While this is a small example, in a real-world graph with large datasets, Cartes
 
 While GQL results can be returned in tabular format, one of the defining features of graph databases is the ability to visualize results as graph structures, making it easier for users to see and explore the relationships within their data.
 
-When running GQL queries in Ultipa products such as <a target="_blank" href="https://www.ultipa.com/docs/manager-user-guide">Ultipa Manager</a> and <a target="_blank" href="https://www.ultipa.com/gql-playground">GQL Playground</a>, query results of nodes and paths can be rendered in **graph view**, offering an intuitive and interactive way to navigate the result graph.
+When running GQL queries in Ultipa products such as <a target="_blank" href="/docs/manager-user-guide">Ultipa Manager</a> and <a target="_blank" href="https://www.ultipa.com/gql-playground">GQL Playground</a>, query results of nodes and paths can be rendered in **graph view**, offering an intuitive and interactive way to navigate the result graph.
 
 <center><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/img/2025-06-30-12-23-11-result-visualization.jpg"><span style="color:#999;">Result Visualization in Ultipa Manager</span></center>

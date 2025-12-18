@@ -190,7 +190,7 @@ MATCH (n:user WHERE lower(n.aboutMe) CONTAINS "graph database")
 RETURN n
 ```
 
-The `CONTAINS` operator is also used to match the specified keywords with tokens of a full-text index (precise or fuzzy match). See <a target="blank" href="https://www.ultipa.com/document/gql/full-text-index#Using-Full-text-Indexes">Using Full-text Indexes</a>. 
+The `CONTAINS` operator is also used to match the specified keywords with tokens of a full-text index (precise or fuzzy match). See <a target="_blank" href="/docs/gql/full-text-index#Using-Full-text-Indexes">Using Full-text Indexes</a>. 
 
 This query finds nodes using the full-text index `prodDesc` where their tokens include "graph" and "database":
 

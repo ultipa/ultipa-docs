@@ -1,4 +1,4 @@
-## Node and Edge Patterns
+# Node and Edge Patterns
 
 ## Overview
 

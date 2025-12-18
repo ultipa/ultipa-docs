@@ -2,7 +2,7 @@
 
 GQL is the standardized query language for graph databases, published by ISO/IEC in April 2024 as:
 
-- <a target="blank" href="https://www.iso.org/standard/76120.html">ISO/IEC 39075:2024 - Information technology — Database languages — GQL</a> 
+- <a target="_blank" href="https://www.iso.org/standard/76120.html">ISO/IEC 39075:2024 - Information technology — Database languages — GQL</a> 
 
 Ultipa now supports most GQL features. This page claims the GQL conformance.
 

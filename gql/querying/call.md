@@ -1,4 +1,4 @@
-## CALL
+# CALL
 
 ## Overview
 
@@ -181,7 +181,7 @@ A **named procedure** refers to a predefined procedure, such as an algorithm, th
 
 ### Running an Algorithm
 
-The following query executes the <a target="_blank" href="https://www.ultipa.com/docs/graph-analytics-algorithms/degree-centrality">Degree Centrality</a> algorithm. Note that the algorithm is run on the HDC graph `my_hdc_graph` derived from the current graph.
+The following query executes the <a target="_blank" href="/docs/graph-analytics-algorithms/degree-centrality">Degree Centrality</a> algorithm. Note that the algorithm is run on the HDC graph `my_hdc_graph` derived from the current graph.
 
 ```gql
 CALL algo.degree.run("my_hdc_graph", {
@@ -191,4 +191,4 @@ CALL algo.degree.run("my_hdc_graph", {
 RETURN r
 ```
 
-To learn more about available algorithms, refer to the <a target="_blank" href="https://www.ultipa.com/docs/graph-analytics-algorithms">Graph Analytics & Algorithms</a> documentation.
+To learn more about available algorithms, refer to the <a target="_blank" href="/docs/graph-analytics-algorithms">Graph Analytics & Algorithms</a> documentation.

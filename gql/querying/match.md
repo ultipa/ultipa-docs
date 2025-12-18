@@ -1,8 +1,8 @@
-## MATCH
+# MATCH
 
 ## Overview
 
-The `MATCH` statement allows you to specify a <a target="blank" href="https://www.ultipa.com/docs/gql/graph-pattern-matching">graph pattern</a> to search for in the graph. It is the fundamental statement for retrieving data from the graph database and binding them to variables for use in subsequent parts of the query. 
+The `MATCH` statement allows you to specify a <a target="_blank" href="/docs/gql/graph-pattern-matching">graph pattern</a> to search for in the graph. It is the fundamental statement for retrieving data from the graph database and binding them to variables for use in subsequent parts of the query. 
 
 ## Example Graph
 
@@ -91,7 +91,7 @@ RETURN e
 
 ## Matching with Labels/Schema
 
-Both node pattern and edge pattern support the <a target="blank" href="https://www.ultipa.com/docs/gql/node-and-edge-patterns#Label/Schema-Expression">label/schema expression</a> to specify schemas (in typed graphs) or labels (in open graphs).
+Both node pattern and edge pattern support the <a target="_blank" href="/docs/gql/node-and-edge-patterns#Label/Schema-Expression">label/schema expression</a> to specify schemas (in typed graphs) or labels (in open graphs).
 
 To retrieve all `Club` nodes:
 
@@ -123,7 +123,7 @@ Result: `n`
 
 ## Matching with Property Specification
 
-<a target="blank" href="https://www.ultipa.com/docs/gql/node-and-edge-patterns#Property-Specification">Property specification</a> can be included in node and edge patterns to apply **joint equalities** to filter nodes and edges with key-value pairs.
+<a target="_blank" href="/docs/gql/node-and-edge-patterns#Property-Specification">Property specification</a> can be included in node and edge patterns to apply **joint equalities** to filter nodes and edges with key-value pairs.
 
 To retrieve `Club` nodes whose `_id` and `since` have specific values:    
 
@@ -153,7 +153,7 @@ Result: `n`
 
 ## Matching with Abbreviated Edges
 
-You can use <a target="_blank" href="https://www.ultipa.com/docs/gql/node-and-edge-patterns#Abbreviated-Edge-Pattern">abbreviated edge patterns</a> when you do not need to filter edges or assign them to a variable. Even with the abbreviated form, you may still specify the direction of the edge when necessary.
+You can use <a target="_blank" href="/docs/gql/node-and-edge-patterns#Abbreviated-Edge-Pattern">abbreviated edge patterns</a> when you do not need to filter edges or assign them to a variable. Even with the abbreviated form, you may still specify the direction of the edge when necessary.
 
 To retrieve nodes connected with `mochaeach` with any outgoing edges:
 
@@ -230,7 +230,7 @@ Result: `n`
 
 ## Matching Quantified Paths
 
-A <a target="_blank" href="https://www.ultipa.com/docs/gql/quantified-paths">quantified path</a> is a variable-length path where the complete path or a part of it is repeated a specified number of times.
+A <a target="_blank" href="/docs/gql/quantified-paths">quantified path</a> is a variable-length path where the complete path or a part of it is repeated a specified number of times.
 
 To retrieve distinct nodes related to `lionbower` in 1 to 3 hops:
 
@@ -258,7 +258,7 @@ Result: `p`
 
 ## Matching Shortest Paths
 
-A <a target="_blank" href="https://www.ultipa.com/docs/gql/shortest-paths">shortest paths</a> between two nodes are the paths that has the fewest edges.
+A <a target="_blank" href="/docs/gql/shortest-paths">shortest paths</a> between two nodes are the paths that has the fewest edges.
 
 To retrieve all the shortest paths between `lionbower` and `purplechalk` within 5 hops:
 

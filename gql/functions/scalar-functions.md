@@ -1,4 +1,4 @@
-## Scalar Functions
+# Scalar Functions
 
 ## Example Graph
 

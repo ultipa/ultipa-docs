@@ -1,8 +1,8 @@
-## Graph Sharding and Storage
+# Graph Sharding and Storage
 
 ## Overview
 
-The graph data is physically stored on the **shard servers** that constitute the <a target="_blank" href="https://www.ultipa.com/docs/graph-database/ultipa-powerhouse-v5">Ultipa database deployment</a>. Depending on your setup, you can run one or multiple shard servers. 
+The graph data is physically stored on the **shard servers** that constitute the <a target="_blank" href="/docs/graph-database/ultipa-powerhouse-v5">Ultipa database deployment</a>. Depending on your setup, you can run one or multiple shard servers. 
 
 When creating a graph, you can designate one or multiple shard servers to store its nodes and edges in a distributed manner. This sharded architecture enables **horizontal scaling** of your data volume while maintaining high-performance querying.
 

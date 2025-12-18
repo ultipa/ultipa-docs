@@ -147,7 +147,7 @@ The `NULLIF` expression is a conditional expression that compares two values and
   "NULLIF" "(" <value expression> "," <value expression> ")"
 ```
 
-The `NULLIF(V1, V2)` expression is equivalent to the following <a href="https://www.ultipa.com/document/gql/case">`CASE`</a> expression:
+The `NULLIF(V1, V2)` expression is equivalent to the following <a href="/docs/gql/case">`CASE`</a> expression:
 
 <p tit="CASE Expression"></p>
 
@@ -206,7 +206,7 @@ The `COALESCE` expression is a conditional expression that returns the first non
   "COALESCE" "(" <value expression> { "," <value expression> }... ")"
 ```
 
-The `COALESCE(V1, V2, V3)` expression is equivalent to the following <a href="https://www.ultipa.com/document/gql/case">`CASE`</a> expression:
+The `COALESCE(V1, V2, V3)` expression is equivalent to the following <a href="/docs/gql/case">`CASE`</a> expression:
 
 <p tit="CASE Expression"></p>
 
@@ -358,4 +358,3 @@ Result:
 | -- |
 | Optimizing Queries |
 | Path Patterns |
-null

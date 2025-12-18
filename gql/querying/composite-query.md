@@ -1,8 +1,8 @@
-## Composite Query
+# Composite Query
 
 ## Overview
 
-A composite query combines the result sets of multiple <a target="_blank" href="https://www.ultipa.com/docs/gql/query-composition">linear queries</a> using the following query conjunctions:
+A composite query combines the result sets of multiple <a target="_blank" href="/docs/gql/query-composition">linear queries</a> using the following query conjunctions:
 
 | <div table-width="22">Query Conjunction</div> | Description |
 | -- | -- |

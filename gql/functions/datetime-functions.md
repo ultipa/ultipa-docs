@@ -1,4 +1,4 @@
-## Datetime Functions
+# Datetime Functions
 
 ## Datetime Value Functions
 

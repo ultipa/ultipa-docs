@@ -1,4 +1,4 @@
-## FOR
+# FOR
 
 ## Overview
 
@@ -118,7 +118,7 @@ Result:
 | normal |
 | normal |
 
-In this query, the `trans` declared in a <a target="_blank" href="https://www.ultipa.com/docs/gql/quantified-paths">quantified path</a> is a group variable. To convert it to a singleton degree of reference, you can use `FOR` to unnest it.
+In this query, the `trans` declared in a <a target="_blank" href="/docs/gql/quantified-paths">quantified path</a> is a group variable. To convert it to a singleton degree of reference, you can use `FOR` to unnest it.
 
 ## WITH ORDINALITY
 

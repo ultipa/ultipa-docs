@@ -8,9 +8,9 @@ HDC graphs enable the execution of both graph queries and algorithms with enhanc
 
 For details on managing and using HDC graphs, see the following:
 
-- <a href="https://www.ultipa.com/docs/gql/managing-hdc-graphs">Managing HDC Graphs</a>
-- <a href="https://www.ultipa.com/docs/gql/hdc-graph-queries">HDC Graph Queries</a>
-- <a href="https://www.ultipa.com/docs/graph-analytics-algorithms">HDC Graph Algorithms</a>
+- <a href="/docs/gql/managing-hdc-graphs">Managing HDC Graphs</a>
+- <a href="/docs/gql/hdc-graph-queries">HDC Graph Queries</a>
+- <a href="/docs/graph-analytics-algorithms">HDC Graph Algorithms</a>
 ## Managing HDC Graphs
 
 ## Overview

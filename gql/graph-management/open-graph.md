@@ -1,4 +1,4 @@
-## Open Graph
+# Open Graph
 
 ## Overview
 

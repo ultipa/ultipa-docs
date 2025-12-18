@@ -1,4 +1,4 @@
-## String Functions
+# String Functions
 
 ## btrim()
 
@@ -259,7 +259,7 @@ Result:
 
 ## normalize()
 
-Converts a string into a consistent format based on the normalization form specified, in accordance with <a target="blank" href="https://www.unicode.org/reports/tr15/">Unicode Standard Annex #15</a>.
+Converts a string into a consistent format based on the normalization form specified, in accordance with <a target="_blank" href="https://www.unicode.org/reports/tr15/">Unicode Standard Annex #15</a>.
 
 This function is typically used to compare two strings by their Unicode codepoints. Two characters appear identical to human eyes may have different codepoints, such as the multiplication sign `×` (U+00D7) and the letter `x` (U+0078).
 

@@ -1,4 +1,4 @@
-## Path Patterns
+# Path Patterns
 
 ## Overview
 
@@ -57,8 +57,8 @@ This path pattern reuses the variable `a` to form a ring-like structure that sta
 
 GQL supports the following advanced path patterns:
 
-- <a target="_blank" href="https://www.ultipa.com/docs/gql/quantified-paths">Quantified Paths</a>
-- <a target="_blank" href="https://www.ultipa.com/docs/gql/shortest-paths">Shortest Paths</a>
+- <a target="_blank" href="/docs/gql/quantified-paths">Quantified Paths</a>
+- <a target="_blank" href="/docs/gql/shortest-paths">Shortest Paths</a>
 
 ## Path Variable Declaration
 
@@ -183,7 +183,7 @@ A path selector is used to select a limited number of paths from **each partitio
     </tr>
     <tr>
       <td><code>ALL SHORTEST</code></td>
-      <td rowspan="4">See <a target="_blank" href="https://www.ultipa.com/docs/gql/shortest-paths">Shortest Paths</a>.</td>
+      <td rowspan="4">See <a target="_blank" href="/docs/gql/shortest-paths">Shortest Paths</a>.</td>
     </tr>
     <tr>
       <td><code>ANY SHORTEST</code></td>
@@ -254,8 +254,8 @@ This path term implicitly extends to:
 (:User)-[]->()-[]->(u)
 ```
 
-> A path term should not juxtapose a token that exposes a minus sign on the right  (`]-`, `<-`, `-`) followed by a token that exposes a minus sign on the left (`-[`, `->`, `-`), as this combination introduces the comment symbol `--`. See <a target="blank" href="https://www.ultipa.com/document/gql/comments">Comments</a>.
+> A path term should not juxtapose a token that exposes a minus sign on the right  (`]-`, `<-`, `-`) followed by a token that exposes a minus sign on the left (`-[`, `->`, `-`), as this combination introduces the comment symbol `--`. See <a target="_blank" href="/docs/gql/comments">Comments</a>.
 
 ### Node Pattern Juxtaposition
 
-Node pattern juxtaposition is only supported for <a target="_blank" href="https://www.ultipa.com/docs/gql/quantified-paths">quantified paths</a>.
+Node pattern juxtaposition is only supported for <a target="_blank" href="/docs/gql/quantified-paths">quantified paths</a>.

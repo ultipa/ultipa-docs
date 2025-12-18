@@ -1,4 +1,4 @@
-## Graph Patterns
+# Graph Patterns
 
 ## Overview
 

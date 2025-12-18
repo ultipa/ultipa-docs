@@ -53,7 +53,7 @@ CREATE GRAPH g1 {
 }
 ```
 
-<a target="_blank" href="https://www.ultipa.com/docs/gql/typed-graph">Learn more about typed graphs →</a>
+<a target="_blank" href="/docs/gql/typed-graph">Learn more about typed graphs →</a>
 
 ### Open Graph
 
@@ -72,7 +72,7 @@ CREATE GRAPH g2 ANY
 
 The `ANY` keyword identifies an open graph.
 
-<a target="_blank" href="https://www.ultipa.com/docs/gql/open-graph">Learn more about open graphs →</a>
+<a target="_blank" href="/docs/gql/open-graph">Learn more about open graphs →</a>
 
 ### Using IF NOT EXISTS
 
@@ -101,7 +101,7 @@ CREATE GRAPH g3 ANY COMMENT 'Social graph'
 
 ## Graph Sharding and Storage
 
-The graph data is physically stored on the **shard servers** that constitute the <a target="_blank" href="https://www.ultipa.com/docs/graph-database/ultipa-powerhouse-v5">Ultipa database deployment</a>. Depending on your setup, you can run one or multiple shard servers. 
+The graph data is physically stored on the **shard servers** that constitute the <a target="_blank" href="/docs/graph-database/ultipa-powerhouse-v5">Ultipa database deployment</a>. Depending on your setup, you can run one or multiple shard servers. 
 
 When creating a graph, you can assign a single shard to store its data or distribute the data across multiple shards. This sharded architecture enables **horizontal scaling** of your data volume while maintaining high-performance querying.
 
@@ -115,7 +115,7 @@ CREATE GRAPH g4 {
 PARTITION BY HASH(CityHash64) SHARDS [1,2,3]
 ```
 
-<a target="_blank" href="https://www.ultipa.com/docs/gql/graph-sharding-and-storage">Learn more about graph sharding and storage →</a>
+<a target="_blank" href="/docs/gql/graph-sharding-and-storage">Learn more about graph sharding and storage →</a>
 
 ## Altering Graph
 
@@ -155,7 +155,7 @@ DROP GRAPH IF EXISTS g1
 
 This deletes the graph `g1` only if a graph with that name does exist. If `g1` does not exist, the statement is ignored without throwing an error.
 
-By default, a graph cannot be deleted if it still has existing <a target="_blank" href="https://www.ultipa.com/docs/gql/hdc-graph-overview">HDC graphs</a>. To bypass this restriction, use the `FORCE` keyword:
+By default, a graph cannot be deleted if it still has existing <a target="_blank" href="/docs/gql/hdc-graph-overview">HDC graphs</a>. To bypass this restriction, use the `FORCE` keyword:
 
 ```gql
 FORCE DROP GRAPH g1
@@ -234,7 +234,7 @@ Each schema name or label must:
 - Contain 2 to 127 characters.
 - Cannot start with an underscore (`_`) or a tilde (`~`).
 - Cannot contain backticks (<code>`</code>).
-- Cannot use system property names or <a target="_blank" href="https://www.ultipa.com/docs/gql/reserved-words">reserved words</a>.
+- Cannot use system property names or <a target="_blank" href="/docs/gql/reserved-words">reserved words</a>.
 
 In a typed graph, node schema names must be unique, and edge schema names must be unique. However, a node schema and an edge schema may share the same name.
 
@@ -245,6 +245,6 @@ Each property name must:
 - Contain 2 to 127 characters.
 - Cannot start with an underscore (`_`) or a tilde (<code>~</code>).
 - Cannot contain backticks (<code>`</code>).
-- Cannot use system property names or <a target="_blank" href="https://www.ultipa.com/docs/gql/reserved-words">reserved words</a>.
+- Cannot use system property names or <a target="_blank" href="/docs/gql/reserved-words">reserved words</a>.
 
 In a typed graph, property names must be unique among a node schema or an edge schema.

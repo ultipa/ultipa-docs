@@ -1,4 +1,4 @@
-## Trigonometric Functions
+# Trigonometric Functions
 
 ## acos()
 
