@@ -30,7 +30,7 @@ To list instances, submit a `GET` request to the following endpoint:
 
 <p tit="http"></p>
 
-```js
+```
 https://cloud.ultipa.com/open/dbaas/v1/instance/list
 ```
 
@@ -46,7 +46,7 @@ Example `GET` request with parameters:
 
 <p tit="http"></p>
 
-```js
+```
 https://cloud.ultipa.com/open/dbaas/v1/instance/list?instanceStateFilter=2&search=ultipa-abc123&page=1&size=1
 ```
 
@@ -59,9 +59,7 @@ https://cloud.ultipa.com/open/dbaas/v1/instance/list?instanceStateFilter=2&searc
 
 **Example Response Body**
 
-<p tit="JSON"></p>
-
-```js
+```json
 {
     "code": 200,
     "message": "success",
@@ -94,7 +92,7 @@ To view instance states, submit a `POST` request to the following endpoint:
 
 <p tit="http"></p>
 
-```js
+```
 https://cloud.ultipa.com/open/dbaas/v1/instance/state
 ```
 
@@ -106,9 +104,7 @@ https://cloud.ultipa.com/open/dbaas/v1/instance/state
 
 **Request Body**
 
-<p tit="JSON"></p>
-
-```js
+```json
 {
     "instanceIds": ["ultipa-abc123", "ultipa-abc456"]
 }
@@ -120,9 +116,7 @@ https://cloud.ultipa.com/open/dbaas/v1/instance/state
 
 **Example Response Body**
 
-<p tit="JSON"></p>
-
-```js
+```json
 {
     "code": 200,
     "message": "success",
@@ -149,7 +143,7 @@ To start an instance, submit a `POST` request to the following endpoint:
 
 <p tit="http"></p>
 
-```js
+```
 https://cloud.ultipa.com/open/dbaas/v1/instance/start
 ```
 
@@ -161,9 +155,7 @@ https://cloud.ultipa.com/open/dbaas/v1/instance/start
 
 **Request Body**
 
-<p tit="JSON"></p>
-
-```js
+```json
 {
     "instanceId": "ultipa-abc123"
 }
@@ -175,9 +167,7 @@ https://cloud.ultipa.com/open/dbaas/v1/instance/start
 
 **Response Body**
 
-<p tit="JSON"></p>
-
-```js
+```json
 {
     "code": 200,
     "message": "success",
@@ -193,7 +183,7 @@ To stop an instance, submit a `POST` request to the following endpoint:
 
 <p tit="http"></p>
 
-```js
+```
 https://cloud.ultipa.com/open/dbaas/v1/instance/stop
 ```
 
@@ -205,9 +195,7 @@ https://cloud.ultipa.com/open/dbaas/v1/instance/stop
 
 **Request Body**
 
-<p tit="JSON"></p>
-
-```js
+```json
 {
     "instanceId": "ultipa-abc123"
 }
@@ -219,9 +207,7 @@ https://cloud.ultipa.com/open/dbaas/v1/instance/stop
 
 **Response Body**
 
-<p tit="JSON"></p>
-
-```js
+```json
 {
     "code": 200,
     "message": "success",
