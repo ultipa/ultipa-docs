@@ -46,7 +46,7 @@ YML configuration file are divided into 4 sections：
 
 - Section 1 Server Information
 
-<p run-tag="false" graph="" tit= "YML" ></p>
+<p tit="YML">
 
 ```js
 server:
@@ -61,7 +61,7 @@ Server connection information `host`, `username`, and `password` should be provi
 
 - Section 2 Node Information
 
-<p run-tag="false" graph="" tit= "YML" ></p>
+<p tit="YML">
 
 ```js
 nodeConfig:
@@ -78,7 +78,7 @@ To export node/edge only requires users to state custom properties; their system
 
 - Section 3 Edge Information
 
-<p run-tag="false" graph="" tit= "YML" ></p>
+<p tit="YML">
 
 ```js
 edgeConfig:
@@ -89,7 +89,7 @@ edgeConfig:
 
 - Section 4 Global Information
 
-<p run-tag="false" graph="" tit= "YML" ></p>
+<p tit="YML">
 
 ```js
 settings:
@@ -100,7 +100,7 @@ settings:
 
 Save sections above in configuration file export_miniCircle.yml, place it with Transporter's import tool: ultipa-importer Transporter under a same directory, open the command line tool under the directory (e.g. right-click Powershell) and execute commands below:
 
-<p run-tag="false" graph="" tit= "Command" ></p>
+<p tit="Command">
 
 ```js
 ./ultipa-exporter --config ./export_miniCircle.yml

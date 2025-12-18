@@ -7,7 +7,7 @@ Export CSV files (without header) from Ultipa graphset <i>shareholding</i> to fo
 
 ## 1. Generate sample configuration file
 
-<p run-tag="false" graph="" tit= "Terminal" ></p>
+<p tit="Terminal">
 
 ```bash
 ./ultipa-exporter --sample
@@ -58,7 +58,7 @@ settings:
 
 ## 3. Execute export
 
-<p run-tag="false" graph="" tit= "Terminal" ></p>
+<p tit="Terminal">
 
 ```bash
 ./ultipa-exporter --config ./export.sample.yml

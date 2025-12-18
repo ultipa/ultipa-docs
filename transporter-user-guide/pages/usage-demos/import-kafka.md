@@ -7,7 +7,7 @@ Acquire data from Kafka streams <i>entity_1</i>, <i>entity_3</i> and <i>relation
 
 ## 1. Generate sample configuration file
 
-<p run-tag="false" graph="" tit= "Terminal" ></p>
+<p tit="Terminal">
 
 ```bash
 ./ultipa-importer --sample
@@ -85,7 +85,7 @@ settings:
 
 ## 3. Execute import
 
-<p run-tag="false" graph="" tit= "Terminal" ></p>
+<p tit="Terminal">
 
 ```bash
 ./ultipa-importer --config ./import.sample.kafka.yml

@@ -111,7 +111,7 @@ See annotations about parameters in the YML file, or read more about the YML fil
 
 Place the Importer tool 'ultipa-importer' in the same folder with the extracted YML file and data files, run a command line tool under the same folder and execute command below:
 
-<p run-tag="false" graph="" tit= "Terminal" ></p>
+<p tit="Terminal">
 
 ```bash
 ./ultipa-importer --config ./import_retail.yml
