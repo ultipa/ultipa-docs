@@ -15,7 +15,7 @@ Acquire data from tables <i>entity</i> and <i>relation</i> in PostgreSQL databas
 
 ## 2. Modify configuration file
 
-<p tit="import.sample.postgresql.yml" type="yaml"></p>
+<p tit="import.sample.postgresql.yml"></p>
 
 ```yml
 # Configure data source type

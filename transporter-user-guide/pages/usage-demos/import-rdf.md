@@ -18,7 +18,7 @@ The `import.sample.rdf.yml` file will be generated in the same directory as `ult
 
 The configuration file consists of three parts. Modify the configuration file according to your needs.
 
-<p tit="import.sample.rdf.yml" type="yaml"></p>
+<p tit="import.sample.rdf.yml"></p>
 
 ```yml
 # Supported source type: csv/json/jsonl/rdf/bigQuery/sql/kafka/neo4j/salesforce; Only one mode can be used at a time
@@ -74,7 +74,8 @@ settings:
 | `file` | String | Path of the RDF file to be imported. Multiple files are allowed to be speicified.| 
 | `format` | String | Supported formats include `ntriples`, `turtle` and `rdfxml`, corresponding to RDF file extensions `.ntl`, `.ttl` and `.xml`, respectively. Ensure the format you specify matches the RDF file to be imported. Otherwise, errors may occur during parsing. |
 > To specify multiple files, configure in the following way:
-<p tit="Configuration for multiple files.yml" type="yaml"></p>
+
+<p tit="Configuration for multiple files.yml"></p>
 
  ```yml
 - file: "./test_data/file1.ttl"

@@ -15,7 +15,7 @@ Acquire data from tables <i>entity</i> and <i>relation</i> in MySQL database <i>
 
 ## 2. Modify configuration file
 
-<p tit="import.sample.mysql.yml" type="yaml"></p>
+<p tit="import.sample.mysql.yml"></p>
 
 ```yml
 # Configure data source type
