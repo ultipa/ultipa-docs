@@ -25,7 +25,7 @@ insert().into(@hold).edges([{_uuid:1, _from_uuid:3, _to_uuid:1, portion:0.3}, {_
 ## Common Usage
 
 Example: Calculate the share holding path of each UBO from F001, return the EDGE list of each path
-<p run-tag="true" graph="uql_manual_graph_3"></p>
+
 
 ```js
 n({_id == "F001"}).le()[:5].n({@human} as UBO) as p

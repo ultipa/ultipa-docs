@@ -41,7 +41,7 @@ insert().into(@default).edges([{_uuid:1, _from_uuid:1, _to_uuid:3, weight:1}, {_
 ### Filter Depth
 
 Example: Find 3-step paths from A to E, carry all properties
-<p run-tag="true" graph="uql_manual_graph_4"></p> 
+ 
 
 ```js
 ab().src({_id == "A"}).dest({_id == "E"}).depth(3) as p
@@ -55,7 +55,7 @@ A --1--> C <--4-- D <--5-- E
 
 
 Example: Find 1~3-step paths from A to E, carry all properties
-<p run-tag="true" graph="uql_manual_graph_4"></p> 
+ 
 
 ```js
 ab().src({_id == "A"}).dest({_id == "E"}).depth(:3) as p
@@ -71,7 +71,7 @@ A <--6-- B <--2-- E
 
 
 Example: Find 2~3-step paths from A to E, carry all properties
-<p run-tag="true" graph="uql_manual_graph_4"></p> 
+ 
 
 ```js
 ab().src({_id == "A"}).dest({_id == "E"}).depth(2:3) as p
@@ -87,7 +87,7 @@ A <--6-- B <-2-- E
 ### Non-weighted Shortest Path
 
 Example: Find shortest paths from A to E within 3 steps, carry all properties
-<p run-tag="true" graph="uql_manual_graph_4"></p> 
+ 
 
 ```js
 ab().src({_id == "A"}).dest({_id == "E"}).depth(3)
@@ -103,7 +103,7 @@ A --3--> E
 ### Weighted Shortest Path
 
 Example: Find shortest paths from A to E within 3 steps, use <i>@default.weight</i> as weight, carry all properties
-<p run-tag="true" graph="uql_manual_graph_4"></p> 
+ 
 
 ```js
 ab().src({_id == "A"}).dest({_id == "E"}).depth(3)
@@ -121,7 +121,7 @@ Analysis: Porperty <i>@default.weight</i> should be loaded to engine (LTE).
 ### Filter Intermediate Nodes
 
 Example: Find 1~3-step paths from A to E and not passing D, carry all properties
-<p run-tag="true" graph="uql_manual_graph_4"></p> 
+ 
 
 ```js
 ab().src({_id == "A"}).dest({_id == "E"}).depth(:3)
@@ -138,7 +138,7 @@ A <--6-- B <--2-- E
 ### Filter Edges
 
 Example: Find 1~3-step paths from A to E where the <i>weight</i> of edge is greater than 1, carry all properties
-<p run-tag="true" graph="uql_manual_graph_4"></p> 
+ 
 
 ```js
 ab().src({_id == "A"}).dest({_id == "E"}).depth(:3)
@@ -154,7 +154,7 @@ A --3--> E
 ### Edge Property Ascend/Descend
 
 Example: Find 1~3-step paths from A to E with property <i>@default.weight</i> ascending along the path, carry all properties
-<p run-tag="true" graph="uql_manual_graph_4"></p> 
+ 
 
 ```js
 ab().src({_id == "A"}).dest({_id == "E"}).depth(:3)
@@ -170,7 +170,7 @@ A --1--> C <--4-- D <--5-- E
 Analysis: Porperty <i>@default.weight</i> should be loaded to engine (LTE).
 
 Example: Find 1~3-step paths from A to E with property <i>@default.weight</i> descending along the path, carry all properties
-<p run-tag="true" graph="uql_manual_graph_4"></p> 
+ 
 
 ```js
 ab().src({_id == "A"}).dest({_id == "E"}).depth(:3)
@@ -188,7 +188,7 @@ Analysis: Porperty <i>@default.weight</i> should be loaded to engine (LTE).
 ### Filter Edge Direction
 
 Example: Find 1~3-step paths from A to E with all edges right-pointing, carry all properties
-<p run-tag="true" graph="uql_manual_graph_4"></p> 
+ 
 
 ```js
 ab().src({_id == "A"}).dest({_id == "E"}).depth(:3)
@@ -202,7 +202,7 @@ A --3--> E
 ```
 
 Example: Find 1~3-step paths from A to E with all edges left-pointing, carry all properties
-<p run-tag="true" graph="uql_manual_graph_4"></p> 
+ 
 
 ```js
 ab().src({_id == "A"}).dest({_id == "E"}).depth(:3)
@@ -218,7 +218,7 @@ A <--6-- B <--2-- E
 ### Filter Circles
 
 Example: Find 4-step paths from A to E that do not contain circle, carry all properties
-<p run-tag="true" graph="uql_manual_graph_4"></p> 
+ 
 
 ```js
 ab().src({_id == "A"}).dest({_id == "C"}).depth(4).no_circle() as p
@@ -241,7 +241,7 @@ A <--6-- B <--2-- E <--3-- A --1--> C
 ### limit()
 
 Example: Find a 1~3-step path from A to E, carry all properties
-<p run-tag="true" graph="uql_manual_graph_4"></p> 
+ 
 
 ```js
 ab().src({_id == "A"}).dest({_id == "E"}).depth(:3).limit(1) as p

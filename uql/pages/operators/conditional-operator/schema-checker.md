@@ -23,7 +23,7 @@ insert().into(@student).nodes([{_id:"S001",_uuid:3,age:27,email:"test@yeah.net"}
 ## Schema
 
 Example: Find nodes of @student 
-<p run-tag="true" graph="uql_manual_graph_2"></p> 
+ 
 
 ```js
 find().nodes({@student}) as n
@@ -44,7 +44,7 @@ Analysis: This filter is equivalent to `{this.@ == "student"}`
 ## Schema & Property
 
 Example: Find nodes of @student, whose age is 27
-<p run-tag="true" graph="uql_manual_graph_2"></p> 
+ 
 
 ```js
 find().nodes({@student.age == 27}) as n

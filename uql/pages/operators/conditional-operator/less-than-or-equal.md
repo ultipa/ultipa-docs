@@ -6,7 +6,7 @@
 ## Constant
 
 Example: Judge whether "2020-01-04" is less than or equal to "2020-04-27"
-<p run-tag="true" graph="uql_manual_graph_2"></p>
+
 
 ```js
 return "2020-01-04" <= "2020-04-27"
@@ -20,7 +20,7 @@ return "2020-01-04" <= "2020-04-27"
 ## Function
 
 Example: Judge whether PI is less than or equal to 3
-<p run-tag="true" graph="uql_manual_graph_2"></p>
+
 
 ```js
 return pi() <= 3
@@ -34,7 +34,7 @@ return pi() <= 3
 ## Alias
 
 Example: Judge each row of an alias whether it is less than or equal to 3
-<p run-tag="true" graph="uql_manual_graph_2"></p> 
+ 
 
 ```js
 uncollect [1,2,3,2,2] as a
@@ -66,7 +66,7 @@ insert().into(@student).nodes([{_id:"S001",_uuid:3,age:27,email:"test@yeah.net"}
 ## Property
 
 Example: Find nodes whose age is less than or equal to 27
-<p run-tag="true" graph="uql_manual_graph_2"></p> 
+ 
 
 ```js
 find().nodes({age <= 27}) as n
@@ -89,7 +89,7 @@ return n{*}
 ```
 
 Example: Find nodes of @professor, whose age is less than or equal to 27
-<p run-tag="true" graph="uql_manual_graph_2"></p> 
+ 
 
 ```js
 find().nodes({@professor.age <= 27}) as n

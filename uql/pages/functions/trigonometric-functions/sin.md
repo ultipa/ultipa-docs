@@ -11,7 +11,7 @@ Returns：
 ## Common Usage
 
 Example: Calculate the sine value of degree 30°
-<p run-tag="true" graph="uql_manual_graph_1"></p> 
+ 
 
 ```js
 return sin(30 * pi() / 180)
@@ -23,7 +23,7 @@ return sin(30 * pi() / 180)
 ```
 
 Example: Calculate the sine value of each row (radian) of an alias
-<p run-tag="true" graph="uql_manual_graph_1"></p> 
+ 
 
 ```js
 uncollect [1, 2.5, 3] as a

@@ -6,7 +6,7 @@
 ## Constant
 
 Example: Judge whether "Ultipa" does not equal "U1tipa"
-<p run-tag="true" graph="uql_manual_graph_2"></p> 
+ 
 
 ```js
 return "Ultipa" != "U1tipa"
@@ -20,7 +20,7 @@ return "Ultipa" != "U1tipa"
 ## Function
 
 Example: Judge whether PI does not equal 3
-<p run-tag="true" graph="uql_manual_graph_2"></p> 
+ 
 
 ```js
 return pi() != 3
@@ -34,7 +34,7 @@ return pi() != 3
 ## Alias
 
 Example: Judge each row of an alias whether it does not equal 2
-<p run-tag="true" graph="uql_manual_graph_2"></p> 
+ 
 
 ```js
 uncollect [1,2,3,2,2] as a
@@ -66,7 +66,7 @@ insert().into(@student).nodes([{_id:"S001",_uuid:3,age:27,email:"test@yeah.net"}
 ## Property
 
 Example: Find nodes whose age is not 27
-<p run-tag="true" graph="uql_manual_graph_2"></p> 
+ 
 
 ```js
 find().nodes({age != 27}) as n
@@ -88,7 +88,7 @@ return n{*}
 ```
 
 Example: Find nodes of @professor, whose age is not 27
-<p run-tag="true" graph="uql_manual_graph_2"></p> 
+ 
 
 ```js
 find().nodes({@professor.age != 27}) as n

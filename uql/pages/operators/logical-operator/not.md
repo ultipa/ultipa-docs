@@ -24,7 +24,7 @@ insert().into(@student).nodes([{_id:"S001",_uuid:3,age:27,email:"test@yeah.net"}
 ## Common Usage
 
 Example: Find nodes of @student, whose age is not 27
-<p run-tag="true" graph="uql_manual_graph_2"></p>
+
  
 ```js
 find().nodes({@student && !(age==27)}) as n

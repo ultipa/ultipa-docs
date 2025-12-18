@@ -49,7 +49,7 @@ insert().into(@default).edges([{_uuid:1, _from_uuid:1, _to_uuid:3, weight:1}, {_
 ## Common Usage
 
 Example: Find 2-step paths from A to D, deduplicate all the involved nodes and return
-<p run-tag="true" graph="uql_manual_graph_4"></p> 
+ 
 
 ```js
 n({_id == "A"}).e()[2].n({_id == "D"}) as p

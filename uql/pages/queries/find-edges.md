@@ -34,7 +34,7 @@ insert().into(@assist).edges([{_uuid:5, _from_uuid:3, _to_uuid:2, year:2020},{_u
 
 ### Find All Edges
 
-<p run-tag="true" graph="uql_manual_graph_2"></p> 
+ 
 
 ```js
 find().edges() as e
@@ -57,7 +57,7 @@ Result:
 
 ### Find Edges by UUID
 
-<p run-tag="true" graph="uql_manual_graph_2"></p> 
+ 
 
 ```js
 find().edges(1) as e
@@ -74,7 +74,7 @@ Result:
 
 <br>
 
-<p run-tag="true" graph="uql_manual_graph_2"></p> 
+ 
 
 ```js
 find().edges([1,3]) as e
@@ -92,7 +92,7 @@ Result:
 
 ### Find Edges by Start Nodes
 
-<p run-tag="true" graph="uql_manual_graph_2"></p> 
+ 
 
 ```js
 find().edges({_from == "P001"}) as e
@@ -109,7 +109,7 @@ Result:
 
 ### Find Edges by End Nodes
 
-<p run-tag="true" graph="uql_manual_graph_2"></p> 
+ 
 
 ```js
 find().edges({_to == "P001"}) as e
@@ -124,7 +124,7 @@ Result:
 
 ### Find Edges by Schema
 
-<p run-tag="true" graph="uql_manual_graph_2"></p> 
+ 
 
 ```js
 find().edges({@assist}) as e
@@ -140,7 +140,7 @@ Result:
 
 <br>
 
-<p run-tag="true" graph="uql_manual_graph_2"></p> 
+ 
 
 ```js
 find().edges({@assist || @mentor}) as e
@@ -163,7 +163,7 @@ Result:
 
 ### Find Edges by Property
 
-<p run-tag="true" graph="uql_manual_graph_2"></p> 
+ 
 
 ```js
 find().edges({year == 2020}) as e
@@ -182,7 +182,7 @@ Result:
 
 ### Find Edges by Schema and Property
 
-<p run-tag="true" graph="uql_manual_graph_2"></p> 
+ 
 
 ```js
 find().edges({@assist.year == 2020}) as e
@@ -197,7 +197,7 @@ Result:
 
 ### Use Default Clause Alias
 
-<p run-tag="true" graph="uql_manual_graph_2"></p> 
+ 
 
 ```js
 find().edges().limit(3)
@@ -214,7 +214,7 @@ Result:
 
 ### Use limit()
 
-<p run-tag="true" graph="uql_manual_graph_2"></p> 
+ 
 
 ```js
 find().edges().limit(3) as e
@@ -231,7 +231,7 @@ Result:
 
 ### Use OPTIONAL
 
-<p run-tag="true" graph="uql_manual_graph_2"></p> 
+ 
 
 ```js
 uncollect [2022, 2023, 2024] as value

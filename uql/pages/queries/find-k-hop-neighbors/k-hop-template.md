@@ -70,7 +70,7 @@ insert().into(@bornIn).edges([{_uuid:9, _from_uuid:8, _to_uuid:2}])
 
 Find the 2-hop neighbors of each country that can be reached through a certain path.
 
-<p run-tag="true" graph="uql_manual_graph_5"></p> 
+ 
 
 ```js
 khop().n({@country} as a).le({@filmedIn}).n({@movie}).le({@direct}).n({@director}) as b
@@ -89,7 +89,7 @@ Result:
 
 Find the 1- and 2-hop neighbors of each country that can be reached through a certain path.
 
-<p run-tag="true" graph="uql_manual_graph_5"></p> 
+ 
 
 ```js
 khop().n({@country} as a).e({!@direct})[:2].n({!@country}) as b
@@ -110,7 +110,7 @@ Result:
 
 Find the 2-hop *@director* neighbors of each country.
 
-<p run-tag="true" graph="uql_manual_graph_5"></p> 
+ 
 
 ```js
 khop().n({@country} as a).e()[2].n({@director}) as b
@@ -129,7 +129,7 @@ Result:
 
 Find the 2-hop *@country* neighbors of one actor.
 
-<p run-tag="true" graph="uql_manual_graph_5"></p> 
+ 
 
 ```js
 khop().n({@actor.name == "Zoe Saldaña"}).e()[2].n({@country}) as a return a
@@ -143,7 +143,7 @@ Even though there exists a 2-step path from the actor to a country (`Zoe Saldañ
 
 Find one 1-hop neighbor for each director that can be reached through a certain path.
 
-<p run-tag="true" graph="uql_manual_graph_5"></p> 
+ 
 
 ```js
 khop().n({@director} as a).e({@direct}).n().limit(1) as b
@@ -161,7 +161,7 @@ Result:
 
 Find the 2-hop *@actor* neighbors of each country that can be reached through a certain path. Return null if no neighbors are found.
 
-<p run-tag="true" graph="uql_manual_graph_5"></p> 
+ 
 
 ```js
 find().nodes({@country}) as cty

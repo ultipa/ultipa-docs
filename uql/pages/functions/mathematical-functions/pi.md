@@ -11,7 +11,7 @@ Returns：
 ## Common Usage
 
 Example: Return the value of PI
-<p run-tag="true" graph="uql_manual_graph_1"></p> 
+ 
 
 ```js
 return pi()
@@ -23,7 +23,7 @@ return pi()
 ```
 
 Example: Convert 123° to radian value
-<p run-tag="true" graph="uql_manual_graph_1"></p> 
+ 
 
 ```js
 return 123 * pi() / 180

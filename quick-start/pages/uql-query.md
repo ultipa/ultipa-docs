@@ -16,7 +16,7 @@ For those who don't have an Ultipa server environment:
 
 Query for nodes is comparable to table query in relational databases. Try to understand below UQL:
 
-<p run-tag="true" graph="quick_start"></p>
+
 
 ```js
 find().nodes() as myFirstQuery
@@ -35,7 +35,7 @@ The target of the above UQL is 'find 10 different nodes and return all their pro
 > The fact that <i>myFirstQuery</i> are nodes all from schema `@customer` is a coincidence, or more precisely, be subject to the sequence of inserting nodes and the behavior of concurrent computing.
 
 To query nodes of a specific schema, <i>merchant</i> for example, describe in `nodes()` as below:
-<p run-tag="true" graph="quick_start"></p>
+
 
 ```js
 find().nodes({@merchant}) as mySecondQuery
@@ -55,7 +55,7 @@ In the current graph model, edges of `@transfer` exist from nodes of `@customer`
 <div align=center drawio-diagram='2524' drawio-name="draw_1bdd638d0b694bc38effffcbee007417.jpg"><img src="https://img.ultipa.cn/draw/draw_1bdd638d0b694bc38effffcbee007417.jpg?v='1657988383271'"/></div>
 
 Query for edges is quite similar to query for nodes, but using `edges()` to hold the filtering condition of edges:
-<p run-tag="true" graph="quick_start"></p>
+
 
 ```js
 find().edges({_from == "60017791850"}) as payment
@@ -65,7 +65,7 @@ return payment{*} limit 10
 <center><img width=860 src="https://img.ultipa.cn/2022-07-16-16-52-55-uql-findedges.png"></center>
 
 The <i>payment</i> are 10 different edges from customer Chen** (ID: 60017791850) to other nodes, the `_to` of <i>payment</i> are the IDs of merchants who receive those payments. Combine this edge query with a node query that calls the IDs of these merchants:
-<p run-tag="true" graph="quick_start"></p>
+
 
 ```js
 find().edges({_from == "60017791850"}) as payment
@@ -85,7 +85,7 @@ This is a typical scenario of multi-graph, in which more than one edge exist bet
 
 ### Spread
 
-<p run-tag="true" graph="quick_start"></p>
+
 
 ```js
 spread().src({_id == "60017791850"}).depth(1) as transaction
@@ -109,7 +109,7 @@ To acquire an exact number of distinct end-node merchants through the above `spr
 
 ### K-Hop
 
-<p run-tag="true" graph="quick_start"></p>
+
 
 ```js
 khop().src({_id == "60017791850"}).depth(1) as merchant
@@ -133,7 +133,7 @@ Template query is an advanced type of graph query by accurately describing each 
 
 ### Chains
 
-<p run-tag="true" graph="quick_start"></p>
+
 
 ```js
 n({_id == "60017791850"}).e().n() as transaction
@@ -150,7 +150,7 @@ Now consider a path that starts from Chen** and reaches a merchant via 3 edges, 
 
 <div align=center drawio-diagram='2594' drawio-name='draw_c7090d0b4fdb40a0a3bf3ddc266d6b14.jpg'><img src="https://img.ultipa.cn/draw/draw_c7090d0b4fdb40a0a3bf3ddc266d6b14.jpg?v='1657988519667'"/></div>
 
-<p run-tag="true" graph="quick_start"></p>
+
 
 ```js
 n({_id == "60017791850"}).e({tran_amount > 70000})[3].n() as transChain
@@ -172,7 +172,7 @@ If the shopping behaviors of Chen**, Zheng**, Qian** and Chu**, those who all pu
 
 Edges in a path never repeat, but nodes do sometimes, which induces circles into the path.
 
-<p run-tag="true" graph="quick_start"></p>
+
 
 ```js
 n({@customer} as start).e({tran_date > "2020-1-1 0:0:0"})[4].n(start) as transRing
@@ -193,7 +193,7 @@ The list view of the query result:
 
 ### Shortest Paths
 
-<p run-tag="true" graph="quick_start"></p>
+
 
 ```js
 n({_id == "60017791850"}).e()[:5].n(115) as transRange
@@ -211,7 +211,7 @@ The target of the above UQL is 'find a path from Chen** to the node whose UUID i
 
 A minor revision made to the path length might completely change the query target of the UQL:
 
-<p run-tag="true" graph="quick_start"></p>
+
 
 ```js
 n({_id == "60017791850"}).e()[*:5].n(115) as transShortest
@@ -233,7 +233,7 @@ UQL can conduct a variety of calculations after finding nodes, edges and paths, 
 ### Deduplicate
 
 Revise the first example demonstrated in section <i>Chains</i> to find those 8 distinct merchants out of 10 in total:
-<p run-tag="true" graph="quick_start"></p>
+
 
 ```js
 n({_id == "60017791850"}).e().n(as payee) limit 10
@@ -250,7 +250,7 @@ return payeeDedup{*}
 ### Count
 
 Revise the previous example to calculate the number of distinct merchants:
-<p run-tag="true" graph="quick_start"></p>
+
 
 ```js
 n({_id == "60017791850"}).e().n(as payee) limit 10
@@ -265,7 +265,7 @@ return cardinality
 ### Order By
 
 Revise the first example demonstrated in section <i>Edge Query</i> to return those 10 edges in descending order of their transaction amount:
-<p run-tag="true" graph="quick_start"></p>
+
 
 ```js
 find().edges({_from == "60017791850"}) as payment limit 10
@@ -281,7 +281,7 @@ return payment{*}
 ### Group By
 
 Revise the second example demonstrated in section <i>Chains</i> to group those 3-step paths by their 3rd node, and count the number of paths in each group:
-<p run-tag="true" graph="quick_start"></p>
+
 
 ```js
 n({_id == "60017791850"}).e({tran_amount > 70000})[2].n(as third).e({tran_amount > 70000}).n() limit 10

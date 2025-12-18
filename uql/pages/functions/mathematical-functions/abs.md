@@ -11,7 +11,7 @@ Returns：
 ## Common Usage
 
 Example: Calculate the absolute value of each row of an alias
-<p run-tag="true" graph="uql_manual_graph_1"></p> 
+ 
 
 ```js
 uncollect [1, -2.5, 3.7] as a

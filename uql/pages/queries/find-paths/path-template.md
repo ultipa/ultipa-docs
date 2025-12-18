@@ -33,7 +33,7 @@ insert().into(@direct).edges([{_uuid:6, _from_uuid:6, _to_uuid:3}, {_uuid:7, _fr
 ## Filter Single Node/Edge
 
 Example: Find single-node paths of @movie, carry all properties
-<p run-tag="true" graph="uql_manual_graph_5"></p> 
+ 
 
 ```js
 n({@movie}) as p
@@ -48,7 +48,7 @@ The Terminator
 ```
 
 Example: Find 4-step paths of @movie-@country-@movie-@director-@movie, carry all properties
-<p run-tag="true" graph="uql_manual_graph_5"></p> 
+ 
 
 ```js
 n({@movie}).re({@filmedIn}).n({@country})
@@ -70,7 +70,7 @@ Avatar ----> USA <---- The Terminator <---- James Cameron ----> Avatar
 ## Filter Multi-Edge
 
 Example: Find 1~4-step paths from Léon to Avatar, carry all properties
-<p run-tag="true" graph="uql_manual_graph_5"></p> 
+ 
 
 ```js
 n({@movie.name == "Léon"}).e()[:4].n({@movie.name == "Avatar"}) as p
@@ -88,7 +88,7 @@ Léon ----> USA <---- Avatar
 ## Filter Multi-Edge and Intermediate Nodes
 
 Example: Find 1~4-step paths from Léon to Avatar and not passing France, carry all properties
-<p run-tag="true" graph="uql_manual_graph_5"></p> 
+ 
 
 ```js
 n({@movie.name == "Léon"}).e().nf({name != "France"})[:4].n({@movie.name == "Avatar"}) as p
@@ -104,7 +104,7 @@ Léon ----> USA <---- Avatar
 ## Non-weighted Shortest Path
 
 Example: Find shortest paths from Léon to Avatar within 4 steps, carry all properties
-<p run-tag="true" graph="uql_manual_graph_5"></p> 
+ 
 
 ```js
 n({@movie.name == "Léon"}).e()[*:4].n({@movie.name == "Avatar"}) as p
@@ -120,7 +120,7 @@ Analysis: The multi-edge template `e()[*:N]` or `e().nf()[*:N]`  that represent 
 ## Filter Circle
 
 Example: Find 4-step paths of @movie-@country-@movie-@director-@movie, with the initial-node and terminal-node representing the same node, carry all properties
-<p run-tag="true" graph="uql_manual_graph_5"></p> 
+ 
 
 ```js
 n({@movie} as a).re({@filmedIn}).n({@country})
@@ -137,7 +137,7 @@ Avatar ----> USA <---- The Terminator <---- James Cameron ----> Avatar
 ```
 
 Example: Find 4-step paths of @movie-@country-@movie-@director-@movie, remove paths with circles, carry all properties
-<p run-tag="true" graph="uql_manual_graph_5"></p> 
+ 
 
 ```js
 n({@movie}).re({@filmedIn}).n({@country})
@@ -157,7 +157,7 @@ Léon ----> USA <---- Avatar <---- James Cameron ----> The Terminator
 ## limit()
 
 Example: Find two 4-step paths of @movie-@country-@movie-@director-@movie, carry all properties
-<p run-tag="true" graph="uql_manual_graph_5"></p> 
+ 
 
 ```js
 n({@movie}).re({@filmedIn}).n({@country})
@@ -176,7 +176,7 @@ Léon ----> USA <---- The Terminator <---- James Cameron ----> Avatar
 ## OPTIONAL
 
 Example: Find 2-step paths from Luc Besson to Avatar, carry all properties; return `null` if no result
-<p run-tag="true" graph="uql_manual_graph_5"></p> 
+ 
 
 ```js
 optional n({@director.name == "Luc Besson"}).e()[2].n({@movie.name == "Avatar"}) as p
@@ -207,7 +207,7 @@ insert().into(@transfer).edges([{_uuid:3, _from_uuid:2, _to_uuid:4, time:"2023-0
 ## Filter 0 Step
 
 Example: Find 0~2-step outward-transferring paths from the accounts held by C001 to other accounts, carry all properties
-<p run-tag="true" graph="uql_manual_graph_6"></p> 
+ 
 
 ```js
 n({_id == "C001"}).re({@has}).n({@account})
@@ -229,7 +229,7 @@ Analysis: The 0-step in multi-edge template `e()[0:N]` or `e().nf()[0:N]` works 
 ## Inter-Step Filtering
 
 Example: Find 2-step outward-transferring paths between accounts, with property <i>time</i> ascending along the path, carry all properties
-<p run-tag="true" graph="uql_manual_graph_6"></p> 
+ 
 
 ```js
 n({@account}).re({@transfer.time > prev_e.time})[2].n({@account}) as p

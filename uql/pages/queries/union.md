@@ -46,7 +46,7 @@ insert().into(@default).edges([{_uuid:1, _from_uuid:1, _to_uuid:6}, {_uuid:2, _f
 ## Common Usage
 
 Example: Find students no elder than 24-year-old that select French, also find students no younger than 24-year-old that select Math, return these students after deduplication
-<p run-tag="true" graph="uql_manual_graph_8"></p> 
+ 
 
 ```js
 n({@course.name == "French"}).e().n({@student.age <= 24} as n) return n.name

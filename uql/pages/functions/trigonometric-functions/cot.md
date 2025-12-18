@@ -11,7 +11,7 @@ Returns：
 ## Common Usage
 
 Example: Calculate the cotangent value of degree 45° 
-<p run-tag="true" graph="uql_manual_graph_1"></p> 
+ 
 
 ```js
 return cot(45 * pi() / 180)
@@ -23,7 +23,7 @@ return cot(45 * pi() / 180)
 ```
 
 Example: Calculate the cotangent value of each row (radian) of an alias
-<p run-tag="true" graph="uql_manual_graph_1"></p> 
+ 
 
 ```js
 uncollect [1, 2.5, 3] as a

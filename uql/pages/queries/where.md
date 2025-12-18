@@ -41,7 +41,7 @@ insert().into(@default).edges([{_uuid:1, _from_uuid:1, _to_uuid:6}, {_uuid:2, _f
 
 
 Example: Find 1-step paths @course-@student, if the <i>credit</i> of course is 4, or the <i>age</i> of student is 24, then return the path
-<p run-tag="true" graph="uql_manual_graph_8"></p> 
+ 
 
 ```js
 n({@course} as a).e().n({@student} as b) as p

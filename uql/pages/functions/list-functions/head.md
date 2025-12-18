@@ -11,7 +11,7 @@ Returns：
 ## Common Usage
 
 Example: Calculate the first element of [1,2,3]
-<p run-tag="true" graph="uql_manual_graph_1"></p>
+
 
 ```js
 return head([1,2,3])

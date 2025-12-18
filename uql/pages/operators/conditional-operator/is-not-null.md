@@ -18,7 +18,7 @@ insert().into(@default).nodes([{name:"Jason", try1:84}, {name:"Alice", try1:55, 
 ## Comman Usage
 
 Example: Return the name of student who took the 2nd test (the 1st re-test)
-<p run-tag="true" graph="uql_manual_graph_9"></p> 
+ 
 
 ```js
 find().nodes({try2 is not null }) as n

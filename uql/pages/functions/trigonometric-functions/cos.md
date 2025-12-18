@@ -11,7 +11,7 @@ Returns：
 ## Common Usage
 
 Example: Calculate the cosine value of degree 60°
-<p run-tag="true" graph="uql_manual_graph_1"></p> 
+ 
 
 ```js
 return cos(60 * pi() / 180)
@@ -23,7 +23,7 @@ return cos(60 * pi() / 180)
 ```
 
 Example: Calculate the cosine value of each row (radian) of an alias
-<p run-tag="true" graph="uql_manual_graph_1"></p> 
+ 
 
 ```js
 uncollect [1, 2.5, 3] as a

@@ -37,7 +37,7 @@ insert().into(@direct).edges([{_uuid:6, _from_uuid:6, _to_uuid:3}, {_uuid:7, _fr
 ## Grouping and Aggregating
 
 Example: Find 2-step paths @country-@movie-@director, group by director and count the number of paths in each group
-<p run-tag="true" graph="uql_manual_graph_5"></p> 
+ 
 
 ```js
 n({@country}).e().n({@movie}).e().n({@director} as n)
@@ -57,7 +57,7 @@ Analysis: An aggregation is executed within each group only if the aggregation f
 ## Multi-level Grouping
 
 Example: Find 2-step paths @country-@movie-@director, group by country and then by director, count the number of paths in each group
-<p run-tag="true" graph="uql_manual_graph_5"></p> 
+ 
 
 ```js
 n({@country} as a).e().n({@movie}).e().n({@director} as b)

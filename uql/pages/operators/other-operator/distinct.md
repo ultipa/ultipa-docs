@@ -8,7 +8,7 @@ Deduplicates rows united by multiple aliases.
 ## Comman Usage
 
 Example: Direct deduplicate
-<p run-tag="true" graph="uql_manual_graph_1"></p> 
+ 
 
 ```js
 uncollect [1,2,1,2] as a
@@ -31,7 +31,7 @@ return distinct a, b
 ```
 
 Example: Multiply and deduplicate
-<p run-tag="true" graph="uql_manual_graph_1"></p> 
+ 
 
 ```js
 uncollect [1,2,1,2] as a
