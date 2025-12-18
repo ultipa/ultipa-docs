@@ -92,7 +92,7 @@ Here is an example CSV file for *@account* nodes, including a header with proper
 
 <p tit="account.csv"></p>
 
-```js
+```csv
 _id:_id,username:string,brithYear:int32
 U001,risotto4cato,1978
 U002,jibber-jabber,1989
@@ -103,7 +103,7 @@ Here is an example headless CSV file for *@follow* edges:
 
 <p tit="follow.csv"></p>
 
-```js
+```csv
 103,risotto4cato,jibber-jabber,1634962465
 102,LondonEYE,jibber-jabber,1634962587
 ```
@@ -131,7 +131,7 @@ Here is an example JSON file for *@user* nodes:
 
 <p tit="user.json"></p>
 
-```js
+```json
 [{
 	"_uuid": 1,
 	"_id": "U001",
@@ -151,7 +151,7 @@ Here is an example JSONL file for *@user* nodes:
 
 <p tit="user.jsonl"></p>
 
-```js
+```jsonl
 {"_uuid": 1, "_id": "U001", "level": 2, "registeredOn": "2018-12-1 10:20:23", "tag": null}
 {"_uuid": 2, "_id": "U002", "level": 3, "registeredOn": "2018-12-1 12:45:12", "tag": "cloud"
 }
@@ -190,7 +190,7 @@ Here is an example SQL to return the *name* and *registeredOn* columns from the 
 
 <p tit="SQL"></p>
 
-```js
+```sql
 SELECT name, registeredOn FROM users;
 ```
 
@@ -224,7 +224,7 @@ Here is an example SQL to return all columns from the *users* table:
 
 <p tit="SQL"></p>
 
-```js
+```sql
 SELECT * FROM users;
 ```
 
@@ -261,7 +261,7 @@ Here is an example Cypher to return all nodes with the *user* label:
 
 <p tit="Cypher"></p>
 
-```js
+```cypher
 MATCH (n:user)
 ```
 

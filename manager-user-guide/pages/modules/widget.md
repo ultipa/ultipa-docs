@@ -20,7 +20,7 @@ Handlebars uses double curly braces `{{ }}` to denote expressions that will be r
 
 <p tit="Template"></p>
 
-```js
+```html
 <h1>{{text}}</h1>
 <!-- Value of the variable 'text' is set in the script -->
 ```
@@ -31,7 +31,7 @@ The Style section employs Less as the CSS preprocessor. Codes written in this se
 
 <p tit="Style"></p>
 
-```js
+```css
 body {
   font-family: system-ui;
   background: #eff3f4;
@@ -51,7 +51,7 @@ In the Script section, initial steps should be:
 
 <p tit="Script" fold="true"></p>
 
-```js
+```java
 import "./index.less"
 import template from "./index.hbs"
 const { ModuleInterface } = require('@/core/module.interface')
@@ -84,7 +84,7 @@ In most cases, when aiming to send an UQL and receive the server response, it's 
 
 <p tit="Script" fold="true"></p>
 
-```js
+```java
 import "./index.less"
 import template from "./index.hbs"
 const { ModuleInterface } = require('@/core/module.interface')
@@ -123,7 +123,7 @@ The following is a list of dependencies loaded with the JavaScript editor:
 
 <p tit="Script" fold="true"></p>
 
-```js
+```java
 dependencies:{
     "3d-force-graph": "^1.73.0",
     "@cosmograph/cosmos": "^1.4.1",
@@ -151,7 +151,7 @@ To load some of them:
 
 <p tit="Script"></p>
 
-```js
+```java
 import * as echarts from 'echarts'
 import axios from 'axios'
 ```
@@ -160,7 +160,7 @@ If the library or framework needed is not included in the list, load the externa
 
 <p tit="Script"></p>
 
-```js
+```java
 ...
 class ManagerModule extends ModuleInterface {
     ...
@@ -217,7 +217,7 @@ You can pass `formData` into the `execute()` function and retrieve the value of 
 
 <p tit="Script"></p>
 
-```js
+```java
 ...
 class ManagerModule extends ModuleInterface {
     ...
