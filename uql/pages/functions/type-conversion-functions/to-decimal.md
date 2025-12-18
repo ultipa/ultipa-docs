@@ -23,19 +23,19 @@ For unsupported value types, the function returns `null`.
 
 ## Example of Result
 
-```js
+```uql
 return toDecimal(123.456, 2)
 ```
 
 Result: 123.46
 
-```js
+```uql
 return toDecimal("123.456")
 ```
 
 Result: 123.456
 
-```js
+```uql
 return toDecimal("123.456abc", 1)
 ```
 

@@ -23,7 +23,7 @@ Run these UQLs row by row in an empty graphset to create this graph:
 
 <p tit="" fold="true"></p>
 
-```js
+```uql
 create().node_schema("professor").node_schema("student").edge_schema("mentor").edge_schema("assist")
 create().node_property(@*, "age", int32).node_property(@*, "email", string).edge_property(@*, "year", int32)
 insert().into(@professor).nodes([{_id:"P001",_uuid:1,age:53,email:"test@yahoo.cn"},{_id:"P002",_uuid:2,age:27,email:"test@ultipa.com"}])
@@ -36,7 +36,7 @@ insert().into(@assist).edges([{_uuid:5, _from_uuid:3, _to_uuid:2, year:2020},{_u
 
  
 
-```js
+```uql
 find().edges() as e
 return e{*}
 ```
@@ -59,7 +59,7 @@ Result:
 
  
 
-```js
+```uql
 find().edges(1) as e
 return e{*}
 ```
@@ -76,7 +76,7 @@ Result:
 
  
 
-```js
+```uql
 find().edges([1,3]) as e
 return e{*}
 ```
@@ -94,7 +94,7 @@ Result:
 
  
 
-```js
+```uql
 find().edges({_from == "P001"}) as e
 return e{*}
 ```
@@ -111,7 +111,7 @@ Result:
 
  
 
-```js
+```uql
 find().edges({_to == "P001"}) as e
 return e{*}
 ```
@@ -126,7 +126,7 @@ Result:
 
  
 
-```js
+```uql
 find().edges({@assist}) as e
 return e{*}
 ```
@@ -142,7 +142,7 @@ Result:
 
  
 
-```js
+```uql
 find().edges({@assist || @mentor}) as e
 return e{*}
 ```
@@ -165,7 +165,7 @@ Result:
 
  
 
-```js
+```uql
 find().edges({year == 2020}) as e
 return e{*}
 ```
@@ -184,7 +184,7 @@ Result:
 
  
 
-```js
+```uql
 find().edges({@assist.year == 2020}) as e
 return e{*}
 ```
@@ -199,7 +199,7 @@ Result:
 
  
 
-```js
+```uql
 find().edges().limit(3)
 return edges{*}
 ```
@@ -216,7 +216,7 @@ Result:
 
  
 
-```js
+```uql
 find().edges().limit(3) as e
 return e{*}
 ```
@@ -233,7 +233,7 @@ Result:
 
  
 
-```js
+```uql
 uncollect [2022, 2023, 2024] as value
 optional find().edges({year == value}) as e
 return e{*}

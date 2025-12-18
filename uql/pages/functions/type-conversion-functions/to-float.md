@@ -22,13 +22,13 @@ For unsupported value types, the function returns `null`.
 
 ## Example of Result
  
-```js
+```uql
 return toFloat("2023.03.02")
 ```
 
 Result: 2023.03
 
-```js
+```uql
 return toFloat("3.1415926ABC")
 ```
 

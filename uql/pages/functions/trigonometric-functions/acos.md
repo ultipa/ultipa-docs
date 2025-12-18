@@ -13,25 +13,25 @@ Returns：
 Example: Calculate the radian of cosine value 0.5
  
 
-```js
+```uql
 return acos(0.5) * 180 / pi()
 ```
 <p tit="Result"></p>
 
-```bash
+```
 60
 ```
 
 Example: Calculate the radian of each row (cosine value) of an alias
  
 
-```js
+```uql
 uncollect [1, -0.5, 0] as a
 return acos(a)
 ```
 <p tit="Result"></p>
 
-```bash
+```
 0
 2.0943951023932
 1.5707963267949

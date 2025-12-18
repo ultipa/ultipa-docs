@@ -7,7 +7,7 @@ Function `reduce()` iterates a designated calculation against each elements in a
 Syntax：
 <p tit="Syntax"></p> 
 
-```js
+```uql
 reduce(<result> = <initial_value>, <element> in <list> | <expression>) 
 ```
 
@@ -23,13 +23,13 @@ reduce(<result> = <initial_value>, <element> in <list> | <expression>)
 Example: Calculate the sum of all numbers in [1,2,3]
 
 
-```js
+```uql
 with [1,2,3] as list
 return reduce(sum = 0, element in list | sum + element) as mySum
 ```
 <p tit="Result"></p>
 
-```bash
+```
 6
 ```
 
@@ -39,7 +39,7 @@ Sample graph: (to be used for the following examples)
 Run below UQLs one by one in an empty graphset to create graph data:
 <p tit="" fold="true"></p>
 
-```js
+```uql
 create().node_schema("firm").node_schema("human").edge_schema("hold")
 create().edge_property(@hold, "portion", double)
 insert().into(@firm).nodes([{_id:"F001", _uuid:1}, {_id:"F002", _uuid:2}])
@@ -50,7 +50,7 @@ insert().into(@hold).edges([{_uuid:1, _from_uuid:3, _to_uuid:1, portion:0.3}, {_
 Example: Calculate the share of each UBO of F001
 
 
-```js
+```uql
 n({_id == "F001"}).le()[:5].n({@human} as UBO) as p
 with pedges(p) as edgeList
 call{
@@ -64,7 +64,7 @@ return table(UBO._id, sum(share))
 ```
 <p tit="Result"></p>
 
-```bash
+```
 | UBO._id | sum(share) |
 |---------|------------|
 | H001    | 0.58       |

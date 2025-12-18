@@ -8,7 +8,7 @@ The `upsert().into()` clause facilitates either the update of existing nodes or 
 
 <p tit="Syntax"></p> 
 
-```js
+```uql
 // Update or insert nodes
 upsert().into(@<schema>).nodes([
   {<property1>: <value1>, <property2>: <value2>, ...},
@@ -46,7 +46,7 @@ Run these UQLs row by row in an empty graphset to create this graph:
 
 <p tit="" fold="true"></p>
 
-```js
+```uql
 create().node_schema("user").edge_schema("follow")
 create().node_property(@user, "name").node_property(@user, "age", int32).edge_property(@follow, "time", datetime)
 insert().into(@user).nodes([{_id:"U001", _uuid:1, name:"Jason", age:30}, {_id:"U002", _uuid:2, name:"Tim"}, {_id:"U003", _uuid:3, name:"Grace", age:25}, {_id:"U004", _uuid:4, name:"Ted", age:26}])
@@ -57,7 +57,7 @@ insert().into(@follow).edges([{_uuid:1, _from_uuid:4, _to_uuid:1, time:"2021-9-1
 
 ### Update or Insert Nodes
 
-```js
+```uql
 upsert().into(@user).nodes([
   {_id: "U001", name: "John"},
   {_id: "U005", name: "Alice"},
@@ -80,7 +80,7 @@ Result:
 
 ### Update or Insert Edges
 
-```js
+```uql
 upsert().into(@follow).edges([
   {_uuid: 1, _from: "U004", _to: "U001", time: "2022-9-12"},
   {_uuid: 4, _from: "U002", _to: "U003"},

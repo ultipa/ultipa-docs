@@ -25,7 +25,7 @@ Sample graph: (to be used for the following examples)
 Run below UQLs one by one in an empty graphset to create graph data:
 <p tit="" fold="true"></p>
 
-```js
+```uql
 create().edge_property(@default, "weight", int32)
 insert().into(@default).nodes([{_id:"A", _uuid:1}, {_id:"B", _uuid:2}, {_id:"C", _uuid:3}, {_id:"D", _uuid:4}, {_id:"E", _uuid:5}, {_id:"F", _uuid:6}])
 insert().into(@default).edges([{_uuid:1, _from_uuid:1, _to_uuid:3, weight:1}, {_uuid:2, _from_uuid:5, _to_uuid:2 , weight:1}, {_uuid:3, _from_uuid:1, _to_uuid:5 , weight:4}, {_uuid:4, _from_uuid:4, _to_uuid:3 , weight:2}, {_uuid:5, _from_uuid:5, _to_uuid:4 , weight:3}, {_uuid:6, _from_uuid:2, _to_uuid:1 , weight:2}, {_uuid:7, _from_uuid:6, _to_uuid:1 , weight:4}])
@@ -36,13 +36,13 @@ insert().into(@default).edges([{_uuid:1, _from_uuid:1, _to_uuid:3, weight:1}, {_
 Find 1~2-Hop edges of node D, return as paths and carry all properties
 
  
-```js
+```uql
 spread().src({_id == "D"}).depth(2) as e
 return e{*}
 ```
 <p tit="Result"></p>
 
-```bash
+```
 A --1--> C
 E --5--> D
 A --3--> E
@@ -57,14 +57,14 @@ Analysis: Both the start node and end node of edge 6 are from 2-Hop of node D, e
 Example: Find 1~2-Hop edges of node D, whose shortest path does not pass node E, return as paths and carry all properties
 
  
-```js
+```uql
 spread().src({_id == "D"}).depth(2)
   .node_filter({_id != "E"}) as e
 return e{*}
 ```
 <p tit="Result"></p>
 
-```bash
+```
 A --1--> C
 D --4--> C
 ```
@@ -75,14 +75,14 @@ Analysis: When the shortest path are not allowed to pass node E, it is equivalen
 Example: Find 1~2-Hop edges of node D, whose shortest path does not pass edge 5, return as paths and carry all properties
 
  
-```js
+```uql
 spread().src({_id == "D"}).depth(2)
   .edge_filter({_uuid != 5}) as e
 return e{*}
 ```
 <p tit="Result"></p>
 
-```bash
+```
 A --1--> C
 D --4--> C
 ```
@@ -93,14 +93,14 @@ Analysis: When the shortest path are not allowed to pass edge 5, it is equivalen
 Example: Find 1~2-Hop edges of node D, with all edges right-pointing, return as paths and carry all properties
 
  
-```js
+```uql
 spread().src({_id == "D"}).depth(2)
   .direction(right) as e
 return e{*}
 ```
 <p tit="Result"></p>
 
-```bash
+```
 D --4--> C
 ```
 When all edges in the shortest path are right-pointing (outbound), node D has only one 1-Hop edge 4, and has no edge from 2-Hop or deeper since the end node of edge 4 has no outbound edge.
@@ -109,14 +109,14 @@ When all edges in the shortest path are right-pointing (outbound), node D has on
 Example: Find 1~2-Hop edges of node D, with all edges left-pointing, return as paths and carry all properties
 
  
-```js
+```uql
 spread().src({_id == "D"}).depth(2)
   .direction(left) as e
 return e{*}
 ```
 <p tit="Result"></p>
 
-```bash
+```
 E --5--> D
 A --3--> E
 ```
@@ -127,13 +127,13 @@ Analysis: When all edges in the shortest path are left-pointing (inbound), node 
 Example: Find three 1~3-Hop edges of node D, return as paths and carry all properties
 
  
-```js
+```uql
 spread().src({_id == "D"}).depth(3).limit(3) as e
 return e{*}
 ```
 <p tit="Result"></p>
 
-```bash
+```
 E --5--> D
 A --3--> E
 D --4--> C

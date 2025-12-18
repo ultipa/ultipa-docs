@@ -13,7 +13,7 @@ The `subgraph([<path_template1>, <path_template2>, ...])` statement describes an
 
 <p tit="Syntax"></p>
   
-```js
+```uql
 subgraph([
   <path_template1>, 
   <path_template2>, 
@@ -27,7 +27,7 @@ subgraph([
 
 To create the graph, execute each of the following UQL queries sequentially in an empty graphset:
 
-```js
+```uql
 create().node_schema("user").node_schema("card").edge_schema("owns").edge_schema("transfers")
 insert().into(@user).nodes([{_id:"user1"}, {_id:"user2"}, {_id:"user3"}, {_id:"user4"}, {_id:"user5"}])
 insert().into(@card).nodes([{_id:"card14"}, {_id:"card22"}, {_id:"card37"}, {_id:"card45"}, {_id:"card63"}, {_id:"card65"}])
@@ -41,7 +41,7 @@ To find users who received direct transaction from both `user1` and `user2`:
 
 <div align=center drawio-diagram='19588' drawio-name="draw_e4b28d625ace456192f233728c42b1c5.jpg"><img src="https://img.ultipa.cn/draw/draw_e4b28d625ace456192f233728c42b1c5.jpg?v='1732697941584'"/></div>
 
-```js
+```uql
 subgraph([
   n({_id == "user1"}).e().n({@card}).re({@transfers}).n({@card} as c).e().n({@user} as u),
   n({_id == "user2"}).e().n({@card}).re({@transfers}).n(c)
@@ -61,7 +61,7 @@ To find 3-step single-direction circular transaction paths between different acc
 
 <div align=center drawio-diagram='19589' drawio-name="draw_fda700339de34fd282f18e975707fe73.jpg"><img src="https://img.ultipa.cn/draw/draw_fda700339de34fd282f18e975707fe73.jpg?v='1732698526987'"/></div>
 
-```js
+```uql
 subgraph([
   n({@user} as u1).e().n({@card} as c1),
   n({@user && _id > u1._id} as u2).e().n({@card} as c2),
@@ -79,7 +79,7 @@ To find card pairs which both cards sent transactions to cards `card14` and `car
 
 <div align=center drawio-diagram='19591' drawio-name="draw_4824ee2d90b34b06b764baf7fc74d5c7.jpg"><img src="https://img.ultipa.cn/draw/draw_4824ee2d90b34b06b764baf7fc74d5c7.jpg?v='1732700063401'"/></div>
 
-```js
+```uql
 subgraph([
   n({@card} as c1).e().n({@card} as c2),
   n(c1 as c11).re().n({_id == "card14"}).le().n(c2 as c22),

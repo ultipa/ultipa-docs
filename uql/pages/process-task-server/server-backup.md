@@ -29,7 +29,7 @@ Returned table header: `backup_id` | `backup_uuid` | `backup_path` | `start_time
 Syntax:
 <p tit="Syntax"></p>
 
-```js
+```uql
 // To show all backups in the current Ultipa instance
 db.backup.show() 
             
@@ -44,7 +44,7 @@ When creating a backup whose name already exists in the current backup path, a b
 Syntax:
 <p tit="Syntax"></p>
 
-```js
+```uql
 // To create a backup in the current Ultipa instance
 db.backup.create("<backup_name>") 
 ```
@@ -56,7 +56,7 @@ Backup name is required when restoring the Ultipa instance, while the `backup_id
 Syntax:
 <p tit="Syntax"></p>
 
-```js
+```uql
 // To restore current Ultipa instance to the latest increment of a certain backup
 db.backup.restore("<backup_name>") 
 

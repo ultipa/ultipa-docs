@@ -10,7 +10,7 @@ The `BATCH` clause should follow the definition of an alias, except when a `LIMI
 
 <p tit="Syntax"></p> 
 
-```js
+```uql
 `<clause>` as `<alias>` `<LIMIT/SKIP clause?>` BATCH `<batch-size>`
 `<clause>`
 ```
@@ -19,7 +19,7 @@ Where `<batch-size>` is the amount of data in each batch.
 
 ## Examples
 
-```js
+```uql
 find().nodes({@post}) as nodes LIMIT 1000 BATCH 100
 khop().n(nodes as a).le()[2].n() as b 
 GROUP BY a 
@@ -29,7 +29,7 @@ RETURN a._uuid, len ORDER BY len DESC LIMIT 10
 
 This UQL puts 1000 @post nodes into 10 batches, each containing 100 nodes. Nodes in each batch are automatically collected into an array and passed into the `khop()` query, which is executed for 10 times independently. Afterward, the final results of the `khop()` query are combined and used in the subsequent clauses.
 
-```js
+```uql
 find().nodes({@user.age_level == 4}) as users
 BATCH 100
 n(users).e().n({@ad} as ads)

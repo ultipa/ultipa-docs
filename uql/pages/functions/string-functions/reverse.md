@@ -16,7 +16,7 @@ The `reverse()` function returns a string with the order of characters reversed 
 
 ## Example of Result
 
-```js
+```uql
 return reverse("abc")
 ```
 
@@ -26,7 +26,7 @@ Result: cba
 
 Retrieve API keys but reverse their characters for security concerns.
 
-```js
+```uql
 find().nodes({@api}) as apis
 return reverse(apis.key)
 ```

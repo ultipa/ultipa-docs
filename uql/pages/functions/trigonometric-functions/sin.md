@@ -13,25 +13,25 @@ Returns：
 Example: Calculate the sine value of degree 30°
  
 
-```js
+```uql
 return sin(30 * pi() / 180)
 ```
 <p tit="Result"></p>
 
-```bash
+```
 0.5
 ```
 
 Example: Calculate the sine value of each row (radian) of an alias
  
 
-```js
+```uql
 uncollect [1, 2.5, 3] as a
 return sin(a)
 ```
 <p tit="Result"></p>
 
-```bash
+```
 0.841470984807897
 0.598472144103957
 0.141120008059867

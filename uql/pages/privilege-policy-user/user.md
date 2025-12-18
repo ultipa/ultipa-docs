@@ -21,7 +21,7 @@ Returned table header: `username` | `create` | `graphPrivileges` | `systemPrivil
 Syntax:
 <p tit="Syntax"></p>
 
-```js
+```uql
 // To show all users in the current Ultipa instance
 show().user()
 
@@ -37,7 +37,7 @@ show().self()
 Syntax:
 <p tit="Syntax"></p>
 
-```js
+```uql
 // To create a user in the current Ultipa instance
 create().user(
   "<username>", 
@@ -52,7 +52,7 @@ create().user(
 Where the data structures are:
 <p tit="Syntax"></p>
 
-```js
+```uql
 // <{}graph_privileges>
 {
   "<graph1>":["<graph_privilege>", "<graph_privilege>", ...],
@@ -105,7 +105,7 @@ Note 2: When top tiems of parameter `user()` are not to be declared, their slots
 
 Example: Create user "Ultipa" with password "ultipaABC123", grant graph privileges UPDATE, ALGO, LTE and UFE for all GraphSets, system privileges STAT, TOP and KILL, and property privilege WRITE to all properties of all GraphSets
 
-```js
+```uql
 create().user(
   "Ultipa",   
   "ultipaABC123",
@@ -128,7 +128,7 @@ create().user(
 Syntax:
 <p tit="Syntax"></p>
 
-```js
+```uql
 // To modify the a certain user in the current Ultipa instance
 alter().user("<username>").set({
   password:"<new?>", 
@@ -143,14 +143,14 @@ Where the data structures `<{}graph_privileges>` and `<{}property_privileges>` a
 
 Example：Modify user <i>Ultipa</i>'s password to "ultipaFast"
 
-```js
+```uql
 alter().user("Ultipa")
   .set({password: "ultipaFast"})
 ```
 
 Example：Modify user <i>Ultipa</i>, make it only able to acquire metadata of GraphSet "default"
 
-```js
+```uql
 alter().user("Ultipa").set({
   graph_privileges: {"default": ["FIND"]},
   property_privileges: {
@@ -170,7 +170,7 @@ Analysis: Users can query and return metadata of 'default' only when both FIND a
 Syntax:
 <p tit="Syntax"></p>
 
-```js
+```uql
 // To delete a certain user from the current Ultipa instance
 drop().user("<name>")
 ```

@@ -22,13 +22,13 @@ For unsupported value types, the function returns `null`.
 
 ## Example of Result
  
-```js
+```uql
 return toDouble(-36.123456789012345)
 ```
 
 Result: -36.1234567890123
 
-```js
+```uql
 return toDouble("-36.1234abc")
 ```
 

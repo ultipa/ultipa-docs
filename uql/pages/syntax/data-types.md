@@ -61,7 +61,7 @@ Example graph:
 ### NODE
 
 Return the node whose name is Alice:
-```js
+```uql
 find().nodes({name == 'Alice'}) as n
 return n{*}
 ```
@@ -84,7 +84,7 @@ Data structure of the node:
 ### EDGE
 
 Return the edge whose UUID is 53:
-```js
+```uql
 find().edges({_uuid == 53}) as e
 return e{*}
 ```
@@ -110,7 +110,7 @@ Data structure of the edge:
 ### PATH
 
 Return the path from Alice to Oxford:
-```js
+```uql
 n({name == 'Alice'}).e().n({name == 'Oxford'}) as p
 return p{*}
 ```
@@ -155,7 +155,7 @@ Date structure of the path:
 ### GRAPH
 
 Return the graph formed by the path from Alice to Oxford:
-```js
+```uql
 n({name == 'Alice'}).e().n({name == 'Oxford'}) as p
 return toGraph(collect(p))
 ```
@@ -199,7 +199,7 @@ Data structure of the graph:
 ### TABLE
 
 Return the table of all nodes' ID and name properties:
-```js
+```uql
 find().nodes() as n
 return table(n._id, n.name)
 ```
@@ -237,7 +237,7 @@ Data structure of the table:
 ### ATTR
 
 Return how many years Alice studied in Oxford:
-```js
+```uql
 find().edges({_uuid == 53}) as e
 return e.end - e.start
 ```

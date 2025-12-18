@@ -14,14 +14,14 @@ Returns：
 Exalmple: Direct calculate
 
 
-```js
+```uql
 uncollect [[1,2,3],[2,4,5]] as a
 uncollect [3,4] as b
 return table(toString(a), b, listContains(a, b))
 ```
 <p tit="Result"></p>
 
-```bash
+```
 | toString(a) | b | listContains(a, b) |
 |-------------|---|--------------------|
 | [1,2,3]     | 3 | 1                  |
@@ -31,7 +31,7 @@ return table(toString(a), b, listContains(a, b))
 Exalmple: Multiply and calculate
 
 
-```js
+```uql
 uncollect [[1,2,3],[2,4,5]] as a
 uncollect [3,4] as b
 with listContains(a, b) as c
@@ -39,7 +39,7 @@ return table(toString(a), b, c)
 ```
 <p tit="Result"></p>
 
-```bash
+```
 | toString(a) | b | c |
 |-------------|---|---|
 | [1,2,3]     | 3 | 1 |

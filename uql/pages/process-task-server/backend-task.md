@@ -24,7 +24,7 @@ Returned table header: `id` | `name` | `params` | `start` | `egnineTime` | `tota
 Syntax:
 <p tit="Syntax"></p>
 
-```js
+```uql
 // To show all algorithm backend tasks in the current graphset
 show().task()
             
@@ -43,13 +43,13 @@ show().task("<taskName>", "<status>")
 
 Example: Show all algorithm backend tasks of "khop_all"
 
-```js
+```uql
 show().task("khop_all", "*")
 ```
 
 Example: Show all algorithm backend tasks that are computing
 
-```js
+```uql
 show().task("*", "computing")
 ```
 
@@ -60,7 +60,7 @@ A stopped task cannot be restarted.
 Syntax:
 <p tit="Syntax"></p>
 
-```js
+```uql
 // To stop all backend tasks that are computing in the current graphset
 stop().task("*")
             
@@ -75,7 +75,7 @@ Clearing a task will delete all the information of this task from the Ultipa ser
 Syntax:
 <p tit="Syntax"></p>
 
-```js
+```uql
 // To clear all algorithm backend tasks in the current graphset (excluding those whose status are computing and writing)
 clear().task("*")
             
@@ -94,19 +94,19 @@ clear().task("<taskName>", "<status>")
 
 Example: Clear all algorithm backend tasks
 
-```js
+```uql
 clear().task("*")
 ```
 
 Example: Clear algorithm backend task with id = 12
 
-```js
+```uql
 clear().task(12)
 ```
 
 Example: Clear all "khop_all" backend tasks that are pending
 
-```js
+```uql
 clear().task("khop_all", "pending")
 ```
 

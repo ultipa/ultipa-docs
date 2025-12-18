@@ -18,7 +18,7 @@ The `replace()` function searches for all occurrences of a given string in a str
 
 ## Example of Result
 
-```js
+```uql
 return replace("ultipa graph", "u", "U")
 ```
 
@@ -28,7 +28,7 @@ Result: Ultipa graph
 
 Update the values of *gender* property of the *@account* nodes ("female" or "male") by replacing their first letters with their capitalizations.
 
-```js
+```uql
 find().nodes({@account}) as acc
 return case acc.gender
 when "female" then replace(acc.gender, "f", "F")

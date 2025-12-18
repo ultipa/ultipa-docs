@@ -19,14 +19,14 @@ Returns：
 Exalmple: Direct calculate
 
  
-```js
+```uql
 uncollect [[1.5,0.5],[2,2]] as point
 uncollect [[[1,0],[3,0],[3,1],[1,1]],[[1,0],[2,1],[1,2],[0,1]]] as polygon
 return table(toString(point), toString(polygon), pointInPolygon(point, polygon))
 ```
 <p tit="Result"></p>
 
-```bash
+```
 | toString(point) |     toString(polygon)     | pointInPolygon(point, polygon) |
 |-----------------|---------------------------|--------------------------------|
 | [1.5,0.5]       | [[1,0],[3,0],[3,1],[1,1]] | 1                              |
@@ -36,7 +36,7 @@ return table(toString(point), toString(polygon), pointInPolygon(point, polygon))
 Exalmple: Multiply and calculate
 
  
-```js
+```uql
 uncollect [[1.5,0.5],[2,2]] as point
 uncollect [[[1,0],[3,0],[3,1],[1,1]],[[1,0],[2,1],[1,2],[0,1]]] as polygon
 with pointInPolygon(point, polygon) as result
@@ -44,7 +44,7 @@ return table(toString(point), toString(polygon), result)
 ```
 <p tit="Result"></p>
 
-```bash
+```
 | toString(point) |     toString(polygon)     | result |
 |-----------------|---------------------------|--------|
 | [1.5,0.5]       | [[1,0],[3,0],[3,1],[1,1]] | 1      |

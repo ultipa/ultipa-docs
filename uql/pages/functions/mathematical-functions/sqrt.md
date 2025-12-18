@@ -13,13 +13,13 @@ Returns：
 Example: Calculate the square root of each row of an alias
  
 
-```js
+```uql
 uncollect [1,4,9] as a
 return sqrt(a)
 ```
 <p tit="Result"></p>
 
-```bash
+```
 1
 2
 3

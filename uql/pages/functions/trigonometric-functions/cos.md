@@ -13,25 +13,25 @@ Returns：
 Example: Calculate the cosine value of degree 60°
  
 
-```js
+```uql
 return cos(60 * pi() / 180)
 ```
 <p tit="Result"></p>
 
-```bash
+```
 0.5
 ```
 
 Example: Calculate the cosine value of each row (radian) of an alias
  
 
-```js
+```uql
 uncollect [1, 2.5, 3] as a
 return cos(a)
 ```
 <p tit="Result"></p>
 
-```bash
+```
 0.54030230586814
 -0.801143615546934
 -0.989992496600445

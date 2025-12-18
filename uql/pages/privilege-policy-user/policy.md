@@ -19,7 +19,7 @@ Returned table header: `name` | `graphPrivileges` | `systemPrivileges` | `proper
 Syntax:
 <p tit="Syntax"></p>
 
-```js
+```uql
 // To show all policies in the current Ultipa instance
 show().policy()
 
@@ -32,7 +32,7 @@ show().policy("<name>")
 Syntax:
 <p tit="Syntax"></p>
 
-```js
+```uql
 // To create a policy in the current Ultipa instance
 create().policy(
   "<name>", 
@@ -46,7 +46,7 @@ create().policy(
 Where the data structures are:
 <p tit="Syntax"></p>
 
-```js
+```uql
 // <{}graph_privileges>
 {
   "<graph1>":["<graph_privilege>", "<graph_privilege>", ...],
@@ -99,7 +99,7 @@ Note 2: When top items of parameter `policy()` are not to be declared, their slo
 
 
 Example: Create policy "sales" that has privilege UPDATE against GraphSet "default" and "client", system privilege STAT, and READ for all properties
-```js
+```uql
 create().policy(
   "sales", 
   {"default": ["UPDATE"], "client":["UPDATE"]}, 
@@ -118,7 +118,7 @@ create().policy(
 Syntax:
 <p tit="Syntax"></p>
 
-```js
+```uql
 // To modify a certain policy in the current Ultipa instance
 alter().policy("<name>").set({ 
   graph_privileges: <{}graph_privileges?>, 
@@ -132,14 +132,14 @@ Where the data structures `<{}graph_privileges>` and `<{}property_privileges>` a
 
 Example: Modify policy "sales", make it only has UPDATE against graphset "default"
 
-```js
+```uql
 alter().policy("sales")
   .set({graph_privileges: {"default": ["UPDATE"]}})
 ```
 
 Example: Modify policy "management", let it has UPDATE and DELETE against all graphsets, sub policy "sales", and all related property privileges.
 
-```js
+```uql
 alter().policy("management").set({
   graph_privileges: {"*": ["UPDATE", "DELETE"]},
   policies: ["sales"],
@@ -159,7 +159,7 @@ alter().policy("management").set({
 Syntax:
 <p tit="Syntax"></p>
 
-```js
+```uql
 // To delete a certain policy from the current Ultipa instance
 drop().policy("<name>")
 ```

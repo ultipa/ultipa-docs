@@ -10,7 +10,7 @@ A graphset named ***default*** is automatically created during the creation of a
 
 ## Show Graph
 
-```js
+```uql
 // Show all graphsets in the instance (via listGraph API)
 show().graph()
 
@@ -34,7 +34,7 @@ A mounted graphset displays the total number of nodes and edges within it. An un
 
 ## Create Graph
 
-```js
+```uql
 // Create a graphset named social, and provide description
 create().graph("social", "Campus social graph")
 
@@ -61,13 +61,13 @@ You cannot have two graphsets with the same name.
 
 Create three graphsets at the same time, but one of the names (*default*) is duplicated with an existing graphset.
 
-```js
+```uql
 create().graph("newGraph_1").graph("default").graph("newGraph_2")
 ```
 
 The creation of the graphset *newGraph_1*, which was specified before the duplicated graphset, succeeds. However, the one (*newGraph_2*) specified after the duplicated graphset fails, with the error message `Duplicated db name!` returned.
 
-```js
+```uql
 TRY create().graph("newGraph_1").graph("default").graph("newGraph_2")
 ```
 
@@ -75,7 +75,7 @@ The creation of the graphsets is the same as above, though the error message is 
 
 ## Alter Graph
 
-```js
+```uql
 // Alter name and description of the graphset currently named "miniCircle"
 alter().graph("miniCircle").set({name: "movieCommunity", description: "Unix Movie Platform"})
 
@@ -92,7 +92,7 @@ You may unmount temporarily unused graphsets (except the *default* graphset) to 
 
 When a graph is unmounted, it’s not allowed to modify or read the schemas, properties, data, etc. within the graph. Unmounted graph can only be mounted, altered or dropped.
 
-```js
+```uql
 // Unmount a graphset named "LDCC" from the instance memory
 unmount().graph("LDCC")
 ```
@@ -103,7 +103,7 @@ Newly created graphsets are mounted by default. You may need to manually re-moun
 
 When a graphset is remounted, its previously LTE-ed properties will be reloaded into the memory; the indexes and full-text indexes will also be automatically recreated as before.
 
-```js
+```uql
 // Mount a graphset named "LDCC" back to the instance memory
 mount().graph("LDCC")
 ```
@@ -112,7 +112,7 @@ mount().graph("LDCC")
 
 Dropping a graphset means to delete the entire graphset. The *default* graphset cannot be dropped.
 
-```js
+```uql
 // Drop the graphset named "test0831"
 drop().graph("test0831")
 
@@ -124,7 +124,7 @@ drop().graph("test0831").graph("test0925")
 
 Truncating a graphset only deletes the specified data within the graph, while the graphset itself and its structure (schemas & properties) are retained.
 
-```js
+```uql
 // Truncate all nodes and edges in the graphset named "PowerGrid"
 truncate().graph("PowerGrid")
 
@@ -147,7 +147,7 @@ truncate().graph("PowerGrid").edges("*")
 
 Compacting a graphset clears invalid and redundant data from the graph on the server disk but does not make any changes to other valid data. 
 
-```js
+```uql
 // Compact the graphset named "PowerGrid"
 compact().graph("PowerGrid")
 ```

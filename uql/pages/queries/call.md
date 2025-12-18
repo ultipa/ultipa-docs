@@ -19,7 +19,7 @@ For instance, skip the first row of each subquery result <i>p</i>:
 
 <div align=center drawio-diagram='13994' drawio-name='draw_a3d1441245d64a9c95705725ff28a33a.jpg'><img src="https://img.ultipa.cn/draw/draw_a3d1441245d64a9c95705725ff28a33a.jpg?v='1703131287436'"/></div>
 
-```js
+```uql
 find().nodes([1, 5]) as nodes
 call {
   with nodes
@@ -36,7 +36,7 @@ Sample graph: (to be used for the following examples)
 Run below UQLs one by one to in an empty graphset to create graph data:
 <p tit="" fold="true"></p>
 
-```js
+```uql
 create().node_schema("country").node_schema("movie").node_schema("director").edge_schema("filmedIn").edge_schema("direct")
 create().node_property(@*, "name")
 insert().into(@country).nodes([{_id:"C001", _uuid:1, name:"France"}, {_id:"C002", _uuid:2, name:"USA"}])
@@ -51,7 +51,7 @@ insert().into(@direct).edges([{_uuid:6, _from_uuid:6, _to_uuid:3}, {_uuid:7, _fr
 Example: Not using GROUP BY, find how many movies are filmed in each country
  
 
-```js
+```uql
 find().nodes({@country}) as nodes
 call { 
   with nodes
@@ -62,7 +62,7 @@ return table(nodes.name, number)
 ```
 <p tit="Result"></p> 
 
-```bash
+```
 | nodes.name | number |
 |------------|--------|
 | France     | 2      |

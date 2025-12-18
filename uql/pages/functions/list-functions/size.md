@@ -13,12 +13,12 @@ Returns：
 Example: Calculate the length of [1,2,3]
 
 
-```js
+```uql
 return size([1,2,3])
 ```
 <p tit="Result"></p>
 
-```bash
+```
 3
 ```
 

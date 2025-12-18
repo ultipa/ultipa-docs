@@ -10,7 +10,7 @@ Deduplicates rows united by multiple aliases.
 Example: Direct deduplicate
  
 
-```js
+```uql
 uncollect [1,2,1,2] as a
 uncollect [3,4,5,4] as b
 return distinct a, b
@@ -33,7 +33,7 @@ return distinct a, b
 Example: Multiply and deduplicate
  
 
-```js
+```uql
 uncollect [1,2,1,2] as a
 uncollect [3,4,5,4] as b
 with distinct a, b

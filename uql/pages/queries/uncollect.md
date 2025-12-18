@@ -14,7 +14,7 @@ For instance, release all the nodes in <i>path</i>, homologous alias <i>path</i>
 
 <div align=center drawio-diagram='13993' drawio-name='draw_3181009d8736466db22645463895dcee.jpg'><img src="https://img.ultipa.cn/draw/draw_3181009d8736466db22645463895dcee.jpg?v='1703131248282'"/></div>
 
-```js
+```uql
 n(2).e()[:3].n(4) as path
 with pnodes(path) as a1
 uncollect a1 as a2
@@ -25,7 +25,7 @@ Another instance is given for releasing two data streams <i>s1</i> and <i>s2</i>
 
 <div align=center drawio-diagram='14945' drawio-name="draw_d8b711020174413a8422f880adf048b2.jpg"><img src="https://img.ultipa.cn/draw/draw_d8b711020174413a8422f880adf048b2.jpg?v='1709175618480'"/></div>
 
-```js
+```uql
 uncollect [["a","b","c"],["d","e"]] as s1
 uncollect [[1,2],[3,4,5]] as s2
 uncollect s1 as l1, s2 as l2
@@ -39,7 +39,7 @@ Sample graph: (to be used for the following examples)
 Run below UQLs one by one in an empty graphset to create graph data:
 <p tit="" fold="true"></p>
 
-```js
+```uql
 create().edge_property(@default, "weight", int32)
 insert().into(@default).nodes([{_id:"A", _uuid:1}, {_id:"B", _uuid:2}, {_id:"C", _uuid:3}, {_id:"D", _uuid:4}, {_id:"E", _uuid:5}, {_id:"F", _uuid:6}])
 insert().into(@default).edges([{_uuid:1, _from_uuid:1, _to_uuid:3, weight:1}, {_uuid:2, _from_uuid:5, _to_uuid:2 , weight:1}, {_uuid:3, _from_uuid:1, _to_uuid:5 , weight:4}, {_uuid:4, _from_uuid:4, _to_uuid:3 , weight:2}, {_uuid:5, _from_uuid:5, _to_uuid:4 , weight:3}, {_uuid:6, _from_uuid:2, _to_uuid:1 , weight:2}, {_uuid:7, _from_uuid:6, _to_uuid:1 , weight:4}])
@@ -51,7 +51,7 @@ insert().into(@default).edges([{_uuid:1, _from_uuid:1, _to_uuid:3, weight:1}, {_
 Example: Find 2-step paths from A to D, deduplicate all the involved nodes and return
  
 
-```js
+```uql
 n({_id == "A"}).e()[2].n({_id == "D"}) as p
 uncollect pnodes(p) as a
 with dedup(a) as b
@@ -59,7 +59,7 @@ return b{*}
 ```
 <p tit="Result"></p> 
 
-```bash
+```
 | _id | _uuid |
 |-----|-------|
 | A   | 1     |

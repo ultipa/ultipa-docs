@@ -11,7 +11,7 @@ Filters are implemented within some methods that represent nodes or edges in que
 A filter is an expression enclosed within curly braces `{ }`. Typically, it involves references of the schemas and properties of nodes and edges.
 
 Example: Find `@user` nodes, and `@movie` nodes whose `rating` property values are above 3.
-```js
+```uql
 find().nodes({@user || @movie.rating > 3}) as n
 return n{*}
 ```
@@ -30,7 +30,7 @@ In cases where the expression of the filter does not yield a boolean value or nu
 | list | Never  | Any value |
 
 Example: Find `@user` nodes whose `age` property values, when subtracted by 33, result in non-zero values.
-```js
+```uql
 find().nodes({@user.age - 33}) as n
 return n{*}
 ```
@@ -41,14 +41,14 @@ return n{*}
 
 In any query clause, you can filter nodes and edges by comparing their schemas and properties with some constant values and/or aliases.
 
-```js
+```uql
 find().nodes({@user.registeredOn >= "2021-09-01 09:00:00"}) as u1
 with max(u1.age) as maxAge
 find().nodes({@user.age == maxAge}) as u2
 return u2
 ```
 
-```js
+```uql
 n(as start).e()[3].n({level == start.level}) as p
 return p
 ```
@@ -61,7 +61,7 @@ Note: The second node template `n()` calls the alias defined in the first node t
 
 In a template-based query clause, you can employ the system aliases <a href="/docs/uql/alias#prev_n">prev_n</a> and <a href="/docs/uql/alias#prev_e">prev_e</a> to facilitate inter-step filtering.
 
-```js
+```uql
 n({@card}).e({@transfersTo.time > prev_e.time})[3].n({@card}) as p
 return p
 ```
@@ -70,7 +70,7 @@ return p
 
 The methods `path_ascend()` and `path_descend()` in certain path query commands like `ab()` serve the same purpose of inter-step comparison, and they necessitate the subject property to be LTE-ed as well. However, the input for these methods does not take the form of a filter.
 
-```js
+```uql
 ab().src({_id == "A"}).dest({_id == "E"}).depth(:3).path_ascend(@default.weight) as p
 return p{*}
 ```
@@ -79,7 +79,7 @@ return p{*}
 
 In any query clause, nodes and edges can be filtered using a created <a href="/docs/uql/full-text">full-text index</a>.
 
-```js
+```uql
 find().nodes({~content CONTAINS "graph computing parallel"}) as n
 return n{*}
 ```

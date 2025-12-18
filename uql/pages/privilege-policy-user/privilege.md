@@ -29,7 +29,7 @@ Returned table header: `graphPrivileges` | `systemPrivileges` (graph privileges,
 Syntax:
 <p tit="Syntax"></p>
 
-```js
+```uql
 // To list all command privileges supported by Ultipa system
 show().privilege()
 ```
@@ -41,7 +41,7 @@ show().privilege()
 Syntax:
 <p tit="Syntax"></p>
 
-```js
+```uql
 // To grant node and edge property privileges to a user/policy
 grant().privilege(["READ" | "WRITE" | "DENY"]).on(
   "<graph>", 
@@ -65,7 +65,7 @@ grant().edge_privilege(["READ" | "WRITE" | "DENY"]).on(
 ```
 
 Example: Grant READ of property <i>@product.price</i> of GraphSet <i>supplychain</i> to policy <i>sales</i>
-```js
+```uql
 grant().node_privilege(["READ"]).on(
   "supplychain",
   @product,
@@ -74,7 +74,7 @@ grant().node_privilege(["READ"]).on(
 ```
 
 Example: Grant WRITE of all properties of all GraphSets to user <i>admin002</i>
-```js
+```uql
 grant().privilege(["WRITE"]).on(
   "*",
   @*,
@@ -89,13 +89,13 @@ Analysis: The parameter `on()` in this example can be shortened as `on("*")`
 Syntax：
 <p tit="Syntax"></p>
 
-```js
+```uql
 // To grant system privileges to a user/policy
 grant().system().privilege(<[]system_privileges>).<user|policy>("<name>")
 ```
 
 Example: Grant system privileges TOP and KILL to user <i>admin002</i>
-```js
+```uql
 grant().system().privilege(["TOP","KILL"]).user("admin002")
 ```
 
@@ -104,7 +104,7 @@ grant().system().privilege(["TOP","KILL"]).user("admin002")
 Syntax：
 <p tit="Syntax"></p>
 
-```js
+```uql
 // To grant privileges of different types to a user/policy
 grant().user("<username>").params({
   graph_privileges: <{}graph_privileges?>, 
@@ -117,7 +117,7 @@ grant().user("<username>").params({
 Where the data structures are:
 <p tit="Syntax"></p>
 
-```js
+```uql
 // <{}graph_privileges>
 {
   "<graph1>":["<graph_privilege>", "<graph_privilege>", ...],
@@ -166,7 +166,7 @@ Where the data structures are:
 
 
 Example: Grant UPDATE of all GraphSets, system privilege STAT, WRITE of all properties of all GraphSets, and policy <i>management</i> to user <i>Ultipa</i>
-```js
+```uql
 grant().user("Ultipa").params({
   graph_privileges: {"*": ["UPDATE"]}, 
   system_privileges: ["STAT"],
@@ -190,7 +190,7 @@ grant().user("Ultipa").params({
 Syntax:
 <p tit="Syntax"></p>
 
-```js
+```uql
 // To revoke node and edge property privileges from a user/policy
 revoke().privilege(["READ" | "WRITE" | "DENY"]).on(
   "<graph>", 
@@ -214,7 +214,7 @@ revoke().edge_privilege(["READ" | "WRITE" | "DENY"]).on(
 ```
 
 Example: Revoke READ of property <i>@product.price</i> of GraphSet <i>supplychain</i> from policy <i>sales</i>
-```js
+```uql
 revoke().node_privilege(["READ"]).on(
   "supplychain",
   @product,
@@ -223,7 +223,7 @@ revoke().node_privilege(["READ"]).on(
 ```
 
 Example: Revoke WRITE of all properties of all GraphSets from user <i>admin002</i>
-```js
+```uql
 revoke().privilege(["WRITE"]).on(
   "*",
   @*,
@@ -238,13 +238,13 @@ Analysis: The parameter `on()` in this example can be shortened as `on("*")`
 Syntax：
 <p tit="Syntax"></p>
 
-```js
+```uql
 // To revoke system privileges from a user/policy
 revoke().system().privilege(<[]system_privileges>).<user|policy>("<name>")
 ```
 
 Example: Revoke system privileges TOP and KILL from user <i>admin002</i>
-```js
+```uql
 revoke().system().privilege(["TOP","KILL"]).user("admin002")
 ```
 
@@ -253,7 +253,7 @@ revoke().system().privilege(["TOP","KILL"]).user("admin002")
 Syntax：
 <p tit="Syntax"></p>
 
-```js
+```uql
 // To revoke privileges of different types from a user/policy
 revoke().user("<username>").params({
   graph_privileges: <{}graph_privileges?>, 
@@ -268,7 +268,7 @@ Where the data structures `<{}graph_privileges>` and `<{}property_privileges>` a
 
 
 Example: Revoke UPDATE of all GraphSets, system privilege STAT, WRITE of all properties of all GraphSets, and policy <i>management</i> from user <i>Ultipa</i>
-```js
+```uql
 revoke().user("Ultipa").params({
   graph_privileges: {"*": ["UPDATE"]}, 
   system_privileges: ["STAT"],

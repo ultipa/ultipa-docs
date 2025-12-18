@@ -60,7 +60,7 @@ The `dateFormat()` function prints a specific format for a given time value.
 
 ## Example of Result
 
-```js
+```uql
 return dateFormat("2010/9/25 6:12:30","%A %e %B, %G")
 ```
 
@@ -70,7 +70,7 @@ Result: Saturday 25 September, 2010
 
 Display the times of reviews in a desired format.
 
-```js
+```uql
 find().nodes({@review}) as n
 return dateFormat(n.time,"%e %b, %G")
 ```

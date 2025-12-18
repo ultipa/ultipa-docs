@@ -12,7 +12,7 @@ The `now()` function returns the current UTC time.
 
 ## Example of Result
 
-```js
+```uql
 return now()
 ```
 

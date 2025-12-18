@@ -20,7 +20,7 @@ While achieving the same query function, the K-Hop template generally offers bet
 
 For example, the two UQLs return the same results - the number of distinct ads clicked by a user. It's important to note that the destination nodes returned by the path template are not automatically deduplicated, whereas the results of the k-hop template are deduplicated.
 
-```js
+```uql
 // Path Template
 n({_id == "u316591"}).e({@clicks}).n({@ad} as ads)
 return count(DISTINCT ads)
@@ -53,7 +53,7 @@ Run these UQLs row by row in an empty graphset to create this graph:
 
 <p tit="" fold="true"></p>
 
-```js
+```uql
 create().node_schema("country").node_schema("movie").node_schema("director").node_schema("actor").edge_schema("filmedIn").edge_schema("direct").edge_schema("cast").edge_schema("bornIn")
 create().node_property(@*, "name")
 insert().into(@country).nodes([{_id:"C001", _uuid:1, name:"France"}, {_id:"C002", _uuid:2, name:"USA"}])
@@ -72,7 +72,7 @@ Find the 2-hop neighbors of each country that can be reached through a certain p
 
  
 
-```js
+```uql
 khop().n({@country} as a).le({@filmedIn}).n({@movie}).le({@direct}).n({@director}) as b
 return table(a.name, b.name)
 ```
@@ -91,7 +91,7 @@ Find the 1- and 2-hop neighbors of each country that can be reached through a ce
 
  
 
-```js
+```uql
 khop().n({@country} as a).e({!@direct})[:2].n({!@country}) as b
 return table(a.name, b.name)
 ```
@@ -112,7 +112,7 @@ Find the 2-hop *@director* neighbors of each country.
 
  
 
-```js
+```uql
 khop().n({@country} as a).e()[2].n({@director}) as b
 return table(a.name, b.name)
 ```
@@ -131,7 +131,7 @@ Find the 2-hop *@country* neighbors of one actor.
 
  
 
-```js
+```uql
 khop().n({@actor.name == "Zoe Saldaña"}).e()[2].n({@country}) as a return a
 ```
 
@@ -145,7 +145,7 @@ Find one 1-hop neighbor for each director that can be reached through a certain 
 
  
 
-```js
+```uql
 khop().n({@director} as a).e({@direct}).n().limit(1) as b
 return table(a.name, b.name)
 ```
@@ -163,7 +163,7 @@ Find the 2-hop *@actor* neighbors of each country that can be reached through a 
 
  
 
-```js
+```uql
 find().nodes({@country}) as cty
 optional khop().n(cty).e({!@bornIn})[2].n({@actor}) as actor
 return table(cty.name, actor.name)

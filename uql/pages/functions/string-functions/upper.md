@@ -16,7 +16,7 @@ The `upper()` function converts all letters within a string to uppercase, leavin
 
 ## Example of Result
 
-```js
+```uql
 return upper("abc536")
 ```
 
@@ -26,7 +26,7 @@ Result: ABC536
 
 Retrieve posts and showcase their titles in uppercase format.
 
-```js
+```uql
 find().nodes({@post}) as posts
 return upper(posts.title)
 ```

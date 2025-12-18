@@ -13,12 +13,12 @@ Returns：
 Example: Calculate the first element of [1,2,3]
 
 
-```js
+```uql
 return head([1,2,3])
 ```
 <p tit="Result"></p>
 
-```bash
+```
 1
 ```
 

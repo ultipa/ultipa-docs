@@ -5,7 +5,7 @@ Function CASE calculates a new value from one or multiple values based on condit
 
 <p tit="Syntax1"></p> 
 
-```js
+```uql
 case
   when <condition> then <output>
   when <condition> then <output>
@@ -17,7 +17,7 @@ end
 
 <p tit="Syntax2"></p> 
 
-```js
+```uql
 case <expression>
   when <value> then <output>
   when <value> then <output>
@@ -38,7 +38,7 @@ end
 Example: Calculate the day of week of the planned payday (15th) of each month in 2023
  
 
-```js
+```uql
 uncollect ["2023-1-15","2023-2-15","2023-3-15","2023-4-15","2023-5-15","2023-6-15","2023-7-15","2023-8-15","2023-9-15","2023-10-15","2023-11-15","2023-12-15"] as payday
 return CASE dayOfWeek(payday)
 when 1 then "Sunday"
@@ -52,7 +52,7 @@ END
 ```
 <p tit="Result"></p>
 
-```bash
+```
 Sunday
 Wednesday
 Wednesday
@@ -70,7 +70,7 @@ Friday
 Example: Calculate the actual payday of each month in 2023, knowing that a planned payday in the weekend should be postponded to the following Monday 
  
 
-```js
+```uql
 uncollect ["2023-1-15","2023-2-15","2023-3-15","2023-4-15","2023-5-15","2023-6-15","2023-7-15","2023-8-15","2023-9-15","2023-10-15","2023-11-15","2023-12-15"] as payday
 return CASE dayOfWeek(payday)
 when 1 then dateAdd(payday, 1, "day")
@@ -81,7 +81,7 @@ END
 Analysis: Function dateAdd() in WHEN shifts the planned <i>payday</i> from weekend to the following Monday; ELSE indicates the <i>payday</i>s that are during working days, but still need the <i>payday</i> to be 0-shifted by dateAdd(), the reason is to keep the output data format of ELSE in consistent with WHEN.
 <p tit="Result"></p>
 
-```bash
+```
 2023-01-16 00:00:00
 2023-02-15 00:00:00
 2023-03-15 00:00:00

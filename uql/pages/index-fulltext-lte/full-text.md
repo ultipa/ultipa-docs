@@ -17,7 +17,7 @@ Returned table header: `name` | `properties` | `schema` | `status` (Name, proper
 Syntax:
 <p tit="Syntax"></p>
 
-```js
+```uql
 // To show all full-text indexes in the current graphset (node full-texts and edge full-texts in separate tables)
 show().fulltext()
 
@@ -35,7 +35,7 @@ Properties of <i>decimal</i> type do not support full-text index.
 Syntax:
 <p tit="Syntax"></p>
 
-```js
+```uql
 // To create full-text index for a certain property of a certain node schema in the current graphset
 create().node_fulltext(@<schema>.<property>,"<name>")
 
@@ -44,7 +44,7 @@ create().edge_fulltext(@<schema>.<property>,"<name>")
 ```
 
 Example: Create full-text index named "prodDesc" for <i>@product</i> property <i>description</i>
-```js
+```uql
 create().node_fulltext(@product.description, "prodDesc")
 ```
 
@@ -55,7 +55,7 @@ Deleting a property will also delete its full-text index.
 Syntax:
 <p tit="Syntax"></p>
 
-```js                            
+```uql                            
 // To delete full-text index for a certain node property from the current graphset
 drop().node_fulltext("<name>")
 
@@ -64,7 +64,7 @@ drop().edge_fulltext("<name>")
 ```
 
 Example: Delete the full-text index named 'prodDesc'
-```js
+```uql
 drop.().node_fulltext("prodDesc")
 ```
 
@@ -88,31 +88,31 @@ where space is used to separate multiple `<keyword>`, and should use backslash `
 ### Node/Edge Query
 
 Example: Find products that contain keywords 'graph' and 'database' by the full-text index named 'prodDesc'
-```js
+```uql
 find().nodes({~prodDesc contains "graph database"}) return nodes
 ```
 
 Example: Find products that contain keywords 'graph' or 'database' by the full-text index named 'prodDesc'
-```js
+```uql
 find().nodes({~prodDesc contains "graph" || ~prodDesc contains "database"}) return nodes
 ```
 
 Example: Find products that contain 'graph', and words start with 'ult' by the full-text index named 'prodDesc'
-```js
+```uql
 find().nodes({~prodDesc contains "graph ult*"}) return nodes
 ```
 
 ### Template Query
 
 Example: Fuzzy search for 10 paths that start from accounts which have segmented word 'capital*', firstly arrive accounts which have segmented word 'investment*', then arrive accounts which have segmented word 'AI*', use full-text index 'companyName'
-```js
+```uql
 n({~companyName contains "capital*"}).e().n({~companyName contains "investment*"})
   .e().n({~companyName contains "AI*"}) as paths
 return paths{*} limit 10
 ```
 
 Example: Fuzzy search for 10 paths from 'Sequoia*' accounts to 'Hillhouse*' accounts within 5 steps, use full-text index 'companyName'
-```js
+```uql
 n({~companyName contains "Sequoia*"}).e()[:5].n({~companyName contains "Hillhouse*"}) as paths
 return paths{*} limit 10
 ```

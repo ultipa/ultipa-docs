@@ -17,7 +17,7 @@ The `startsWith()` function checks whether a string starts with a specified subs
 
 ## Example of Result
 
-```js
+```uql
 return startsWith("ultipa.com", "Ultipa")
 ```
 
@@ -27,7 +27,7 @@ Result: 0
 
 Find webpages with URLs that begin with "https://". 
 
-```js
+```uql
 find().nodes({startsWith(@webpage.url, "https://")}) as n
 return n{*}
 ```

@@ -12,7 +12,7 @@ For instance, adjusts the order of one-step paths  <i>path</i>, first into desce
 
 <div align=center drawio-diagram='13985' drawio-name='draw_67147cadf7d743cd8935831ee14838fd.jpg'><img src="https://img.ultipa.cn/draw/draw_67147cadf7d743cd8935831ee14838fd.jpg?v='1703130926088'"/></div>
 
-```js
+```uql
 n([4, 2]).e().n(as n) as path
 order by n.radius desc, n
 return path
@@ -24,7 +24,7 @@ Sample graph: (to be used for the following examples)
 Run below UQLs one by one in an empty graphset to create graph data:
 <p tit="" fold="true"></p>
 
-```js
+```uql
 create().node_schema("student").node_schema("course")
 create().node_property(@*, "name").node_property(@student, "age", int32).node_property(@course, "credit", int32)
 insert().into(@student).nodes([{_id:"S001", _uuid:1, name:"Jason", age:25}, {_id:"S002", _uuid:2, name:"Lina", age:23}, {_id:"S003", _uuid:3, name:"Eric", age:24}, {_id:"S004", _uuid:4, name:"Emma", age:26}, {_id:"S005", _uuid:5, name:"Pepe", age:24}])
@@ -38,7 +38,7 @@ Example: Find 1-step paths @course-@student, group by course and calculate numbe
 
  
 
-```js
+```uql
 n({@course} as a).e().n({@student})
 group by a
 with count(a) as b
@@ -48,7 +48,7 @@ return table(a.name, b)
 
 <p tit="Result"></p> 
 
-```bash
+```
 | a.name | b |
 |--------|---|
 | Math   | 4 |
@@ -60,7 +60,7 @@ return table(a.name, b)
 Example: Find 1-step paths @course-@student, order the results into ascending <i>credit</i> of course, then into descending <i>age</i> of student
  
 
-```js
+```uql
 n({@course} as a).e().n({@student} as b) as p
 order by a.credit, b.age desc 
 return p{*}
@@ -68,7 +68,7 @@ return p{*}
 
 <p tit="Result"></p> 
 
-```bash
+```
 French <---- Jason
 French <---- Eric
 French <---- Lina

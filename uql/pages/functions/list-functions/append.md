@@ -14,14 +14,14 @@ Returns：
 Exalmple: Direct calculate
 
 
-```js
+```uql
 uncollect [["a","b"],["c","d"]] as a
 uncollect ["X","Y"] as b
 return append(a, b)
 ```
 <p tit="Result"></p>
 
-```bash
+```
 | append(a, b)  |
 |---------------|
 | ["a","b","X"] |
@@ -31,7 +31,7 @@ return append(a, b)
 Exalmple: Multiply and calculate
 
 
-```js
+```uql
 uncollect [["a","b"],["c","d"]] as a
 uncollect ["X","Y"] as b
 with append(a, b) as c
@@ -39,7 +39,7 @@ return c
 ```
 <p tit="Result"></p>
 
-```bash
+```
 |       c       |
 |---------------|
 | ["a","b","X"] |

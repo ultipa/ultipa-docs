@@ -7,7 +7,7 @@ Returned table header: `cpuUsage` | `memUsage` | `expiredDate` | `cpuCores` | `c
 Syntax:
 <p tit="Syntax"></p>
 
-```js
+```uql
 // To check various system-wide statistical data in the current Ultipa instance
 stats()
 ```

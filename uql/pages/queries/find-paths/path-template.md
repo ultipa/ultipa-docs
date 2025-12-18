@@ -20,7 +20,7 @@ Sample graph: (to be used for the following examples)
 Run below UQLs one by one in an empty graphset to create graph data:
 <p tit="" fold="true"></p>
 
-```js
+```uql
 create().node_schema("country").node_schema("movie").node_schema("director").edge_schema("filmedIn").edge_schema("direct")
 create().node_property(@*, "name")
 insert().into(@country).nodes([{_id:"C001", _uuid:1, name:"France"}, {_id:"C002", _uuid:2, name:"USA"}])
@@ -35,13 +35,13 @@ insert().into(@direct).edges([{_uuid:6, _from_uuid:6, _to_uuid:3}, {_uuid:7, _fr
 Example: Find single-node paths of @movie, carry all properties
  
 
-```js
+```uql
 n({@movie}) as p
 return p{*}
 ```
 <p tit="Result"></p> 
 
-```bash
+```
 Léon
 Avatar
 The Terminator
@@ -50,7 +50,7 @@ The Terminator
 Example: Find 4-step paths of @movie-@country-@movie-@director-@movie, carry all properties
  
 
-```js
+```uql
 n({@movie}).re({@filmedIn}).n({@country})
   .le({@filmedIn}).n({@movie})
   .le({@direct}).n({@director})
@@ -59,7 +59,7 @@ return p{*}
 ```
 <p tit="Result"></p> 
 
-```bash
+```
 Léon ----> France <---- The Terminator <---- James Cameron ----> Avatar
 Léon ----> USA <---- The Terminator <---- James Cameron ----> Avatar
 Léon ----> USA <---- Avatar <---- James Cameron ----> The Terminator
@@ -72,13 +72,13 @@ Avatar ----> USA <---- The Terminator <---- James Cameron ----> Avatar
 Example: Find 1~4-step paths from Léon to Avatar, carry all properties
  
 
-```js
+```uql
 n({@movie.name == "Léon"}).e()[:4].n({@movie.name == "Avatar"}) as p
 return p{*}
 ```
 <p tit="Result"></p> 
 
-```bash
+```
 Léon ----> France <---- The Terminator ----> USA <---- Avatar
 Léon ----> France <---- The Terminator <---- James Cameron ----> Avatar
 Léon ----> USA <---- The Terminator <---- James Cameron ----> Avatar
@@ -90,13 +90,13 @@ Léon ----> USA <---- Avatar
 Example: Find 1~4-step paths from Léon to Avatar and not passing France, carry all properties
  
 
-```js
+```uql
 n({@movie.name == "Léon"}).e().nf({name != "France"})[:4].n({@movie.name == "Avatar"}) as p
 return p{*}
 ```
 <p tit="Result"></p> 
 
-```bash
+```
 Léon ----> USA <---- The Terminator <---- James Cameron ----> Avatar
 Léon ----> USA <---- Avatar
 ```
@@ -106,13 +106,13 @@ Léon ----> USA <---- Avatar
 Example: Find shortest paths from Léon to Avatar within 4 steps, carry all properties
  
 
-```js
+```uql
 n({@movie.name == "Léon"}).e()[*:4].n({@movie.name == "Avatar"}) as p
 return p{*}
 ```
 <p tit="Result"></p> 
 
-```bash
+```
 Léon ----> USA <---- Avatar
 ```
 Analysis: The multi-edge template `e()[*:N]` or `e().nf()[*:N]`  that represent shortest path must be the last edge template in the path.
@@ -122,7 +122,7 @@ Analysis: The multi-edge template `e()[*:N]` or `e().nf()[*:N]`  that represent 
 Example: Find 4-step paths of @movie-@country-@movie-@director-@movie, with the initial-node and terminal-node representing the same node, carry all properties
  
 
-```js
+```uql
 n({@movie} as a).re({@filmedIn}).n({@country})
   .le({@filmedIn}).n({@movie})
   .le({@direct}).n({@director})
@@ -131,7 +131,7 @@ return p{*}
 ```
 <p tit="Result"></p> 
 
-```bash
+```
 The Terminator ----> USA <---- Avatar <---- James Cameron ----> The Terminator
 Avatar ----> USA <---- The Terminator <---- James Cameron ----> Avatar
 ```
@@ -139,7 +139,7 @@ Avatar ----> USA <---- The Terminator <---- James Cameron ----> Avatar
 Example: Find 4-step paths of @movie-@country-@movie-@director-@movie, remove paths with circles, carry all properties
  
 
-```js
+```uql
 n({@movie}).re({@filmedIn}).n({@country})
   .le({@filmedIn}).n({@movie})
   .le({@direct}).n({@director})
@@ -148,7 +148,7 @@ return p{*}
 ```
 <p tit="Result"></p> 
 
-```bash
+```
 Léon ----> France <---- The Terminator <---- James Cameron ----> Avatar
 Léon ----> USA <---- The Terminator <---- James Cameron ----> Avatar
 Léon ----> USA <---- Avatar <---- James Cameron ----> The Terminator
@@ -159,7 +159,7 @@ Léon ----> USA <---- Avatar <---- James Cameron ----> The Terminator
 Example: Find two 4-step paths of @movie-@country-@movie-@director-@movie, carry all properties
  
 
-```js
+```uql
 n({@movie}).re({@filmedIn}).n({@country})
   .le({@filmedIn}).n({@movie})
   .le({@direct}).n({@director})
@@ -168,7 +168,7 @@ return p{*}
 ```
 <p tit="Result"></p> 
 
-```bash
+```
 Léon ----> France <---- The Terminator <---- James Cameron ----> Avatar
 Léon ----> USA <---- The Terminator <---- James Cameron ----> Avatar
 ```
@@ -178,13 +178,13 @@ Léon ----> USA <---- The Terminator <---- James Cameron ----> Avatar
 Example: Find 2-step paths from Luc Besson to Avatar, carry all properties; return `null` if no result
  
 
-```js
+```uql
 optional n({@director.name == "Luc Besson"}).e()[2].n({@movie.name == "Avatar"}) as p
 return p{*}
 ```
 <p tit="Result"></p> 
 
-```bash
+```
 null --null-- null --null-- null
 ```
 Analysis: This query will give no return if not using OPTIONAL.
@@ -195,7 +195,7 @@ Sample graph: (to be used for the following examples)
 Run below UQLs one by one in an empty graphset to create graph data:
 <p tit="" fold="true"></p>
 
-```js
+```uql
 create().node_schema("customer").node_schema("account").edge_schema("has").edge_schema("transfer")
 create().edge_property(@transfer, "time", datetime)
 insert().into(@customer).nodes([{_id:"C001", _uuid:1}])
@@ -209,14 +209,14 @@ insert().into(@transfer).edges([{_uuid:3, _from_uuid:2, _to_uuid:4, time:"2023-0
 Example: Find 0~2-step outward-transferring paths from the accounts held by C001 to other accounts, carry all properties
  
 
-```js
+```uql
 n({_id == "C001"}).re({@has}).n({@account})
   .re({@transfer})[0:2].n({@account}) as p
 return p{*}
 ```
 <p tit="Result"></p> 
 
-```bash
+```
 C001 ----> A001
 C001 ----> A001 ----> A003
 C001 ----> A001 ----> A003 ----> A004
@@ -231,13 +231,13 @@ Analysis: The 0-step in multi-edge template `e()[0:N]` or `e().nf()[0:N]` works 
 Example: Find 2-step outward-transferring paths between accounts, with property <i>time</i> ascending along the path, carry all properties
  
 
-```js
+```uql
 n({@account}).re({@transfer.time > prev_e.time})[2].n({@account}) as p
 return p{*}
 ```
 <p tit="Result"></p> 
 
-```bash
+```
 A001 ----> A003 ----> A004
 ```
 Analysis: Porperty <i>@transfer.time</i> should be loaded to engine (LTE).
