@@ -7,7 +7,7 @@ Acquire data with labels <i>person</i>, <i>company</i> and <i>holding</i> in Neo
 
 ## 1. Generate sample configuration file
 
-<p run-tag="false" graph="" tit= "Terminal" ></p>
+<p tit="Terminal">
 
 ```bash
 ./ultipa-importer --sample
@@ -82,7 +82,7 @@ settings:
 
 ## 3. Execute import
 
-<p run-tag="false" graph="" tit= "Terminal" ></p>
+<p tit="Terminal">
 
 ```bash
 ./ultipa-importer --config ./import.sample.neo4j.yml

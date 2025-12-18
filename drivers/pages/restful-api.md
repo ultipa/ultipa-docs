@@ -19,14 +19,14 @@
 ## Start API Service
 
 1. Show help
-<p run-tag="false" graph="" tit= "Command" ></p>
+<p tit="Command">
 
 ```bash
 ./ultipa_restful_api.exe --help
 ```
 
 2. Show current version
-<p run-tag="false" graph="" tit= "Command" ></p>
+<p tit="Command">
 
 ```bash
 ./ultipa_restful_api.exe --version
@@ -67,14 +67,14 @@ Other Parameters:
 ## Login Ultipa Service
 
 - Request URL
-<p run-tag="false" graph="" tit= "URL" ></p>
+<p tit="URL">
 
 ```bash
 .../login
 ```
 
 - Request Example
-<p run-tag="false" graph="" tit= "JSON" ></p>
+<p tit="JSON">
 
 ```json
 {
@@ -90,7 +90,7 @@ Other Parameters:
 ## Send UQL
 
 - Request URL
-<p run-tag="false" graph="" tit= "URL" ></p>
+<p tit="URL">
 
 ```bash
 .../uql
@@ -104,7 +104,7 @@ Other Parameters:
 | graph			| string		| no 		| The graphset name (default value: the graphset designated when starting the API service)	|
 
 - Request Example
-<p run-tag="false" graph="" tit= "JSON" ></p>
+<p tit="JSON">
 
 ```json
 {
@@ -114,7 +114,7 @@ Other Parameters:
 ```
 
 - Success Response
-<p run-tag="false" graph="" tit= "JSON" ></p>
+<p tit="JSON">
 
 ```json
 {
@@ -144,7 +144,7 @@ Other Parameters:
 ## Send UQL and limit returns
 
 - Request URL
-<p run-tag="false" graph="" tit= "URL" ></p>
+<p tit="URL">
 
 ```bash
 .../uql/stream
@@ -159,7 +159,7 @@ Other Parameters:
 | package_num	| int			| no		| The number of packages to return (default value: 0, query but do not return)		|
 
 - Request Example
-<p run-tag="false" graph="" tit= "JSON" ></p>
+<p tit="JSON">
 
 ```json
 {
@@ -174,7 +174,7 @@ Other Parameters:
 ## Insert Nodes
 
 - Request URL
-<p run-tag="false" graph="" tit= "URL" ></p>
+<p tit="URL">
 
 ```bash
 .../insert/nodes
@@ -190,7 +190,7 @@ Other Parameters:
 | sync			| bool			| no		| If return the status of request (default value: false). A 'true' value will induce batch waiting time	(`-d`, `--duration`) when the data volume is less than batch size (`-b`, `--batch`), which	will affect the insert performance	|
 
 - Request Example
-<p run-tag="false" graph="" tit= "JSON" ></p>
+<p tit="JSON">
 
 ```json
 {
@@ -202,7 +202,7 @@ Other Parameters:
 ```
 
 - Success Response
-<p run-tag="false" graph="" tit= "JSON" ></p>
+<p tit="JSON">
 
 ```json
 {
@@ -213,7 +213,7 @@ Other Parameters:
 ## Insert Edges
 
 - Request URL
-<p run-tag="false" graph="" tit= "URL" ></p>
+<p tit="URL">
 
 ```bash
 .../insert/edges
@@ -229,7 +229,7 @@ Other Parameters:
 | sync			| bool			| no		| If return the status of request (default value: false). A 'true' value will induce batch waiting time	(`-d`, `--duration`) when the data volume is less than batch size (`-b`, `--batch`), which	will affect the insert performance	|
 
 - Request Example
-<p run-tag="false" graph="" tit= "JSON" ></p>
+<p tit="JSON">
 
 ```json
 {
@@ -241,7 +241,7 @@ Other Parameters:
 ```
 
 - Success Response
-<p run-tag="false" graph="" tit= "JSON" ></p>
+<p tit="JSON">
 
 ```json
 {
@@ -254,7 +254,7 @@ Other Parameters:
 Update nodes based on `_id` or `_uuid`.
 
 - Request URL
-<p run-tag="false" graph="" tit= "URL" ></p>
+<p tit="URL">
 
 ```bash
 .../update/nodes
@@ -268,7 +268,7 @@ Update nodes based on `_id` or `_uuid`.
 | graph			| string		| no 		| The graphset name (default value: the graphset designated when starting the API service)	|
 
 - Request Example
-<p run-tag="false" graph="" tit= "JSON" ></p>
+<p tit="JSON">
 
 ```json
 {
@@ -278,7 +278,7 @@ Update nodes based on `_id` or `_uuid`.
 ```
 
 - Success Response
-<p run-tag="false" graph="" tit= "JSON" ></p>
+<p tit="JSON">
 
 ```json
 {
@@ -292,7 +292,7 @@ Update nodes based on `_id` or `_uuid`.
 Update edges based on `_from`&`_to` or `_uuid`.
 
 - Request URL
-<p run-tag="false" graph="" tit= "URL" ></p>
+<p tit="URL">
 
 ```bash
 .../update/edges
@@ -306,7 +306,7 @@ Update edges based on `_from`&`_to` or `_uuid`.
 | graph			| string		| no 		| The graphset name (default value: the graphset designated when starting the API service)	|
 
 - Request Example
-<p run-tag="false" graph="" tit= "JSON" ></p>
+<p tit="JSON">
 
 ```json
 {
@@ -316,7 +316,7 @@ Update edges based on `_from`&`_to` or `_uuid`.
 ```
 
 - Success Response
-<p run-tag="false" graph="" tit= "JSON" ></p>
+<p tit="JSON">
 
 ```json
 {

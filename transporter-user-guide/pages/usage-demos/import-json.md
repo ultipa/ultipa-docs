@@ -7,7 +7,7 @@ Read node files <i>person.json</i> and <i>company.json</i> and edge file <i>hold
 
 ## 1. Generate sample configuration file
 
-<p run-tag="false" graph="" tit= "Terminal" ></p>
+<p tit="Terminal">
 
 ```bash
 ./ultipa-importer --sample
@@ -84,7 +84,7 @@ settings:
 
 ## 3. Execute import
 
-<p run-tag="false" graph="" tit= "Terminal" ></p>
+<p tit="Terminal">
 
 ```bash
 ./ultipa-importer --config ./import.sample.json.yml
