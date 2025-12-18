@@ -16,9 +16,7 @@ For those who don't have an Ultipa server environment:
 
 Query for nodes is comparable to table query in relational databases. Try to understand below UQL:
 
-
-
-```js
+```uql
 find().nodes() as myFirstQuery
 return myFirstQuery{*} limit 10
 ```
@@ -36,8 +34,7 @@ The target of the above UQL is 'find 10 different nodes and return all their pro
 
 To query nodes of a specific schema, <i>merchant</i> for example, describe in `nodes()` as below:
 
-
-```js
+```uql
 find().nodes({@merchant}) as mySecondQuery
 return mySecondQuery{*} limit 10
 ```
@@ -56,8 +53,7 @@ In the current graph model, edges of `@transfer` exist from nodes of `@customer`
 
 Query for edges is quite similar to query for nodes, but using `edges()` to hold the filtering condition of edges:
 
-
-```js
+```uql
 find().edges({_from == "60017791850"}) as payment
 return payment{*} limit 10
 ```
@@ -66,8 +62,7 @@ return payment{*} limit 10
 
 The <i>payment</i> are 10 different edges from customer Chen** (ID: 60017791850) to other nodes, the `_to` of <i>payment</i> are the IDs of merchants who receive those payments. Combine this edge query with a node query that calls the IDs of these merchants:
 
-
-```js
+```uql
 find().edges({_from == "60017791850"}) as payment
 find().nodes({_id == payment._to}) as merchant
 return merchant{*} limit 10
@@ -85,9 +80,7 @@ This is a typical scenario of multi-graph, in which more than one edge exist bet
 
 ### Spread
 
-
-
-```js
+```uql
 spread().src({_id == "60017791850"}).depth(1) as transaction
 return transaction{*} limit 10
 ```
@@ -109,9 +102,7 @@ To acquire an exact number of distinct end-node merchants through the above `spr
 
 ### K-Hop
 
-
-
-```js
+```uql
 khop().src({_id == "60017791850"}).depth(1) as merchant
 return merchant{*} limit 10
 ```
@@ -133,9 +124,7 @@ Template query is an advanced type of graph query by accurately describing each 
 
 ### Chains
 
-
-
-```js
+```uql
 n({_id == "60017791850"}).e().n() as transaction
 return transaction{*} limit 10
 ```
@@ -150,9 +139,7 @@ Now consider a path that starts from Chen** and reaches a merchant via 3 edges, 
 
 <div align=center drawio-diagram='2594' drawio-name='draw_c7090d0b4fdb40a0a3bf3ddc266d6b14.jpg'><img src="https://img.ultipa.cn/draw/draw_c7090d0b4fdb40a0a3bf3ddc266d6b14.jpg?v='1657988519667'"/></div>
 
-
-
-```js
+```uql
 n({_id == "60017791850"}).e({tran_amount > 70000})[3].n() as transChain
 return transChain{*} limit 10
 ```
@@ -172,9 +159,7 @@ If the shopping behaviors of Chen**, Zheng**, Qian** and Chu**, those who all pu
 
 Edges in a path never repeat, but nodes do sometimes, which induces circles into the path.
 
-
-
-```js
+```uql
 n({@customer} as start).e({tran_date > "2020-1-1 0:0:0"})[4].n(start) as transRing
 return transRing{*} limit 10
 ```
@@ -193,9 +178,7 @@ The list view of the query result:
 
 ### Shortest Paths
 
-
-
-```js
+```uql
 n({_id == "60017791850"}).e()[:5].n(115) as transRange
 return transRange{*} limit 1
 ```
@@ -211,9 +194,7 @@ The target of the above UQL is 'find a path from Chen** to the node whose UUID i
 
 A minor revision made to the path length might completely change the query target of the UQL:
 
-
-
-```js
+``uql
 n({_id == "60017791850"}).e()[*:5].n(115) as transShortest
 return transShortest{*} limit 1
 ```
@@ -234,8 +215,7 @@ UQL can conduct a variety of calculations after finding nodes, edges and paths, 
 
 Revise the first example demonstrated in section <i>Chains</i> to find those 8 distinct merchants out of 10 in total:
 
-
-```js
+```uql
 n({_id == "60017791850"}).e().n(as payee) limit 10
 with distinct payee as payeeDedup
 return payeeDedup{*}
@@ -251,8 +231,7 @@ return payeeDedup{*}
 
 Revise the previous example to calculate the number of distinct merchants:
 
-
-```js
+```uql
 n({_id == "60017791850"}).e().n(as payee) limit 10
 with count(distinct payee) as cardinality
 return cardinality
@@ -266,8 +245,7 @@ return cardinality
 
 Revise the first example demonstrated in section <i>Edge Query</i> to return those 10 edges in descending order of their transaction amount:
 
-
-```js
+```uql
 find().edges({_from == "60017791850"}) as payment limit 10
 order by payment.tran_amount desc
 return payment{*}
@@ -282,8 +260,7 @@ return payment{*}
 
 Revise the second example demonstrated in section <i>Chains</i> to group those 3-step paths by their 3rd node, and count the number of paths in each group:
 
-
-```js
+```uql
 n({_id == "60017791850"}).e({tran_amount > 70000})[2].n(as third).e({tran_amount > 70000}).n() limit 10
 group by third
 return table(third.cust_name, count(third))

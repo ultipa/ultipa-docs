@@ -46,7 +46,7 @@ A path starts from and ends with node, contains at least one edge. It represents
 <i><center>Chart3: Describing nodes</center></i>
 
 There are a bunch of parameters that can describe node(s) in UQL. Take parameter `n()` as an example:
-```js
+```uql
 n()									// any node in the graph
 n({@Student})						// nodes of schema 'Student'
 n({name == "Jason"})				// nodes whose property 'name' is 'Jason'
@@ -76,7 +76,7 @@ All parameters that can describe node(s) in UQL:
 <i><center>Chart4: Describing edges</center></i>
 
 Take `e()` as an example to see how edges can be described:
-```js
+```uql
 e()									// any edge in the graph
 e({@workAs})						// edges of schema 'workAs'
 e({since == 2012})					// edges whose property 'since' is '2012'
@@ -105,7 +105,7 @@ All parameters that can describe edge(s) in UQL:
 <i><center>Chart5: Describing paths</center></i>
 
 Paths described using `n()` and `e()` are template:
-```js
+```uql
 // any 1-hop path in the graph
 n().e().n()
 
