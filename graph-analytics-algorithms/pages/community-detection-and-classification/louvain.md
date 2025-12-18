@@ -133,7 +133,7 @@ algo(louvain).params({
 Statistics: community_count = 4, modularity = 0.464280<br>
 Results: Files <i>communityID</i>, <i>ids</i>, <i>num</i>
 
-<p run-tag="false" graph="" tit="File: communityID" ></p>
+<p tit="File: communityID"></p>
 
 ```js
 M,2
@@ -152,7 +152,7 @@ A,12
 B,13
 ```
 
-<p run-tag="false" graph="" tit="File: ids" ></p>
+<p tit="File: ids"></p>
 
 ```js
 8,J,I,H,F,
@@ -161,7 +161,7 @@ B,13
 13,G,B,
 ```
 
-<p run-tag="false" graph="" tit="File: num" ></p>
+<p tit="File: num"></p>
 
 ```js
 8,4

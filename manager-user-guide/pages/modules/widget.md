@@ -49,7 +49,7 @@ In the Script section, initial steps should be:
 
 #### 1. Render with Custom Layout
 
-<p run-tag="false" tit="Script" fold="true"></p>
+<p tit="Script" fold="true"></p>
 
 ```js
 import "./index.less"
@@ -82,7 +82,7 @@ Results Preview:
 
 In most cases, when aiming to send an UQL and receive the server response, it's essential to utilize an instance of the `Client` class and render the query results using the default Ultipa layout.
 
-<p run-tag="false" tit="Script" fold="true"></p>
+<p tit="Script" fold="true"></p>
 
 ```js
 import "./index.less"
@@ -121,7 +121,7 @@ Results Preview:
 
 The following is a list of dependencies loaded with the JavaScript editor:
 
-<p run-tag="false" tit="Script" fold="true"></p>
+<p tit="Script" fold="true"></p>
 
 ```js
 dependencies:{
@@ -149,7 +149,7 @@ dependencies:{
 
 To load some of them:
 
-<p run-tag="false" tit="Script"></p>
+<p tit="Script"></p>
 
 ```js
 import * as echarts from 'echarts'
@@ -158,7 +158,7 @@ import axios from 'axios'
 
 If the library or framework needed is not included in the list, load the external JavaScript file asynchronously during initialization:
 
-<p run-tag="false" tit="Script"></p>
+<p tit="Script"></p>
 
 ```js
 ...
@@ -215,7 +215,7 @@ Here are the data types associated with each (variable) type:
 
 You can pass `formData` into the `execute()` function and retrieve the value of a variable using `formData?.<variable_name>`:
 
-<p run-tag="false" tit="Script"></p>
+<p tit="Script"></p>
 
 ```js
 ...
