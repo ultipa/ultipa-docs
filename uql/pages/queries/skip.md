@@ -34,7 +34,7 @@ insert().into(@default).edges([{_uuid:1, _from_uuid:1, _to_uuid:6}, {_uuid:2, _f
 ## Common Usage
 
 Example: Find nodes of @student, discard two youngest students and return <i>name</i>
-<p run-tag="true" graph="uql_manual_graph_8"></p> 
+ 
 
 ```js
 find().nodes({@student}) as n

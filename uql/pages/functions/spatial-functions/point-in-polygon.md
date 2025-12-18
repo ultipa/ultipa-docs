@@ -17,7 +17,7 @@ Returns：
 
 
 Exalmple: Direct calculate
-<p run-tag="true" graph="uql_manual_graph_7"></p>
+
  
 ```js
 uncollect [[1.5,0.5],[2,2]] as point
@@ -34,7 +34,7 @@ return table(toString(point), toString(polygon), pointInPolygon(point, polygon))
 ```
 
 Exalmple: Multiply and calculate
-<p run-tag="true" graph="uql_manual_graph_7"></p>
+
  
 ```js
 uncollect [[1.5,0.5],[2,2]] as point

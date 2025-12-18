@@ -27,7 +27,7 @@ insert().into(@default).nodes([{name:"Jason", try1:84}, {name:"Alice", try1:55, 
 ## Common Usage
 
 Example: Return the score of the last re-test that each student takes, knowing that each student has three chances, and retesting is allowed only if the previous one failed. Return `null` if a student does not give any try.
-<p run-tag="true" graph="uql_manual_graph_9"></p> 
+ 
 
 ```js
 find().nodes() as n

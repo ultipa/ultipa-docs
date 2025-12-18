@@ -11,7 +11,7 @@ Returns：
 ## Common Usage
 
 Example: Calculate the radian of tangent value 1
-<p run-tag="true" graph="uql_manual_graph_1"></p> 
+ 
 
 ```js
 return atan(1) * 180 / pi()
@@ -23,7 +23,7 @@ return atan(1) * 180 / pi()
 ```
 
 Example: Calculate the radian of each row (tangent value) of an alias
-<p run-tag="true" graph="uql_manual_graph_1"></p> 
+ 
 
 ```js
 uncollect [1, -0.5, 0] as a

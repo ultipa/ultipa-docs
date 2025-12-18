@@ -12,7 +12,7 @@ Returns：
 ## Common Usage
 
 Example: Direct calculate
-<p run-tag="true" graph="uql_manual_graph_1"></p> 
+ 
 
 ```js
 uncollect [-3.75, 7.55] as a
@@ -29,7 +29,7 @@ return table(a, b, round(a, b))
 ```
 
 Example: Multiply and calculate
-<p run-tag="true" graph="uql_manual_graph_1"></p> 
+ 
 
 ```js
 uncollect [-3.75, 7.55] as a

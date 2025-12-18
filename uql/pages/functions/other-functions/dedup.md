@@ -25,7 +25,7 @@ insert().into(@student).nodes([{_id:"S001",_uuid:3,age:27,email:"test@yeah.net"}
 ## Common Usage
 
 Example: Calculate the deduplicated <i>age</i> of all nodes in the graph
-<p run-tag="true" graph="uql_manual_graph_2"></p> 
+ 
 
 ```js
 find().nodes() as n

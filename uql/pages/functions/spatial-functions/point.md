@@ -13,7 +13,7 @@ Returns：
 ## Common Usage
 
 Example: Convert Beijing (39.9° N 116.3° E) to geographical coordinates
-<p run-tag="true" graph="uql_manual_graph_7"></p>
+
  
 ```js
 return point({latitude:39.9, longitude:116.3})
@@ -25,7 +25,7 @@ POINT(39.900000 116.300000)
 ```
 
 Example: Convert each row of an alias into geographical coordinates
-<p run-tag="true" graph="uql_manual_graph_7"></p>
+
  
 ```js
 uncollect [{latitude:39.9, longitude:116.3},{latitude:31.2, longitude:121.5}] as a

@@ -6,7 +6,7 @@
 ## Constant
 
 Example: Judge whether "abc" is in the open interval ["abc", "123"] 
-<p run-tag="true" graph="uql_manual_graph_2"></p>
+
 
 ```js
 return "abc" <> ["abc", "123"]
@@ -20,7 +20,7 @@ return "abc" <> ["abc", "123"]
 ## Function
 
 Example: Judge whether PI is in the open interval [3.14, 3.15] 
-<p run-tag="true" graph="uql_manual_graph_2"></p>
+
 
 ```js
 with [3.14, 3.15] as a
@@ -35,7 +35,7 @@ return pi() <> [a[0], a[1]]
 ## Alias
 
 Example: Judge each row of an alias whether it is in the open interval [2, 4]
-<p run-tag="true" graph="uql_manual_graph_2"></p> 
+ 
 
 ```js
 uncollect [1,2,3,2,2] as a
@@ -67,7 +67,7 @@ insert().into(@student).nodes([{_id:"S001",_uuid:3,age:27,email:"test@yeah.net"}
 ## Property
 
 Example: Find nodes whose age is in the open interval [25, 35]
-<p run-tag="true" graph="uql_manual_graph_2"></p> 
+ 
 
 ```js
 find().nodes({age <> [25, 35]}) as n
@@ -88,7 +88,7 @@ return n{*}
 ```
 
 Example: Find nodes of @professor, whose age is in the open interval [25, 35]
-<p run-tag="true" graph="uql_manual_graph_2"></p> 
+ 
 
 ```js
 find().nodes({@professor.age <> [25, 35]}) as n

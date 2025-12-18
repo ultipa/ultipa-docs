@@ -7,7 +7,7 @@
 ## Constant
 
 Example: Judge whether 2 does not belong to [1,2,3]
-<p run-tag="true" graph="uql_manual_graph_2"></p> 
+ 
 
 ```js
 return 2 nin [1,2,3]
@@ -21,7 +21,7 @@ return 2 nin [1,2,3]
 ## Function
 
 Example: Judge whether 2 does not belong to the intersection of [1,2,3] and [3,2,5]
-<p run-tag="true" graph="uql_manual_graph_2"></p>
+
 
 ```js
 return 2 nin intersection([1,2,3], [3,2,5])
@@ -35,7 +35,7 @@ return 2 nin intersection([1,2,3], [3,2,5])
 ## Alias
 
 Example: Judge each row of an alias whether it does not belong to [0,1,3]
-<p run-tag="true" graph="uql_manual_graph_2"></p> 
+ 
 
 ```js
 uncollect [1,2,3,2,2] as a
@@ -67,7 +67,7 @@ insert().into(@student).nodes([{_id:"S001",_uuid:3,age:27,email:"test@yeah.net"}
 ## Property
 
 Example: Find nodes whose age does not belong to [20,25,30,35]
-<p run-tag="true" graph="uql_manual_graph_2"></p> 
+ 
 
 ```js
 find().nodes({age nin [20,25,30,35]}) as n
@@ -89,7 +89,7 @@ return n{*}
 ```
 
 Example: Find nodes of @professor, whose age does not belong to [20,25,30,35]
-<p run-tag="true" graph="uql_manual_graph_2"></p> 
+ 
 
 ```js
 find().nodes({@professor.age nin [20,25,30,35]}) as n

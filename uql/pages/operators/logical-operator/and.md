@@ -26,7 +26,7 @@ insert().into(@student).nodes([{_id:"S001",_uuid:3,age:27,email:"test@yeah.net"}
 ## Common Usage
 
 Example: Find nodes of @professor, whose age is greater than 27
-<p run-tag="true" graph="uql_manual_graph_2"></p> 
+ 
 
 ```js
 find().nodes({@professor && age > 27}) as n

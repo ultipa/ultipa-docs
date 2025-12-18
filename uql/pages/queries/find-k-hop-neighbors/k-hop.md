@@ -50,7 +50,7 @@ insert().into(@default).edges([{_uuid:1, _from_uuid:1, _to_uuid:3, weight:1}, {_
 
 Find the 3-hop neighbors of node D.
 
-<p run-tag="true" graph="uql_manual_graph_4"></p>
+
  
 ```js
 khop().src({_id == "D"}).depth(3) as n
@@ -65,7 +65,7 @@ Result:
 
 Find 1-hop to 3-hop neighbors of node D.
 
-<p run-tag="true" graph="uql_manual_graph_4"></p>
+
  
 ```js
 khop().src({_id == "D"}).depth(:3) as n
@@ -86,7 +86,7 @@ Result:
 
 Find the 1- to 2-hop neighbors of node D. Return node D at the same time.
 
-<p run-tag="true" graph="uql_manual_graph_4"></p>
+
  
 ```js
 khop().src({_id == "D"}).depth(0:2) as n
@@ -107,7 +107,7 @@ Result:
 
 Find the 3-hop neighbors of node D while excluding node E.
 
-<p run-tag="true" graph="uql_manual_graph_4"></p>
+
  
 ```js
 khop().src({_id == "D"}).depth(3).node_filter({_id != "E"}) as n
@@ -127,7 +127,7 @@ When node E (and its adjacent edges) is excluded, node B becomes the 3-hop neigh
 
 Find the 3-hop neighbors of node D while excluding edge 5.
 
-<p run-tag="true" graph="uql_manual_graph_4"></p>
+
  
 ```js
 khop().src({_id == "D"}).depth(3).edge_filter({_uuid != 5}) as n
@@ -148,7 +148,7 @@ When edge 5 is excluded, node E and B become the 3-hop neighbor of node D.
 
 Find the 1- to 2-hop neighbors of node D while ensuring that all edges that pass through point to the right.
 
-<p run-tag="true" graph="uql_manual_graph_4"></p>
+
  
 ```js
 khop().src({_id == "D"}).depth(:2).direction(right) as n
@@ -165,7 +165,7 @@ Result:
 
 Find the 1-hop neighbors of nodes D and F.
 
-<p run-tag="true" graph="uql_manual_graph_4"></p>
+
  
 ```js
 find().nodes({_id in ["D", "F"]}) as start
@@ -184,7 +184,7 @@ Result:
 
 Find three 1- to 3-hop neighbors of node D.
 
-<p run-tag="true" graph="uql_manual_graph_4"></p>
+
  
 ```js
 khop().src({_id == "D"}).depth(:3).limit(3) as n
@@ -205,7 +205,7 @@ The k-hop clause returns neighbor nodes in order from nearest to farthest, start
 
 Find the 2-hop neighbors of nodes A and D while ensuring that all edges that pass through point to the right. Return null if no neighbors are found.
 
-<p run-tag="true" graph="uql_manual_graph_4"></p>
+
  
 ```js
 find().nodes({_id in ["A", "D"]}) as start

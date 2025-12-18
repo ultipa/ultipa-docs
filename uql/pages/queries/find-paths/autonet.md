@@ -53,7 +53,7 @@ insert().into(@default).edges([{_uuid:1, _from_uuid:1, _to_uuid:3, weight:1}, {_
 ## Inter-Group: Filter Depth
 
 Example: Find 1~3-step paths from [A,B] to [D,E], carry all properties
-<p run-tag="true" graph="uql_manual_graph_4"></p> 
+ 
 
 ```js
 autonet().src({_id in ["A","B"]}).dest({_id in ["D","E"]}).depth(:3) as p
@@ -78,7 +78,7 @@ B <--2-- E
 ## Inter-Group: Non-weighted Shortest Path
 
 Example: Find shortest paths from [A,B] to [D,E] within 3 steps, carry all properties
-<p run-tag="true" graph="uql_manual_graph_4"></p> 
+ 
 
 ```js
 autonet().src({_id in ["A","B"]}).dest({_id in ["D","E"]}).depth(3)
@@ -98,7 +98,7 @@ B <--2-- E
 ## Inter-Group: limit()
 
 Example: Find 1~3-step paths from [A,B] to [D,E], return 1 path for each pair of nodes, carry all properties
-<p run-tag="true" graph="uql_manual_graph_4"></p> 
+ 
 
 ```js
 autonet().src({_id in ["A","B"]}).dest({_id in ["D","E"]}).depth(:3).limit(1) as p
@@ -116,7 +116,7 @@ B <--2-- E
 ## Intra-Group: Filter Depth
 
 Example: Find 1~3-step paths among [A,B,C], carry all properties
-<p run-tag="true" graph="uql_manual_graph_4"></p> 
+ 
 
 ```js
 autonet().src({_id in ["A","B","C"]}).depth(:3) as p
@@ -137,7 +137,7 @@ B <--2-- E <--3-- A --1--> C
 ## Intra-Group: Non-weighted Shortest Path
 
 Example: Find shortest paths among [A,B,C] within 3 steps, carry all properties
-<p run-tag="true" graph="uql_manual_graph_4"></p> 
+ 
 
 ```js
 autonet().src({_id in ["A","B","C"]}).depth(3)
@@ -155,7 +155,7 @@ B --6--> A --1--> C
 ## Intra-Group: limit()
 
 Example: Find 1~3-step paths among [A,B,C], return 1 path for each pair of nodes, carry all properties
-<p run-tag="true" graph="uql_manual_graph_4"></p> 
+ 
 
 ```js
 autonet().src({_id in ["A","B","C"]}).depth(:3).limit(1) as p

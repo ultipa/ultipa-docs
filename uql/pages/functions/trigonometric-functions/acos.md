@@ -11,7 +11,7 @@ Returns：
 ## Common Usage
 
 Example: Calculate the radian of cosine value 0.5
-<p run-tag="true" graph="uql_manual_graph_1"></p> 
+ 
 
 ```js
 return acos(0.5) * 180 / pi()
@@ -23,7 +23,7 @@ return acos(0.5) * 180 / pi()
 ```
 
 Example: Calculate the radian of each row (cosine value) of an alias
-<p run-tag="true" graph="uql_manual_graph_1"></p> 
+ 
 
 ```js
 uncollect [1, -0.5, 0] as a

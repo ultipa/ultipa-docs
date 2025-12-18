@@ -34,7 +34,7 @@ insert().into(@default).edges([{_uuid:1, _from_uuid:1, _to_uuid:3, weight:1}, {_
 ## Filter Depth
 
 Find 1~2-Hop edges of node D, return as paths and carry all properties
-<p run-tag="true" graph="uql_manual_graph_4"></p>
+
  
 ```js
 spread().src({_id == "D"}).depth(2) as e
@@ -55,7 +55,7 @@ Analysis: Both the start node and end node of edge 6 are from 2-Hop of node D, e
 ## Filter Neighbor Nodes
 
 Example: Find 1~2-Hop edges of node D, whose shortest path does not pass node E, return as paths and carry all properties
-<p run-tag="true" graph="uql_manual_graph_4"></p>
+
  
 ```js
 spread().src({_id == "D"}).depth(2)
@@ -73,7 +73,7 @@ Analysis: When the shortest path are not allowed to pass node E, it is equivalen
 ## Filter Edges
 
 Example: Find 1~2-Hop edges of node D, whose shortest path does not pass edge 5, return as paths and carry all properties
-<p run-tag="true" graph="uql_manual_graph_4"></p>
+
  
 ```js
 spread().src({_id == "D"}).depth(2)
@@ -91,7 +91,7 @@ Analysis: When the shortest path are not allowed to pass edge 5, it is equivalen
 ## Filter Edge Direction
 
 Example: Find 1~2-Hop edges of node D, with all edges right-pointing, return as paths and carry all properties
-<p run-tag="true" graph="uql_manual_graph_4"></p>
+
  
 ```js
 spread().src({_id == "D"}).depth(2)
@@ -107,7 +107,7 @@ When all edges in the shortest path are right-pointing (outbound), node D has on
 
 
 Example: Find 1~2-Hop edges of node D, with all edges left-pointing, return as paths and carry all properties
-<p run-tag="true" graph="uql_manual_graph_4"></p>
+
  
 ```js
 spread().src({_id == "D"}).depth(2)
@@ -125,7 +125,7 @@ Analysis: When all edges in the shortest path are left-pointing (inbound), node 
 ## Limit Result of Sub-Query
 
 Example: Find three 1~3-Hop edges of node D, return as paths and carry all properties
-<p run-tag="true" graph="uql_manual_graph_4"></p>
+
  
 ```js
 spread().src({_id == "D"}).depth(3).limit(3) as e

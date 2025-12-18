@@ -12,7 +12,7 @@ Returns：
 ## Common Usage
 
 Exalmple: Direct calculate
-<p run-tag="true" graph="uql_manual_graph_1"></p>
+
 
 ```js
 uncollect [["a","b"],["c","d"]] as a
@@ -29,7 +29,7 @@ return append(a, b)
 ```
 
 Exalmple: Multiply and calculate
-<p run-tag="true" graph="uql_manual_graph_1"></p>
+
 
 ```js
 uncollect [["a","b"],["c","d"]] as a

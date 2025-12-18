@@ -49,7 +49,7 @@ insert().into(@direct).edges([{_uuid:6, _from_uuid:6, _to_uuid:3}, {_uuid:7, _fr
 ## Common Usage
 
 Example: Not using GROUP BY, find how many movies are filmed in each country
-<p run-tag="true" graph="uql_manual_graph_5"></p> 
+ 
 
 ```js
 find().nodes({@country}) as nodes

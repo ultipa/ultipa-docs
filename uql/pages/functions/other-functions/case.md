@@ -36,7 +36,7 @@ end
 ## Common Usage
 
 Example: Calculate the day of week of the planned payday (15th) of each month in 2023
-<p run-tag="true" graph="uql_manual_graph_1"></p> 
+ 
 
 ```js
 uncollect ["2023-1-15","2023-2-15","2023-3-15","2023-4-15","2023-5-15","2023-6-15","2023-7-15","2023-8-15","2023-9-15","2023-10-15","2023-11-15","2023-12-15"] as payday
@@ -68,7 +68,7 @@ Friday
 ```
 
 Example: Calculate the actual payday of each month in 2023, knowing that a planned payday in the weekend should be postponded to the following Monday 
-<p run-tag="true" graph="uql_manual_graph_1"></p> 
+ 
 
 ```js
 uncollect ["2023-1-15","2023-2-15","2023-3-15","2023-4-15","2023-5-15","2023-6-15","2023-7-15","2023-8-15","2023-9-15","2023-10-15","2023-11-15","2023-12-15"] as payday

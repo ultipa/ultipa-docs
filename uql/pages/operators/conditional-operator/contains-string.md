@@ -8,7 +8,7 @@ Judges whether a string contains another string.
 ## Constant
 
 Example: Judge whether 'Graph Database' contains 'graph'
-<p run-tag="true" graph="uql_manual_graph_2"></p>
+
 
 ```js
 return "Graph Database@d134" contains "graph"
@@ -22,7 +22,7 @@ return "Graph Database@d134" contains "graph"
 ## Function
 
 Example: Convert 'Graph Database' to lowercase and judge whether it contains 'graph'
-<p run-tag="true" graph="uql_manual_graph_2"></p>
+
 
 ```js
 return lower("Graph Database@d134") contains "graph"
@@ -36,7 +36,7 @@ return lower("Graph Database@d134") contains "graph"
 ## Alias
 
 Example: Judge each row of an alias whether it contains 'graph'
-<p run-tag="true" graph="uql_manual_graph_2"></p> 
+ 
 
 ```js
 uncollect ["Graph", "grAph", "graph"] as a
@@ -66,7 +66,7 @@ insert().into(@student).nodes([{_id:"S001",_uuid:3,age:27,email:"test@yeah.net"}
 ## Property
 
 Example: Find nodes whose email contains 'ultipa'
-<p run-tag="true" graph="uql_manual_graph_2"></p> 
+ 
 
 ```js
 find().nodes({email contains "ultipa"}) as n
@@ -82,7 +82,7 @@ return n{*}
 ```
 
 Example: Find nodes of @professor, whose email contains 'ultipa'
-<p run-tag="true" graph="uql_manual_graph_2"></p> 
+ 
 
 ```js
 find().nodes({@professor.email contains "ultipa"}) as n

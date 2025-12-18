@@ -41,7 +41,7 @@ insert().into(@wishlist).edges([{_uuid:3, _from_uuid:2, _to_uuid:4}, {_uuid:4, _
 ## Functional Operation
 
 Example: Find all the nodes of @account that are youngest, return their <i>name</i>
-<p run-tag="true" graph="uql_manual_graph_10"></p> 
+ 
 
 ```js
 find().nodes({@account}) as a
@@ -59,7 +59,7 @@ Analysis: The method of sorting all accounts into ascending <i>age</i> and retur
 ## Cartesian Product
 
 Example: Pair nodes of @account and @movie, find 1-step paths @account-@movie, return `null` for those pairs that do not have any path
-<p run-tag="true" graph="uql_manual_graph_10"></p> 
+ 
 
 ```js
 find().nodes({@account}) as a

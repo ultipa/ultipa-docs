@@ -7,7 +7,7 @@
 ## Constant
 
 Example: judge if String "adfAWa" is composed of uncapitalized letters
-<p run-tag="true" graph="uql_manual_graph_2"></p>
+
 
 ```js
 return "Ultipa" =~ "^[a-z]+$"
@@ -21,7 +21,7 @@ return "Ultipa" =~ "^[a-z]+$"
 ## Function
 
 Example: Convert 'Graph Database' to lowercase and judge whether it is composed of uncapitalized letters
-<p run-tag="true" graph="uql_manual_graph_2"></p>
+
 
 ```js
 return lower("Ultipa.com") =~ "^[a-z]+$"
@@ -35,7 +35,7 @@ return lower("Ultipa.com") =~ "^[a-z]+$"
 ## Alias
 
 Example: Judge each row of an alias whether it is composed of uncapitalized letters
-<p run-tag="true" graph="uql_manual_graph_2"></p> 
+ 
 
 ```js
 uncollect ["Ultipa.com", "grAph", "graph"] as a
@@ -65,7 +65,7 @@ insert().into(@student).nodes([{_id:"S001",_uuid:3,age:27,email:"test@yeah.net"}
 ## Property
 
 Example: Find nodes whose email is in format xxx@xxx.com or xxx@xxx.cn 
-<p run-tag="true" graph="uql_manual_graph_2"></p>
+
 
 ```js
 find().nodes({email =~ "^[a-zA-Z0-9_.-]+@[a-zA-Z0-9]+\.(com|cn)$"}) as n
@@ -87,7 +87,7 @@ return n{*}
 ```
 
 Example: Find nodes of @professor, whose email is in format xxx@xxx.com or xxx@xxx.cn 
-<p run-tag="true" graph="uql_manual_graph_2"></p>
+
 
 ```js
 find().nodes({@professor.email =~ "^[a-zA-Z0-9_.-]+@[a-zA-Z0-9]+\.(com|cn)$"}) as n

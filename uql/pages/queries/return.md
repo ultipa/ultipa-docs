@@ -41,7 +41,7 @@ insert().into(@wishlist).edges([{_uuid:3, _from_uuid:2, _to_uuid:4}, {_uuid:4, _
 ## Return NODE
 
 Example: Carry all properties
-<p run-tag="true" graph="uql_manual_graph_10"></p> 
+ 
 
 ```js
 find().nodes({@account}) as n
@@ -59,7 +59,7 @@ return n{*}
 ```
 
 Example: Carry some custom properties
-<p run-tag="true" graph="uql_manual_graph_10"></p> 
+ 
 
 ```js
 find().nodes() as n
@@ -84,7 +84,7 @@ return n{name, year}
 Analysis: NODE only carries the properties that it has.
 
 Example: Carry only system properties
-<p run-tag="true" graph="uql_manual_graph_10"></p> 
+ 
 
 ```js
 find().nodes({@movie}) as n
@@ -104,7 +104,7 @@ return n
 ## Return EDGE
 
 Example: Carry all properties
-<p run-tag="true" graph="uql_manual_graph_10"></p> 
+ 
 
 ```js
 find().edges({@rate}) as e
@@ -121,7 +121,7 @@ return e{*}
 ```
 
 Example: Carry only system properties
-<p run-tag="true" graph="uql_manual_graph_10"></p> 
+ 
 
 ```js
 find().edges() as e
@@ -146,7 +146,7 @@ return e
 ## Return PATH 
 
 Example: Carry some custom properties
-<p run-tag="true" graph="uql_manual_graph_10"></p> 
+ 
 
 ```js
 n({@account}).e({@rate}).n({@movie}) as p
@@ -180,7 +180,7 @@ return p{name}{*}
 ```
 
 Example: Carry only system properties
-<p run-tag="true" graph="uql_manual_graph_10"></p> 
+ 
 
 ```js
 n({@movie}).e({@rate}).n({@account}).e({@wishlist}).n({@movie}) as p
@@ -208,7 +208,7 @@ return p
 ## Return TABLE
 
 Example: Find 1-step path @account-@movie, assemble the <i>name</i> of accounts and movies into a table
-<p run-tag="true" graph="uql_manual_graph_10"></p> 
+ 
 
 ```js
 n({@account} as a).e({@wishlist}).n({@movie} as b)
@@ -226,7 +226,7 @@ return table(a.name, b.name)
 ## Return ATTR - Atomic
 
 Example: Return custom properties of nodes independently
-<p run-tag="true" graph="uql_manual_graph_10"></p> 
+ 
 
 ```js
 find().nodes() as n
@@ -265,7 +265,7 @@ Analysis: A `null` will be returned when calling a property that is not existent
 ## Return ATTR - List
 
 Example: Assemble the <i>name</i> of 1-Hop neighbors of each movie into a list
-<p run-tag="true" graph="uql_manual_graph_10"></p> 
+ 
 
 ```js
 khop().n({@movie} as a).e().n() as b

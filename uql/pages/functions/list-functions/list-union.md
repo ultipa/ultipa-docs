@@ -13,7 +13,7 @@ Returns：
 ## Common Usage
 
 Exalmple: Direct calculate
-<p run-tag="true" graph="uql_manual_graph_8"></p>
+
 
 ```js
 uncollect [[1,2,2],[2,4,5]] as a
@@ -30,7 +30,7 @@ return table(toString(a), toString(b), toString(listUnion(a, b)))
 ```
 
 Exalmple: Multiply and calculate
-<p run-tag="true" graph="uql_manual_graph_8"></p>
+
 
 ```js
 uncollect [[1,2,2],[2,4,5]] as a
@@ -64,7 +64,7 @@ insert().into(@default).edges([{_uuid:1, _from_uuid:1, _to_uuid:6}, {_uuid:2, _f
 ```
 
 Example: Find the students that select French or Math
-<p run-tag="true" graph="uql_manual_graph_8"></p>
+
 
 ```js
 khop().src({name == "French"}).depth(1) as n1

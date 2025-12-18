@@ -24,7 +24,7 @@ insert().into(@default).nodes([{_id:"L001", _uuid:1, name:"New York", lat_long:p
 ## Common Usage
 
 Exalmple: Direct calculate, return in kilometers
-<p run-tag="true" graph="uql_manual_graph_7"></p>
+
  
 ```js
 find().nodes({name in ["New York", "Paris"]}) as a
@@ -41,7 +41,7 @@ return table(a.name, b.name, distance(a.lat_long, b.lat_long)/1000)
 ```
 
 Exalmple: Multiply and calculate, return in kilometers
-<p run-tag="true" graph="uql_manual_graph_7"></p>
+
  
 ```js
 find().nodes({name in ["New York", "Paris"]}) as a

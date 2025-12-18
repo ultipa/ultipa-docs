@@ -21,7 +21,7 @@ reduce(<result> = <initial_value>, <element> in <list> | <expression>)
 ## Common Usage
 
 Example: Calculate the sum of all numbers in [1,2,3]
-<p run-tag="true" graph="uql_manual_graph_3"></p>
+
 
 ```js
 with [1,2,3] as list
@@ -48,7 +48,7 @@ insert().into(@hold).edges([{_uuid:1, _from_uuid:3, _to_uuid:1, portion:0.3}, {_
 ```
 
 Example: Calculate the share of each UBO of F001
-<p run-tag="true" graph="uql_manual_graph_3"></p>
+
 
 ```js
 n({_id == "F001"}).le()[:5].n({@human} as UBO) as p
