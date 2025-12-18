@@ -11,7 +11,7 @@ Graph model in Ultipa Graph means the <u>schemas and properties</u> of a graphse
 
 ### How to Run UQL
 
-```js
+```uql
 create().graph("retail_test")
 ```
 
@@ -33,7 +33,7 @@ In Ultipa Manager, a UQL, take this 'create graph' as an example, can be compose
 <center><i>Chart4: Create graph model via UI operations</i></center>
 
 Chart4 shows a minimal procedure of creating graph model. It essentially assembles two UQLs that create a node schema and a property via UI:
-```js
+```uql
 // Create node schema 'customer'
 create().node_schema("customer")
 
@@ -65,7 +65,7 @@ Nodes have two system properties `_id` and `_uuid`, they both are the <u>unique 
 Click and read about [Unique Identifier](/docs/uql/unique-identifier) of metadata.
 
 Below UQLs all insert some node(s) into schema <i>customer</i>:
-```js
+```uql
 // insert a node, all custom properties set to null, '_id' and `_uuid` auto-generated
 insert().into(@customer).nodes({})
 
@@ -99,7 +99,7 @@ Details of inserting metadata can be found in documentation of [Insert](/docs/uq
 Edges have only `_uuid` inhered as unique identifier, but have another 4 inhered system properties, namely, <u>start and end node ID</u> of edge `_from`&`_to`, `_from_uuid`&`_to_uuid`, at least one pair of which must be designated when inserting an edge.
 
 Below UQLs all insert some edge(s) into schema <i>transfer</i>, pointing from 'CU001' or 'CU002' to 'MC001':
-```js
+```uql
 // insert an edge, all custom properties set to null, `_uuid` auto-generated
 insert().into(@transfer).edges({_from: "CU001", _to: "MC001"})
 
@@ -135,7 +135,7 @@ For batch import of data from CSV files or other databases, please refer to arti
 <center><i>Chart7: Update node via UI operations</i></center>
 
 More UQL examples that update node(s) or edge(s):
-```js
+```uql
 // update 'type' of all nodes to 'IV'
 update().nodes().set({type: "IV"})
 

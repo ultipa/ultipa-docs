@@ -46,9 +46,7 @@ YML configuration file are divided into 4 sections：
 
 - Section 1 Server Information
 
-<p tit="YML">
-
-```js
+```yml
 server:
   host: "192.168.1.85:64001"
   username: "root"
@@ -61,9 +59,7 @@ Server connection information `host`, `username`, and `password` should be provi
 
 - Section 2 Node Information
 
-<p tit="YML">
-
-```js
+```yml
 nodeConfig:
   - schema: "movie"
     properties:
@@ -78,9 +74,7 @@ To export node/edge only requires users to state custom properties; their system
 
 - Section 3 Edge Information
 
-<p tit="YML">
-
-```js
+```yml
 edgeConfig:
   - schema: "filmedIn"
 ```
@@ -89,9 +83,7 @@ edgeConfig:
 
 - Section 4 Global Information
 
-<p tit="YML">
-
-```js
+```yml
 settings:
   writeHeader: true
 ```
@@ -102,7 +94,7 @@ Save sections above in configuration file export_miniCircle.yml, place it with T
 
 <p tit="Command">
 
-```js
+```bash
 ./ultipa-exporter --config ./export_miniCircle.yml
 ```
 
