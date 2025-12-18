@@ -4,40 +4,32 @@
         {
             "pages": [
                 {
-                    "file": "graph-data.md",
-                    "title": "Graph Data"
-                }, 
+                    "file": "introduction.md",
+                    "title": "Introduction"
+                },
                 {
-                    "file": "graph-database.md",
-                    "title": "Graph Database"
-                }, 
+                    "file": "what-is-a-graph-database.md",
+                    "title": "What is a Graph Database"
+                },
                 {
-                    "file": "what-and-how.md",
-                    "title": "What and How"
-                }, 
+                    "file": "what-is-gql.md",
+                    "title": "What is GQL"
+                },
                 {
-                    "file": "connect-to-server.md",
-                    "title": "Connect to Server"
-                }, 
+                    "file": "introducing-ultipa-manager.md",
+                    "title": "Introducing Ultipa Manager"
+                },
                 {
-                    "file": "prepare-graph.md",
-                    "title": "Prepare Graph"
-                }, 
+                    "file": "modeling-relational-to-graph.md",
+                    "title": "Modeling: Relational to Graph"
+                },
                 {
-                    "file": "uql-query.md",
-                    "title": "UQL Query"
-                }, 
+                    "file": "importing-data-to-ultipa.md",
+                    "title": "Importing Data to Ultipa"
+                },
                 {
-                    "file": "data-import.md",
-                    "title": "Data Import"
-                }, 
-                {
-                    "file": "data-export.md",
-                    "title": "Data Export"
-                }, 
-                {
-                    "file": "graph-modeling.md",
-                    "title": "Graph Modeling"
+                    "file": "graph-analytics-for-insights.md",
+                    "title": "Graph Analytics for Insights"
                 }
             ]
         }
