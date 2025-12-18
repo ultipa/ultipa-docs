@@ -27,15 +27,11 @@
 ## Deployment Procedure 
 
 1. Generate configuration file template 
-<p tit="bash"></p> 
-
 ```bash
 ./ultipa-deploy -g 
 ```
 
 2. Modify configuration file according to the instruction in the file
-<p tit="bash"></p> 
-
 ```bash
 mv example_config.yaml config.yaml 
 
@@ -43,43 +39,31 @@ vim config.yaml
 ```
 
 3. Upload offline docker image described in LOCAL_IMAGE_TAR to all target servers, and execute `docker load` 
-<p tit="bash"></p> 
-
 ```bash
 ./ultipa-deploy -c config.yaml -o loadtar 
 ```
 
 4. Check the environment beforehand to see if it meets the deployment requirement 
-<p tit="bash"></p> 
-
 ```bash
 ./ultipa-deploy -c config.yaml -o check 
 ```
 
 5. Start deployment 
-<p tit="bash"></p> 
-
 ```bash
 ./ultipa-deploy -c config.yaml -o deploy 
 ```
 
 6. Check deployment status
-<p tit="bash"></p> 
-
 ```bash
 ./ultipa-deploy -c config.yaml -o list 
 ```
 
 7. Stop the cluster as described in the configuration file when needed
-<p tit="bash"></p> 
-
 ```bash
 ./ultipa-deploy -c config.yaml -o stop 
 ```
 
 8. Start the cluster as described in the configuration file when needed
-<p tit="bash"></p> 
-
 ```bash
 ./ultipa-deploy -c config.yaml -o start 
 ```
@@ -87,15 +71,11 @@ vim config.yaml
 ## License Update 
 
 1. Upload server license described by LOCAL_LICENSE to path LICENSE_ON_REMOTE_SERVER in the target server, the old license will be renamed for back up 
-<p tit="bash"></p> 
-
 ```bash
 ./ultipa-deploy -c config.yaml -o uplic 
 ```
 
 2. Restart server license in the path LICENSE_ON_REMOTE_SERVER
-<p tit="bash"></p> 
-
 ```bash
 ./ultipa-deploy -c config.yaml -o relic 
 ```
@@ -124,8 +104,6 @@ vim config.yaml
 | -o relic | Restart server license as described in LICENSE_ON_REMOTE_SERVER <br>Note: this is not to re-upload license   |
 
 ## Configuration File  
-<p tit="YAML" type="yaml"></p> 
-
 ```yml
 # The local path to store license, used by '-o uplic'
 
