@@ -100,7 +100,7 @@ The FastRP algorithm follows these steps:
 | --- | --- |
 | filename | `_id`, `embedding_result` |
 
-```js
+```uql
 algo(fastRP).params({
   dimension : 10,
   normalizationStrength: 1.5,
@@ -121,7 +121,7 @@ algo(fastRP).params({
 | -- | -- | -- | -- |
 | property | `embedding_result` | Node Property | `string` |
 
-```js
+```uql
 algo(fastRP).params({
   dimension : 10,
   normalizationStrength: 1.5,
@@ -140,7 +140,7 @@ algo(fastRP).params({
 | ---- | --- | --- | ---- |
 | 0 | []perNode | Node and its embeddings | `_uuid`, `embedding_result` |
 
-```js
+```uql
 algo(fastRP).params({
   dimension : 10,
   normalizationStrength: 1.5,
@@ -155,7 +155,7 @@ return embeddings
 | ---- | --- | --- | ---- |
 | 0 | []perNode | Node and its embeddings | `_uuid`, `embedding_result` |
 
-```js
+```uql
 algo(fastRP).params({
   dimension : 10,
   normalizationStrength: 1.5,

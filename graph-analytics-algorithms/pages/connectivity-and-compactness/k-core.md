@@ -48,7 +48,7 @@ The example graph is as follows:
 | --- | --- | --- |
 | filename | `_id` | ID of node in the k-core |
 
-```js
+```uql
 algo(k_core).params({
   k: 3
 }).write({
@@ -62,7 +62,7 @@ Results: File <i>3-core</i>
 
 <p tit="File"></p>
 
-```js
+```
 G
 F
 E
@@ -75,7 +75,7 @@ D
 | --- | --- | --- |
 | 0	| []perNode	| UUIDs of nodes in the k-core |
 
-```js
+```uql
 algo(k_core).params({
   k: 2
 }) as k2 
@@ -99,7 +99,7 @@ Results: <i>k2</i>
 | --- | --- | --- |
 | 0	| []perNode	| UUIDs of nodes in the k-core |
 
-```js
+```uql
 algo(k_core).params({
   k: 2
 }).stream() as k2 

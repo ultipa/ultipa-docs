@@ -93,7 +93,7 @@ The example graph is as follows:
 | --- | --- |
 | filename | `node1`,`node2`,`similarity` |
 
-```js
+```uql
 algo(similarity).params({
   ids: 'userC',
   ids2: ['userA', 'userB', 'userD'],
@@ -109,13 +109,13 @@ Results: File <i>sc</i>
 
 <p tit="File"></p>
 
-```js
+```
 userC,userA,1
 userC,userB,1
 userC,userD,0
 ```
 
-```js
+```uql
 algo(similarity).params({
   uuids: [1,2,3,4],
   type: 'overlap'
@@ -130,7 +130,7 @@ Results: File <i>list</i>
 
 <p tit="File"></p>
 
-```js
+```
 userA,userC,1
 userA,userB,0.5
 userA,userD,0.333333
@@ -149,7 +149,7 @@ userD,userA,0.333333
 | --- | --- | --- | --- |
 | 0 | []perNodePair | Node pair and its similarity | `node1`, `node2`, `similarity` |
 
-```js
+```uql
 algo(similarity).params({ 
   uuids: [1,2], 
   uuids2: [2,3,4],
@@ -168,7 +168,7 @@ Results: <i>overlap</i>
 | 2 | 3 | 1 |
 | 2 | 4 | 0.5 |
 
-```js
+```uql
 algo(similarity).params({
   uuids: [1,2],
   type: 'overlap',
@@ -190,7 +190,7 @@ Results: <i>top</i>
 | --- | --- | --- | --- |
 | 0 | []perNodePair | Node pair and its similarity | `node1`, `node2`, `similarity` |
 
-```js
+```uql
 algo(similarity).params({ 
   uuids: [3], 
   uuids2: [1,2,4],
@@ -207,7 +207,7 @@ Results: <i>overlap</i>
 | 3	| 1	| 1 |
 | 3	| 2 | 1 |
 
-```js
+```uql
 algo(similarity).params({
   uuids: [1],
   type: 'overlap',

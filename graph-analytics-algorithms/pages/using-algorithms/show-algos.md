@@ -4,7 +4,7 @@ To show information of algorithms installed in the current Ultipa instance.
 
 Syntax:
 
-```js
+```uql
 show().algo()
 ```
 

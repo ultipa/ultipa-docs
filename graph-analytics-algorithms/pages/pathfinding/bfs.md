@@ -45,7 +45,7 @@ Below is an example of traversing the graph using the BFS approach, starting fro
 | --- | --- | --- |
 | filename | `_id,_id` | The visited node (toNode), and the node from which it is visited (fromNode) |
 
-```js
+```uql
 algo(traverse).params({
   ids: ['A'],
   direction: 'out',
@@ -61,7 +61,7 @@ Results: File <i>result</i>
 
 <p tit="File"></p>
 
-```js
+```
 F,E
 E,B
 D,A

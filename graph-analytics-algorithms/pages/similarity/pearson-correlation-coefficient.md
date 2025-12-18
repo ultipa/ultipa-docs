@@ -53,7 +53,7 @@ The example graph has 4 products (edges are ignored), each product has propertie
 | --- | --- |
 | filename | `node1`,`node2`,`similarity` |
 
-```js
+```uql
 algo(similarity).params({
   uuids: [1], 
   uuids2: [2,3,4],
@@ -70,13 +70,13 @@ Results: File <i>pearson</i>
 
 <p tit="File"></p>
 
-```js
+```
 product1,product2,0.998785
 product1,product3,0.474384
 product1,product4,0.210494
 ```
 
-```js
+```uql
 algo(similarity).params({
   uuids: [1,2,3,4],
   node_schema_property: ['price', 'weight', 'width', 'height'],
@@ -92,7 +92,7 @@ Results: File <i>list</i>
 
 <p tit="File"></p>
 
-```js
+```
 product1,product2,0.998785
 product1,product3,0.474384
 product1,product4,0.210494
@@ -113,7 +113,7 @@ product4,product1,0.210494
 | --- | --- | --- | --- |
 | 0 | []perNodePair | Node pair and its similarity | `node1`, `node2`, `similarity` |
 
-```js
+```uql
 algo(similarity).params({
   uuids: [1,2], 
   uuids2: [2,3,4],
@@ -133,7 +133,7 @@ Results: <i>p</i>
 | 2 | 3 | 0.50783775659896 |
 | 2 | 4 | 0.253573071269506 |
 
-```js
+```uql
 algo(similarity).params({
   uuids: [1,2],
   type: 'pearson',
@@ -156,7 +156,7 @@ Results: <i>top</i>
 | --- | --- | --- | --- |
 | 0 | []perNodePair | Node pair and its similarity | `node1`, `node2`, `similarity` |
 
-```js
+```uql
 algo(similarity).params({
   uuids: [3], 
   uuids2: [1,2,4],
@@ -174,7 +174,7 @@ Results: <i>p</i>
 | 3	| 1	| 0.167101674410905 |
 | 3	| 2	| 0.181677473801374 |
 
-```js
+```uql
 algo(similarity).params({
   uuids: [1,3],
   node_schema_property: ['price', 'weight', 'width', 'height'],

@@ -71,7 +71,7 @@ The example graph is as follows:
 | --- | --- | --- |
 | filename | `_id`,`spread` | Node and its marginal gain when it joins the seed set |
 
-```js
+```uql
 algo(celf).params({
   seedSetSize: 3,
   monteCarloSimulations: 1000,
@@ -87,7 +87,7 @@ Results: File <i>seeds</i>
 
 <p tit="File"></p>
 
-```js
+```
 H,3.608
 I,1.647
 A,1.345
@@ -99,7 +99,7 @@ A,1.345
 | --------- | --- | ----------- | -------- |
 | 0 | []perNode | Node and its marginal gain when it joins the seed set | `_uuid`, `spread` |
 
-```js
+```uql
 algo(celf).params({
   seedSetSize: 2,
   monteCarloSimulations: 1000,
@@ -121,7 +121,7 @@ Results: <i>seeds</i>
 | --------- | --- | ----------- | -------- |
 | 0 | []perNode | Node and its marginal gain when it joins the seed set | `_uuid`, `spread` |
 
-```js
+```uql
 algo(celf).params({
   seedSetSize: 3,
   monteCarloSimulations: 1000,

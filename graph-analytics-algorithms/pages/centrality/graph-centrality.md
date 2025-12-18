@@ -60,7 +60,7 @@ The example graph is as follows:
 | --- | --- |
 | filename | `_id`,`centrality` |
 
-```js 
+```uql 
 algo(graph_centrality).params().write({
   file:{ 
     filename: 'res'
@@ -72,7 +72,7 @@ Results: File <i>res</i>
 
 <p tit="File"></p>
 
-```js
+```
 J,0
 I,0.25
 H,0.2
@@ -91,7 +91,7 @@ B,0.2
 | --- | --- | --- | --- |
 | property | `centrality` | Node property | `float` |
 
-```js
+```uql
 algo(graph_centrality).params().write({
   db:{ 
     property: 'gc'
@@ -107,7 +107,7 @@ Results: Centrality score for each node is written to a new property named <i>gc
 | ------------- | ---- | ----------- | ----------- |
 | 0 | []perNode | Node and its centrality | `_uuid`, `centrality` |
 
-```js
+```uql
 algo(graph_centrality).params({
   ids: ['A', 'B', 'C'],
   order: 'asc'
@@ -129,7 +129,7 @@ Results: <i>gc</i>
 | ------------- | ---- | ----------- | ----------- |
 | 0 | []perNode | Node and its centrality | `_uuid`, `centrality` |
 
-```js
+```uql
 algo(graph_centrality).params().stream() as gc
 where gc.centrality > 0.25
 return gc

@@ -81,7 +81,7 @@ The example is a web network, edge property <i>@link.value</i> can be used as we
 | --- | --- |
 | filename | `_id`,`rank` |
 
-```js
+```uql
 algo(eigenvector_centrality).params({
   max_loop_num: 15,
   tolerance: 0.01,
@@ -97,7 +97,7 @@ Results: File <i>rank</i>
 
 <p tit="File"></p>
 
-```js
+```
 web7,4.63007e-06
 web6,0.0198426
 web5,0.255212
@@ -113,7 +113,7 @@ web1,0.573511
 | --- | --- | --- | --- |
 | property | `rank` | Node property | `float` |
 
-```js
+```uql
 algo(eigenvector_centrality).params({
   edge_weight_property: 'value'  
 }).write({
@@ -130,7 +130,7 @@ Results: Centrality score for each node is written to a new property named <i>ec
 | ------------- | ---- | ----------- | ----------- |
 | 0 | []perNode | Node and its centrality | `_uuid`, `rank` |
 
-```js
+```uql
 algo(eigenvector_centrality).params({
   max_loop_num: 20,
   tolerance: 0.01,
@@ -160,7 +160,7 @@ Results: <i>ec</i>
 | 0 | []perNode | Node and its centrality | `_uuid`, `rank` |
 
 Example: Calculate weighted eigenvector centrality for all nodes, count the number of nodes with score above 0.4 or otherwise respectively
-```js
+```uql
 algo(eigenvector_centrality).params({
   edge_weight_property: '@link.value',
   direction: "in"

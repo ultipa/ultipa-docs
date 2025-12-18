@@ -66,7 +66,7 @@ The example graph is as follows, nodes are of schema <i>user</i>, edges are of s
 | --- | --- |
 | filename | `_id`,`label_1`,`score_1` |
 
-```js
+```uql
 algo(hanp).params({ 
   loop_num: 10,
   edge_weight_property: 'strength',
@@ -84,7 +84,7 @@ Results: File <i>hanp</i>
 
 <p tit="File"></p>
 
-```js
+```
 O,13,-0.600000,
 N,6,-1.000000,
 M,6,-1.000000,
@@ -108,7 +108,7 @@ A,6,-0.400000,
 | --- | --- | --- | --- |
 | property | `label_1`,`score_1` | Node property | Label: `string`,<br>Label score: `float` |
 
-```js
+```uql
 algo(hanp).params({ 
   node_label_property: '@user.interest',
   m: 0.1, 
@@ -130,7 +130,7 @@ Results: The label and label score of each node is written to new properties <i>
 | 0 | []perNode | Node and its label, label score | `_uuid`, `label_1`, `score_1` |
 | 1	| KV | Number of labels | `label_count` |
 
-```js
+```uql
 algo(hanp).params({ 
   loop_num: 12,
   node_label_property: '@user.interest',
@@ -170,7 +170,7 @@ Results: <i>res</i> and <i>stats</i>
 | --- | --- | --- | --- |
 | 0 | []perNode | Node and its label, label score | `_uuid`, `label_1`, `score_1` |
 
-```js
+```uql
 algo(hanp).params({ 
   loop_num: 12,
   node_label_property: '@user.interest',
@@ -197,7 +197,7 @@ Results: <i>table(hanp.label_1, labelCount)</i>
 | --- | --- | --- | --- |
 | 0	| KV | Number of labels | `label_count` |
 
-```js
+```uql
 algo(hanp).params({ 
   loop_num: 5,
   node_label_property: 'interest',

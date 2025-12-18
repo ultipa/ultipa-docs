@@ -93,7 +93,7 @@ The example graph is as follows:
 | --- | --- |
 | filename | `node1`,`node2`,`similarity` |
 
-```js
+```uql
 algo(similarity).params({
   ids: 'userC',
   ids2: ['userA', 'userB', 'userD'],
@@ -109,13 +109,13 @@ Results: File <i>sc</i>
 
 <p tit="File"></p>
 
-```js
+```
 userC,userA,0.25
 userC,userB,0.5
 userC,userD,0
 ```
 
-```js
+```uql
 algo(similarity).params({
   uuids: [1,2,3,4],
   type: 'jaccard'
@@ -130,7 +130,7 @@ Results: File <i>list</i>
 
 <p tit="File"></p>
 
-```js
+```
 userA,userC,0.25
 userA,userB,0.2
 userA,userD:0.166667
@@ -149,7 +149,7 @@ userD,userA:0.166667
 | --- | --- | --- | --- |
 | 0 | []perNodePair | Node pair and its similarity | `node1`, `node2`, `similarity` |
 
-```js
+```uql
 algo(similarity).params({ 
   uuids: [1,2], 
   uuids2: [2,3,4],
@@ -168,7 +168,7 @@ Results: <i>jacc</i>
 | 2 | 3 | 0.5 |
 | 2 | 4 | 0.25 |
 
-```js
+```uql
 algo(similarity).params({
   uuids: [1,2],
   type: 'jaccard',
@@ -190,7 +190,7 @@ Results: <i>top</i>
 | --- | --- | --- | --- |
 | 0 | []perNodePair | Node pair and its similarity | `node1`, `node2`, `similarity` |
 
-```js
+```uql
 algo(similarity).params({ 
   uuids: [3], 
   uuids2: [1,2,4],
@@ -207,7 +207,7 @@ Results: <i>jacc</i>
 | 3	| 1	| 0.25 |
 | 3	| 2 | 0.5 |
 
-```js
+```uql
 algo(similarity).params({
   uuids: [1],
   type: 'jaccard',

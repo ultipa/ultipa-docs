@@ -81,7 +81,7 @@ The example graph is as follows:
 | --- | --- |
 | filename | `_id`,`rank` |
 
-```js
+```uql
 algo(page_rank).params({
   init_value: 1,
   loop_num: 50,
@@ -97,7 +97,7 @@ Results: File <i>rank</i>
 
 <p tit="File"></p>
 
-```js
+```
 E,2.3906
 G,1.15624
 F,1.03774
@@ -120,7 +120,7 @@ K,0.2
 | --- | --- | --- | --- |
 | property | `rank` | Node property | `float` |
 
-```js
+```uql
 algo(page_rank).params({
   loop_num: 50,
   weaken: 1
@@ -137,7 +137,7 @@ Results: Rank for each node is written to a new property named <i>PR</i>
 | ------------- | ---- | ----------- | ----------- |
 | 0 | []perNode | Node and its rank | `_uuid`, `rank` |
 
-```js
+```uql
 algo(page_rank).params({
   init_value: 1,
   loop_num: 50,
@@ -165,7 +165,7 @@ Results: <i>PR</i>
 | ------------- | ---- | ----------- | ----------- |
 | 0 | []perNode | Node and its rank | `_uuid`, `rank` |
 
-```js
+```uql
 algo(page_rank).params({
   loop_num: 50,
   damping: 0.8,

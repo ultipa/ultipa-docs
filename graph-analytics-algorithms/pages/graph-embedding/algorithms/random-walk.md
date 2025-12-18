@@ -59,7 +59,7 @@ The example graph is as follows, numbers on edges are the values of edge propert
 | --- | --- | --- |
 | filename | `_id`,`_id`,... | IDs of visited nodes |
 
-```js
+```uql
 algo(random_walk).params({
   walk_length: 6,
   walk_num: 2
@@ -73,7 +73,7 @@ Results: File <i>walks</i>
 
 <p tit="File"></p>
 
-```js
+```
 K,
 J,G,J,G,F,D,
 I,I,I,H,I,I,
@@ -104,7 +104,7 @@ A,B,A,C,D,C,
 | --------- | --- | ----------- | -------- |
 | 0 | []perWalk | Array of UUIDs of visited nodes | `[_uuid, _uuid, ...]` |
 
-```js
+```uql
 algo(random_walk).params({
   walk_length: 6,
   walk_num: 2,
@@ -146,7 +146,7 @@ Results: <i>walks</i>
 | --------- | --- | ----------- | -------- |
 | 0 | []perWalk | Array of UUIDs of visited nodes | `[_uuid, _uuid, ...]` |
 
-```js
+```uql
 algo(random_walk).params({
   walk_length: 5,
   walk_num: 1,

@@ -48,7 +48,7 @@ The example graph is as follows:
 | --- | --- |
 | filename | `edge1`,`edge2`,`edge3` or `node1`,`node2`,`node3` |
 
-```js
+```uql
 algo(triangle_counting).params({
   type: 1,
   result_type: 2
@@ -63,13 +63,13 @@ Results: File <i>te</i>
 
 <p tit="File"></p>
 
-```js
+```
 103,104,101
 103,104,102
 105,104,106
 ```
 
-```js
+```uql
 algo(triangle_counting).params({
   type: 2,
   result_type: 2
@@ -84,7 +84,7 @@ Results: Files <i>tn</i>
 
 <p tit="File"></p>
 
-```js
+```
 C4,C2,C1
 C3,C2,C1
 ```
@@ -95,7 +95,7 @@ C3,C2,C1
 | --- | --- | --- | --- |
 | 0 | KV or []perTriangle | Number of triangles or triangles | `triangle_count` or `edge1`, `edge2`, `edge3` or `node1`, `node2`, `node3` |
 
-```js
+```uql
 algo(triangle_counting).params({
   result_type: 1
 }) as count 
@@ -108,7 +108,7 @@ Results: <i>count</i>
 | -- |
 | 3 |
 
-```js
+```uql
 algo(triangle_counting).params({
   result_type: 2
 }) as triangles 
@@ -129,7 +129,7 @@ Results: <i>triangles</i>
 | --- | --- | --- | --- |
 | 0 | KV or []perTriangle | Number of triangles or triangles | `triangle_count` or `edge1`, `edge2`, `edge3` or `node1`, `node2`, `node3` |
 
-```js
+```uql
 algo(triangle_counting).params({
   type: 2, 
   result_type:2 
@@ -149,7 +149,7 @@ Results: <i>table(t.node1, t.node2, t.node3, sumAmount)</i>
 | 4 | 2 | 1 | 12 |
 | 3 | 2 | 1 | 9 |
 
-```js
+```uql
 algo(triangle_counting).params({
   type: 2, 
   result_type:1
@@ -173,7 +173,7 @@ Results: <i>table(tNodes.triangle_count, tEdges.triangle_count)</i>
 | --- | --- | --- | --- |
 | 0 | KV | Number of triangles | `triangle_count` |
 
-```js
+```uql
 algo(triangle_counting).params({
   result_type: 1
 }).stats() as sta 

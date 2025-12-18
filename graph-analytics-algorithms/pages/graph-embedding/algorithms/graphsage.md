@@ -109,7 +109,7 @@ The process of feature aggregation of our example can be illustrated as below:
 | ---- | ---- | ---- | ---- |
 | property_name | Node embedding | Node property | `string` |
 
-```js
+```uql
 algo(graph_sage).params({
   model_task_id: 4785,
   ids: ['ULTIPA8000000000000001', 'ULTIPA8000000000000002']

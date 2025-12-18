@@ -51,7 +51,7 @@ The example graph is as follows:
 | --- | --- | --- |
 | filename | `_id--[_uuid]--_id` | One-step path in the truss: (start node)--(edge)--(end node) |
 
-```js
+```uql
 algo(k_truss).params({k: 4}).write({
   file:{
       filename: 'truss'
@@ -63,7 +63,7 @@ Results: File <i>truss</i>
 
 <p tit="File"></p>
 
-```js
+```
 d--[102]--a
 c--[103]--a
 d--[104]--c
@@ -91,7 +91,7 @@ m--[126]--l
 | --- | --- | --- |
 | 0 | []`path` | One-step path in the truss: <br>`_uuid` (start node) -- `[_uuid]` (edge) -- `_uuid` (end node) |
 
-```js
+```uql
 algo(k_truss).params({k: 5}) as truss return truss
 ```
 
@@ -115,7 +115,7 @@ Results: <i>subgraph</i>
 | --- | --- | --- |
 | 0 | []`path` | One-step path in the truss: <br>`_uuid` (start node) -- `_uuid` (edge) -- `_uuid` (end node) |
 
-```js
+```uql
 algo(k_truss).params({k: 5}).stream() as truss5
 with pedges(truss5) as e
 find().edges(e) as edges

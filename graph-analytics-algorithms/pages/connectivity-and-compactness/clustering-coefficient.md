@@ -49,7 +49,7 @@ The example graph is as follows:
 | --- | --- |
 | filename | `_id`,`centrality` |
 
-```js
+```uql
 algo(clustering_coefficient).params({ 
   ids: ['Lee', 'Choi']
 }).write({
@@ -63,7 +63,7 @@ Results: File <i>lcc</i>
 
 <p tit="File"></p>
 
-```js
+```
 Lee,0.266667
 Choi,1
 ```
@@ -74,7 +74,7 @@ Choi,1
 | --- | --- | --- | --- |
 | property | `centrality` | Node property | `float` |
 
-```js
+```uql
 algo(clustering_coefficient).params().write({
   db:{
     property: 'lcc'
@@ -90,7 +90,7 @@ Results: The value of the local clustering coefficient for each node is written 
 | ---| --- | --- | --- |
 | 0 | []perNode | Node and its local clustering coefficient | `_uuid`, `centrality` |
 
-```js
+```uql
 algo(clustering_coefficient).params({
   order: 'desc'
 }) as lcc 
@@ -115,7 +115,7 @@ Results: <i>lcc</i>
 | ---| --- | --- | --- |
 | 0 | []perNode | Node and its local clustering coefficient | `_uuid`, `centrality` |
 
-```js
+```uql
 algo(clustering_coefficient).params().stream() as lcc
 where lcc.centrality == 1
 return count(lcc)

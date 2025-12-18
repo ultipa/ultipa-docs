@@ -64,7 +64,7 @@ The example graph has 11 nodes (edges are ignored), and each node has properties
 | --- | --- |
 | filename | `community`:`_id`,`_id`,... |
 
-```js
+```uql
 algo(k_means).params({
   start_ids: [1,2,5],
   k: 3,
@@ -82,7 +82,7 @@ Results: File <i>communities</i>
 
 <p tit="File"></p>
 
-```js
+```
 0:I,
 1:K,H,G,B,F,
 2:J,C,A,E,D,
@@ -94,7 +94,7 @@ Results: File <i>communities</i>
 | --- | --- | ---| --- |
 | 0	| []perCommunity | Cluster and nodes in the cluster | `community`, `uuids` |
 
-```js
+```uql
 algo(k_means).params({
   start_ids: [1,2,5],
   k: 3,
@@ -119,7 +119,7 @@ Results: <i>k3</i>
 | --- | --- | ---| --- |
 | 0	| []perCommunity | Cluster and nodes in the cluster | `community`, `uuids` |
 
-```js
+```uql
 algo(k_means).params({
   k: 2,
   node_schema_property: ['f1', 'f2', 'f3'],

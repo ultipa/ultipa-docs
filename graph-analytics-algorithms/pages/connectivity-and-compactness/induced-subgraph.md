@@ -44,7 +44,7 @@ The example graph is as follows:
 | --- | --- | --- |
 | filename | `_id--[_uuid]--_id` | One-step path in the induced subgraph:<br>(start node)--(edge)--(end node) |
 
-```js
+```uql
 algo(subgraph).params({
   ids: ['A','C','D','G']
 }).write({
@@ -58,7 +58,7 @@ Results: File <i>paths</i>
 
 <p tit="File"></p>
 
-```js
+```
 C--[102]--A
 C--[105]--D
 D--[107]--A
@@ -72,7 +72,7 @@ G--[109]--G
 | --- | --- | --- |
 | 0 | []path | One-step path in the induced subgraph: <br>`_uuid` (start node) -- [`_uuid`] (edge) -- `_uuid` (end node) |
 
-```js
+```uql
 algo(subgraph).params({
   ids: ['A','C','D','G']
 }) as subgraph
@@ -95,7 +95,7 @@ Results: <i>subgraph</i>
 | --- | --- | --- |
 | 0 | []path | One-step path in the induced subgraph: <br>`_uuid` (start node) -- [`_uuid`] (edge) -- `_uuid` (end node) |
 
-```js
+```uql
 algo(subgraph).params({
   uuids: [6,7]
 }).stream() as p

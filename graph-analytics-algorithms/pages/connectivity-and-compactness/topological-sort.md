@@ -65,7 +65,7 @@ The example graph is as follows:
 | --- | --- |
 | filename | `_id`,`_id`,... |
 
-```js
+```uql
 algo(topological_sort).params().write({
   file: {
     filename: 'sort'
@@ -77,7 +77,7 @@ Results: File <i>sort</i>
 
 <p tit="File"></p>
 
-```js
+```
 H
 F
 A
@@ -94,7 +94,7 @@ G
 | --- | --- | --- |
 | 0 | []`nodes` | Array of sorted nodes |
 
-```js
+```uql
 algo(topological_sort).params() as nodes
 return nodes
 ```
@@ -118,7 +118,7 @@ Results: <i>nodes</i>
 | --- | --- | --- |
 | 0 | []`nodes` | Array of sorted nodes |
 
-```js
+```uql
 algo(topological_sort).params().stream() as n
 find().nodes(n) as nodes
 return nodes{*}

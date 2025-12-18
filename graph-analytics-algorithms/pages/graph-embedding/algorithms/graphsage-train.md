@@ -78,7 +78,7 @@ where <i>max</i> denotes the element-wise max operator and <i>σ</i> is a non-li
 | --- | --- |
 | model_name | The trained GraphSAGE model |
 
-```js
+```uql
 algo(graph_sage_train).params({
   dimension: 10,
   node_property_names: ['dbField','fField','uInt32','int32','age'],

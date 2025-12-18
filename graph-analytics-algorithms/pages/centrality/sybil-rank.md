@@ -82,7 +82,7 @@ The example graph is as follows:
 | --- | --- |
 | filename | `_id`,`rank` |
 
-```js
+```uql
 algo(sybil_rank).params({
   total_trust: 100,
   trust_seeds: [2,3,5],
@@ -98,7 +98,7 @@ Results: File <i>sybilRank</i>
 
 <p tit="File"></p>
 
-```js
+```
 S1,0
 S4,3.61111
 S2,4.45602
@@ -121,7 +121,7 @@ H6,12.6013
 | --- | --- | --- | --- |
 | property | `rank` | Node property | `float` |
 
-```js
+```uql
 algo(sybil_rank).params({
   total_trust: 100,
   trust_seeds: [2,3,5],
@@ -141,7 +141,7 @@ Results: Trust score for each node is written to a new property named <i>trust</
 | ------------- | ---- | ----------- | ----------- |
 | 0 | []perNode | Node and its trust | `_uuid`, `rank` |
 
-```js
+```uql
 algo(sybil_rank).params({
   total_trust: 100,
   trust_seeds: [2,3,5],
@@ -175,7 +175,7 @@ Results: <i>trust</i>
 | ------------- | ---- | ----------- | ----------- |
 | 0 | []perNode | Node and its trust | `_uuid`, `rank` |
 
-```js
+```uql
 algo(sybil_rank).params({
   total_trust: 100,
   trust_seeds: [2,3,5],

@@ -47,7 +47,7 @@ Below is an example of traversing the graph using the DFS approach, starting fro
 | --- | --- | --- |
 | filename | `_id,_id` | The visited node (toNode), and the node from which it is visited (fromNode) |
 
-```js
+```uql
 algo(traverse).params({
   ids: ['B'],
   direction: 'in',
@@ -63,7 +63,7 @@ Results: File <i>result</i>
 
 <p tit="File"></p>
 
-```js
+```
 F,C
 E,F
 C,A

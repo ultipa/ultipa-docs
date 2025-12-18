@@ -43,7 +43,7 @@ The example is a transaction network between bank cards:
 | filename_ids | `_id`,`_id` | The first `_id` represents the target node, the second `_id` represents the neighbor of the target node |
 | filename | `_id`,`aggregate_result1`,...,`aggregate_resultN`,`count` | `_id` represents the target node, `aggregate_result1` ~ `aggregate_resultN` are the aggregation results, the last `count` is the total number of neighbors of the target node |
 
-```js
+```uql
 algo(khop_all).params({
   ids: ['card1', 'card7'],
   k_start: 2,
@@ -63,7 +63,7 @@ Results: Files <i>neighbors</i>, <i>aggregations</i>
 
 <p tit="File: neighbors"></p>
 
-```js
+```uql
 card1,card7
 card1,card3
 card1,card4
@@ -72,7 +72,7 @@ card7,card4
 
 <p tit="File: aggregations"></p>
 
-```js
+```uql
 card1,4.000000,3174.103333,3.000000,
 card7,2.000000,4768.800000,1.000000,
 ```
@@ -83,7 +83,7 @@ card7,2.000000,4768.800000,1.000000,
 | --- | --- | --- | --- |
 | property | Number of neighbors | Node property | `double` |
 
-```js
+```uql
 algo(khop_all).params({ 
   k_start: 2,
   k_end: 2
@@ -102,7 +102,7 @@ Results: The number of 2-hop neighbors of each node is written to a new property
 | --- | --- | --- | --- |
 | 0 | []perNode | Node and its aggregation results, and number of neighbors | `_uuid`, `value` |
 
-```js
+```uql
 algo(khop_all).params({
   ids: ['card1', 'card7'],
   k_start: 2,
@@ -126,7 +126,7 @@ Results: <i>r</i>
 | --- | --- | --- | --- |
 | 0 | []perNode | Node and its aggregation results, and number of neighbors | `_uuid`, `value` |
 
-```js
+```uql
 algo(khop_all).params({
    uuids: [2],
    k_start: 2,

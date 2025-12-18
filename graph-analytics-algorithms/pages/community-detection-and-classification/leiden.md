@@ -117,7 +117,7 @@ Once this third phase is completed, another pass is applied to the aggregate gra
 | filename_ids | `community_id`,`_id`,`_id`,... | Community ID and the ID of nodes in it |
 | filename_num | `community_id`,`count` | Community ID and the number of nodes in it |
 
-```js
+```uql
 algo(leiden).params({ 
   phase1_loop_num: 5, 
   min_modularity_increase: 0.1,
@@ -137,7 +137,7 @@ algo(leiden).params({
 | --- | --- | --- | --- |
 | property | `community_id` | Node property | `uint32` |
 
-```js
+```uql
 algo(leiden).params({ 
   phase1_loop_num: 5, 
   min_modularity_increase: 0.1,
@@ -156,7 +156,7 @@ algo(leiden).params({
 | 0 | []perNode	| Node and its community ID	| `_uuid`, `community_id` |
 | 1 | KV | Number of communities, modularity | `community_count`, `modularity` |
 
-```js
+```uql
 algo(leiden).params({ 
   phase1_loop_num: 6, 
   min_modularity_increase: 0.5,
@@ -196,7 +196,7 @@ return results, stats
 </tbody>
 </table>
 
-```js
+```uql
 algo(leiden).params({ 
   phase1_loop_num: 6, 
   min_modularity_increase: 0.5,
@@ -206,7 +206,7 @@ group by results.community_id
 return table(results.community_id, max(results._uuid))
 ```
 
-```js
+```uql
 algo(leiden).params({ 
   phase1_loop_num: 5, 
   min_modularity_increase: 0.1,
@@ -223,7 +223,7 @@ return results
 | ------------- | ---- | ----------- | ----------- |
 | 0 | KV | Number of communities, modularity | `community_count`, `modularity` |
 
-```js
+```uql
 algo(leiden).params({ 
   phase1_loop_num: 5, 
   min_modularity_increase: 0.1

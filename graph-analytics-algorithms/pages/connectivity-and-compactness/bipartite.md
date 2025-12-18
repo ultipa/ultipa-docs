@@ -46,7 +46,7 @@ The example graph is as follows:
 | --- | --- | --- | --- |
 | 0	| KV | Whether the graph is bipartite, 0 means false, 1 means true | `bipartite_result` |
 
-```js
+```uql
 algo(bipartite).params() as result 
 return result
 ```
@@ -63,7 +63,7 @@ Results: <i>result</i>
 | --- | --- | --- | --- |
 | 0	| KV | Whether the graph is bipartite, 0 means false, 1 means true | `bipartite_result` |
 
-```js
+```uql
 algo(bipartite).params().stream() as result 
 return result
 ```
@@ -80,7 +80,7 @@ Results: <i>result</i>
 | --- | --- | --- | --- |
 | 0	| KV | Whether the graph is bipartite, 0 means false, 1 means true | `bipartite_result` |
 
-```js
+```uql
 algo(bipartite).params().stats() as result 
 return result
 ```

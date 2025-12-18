@@ -73,7 +73,7 @@ The example graph is as follows:
 | --- | --- |
 | filename | `_id`,`centrality` |
 
-```js 
+```uql 
 algo(harmonic_centrality).params().write({
   file:{ 
     filename: 'centrality'
@@ -85,7 +85,7 @@ Results: File <i>centrality</i>
 
 <p tit="File"></p>
 
-```js
+```
 LH,0
 LG,0.142857
 LF,0.142857
@@ -102,7 +102,7 @@ LA,0.571429
 | --- | --- | --- | --- |
 | property | `centrality` | Node property | `float` |
 
-```js
+```uql
 algo(harmonic_centrality).params().write({
   db:{ 
     property: 'hc'
@@ -118,7 +118,7 @@ Results: Centrality score for each node is written to a new property named <i>hc
 | ------------- | ---- | ----------- | ----------- |
 | 0 | []perNode | Node and its centrality | `_uuid`, `centrality` |
 
-```js
+```uql
 algo(harmonic_centrality).params({
   direction: 'out',
   order: 'desc',
@@ -141,7 +141,7 @@ Results: <i>hc</i>
 | ------------- | ---- | ----------- | ----------- |
 | 0 | []perNode | Node and its centrality | `_uuid`, `centrality` |
 
-```js
+```uql
 algo(harmonic_centrality).params({
   direction: 'in'
 }).stream() as hc
