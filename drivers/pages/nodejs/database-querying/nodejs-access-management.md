@@ -18,7 +18,7 @@ Retrieves all system privileges and graph privileges, which are actually UQL com
 
 - `Privilege`: All system privileges and graph privileges.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 // Retrieves all system privileges and graph privileges
@@ -27,7 +27,7 @@ let resp = await conn.showPrivilege();
 console.log(resp);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 {
@@ -78,7 +78,7 @@ Retrieves all policies from the instance. A policy includes system privileges, g
 
 - `Policy[]`: The list of all policies in the instance.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 // Retrieves all policies and prints their information
@@ -92,7 +92,7 @@ for (let i of resp.data) {
     console.log("- Policies: ", i.policies);
 }
 ```
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Policy  manager  includes: 
@@ -126,7 +126,7 @@ Retrieves a policy from the instance by its name.
 
 - `Policy`: The retrieved policy.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 // Retrieves a policy 'operator' and prints its information
@@ -139,7 +139,7 @@ console.log("Policy ", resp.data.name, " includes: "),
   console.log("- Policies: ", resp.data.policies);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Policy  operator  includes: 
@@ -165,7 +165,7 @@ Creates a policy in the instance.
 
 - `Response`: Result of the request.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 // Creates a new policy 'sales' and then retrieves it
@@ -207,7 +207,7 @@ console.log("Policy", resp.data.name, "includes: "),
   console.log("- Policies: ", resp.data.policies);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Policy sales includes: 
@@ -235,7 +235,7 @@ Alters the system privileges, graph privileges, property privileges and policies
 
 - `Response`: Result of the request.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 // Alters the policy 'sales' and then retrieves it
@@ -265,7 +265,7 @@ console.log("Policy", resp.data.name, "includes: "),
   console.log("- Policies: ", resp.data.policies);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Policy sales includes: 
@@ -301,7 +301,7 @@ Drops one policy from the instance by its name.
 
 - `Response`: Result of the request.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 // Drops the policy 'sales' and prints error code
@@ -310,7 +310,7 @@ let resp = await conn.dropPolicy("sales");
 console.log(resp.status.code_desc);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 SUCCESS
@@ -330,7 +330,7 @@ Retrieves all database users from the instance.
 
 - `User[]`: The list of all users in the instance.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 // Retrieves all users and prints information of the first returned
@@ -345,7 +345,7 @@ console.log("Property privileges:", user1.property_privileges);
 console.log("Policies:", user1.policies);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Username: test006
@@ -383,7 +383,7 @@ Retrieves a database user from the instance by its username.
 
 - `User`: The retrieved user.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 // Retrieves user 'test005' and prints its information
@@ -397,7 +397,7 @@ console.log("Property privileges:", resp.data.property_privileges);
 console.log("Policies:", resp.data.policies);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Username: test005
@@ -435,7 +435,7 @@ Creates a database user in the instance.
 
 - `Response`: Result of the request.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 // Creates a new user 'NodeJsUser' and prints error code
@@ -471,7 +471,7 @@ let resp = await conn.createUser({
 console.log(resp.status.code_desc);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 SUCCESS
@@ -490,7 +490,7 @@ Alters the password, system privileges, graph privileges, property privileges an
 
 - `Response`: Result of the request.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 // Alters the user 'NodeJsUser' and prints error code
@@ -507,7 +507,7 @@ let resp = await conn.alterUser({
 console.log(resp.status.code_desc);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 SUCCESS
@@ -526,7 +526,7 @@ Drops one database user from the instance by its username.
 
 - `Response`: Result of the request.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 // Drops the user 'NodeJsUser' and prints error code
@@ -535,7 +535,7 @@ let resp = await conn.dropUser("NodeJsUser");
 console.log(resp.status.code_desc);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 SUCCESS
@@ -558,7 +558,7 @@ Grants new system privileges, graph privileges, property privileges and policies
 
 - `Response`: Result of the request.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 // Grants privileges and policies to user 'johndoe' and prints error code
@@ -582,7 +582,7 @@ let resp = await conn.grantPolicy(
 console.log(resp.status.code_desc);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 SUCCESS
@@ -605,7 +605,7 @@ Revokes system privileges, graph privileges, property privileges and policies fr
 
 - `Response`: Result of the request.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 let resp = await conn.revokePolicy(
@@ -620,7 +620,7 @@ let resp = await conn.revokePolicy(
 console.log(resp.status.code_desc);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 SUCCESS
@@ -628,7 +628,7 @@ SUCCESS
 
 ## Full Example
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
 
 ```ts
 import { ConnectionPool, ULTIPA } from "@ultipa-graph/ultipa-node-sdk";

@@ -15,7 +15,7 @@ Read node files <i>person.json</i> and <i>company.json</i> and edge file <i>hold
 
 ## 2. Modify configuration file
 
-<p tit= "import.sample.json.yml" type="yaml"></p>
+<p tit="import.sample.json.yml" type="yaml"></p>
 
 ```yml
 # Configure data source type

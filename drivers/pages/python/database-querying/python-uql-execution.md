@@ -19,7 +19,7 @@ Executes a UQL query on the current graphset or the database and returns the res
 
 - `UltipaResponse`: Result of the request.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
 
 ```python
 # Retrieves 5 @movie nodes in graphset 'miniCircle' and prints their names
@@ -31,7 +31,7 @@ for node in nodeList:
     print(node.get("name"))
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```Python
 The Shawshank Redemption
@@ -57,7 +57,7 @@ Executes a UQL query on the current graphset or the database and returns the res
 
 - `None`
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
 
 ```python
 # Retrieves all 1-step paths in graphset 'miniCircle'
@@ -83,7 +83,7 @@ result = Conn.uqlStream(uql, stream, requestConfig)
 print()
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```python
 Stream started.

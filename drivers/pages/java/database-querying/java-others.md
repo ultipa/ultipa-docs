@@ -68,7 +68,7 @@ SUCCESS
 
 ## Full Example
 
-<p tit= "Main.java" ></p> 
+<p tit="Main.java" ></p> 
 
 ```java
 package com.ultipa.www.sdk.api;

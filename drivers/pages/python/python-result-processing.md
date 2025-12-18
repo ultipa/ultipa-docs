@@ -29,7 +29,7 @@ Retrieves data by the alias index.
 
 - `DataItem`: The retrieved data.
 
-<p tit= "Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 response = Conn.uql("find().nodes() as n return n._id, n._uuid limit 3")
@@ -38,7 +38,7 @@ print(response.get(0).toJSON())
 
 The UQL statement returns two aliases `n._id` and `n._uuid`; the `get()` method retrieves the alias `n._id` at index 0.
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 {"alias": "n._id", "data": {"name": "n._id", "type": 4, "type_desc": "ATTR", "values": ["U1", "U2", "U3"]}, "type": "ATTR"}
@@ -56,7 +56,7 @@ Retrieves data by the alias name.
 
 - `DataItem`: The retrieved data.
 
-<p tit= "Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 response = Conn.uql("find().nodes() as n return n._id, n._uuid limit 3")
@@ -65,7 +65,7 @@ print(response.alias('n._uuid').toJSON())
 
 The UQL statement returns two aliases `n._id` and `n._uuid`; the `alias()` method retrieves the alias `n._uuid` by its name.
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 {"alias": "n._uuid", "data": {"name": "n._uuid", "type": 4, "type_desc": "ATTR", "values": [1, 2, 3]}, "type": "ATTR"}

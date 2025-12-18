@@ -11,7 +11,7 @@ The values of <a href="#Configuration-Items">configuration items</a> are prefere
 
 ## Code Configuration Connection
 
-<p tit= "Main.java" ></p> 
+<p tit="Main.java" ></p> 
 
 ```java
 package com.ultipa.www.sdk.api;
@@ -45,7 +45,7 @@ public class Main {
 }
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```java
 Hi Welcome To Ultipa!
@@ -57,7 +57,7 @@ The `getConnection()` method obtains a connection to Ultipa, allowing you to opt
 
 ## File Configuration Connection
 
-<p tit= "Main.java" ></p> 
+<p tit="Main.java" ></p> 
 
 ```java
 package com.ultipa.www.sdk.api;
@@ -88,7 +88,7 @@ A driver is created with the configurations specified using the `ultipa.properti
 
 Example of the `ultipa.properties` file:
 
-<p tit= "ultipa.properties" ></p> 
+<p tit="ultipa.properties" ></p> 
 
 ```properties
 ultipa.hosts=192.168.1.85:60061,192.168.1.86:60061,192.168.1.87:60061
@@ -138,7 +138,7 @@ Below are all the configuration items available for `UltipaConfiguration` and `u
 
 `PoolConfig` contains the configuration settings for using the Apache Commons Pool library. These settings are necessary when connecting to a database to efficiently handle and reuse connections.
 
-<p tit= "Main.java" ></p> 
+<p tit="Main.java" ></p> 
 
 ```java
 package com.ultipa.www.sdk.api;
@@ -199,7 +199,7 @@ By setting the configurations and the target graph in a `DataSource`, you can ea
 
 > When `UltipaClientDriver` is instantiated using `DataSource`, the `ultipa.properties` file is ignored.
 
-<p tit= "Main.java" ></p> 
+<p tit="Main.java" ></p> 
 
 ```java
 package com.ultipa.www.sdk.api;

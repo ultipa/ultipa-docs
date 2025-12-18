@@ -50,7 +50,7 @@ Inserts new nodes of a schema to the current graph.
 
 - `ResponseInsertNode`: Result of the request. The `ResponseInsertNode` object contains an alias `nodes` that holds all the inserted nodes when `InsertRequestConfig.silent` is set to false.
 
-<p tit= "Python" ></p> 
+<p tit="Python"></p> 
 
 ```python
 # Inserts two nodes into schema 'user' in graphset 'lcc', prints error code and information of the inserted nodes
@@ -85,7 +85,7 @@ for insertedNode in insertedNodes:
     print(insertedNode.toJSON())
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```python
 0
@@ -107,7 +107,7 @@ Inserts new edges of a schema to the current graph.
 
 - `ResponseInsertEdge`: Result of the request. The `ResponseInsertEdge` object contains an alias `edges` that holds all the inserted edges when `InsertRequestConfig.silent` is set to false.
 
-<p tit= "Python" ></p> 
+<p tit="Python"></p> 
 
 ```python
 # Inserts two edges into schema 'follows' in graphset 'lcc', prints error code and information of the inserted edges
@@ -131,7 +131,7 @@ for insertedEdge in insertedEdges:
     print(insertedEdge.toJSON())
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```python
 0
@@ -153,7 +153,7 @@ Inserts new nodes of a schema into the current graph through gRPC. The propertie
 
 - `InsertResponse`: Result of the request. `InsertResponse.data.uuids` contains the UUIDs of the inserted nodes when `InsertRequestConfig.silent` is set to false.
 
-<p tit= "Python" ></p> 
+<p tit="Python"></p> 
 
 ```python
 # Inserts two nodes into schema 'user' in graphset 'lcc', prints error code and the UUIDs of the inserted nodes
@@ -208,7 +208,7 @@ print(response.status.code)
 print(response.data.uuids)
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```python
 0
@@ -229,7 +229,7 @@ Inserts new edges of a schema into the current graph through gRPC. The propertie
 
 - `InsertResponse`: Result of the request. `InsertResponse.data.uuids` contains the UUIDs of the inserted edges when `InsertRequestConfig.silent` is set to false.
 
-<p tit= "Python" ></p> 
+<p tit="Python"></p> 
 
 ```python
 # Inserts two edges into schema 'follows' in graphset 'lcc', prints error code and the UUIDs of the inserted edges
@@ -260,7 +260,7 @@ print(response.status.code)
 print(response.data.uuids)
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```python
 0
@@ -280,7 +280,7 @@ Inserts new nodes of one or multiple schemas to the current graph through gRPC. 
 
 - `ResponseBatchAutoInsert`: Result of the request. `ResponseBatchAutoInsert.data.uuids` contains the insertion report when `InsertRequestConfig.silent` is set to false.
 
-<p tit= "Python" ></p> 
+<p tit="Python"></p> 
 
 ```python
 # Inserts two nodes into schema 'user' and one node into schema `product` in graphset 'lcc', prints error code and the insert reply
@@ -324,7 +324,7 @@ print(response.status.code)
 print(response.data.uuids)
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```python
 0
@@ -344,7 +344,7 @@ Inserts new edges of one or multiple schemas to the current graph through gRPC. 
 
 - `ResponseBatchAutoInsert`: Result of the request. `ResponseBatchAutoInsert.data.uuids` contains the insertion report when `InsertRequestConfig.silent` is set to false.
 
-<p tit= "Python" ></p> 
+<p tit="Python"></p> 
 
 ```python
 # Inserts two edges into schema 'follows' and one edge into schema 'purchased' in graphset 'lcc', prints error code and the insert reply
@@ -367,7 +367,7 @@ print(response.status.code)
 print(response.data.uuids)
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```python
 0
@@ -389,7 +389,7 @@ Deletes nodes that meet the given conditions from the current graph. It's import
 
 - `ResponseDeleteNode`: Result of the request. The `ResponseDeleteNode` object contains an alias `nodes` that holds all the deleted nodes when `InsertRequestConfig.silent` is set to false.
 
-<p tit= "Python" ></p> 
+<p tit="Python"></p> 
 
 ```python
 # Deletes one @user nodes whose name is 'Alice' from graphset 'lcc', prints error code and information of the deleted nodes
@@ -409,7 +409,7 @@ for deletedNode in deletedNodes:
     print(deletedNode.toJSON())
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```python
 0
@@ -429,7 +429,7 @@ Deletes edges that meet the given conditions from the current graph.
 
 - `ResponseDeleteEdge`: Result of the request. The `ResponseDeleteEdge` object contains an alias `edges` that holds all the deleted edges when `InsertRequestConfig.silent` is set to false.
 
-<p tit= "Python" ></p> 
+<p tit="Python"></p> 
 
 ```python
 # Deletes all @purchased edges from graphset 'lcc', prints error code and information of the deleted edges
@@ -448,7 +448,7 @@ for deletedEdge in deletedEdges:
     print(deletedEdge.toJSON())
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```python
 0

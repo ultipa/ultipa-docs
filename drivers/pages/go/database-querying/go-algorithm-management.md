@@ -19,7 +19,7 @@ Retrieves all Ultipa graph algorithms installed in the instance.
 - `[]Algo`: The list of all algorithms retrieved.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 // Retrieves all Ultipa graph algorithms installed and prints the information of the first returned one
@@ -35,7 +35,7 @@ if err != nil {
 println("First algorithm retrieved:")
 println(utils.JSONString(graphList[0]))
 ```
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 First algorithm retrieved:
@@ -57,7 +57,7 @@ Installs an Ultipa graph algorithm in the instance.
 - `InstallAlgoReply`: Result of the request.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.`
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 // Installs the algorithm LPA and uses the leader node to guarantee consistency, and prints the error code
@@ -76,7 +76,7 @@ if graph.Status.ErrorCode == 0 {
   println("Installation failed")
 }
 ```
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Installation succeeds
@@ -96,7 +96,7 @@ Uninstalls an Ultipa graph algorithm in the instance.
 - `UninstallAlgoReply`: Result of the request.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.`
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 // Uninstalls the algorithm LPA and prints the error code
@@ -115,7 +115,7 @@ Uninstalls an Ultipa graph algorithm in the instance.
     println("Operation failed")
   }
 ```
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Algorithm is uninstalled
@@ -136,7 +136,7 @@ Retrieves all extas installed in the instance.
 - `[]Exta`: The list of all extas retrieved.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.`
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 // Retrieves all extas installed and prints the information of the first returned one
@@ -147,7 +147,7 @@ if err != nil {
 }
 println(utils.JSONString(extaList[0]))
 ```
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 {"Name":"page_rank 1","Author":"wuchuang","Version":"beta.4.4.41-b4.4.0-tv-ui","Detail":"base:\n  category: ExtaExample\n  cn:\n    name: page_rank\n    desc: null\n  en:\n    name: page_rank\n    desc: null\n\nother_param:\n\n    \nparam_form:\n\nwrite:\n\nreturn:\n\nmedia:\n"}
@@ -168,7 +168,7 @@ Installs an exta in the instance.
 - `Response`: Result of the request.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.`
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 // Installs the exta page_rank and uses the leader node to guarantee consistency, and prints the error code
@@ -187,7 +187,7 @@ if exta.Status.ErrorCode == 0 {
   println("Installation failed")
 }
 ```
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Installation succeeds
@@ -207,7 +207,7 @@ Uninstalls an exta in the instance.
 - `UninstallExtaReply`: Result of the request.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.`
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 // Uninstalls the exta page_rank and prints the error code
@@ -222,7 +222,7 @@ if exta.Status.ErrorCode == 0 {
   println("Operation failed")
 }
 ```
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Exta is uninstalled
@@ -230,7 +230,7 @@ Exta is uninstalled
 
 ## Full Example
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
 
 ```go
 package main

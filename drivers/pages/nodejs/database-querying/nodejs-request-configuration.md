@@ -8,7 +8,7 @@ All querying methods support an optional request configuration parameter (`Reque
 
 `RequestConfig` defines the settings needed when sending non-insert requests to the database.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 import { ConnectionPool } from "@ultipa-graph/ultipa-node-sdk";
@@ -66,7 +66,7 @@ sdkUsage().then(console.log).catch(console.log);
 
 `InsertRequestConfig` defines the settings needed when sending data insertion or deletion requests to the database.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 import { ConnectionPool, ULTIPA } from "@ultipa-graph/ultipa-node-sdk";

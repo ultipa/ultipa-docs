@@ -12,7 +12,7 @@ The Ultipa Node.js SDK requires Node.js version 12.22.12 or higher.
 
 Create a Node.js project and a TypeScript file, and then add the SDK to your project using the following command:
 
-<p tit= "TypeScript" ></p>
+<p tit="TypeScript"></p>
 
 ```bash
 npm i @ultipa-graph/ultipa-node-sdk@~4.5.0-s4.4

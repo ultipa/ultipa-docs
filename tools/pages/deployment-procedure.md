@@ -13,7 +13,7 @@
   - Offline: `docker load -i < 'docker image file' >`
 - Get docker image ID: `docker images`
 - Start docker container
-<p tit= "shell" ></p> 
+<p tit="shell"></p> 
 
 ```shell
 docker run -itd --net=host 

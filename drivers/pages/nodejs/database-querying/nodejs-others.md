@@ -16,7 +16,7 @@ Retrieves database server statistics.
 
 - `Stat`: The retrieved server statistics.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 let resp = await conn.stats();
@@ -29,7 +29,7 @@ console.log("Server type:", resp.data["serverType"]),
 console.log("Version:", resp.data["version"]);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 CPU usage: 12.503961
@@ -53,14 +53,14 @@ Tests driver and database server connection.
 
 - `boolean`: Result of the request.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 let resp = await conn.test();
 console.log(resp);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 true
@@ -68,7 +68,7 @@ true
 
 ## Full Example
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
 
 ```ts
 import { ConnectionPool, ULTIPA } from "@ultipa-graph/ultipa-node-sdk";

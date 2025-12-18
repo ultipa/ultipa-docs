@@ -4,7 +4,7 @@
 
 The `Get()` or `Alias()` method of the `Response` class returns a `DataItem`, which embeds the query result. You should use the `As<Type>()` method of `DataItem` to cast the result to the appropriate driver type.
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 myQuery, _ := conn.Uql("find().nodes() as n return n{*} limit 5", requestConfig)
@@ -63,7 +63,7 @@ Methods on a `Node` object:
 | `get("<propertyName>")` | Object | Get value of the given custom property of the node. |
 | `set("<propertyName>", <propertyValue>` |  | Set value for the given custom property of the node; or add a key-value pair to the `Values` of the node if the given `<propertyName>` does not exist. |
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
 
 ```go
 myQuery, _ := conn.Uql("find().nodes() as n return n{*} limit 5", requestConfig)
@@ -73,7 +73,7 @@ println("ID of the 1st node:", nodeList[0].GetID())
 println("Name of the 1st node:", nodeList[0].GetSchema())
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 ID of the 1st node: ULTIPA8000000000000001
@@ -102,7 +102,7 @@ Methods on an `Edge` object:
 | `get("<propertyName>")` | Object | Get value of the given custom property of the edge. |
 | `set("<propertyName>", <propertyValue>` |  | Set value for the given custom property of the edge; or add a key-value pair to the values of the edge if the given `<propertyName>` does not exist. |
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 myQuery, _ := conn.Uql("find().edges() as e return e{*} limit 5", requestConfig)
@@ -111,7 +111,7 @@ edgeList, _ := myQuery.Alias("e").AsFirstEdge()
 println("Values of the 1st edge:", utils.JSONString(edgeList.GetValues()))
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 Values of the 1st edge: {"Data":{"datetime":{"Datetime":1847052190913396736,"Year":2019,"Month":1,"Day":6,"Hour":2,"Minute":57,"Second":57,"Macrosec":0,"Time":"2019-01-06T02:57:57Z"},"targetPost":703,"timestamp":{"Datetime":1847052190913396736,"Year":2019,"Month":1,"Day":6,"Hour":2,"Minute":57,"Second":57,"Macrosec":0,"Time":"2019-01-06T02:57:57+08:00"}}}
@@ -129,7 +129,7 @@ A `Path` object has the following fields:
 | `NodeSchemas` | object | Infomation of node schema |
 | `EdgeSchemas` | object | Infomation of edge schema |
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 myQuery, _ := conn.Uql("n().e()[:2].n() as paths return paths{*} limit 5", requestConfig)
@@ -140,7 +140,7 @@ println("Edge list of the 1st path:", "\n", utils.JSONString(pathList[0].GetEdge
 println("Information of the 2nd node in the 1st path:", "\n", utils.JSONString(pathList[0].GetNodes()[1]))
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 Length of the 1st path: 2
@@ -162,7 +162,7 @@ A `Graph` object has the following fields:
 | `NodeSchemas` | object | Map of all node schemas of the path |
 | `EdgeSchemas` | object | Map of all edge schemas of the path |
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 myQuery, _ := conn.Uql("n(as n1).re(as e).n(as n2).limit(3) with toGraph(collect(n1), collect(n2), collect(e)) as graph return graph", requestConfig)
@@ -178,7 +178,7 @@ for _, item := range resp.Edges {
 }
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 Node IDs:
@@ -206,7 +206,7 @@ A `GraphSet` object has the following fields:
 | `TotalEdges` | string | Total number of edges in the graphset |
 | `Status` | string | Graphset status (MOUNTED, MOUNTING, or UNMOUNTED) |
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 myQuery, _ := conn.Uql("show().graph()", nil)
@@ -219,7 +219,7 @@ for _, item := range resp {
 }
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 DFS_EG
@@ -240,7 +240,7 @@ A `Schema` object has the following fields:
 | `DBType` | DBType | Type of the schema (node or edge) |
 | `Total` | int | Total number of nodes/edges of the schema |
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 myQuery, _ := conn.Uql("show().node_schema()", requestConfig)
@@ -251,7 +251,7 @@ for _, item := range resp {
 }
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 default has 0 nodes
@@ -273,7 +273,7 @@ A `Property` object has the following fields:
 | `SubTypes` | []PropertyType | List of property data type |
 | `Extra` | string | Extra information of properties |
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 myQuery, _ := conn.Uql("show().node_property(@user)", requestConfig)
@@ -286,7 +286,7 @@ for _, item := range resp {
 }
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 LTE-ed property name: occupation
@@ -303,7 +303,7 @@ An `Algo` object has the following fields:
 | `Version` | string | Algorithm version |
 | `Params` | object | Parameters of the algorithm |
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 myQuery, _ := conn.Uql("show().algo()", requestConfig)
@@ -312,7 +312,7 @@ resp, _ := myQuery.Alias("_algoList").AsAlgos()
 println(utils.JSONString(resp[0]))
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 {"Name":"bipartite","Desc":"bipartite check","Version":"1.0.1","Params":{}}
@@ -331,7 +331,7 @@ An `Exta` object has the following fields:
 | `Version` | string | Exta version |
 | `Detail` | string | Content of the YML configuration file of the Exta |
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 myQuery, _ := conn.Uql("show().exta()")
@@ -340,7 +340,7 @@ resp, _ := myQuery.Alias("_extaList").AsExtas()
 println("Exta name:", utils.JSONString(resp[0].Name))
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 Exta name: "page_rank"
@@ -359,7 +359,7 @@ An `Index` object has the following fields:
 | `Size` | string | Index size in bytes |
 | `Type` | string | Index type (DBNODE or DBEDGE) |
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 myQuery, _ := conn.Uql("show().index()", requestConfig)
@@ -372,7 +372,7 @@ for i := 0; i < len(resp); i++ {
 }
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 Schema name: user
@@ -396,7 +396,7 @@ A `FullText` object has the following fields:
 | `Size` | string | Index size in bytes |
 | `Type` | string | Index type (DBNODE or DBEDGE) |
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 myQuery, _ := conn.Uql("show().fulltext()", requestConfig)
@@ -409,7 +409,7 @@ for i := 0; i < len(resp); i++ {
 }
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 Fulltext name: nameFull
@@ -426,7 +426,7 @@ A `Privilege` object has the following fields:
 | `GraphPrivileges` | []string | Graph privileges |
 | `SystemPrivileges` | []string | System privileges |
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 myQuery, _ := conn.Uql("show().privilege()", requestConfig)
@@ -435,7 +435,7 @@ resp, _ := myQuery.Alias("_privilege").AsPrivilege()
 println(utils.JSONString(resp[0].SystemPrivileges))
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 ["TRUNCATE","COMPACT","CREATE_GRAPH","SHOW_GRAPH","DROP_GRAPH","ALTER_GRAPH","MOUNT_GRAPH","UNMOUNT_GRAPH","TOP","KILL","STAT","SHOW_POLICY","CREATE_POLICY","DROP_POLICY","ALTER_POLICY","SHOW_USER","CREATE_USER","DROP_USER","ALTER_USER","GRANT","REVOKE","SHOW_PRIVILEGE"]
@@ -453,7 +453,7 @@ A `Policy` object has the following fields:
 | `PropertyPrivileges` | PropertyPrivileges | Property privileges included in the policy |
 | `Policies` | []string | Policies included in the policy |
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 myQuery, _ := conn.Uql("show().policy()", requestConfig)
@@ -464,7 +464,7 @@ for i := 0; i < len(resp); i++ {
 }
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 operator
@@ -485,7 +485,7 @@ A `User` object has the following fields:
 | `Policies` | []string | Policies granted to the user |
 | `PropertyPrivileges` | PropertyPrivileges | Property privileges granted to the user |
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 myQuery, _ := conn.Uql("show().user('Tester')", requestConfig)
@@ -498,7 +498,7 @@ println("System privileges:", utils.JSONString(resp[0].SystemPrivileges))
 println("Property privileges:", utils.JSONString(resp[0].PropertyPrivileges))
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 Username: Tester
@@ -522,7 +522,7 @@ A `Stat` object has the following fields:
 | `ServerType` | string | Server type |
 | `Version` | string | Version of the server | 
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go  
 myQuery, _ := conn.Uql("stats()", requestConfig)
@@ -532,7 +532,7 @@ println("CPU usage::", resp.CPUUsage, "%")
 println("Memory usage:", resp.MemUsage, "%")
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 CPU usage: 16.926739 %
@@ -550,7 +550,7 @@ A `Process` (`Top`) object has the following fields:
 | `ProcessUql` | string | The UQL run with the process |
 | `Duration` | string | The duration in seconds the task has run so far |
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 myQuery, _ := conn.Uql("top()", requestConfig)
@@ -559,7 +559,7 @@ resp, _ := myQuery.Alias("_top").AsTops()
 println(resp[0].ProcessId)
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 a_5_15518_2
@@ -576,7 +576,7 @@ A `Task` object has the following fields:
 | `ErrorMsg` | string | Error message of the task |
 | `Result` | object | Algorithm result and statistics and their corresponding values |
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 myQuery, _ := conn.Uql("show().task()", requestConfig)
@@ -587,7 +587,7 @@ println("Parameters:", utils.JSONString(resp[0].Param))
 println("Result:", utils.JSONString(resp[0].Result))
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 Algo name: louvain
@@ -611,7 +611,7 @@ Methods on a `Table` object:
 | ---- | ---- | ---- | 
 | `ToKV()` | []Values | Convert all rows of the table to a key-value list. |
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 myQuery, _ := conn.Uql("find().nodes() as n return table(n._id, n._uuid) as myTable limit 5", requestConfig)
@@ -620,7 +620,7 @@ resp, _ := myQuery.Alias("myTable").AsTable()
 println("2nd row in table:", utils.JSONString(resp.ToKV()[1]))
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 2nd row in table: {"Data":{"n._id":"u604510","n._uuid":2}}
@@ -637,7 +637,7 @@ An `Attr` object has the following fields:
 | `ResultType` | ResultType | Attr type description |
 | `Rows` | Row | Attr rows |
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 myQuery, _ := conn.Uql("find().nodes({@ad}) as n return n.brand limit 5", requestConfig)
@@ -645,7 +645,7 @@ resp, _ := myQuery.Alias("n.brand").AsAttr()
 println(utils.JSONString(resp.Rows))
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 [14655,14655,14655,14655,434760]

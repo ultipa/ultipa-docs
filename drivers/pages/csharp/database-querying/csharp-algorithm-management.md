@@ -18,7 +18,7 @@ Retrieves all Ultipa graph algorithms installed in the instance.
 
 - `List<Algo>`: The list of all algorithms retrieved.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 // Retrieves all Ultipa graph algorithms installed and prints the information of the first returned one
@@ -26,7 +26,7 @@ Retrieves all Ultipa graph algorithms installed in the instance.
 var res = await ultipa.ShowAlgo();
 Console.WriteLine(JsonConvert.SerializeObject(res[0].Params));
 ```
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 "{\"name\":\"louvain\",\"description\":\"louvain\",\"version\":\"1.0.4\",\"parameters\":{\"edge_schema_property\":\"optinal,default 1 for each edge if absent\",\"phase1_loop_num\":\"size_t,required\",\"min_modularity_increase\":\"float,required\",\"limit\":\"optional,-1 for all results, >=0 partial results\",\"order\":\"optional, asc or desc, case_unsensitive, only work for 'community:id/count' mode\"},\"write_to_db_parameters\":{\"property\":\"set write back property name for each schema and nodes\"},\"write_to_file_parameters\":{\"filename1\":\"id1:community\",\"filename2\":\"community1: id1,id2...\",\"filename3\":\"community1: count\"},\"write_to_stats_parameters\":{\"enable\":\"0:no stats, 1:enable stats(count of communities)\"},\"write_to_client_normal_parameters\":{\"mode\":\"1:<id1:community>   2:<community1:count>\"},\"write_to_client_stream_parameters\":{\"mode\":\"1:<id1:community>   2:<community1:count>\"},\"result_opt\":\"59\"}"
@@ -46,7 +46,7 @@ Installs an Ultipa graph algorithm in the instance.
 
 - `InstallAlgoReply`: Result of the request.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 // Installs the algorithm LPA and uses the leader node to guarantee consistency, and prints the error code
@@ -60,7 +60,7 @@ var res = await ultipa.InstallAlgo(
 );
 Console.WriteLine(res.Status.ErrorCode);
 ```
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Success
@@ -79,7 +79,7 @@ Uninstalls an Ultipa graph algorithm in the instance.
 
 - `UninstallAlgoReply`: Result of the request.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 // Uninstalls the algorithm LPA and prints the error code
@@ -87,7 +87,7 @@ Uninstalls an Ultipa graph algorithm in the instance.
 var res = ultipa.UninstallAlgo("lpa");
 Console.WriteLine(res.Status.ErrorCode);
 ```
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Success
@@ -107,7 +107,7 @@ Retrieves all extas installed in the instance.
 
 - `List<Exta>`: The list of all extas retrieved.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 // Retrieves all extas installed and prints the information of the first returned one
@@ -115,7 +115,7 @@ Retrieves all extas installed in the instance.
 var res = await ultipa.ShowExta();
 Console.WriteLine(JsonConvert.SerializeObject(res[0]));
 ```
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 {"Author":"wuchuang","Name":"page_rank","Version":"beta.4.4.41-b4.4.0-tv-ui","Detail":"base:\r\n  category: ExtaExample\r\n  cn:\r\n    name: page_rank\r\n    desc: null\r\n  en:\r\n    name: page_rank\r\n    desc: null\r\n\r\nother_param:\r\n\r\n    \r\nparam_form:\r\n\r\nwrite:\r\n\r\nreturn:\r\n\r\nmedia:\r\n"}
@@ -135,7 +135,7 @@ Installs an exta in the instance.
 
 - `InstallExtaReply`: Result of the request.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 // Installs the exta page_rank and uses the leader node to guarantee consistency, and prints the error code
@@ -149,7 +149,7 @@ var res = await ultipa.InstallExta(
 );
 Console.WriteLine(res.Status.ErrorCode);
 ```
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Success
@@ -168,7 +168,7 @@ Uninstalls an exta in the instance.
 
 - `UninstallExtaReply`: Result of the request.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 // Uninstalls the exta page_rank and prints the error code
@@ -176,7 +176,7 @@ Uninstalls an exta in the instance.
 var res = ultipa.UninstallExta("page_rank");
 Console.WriteLine(res.Status.ErrorCode);
 ```
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Success
@@ -184,7 +184,7 @@ Success
 
 ## Full Example
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
 
 ```c#
 using System.Security.Cryptography.X509Certificates;

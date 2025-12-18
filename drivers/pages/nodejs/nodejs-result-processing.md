@@ -28,7 +28,7 @@ Retrieves data by the alias index.
 
 - `DataItem`: The retrieved data.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 let resp = await conn.uql(
@@ -41,7 +41,7 @@ console.log(resp.data.get(1));
 
 The UQL statement returns two aliases `n._id` and `n._uuid`; the `get()` method retrieves the alias `n._id` at index 0.
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 DataItem {
@@ -73,7 +73,7 @@ Retrieves data by the alias name.
 
 - `DataItem`: The retrieved data.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 let resp = await conn.uql(
@@ -85,7 +85,7 @@ console.log(resp.data.alias("n._uuid"));
 
 The UQL statement returns two aliases `n._id` and `n._uuid`; the `alias()` method retrieves the alias `n._uuid` by its name.
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 DataItem {

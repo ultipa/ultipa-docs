@@ -20,7 +20,7 @@ Retrieves all running and stopping processes from the instance.
 
 - `List<Process>`: The list of all processes in the instance.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 // Retrieves all running and stopping processes in the instance
@@ -31,7 +31,7 @@ var processList = await ultipa.Top(requestConfig);
 Console.WriteLine(JsonConvert.SerializeObject(processList));
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 [{"Id":"a_7_33_2","Uql":"n().e().n().e().n().e().n() as p return count(p)","Duration":73,"Status":"RUNNING"}]
@@ -50,7 +50,7 @@ Kills running processes in the instance.
 
 - `Response`: Result of the request.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 // Retrieves all running and stopping processes in the instance and kill all
@@ -71,7 +71,7 @@ if (res.Status.ErrorCode == 0)
 }
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Process ID: a_6_41_2
@@ -97,7 +97,7 @@ Retrieves tasks from the current graphset.
 
 - `List<Task>`: The list of all tasks in the graphset.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 RequestConfig requestConfig = new RequestConfig()
@@ -123,7 +123,7 @@ Console.WriteLine("Algo name: " + JsonConvert.SerializeObject(showT[0].Info.Algo
 Console.WriteLine("Task result: " + JsonConvert.SerializeObject(showT[0].result));
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Task ID: "72122"
@@ -145,7 +145,7 @@ Clears (Deletes) tasks from the current graphset. Tasks with the status `TaskSta
 
 - `Response`: Result of the request.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 RequestConfig requestConfig = new RequestConfig()
@@ -178,7 +178,7 @@ else
 }
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Task ID: 72124
@@ -198,7 +198,7 @@ Stops tasks whose status is `COMPUTING` in the current graphset.
 
 - `Response`: Result of the request.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 RequestConfig requestConfig = new RequestConfig()
@@ -222,7 +222,7 @@ Console.WriteLine("Task ID: " + taskID);
 Console.WriteLine("Task is stopped: " + stopT.Status.ErrorCode);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Task ID: 72126
@@ -231,7 +231,7 @@ Task is stopped: Success
 
 ## Full Example
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
 
 ```c#
 using System.Data;

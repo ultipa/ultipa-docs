@@ -14,7 +14,7 @@
 ## Operation Procedure
 
 1. Generate sample configuration file `example_config.yaml`
-<p tit= "bash" ></p> 
+<p tit="bash"></p> 
 
 ```bash
 ./ultipaLDAP -g 
@@ -36,7 +36,7 @@ Command options:
 
 
 ## Configuration File  
-<p tit= "YAML" type="yaml"></p> 
+<p tit="YAML" type="yaml"></p> 
 
 ```yml
 ProxyConfig:

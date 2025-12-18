@@ -16,7 +16,7 @@ Retrieves all graphsets from the database.
 
 - `GraphSet[]`: The list of all graphsets in the database.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 // Retrieves all graphsets and prints the names of those who have over 2000 edges
@@ -27,7 +27,7 @@ let graphs = resp.data?.filter((graph) => {
 });
 console.log(graphs);
 ```
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Display_Ad_Click
@@ -48,7 +48,7 @@ Retrieves one graphset from the database by its name.
 
 - `GraphSet`: The retrieved graphset.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 // Retrieves the graphsets named 'wikiKG' and prints all its information
@@ -57,7 +57,7 @@ let resp = await conn.getGraph("wikiKG");
 console.log(resp.data);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 {"id":615,"name":"wikiKG","totalNodes":3546,"totalEdges":2179,"status":"MOUNTED","description":""}
@@ -76,7 +76,7 @@ Creates a new graphset in the database.
 
 - `Response`: Result of the request.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 // Creates one graphset and prints the error code
@@ -90,7 +90,7 @@ console.log(resp.status.code_desc);
 
 A new graphset `testNodeJS_SDK` is created in the database, and the driver prints:
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 SUCCESS
@@ -109,7 +109,7 @@ Creates a new graphset in the database, handling cases where the given graphset 
 
 - `Response`: Result of the request.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
 
 ```ts
 // Creates one graphset and prints the error code
@@ -130,7 +130,7 @@ console.log("Second Creation: ", graph2.status.code_desc);
 
 A new graphset `testNodeJS_SDK` is created in the database, and the driver prints:
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 First Creation: SUCCESS
@@ -150,7 +150,7 @@ Drops one graphset from the database by its name.
 
 - `Response`: Result of the request.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
 
 ```ts
 // Creates one graphset and then drops it, prints the result
@@ -164,7 +164,7 @@ console.log(resp.status.code_desc);
 let resp2 = await conn.dropGraph("testNodeJS_SDK");
 console.log(resp2);
 ```
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```java
 SUCCESS
@@ -189,7 +189,7 @@ Alters the name and description of one existing graphset in the database by its 
 
 - `Response`: Result of the request.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
 
 ```ts
 // Renames the graphset 'testNodeJS_SDK' to 'newGraph', sets a description for it, and prints the result
@@ -201,7 +201,7 @@ let resp = await conn.alterGraph(
 console.log(resp);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```java
 {
@@ -224,7 +224,7 @@ Truncates (Deletes) the specified nodes or edges in the given graphset or trunca
 
 - `Response`: Result of the request.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
 
 ```ts
 // Truncates @user nodes in the graphset 'myGraph_1' and prints the error code
@@ -252,7 +252,7 @@ let trunc3 = await conn.truncate({
 console.log(trunc3.status.code_desc);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```java
 SUCCESS
@@ -273,7 +273,7 @@ Compacts a graphset by clearing its invalid and redundant data on the server dis
 
 - `Response`: Result of the request.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
 
 ```ts
 // Compacts the graphset 'miniCircle' and prints the error code
@@ -282,7 +282,7 @@ let trunc1 = await conn.compact("miniCircle");
 console.log(trunc1.status.code_desc);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```java
 SUCCESS
@@ -301,7 +301,7 @@ Checks the existence of a graphset in the database by its name.
 
 - `Boolean`: Result of the request.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
 
 ```ts
 // Checks the existence of graphset 'miniCircle' and prints the result
@@ -310,7 +310,7 @@ let has = await conn.hasGraph("miniCircle");
 console.log("has = ", has.data);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```java
 has = true
@@ -329,7 +329,7 @@ Unmounts a graphset to save database memory.
 
 - `Response`: Result of the request.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
 
 ```ts
 // / Unmounts the graphsets 'miniCircle' and prints the result
@@ -338,7 +338,7 @@ let resp = await conn.unmountGraph("miniCircle");
 console.log(resp.status.code_desc);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```java
 SUCCESS
@@ -357,7 +357,7 @@ Mounts a graphset to the database memory.
 
 - `Response`: Result of the request.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
 
 ```ts
 // Mounts the graphsets 'miniCircle' and prints the result
@@ -366,7 +366,7 @@ let resp = await conn.mountGraph("miniCircle");
 console.log(resp.status.code_desc);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```java
 SUCCESS
@@ -374,7 +374,7 @@ SUCCESS
 
 ## Full Example
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
 
 ```ts
 import { ConnectionPool, ULTIPA } from "@ultipa-graph/ultipa-node-sdk";

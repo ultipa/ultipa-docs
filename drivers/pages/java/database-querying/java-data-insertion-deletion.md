@@ -50,7 +50,7 @@ Inserts new nodes of a schema to the current graph.
 
 - `Response`: Result of the request. The `Response` object contains an alias `nodes` that holds all the inserted nodes when `InsertRequestConfig.silent` is set to false.
 
-<p tit= "Java" ></p> 
+<p tit="Java"></p> 
 
 ```java
 // Inserts two nodes into schema 'user' in graphset 'lcc', prints error code and information of the inserted nodes
@@ -94,7 +94,7 @@ for (Node node : insertedNodes) {
 }
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```java
 SUCCESS
@@ -116,7 +116,7 @@ Inserts new edges of a schema to the current graph.
 
 - `Response`: Result of the request. The `Response` object contains an alias `edges` that holds all the inserted edges when `InsertRequestConfig.silent` is set to false.
 
-<p tit= "Java" ></p> 
+<p tit="Java"></p> 
 
 ```java
 // Inserts two edges into schema 'follows' in graphset 'lcc', prints error code and information of the inserted edges
@@ -153,7 +153,7 @@ for (Edge edge : insertedEdges) {
 }
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```java
 SUCCESS
@@ -175,7 +175,7 @@ Inserts new nodes of a schema into the current graph through gRPC. The propertie
 
 - `Response`: Result of the request. `Response.InsertNodesReply` contains the insertion report when `InsertRequestConfig.silent` is set to false.
 
-<p tit= "Java" ></p> 
+<p tit="Java"></p> 
 
 ```java
 // Inserts two nodes into schema 'user' in graphset 'lcc', prints error code and the insert reply
@@ -258,7 +258,7 @@ System.out.println(response.getStatus().getErrorCode());
 System.out.println(response.getInsertNodesReply());
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```java
 SUCCESS
@@ -279,7 +279,7 @@ Inserts new edges of a schema into the current graph through gRPC. The propertie
 
 - `Response`: Result of the request. `Response.InsertNodesReply` contains the insertion report when `InsertRequestConfig.silent` is set to false.
 
-<p tit= "Java" ></p> 
+<p tit="Java"></p> 
 
 ```java
 // Inserts two edges into schema 'follows' in graphset 'lcc', prints error code and the insert reply
@@ -323,7 +323,7 @@ System.out.println(response.getStatus().getErrorCode());
 System.out.println(response.getInsertEdgesReply());
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```java
 SUCCESS
@@ -343,7 +343,7 @@ Inserts new nodes of one or multiple schemas to the current graph through gRPC. 
 
 - `Response`: Result of the request. `Response.InsertNodesReply` contains the insertion report when `InsertRequestConfig.silent` is set to false.
 
-<p tit= "Java" ></p> 
+<p tit="Java"></p> 
 
 ```java
 // Inserts two nodes into schema 'user' and one node into schema `product` in graphset 'lcc', prints error code and the insert reply
@@ -408,7 +408,7 @@ System.out.println(response.getStatus().getErrorCode());
 System.out.println(response.getInsertNodesReply());
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```java
 SUCCESS
@@ -428,7 +428,7 @@ Inserts new edges of one or multiple schemas to the current graph through gRPC. 
 
 - `Response`: Result of the request. `Response.InsertEdgesReply` contains the insertion report when `InsertRequestConfig.silent` is set to false.
 
-<p tit= "Java" ></p> 
+<p tit="Java"></p> 
 
 ```java
 // Inserts two edges into schema 'follows' and one edge into schema 'purchased' in graphset 'lcc', prints error code and the insert reply
@@ -473,7 +473,7 @@ System.out.println(response.getStatus().getErrorCode());
 System.out.println(response.getInsertEdgesReply());
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```java
 SUCCESS
@@ -496,7 +496,7 @@ Deletes nodes that meet the given conditions from the current graph. It's import
 
 - `Response`: Result of the request. The `Response` object contains an alias `nodes` that holds all the deleted nodes when `InsertRequestConfig.silent` is set to false.
 
-<p tit= "Java" ></p> 
+<p tit="Java"></p> 
 
 ```java
 // Deletes one @user nodes whose name is 'Alice' from graphset 'lcc', prints error code and information of the deleted nodes
@@ -516,7 +516,7 @@ for (Node node : deletedNodes) {
 }
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```java
 SUCCESS
@@ -537,7 +537,7 @@ Deletes edges that meet the given conditions from the current graph.
 
 - `Response`: Result of the request. The `Response` object contains an alias `edges` that holds all the deleted edges when `InsertRequestConfig.silent` is set to false.
 
-<p tit= "Java" ></p> 
+<p tit="Java"></p> 
 
 ```java
 // Deletes all @purchased edges from graphset 'lcc', prints error code and information of the deleted edges
@@ -556,7 +556,7 @@ for (Edge edge : deletedEdges) {
 }
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```java
 SUCCESS

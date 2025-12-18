@@ -15,7 +15,7 @@ Acquire data with labels <i>person</i>, <i>company</i> and <i>holding</i> in Neo
 
 ## 2. Modify configuration file
 
-<p tit= "import.sample.neo4j.yml" type="yaml"></p>
+<p tit="import.sample.neo4j.yml" type="yaml"></p>
 
 ```yml
 # Configure data source type

@@ -49,7 +49,7 @@ Inserts new nodes of a schema to the current graph.
 - `Response`: Result of the request. The `Response` object contains an alias `nodes` that holds all the inserted nodes when `InsertRequestConfig.Slient` is set to true.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 // Inserts two nodes into schema 'user' in graphset 'lcc', prints error code and information of the inserted nodes
@@ -89,7 +89,7 @@ println("Operation succeeds:", myInsert.Status.IsSuccess())
 nodeList, schemaList, _ := myInsert.Alias("nodes").AsNodes()
 printers.PrintNodes(nodeList, schemaList)
 ```
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Operation succeeds: true
@@ -117,7 +117,7 @@ Inserts new edges of a schema to the current graph.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 // Inserts two edges into schema 'follows' in graphset 'lcc', prints error code and information of the inserted edges
@@ -154,7 +154,7 @@ println("Operation succeeds:", myInsert.Status.IsSuccess())
 edgeList, schemaList, _ := myInsert.Alias("edges").AsEdges()
 printers.PrintEdges(edgeList, schemaList)
 ```
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Operation succeeds: true
@@ -181,7 +181,7 @@ Inserts new nodes of a schema into the current graph through gRPC. The propertie
 - `InsertResponse`: Result of the request.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 // Inserts two nodes into schema 'user' in graphset 'lcc' and prints error code 
@@ -256,7 +256,7 @@ if err != nil {
 }
 println("Operation succeeds:", myInsert.Status.IsSuccess())
 ```
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Operation succeeds: true
@@ -278,7 +278,7 @@ Inserts new edges of a schema into the current graph through gRPC. The propertie
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 // Inserts two edges into schema 'follows' in graphset 'lcc' and prints error code
@@ -318,7 +318,7 @@ if err != nil {
 }
 println("Operation succeeds:", myInsert.Status.IsSuccess())
 ```
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Operation succeeds: true
@@ -338,7 +338,7 @@ Inserts new nodes of one or multiple schemas to the current graph through gRPC. 
 - `InsertBatchAutoResponse`: Result of the request. 
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 // Inserts two nodes into schema 'user' and one node into schema `product` in graphset 'lcc' and prints error code
@@ -414,7 +414,7 @@ for _, item := range insert3.Resps {
   println("Operation succeeds:", item.Status.IsSuccess())
 }
 ```
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Operation succeeds: true
@@ -436,7 +436,7 @@ Inserts new edges of one or multiple schemas to the current graph through gRPC. 
 - `InsertBatchAutoResponse`: Result of the request.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 // Inserts two edges into schema 'follows' and one edge into schema 'purchased' in graphset 'lcc' and prints error code
@@ -502,7 +502,7 @@ for _, item := range insert3.Resps {
   println("Operation succeeds:", item.Status.IsSuccess())
 }
 ```
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Operation succeeds: true
@@ -526,7 +526,7 @@ Deletes nodes that meet the given conditions from the current graph. It's import
 - `Response`: Result of the request. The `Response` object contains an alias `nodes` that holds all the deleted nodes when `InsertRequestConfig.Slient` is set to false.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 // Deletes one @user nodes whose name is 'Alice' from graphset 'lcc' and prints error code
@@ -545,7 +545,7 @@ insertRequestConfig := &configuration.InsertRequestConfig{
 myDeletion, _ := conn.DeleteNodes("{@user.name == 'Alice'}", insertRequestConfig)
 println("Operation succeeds:", myDeletion.Status.IsSuccess())
 ```
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Operation succeeds: true
@@ -565,7 +565,7 @@ Deletes edges that meet the given conditions from the current graph.
 - `Response`: Result of the request. The `Response` object contains an alias `edges` that holds all the deleted edges when `InsertRequestConfig.Slient` is set to true.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 // Deletes all @purchased edges from graphset 'lcc' and prints error code
@@ -583,7 +583,7 @@ insertRequestConfig := &configuration.InsertRequestConfig{
 deleteEdge, _ := conn.DeleteEdges("{@purchased}", insertRequestConfig)
 println("Operation succeeds:", deleteEdge.Status.IsSuccess()
 ```
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Operation succeeds: true
@@ -591,7 +591,7 @@ Operation succeeds: true
 
 ## Full Example
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
 
 ```go
 package main

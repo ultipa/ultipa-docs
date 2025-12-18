@@ -19,7 +19,7 @@ Retrieves all system privileges and graph privileges, which are actually UQL com
 - `[]Privilege`: All system privileges and graph privileges.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 // Retrieves all system privileges and graph privileges
@@ -48,7 +48,7 @@ for i, sp := range myPri[0].SystemPrivileges {
 println("SystemPrivileges:", "\n", SGraph)
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 GraphPrivileges: 
@@ -72,7 +72,7 @@ Retrieves all policies from the instance. A policy includes system privileges, g
 - `[]Policy`: The list of all policies in the instance.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 // Retrieves all policies and prints their information
@@ -90,7 +90,7 @@ for i := 0; i < len(myPol); i++ {
   println("Policies include:", utils.JSONString(myPol[i].Policies), "\n")
 }
 ```
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Policy name: operator
@@ -126,7 +126,7 @@ Retrieves a policy from the instance by its name.
 - `Policy`: The retrieved policy.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 // Retrieves a policy 'operator' and prints its information
@@ -143,7 +143,7 @@ println("- Proverty privileges:", utils.JSONString(myPol.PropertyPrivileges))
 println("- Policies:", utils.JSONString(myPol.Policies))
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Policy operator includes:
@@ -167,7 +167,7 @@ Creates a policy in the instance.
 - `Response`: Result of the request.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 // Creates a new policy 'sales' and then retrieves it
@@ -218,7 +218,7 @@ println("- Proverty privileges:", utils.JSONString(myPol.PropertyPrivileges))
 println("- Policies:", utils.JSONString(myPol.Policies))
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Policy is created: true
@@ -243,7 +243,7 @@ Alters the system privileges, graph privileges, property privileges and policies
 - `Response`: Result of the request.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 // Alters the policy 'sales' and then retrieves it
@@ -281,7 +281,7 @@ println("- Proverty privileges:", utils.JSONString(myPol.PropertyPrivileges))
 println("- Policies:", utils.JSONString(myPol.Policies))
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Policy is altered: true
@@ -306,7 +306,7 @@ Drops one policy from the instance by its name.
 - `Response`: Result of the request.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 // Drops the policy 'sales' and prints error code
@@ -319,7 +319,7 @@ if err != nil {
 println("Policy is deleted:", myPol.IsSuccess())
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Policy is deleted: true
@@ -340,7 +340,7 @@ Retrieves all database users from the instance.
 - `[]User`: The list of all users in the instance.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 // Retrieves all users and prints information of the first returned
@@ -359,7 +359,7 @@ println("Property privileges:", "\n", utils.JSONString(userList[0].PropertyPrivi
 println("Policies:", "\n", utils.JSONString(userList[0].Policies))
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Username: test006
@@ -388,7 +388,7 @@ Retrieves a database user from the instance by its username.
 - `User`: The retrieved user.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 // Retrieves user 'test005' and prints its information
@@ -407,7 +407,7 @@ println("Property privileges:", "\n", utils.JSONString(myUser.PropertyPrivileges
 println("Policies:", "\n", utils.JSONString(myUser.Policies))
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Username: test005
@@ -436,7 +436,7 @@ Creates a database user in the instance.
 - `Response`: Result of the request.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 // Creates a new user 'GoUser' and prints error code
@@ -463,7 +463,7 @@ if err != nil {
 println("User is created:", myUser.IsSuccess())
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 User is created: true
@@ -483,7 +483,7 @@ Alters the password, system privileges, graph privileges, property privileges an
 - `Response`: Result of the request.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 // Alters the user 'GoUser' and prints error code
@@ -508,7 +508,7 @@ if err != nil {
 println("User is altered:", myUser.IsSuccess())
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 User is altered: true
@@ -528,7 +528,7 @@ Drops one database user from the instance by its username.
 - `Response`: Result of the request.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 // Drops the user 'GoUser' and prints error code
@@ -542,7 +542,7 @@ if err != nil {
 println("User is deleted:", myUser.IsSuccess())
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 User is deleted: true
@@ -566,7 +566,7 @@ Grants new system privileges, graph privileges, property privileges and policies
 - `Response`: Result of the request.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 // Grants privileges and policies to user 'johndoe' and prints error code
@@ -585,7 +585,7 @@ if err != nil {
 println("Policy is granted:", myPol.IsSuccess())
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Policy is granted: true
@@ -609,7 +609,7 @@ Revokes system privileges, graph privileges, property privileges and policies fr
 - `Response`: Result of the request.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 graphPrivileges := structs.GraphPrivileges{
@@ -643,7 +643,7 @@ if err != nil {
 println("Policy is revoked:", myPol2.IsSuccess())
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Policy is revoked: true
@@ -653,7 +653,7 @@ Policy is revoked: true
 
 ## Full Example
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
 
 ```go
 package main

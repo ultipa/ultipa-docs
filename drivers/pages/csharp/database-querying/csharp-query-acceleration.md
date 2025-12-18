@@ -21,7 +21,7 @@ Loads one custom property of nodes or edges to the computing engine for query ac
 
 - `UqlResponse`: Result of the request. 
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
 
 ```c#
 // Loads the edge property @relatesTo.type to engine in graphset 'UltipaTeam' and prints error code
@@ -35,7 +35,7 @@ var prop = await ultipa.GetEdgeProperty("relatesTo", "type", requestConfig);
 Console.WriteLine("LTE status of the property: " + prop.Lte);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Success
@@ -57,7 +57,7 @@ Unloads one custom property of nodes or edges from the computing engine to save 
 
 - `UqlResponse`: Result of the request. 
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
 
 ```c#
 // Unloads the edge property @relatesTo.type from engine in graphset 'UltipaTeam' and prints error code and whether it's LTE-ed
@@ -71,7 +71,7 @@ var prop = await ultipa.GetEdgeProperty("relatesTo", "type", requestConfig);
 Console.WriteLine("LTE status of the property: " + prop.Lte);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Success
@@ -92,7 +92,7 @@ Retrieves all indexes of node and edge properties from the current graphset.
 
 - `List<Index>`: The list of all indexes retrieved in the current graphset.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
 
 ```c#
 // Retrieves indexes in graphset 'Ad_Click' and prints their information
@@ -106,7 +106,7 @@ foreach (var item in res)
 }
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 {"Schema":"user","Name":"shopping_level","Properties":"shopping_level","Status":"done","size":"4608315"}
@@ -126,7 +126,7 @@ Retrieves all indexes of node properties from the current graphset.
 
 - `List<Index>`: The list of all indexes retrieved in the current graphset.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
 
 ```c#
 // Retrieves node indexes in graphset 'Ad_Click' and prints their information
@@ -140,7 +140,7 @@ foreach (var item in res)
 }
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 {"Schema":"user","Name":"shopping_level","Properties":"shopping_level","Status":"done","size":"4608315"}
@@ -159,7 +159,7 @@ Retrieves all indexes of edge properties from the current graphset.
 
 - `List<Index>`: The list of all indexes retrieved in the current graphset.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
 
 ```c#
 // Retrieves edge indexes in graphset 'Ad_Click' and prints their information
@@ -173,7 +173,7 @@ foreach (var item in res)
 }
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 {"Schema":"clicks","Name":"time","Properties":"time","Status":"done","size":"12809771"}
@@ -194,7 +194,7 @@ Creates a new index in the current graphset.
 
 - `UqlResponse`: Result of the request. 
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
 
 ```c#
 // Creates indexes for all node properties 'name' in graphset 'Ad_Click' and prints the error code
@@ -205,7 +205,7 @@ var res = await ultipa.CreateIndex(DBType.Dbnode, "name", requestConfig);
 Console.WriteLine(res.Status.ErrorCode);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Success
@@ -226,7 +226,7 @@ Drops indexes in the current graphset.
 
 - `UqlResponse`: Result of the request. 
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
 
 ```c#
 // Drops the index of the node property @ad.name in graphset 'Ad_Click' and prints the error code
@@ -237,7 +237,7 @@ var res = await ultipa.DropIndex(DBType.Dbnode, "ad", "name", requestConfig);
 Console.WriteLine(res.Status.ErrorCode);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Success
@@ -257,7 +257,7 @@ Retrieves all full-text indexes of node and edge properties from the current gra
 
 - `List<Index>`: The list of all indexes retrieved in the current graphset.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
 
 ```c#
 // Retrieves the first full-text index returned in graphset 'miniCircle' and prints its information
@@ -268,7 +268,7 @@ var res = await ultipa.ShowFulltext(requestConfig);
 Console.WriteLine(JsonConvert.SerializeObject(res[0]));
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 {"Schema":"movie","Name":"genreFull","Properties":"genre","Status":"done","size":null}
@@ -286,7 +286,7 @@ Retrieves all full-text indexes of node properties from the current graphset.
 
 - `List<Index>`: The list of all full-text indexes of node properties retrieved in the current graphset.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
 
 ```c#
 // Retrieves the first node full-text index of node properties returned in graphset 'miniCircle' and prints its information
@@ -297,7 +297,7 @@ var res = await ultipa.ShowNodeFulltext(requestConfig);
 Console.WriteLine(JsonConvert.SerializeObject(res[0]));
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 {"Schema":"movie","Name":"genreFull","Properties":"genre","Status":"done","size":null}
@@ -315,7 +315,7 @@ Retrieves all full-text indexes of edge properties from the current graphset.
 
 - `List<Index>`: The list of all edge full-text indexes of edge properties retrieved in the current graphset.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
 
 ```c#
 // Retrieves the first edge full-text index of edge properties returned in graphset 'miniCircle' and prints its information
@@ -326,7 +326,7 @@ var res = await ultipa.ShowEdgeFulltext(requestConfig);
 Console.WriteLine(JsonConvert.SerializeObject(res[0]));
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 {"Schema":"review","Name":"nameFull","Properties":"content","Status":"done","size":null}
@@ -348,7 +348,7 @@ Creates a new full-text index in the current graphset.
 
 - `UqlResponse`: Result of the request. 
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
 
 ```c#
 // Creates full-text index called 'movieName' for the property @movie.name in graphset 'miniCircle' and prints the error code
@@ -365,7 +365,7 @@ var res = await ultipa.CreateFulltext(
 Console.WriteLine(res.Status.ErrorCode);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Success
@@ -385,7 +385,7 @@ Drops a full-text index in the current graphset.
 
 - `UqlResponse`: Result of the request. 
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
 
 ```c#
 // Drops the node full-index 'movieName' in graphset 'miniCircle' and prints the error code
@@ -396,7 +396,7 @@ var res = await ultipa.DropFulltext(DBType.Dbnode, "movieName", requestConfig);
 Console.WriteLine(res.Status.ErrorCode);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Success
@@ -404,7 +404,7 @@ Success
 
 ## Full Example
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
 
 ```c#
 

@@ -6,7 +6,7 @@ Acquire data from RDF file(s) and import into Ultipa graphset.
 
 Execute the following command in your command line tool. 
 
-<p tit= "Terminal" ></p> 
+<p tit="Terminal"></p> 
 
 ```bash
 ./ultipa-importer --sample
@@ -18,7 +18,7 @@ The `import.sample.rdf.yml` file will be generated in the same directory as `ult
 
 The configuration file consists of three parts. Modify the configuration file according to your needs.
 
-<p tit= "import.sample.rdf.yml" type="yaml"></p>
+<p tit="import.sample.rdf.yml" type="yaml"></p>
 
 ```yml
 # Supported source type: csv/json/jsonl/rdf/bigQuery/sql/kafka/neo4j/salesforce; Only one mode can be used at a time
@@ -74,7 +74,7 @@ settings:
 | `file` | String | Path of the RDF file to be imported. Multiple files are allowed to be speicified.| 
 | `format` | String | Supported formats include `ntriples`, `turtle` and `rdfxml`, corresponding to RDF file extensions `.ntl`, `.ttl` and `.xml`, respectively. Ensure the format you specify matches the RDF file to be imported. Otherwise, errors may occur during parsing. |
 > To specify multiple files, configure in the following way:
-<p tit= "Configuration for multiple files.yml" type="yaml"></p>
+<p tit="Configuration for multiple files.yml" type="yaml"></p>
 
  ```yml
 - file: "./test_data/file1.ttl"
@@ -110,7 +110,7 @@ settings:
 
 The import process uses the <a href="#Prepare-the-Configuration-File">configuration file</a> specified by the `-config` parameter to import RDF data into the target server and display it in the Ultipa graph structure.
 
-<p tit= "Terminal" ></p> 
+<p tit="Terminal"></p> 
 
 ```bash
 ./ultipa-importer --config import.sample.rdf.yml
@@ -135,7 +135,7 @@ The import process uses the <a href="#Prepare-the-Configuration-File">configurat
 
 In this example, an RDF file in the format of `.ttl` is imported.
 
-<p tit= "UltipaGraph.ttl"></p> 
+<p tit="UltipaGraph.ttl"></p> 
 
 ```bash
 @prefix ultipaVoc: <http://ultipa.com/vocab/sw#> .

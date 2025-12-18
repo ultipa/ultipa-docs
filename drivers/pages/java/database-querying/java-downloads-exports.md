@@ -19,7 +19,7 @@ Downloads one result file from an algorithm task in the current graph.
 
 - `Response`: Result of the request.
 
-<p tit= "Java" ></p> 
+<p tit="Java"></p> 
 
 ```java
 RequestConfig requestConfig = new RequestConfig();
@@ -57,7 +57,7 @@ Response resDownLoad = client.downloadAlgoResultFile("communityID", taskId, new 
 System.out.println("resDownLoad = " + new Gson().toJson(resDownLoad));
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```java
 taskId = 54228
@@ -86,7 +86,7 @@ Downloads all result files from an algorithm task in the current graph.
 
 - `Response`: Result of the request.
 
-<p tit= "Java" ></p> 
+<p tit="Java"></p> 
 
 ```java
 RequestConfig requestConfig = new RequestConfig();
@@ -124,7 +124,7 @@ Response resDownLoad = client.downloadAllAlgoResultFile(taskId, new DownloadFile
 System.out.println("resDownLoad = " + new Gson().toJson(resDownLoad));
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```java
 taskId = 54229
@@ -168,7 +168,7 @@ Exports nodes and edges from the current graph.
 
 - `Response`: Result of the request.
 
-<p tit= "Java" ></p> 
+<p tit="Java"></p> 
 
 ```java
 // Exports 10 nodes of schema 'account' with selected properties in graphset 'miniCircle' and prints their information
@@ -202,7 +202,7 @@ Response response = client.export(exportRequest, new ExportListener() {
 }, requestConfig);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```java
 Node(uuid=1, id=ULTIPA8000000000000001, schema=account, values={_id=ULTIPA8000000000000001, name=Yu78, year=1978})

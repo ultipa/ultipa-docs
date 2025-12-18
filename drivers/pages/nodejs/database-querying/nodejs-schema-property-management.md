@@ -18,7 +18,7 @@ Retrieves all nodes and edge schemas from the current graphset.
 
 - `Schema[]`: The list of all schemas in the current graphset.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 // Retrieves all schemas in graphset 'UltipaTeam' and prints their names and types
@@ -35,7 +35,7 @@ const dataList = resp.data?.map((item) => ({
 }));
 console.log(dataList);
 ```
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 [
@@ -62,7 +62,7 @@ Retrieves a node or edge schema from the current graphset.
 
 - `Schema`: The retrieved schema.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 // Retrieves node schema 'member' and edge schema 'connectsTo' in graphset 'UltipaTeam', and prints all their information
@@ -88,7 +88,7 @@ let edgeInfo = await conn.getSchema(
 console.log("EdgeSchema: ", edgeInfo.data);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 {
@@ -142,7 +142,7 @@ Retrieves all node schemas from the current graphset.
 
 - `Schema[]`: The list of all node schemas in the current graphset.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 // Retrieves all node schemas in graphset 'UltipaTeam' and prints their names
@@ -157,7 +157,7 @@ const schemaInfo = dataOri.data?.map((item) => item.name);
 console.log("SchemaName: ", schemaInfo);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 SchemaName:  [ 'default', 'member', 'organization' ]
@@ -175,7 +175,7 @@ Retrieves all edge schemas from the current graphset.
 
 - `Schema[]`: The list of all edge schemas in the current graphset.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 // Retrieves all edge schemas in graphset 'UltipaTeam' and prints their names
@@ -190,7 +190,7 @@ const schemaInfo = dataOri.data?.map((item) => item.name);
 console.log("SchemaName: ", schemaInfo);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 SchemaName:  [ 'default', 'reportsTo', 'relatesTo']
@@ -209,7 +209,7 @@ Retrieves a node schema from the current graphset.
 
 - `Schema`: The retrieved node schema.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 // Retrieves node schema 'member' in graphset 'UltipaTeam' and prints its properties
@@ -223,7 +223,7 @@ let resp = await conn.getNodeSchema("member", requestConfig);
 console.log("Property: ", resp.data?.properties);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Property:  [
@@ -271,7 +271,7 @@ Retrieves an edge schema from the current graphset.
 
 - `Schema`: The retrieved edge schema.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 // Retrieves edge schema 'relatesTo' in graphset 'UltipaTeam' and prints its properties
@@ -285,7 +285,7 @@ let resp = await conn.getEdgeSchema("relatesTo", requestConfig);
 console.log("Property: ", resp.data?.properties);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Property:  [
@@ -313,7 +313,7 @@ Creates a new schema in the current graphset.
 
 - `Response`: Result of the request.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 let requestConfig = <RequestType.RequestConfig>{
@@ -359,7 +359,7 @@ console.log("Edge Schema Creation: ", edgePro.status.code_desc);
 console.log((await conn.getEdgeSchema("managedBy", requestConfig)).data);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Node Schema Creation:  SUCCESS
@@ -401,7 +401,7 @@ Creates a new schema in the current graphset, handling cases where the given sch
 
 - `Boolean`: Whether the creation happens.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 let requestConfig = <RequestType.RequestConfig>{
@@ -434,7 +434,7 @@ let creation2 = await conn.createSchemaIfNotExist(
 console.log("Ignore repeated creation: ", creation2.data);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Ignore repeated creation:  false
@@ -455,7 +455,7 @@ Alters the name and description of one existing schema in the current graphset b
 
 - `Response`: Result of the request.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 // Renames the node schema 'utility' to 'securityUtility' and removes its description in graphset 'UltipaTeam'
@@ -481,7 +481,7 @@ let resp = await conn.alterSchema(
 console.log(resp.status.code_desc);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 SUCCESS
@@ -500,7 +500,7 @@ Drops one schema from the current graphset by its name.
 
 - `Response`: Result of the request.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 // Drops the node schema 'utility' in graphset 'UltipaTeam'
@@ -520,7 +520,7 @@ let resp = await conn.dropSchema(
 console.log(resp);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 {
@@ -546,7 +546,7 @@ Retrieves custom properties of nodes or edges from the current graphset.
 
 - `Property[]`: The list of all properties retrieved in the current graphset.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 // Retrieves all node properties in graphset 'UltipaTeam' and prints their names and associated schemas
@@ -575,7 +575,7 @@ for (let i = 0; i < nameList.length; i++) {
 }
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Schema default contains properties []
@@ -596,7 +596,7 @@ Retrieves custom properties of nodes from the current graphset.
 
 - `Property[]`: The list of all properties retrieved in the current graphset.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 // Retrieves all custom properties of node schema 'member' in graphset 'UltipaTeam' and prints the count
@@ -610,7 +610,7 @@ let NodePro = await conn.showNodeProperty("member", requestConfig);
 console.log(NodePro.data?.length);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 3
@@ -629,7 +629,7 @@ Retrieves custom properties of edges from the current graphset.
 
 - `Property[]`: The list of all properties retrieved in the current graphset.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 // Retrieves all custom properties of edge schema 'relatesTo' in graphset 'UltipaTeam' and prints their names
@@ -643,7 +643,7 @@ let edgePro = await conn.showEdgeProperty("relatesTo", requestConfig);
 console.log(edgePro.data?.map((item) => item.name));
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 [ 'type' ]
@@ -664,7 +664,7 @@ Retrieves a custom property of nodes or edges from the current graphset.
 
 - `Property`: The retrieved property.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 // Retrieves node property @member.title in graphset 'UltipaTeam' and prints all its information
@@ -683,7 +683,7 @@ let resp = await conn.getProperty(
 console.log(resp.data);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 {
@@ -713,7 +713,7 @@ Retrieves a custom property of nodes from the current graphset.
 
 - `Property`: The retrieved property.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 // Retrieves node property @member.title in graphset 'UltipaTeam' and prints all its information
@@ -731,7 +731,7 @@ let resp = await conn.getNodeProperty(
 console.log(resp.data);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 {
@@ -761,7 +761,7 @@ Retrieves a custom property of edges from the current graphset.
 
 - `Property`: The retrieved property.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 // Retrieves edge property @relatesTo.type in graphset 'UltipaTeam' and prints all its information
@@ -775,7 +775,7 @@ let resp = await conn.getEdgeProperty("relatesTo", "type", requestConfig);
 console.log(resp.data);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 {
@@ -806,7 +806,7 @@ Creates a new property for a node or edge schema in the current graphset.
 
 - `Response`: Result of the request.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 // Creates two properties for node schema 'member' in graphset 'UltipaTeam' and prints error codes
@@ -833,7 +833,7 @@ let resp2 = await conn.createProperty(
 console.log(resp2.status.code_desc);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 SUCCESS
@@ -855,7 +855,7 @@ Creates a new property for a node or edge schema in the current graphset, handli
 
 - `Boolean`: Whether the creation happens.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 let requestConfig = <RequestType.RequestConfig>{
@@ -884,7 +884,7 @@ let resp2 = await conn.createPropertyIfNotExist(
 console.log("Ignore repeated creation: ", resp2.data);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Ignore repeated creation:  false
@@ -907,7 +907,7 @@ Alters the name and description of one existing custom property in the current g
 
 - `Response`: Result of the request.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 let requestConfig = <RequestType.RequestConfig>{
@@ -926,7 +926,7 @@ let resp = await conn.alterProperty(
 console.log(resp.status.code_desc);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 SUCCESS
@@ -947,7 +947,7 @@ Drops one custom property from the current graphset by its name and the associat
 
 - `Response`: Result of the request.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 let requestConfig = <RequestType.RequestConfig>{
@@ -977,7 +977,7 @@ console.log(resp1.status.code_desc);
 ```
 
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 SUCCESS
@@ -986,7 +986,7 @@ SUCCESS
 
 ## Full Example
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
 
 ```ts
 import { ConnectionPool, ULTIPA } from "@ultipa-graph/ultipa-node-sdk";

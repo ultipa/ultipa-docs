@@ -29,7 +29,7 @@ response = Conn.test()
 print("Code = ", response.status.code)
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```python
 Code =  0
@@ -41,7 +41,7 @@ The `Connection.NewConnection()` method obtains a connection to Ultipa. The grap
 
 ## File Configuration Connection
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
 
 ```Python
 import os
@@ -78,7 +78,7 @@ response = getConn().test()
 print("Code = ", response.status.code)
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```python
 2024-08-19 10:21:00,347 - INFO: Test Welcome To Ultipa!

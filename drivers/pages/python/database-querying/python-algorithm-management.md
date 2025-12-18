@@ -18,7 +18,7 @@ Retrieves all Ultipa graph algorithms installed in the instance.
 
 - `List[Algo]`: The list of all algorithms retrieved.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 # Retrieves all Ultipa graph algorithms installed and prints the information of the first returned one
@@ -27,7 +27,7 @@ algos = Conn.showAlgo()
 print(algos[0].toJSON())
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```python
 {"name": "lpa", "description": "label propagation algorithm", "version": "1.0.10", "result_opt": "27", "parameters": {"loop_num": "size_t,required", "node_label_property": "optional", "node_weight_property": "optional", "edge_weight_property": "optional", "k": "no more than k labels will be kept for each node", "ids": "labeled nodes, optional, all nodes(with non-NULL value) as labeled nodes if empty"}, "write_to_db_parameters": {"property": "set property name in db, only label with `max probability` will be write to db"}, "write_to_file_parameters": {"filename": "set file name"}}
@@ -47,7 +47,7 @@ Installs an Ultipa graph algorithm in the instance.
 
 - `UltipaResponse`: Result of the request.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```Python
 # Installs the algorithm LPA and uses the leader node to guarantee consistency, and prints the error code
@@ -59,7 +59,7 @@ response = Conn.installAlgo("algo/libplugin_lpa.so", "algo/lpa.yml", requestConf
 print(response.status.code)
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```python
 0
@@ -78,7 +78,7 @@ Uninstalls an Ultipa graph algorithm in the instance.
 
 - `UltipaResponse`: Result of the request.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 # Uninstalls the algorithm LPA and prints the error code
@@ -89,7 +89,7 @@ response = Conn.uninstallAlgo("lpa")
 print(response.status.code)
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```python
 0
@@ -109,7 +109,7 @@ Retrieves all extas installed in the instance.
 
 - `List[Exta]`: The list of all extas retrieved.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 # Retrieves all extas installed and prints the information of the first returned one
@@ -118,7 +118,7 @@ extas = Conn.showExta()
 print(extas[0].toJSON())
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```python
 {
@@ -160,7 +160,7 @@ Installs an exta in the instance.
 
 - `UltipaResponse`: Result of the request.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 # Installs the exta page_rank and uses the leader node to guarantee consistency, and prints the error code
@@ -172,7 +172,7 @@ response = Conn.installExta("exta/libexta_page_rank.so", "exta/page_rank.yml", r
 print(response.status.code)
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```python
 0
@@ -191,7 +191,7 @@ Uninstalls an exta in the instance.
 
 - `UltipaResponse`: Result of the request.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 # Uninstalls the exta page_rank and prints the error code
@@ -200,7 +200,7 @@ response = Conn.uninstallExta("page_rank")
 print(response.status.code)
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```python
 0

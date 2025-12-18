@@ -173,7 +173,7 @@ print("- Property privileges:", createdPolicy.propertyPrivileges)
 print("- Policies:", createdPolicy.policies)
 ```
 
-<p tit="Output" ></p> 
+<p tit="Output"></p> 
  
 ```python
 0
@@ -225,7 +225,7 @@ print("- Property privileges:", alteredPolicy.propertyPrivileges)
 print("- Policies:", alteredPolicy.policies)
 ```
 
-<p tit="Output" ></p> 
+<p tit="Output"></p> 
  
 ```python
 0
@@ -292,7 +292,7 @@ print("Property privileges:", userList[0].propertyPrivileges)
 print("Policies:", userList[0].policies)
 ```
 
-<p tit="Output" ></p> 
+<p tit="Output"></p> 
  
 ```python
 Username: test006
@@ -330,7 +330,7 @@ print("Property privileges:", user.propertyPrivileges)
 print("Policies:", user.policies)
 ```
 
-<p tit="Output" ></p> 
+<p tit="Output"></p> 
  
 ```python
 Username: test005
@@ -432,7 +432,7 @@ response = Conn.alterUser(user)
 print(response.status.code)
 ```
 
-<p tit="Output" ></p> 
+<p tit="Output"></p> 
  
 ```python
 0
@@ -460,7 +460,7 @@ response = Conn.dropUser("pythonUser")
 print(response.status.code)
 ```
 
-<p tit="Output" ></p> 
+<p tit="Output"></p> 
  
 ```python
 0
@@ -519,7 +519,7 @@ response2 = Conn.grantPolicy("Tester", graphPrivileges, systemPrivileges, polici
 print(response2.status.code)
 ```
 
-<p tit="Output" ></p> 
+<p tit="Output"></p> 
  
 ```python
 0
@@ -579,7 +579,7 @@ response2 = Conn.revokePolicy("Tester", graphPrivileges, systemPrivileges, polic
 print(response2.status.code)
 ```
 
-<p tit="Output" ></p> 
+<p tit="Output"></p> 
  
 ```python
 0

@@ -3,7 +3,7 @@
 Function CASE calculates a new value from one or multiple values based on conditions. Once the condition of a WHEN is met, the value in the correspondent THEN is generated, and the rest of WHEN and ELSE will be skipped.
 
 
-<p tit= "Syntax1"></p> 
+<p tit="Syntax1"></p> 
 
 ```js
 case
@@ -15,7 +15,7 @@ end
 ```
 
 
-<p tit= "Syntax2"></p> 
+<p tit="Syntax2"></p> 
 
 ```js
 case <expression>

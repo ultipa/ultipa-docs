@@ -15,7 +15,7 @@ Acquire data from Kafka streams <i>entity_1</i>, <i>entity_3</i> and <i>relation
 
 ## 2. Modify configuration file
 
-<p tit= "import.sample.kafka.yml" type="yaml"></p>
+<p tit="import.sample.kafka.yml" type="yaml"></p>
 
 ```yml
 # Configure data source type

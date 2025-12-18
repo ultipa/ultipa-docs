@@ -18,7 +18,7 @@ Retrieves all Ultipa graph algorithms installed in the instance.
 
 - `List<Algo>`: The list of all algorithms retrieved.
 
-<p tit="Java" ></p> 
+<p tit="Java"></p> 
  
 ```java
 // Retrieves all Ultipa graph algorithms installed and prints the information of the first returned one
@@ -27,7 +27,7 @@ List<Algo> algos = client.showAlgo();
 System.out.println(algos.get(0).toString());
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Algo(name=louvain, desc={"name":"louvain","description":"louvain","version":"1.0.4","parameters":{"edge_schema_property":"optinal,default 1 for each edge if absent","phase1_loop_num":"size_t,required","min_modularity_increase":"float,required","limit":"optional,-1 for all results, >=0 partial results","order":"optional, asc or desc, case_unsensitive, only work for 'community:id/count' mode"},"write_to_db_parameters":{"property":"set write back property name for each schema and nodes"},"write_to_file_parameters":{"filename1":"id1:community","filename2":"community1: id1,id2...","filename3":"community1: count"},"write_to_stats_parameters":{"enable":"0:no stats, 1:enable stats(count of communities)"},"write_to_client_normal_parameters":{"mode":"1:<id1:community>   2:<community1:count>"},"write_to_client_stream_parameters":{"mode":"1:<id1:community>   2:<community1:count>"},"result_opt":"59"}, version=null, params=null)
@@ -47,7 +47,7 @@ Installs an Ultipa graph algorithm in the instance.
 
 - `Response`: Result of the request.
 
-<p tit="Java" ></p> 
+<p tit="Java"></p> 
  
 ```java
 // Installs the algorithm LPA and uses the leader node to guarantee consistency, and prints the error code
@@ -60,7 +60,7 @@ Response response = client.installAlgo("algo/libplugin_lpa.so", "algo/lpa.yml");
 System.out.println(response.getStatus().getErrorCode());
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 SUCCESS
@@ -79,7 +79,7 @@ Uninstalls an Ultipa graph algorithm in the instance.
 
 - `Response`: Result of the request.
 
-<p tit="Java" ></p> 
+<p tit="Java"></p> 
  
 ```java
 // Uninstalls the algorithm LPA and prints the error code
@@ -88,7 +88,7 @@ Response response = client.uninstallAlgo("lpa");
 System.out.println(response.getStatus().getErrorCode());
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 SUCCESS
@@ -108,7 +108,7 @@ Retrieves all extas installed in the instance.
 
 - `List<Exta>`: The list of all extas retrieved.
 
-<p tit="Java" ></p> 
+<p tit="Java"></p> 
  
 ```java
 // Retrieves all extas installed and prints the information of the first returned one
@@ -117,7 +117,7 @@ List<Exta> extas = client.showExta();
 System.out.println(extas.get(0).toString());
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Exta(name=page_rank, author=wuchuang, version=beta.4.4.41-b4.4.0-tv-ui, detail=base:
@@ -156,7 +156,7 @@ Installs an exta in the instance.
 
 - `Response`: Result of the request.
 
-<p tit="Java" ></p> 
+<p tit="Java"></p> 
  
 ```java
 // Installs the exta page_rank and uses the leader node to guarantee consistency, and prints the error code
@@ -169,7 +169,7 @@ Response response = client.installExta("algo/libexta_page_rank.so", "algo/page_r
 System.out.println(response.getStatus().getErrorCode());
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 SUCCESS
@@ -188,7 +188,7 @@ Uninstalls an exta in the instance.
 
 - `Response`: Result of the request.
 
-<p tit="Java" ></p> 
+<p tit="Java"></p> 
  
 ```java
 // Uninstalls the exta page_rank and prints the error code
@@ -197,7 +197,7 @@ Response response = client.uninstallExta("page_rank");
 System.out.println(response.getStatus().getErrorCode());
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 SUCCESS

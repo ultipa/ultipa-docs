@@ -8,7 +8,7 @@ All querying methods support an optional request configuration parameter (`Reque
 
 `RequestConfig` defines the settings needed when sending non-insert requests to the database.
 
-<p tit= "Main.java" ></p> 
+<p tit="Main.java" ></p> 
 
 ```java
 public class Main {
@@ -57,7 +57,7 @@ public class Main {
 
 `InsertRequestConfig` defines the settings needed when sending data insertion or deletion requests to the database.
 
-<p tit= "Main.java" ></p> 
+<p tit="Main.java" ></p> 
  
 ```java
 public class Main {

@@ -14,7 +14,7 @@ This manual covers the usage of Ultipa CLI, a cross-platform command line tool f
 ## Operation Procedure
 
 1. Get server connection (in PowerShell on Windows, the same below) 
-<p tit= "bash" ></p> 
+<p tit="bash"></p> 
 
 ```bash
 ./ultipa_cli.exe -h 192.168.1.88:61095 -u user1 -p 12dfa36
@@ -26,14 +26,14 @@ show().graph()
 ```
 
 3. Switch graphset ('alimama' for example)
-<p tit= "bash" ></p> 
+<p tit="bash"></p> 
 
 ```bash
 use alimama
 ```
 
 4. Switch server connection
-<p tit= "bash" ></p> 
+<p tit="bash"></p> 
 
 ```bash
 exit

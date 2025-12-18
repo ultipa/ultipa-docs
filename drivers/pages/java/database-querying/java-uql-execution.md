@@ -19,7 +19,7 @@ Executes a UQL query on the current graphset or the database and returns the res
 
 - `Response`: Result of the request.
 
-<p tit= "Java" ></p> 
+<p tit="Java"></p> 
 
 ```java
 // Retrieves 5 @movie nodes in graphset 'miniCircle' and prints their names
@@ -34,7 +34,7 @@ for (Node node : nodeList) {
 }
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```java
 The Shawshank Redemption
@@ -60,7 +60,7 @@ Executes a UQL query on the current graphset or the database and returns the res
 
 - `void`
 
-<p tit= "Java" ></p> 
+<p tit="Java"></p> 
 
 ```java
 // Retrieves all 1-step paths in graphset 'miniCircle'
@@ -96,7 +96,7 @@ client.uqlStream("n().e().n() as paths return paths{*}", new UqlListener() {
 }, requestConfig);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```java
 count = 1250
@@ -107,7 +107,7 @@ count = 1392
 
 ## Full Example
 
-<p tit= "Main.java" ></p> 
+<p tit="Main.java" ></p> 
 
 ```java
 package com.ultipa.www.sdk.api;

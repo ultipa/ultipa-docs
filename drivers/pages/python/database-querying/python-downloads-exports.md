@@ -52,7 +52,7 @@ cb = lambda stream: handle_down_algo_file(stream)
 Conn.downloadAlgoResultFile(filename, taskID, cb, requestConfig)
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```python
 taskID = 78620
@@ -105,7 +105,7 @@ cb = lambda stream,filename: handle_down_all_algo_file(stream,filename)
 Conn.downloadAllAlgoResultFile(taskID, cb, requestConfig)
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```Python
 taskId = 1509

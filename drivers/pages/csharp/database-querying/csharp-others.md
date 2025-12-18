@@ -16,7 +16,7 @@ Retrieves database server statistics.
 
 - `DatabaseStats`: The retrieved server statistics.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 var res = await ultipa.Stats();
@@ -29,7 +29,7 @@ Console.WriteLine("Server type: " + res.ServerType);
 Console.WriteLine("Version: " + res.Version);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 CPU usage: 11.535199
@@ -53,14 +53,14 @@ Tests driver and database server connection.
 
 - `bool`: Result of the request.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 var res = ultipa.Test();
 Console.WriteLine("Test succeeds: " + res);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Test succeeds: True
@@ -68,7 +68,7 @@ Test succeeds: True
 
 ## Full Example
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
 
 ```c#
 using System.Security.Cryptography.X509Certificates;

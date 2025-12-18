@@ -19,7 +19,7 @@ Downloads one result file from an algorithm task in the current graph.
 
 - `Response`: Result of the request.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 let requestConfig = <RequestType.RequestConfig>{
@@ -70,7 +70,7 @@ let myDownload = await conn.downloadAlgoResultFile(
 );
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 taskID =  60085
@@ -92,7 +92,7 @@ Downloads all result files from an algorithm task in the current graph.
 
 - `Response`: Result of the request.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 let requestConfig = <RequestType.RequestConfig>{
@@ -140,7 +140,7 @@ let myDownload = await conn.downloadAllAlgoResultFile(
 );
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 taskID =  60088
@@ -164,7 +164,7 @@ Exports nodes and edges from the current graph.
 - `Response`: Result of the request.
 
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 // Exports 10 nodes of schema 'account' with selected properties in graphset 'miniCircle' and prints their information
@@ -198,7 +198,7 @@ let resp = await conn.export(
 
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 [
@@ -267,7 +267,7 @@ let resp = await conn.export(
 
 ## Full Example
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
 
 ```ts
 import { ConnectionPool, ULTIPA } from "@ultipa-graph/ultipa-node-sdk";
