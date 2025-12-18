@@ -1,58 +1,45 @@
 {
-  "name": "Ultipa Manager User Guide",
+  "name": "Ultipa Manager",
   "navigation": [
     {
-      "file": "introduction.md",
-      "title": "Introduction"
+      "file": "get-started.md",
+      "title": "Get Started"
     },
     {
-      "file": "logon-to-manager.md",
-      "title": "Logon to Manager"
+      "file": "manage-instances.md",
+      "title": "Manage Instances"
     },
     {
-      "file": "connect-to-ultipa-graph.md",
-      "title": "Connect to Ultipa Graph"
+      "file": "manage-graphs-structure-and-data.md",
+      "title": "Manage Graphs, Structure, and Data"
     },
     {
-      "file": "interface-overview.md",
-      "title": "Interface Overview"
+      "file": "run-queries.md",
+      "title": "Run Queries"
     },
     {
-      "folder": "modules",
-      "pages": [
-        {
-          "file": "graph.md",
-          "title": "Graph"
-        },
-        {
-          "file": "schema.md",
-          "title": "Schema"
-        },
-        {
-          "file": "algos.md",
-          "title": "Algos"
-        },
-        {
-          "file": "auths.md",
-          "title": "Auths"
-        },
-        {
-          "file": "loader.md",
-          "title": "Loader"
-        },
-        {
-          "file": "widget.md",
-          "title": "Widget"
-        }
-      ]
+      "file": "results-visualization.md",
+      "title": "Results Visualization"
     },
     {
-      "file": "uql-editor.md",
-      "title": "UQL Editor"
+      "file": "hdc.md",
+      "title": "HDC"
     },
     {
-      "file": "result-pane.md",
-      "title": "Result Pane"
+      "file": "load-data.md",
+      "title": "Load Data"
+    },
+    {
+      "file": "manage-database-access.md",
+      "title": "Manage Database Access"
+    },
+    {
+      "file": "develop-widgets.md",
+      "title": "Develop Widgets"
+    },
+    {
+      "file": "users-roles-and-authentication.md",
+      "title": "Users, Roles, and Authentication"
     },
     {
       "file": "settings.md",

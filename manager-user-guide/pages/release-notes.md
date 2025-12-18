@@ -1,11 +1,26 @@
 # Release Notes
 
-> This page provides the release notes for Ultipa Manager since 2023. These notes detail major features, bug fixes, performance improvements, and other changes introduced in each version.
+This page provides the release notes for Ultipa Manager. These notes detail major features, bug fixes, performance improvements, and other changes introduced in each version.
+
+## beta_5.1.39-s5.0 (2025-04-03)
+
+- GQL is now supported.
+- Added more layout options and support for multi-selection of nodes and edges, box selection, and lasso tools.
+- HDC is now supported.
+- Widget is revamped with the React framework; sharing widget now uses a connection token.
+- New Admin Management: Manage users, groups, connections, and global configurations; supports session sharing and MFA (Multi-Factor Authentication).
+- Achieved compatibility with Ultipa Server v5.0.
+- Fixed known issues.
+
+## beta_4.5.12-s4.4 (2025-02-28)
+
+- Widget now supports PowerBI embedding.
+- Forms in Widget now supports dragging.
 
 ## beta.4.4.66-s5.0 (2024-10-11)
 
 - Updated the HDC module.
-- Fixed the issue where the version doesn’t show.
+- Fixed the issue where the version doesn't show.
 - Fixed known bugs.
 
 ## beta.4.4.65-s5.0 (2024-09-25)
@@ -64,13 +79,13 @@
 - Optimized the UQL Execution History for improved usability.
 - Optimized the sharing feature for widgets.
 - Streamlined the preview and import feature for Loader.
-- Added Daemon configuration for instances to control the server nodes' start or stop operations. 
+- Added Daemon configuration for instances to control the server nodes' start or stop operations.
 - Fixed known bugs.
 
 ## v4.4.54-s4.4 (2024-03-11)
 
-- Loader now supports more data sources, including MySQL, SQL Server, PostgreSQL, JSON, JSONL, Kafka, Neo4j and BigQuery. 
-- Added support for configuring time format. 
+- Loader now supports more data sources, including MySQL, SQL Server, PostgreSQL, JSON, JSONL, Kafka, Neo4j and BigQuery.
+- Added support for configuring time format.
 - Fixed known bugs.
 
 ## v4.4.42-s4.4 (2024-02-15)
@@ -81,7 +96,7 @@
 
 ## v4.4.35-s4.4 (2024-01-12)
 
-- Removed the use of backticks (\`) for wrapping schema and property names that do not contain special characters. 
+- Removed the use of backticks (\`) for wrapping schema and property names that do not contain special characters.
 - Updated various UI text elements.
 - Fixed known bugs.
 
@@ -99,22 +114,22 @@
 
 ## v4.4.16-s4.4 (2023-10-27)
 
-- Added the Widget module, replacing the Shortcut module; added support for writing CSS and HTML, and importing third-party packages. 
-- Added an execution window for Widget. 
-- Optimized the Loader model, including validation prompts and file deletion. 
-- Adjusted the style of the left navigation bar. 
-- Optimized the UQL results panel, including the executed statements list and the toolbar layout. 
-- Added support for the decimal and set data types. 
-- Added support for the toGraph structure. 
-- Fixed known bugs. 
+- Added the Widget module, replacing the Shortcut module; added support for writing CSS and HTML, and importing third-party packages.
+- Added an execution window for Widget.
+- Optimized the Loader model, including validation prompts and file deletion.
+- Adjusted the style of the left navigation bar.
+- Optimized the UQL results panel, including the executed statements list and the toolbar layout.
+- Added support for the decimal and set data types.
+- Added support for the toGraph structure.
+- Fixed known bugs.
 
 ## v4.3.2.48 (2023-10-24)
 
-- Added the Loader module in replace of the Files module. 
-- Supports uploading and importing one CSV file per loader. 
-- Supports importing data to all graphsets in the instance (not only the current graphset). 
-- Supports executing single loader. 
-- Supports executing multiple loaders in serial or parallel mode. 
+- Added the Loader module in replace of the Files module.
+- Supports uploading and importing one CSV file per loader.
+- Supports importing data to all graphsets in the instance (not only the current graphset).
+- Supports executing single loader.
+- Supports executing multiple loaders in serial or parallel mode.
 - Moved the data export function to graphset operational list.
 
 ## v4.3.72 (2023-09-01)
@@ -134,20 +149,20 @@
 ## v4.3.52 (2023-07-28)
 
 - Implemented Watermark functionality within the Settings.
-- Added Manager Privileges for users in the Auths module. 
+- Added Manager Privileges for users in the Auths module.
 - Enhanced the Style Management with Color Picker and Property selection when choosing colors.
-- Added the Map layout for returned results containing data of the point type. 
-- Added the Timeline layout for returned results containing data of the datetime or timestamp type. 
+- Added the Map layout for returned results containing data of the point type.
+- Added the Timeline layout for returned results containing data of the datetime or timestamp type.
 - Implemented detailed information display for nodes and edges when hovering the mouse over them.
-- Integrated Echarts into the Shortcut module. 
-- Integrated Highcharts into the Shortcut module. 
+- Integrated Echarts into the Shortcut module.
+- Integrated Highcharts into the Shortcut module.
 - Redesigned the panel layout and content of the Algos module.
 
 ## v4.3.38 (2023-06-16)
 
-- Added variable types into the form in shortcut. 
-- Added the sharing function to the shortcut. 
-- Added animation effects to menus and buttons. 
+- Added variable types into the form in shortcut.
+- Added the sharing function to the shortcut.
+- Added animation effects to menus and buttons.
 - Addressed various known bugs and issues.
 
 ## v4.3.28 (2023-05-06)
@@ -197,7 +212,7 @@ Optimized the data export process for improved efficiency.
 
 - Fixed the issue where exported data is empty when the property name begins with an underscore.
 - Optimized the flickering problem in the 3D view.
-- Fixed the issue where UQL executions in new graphets don't carry the timezone. 
+- Fixed the issue where UQL executions in new graphets don't carry the timezone.
 - Corrected the authentication interface parameters.
 
 ## v4.2.30 (2023-02-13)
