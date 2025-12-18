@@ -20,7 +20,7 @@ Retrieves all running and stopping processes from the instance.
 
 - `List<Process>`: The list of all processes in the instance.
 
-<p tit= "Java" ></p> 
+<p tit="Java"></p> 
 
 ```java
 // Retrieves all running and stopping processes in the instance
@@ -31,7 +31,7 @@ for (Process process : processList) {
 }
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```java
 a_0_539_2 n({_uuid > 300}).e()[:3].n() as p RETURN p{*} LIMIT 500
@@ -50,7 +50,7 @@ Kills running processes in the instance.
 
 - `Response`: Result of the request.
 
-<p tit= "Java" ></p> 
+<p tit="Java"></p> 
 
 ```java
 // Retrieves all running and stopping processes in the instance and kill all
@@ -63,7 +63,7 @@ Response response = client.kill("*");
 System.out.println(response.getStatus().getErrorCode());
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```java
 a_0_540_2 n({_uuid > 300}).e()[:3].n() as p RETURN p{*} LIMIT 500

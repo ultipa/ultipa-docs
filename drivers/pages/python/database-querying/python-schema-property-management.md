@@ -18,7 +18,7 @@ Retrieves all nodes and edge schemas from the current graphset.
 
 - `ResponseListSchema`: The list of all schemas in the current graphset.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 # Retrieves all schemas in graphset 'UltipaTeam' and prints their names and types
@@ -30,7 +30,7 @@ for schema in schemas:
     print(f"{schema.name}, type: {schema.DBType}")
 ```
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 default, type: 0
@@ -55,7 +55,7 @@ Retrieves a node or edge schema from the current graphset.
 
 - `Schema`: The retrieved schema.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 # Retrieves node schema 'organization' and edge schema 'connectsTo' in graphset 'UltipaTeam', and prints all their information
@@ -75,7 +75,7 @@ else:
     print("Not found")
 ```
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 {"DBType": 0, "description": "", "name": "organization", "properties": [{"description": "", "lte": true, "name": "name", "schema": null, "subTypes": null, "type": "string"}, {"description": "", "lte": false, "name": "logo", "schema": null, "subTypes": null, "type": "string"}], "total": "19", "type": "node"}
@@ -94,7 +94,7 @@ Retrieves all node schemas from the current graphset.
 
 - `List[Schema]`: The list of all node schemas in the current graphset.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 # Retrieves all node schemas in graphset 'UltipaTeam' and prints their names
@@ -106,7 +106,7 @@ for schema in schemas:
     print(schema.name)
 ```
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 default
@@ -126,7 +126,7 @@ Retrieves all edge schemas from the current graphset.
 
 - `List[Schema]`: The list of all edge schemas in the current graphset.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 # Retrieves all edge schemas in graphset 'UltipaTeam' and prints their names
@@ -138,7 +138,7 @@ for schema in schemas:
     print(schema.name)
 ```
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 default
@@ -159,7 +159,7 @@ Retrieves a node schema from the current graphset.
 
 - `Schema`: The retrieved node schema.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 # Retrieves node schema 'member' in graphset 'UltipaTeam' and prints its property names
@@ -171,7 +171,7 @@ for property in schema.properties:
     print(property.name)
 ```
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 title
@@ -192,7 +192,7 @@ Retrieves an edge schema from the current graphset.
 
 - `Schema`: The retrieved edge schema.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 # Retrieves edge schema 'relatesTo' in graphset 'UltipaTeam' and prints its property names
@@ -204,7 +204,7 @@ for property in schema.properties:
     print(property.name)
 ```
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 type
@@ -224,7 +224,7 @@ Creates a new schema in the current graphset.
 
 - `UltipaResponse`: Result of the request.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 requestConfig = RequestConfig(graphName="UltipaTeam")
@@ -265,7 +265,7 @@ schema2 = Conn.getEdgeSchema("managedBy", requestConfig)
 print(schema2.toJSON())
 ```
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
 
 ```python
 0
@@ -289,7 +289,7 @@ Creates a new schema in the current graphset, handling cases where the given sch
 - `bool`: Whether the schema already exists.
 - `UltipaResponse`: Result of the request.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 requestConfig = RequestConfig(graphName="UltipaTeam")
@@ -319,7 +319,7 @@ else:
     print("No response")
 ```
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 Code = 0
@@ -340,7 +340,7 @@ Alters the name and description of one existing schema in the current graphset b
 
 - `UltipaResponse`: Result of the request.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 # Renames the node schema 'utility' to 'securityUtility' and removes its description in graphset 'UltipaTeam'
@@ -353,7 +353,7 @@ response = Conn.alterSchema(schema, newSchema, requestConfig)
 print(response.status.code)
 ```
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 0
@@ -372,7 +372,7 @@ Drops one schema from the current graphset by its name.
 
 - `UltipaResponse`: Result of the request.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 # Drops the node schema 'utility' in graphset 'UltipaTeam'
@@ -384,7 +384,7 @@ response = Conn.dropSchema(schema, requestConfig)
 print(response.status.code)
 ```
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 0
@@ -406,7 +406,7 @@ Retrieves custom properties of nodes or edges from the current graphset.
 
 - `List[Property]`: The list of all properties retrieved in the current graphset.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 # Retrieves all custom node properties in graphset 'UltipaTeam' and prints their names, types and associated schemas
@@ -418,7 +418,7 @@ for property in properties:
     print(f"{property.name} ({property.type}) is associated with schema named {property.schema}")
 ```
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 name (string) is associated with schema named member
@@ -441,7 +441,7 @@ Retrieves custom properties of nodes from the current graphset.
 
 - `List[Property]`: The list of all properties retrieved in the current graphset.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 # Retrieves all custom properties of node schema 'member' in graphset 'UltipaTeam' and prints the count
@@ -452,7 +452,7 @@ properties = Conn.showNodeProperty("member", requestConfig)
 print(len(properties))
 ```
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 3
@@ -471,7 +471,7 @@ Retrieves custom properties of edges from the current graphset.
 
 - `List[Property]`: The list of all properties retrieved in the current graphset.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 # Retrieves all custom properties of edge schema 'relatesTo' in graphset 'UltipaTeam' and prints their names
@@ -483,7 +483,7 @@ for property in properties:
     print(property.name)
 ```
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 type
@@ -504,7 +504,7 @@ Retrieves a custom property of nodes or edges from the current graphset.
 
 - `Property`: The retrieved property.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 # Retrieves node property @member.title in graphset 'UltipaTeam' and prints all its information
@@ -515,7 +515,7 @@ property = Conn.getProperty(DBType.DBNODE, "title", "member", requestConfig)
 print(property.toJSON())
 ```
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 {"description": "", "encrypt": "", "encrypted": false, "extra": "{}", "ignored": false, "lte": false, "name": "title", "propertyType": "", "read": true, "schema": "member", "subTypes": null, "type": "string", "write": true}
@@ -535,7 +535,7 @@ Retrieves a custom property of nodes from the current graphset.
 
 - `Property`: The retrieved property.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 # Retrieves node property @member.title in graphset 'UltipaTeam' and prints all its information
@@ -546,7 +546,7 @@ property = Conn.getNodeProperty("title", "member", requestConfig)
 print(property.toJSON())
 ```
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 {"description": "", "encrypt": "", "encrypted": false, "extra": "{}", "ignored": false, "lte": false, "name": "title", "propertyType": "", "read": true, "schema": "member", "subTypes": null, "type": "string", "write": true}
@@ -566,7 +566,7 @@ Retrieves a custom property of edges from the current graphset.
 
 - `Property`: The retrieved property.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 # Retrieves edge property @relatesTo.type in graphset 'UltipaTeam' and prints all its information
@@ -577,7 +577,7 @@ property = Conn.getEdgeProperty("type", "relatesTo", requestConfig)
 print(property.toJSON())
 ```
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 {"description": "", "encrypt": "", "encrypted": false, "extra": "{}", "ignored": false, "lte": false, "name": "type", "propertyType": "", "read": true, "schema": "relatesTo", "subTypes": null, "type": "string", "write": true}
@@ -598,7 +598,7 @@ Creates a new property for a node or edge schema in the current graphset.
 
 - `UltipaResponse`: Result of the request.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 # Creates two properties for node schema 'member' in graphset 'UltipaTeam' and prints error codes
@@ -622,7 +622,7 @@ response2 = Conn.createProperty(DBType.DBNODE, "member", property2, requestConfi
 print(response2.status.code)
 ```
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 0
@@ -645,7 +645,7 @@ Creates a new property for a node or edge schema in the current graphset, handli
 - `boolean`: Whether the property already exists.
 - `UltipaResponse`: Result of the request.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 requestConfig = RequestConfig(graphName="UltipaTeam")
@@ -674,7 +674,7 @@ else:
     print("No response")
 ```
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 Code = 0
@@ -696,7 +696,7 @@ Alters the name and description of one existing custom property in the current g
 
 - `UltipaResponse`: Result of the request.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 requestConfig = RequestConfig(graphName="UltipaTeam")
@@ -716,7 +716,7 @@ response = Conn.alterProperty(DBType.DBNODE, oldProperty, newProperty, requestCo
 print(response.status.code)
 ```
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 0
@@ -737,7 +737,7 @@ Drops one custom property from the current graphset by its name and the associat
 
 - `Response`: Result of the request.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 requestConfig = RequestConfig(graphName="UltipaTeam")
@@ -753,7 +753,7 @@ response2 = Conn.dropProperty(DBType.DBNODE, "member", "name", requestConfig)
 print(response2.status.code)
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```python
 0

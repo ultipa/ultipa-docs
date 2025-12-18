@@ -4,7 +4,7 @@
 
 The `get()` or `alias()` method of the `Response` class returns a `DataItem`, which embeds the query result. You should use the `as<Type>()` method of `DataItem` to cast the result to the appropriate driver type.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 let requestConfig = <RequestType.RequestConfig>{
@@ -67,7 +67,7 @@ Methods on a `Node` object:
 | `get("<propertyName>")` | Object | Get value of the given custom property of the node. |
 | `set("<propertyName>", <propertyValue>` |  | Set value for the given custom property of the node; or add a key-value pair to the `values` of the node if the given `<propertyName>` does not exist. |
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
 
 ```ts
 let resp = await conn.uql(
@@ -80,7 +80,7 @@ console.log("ID of the 1st node:", nodeList[0].getID());
 console.log("Name of the 1st node:", nodeList[0].get("name"));
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 ID of the 1st node: ULTIPA8000000000000001
@@ -108,7 +108,7 @@ Methods on an `Edge` object:
 | `get("<propertyName>")` | Object | Get value of the given custom property of the edge. |
 | `set("<propertyName>", <propertyValue>` |  | Set value for the given custom property of the edge; or add a key-value pair to the values of the edge if the given `<propertyName>` does not exist. |
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 let resp = await conn.uql(
@@ -120,7 +120,7 @@ let edgeList = resp.data?.alias("e").asEdges();
 console.log("Values of the 1st edge", edgeList[0].getValues());
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 Values of the 1st edge {
@@ -141,7 +141,7 @@ A `Path` object has the following fields:
 | `length` | number | Length of the path, namely the number of edges in the path |
 
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 let resp = await conn.uql(
@@ -158,7 +158,7 @@ console.log(
 );
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 Length of the 1st path: 2
@@ -205,7 +205,7 @@ A `Graph` object has the following fields:
 | `nodeSchemas` | map<string, schema> | Map of all node schemas of the path |
 | `edgeSchemas` | map<string, schema> | Map of all edge schemas of the path |
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 let resp = await conn.uql(
@@ -226,7 +226,7 @@ console.log(
 );
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 Node IDs: [
@@ -251,7 +251,7 @@ A `GraphSet` object has the following fields:
 | `totalEdges` | string | Total number of edges in the graphset |
 | `status` | string | Graphset status (MOUNTED, MOUNTING, or UNMOUNTED) |
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 let resp = await conn.uql("show().graph()");
@@ -261,7 +261,7 @@ let unmountedGraph = graphList.filter((item) => item.status == "UNMOUNTED");
 console.log(unmountedGraph.map((item) => item.name));
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 [ 'DFS_EG', 'cyber', 'cyber2' ]
@@ -279,7 +279,7 @@ A `Schema` object has the following fields:
 | `totalNodes` | string | Total number of nodes of the schema |
 | `totalEdges` | string | Total number of edges of the schema |
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 let resp = await conn.uql("show().node_schema()", requestConfig);
@@ -290,7 +290,7 @@ for (let schema of schemaList) {
 }
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 default has 0 nodes
@@ -313,7 +313,7 @@ A `Property` object has the following fields:
 | `lte` | string | Property LTE status (true, false or creating) |
 | `extra` | PropertyExtraInfo | Extra information of properties |
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 let resp = await conn.uql("show().node_property(@user)", requestConfig);
@@ -325,7 +325,7 @@ for (let property of propertyList) {
 }
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 LTE-ed property name: location
@@ -344,7 +344,7 @@ An `Algo` object has the following fields:
 | `result_opt` | object | Options for the algorithm result |
 
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 let resp = await conn.uql("show().algo()");
@@ -354,7 +354,7 @@ console.log("Algo version:", algoList[0].param.version);
 console.log("Description:", algoList[0].param.description);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 Algo name: lpa
@@ -375,7 +375,7 @@ An `Exta` object has the following fields:
 | `name` | string | Exta name |
 | `version` | string | Exta version |
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 let resp = await conn.uql("show().exta()");
@@ -383,7 +383,7 @@ let extaList = resp.data?.alias("_extaList").asExtas();
 console.log("Exta name:", extaList[0].name);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 Exta name: page_rank 1
@@ -402,7 +402,7 @@ An `Index` object has the following fields:
 | `size` | string | Index size in bytes |
 | `dbType` | Ultipa.DBType | Index type (DBNODE or DBEDGE) |
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 let resp = await conn.uql("show().index()");
@@ -410,7 +410,7 @@ let indexList = resp.data?.alias("_nodeIndex");
 console.log(indexList.data);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 Table {
@@ -421,7 +421,7 @@ Table {
 }
 ```
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 let resp = await conn.uql("show().fulltext()");
@@ -429,7 +429,7 @@ let indexList = resp.data?.alias("_nodeFulltext");
 console.log(indexList.data);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 Table {
@@ -449,7 +449,7 @@ A `Privilege` object has the following fields:
 | `systemPrivileges` | string[] | System privileges |
 | `graphPrivileges` | string[] | Graph privileges |
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 let resp = await conn.uql("show().privilege()");
@@ -458,7 +458,7 @@ let privilegeList = resp.data?.alias("_privilege").asTable();
 console.log("System privileges:", privilegeList.rows[0][1]);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 [TRUNCATE, COMPACT, CREATE_GRAPH, SHOW_GRAPH, DROP_GRAPH, ALTER_GRAPH, MOUNT_GRAPH, UNMOUNT_GRAPH, TOP, KILL, STAT, SHOW_POLICY, CREATE_POLICY, DROP_POLICY, ALTER_POLICY, SHOW_USER, CREATE_USER, DROP_USER, ALTER_USER, GRANT, REVOKE, SHOW_PRIVILEGE]
@@ -476,7 +476,7 @@ A `Policy` object has the following fields:
 | `policies` | string[] | Policies included in the policy |
 | `property_privileges` | PropertyPrivilege | Property privileges included in the policy |
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 let resp = await conn.uql("show().policy()");
@@ -484,7 +484,7 @@ let policyList = resp.data?.alias("_policy");
 console.log(policyList.data.rows[4]);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 [
@@ -510,7 +510,7 @@ A `User` object has the following fields:
 | `policies` | string[] | Policies granted to the user |
 | `property_privileges` | PropertyPrivilege | Property privileges granted to the user |
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 let resp = await conn.uql("show().user('Tester')");
@@ -523,7 +523,7 @@ console.log(userList.headers[3], ":", userList.rows[0][3]);
 console.log(userList.headers[4], ":", userList.rows[0][4]);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 username : Tester
@@ -547,7 +547,7 @@ A `Stats` object has the following fields:
 | `serverType` | string | Server type |
 | `version` | string | Version of the server | 
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts  
 let resp = await conn.stats();
@@ -555,7 +555,7 @@ console.log("CPU usage:", resp.data.cpuUsage, "%");
 console.log("Memory usage:", resp.data.memUsage);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 CPU usage: 15.209929 %
@@ -573,7 +573,7 @@ A `Process` object has the following fields:
 | `status` | string | Process status |
 | `duration` | string | The duration in seconds the task has run so far |
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 let requestConfig = <RequestType.RequestConfig>{
@@ -586,7 +586,7 @@ let processList = resp.data?.alias("_top");
 console.log(processList.data.rows[0][0]);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 a_1_3259_2
@@ -604,7 +604,7 @@ A `Task` object has the following fields:
 | `result` | object | Algorithm result and statistics and their corresponding values |
 | `return_type` | object | Result return type |
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 let requestConfig = <RequestType.RequestConfig>{
@@ -619,7 +619,7 @@ console.log("Algo parameters:", taskList[0].param);
 console.log("Result:", taskList[0].result);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 Algo name: louvain
@@ -647,7 +647,7 @@ Methods on a `Table` object:
 | ---- | ---- | ---- | 
 | `toKV()` | List\<Value> | Convert all rows of the table to a key-value list. |
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 let resp = await conn.uql(
@@ -658,7 +658,7 @@ let tableInfo = resp.data.alias("myTable").asTable();
 console.log("2nd row in table:", tableInfo.toKV()[1]);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 2nd row in table: { 'n._id': 'ULTIPA8000000000000002', 'n._uuid': '2' }
@@ -675,7 +675,7 @@ An `Attr` object has the following fields:
 | `type_desc` | string | Attr type description |
 | `values` | object | Attr rows |
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 let resp = await conn.uql(
@@ -686,7 +686,7 @@ let myAttr = resp.data.alias("n.year").asAttrs();
 console.log(myAttr.values);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 [ 1978, 1989, 1982, 2007, 1973 ]

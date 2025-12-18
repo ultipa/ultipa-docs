@@ -31,7 +31,7 @@ Retrieves data by the alias index.
 
 - `DataItem`: The retrieved data.
 
-<p tit= "Java" ></p> 
+<p tit="Java"></p> 
  
 ```java
 Response response = client.uql("find().nodes() as n return n._id, n._uuid limit 3");
@@ -40,7 +40,7 @@ System.out.println(response.get(0).toJson());
 
 The UQL statement returns two aliases `n._id` and `n._uuid`; the `get()` method retrieves the alias `n._id` at index 0.
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 ["{\"type\":\"STRING\",\"values\":[\"u604131\",\"u604510\",\"u604614\"],\"name\":\"n._id\"}"]
@@ -58,7 +58,7 @@ Retrieves data by the alias name.
 
 - `DataItem`: The retrieved data.
 
-<p tit= "Java" ></p> 
+<p tit="Java"></p> 
  
 ```java
 Response response = client.uql("find().nodes() as n return n._id, n._uuid limit 3");
@@ -67,7 +67,7 @@ System.out.println(response.alias("n._uuid").toJson());
 
 The UQL statement returns two aliases `n._id` and `n._uuid`; the `alias()` method retrieves the alias `n._uuid` by its name.
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 ["{\"type\":\"UINT64\",\"values\":[\"1\",\"2\",\"3\"],\"name\":\"n._uuid\"}"]

@@ -20,7 +20,7 @@ Retrieves all running and stopping processes from the instance.
 
 - `List[Top]`: The list of all processes in the instance.
 
-<p tit= "Python" ></p> 
+<p tit="Python"></p> 
 
 ```Python
 # Retrieves all running and stopping processes in the instance
@@ -31,7 +31,7 @@ for process in processList:
     print("process_uql: " + process.process_uql)
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```python
 process_id: a_7_11229_2
@@ -51,7 +51,7 @@ Kills running processes in the instance.
 
 - `UltipaResponse`: Result of the request.
 
-<p tit= "Python" ></p> 
+<p tit="Python"></p> 
 
 ```Python
 # Retrieves all running and stopping processes in the instance and kill all
@@ -67,7 +67,7 @@ response = Conn.kill(processId = "*")
 print(response.status.code)
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```Python
 process_id:a_4_11461_2
@@ -95,7 +95,7 @@ Retrieves tasks from the current graphset.
 
 - `List[Task]`: The list of all tasks in the graphset.
 
-<p tit= "Python" ></p> 
+<p tit="Python"></p> 
 
 ```Python
 requestConfig = RequestConfig(graphName="miniCircle")
@@ -146,7 +146,7 @@ Clears (Deletes) tasks from the current graphset. Tasks with the status `COMPUTI
 
 - `UltipaResponse`: Result of the request.
 
-<p tit= "Python" ></p> 
+<p tit="Python"></p> 
 
 ```Python
 requestConfig = RequestConfig(graphName="miniCircle")

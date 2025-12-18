@@ -18,7 +18,7 @@ Retrieves all system privileges and graph privileges, which are actually UQL com
 
 - `List<Privilege>`: All system privileges and graph privileges.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 // Retrieves all system privileges and graph privileges
@@ -43,7 +43,7 @@ Console.WriteLine("System privileges: ");
 Console.WriteLine(JsonConvert.SerializeObject(systemL));
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Graph privileges:
@@ -66,7 +66,7 @@ Retrieves all policies from the instance. A policy includes system privileges, g
 
 - `List<Policy>`: The list of all policies in the instance.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 // Retrieves all policies and prints their information
@@ -87,7 +87,7 @@ foreach (var item in res)
     Console.WriteLine("- Policies:" + JsonConvert.SerializeObject(item.SubPolicies));
 }
 ```
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Policy 'operator' include:
@@ -115,7 +115,7 @@ Retrieves a policy from the instance by its name.
 
 - `Policy`: The retrieved policy.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 // Retrieves a policy 'operator' and prints its information
@@ -134,7 +134,7 @@ Console.WriteLine(
 Console.WriteLine("- Policies: " + JsonConvert.SerializeObject(res.SubPolicies));
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Policy 'operator' includes:
@@ -157,7 +157,7 @@ Creates a policy in the instance.
 
 - `UqlResponse`: Result of the request.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 // Creates a new policy 'sales' and then retrieves it
@@ -229,7 +229,7 @@ Console.WriteLine(
 Console.WriteLine("- Policies: " + JsonConvert.SerializeObject(res.SubPolicies));
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Policy 'sales' includes:
@@ -252,7 +252,7 @@ Alters the system privileges, graph privileges, property privileges and policies
 
 - `UqlResponse`: Result of the request.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 // Alters the policy 'sales' and then retrieves it
@@ -292,7 +292,7 @@ Console.WriteLine(
 Console.WriteLine("- Policies: " + JsonConvert.SerializeObject(res.SubPolicies));
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Success
@@ -316,7 +316,7 @@ Drops one policy from the instance by its name.
 
 - `UqlResponse`: Result of the request.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 // Drops the policy 'sales' and prints error code
@@ -325,7 +325,7 @@ var res = await ultipa.DropPolicy("sales");
 Console.WriteLine(res.Status.ErrorCode);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Success
@@ -345,7 +345,7 @@ Retrieves all database users from the instance.
 
 - `List<User>`: The list of all users in the instance.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 // Retrieves all users and prints information of the first returned
@@ -365,7 +365,7 @@ Console.WriteLine(
 Console.WriteLine("Policies: " + JsonConvert.SerializeObject(res[0].Policies));
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Username: test006
@@ -389,7 +389,7 @@ Retrieves a database user from the instance by its username.
 
 - `User`: The retrieved user.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 // Retrieves user 'test005' and prints its information
@@ -407,7 +407,7 @@ Console.WriteLine(
 Console.WriteLine("Policies: " + JsonConvert.SerializeObject(res.Policies));
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Username: test005
@@ -431,7 +431,7 @@ Creates a database user in the instance.
 
 - `UqlResponse`: Result of the request.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 // Creates a new user 'CSharpUser' and prints error code
@@ -477,7 +477,7 @@ User newUser = new User()
 };
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Success
@@ -496,7 +496,7 @@ Alters the password, system privileges, graph privileges, property privileges an
 
 - `UqlResponse`: Result of the request.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 // Alters the user 'CSharpUser' and prints error code
@@ -526,7 +526,7 @@ var res = await ultipa.AlterUser(newUser);
 Console.WriteLine(res.Status.ErrorCode);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Success
@@ -545,7 +545,7 @@ Drops one database user from the instance by its username.
 
 - `UqlResponse`: Result of the request.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 // Drops the user 'CSharpUser' and prints error code
@@ -554,7 +554,7 @@ var res = await ultipa.DropUser("CSharpUser");
 Console.WriteLine(res.Status.ErrorCode);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Success
@@ -574,7 +574,7 @@ Grants policies to a database user in the instance.
 
 - `UqlResponse`: Result of the request.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 // Grants policies 'operator' and 'manager' to user 'johndoe' and prints error code
@@ -582,7 +582,7 @@ var res = await ultipa.GrantPolicy("johndoe", policies: new() { "operator", "man
 Console.WriteLine(res.Status.ErrorCode);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Success
@@ -602,14 +602,14 @@ Revokes policies from a database user in the instance.
 
 - `UqlResponse`: Result of the request.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 var res = await ultipa.RevokePolicy("johndoe", policies: new() { "operator", "manager" });
 Console.WriteLine(res.Status.ErrorCode);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Success
@@ -617,7 +617,7 @@ Success
 
 ## Full Example
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
 
 ```c#
 using System.Data;

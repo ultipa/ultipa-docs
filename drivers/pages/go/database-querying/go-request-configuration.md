@@ -8,7 +8,7 @@ All querying methods support an optional request configuration parameter (`Reque
 
 `RequestConfig` defines the information needed when sending non-insert type of requests to the database.
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
 
 ```go
 package main
@@ -63,7 +63,7 @@ func main() {
 
 `InsertRequestConfig` defines the settings needed when sending data insertion or deletion requests to the database.
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 package main

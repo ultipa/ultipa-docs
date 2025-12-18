@@ -60,7 +60,7 @@ Methods on a `Node` object:
 | `get("<propertyName>")` | Any | Get value of the given custom property of the node. |
 | `set("<propertyName>", <propertyValue>)` |  | Set value for the given custom property of the node; or add a key-value pair to the `values` of the node if the given `<propertyName>` does not exist. |
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
 
 ```python
 response = Conn.uql("find().nodes() as n return n{*} limit 5")
@@ -70,7 +70,7 @@ print("ID of the 1st node:", nodes[0].getID())
 print("Store name of the 1st node", nodes[0].get("storeName"))
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 ID of the 1st node: 47370-257954
@@ -98,7 +98,7 @@ Methods on an `Edge` object:
 | `get("<propertyName>")` | Any | Get value of the given custom property of the edge. |
 | `set("<propertyName>", <propertyValue>` |  | Set value for the given custom property of the edge; or add a key-value pair to the values of the edge if the given `<propertyName>` does not exist. |
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 response = Conn.uql("find().edges() as e return e{*} limit 5")
@@ -107,7 +107,7 @@ edges = response.alias("e").asEdges()
 print("Values of the 1st edge:", edges[0].getValues())
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 Values of the 1st edge: {'distanceMeters': 20, 'duration': '21s', 'staticDuration': '25s', 'travelMode': 'Walk', 'transportationCost': 46}
@@ -130,7 +130,7 @@ Methods on a `Path` object:
 | ---- | ---- | ---- | 
 | `length()` | int | Get length of the path, i.e., the number of edges in the path. |
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 response = Conn.uql("n().e()[:2].n() as paths return paths{*} limit 5")
@@ -148,7 +148,7 @@ nodes = paths[0].getNodes()
 print(nodes[1])
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 Length of the 1st path: 2
@@ -168,7 +168,7 @@ A `Graph` object has the following fields:
 | `node_table` | List[Node] | Node list of the path |
 | `edge_table` | List[Edge] | Edge list of the path |
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 response = Conn.uql("n(as n1).re(as e).n(as n2).limit(3) with toGraph(collect(n1), collect(n2), collect(e)) as graph return graph", requestConfig)
@@ -185,7 +185,7 @@ for edge in edges:
     print(edge.getUUID())
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 Node IDs:
@@ -213,7 +213,7 @@ A `GraphSet` object has the following fields:
 | `totalEdges` | int | Total number of edges in the graphset |
 | `status` | str | Graphset status (MOUNTED, MOUNTING, or UNMOUNTED) |
 
-<p tit= "Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 response = Conn.uql("show().graph()")
@@ -223,7 +223,7 @@ for graph in graphs:
         print(graph.name)
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 DFS_EG
@@ -243,7 +243,7 @@ A `Schema` object has the following fields:
 | `DBType` | DBType | Schema type (0 for nodes, 1 for edge) |
 | `total` | int | Total number of nodes or edges of the schema |
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 response = Conn.uql("show().node_schema()")
@@ -252,7 +252,7 @@ for schema in schemas:
     print(schema.name, "has", schema.total, "nodes")
 ```
 
-<p tit="Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 default has 0 nodes
@@ -273,7 +273,7 @@ A `Property` object has the following fields:
 | `subTypes` | List[PropertyTypeStr] | Property data sub type |
 | `lte` | bool | Property LTE status (true or false) |
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 response = Conn.uql("show().property()")
@@ -282,7 +282,7 @@ for property in properties:
     print(property.name)
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 title
@@ -314,7 +314,7 @@ algos = response.alias("_algoList").asAlgos()
 print(algos[0])
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 {'name': 'celf', 'description': 'celf', 'version': '1.0.0', 'result_opt': '25', 'parameters': {'seedSetSize': 'size_t,optional,1 as default', 'monteCarloSimulations': 'size_t,optional, 1000 as default', 'propagationProbability': 'float,optional, 0.1 as default'}, 'write_to_db_parameters': {}, 'write_to_file_parameters': {'filename': 'set file name'}}
@@ -333,7 +333,7 @@ An `Exta` object has the following fields:
 | `version` | str | Exta version |
 | `detail` | str | Content of the YML configuration file of the Exta |
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 response = Conn.uql("show().exta()")
@@ -341,7 +341,7 @@ extas = response.alias("_extaList").asExtas()
 print(extas[0].name)
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 page_rank
@@ -360,7 +360,7 @@ An `Index` object has the following fields:
 | `size` | str | Index size in bytes |
 | `DBType` | DBType | Index type (DBNODE or DBEDGE) |
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
 
 ```python
 response = Conn.uql("show().index()")
@@ -370,14 +370,14 @@ for index in indexList:
     print(index.schema, index.properties, index.size)
 ```
 
-<p tit="Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 account name 0
 movie name 2526
 ```
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
 
 ```python
 response = Conn.uql("show().fulltext()")
@@ -387,7 +387,7 @@ for index in indexList:
     print(index.schema, index.properties, index.schema)
 ```
 
-<p tit="Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 contentFull content review
@@ -402,7 +402,7 @@ A `Privilege` object has the following fields:
 | `systemPrivileges` | List[str] | System privileges |
 | `graphPrivileges` | List[str] | Graph privileges |
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 response = Conn.uql("show().privilege()")
@@ -410,7 +410,7 @@ privilege = response.alias("_privilege").asPrivilege()
 print(privilege.systemPrivileges)
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 ["TRUNCATE","COMPACT","CREATE_GRAPH","SHOW_GRAPH","DROP_GRAPH","ALTER_GRAPH","MOUNT_GRAPH","UNMOUNT_GRAPH","TOP","KILL","STAT","SHOW_POLICY","CREATE_POLICY","DROP_POLICY","ALTER_POLICY","SHOW_USER","CREATE_USER","DROP_USER","ALTER_USER","GRANT","REVOKE","SHOW_PRIVILEGE"]
@@ -428,7 +428,7 @@ A `Policy` object has the following fields:
 | `propertyPrivileges` | dict | Property privileges included in the policy |
 | `policies` | List[str] | Policies included in the policy |
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 response = Conn.uql("show().policy()")
@@ -438,7 +438,7 @@ for policy in policyList:
     print(policy.name)
 ```
 
-<p tit="Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 manager
@@ -458,7 +458,7 @@ A `User` object has the following fields:
 | `propertyPrivileges` | dict | Property privileges granted to the user |
 | `policies` | List[str] | Policies granted to the user |
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 response = Conn.uql("show().user('Tester')")
@@ -467,7 +467,7 @@ user = response.alias("_user").asUsers()
 print(user.toJSON())
 ```
 
-<p tit="Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 {"create": 1721974206, "graphPrivileges": "{}", "policies": "[]", "propertyPrivileges": "{\"node\":{\"read\":[],\"write\":[[\"miniCircle\",\"account\",\"name\"]],\"deny\":[]},\"edge\":{\"read\":[],\"write\":[],\"deny\":[]}}", "systemPrivileges": "[]", "username": "Tester"}
@@ -487,7 +487,7 @@ A `Stats` object has the following fields:
 | `serverType` | str | Server type |
 | `version` | str | Version of the server | 
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 response = Conn.uql("stats()")
@@ -496,7 +496,7 @@ print("CPU usage (%):", stats.cpuUsage)
 print("Memory usage:", stats.memUsage)
 ```
 
-<p tit="Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 CPU usage (%): 5.415697
@@ -514,7 +514,7 @@ A `Process` object has the following fields:
 | `status` | String | Process status |
 | `duration` | String | The duration in seconds the task has run so far |
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 requestConfig = RequestConfig(graphName="amz")
@@ -525,7 +525,7 @@ for process in processList:
     print(process.processId)
 ```
 
-<p tit="Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 a_2_569_2
@@ -554,7 +554,7 @@ print(tasks[0].param)
 print(tasks[0].result)
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 {'task_id': 77954, 'server_id': 2, 'algo_name': 'louvain', 'start_time': 1728543848, 'writing_start_time': 1728543848, 'end_time': 1728543848, 'time_cost': 0, 'TASK_STATUS': 3, 'return_type': <ultipa.types.types_response.Return_Type object at 0x0000025E53C0F940>}
@@ -578,7 +578,7 @@ Methods on a `Table` object:
 | ---- | ---- | ---- | 
 | `headerToDicts()` | List[Dict] | Convert all rows of the table to a key-value list. |
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 response = Conn.uql("find().nodes() as n return table(n._id, n._uuid) as myTable limit 5")
@@ -587,7 +587,7 @@ rows = table.headerToDicts()
 print("2nd row in table:", rows[1])
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 2nd row in table: {'n._id': 'u604510', 'n._uuid': 2}
@@ -603,7 +603,7 @@ A `Attr` object has the following fields:
 | `values` | any | Attr rows |
 | `type` | `ResultType` | Attr type |
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 response = Conn.uql("find().nodes({@ad}) as n return n.brand limit 5")
@@ -611,7 +611,7 @@ attr = response.alias("n.brand").asAttr()
 print(attr.values)
 ```
 
-<p tit="Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 [14655, 14655, 14655, 14655, 434760]

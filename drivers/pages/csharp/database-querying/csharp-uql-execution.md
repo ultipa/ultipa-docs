@@ -19,7 +19,7 @@ Executes a UQL query on the current graphset or the database and returns the res
 
 - `Response`: Result of the request. 
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 // Retrieves 5 @movie nodes in graphset 'miniCircle' and prints their name
@@ -34,7 +34,7 @@ foreach (var node in nodeList)
 }
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```java
 The Shawshank Redemption
@@ -60,7 +60,7 @@ Executes a UQL query on the current graphset or the database and returns the res
 
 - `void` 
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 // Retrieves all 1-step paths in graphset 'miniCircle'
@@ -93,7 +93,7 @@ await ultipa.UqlStream(
 );
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```java
 Start
@@ -103,7 +103,7 @@ End
 
 ## Full Example
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
 
 ```c#
 using System.Security.Cryptography.X509Certificates;

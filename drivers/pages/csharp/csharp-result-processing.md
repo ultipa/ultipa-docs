@@ -27,7 +27,7 @@ Retrieves data by the alias index.
 
 - `DataItem`: The retrieved data.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 var res = await ultipa.Uql("find().nodes() as n return n._id, n._uuid limit 3");
@@ -36,7 +36,7 @@ Console.WriteLine(JsonConvert.SerializeObject(res.Get(0)));
 
 The UQL statement returns two aliases `n._id` and `n._uuid`; the `Get()` method retrieves the alias `n._id` at index 0.
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 {"Data":{"Alias":"n._id","Attr":{"ValueType":7,"Values":[[85,76,84,73,80,65,56,48,48,48,48,48,48,48,48,48,48,48,48,48,48,49],[85,76,84,73,80,65,56,48,48,48,48,48,48,48,48,48,48,48,48,48,48,50],[85,76,84,73,80,65,56,48,48,48,48,48,48,48,48,48,48,48,48,48,48,51]]}},"AliasName":"n._id","OriginalResultType":4}
@@ -54,7 +54,7 @@ Retrieves data by the alias name.
 
 - `DataItem`: The retrieved data.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 var res = await ultipa.Uql("find().nodes() as n return n._id, n._uuid limit 3");
@@ -63,7 +63,7 @@ Console.WriteLine(JsonConvert.SerializeObject(res.Alias("n._uuid")));
 
 The UQL statement returns two aliases `n._id` and `n._uuid`; the `Alias()` method retrieves the alias `n._uuid` by its name.
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 {"Data":{"Alias":"n._uuid","Attr":{"ValueType":4,"Values":[[0,0,0,0,0,0,0,1],[0,0,0,0,0,0,0,2],[0,0,0,0,0,0,0,3]]}},"AliasName":"n._uuid","OriginalResultType":4}

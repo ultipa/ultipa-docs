@@ -8,7 +8,7 @@ All querying methods support an optional request configuration parameter (`Reque
 
 `RequestConfig` defines the information needed when sending non-insert type of requests to the database.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
 
 ```c#
 using Newtonsoft.Json;
@@ -69,7 +69,7 @@ class Program
 
 `InsertRequestConfig` defines the settings needed when sending data insertion or deletion requests to the database.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 using Newtonsoft.Json;

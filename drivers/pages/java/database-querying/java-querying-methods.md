@@ -120,7 +120,7 @@ Once the connection is established, you can send requests to query the database 
 
 The task specific methods eliminate the need to explicitly write UQL. The following two examples use the `uql()` and `getNodeSchema()` methods respectively to retrieve the `club-member` node schema and print its associated properties. Notice that the latter is easier to write and returns the result as a `Schema` directly. While with `uql()`, you need to extract the data from `Response` and cast it into `Schema`.
 
-<p tit= "Java" ></p> 
+<p tit="Java"></p> 
 
 ```java
 // Uses the uql() method

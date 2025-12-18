@@ -19,7 +19,7 @@ Before installing the Ultipa Spark Connector, ensure you have the right versions
 
 To import the dependency of the Ultipa Spark Connector, add the following code to your *pom.xml* file:
 
-<p tit= "prom.xml" ></p>
+<p tit="prom.xml" ></p>
 
 ```xml
 <dependencies>
@@ -43,7 +43,7 @@ Retrieve `_id` and all custom properties of nodes belonging to the specified sch
 
 Example: Read all nodes in the graphset *Test* with the schema *Person*
 
-<p tit= "Scala" ></p>
+<p tit="Scala"></p>
 
 ```scala
 import org.apache.spark.sql.{SaveMode, SparkSession}
@@ -75,7 +75,7 @@ Retrieve `_from`, `_to` and all custom properties of edges belonging to the spec
 
 Example: Read all edges in the graphset *Test* with the schema *Follows*
 
-<p tit= "Scala" ></p>
+<p tit="Scala"></p>
 
 ```scala
 import org.apache.spark.sql.{SaveMode, SparkSession}
@@ -106,7 +106,7 @@ Retrieve data using a UQL query statement. The UQL query for reading must contai
 
 Example: Read data in the graphset *Test* returned by a UQL statement
 
-<p tit= "Scala" ></p>
+<p tit="Scala"></p>
 
 ```scala
 import org.apache.spark.sql.{SaveMode, SparkSession}
@@ -142,7 +142,7 @@ The data type of each property is determined by the data type of the correspondi
 
 Example: Write a DataFrame to the *Person* nodes in the graphset *Test*
 
-<p tit= "Scala" ></p>
+<p tit="Scala"></p>
 
 ```scala
 import org.apache.spark.sql.{SaveMode, SparkSession}
@@ -168,7 +168,7 @@ df.write.format("com.ultipa.spark.DataSource")
 
 Example: Write a DataFrame to the *RelatesTo* edges in the graphset *Test*
 
-<p tit= "Scala" ></p>
+<p tit="Scala"></p>
 
 ```scala
 import org.apache.spark.sql.{SaveMode, SparkSession}
@@ -236,7 +236,7 @@ You can set the options for each connection, or specify global configurations in
 
 Example: set global configurations for options `hosts`, `auth.username`, `auth.password`, `graph` and `connection.timeout`
 
-<p tit= "Scala" ></p>
+<p tit="Scala"></p>
 
 ```scala
 import org.apache.spark.sql.{SaveMode, SparkSession}

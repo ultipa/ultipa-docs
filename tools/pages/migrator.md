@@ -15,7 +15,7 @@ Examples given in this manual are demonstrated in PowerShell on Windows.
  
 ### Generate the sample
  
-<p tit= "bash" ></p>  
+<p tit="bash"></p>  
  
 ```bash 
 ./ultipa-migrator.exe -sample 
@@ -27,7 +27,7 @@ The `config.yml` file will be generated in the same directory as `ultipa-migrato
  
 The content of the sample `config.yml` file is as follows, modify it according to your needs.    
  
-<p tit= "config.yml" type="yaml"></p> 
+<p tit="config.yml" type="yaml"></p> 
  
 ```yml 
 # Source server configuration  
@@ -90,7 +90,7 @@ Key: `to`
  
 Example: 
  
-<p tit= "config.yml" type="yaml"></p> 
+<p tit="config.yml" type="yaml"></p> 
  
 ```yml 
 # Migrate data by UQL (optional) 
@@ -119,7 +119,7 @@ The migration runs based on the <a href="#Prepare-the-Configuration-File">config
  
 Migrate using a configuration file (e.g., `config.yml`) saved in the same directory: 
  
-<p tit= "bash" ></p>  
+<p tit="bash"></p>  
  
 ```bash 
 ./ultipa-migrator.exe -config config.yml 
@@ -127,7 +127,7 @@ Migrate using a configuration file (e.g., `config.yml`) saved in the same direct
  
 Migrate using a configuration file (e.g., `migrate0212.yml`) saved in another directory: 
  
-<p tit= "bash" ></p>  
+<p tit="bash"></p>  
  
 ```bash 
 ./ultipa-migrator.exe -config C:\Users\johndoe\Desktop\migrate0212.yml 
@@ -137,7 +137,7 @@ Migrate using a configuration file (e.g., `migrate0212.yml`) saved in another di
  
 ## Generate Graph and Structure Creation UQLs 
  
-<p tit= "bash" ></p>  
+<p tit="bash"></p>  
  
 ```bash 
 ./ultipa-migrator.exe -config migrate0212.yml -gen_struct_uql 
@@ -149,7 +149,7 @@ A .uql file will be generated and saved in the same directory as `ultipa-migrato
 
 ## Show Version 
 
-<p tit= "bash" ></p>  
+<p tit="bash"></p>  
  
 ```bash 
 ./ultipa-migrator.exe -version 
@@ -160,7 +160,7 @@ A .uql file will be generated and saved in the same directory as `ultipa-migrato
 
 ## Show Help 
  
-<p tit= "bash" ></p>  
+<p tit="bash"></p>  
  
 ```bash
 ./ultipa-migrator.exe -help 

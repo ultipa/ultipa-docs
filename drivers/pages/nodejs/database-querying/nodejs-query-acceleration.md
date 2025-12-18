@@ -21,7 +21,7 @@ Loads one custom property of nodes or edges to the computing engine for query ac
 
 - `Response`: Result of the request.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
 
 ```ts
 // Loads the edge property @relatesTo.type to engine in graphset 'UltipaTeam' and prints error code
@@ -40,7 +40,7 @@ let resp = await conn.lte(
 console.log(resp.status.code_desc);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 SUCCESS
@@ -61,7 +61,7 @@ Unloads one custom property of nodes or edges from the computing engine to save 
 
 - `Response`: Result of the request.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
 
 ```ts
 // Unloads the edge property @relatesTo.type from engine in graphset 'UltipaTeam' and prints error code
@@ -80,7 +80,7 @@ let resp = await conn.ufe(
 console.log(resp.status.code_desc);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 SUCCESS
@@ -100,7 +100,7 @@ Retrieves all indexes of node and edge properties from the current graphset.
 
 - `Index[]`: The list of all indexes retrieved in the current graphset.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
 
 ```ts
 // Retrieves indexes in graphset 'Ad_Click' and prints their information
@@ -114,7 +114,7 @@ let resp = await conn.showIndex(requestConfig);
 console.log(resp.data);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 {
@@ -158,7 +158,7 @@ Retrieves all indexes of node properties from the current graphset.
 
 - `Index[]`: The list of all node indexes retrieved in the current graphset.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
 
 ```ts
 // Retrieves node indexes in graphset 'Ad_Click' and prints their information
@@ -172,7 +172,7 @@ let resp = await conn.showNodeIndex(requestConfig);
 console.log(resp.data);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 [
@@ -205,7 +205,7 @@ Retrieves all indexes of edge properties from the current graphset.
 
 - `Index[]`: The list of all edge indexes retrieved in the current graphset.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
 
 ```ts
 // Retrieves edge indexes in graphset 'Ad_Click' and prints their information
@@ -219,7 +219,7 @@ let resp = await conn.showEdgeIndex(requestConfig);
 console.log(resp.data);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 [
@@ -248,7 +248,7 @@ Creates a new index in the current graphset.
 
 - `Response`: Result of the request.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
 
 ```ts
 // Creates indexes for all node properties 'name' in graphset 'Ad_Click' and prints the error code
@@ -267,7 +267,7 @@ let resp = await conn.createIndex(
 console.log(resp.status.code_desc);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 SUCCESS
@@ -288,7 +288,7 @@ Drops indexes in the current graphset.
 
 - `Response`: Result of the request.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
 
 ```ts
 // Drops the index of the node property @ad.name in graphset 'Ad_Click' and prints the error code
@@ -307,7 +307,7 @@ let resp = await conn.dropIndex(
 console.log(resp.status.code_desc);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 SUCCESS
@@ -327,7 +327,7 @@ Retrieves all full-text indexes of node and edge properties from the current gra
 
 - `Index[]`: The list of all full-text indexes retrieved in the current graphset.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
 
 ```ts
 // Retrieves the first full-text index returned in graphset 'miniCircle' and prints its information
@@ -342,7 +342,7 @@ let data = resp.data;
 console.log(data["_nodeFulltext" || "_edgeFulltext"][0]);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 {
@@ -365,7 +365,7 @@ Retrieves all full-text indexes of node properties from the current graphset.
 
 - `Index[]`: The list of all full-text indexes of node properties retrieved in the current graphset.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
 
 ```ts
 // Retrieves the first node full-text index of node properties returned in graphset 'miniCircle' and prints its information
@@ -379,7 +379,7 @@ let resp = await conn.showNodeFulltext(requestConfig);
 console.log(resp.data["_nodeFulltext"][0]);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 {
@@ -402,7 +402,7 @@ Retrieves all full-text indexes of edge properties from the current graphset.
 
 - `Index[]`: The list of all edge full-text indexes of edge properties retrieved in the current graphset.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
 
 ```ts
 // Retrieves the first edge full-text index of edge properties returned in graphset 'miniCircle' and prints its information
@@ -416,7 +416,7 @@ let resp = await conn.showEdgeFulltext(requestConfig);
 console.log(resp.data["_edgeFulltext"][0]);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 {
@@ -443,7 +443,7 @@ Creates a new full-text index in the current graphset.
 
 - `Response`: Result of the request.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
 
 ```ts
 // Creates full-text index called 'movieName' for the property @movie.name in graphset 'miniCircle' and prints the error code
@@ -463,7 +463,7 @@ let resp = await conn.createFulltext(
 console.log(resp.status.code_desc);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 SUCCESS
@@ -483,7 +483,7 @@ Drops a full-text index in the current graphset.
 
 - `Response`: Result of the request.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
 
 ```ts
 // Drops the node full-index 'movieName' in graphset 'miniCircle' and prints the error code
@@ -501,7 +501,7 @@ let resp = await conn.dropFulltext(
 console.log(resp.status.code_desc);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 SUCCESS
@@ -509,7 +509,7 @@ SUCCESS
 
 ## Full Example
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
 
 ```ts
 import { ConnectionPool, ULTIPA } from "@ultipa-graph/ultipa-node-sdk";

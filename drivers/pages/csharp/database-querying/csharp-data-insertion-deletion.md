@@ -48,7 +48,7 @@ Inserts new nodes of a schema to the current graph.
 
 - `UqlResponse`: Result of the request. The `Response` object contains an alias `nodes` that holds all the inserted nodes when `InsertRequestConfig.Slient` is set to false.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
 
 ```c#
 InsertRequestConfig insertRequestConfig = new InsertRequestConfig()
@@ -114,7 +114,7 @@ foreach (var node in insertedNodes)
     Console.WriteLine(JsonConvert.SerializeObject(node));
 }
 ```
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Insertion succeeds
@@ -136,7 +136,7 @@ Inserts new edges of a schema to the current graph.
 
 - `UqlResponse`: Result of the request. The `Response` object contains an alias `edges` that holds all the inserted edges when `InsertRequestConfig.Slient` is set to false.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 InsertRequestConfig insertRequestConfig = new InsertRequestConfig()
@@ -182,7 +182,7 @@ foreach (var edge in insertedEdges)
 }
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Insertion succeeds
@@ -204,7 +204,7 @@ Inserts new nodes of a schema into the current graph through gRPC. The propertie
 
 - `InsertResponse`: Result of the request.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
 
 ```c#
 // Inserts two nodes into schema 'user' in graphset 'lcc' and prints error code 
@@ -292,7 +292,7 @@ var res = ultipa.InsertNodesBatchBySchema(schema, nodeList, insertRequestConfig)
 Console.WriteLine(res.Status.ErrorCode);
 Console.WriteLine(JsonConvert.SerializeObject(res));
 ```
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Success
@@ -314,7 +314,7 @@ Inserts new edges of a schema into the current graph through gRPC. The propertie
 - `InsertResponse`: Result of the request.
 
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 // Inserts two edges into schema 'follows' in graphset 'lcc' and prints error code
@@ -354,7 +354,7 @@ var res = ultipa.InsertEdgesBatchBySchema(schema, edgeList, insertRequestConfig)
 Console.WriteLine(res.Status.ErrorCode);
 Console.WriteLine(JsonConvert.SerializeObject(res.Data));
 ```
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Success
@@ -374,7 +374,7 @@ Inserts new nodes of one or multiple schemas to the current graph through gRPC. 
 
 - `Dictionary<string,InsertResponse>`: Result of the request. 
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 // Inserts two nodes into schema 'user' and one node into schema `product` in graphset 'lcc' and prints error code
@@ -440,7 +440,7 @@ var res = await ultipa.InsertNodesBatchAuto(nodeList, insertRequestConfig);
 Console.WriteLine(JsonConvert.SerializeObject(res));
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 {"user":{"Status":{"ErrorCode":0,"Msg":"","ClusterInfo":null},"Statistic":{"NodeAffected":0,"EdgeAffected":0,"TotalCost":0,"EngineCost":0},"Data":{"Uuids":[1,2],"Ids":[],"ErrorItem":{}}},"product":{"Status":{"ErrorCode":0,"Msg":"","ClusterInfo":null},"Statistic":{"NodeAffected":0,"EdgeAffected":0,"TotalCost":0,"EngineCost":0},"Data":{"Uuids":[3],"Ids":[],"ErrorItem":{}}}}
@@ -459,7 +459,7 @@ Inserts new edges of one or multiple schemas to the current graph through gRPC. 
 
 - `Dictionary<string,InsertResponse>`: Result of the request.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 // Inserts two edges into schema 'follows' and one edge into schema 'purchased' in graphset 'lcc' and prints error code
@@ -504,7 +504,7 @@ edgeList.Add(edge3);
 var res = await ultipa.InsertEdgesBatchAuto(edgeList, insertRequestConfig);
 Console.WriteLine(JsonConvert.SerializeObject(res));
 ```
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 {"follows":{"Status":{"ErrorCode":0,"Msg":"insert edges succeed!","ClusterInfo":null},"Statistic":{"NodeAffected":0,"EdgeAffected":0,"TotalCost":0,"EngineCost":0},"Data":{"Uuids":[1,2],"Ids":[],"ErrorItem":{}}},"purchased":{"Status":{"ErrorCode":0,"Msg":"insert edges succeed!","ClusterInfo":null},"Statistic":{"NodeAffected":0,"EdgeAffected":0,"TotalCost":0,"EngineCost":0},"Data":{"Uuids":[3],"Ids":[],"ErrorItem":{}}}}
@@ -525,7 +525,7 @@ Deletes nodes that meet the given conditions from the current graph. It's import
 
 - `<UqlResponse, List<Node>?>`: Result of the request. The `Response` object contains an alias `nodes` that holds all the deleted nodes when `InsertRequestConfig.Slient` is set to false.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 // Deletes one @user nodes whose name is 'Alice' from graphset 'lcc' and prints error code
@@ -542,7 +542,7 @@ var res = await ultipa.DeleteNodes("@user.name == 'Alice'", insertRequestConfig)
 Console.WriteLine(res.Item1.Status.ErrorCode);
 Console.WriteLine(JsonConvert.SerializeObject(res.Item2));
 ```
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Success
@@ -562,7 +562,7 @@ Deletes edges that meet the given conditions from the current graph.
 
 - `<UqlResponse, List<Edge>?>`: Result of the request. The `Response` object contains an alias `edges` that holds all the deleted edges when `InsertRequestConfig.Slient` is set to false.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 // Deletes all @purchased edges from graphset 'lcc' and prints error code
@@ -577,7 +577,7 @@ var res = await ultipa.DeleteEdges("@purchased", insertRequestConfig);
 Console.WriteLine(res.Item1.Status.ErrorCode);
 Console.WriteLine(JsonConvert.SerializeObject(res.Item2));
 ```
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 Success
@@ -585,7 +585,7 @@ Success
 ```
 
 ## Full Example
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
 
 ```c#
 using System.Data;

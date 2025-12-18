@@ -15,7 +15,7 @@ Acquire data from tables <i>entity</i> and <i>relation</i> from SQL Server datab
 
 ## 2. Modify configuration file
 
-<p tit= "import.sample.sqlserver.yml" type="yaml"></p>
+<p tit="import.sample.sqlserver.yml" type="yaml"></p>
 
 ```yml
 # Configure data source type

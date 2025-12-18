@@ -19,7 +19,7 @@ Downloads one result file from an algorithm task in the current graph.
 
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 requestConfig := &configuration.RequestConfig{
@@ -64,7 +64,7 @@ if myDownload != nil {
 }
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 TaskID is: 65483
@@ -85,7 +85,7 @@ Downloads all result files from an algorithm task in the current graph.
 
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 requestConfig := &configuration.RequestConfig{
@@ -125,7 +125,7 @@ if myDownload != nil {
 }
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 TaskID is: 65838
@@ -146,7 +146,7 @@ Exports nodes and edges from the current graph.
 
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 // Exports 10 nodes of schema 'account' with selected properties in graphset 'miniCircle' and prints the result
@@ -261,7 +261,7 @@ func main() {
   }
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 File is exported
@@ -269,7 +269,7 @@ File is exported
 
 ## Full Example
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
 
 ```go
 package main

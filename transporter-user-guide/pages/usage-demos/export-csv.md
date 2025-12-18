@@ -15,7 +15,7 @@ Export CSV files (without header) from Ultipa graphset <i>shareholding</i> to fo
 
 ## 2. Modify configuration file
 
-<p tit= "export.sample.yml" type="yaml"></p>
+<p tit="export.sample.yml" type="yaml"></p>
 
 ```yml
 # Configure the SFTP where to store the exported files, or store in a local direcotry by default

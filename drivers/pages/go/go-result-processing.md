@@ -29,7 +29,7 @@ Retrieves data by the alias index.
 
 - `DataItem`: The retrieved data.
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 myQuery, err := conn.Uql("find().nodes() as n return n._id, n._uuid limit 3", requestConfig)
@@ -41,7 +41,7 @@ println(utils.JSONString(myQuery.Get(0)))
 
 The UQL statement returns two aliases `n._id` and `n._uuid`; the `Get()` method retrieves the alias `n._id` at index 0.
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 {"Alias":"","Type":4,"Data":{"alias":"n._id","attr":{"value_type":7,"values":["VUxUSVBBODAwMDAwMDAwMDAwMDAwMQ==","VUxUSVBBODAwMDAwMDAwMDAwMDAwMg==","VUxUSVBBODAwMDAwMDAwMDAwMDAwMw=="]}}}
@@ -59,7 +59,7 @@ Retrieves data by the alias name.
 
 - `DataItem`: The retrieved data.
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 myQuery, err := conn.Uql("find().nodes() as n return n._id, n._uuid limit 3", requestConfig)
@@ -71,7 +71,7 @@ println(utils.JSONString(myQuery.Alias("n._uuid")))
 
 The UQL statement returns two aliases `n._id` and `n._uuid`; the `Alias()` method retrieves the alias `n._uuid` by its name.
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```bash
 {"Alias":"","Type":4,"Data":{"alias":"n._uuid","attr":{"value_type":4,"values":["AAAAAAAAAAE=","AAAAAAAAAAI=","AAAAAAAAAAM="]}}}

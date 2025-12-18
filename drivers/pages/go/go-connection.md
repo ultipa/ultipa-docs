@@ -6,7 +6,7 @@ After <a href="https://www.ultipa.com/doc/drivers/go-installation">installing th
 
 ### Connect to a Cluster
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 func TestMisc(t *testing.T) {
@@ -25,7 +25,7 @@ func TestMisc(t *testing.T) {
 
 ### Connect to Ultipa Cloud
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 func GetClient1(hosts []string, graphName string) (*api.UltipaAPI, error) {
@@ -87,7 +87,7 @@ A YAML configuration file stores the necessary server information for connecting
 A driver is created with the configurations specified using the YAML file. The YAML file should be placed under the path of current Go file.
 
 Example of a YAML configuration file 'testConfig.yml': 
-<p tit= "YAML" ></p> 
+<p tit="YAML"></p> 
  
 ```yml
 hosts: 
@@ -100,7 +100,7 @@ default_graph: amz
 timeout:: 300
 ```
 
-<p tit= "Go" ></p> 
+<p tit="Go"></p> 
  
 ```go
 func TestMisc(t *testing.T) {

@@ -5,7 +5,7 @@ Function `reduce()` iterates a designated calculation against each elements in a
 > The iteration pattern of this function is similar to the 'for' in most programming languages, just that the index of each iteration is not exposed to developers.
 
 Syntax：
-<p tit= "Syntax"></p> 
+<p tit="Syntax"></p> 
 
 ```js
 reduce(<result> = <initial_value>, <element> in <list> | <expression>) 

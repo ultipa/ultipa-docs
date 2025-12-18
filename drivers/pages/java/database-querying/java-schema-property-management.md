@@ -18,7 +18,7 @@ Retrieves all nodes and edge schemas from the current graphset.
 
 - `List<Schema>`: The list of all schemas in the current graphset.
 
-<p tit="Java" ></p> 
+<p tit="Java"></p> 
  
 ```java
 // Retrieves all schemas in graphset 'UltipaTeam' and prints their types and names
@@ -33,7 +33,7 @@ for (Schema schema : schemas) {
 }
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 DBNODE: default
@@ -58,7 +58,7 @@ Retrieves a node or edge schema from the current graphset.
 
 - `Schema`: The retrieved schema.
 
-<p tit="Java" ></p> 
+<p tit="Java"></p> 
  
 ```java
 // Retrieves node schema 'member' and edge schema 'connectsTo' in graphset 'UltipaTeam', and prints all their information
@@ -73,7 +73,7 @@ Schema schema2 = client.getSchema("connectsTo", Ultipa.DBType.DBEDGE, requestCon
 System.out.println("schema2: " + new Gson().toJson(schema2));
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 schema1: {"name":"member","description":"","properties":[{"name":"name","propertyType":"STRING","type":"string","lte":false,"description":"","ignored":false,"extra":"{}"},{"name":"title","propertyType":"STRING","type":"string","lte":false,"description":"","ignored":false,"extra":"{}"},{"name":"profile","propertyType":"STRING","type":"string","lte":false,"description":"","ignored":false,"extra":"{}"}],"dbType":"DBNODE","total":7}
@@ -92,7 +92,7 @@ Retrieves all node schemas from the current graphset.
 
 - `List<Schema>`: The list of all node schemas in the current graphset.
 
-<p tit="Java" ></p> 
+<p tit="Java"></p> 
  
 ```java
 // Retrieves all node schemas in graphset 'UltipaTeam' and prints their names
@@ -107,7 +107,7 @@ for (Schema schema : schemas) {
 }
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 default
@@ -127,7 +127,7 @@ Retrieves all edge schemas from the current graphset.
 
 - `List<Schema>`: The list of all edge schemas in the current graphset.
 
-<p tit="Java" ></p> 
+<p tit="Java"></p> 
  
 ```java
 // Retrieves all edge schemas in graphset 'UltipaTeam' and prints their names
@@ -142,7 +142,7 @@ for (Schema schema : schemas) {
 }
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 default
@@ -163,7 +163,7 @@ Retrieves a node schema from the current graphset.
 
 - `Schema`: The retrieved node schema.
 
-<p tit="Java" ></p> 
+<p tit="Java"></p> 
  
 ```java
 // Retrieves node schema 'member' in graphset 'UltipaTeam' and prints its properties
@@ -175,7 +175,7 @@ Schema schema = client.getNodeSchema("member", requestConfig);
 System.out.println(schema.getProperties());
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 [Property(name=name, propertyType=STRING, subPropertyTypes=null, type=string, lte=false, read=null, write=null, schema=null, description=, ignored=false, extra={}, encrypt=null, encrypted=null), Property(name=title, propertyType=STRING, subPropertyTypes=null, type=string, lte=false, read=null, write=null, schema=null, description=, ignored=false, extra={}, encrypt=null, encrypted=null), Property(name=profile, propertyType=STRING, subPropertyTypes=null, type=string, lte=false, read=null, write=null, schema=null, description=, ignored=false, extra={}, encrypt=null, encrypted=null)]
@@ -194,7 +194,7 @@ Retrieves an edge schema from the current graphset.
 
 - `Schema`: The retrieved edge schema.
 
-<p tit="Java" ></p> 
+<p tit="Java"></p> 
  
 ```java
 // Retrieves edge schema 'relatesTo' in graphset 'UltipaTeam' and prints its properties
@@ -206,7 +206,7 @@ Schema schema = client.getEdgeSchema("relatesTo", requestConfig);
 System.out.println(schema.getProperties());
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 [Property(name=type, propertyType=STRING, subPropertyTypes=null, type=string, lte=false, read=null, write=null, schema=null, description=, ignored=false, extra={}, encrypt=null, encrypted=null)]
@@ -226,7 +226,7 @@ Creates a new schema in the current graphset.
 
 - `Response`: Result of the request.
 
-<p tit="Java" ></p> 
+<p tit="Java"></p> 
  
 ```java
 RequestConfig requestConfig = new RequestConfig();
@@ -273,7 +273,7 @@ Schema newSchema2 = client.getEdgeSchema("managedBy", requestConfig);
 System.out.println(new Gson().toJson(newSchema2));
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 SUCCESS
@@ -296,7 +296,7 @@ Creates a new schema in the current graphset, handling cases where the given sch
 
 - `boolean`: Whether the creation happens.
 
-<p tit="Java" ></p> 
+<p tit="Java"></p> 
  
 ```java
 RequestConfig requestConfig = new RequestConfig();
@@ -320,7 +320,7 @@ boolean flag2 = client.createSchemaIfNotExist(schema, requestConfig);
 System.out.println(flag2);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 true
@@ -341,7 +341,7 @@ Alters the name and description of one existing schema in the current graphset b
 
 - `Response`: Result of the request.
 
-<p tit="Java" ></p> 
+<p tit="Java"></p> 
  
 ```java
 // Renames the node schema 'utility' to 'securityUtility' and removes its description in graphset 'UltipaTeam'
@@ -359,7 +359,7 @@ Response response = client.alterSchema(schema, newSchema, requestConfig);
 System.out.println(response.getStatus().getErrorCode());
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 SUCCESS
@@ -378,7 +378,7 @@ Drops one schema from the current graphset by its name.
 
 - `Response`: Result of the request.
 
-<p tit="Java" ></p> 
+<p tit="Java"></p> 
  
 ```java
 // Drops the node schema 'utility' in graphset 'UltipaTeam'
@@ -391,7 +391,7 @@ Response response = client.dropSchema(schema, requestConfig);
 System.out.println(new Gson().toJson(response));
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 {"host":"192.168.1.87:60611","statistic":{"rowAffected":0,"totalTimeCost":0,"engineTimeCost":0,"nodeAffected":0,"edgeAffected":0,"totalCost":1,"engineCost":0},"status":{"errorCode":"SUCCESS","msg":"","clusterInfo":{"redirect":"","leaderAddress":"","followers":[]}},"aliases":[],"items":{},"explainPlan":{"planNodes":[]}}
@@ -413,7 +413,7 @@ Retrieves custom properties of nodes or edges from the current graphset.
 
 - `List<Property>`: The list of all properties retrieved in the current graphset.
 
-<p tit="Java" ></p> 
+<p tit="Java"></p> 
  
 ```java
 // Retrieves all custom node properties in graphset 'UltipaTeam' and prints their names, types and associated schemas
@@ -427,7 +427,7 @@ for (Property property : propertyList) {
 }
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 name(string) is associated with schema named member
@@ -450,7 +450,7 @@ Retrieves custom properties of nodes from the current graphset.
 
 - `List<Property>`: The list of all properties retrieved in the current graphset.
 
-<p tit="Java" ></p> 
+<p tit="Java"></p> 
  
 ```java
 // Retrieves all custom properties of node schema 'member' in graphset 'UltipaTeam' and prints the count
@@ -462,7 +462,7 @@ List<Property> propertyList = client.showNodeProperty("member", requestConfig);
 System.out.println(propertyList.size());
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 3
@@ -481,7 +481,7 @@ Retrieves custom properties of edges from the current graphset.
 
 - `List<Property>`: The list of all properties retrieved in the current graphset.
 
-<p tit="Java" ></p> 
+<p tit="Java"></p> 
  
 ```java
 // Retrieves all custom properties of edge schema 'relatesTo' in graphset 'UltipaTeam' and prints their names
@@ -495,7 +495,7 @@ for (Property property : propertyList) {
 }
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 type
@@ -516,7 +516,7 @@ Retrieves a custom property of nodes or edges from the current graphset.
 
 - `Property`: The retrieved property.
 
-<p tit="Java" ></p> 
+<p tit="Java"></p> 
  
 ```java
 // Retrieves node property @member.title in graphset 'UltipaTeam' and prints all its information
@@ -528,7 +528,7 @@ Property property = client.getProperty("member", Ultipa.DBType.DBNODE, "title", 
 System.out.println(new Gson().toJson(property));
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 {"name":"title","propertyType":"STRING","type":"string","lte":false,"read":true,"write":true,"schema":"member","description":"","ignored":false,"extra":"{}","encrypt":"","encrypted":false}
@@ -548,7 +548,7 @@ Retrieves a custom property of nodes from the current graphset.
 
 - `Property`: The retrieved property.
 
-<p tit="Java" ></p> 
+<p tit="Java"></p> 
  
 ```java
 // Retrieves node property @member.title in graphset 'UltipaTeam' and prints all its information
@@ -560,7 +560,7 @@ Property property = client.getNodeProperty("member", "title", requestConfig);
 System.out.println(new Gson().toJson(property));
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 {"name":"title","propertyType":"STRING","type":"string","lte":false,"read":true,"write":true,"schema":"member","description":"","ignored":false,"extra":"{}","encrypt":"","encrypted":false}
@@ -580,7 +580,7 @@ Retrieves a custom property of edges from the current graphset.
 
 - `Property`: The retrieved property.
 
-<p tit="Java" ></p> 
+<p tit="Java"></p> 
  
 ```java
 // Retrieves edge property @relatesTo.type in graphset 'UltipaTeam' and prints all its information
@@ -592,7 +592,7 @@ Property property = client.getEdgeProperty("relatesTo", "type", requestConfig);
 System.out.println(new Gson().toJson(property));
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 {"name":"type","propertyType":"STRING","type":"string","lte":false,"read":true,"write":true,"schema":"relatesTo","description":"","ignored":false,"extra":"{}","encrypt":"","encrypted":false}
@@ -613,7 +613,7 @@ Creates a new property for a node or edge schema in the current graphset.
 
 - `Response`: Result of the request.
 
-<p tit="Java" ></p> 
+<p tit="Java"></p> 
  
 ```java
 // Creates two properties for node schema 'member' in graphset 'UltipaTeam' and prints error codes
@@ -637,7 +637,7 @@ Response response2 = client.createProperty(Ultipa.DBType.DBNODE, schema, propert
 System.out.println(response2.getStatus().getErrorCode());
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 SUCCESS
@@ -659,7 +659,7 @@ Creates a new property for a node or edge schema in the current graphset, handli
 
 - `boolean`: Whether the creation happens.
 
-<p tit="Java" ></p> 
+<p tit="Java"></p> 
  
 ```java
 RequestConfig requestConfig = new RequestConfig();
@@ -682,7 +682,7 @@ boolean flag2 = client.createPropertyIfNotExist(Ultipa.DBType.DBNODE, "member", 
 System.out.println(flag2);
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 true
@@ -704,7 +704,7 @@ Alters the name and description of one existing custom property in the current g
 
 - `Response`: Result of the request.
 
-<p tit="Java" ></p> 
+<p tit="Java"></p> 
  
 ```java
 RequestConfig requestConfig = new RequestConfig();
@@ -723,7 +723,7 @@ Response response = client.alterProperty(Ultipa.DBType.DBNODE, oldProperty, newP
 System.out.println(response.getStatus().getErrorCode());
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 SUCCESS
@@ -744,7 +744,7 @@ Drops one custom property from the current graphset by its name and the associat
 
 - `Response`: Result of the request.
 
-<p tit="Java" ></p> 
+<p tit="Java"></p> 
  
 ```java
 RequestConfig requestConfig = new RequestConfig();
@@ -761,7 +761,7 @@ Response response2 = client.dropProperty(Ultipa.DBType.DBNODE, "member", "name",
 System.out.println(response2.getStatus().getErrorCode());
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 SUCCESS

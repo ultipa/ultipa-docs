@@ -19,7 +19,7 @@ Downloads one result file from an algorithm task in the current graph.
 
 - `Response`: Result of the request.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 RequestConfig requestConfig = new RequestConfig()
@@ -57,7 +57,7 @@ var bs = stream.ToArray();
 Console.Write(Encoding.UTF8.GetString(bs));
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 TaskId :77218
@@ -78,7 +78,7 @@ Downloads all result files from an algorithm task in the current graph.
 
 - `Response`: Result of the request.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 // Runs the Louvain algorithm in graphset 'miniCircle' and prints the task ID
@@ -119,7 +119,7 @@ RequestConfig requestConfig = new RequestConfig() { UseMaster = true, Graph = "m
 }
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 TaskId :79667
@@ -145,7 +145,7 @@ Exports nodes and edges from the current graph.
 
 - `ExportReply`: Result of the request.
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
  
 ```c#
 // Exports 10 nodes of schema 'account' with selected properties in graphset 'miniCircle' and prints the result
@@ -176,7 +176,7 @@ await ultipa.Export(
 );
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```java
 {"Uuid":1,"Id":"ULTIPA8000000000000001","Schema":"account","Values":{"name":"Yu78","year":1978}}
@@ -193,7 +193,7 @@ await ultipa.Export(
 
 ## Full Example
 
-<p tit= "C#" ></p> 
+<p tit="C#" ></p> 
 
 ```c#
 using System.Data;

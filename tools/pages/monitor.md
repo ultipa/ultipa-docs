@@ -14,7 +14,7 @@ This manual introduces the minimum procedure of using Ultipa Monitor in conjucti
 <div align=center><img src="https://img.ultipa.cn/2022-11-28-20-27-07-config-folder.png"></div>
 
 2\. Modify the configuration file if necessary. Below is a sample of the file with definiation of each parameter:
-<p tit= "yml" type="yaml"></p> 
+<p tit="yml" type="yaml"></p> 
 
 ```yml
 # the first part of content usually needs no modification
@@ -44,7 +44,7 @@ prometheus:
 ```
 
 3\. In case the file of Ultipa Monitor is not executable (usually occurs after manually copying Ultipa Monitor to the server directory), run `chmod +x <filename>` to grant execution permission. Below is the sample command:
-<p tit= "bash" ></p> 
+<p tit="bash"></p> 
 
 ```bash
 chmod +x ultipa_monitor
@@ -53,14 +53,14 @@ chmod +x ultipa_monitor
 ## Start Ultipa Monitor
 
 1\. Install `libpcap` in case the feature of capturing and filtering packets is not enabled:
-<p tit= "bash" ></p> 
+<p tit="bash"></p> 
 
 ```bash
 yum -y install libpcap-devel
 ```
 
 2\. Run below command to start Ultipa Monitor when it is stopped, or restart Ultipa Monitor if its configuration file is modified:
-<p tit= "bash" ></p> 
+<p tit="bash"></p> 
 
 ```bash
 ./ultipa_monitor -d
@@ -69,7 +69,7 @@ yum -y install libpcap-devel
 ## Configure Prometheus
 
 1\. Add the job information of Ultipa Monitor to the YML configuration file of Prometheus (<i>`prometheus`</i>). It can be attached to those existing jobs:
-<p tit= "yml" type="yaml"></p> 
+<p tit="yml" type="yaml"></p> 
 
 ```yml
 global:
@@ -101,7 +101,7 @@ scrape_configs:
 ```
 
 2\. Restart Prometheus:
-<p tit= "bash" ></p> 
+<p tit="bash"></p> 
 
 ```bash
 docker restart prometheus

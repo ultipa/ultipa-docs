@@ -19,7 +19,7 @@ Executes a UQL query on the current graphset or the database and returns the res
 
 - `Response`: Result of the request.
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 // Retrieves 5 @movie nodes in graphset 'miniCircle' and prints their names
@@ -40,7 +40,7 @@ node_list?.forEach((node) => {
 });
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```java
 The Shawshank Redemption
@@ -66,7 +66,7 @@ Executes a UQL query on the current graphset or the database and returns the res
 
 - `void`
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
  
 ```ts
 // Retrieves all 1-step paths in graphset 'miniCircle'
@@ -99,7 +99,7 @@ let resp = await conn.uqlStream(
 );
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
 
 ```java
 Start
@@ -110,7 +110,7 @@ END
 
 ## Full Example
 
-<p tit= "TypeScript" ></p> 
+<p tit="TypeScript"></p> 
 
 ```ts
 import { ConnectionPool, ULTIPA } from "@ultipa-graph/ultipa-node-sdk";

@@ -11,7 +11,7 @@ The Ultipa Java SDK requires JDK8 or higher.
 
 If you have a **Maven** project, you can add the Ultipa Java SDK as a dependency in the `pom.xml` file:
 
-<p tit= "pom.xml" ></p> 
+<p tit="pom.xml" ></p> 
 
 ```xml
 <dependencies>
@@ -28,7 +28,7 @@ If you have a **Maven** project, you can add the Ultipa Java SDK as a dependency
 
 If you are using **Gradle**, add the following to your `build.gradle` dependencies list:
 
-<p tit= "build.gradle" ></p> 
+<p tit="build.gradle" ></p> 
 
 ```js
 dependencies {

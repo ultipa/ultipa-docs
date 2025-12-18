@@ -16,7 +16,7 @@ Retrieves all graphsets from the database.
 
 - `ResponseListGraph`: The list of all graphsets in the database.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 # Retrieves all graphsets and prints the names of the those who have over 2000 edges
@@ -27,7 +27,7 @@ for graph in graphs:
         print(graph.name)
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```python
 Display_Ad_Click
@@ -48,7 +48,7 @@ Retrieves one graphset from the database by its name.
 
 - `ResponseGraph`: The retrieved graphset.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 # Retrieves the graphsets named 'wikiKG' and prints all its information
@@ -57,7 +57,7 @@ graph = Conn.getGraph("wikiKG")
 print(graph.toJSON())
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```python
 {"description": "", "id": "13844", "name": "wikiKG", "status": "MOUNTED", "totalEdges": "167799", "totalNodes": "44449"}
@@ -76,7 +76,7 @@ Creates a new graphset in the database.
 
 - `UltipaResponse`: Result of the request.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
 
 ```python
 # Creates one graphset and prints the error code
@@ -91,7 +91,7 @@ print(response.status.code)
 
 A new graphset `testPythonSDK` is created in the database, and the driver prints:
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```python
 0
@@ -111,7 +111,7 @@ Creates a new graphset in the database, handling cases where the given graphset 
 - `bool`: Whether the graph already exists.
 - `UltipaResponse` or `None`: Result of the request; returns `None` if the graph already exists.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
 
 ```python
 # Creates one graphset and prints the error code
@@ -138,7 +138,7 @@ else:
 
 A new graphset `testPythonSDK` is created in the database, and the driver prints:
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```python
 Code = 0
@@ -158,7 +158,7 @@ Drops one graphset from the database by its name.
 
 - `UltipaResponse`: Result of the request.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 # Creates one graphset and then drops it, prints the result
@@ -175,7 +175,7 @@ response2 = Conn.dropGraph("testPythonSDK")
 print(response2.status.code)
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```python
 0
@@ -196,7 +196,7 @@ Alters the name and description of one existing graphset in the database by its 
 
 - `UltipaResponse`: Result of the request.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 # Renames the graphset 'testPythonSDK' to 'newGraph', sets a description for it, and prints the result
@@ -208,7 +208,7 @@ response = Conn.alterGraph(oldGraph, newGraph)
 print(response.status.code)
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```python
 0
@@ -227,7 +227,7 @@ Truncates (Deletes) the specified nodes or edges in the given graphset or trunca
 
 - `UltipaResponse`: Result of the request.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 # Truncates @person nodes in the graphset 'exKG' and prints the error code
@@ -249,7 +249,7 @@ response3 = Conn.truncate(target3)
 print(response3.status.code)
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```python
 0
@@ -270,7 +270,7 @@ Compacts a graphset by clearing its invalid and redundant data on the server dis
 
 - `UltipaResponse`: Result of the request.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 # Compacts the graphset 'miniCircle' and prints the error code
@@ -279,7 +279,7 @@ response = Conn.compact("miniCircle")
 print(response.status.code)
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```python
 0
@@ -298,7 +298,7 @@ Checks the existence of a graphset in the database by its name.
 
 - `bool`: Result of the request.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 # Checks the existence of graphset 'miniCircle' and prints the result
@@ -307,7 +307,7 @@ response = Conn.hasGraph("miniCircle")
 print(response)
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```python
 True
@@ -326,7 +326,7 @@ Unmounts a graphset to save database memory.
 
 - `UltipaResponse`: Result of the request.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 # Unmounts the graphsets 'miniCircle' and prints its status
@@ -338,7 +338,7 @@ graph = Conn.getGraph("miniCircle")
 print(graph.data.status)
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```python
 UNMOUNTED
@@ -357,7 +357,7 @@ Mounts a graphset to the database memory.
 
 - `UltipaResponse`: Result of the request.
 
-<p tit="Python" ></p> 
+<p tit="Python"></p> 
  
 ```python
 # Mounts the graphsets 'miniCircle' and prints its status
@@ -369,7 +369,7 @@ graph = Conn.getGraph("miniCircle")
 print(graph.data.status)
 ```
 
-<p tit= "Output" ></p> 
+<p tit="Output"></p> 
  
 ```python
 MOUNTED
