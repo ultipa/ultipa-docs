@@ -16,8 +16,6 @@ Retrieves all graphsets from the database.
 
 - `List<GraphSet>`: The list of all graphsets in the database.
 
-<p tit="Java"></p> 
- 
 ```java
 // Retrieves all graphsets and prints the names of the those who have over 2000 edges
 
@@ -31,7 +29,7 @@ for (GraphSet graphSet : graphSetList) {
 
 <p tit="Output"></p> 
  
-```java
+```
 Display_Ad_Click
 ERP_DATA2
 wikiKG
@@ -50,8 +48,6 @@ Retrieves one graphset from the database by its name.
 
 - `GraphSet`: The retrieved graphset.
 
-<p tit="Java"></p> 
- 
 ```java
 // Retrieves the graphsets named 'wikiKG' and prints all its information
 
@@ -62,7 +58,7 @@ System.out.println(new Gson().toJson(graph));
 
 <p tit="Output"></p> 
  
-```java
+```
 {"id":615,"name":"wikiKG","totalNodes":3546,"totalEdges":2179,"status":"MOUNTED","description":""}
 ```
 
@@ -79,8 +75,6 @@ Creates a new graphset in the database.
 
 - `Response`: Result of the request.
 
-<p tit="Java"></p> 
-
 ```java
 // Creates one graphset and prints the error code
 
@@ -96,7 +90,7 @@ A new graphset `testJavaSDK` is created in the database, and the driver prints:
 
 <p tit="Output"></p> 
  
-```java
+```
 SUCCEED
 ```
 
@@ -112,8 +106,6 @@ Creates a new graphset in the database, handling cases where the given graphset 
 **Returns:**
 
 - `Response`: Result of the request.
-
-<p tit="Java"></p> 
 
 ```java
 // Creates one graphset and prints the error code
@@ -135,7 +127,7 @@ A new graphset `testJavaSDK` is created in the database, and the driver prints:
 
 <p tit="Output"></p> 
  
-```java
+```
 First Creation: SUCCESS
 Second Creation: SUCCESS
 ```
@@ -153,8 +145,6 @@ Drops one graphset from the database by its name.
 
 - `Response`: Result of the request.
 
-<p tit="Java"></p> 
- 
 ```java
 // Creates one graphset and then drops it, prints the result
 
@@ -171,7 +161,7 @@ System.out.println(new Gson().toJson(response1));
 
 <p tit="Output"></p> 
  
-```java
+```
 {"host":"192.168.1.85:60611","statistic":{"rowAffected":0,"totalTimeCost":0,"engineTimeCost":0,"nodeAffected":0,"edgeAffected":0,"totalCost":8,"engineCost":0},"status":{"errorCode":"SUCCESS","msg":"","clusterInfo":{"redirect":"","leaderAddress":"","followers":[]}},"aliases":[],"items":{},"explainPlan":{"planNodes":[]}}
 ```
 
@@ -189,8 +179,6 @@ Alters the name and description of one existing graphset in the database by its 
 
 - `Response`: Result of the request.
 
-<p tit="Java"></p> 
- 
 ```java
 // Renames the graphset 'testJavaSDK' to 'newGraph', sets a description for it, and prints the result
 
@@ -207,7 +195,7 @@ System.out.println(new Gson().toJson(response));
 
 <p tit="Output"></p> 
  
-```java
+```
 {"host":"192.168.1.85:60611","statistic":{"rowAffected":0,"totalTimeCost":0,"engineTimeCost":0,"nodeAffected":0,"edgeAffected":0,"totalCost":1,"engineCost":0},"status":{"errorCode":"SUCCESS","msg":"","clusterInfo":{"redirect":"","leaderAddress":"","followers":[]}},"aliases":[],"items":{},"explainPlan":{"planNodes":[]}}
 ```
 
@@ -224,8 +212,6 @@ Truncates (Deletes) the specified nodes or edges in the given graphset or trunca
 
 - `Response`: Result of the request.
 
-<p tit="Java"></p> 
- 
 ```java
 // Truncates @user nodes in the graphset 'myGraph_1' and prints the error code
 
@@ -257,7 +243,7 @@ System.out.println(response3.getStatus().getErrorCode());
 
 <p tit="Output"></p> 
  
-```java
+```
 SUCCESS
 SUCCESS
 SUCCESS
@@ -276,8 +262,6 @@ Compacts a graphset by clearing its invalid and redundant data on the server dis
 
 - `Response`: Result of the request.
 
-<p tit="Java"></p> 
- 
 ```java
 // Compacts the graphset 'miniCircle' and prints the error code
 
@@ -287,7 +271,7 @@ System.out.println(response.getStatus().getErrorCode());
 
 <p tit="Output"></p> 
  
-```java
+```
 SUCCESS
 ```
 
@@ -304,8 +288,6 @@ Checks the existence of a graphset in the database by its name.
 
 - `boolean`: Result of the request.
 
-<p tit="Java"></p> 
- 
 ```java
 // Checks the existence of graphset 'miniCircle' and prints the result
 
@@ -315,7 +297,7 @@ System.out.println("has = " + has);
 
 <p tit="Output"></p> 
  
-```java
+```
 has = true
 ```
 
@@ -332,8 +314,6 @@ Unmounts a graphset to save database memory.
 
 - `Response`: Result of the request.
 
-<p tit="Java"></p> 
- 
 ```java
 // Unmounts the graphsets 'miniCircle' and prints its status
 
@@ -345,7 +325,7 @@ System.out.println(graphSet.getStatus());
 
 <p tit="Output"></p> 
  
-```java
+```
 UNMOUNTED
 ```
 
@@ -362,8 +342,6 @@ Mounts a graphset to the database memory.
 
 - `Response`: Result of the request.
 
-<p tit="Java"></p> 
- 
 ```java
 // Mounts the graphsets 'miniCircle' and prints its status
 
@@ -375,7 +353,7 @@ System.out.println(graphSet.getStatus());
 
 <p tit="Output"></p> 
  
-```java
+```
 MOUNTED
 ```
 

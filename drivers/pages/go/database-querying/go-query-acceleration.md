@@ -22,8 +22,6 @@ Loads one custom property of nodes or edges to the computing engine for query ac
 - `Response`: Result of the request. 
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
-
 ```go
 // Loads the edge property @relatesTo.type to engine in graphset 'UltipaTeam' and prints error code
 
@@ -38,7 +36,7 @@ print("Operation succeeds:", resp.Status.IsSuccess())
 
 <p tit="Output"></p> 
  
-```java
+```
 Operation succeeds:true
 ```
 
@@ -58,8 +56,6 @@ Unloads one custom property of nodes or edges from the computing engine to save 
 - `Response`: Result of the request. 
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
-
 ```go
 // Unloads the edge property @relatesTo.type from engine in graphset 'UltipaTeam' and prints error code
 
@@ -74,7 +70,7 @@ print("Operation succeeds:", resp.Status.IsSuccess())
 
 <p tit="Output"></p> 
  
-```java
+```
 Operation succeeds:true
 ```
 
@@ -92,8 +88,6 @@ Retrieves all indexes of node and edge properties from the current graphset.
 
 - `[]Index`: The list of all indexes retrieved in the current graphset.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
-
-<p tit="Go"></p> 
 
 ```go
 // Retrieves indexes in graphset 'Ad_Click' and prints their information
@@ -114,7 +108,7 @@ for i := 0; i < len(indexList); i++ {
 
 <p tit="Output"></p> 
  
-```java
+```
 {"Name":"shopping_level","Properties":"shopping_level","Schema":"user","Status":"done","Size":4608287,"Type":"node"}
 {"Name":"price","Properties":"price","Schema":"ad","Status":"done","Size":7828760,"Type":"node"}
 {"Name":"time","Properties":"time","Schema":"clicks","Status":"done","Size":12811267,"Type":"edge"}
@@ -133,8 +127,6 @@ Retrieves all indexes of node properties from the current graphset.
 - `[]Index`: The list of all indexes retrieved in the current graphset.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-
-<p tit="Go"></p> 
 
 ```go
 // Retrieves node indexes in graphset 'Ad_Click' and prints their information
@@ -155,7 +147,7 @@ for i := 0; i < len(indexList); i++ {
 
 <p tit="Output"></p> 
  
-```java
+```
 {"Name":"shopping_level","Properties":"shopping_level","Schema":"user","Status":"done","Size":4608287,"Type":"node"}
 {"Name":"price","Properties":"price","Schema":"ad","Status":"done","Size":7828760,"Type":"node"}
 ```
@@ -172,8 +164,6 @@ Retrieves all indexes of edge properties from the current graphset.
 
 - `[]Index`: The list of all indexes retrieved in the current graphset.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
-
-<p tit="Go"></p> 
 
 ```go
 // Retrieves edge indexes in graphset 'Ad_Click' and prints their information
@@ -194,7 +184,7 @@ for i := 0; i < len(indexList); i++ {
 
 <p tit="Output"></p> 
  
-```java
+```
 {"Name":"time","Properties":"time","Schema":"clicks","Status":"done","Size":12811267,"Type":"edge"}
 ```
 
@@ -214,8 +204,6 @@ Creates a new index in the current graphset.
 - `Response`: Result of the request. 
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
-
 ```go
 // Creates indexes for all node properties 'name' in graphset 'Ad_Click' and prints the error code
 
@@ -233,7 +221,7 @@ println("Operation succeeds:", indexList.Status.IsSuccess())
 
 <p tit="Output"></p> 
  
-```java
+```
 Operation succeeds: true
 ```
 
@@ -253,8 +241,6 @@ Drops indexes in the current graphset.
 - `Response`: Result of the request. 
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
-
 ```go
 // Drops the index of the node property @ad.name in graphset 'Ad_Click' and prints the error code
 
@@ -272,7 +258,7 @@ println("Operation succeeds:", indexList.Status.IsSuccess())
 
 <p tit="Output"></p> 
  
-```java
+```
 Operation succeeds: true
 ```
 
@@ -292,8 +278,6 @@ Retrieves all full-text indexes of node and edge properties from the current gra
 - `[]Index`: The list of all indexes retrieved in the current graphset.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
-
 ```go
 // Retrieves the first full-text index returned in graphset 'miniCircle' and prints its information
 
@@ -311,7 +295,7 @@ println(utils.JSONString(indexList[0]))
 
 <p tit="Output"></p> 
  
-```java
+```
 {"Name":"genreFull","Properties":"genre","Schema":"movie","Status":"done","Size":0,"Type":""}
 ```
 
@@ -327,8 +311,6 @@ Retrieves all full-text indexes of node properties from the current graphset.
 
 - `[]Index`: The list of all indexes retrieved in the current graphset.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
-
-<p tit="Go"></p> 
 
 ```go
 // Retrieves the first node full-text index returned in graphset 'miniCircle' and prints its information
@@ -347,7 +329,7 @@ println(utils.JSONString(indexList[0]))
 
 <p tit="Output"></p> 
  
-```java
+```
 {"Name":"genreFull","Properties":"genre","Schema":"movie","Status":"done","Size":0,"Type":""}
 ```
 
@@ -363,8 +345,6 @@ Retrieves all full-text indexes of edge properties from the current graphset.
 
 - `[]Index`: The list of all indexes retrieved in the current graphset.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
-
-<p tit="Go"></p> 
 
 ```go
 // Retrieves the first edge full-text index returned in graphset 'miniCircle' and prints its information
@@ -383,7 +363,7 @@ println(utils.JSONString(indexList[0]))
 
 <p tit="Output"></p> 
  
-```java
+```
 {"Name":"nameFull","Properties":"content","Schema":"review","Status":"done","Size":0,"Type":""}
 ```
 
@@ -404,8 +384,6 @@ Creates a new full-text index in the current graphset.
 - `Response`: Result of the request. 
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
-
 ```go
 // Creates full-text index called 'movieName' for the property @movie.name in graphset 'miniCircle' and prints the error code
 
@@ -423,7 +401,7 @@ println("Operation succeeds:", indexList.Status.IsSuccess())
 
 <p tit="Output"></p> 
  
-```java
+```
 Operation succeeds: true
 ```
 
@@ -442,8 +420,6 @@ Drops a full-text index in the current graphset.
 - `Response`: Result of the request. 
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
-
 ```go
 // Drops the node full-index 'movieName' in graphset 'miniCircle' and prints the error code
 
@@ -461,13 +437,11 @@ println("Operation succeeds:", indexList.Status.IsSuccess())
 
 <p tit="Output"></p> 
  
-```java
+```
 Operation succeeds: true
 ```
 
 ## Full Example
-
-<p tit="Go"></p> 
 
 ```go
 package main

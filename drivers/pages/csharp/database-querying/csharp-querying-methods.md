@@ -120,9 +120,7 @@ Once the connection is established, you can send requests to query the database 
 
 The task specific methods eliminate the need to explicitly write UQL. The following two examples use the `Uql()` and `ShowNodeProperty()` methods respectively to retrieve the `club-member` node schema and print its associated properties. Notice that the latter is easier to write and returns the result as a list of `Property` directly. While with `Uql()`, you need to extract the data from `Response` and cast it into `Property`.
 
-<p tit="C#" ></p> 
-
-```c#
+```csharp
 // Uses the Uql() method
 var res = await ultipa.Uql("show().node_schema(@`club-member`)", requestConfig);
 var schemas = res.Get(0).AsSchemas();

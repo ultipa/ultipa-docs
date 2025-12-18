@@ -19,9 +19,7 @@ Executes a UQL query on the current graphset or the database and returns the res
 
 - `Response`: Result of the request. 
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Retrieves 5 @movie nodes in graphset 'miniCircle' and prints their name
 
 RequestConfig requestConfig = new RequestConfig() { Graph = "miniCircle", UseMaster = true };
@@ -36,7 +34,7 @@ foreach (var node in nodeList)
 
 <p tit="Output"></p> 
 
-```java
+```
 The Shawshank Redemption
 Farewell My Concubine
 Léon: The Professional
@@ -60,9 +58,7 @@ Executes a UQL query on the current graphset or the database and returns the res
 
 - `void` 
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Retrieves all 1-step paths in graphset 'miniCircle'
 RequestConfig requestConfig = new RequestConfig() { Graph = "miniCircle", UseMaster = true };
 
@@ -95,7 +91,7 @@ await ultipa.UqlStream(
 
 <p tit="Output"></p> 
 
-```java
+```
 Start
 Count =  1390
 End
@@ -103,9 +99,7 @@ End
 
 ## Full Example
 
-<p tit="C#" ></p> 
-
-```c#
+```csharp
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;

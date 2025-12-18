@@ -8,9 +8,7 @@ Connection to Ultipa can be established by using `UltipaConfig`, which specifies
 
 ### Connect to a Cluster
 
-<p tit="C#" ></p> 
-
-```c#
+```csharp
 using UltipaSharp;
 using UltipaSharp.configuration;
 
@@ -32,9 +30,7 @@ class Program
 
 ### Connect to Ultipa Cloud with TSL
 
-<p tit="C#" ></p> 
-
-```c#
+```csharp
 using UltipaSharp;
 using UltipaSharp.configuration;
 using UltipaSharp.connection;

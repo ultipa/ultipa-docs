@@ -16,9 +16,7 @@ Retrieves database server statistics.
 
 - `Stats`: The retrieved server statistics.
 
-<p tit="Java"></p>
-
-```js
+```java
 Stats stats = client.stats();
 System.out.println("CPU usage: " + stats.getCpuUsage() + "%");
 System.out.println("Memory usage: " + stats.getMemUsage() + "MB");
@@ -31,7 +29,7 @@ System.out.println("Version: " + stats.getVersion());
 
 <p tit="Output"></p>
 
-```js
+```
 CPU usage: 111.151108%
 Memory usage: 10939.929688MB
 Expiration date: Thu Dec 26 23:59:59 2024
@@ -53,16 +51,14 @@ Tests driver and database server connection.
 
 - `Response`: Result of the request.
 
-<p tit="Java"></p>
-
-```js
+```java
 Response response = client.test();
 System.out.println(response.getStatus().getErrorCode());
 ```
 
 <p tit="Output"></p>
 
-```js
+```
 SUCCESS
 ```
 

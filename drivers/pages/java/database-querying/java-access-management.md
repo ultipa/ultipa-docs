@@ -18,8 +18,6 @@ Retrieves all system privileges and graph privileges, which are actually UQL com
 
 - `Privilege`: All system privileges and graph privileges.
 
-<p tit="Java"></p> 
- 
 ```java
 // Retrieves all system privileges and graph privileges
 
@@ -30,7 +28,7 @@ System.out.println("Graph privileges: " + privilege.getGraphPrivileges());
 
 <p tit="Output"></p> 
  
-```java
+```
 System privileges: [TRUNCATE, COMPACT, CREATE_GRAPH, SHOW_GRAPH, DROP_GRAPH, ALTER_GRAPH, MOUNT_GRAPH, UNMOUNT_GRAPH, TOP, KILL, STAT, SHOW_POLICY, CREATE_POLICY, DROP_POLICY, ALTER_POLICY, SHOW_USER, CREATE_USER, DROP_USER, ALTER_USER, GRANT, REVOKE, SHOW_PRIVILEGE]
 Graph privileges: [TEMPLATE, KHOP, AB, SPREAD, AUTONET, FIND, FIND_NODE, FIND_EDGE, INSERT, EXPORT, UPSERT, UPDATE, DELETE, DELETE_NODE, DELETE_EDGE, CREATE_SCHEMA, DROP_SCHEMA, ALTER_SCHEMA, SHOW_SCHEMA, CREATE_TRIGGER, DROP_TRIGGER, SHOW_TRIGGER, CREATE_BACKUP, RESTORE_BACKUP, SHOW_BACKUP, CREATE_PROPERTY, DROP_PROPERTY, ALTER_PROPERTY, SHOW_PROPERTY, CREATE_FULLTEXT, DROP_FULLTEXT, SHOW_FULLTEXT, CREATE_INDEX, DROP_INDEX, SHOW_INDEX, LTE, UFE, CLEAR_TASK, STOP_TASK, PAUSE_TASK, RESUME_TASK, SHOW_TASK, ALGO, SHOW_ALGO]
 ```
@@ -49,8 +47,6 @@ Retrieves all policies from the instance. A policy includes system privileges, g
 
 - `List<Policy>`: The list of all policies in the instance.
 
-<p tit="Java"></p> 
- 
 ```java
 // Retrieves all policies and prints their information
 
@@ -66,7 +62,7 @@ for (Policy policy : policyList) {
 
 <p tit="Output"></p> 
  
-```java
+```
 Policy 'manager' include:
 - System privileges: [DROP_POLICY, COMPACT]
 - Graph privileges: {*=[CREATE_INDEX, DROP_TRIGGER, CREATE_FULLTEXT]}
@@ -92,8 +88,6 @@ Retrieves a policy from the instance by its name.
 
 - `Policy`: The retrieved policy.
 
-<p tit="Java"></p> 
- 
 ```java
 // Retrieves a policy 'operator' and prints its information
 
@@ -107,7 +101,7 @@ System.out.println("- Policies: " + policy.getPolicies());
 
 <p tit="Output"></p> 
  
-```java
+```
 Policy 'operator' include:
 - System privileges: [MOUNT_GRAPH, TRUNCATE, SHOW_GRAPH]
 - Graph privileges: {miniCircle=[UPDATE, INSERT, TEMPLATE, UPSERT, AUTONET]}
@@ -128,8 +122,6 @@ Creates a policy in the instance.
 
 - `Response`: Result of the request.
 
-<p tit="Java"></p> 
- 
 ```java
 // Creates a new policy 'sales' and then retrieves it
 
@@ -195,7 +187,7 @@ System.out.println("- Policies: " + policy1.getPolicies());
 
 <p tit="Output"></p> 
  
-```java
+```
 SUCCESS
 Policy 'sales' include:
 - System privileges: [SHOW_GRAPH, TRUNCATE]
@@ -217,8 +209,6 @@ Alters the system privileges, graph privileges, property privileges and policies
 
 - `Response`: Result of the request.
 
-<p tit="Java"></p> 
- 
 ```java
 // Alters the policy 'sales' and then retrieves it
 
@@ -252,7 +242,7 @@ System.out.println("- Policies: " + policy1.getPolicies());
 
 <p tit="Output"></p> 
  
-```java
+```
 SUCCESS
 Policy 'sales' include:
 - System privileges: [SHOW_GRAPH]
@@ -274,8 +264,6 @@ Drops one policy from the instance by its name.
 
 - `Response`: Result of the request.
 
-<p tit="Java"></p> 
- 
 ```java
 // Drops the policy 'sales' and prints error code
 
@@ -285,7 +273,7 @@ System.out.println(response.getStatus().getErrorCode());
 
 <p tit="Output"></p> 
  
-```java
+```
 SUCCESS
 ```
 
@@ -303,8 +291,6 @@ Retrieves all database users from the instance.
 
 - `List<User>`: The list of all users in the instance.
 
-<p tit="Java"></p> 
- 
 ```java
 // Retrieves all users and prints information of the first returned
 
@@ -319,7 +305,7 @@ System.out.println("Policies: " + userList.get(0).getPolicies());
 
 <p tit="Output"></p> 
  
-```java
+```
 Username: test006
 Created on: Fri Sep 01 14:37:56 CST 2023
 System privileges: [SHOW_PRIVILEGE, ALTER_USER, DROP_USER, CREATE_USER, SHOW_GRAPH, ALTER_GRAPH, DROP_GRAPH, COMPACT, MOUNT_GRAPH, TOP, CREATE_GRAPH, STAT, UNMOUNT_GRAPH, SHOW_POLICY, TRUNCATE, KILL, ALTER_POLICY, CREATE_POLICY, DROP_POLICY, SHOW_USER]
@@ -341,8 +327,6 @@ Retrieves a database user from the instance by its username.
 
 - `User`: The retrieved user.
 
-<p tit="Java"></p> 
- 
 ```java
 // Retrieves user 'test005' and prints its information
 
@@ -357,7 +341,7 @@ System.out.println("Policies: " + user.getPolicies());
 
 <p tit="Output"></p> 
  
-```java
+```
 Username: test005
 Created on: Thu Aug 31 17:15:59 CST 2023
 System privileges: [SHOW_PRIVILEGE, ALTER_USER, DROP_USER, CREATE_USER, SHOW_GRAPH, ALTER_GRAPH, DROP_GRAPH, COMPACT, MOUNT_GRAPH, TOP, CREATE_GRAPH, STAT, UNMOUNT_GRAPH, SHOW_POLICY, TRUNCATE, KILL, ALTER_POLICY, CREATE_POLICY, DROP_POLICY, SHOW_USER]
@@ -379,8 +363,6 @@ Creates a database user in the instance.
 
 - `Response`: Result of the request.
 
-<p tit="Java"></p> 
- 
 ```java
 // Creates a new user 'javaUser' and prints error code
 
@@ -431,7 +413,7 @@ System.out.println(response.getStatus().getErrorCode());
 
 <p tit="Output"></p>
 
-```js
+```
 SUCCESS
 ```
 
@@ -448,8 +430,6 @@ Alters the password, system privileges, graph privileges, property privileges an
 
 - `Response`: Result of the request.
 
-<p tit="Java"></p> 
- 
 ```java
 // Alters the user 'javaUser' and prints error code
 
@@ -472,7 +452,7 @@ System.out.println(response.getStatus().getErrorCode());
 
 <p tit="Output"></p> 
  
-```java
+```
 SUCCESS
 ```
 
@@ -489,8 +469,6 @@ Drops one database user from the instance by its username.
 
 - `Response`: Result of the request.
 
-<p tit="Java"></p> 
- 
 ```java
 // Drops the user 'javaUser' and prints error code
 
@@ -500,7 +478,7 @@ System.out.println(response.getStatus().getErrorCode());
 
 <p tit="Output"></p> 
  
-```java
+```
 SUCCESS
 ```
 
@@ -521,8 +499,6 @@ Grants new system privileges, graph privileges, property privileges and policies
 
 - `Response`: Result of the request.
 
-<p tit="Java"></p> 
- 
 ```java
 // Graph privileges
 Map<String,List<GraphPrivilege>> graphPrivileges = new HashMap<>();
@@ -572,7 +548,7 @@ System.out.println(response2.getStatus().getErrorCode());
 
 <p tit="Output"></p> 
  
-```java
+```
 SUCCESS
 SUCCESS
 ```
@@ -594,8 +570,6 @@ Revokes system privileges, graph privileges, property privileges and policies fr
 
 - `Response`: Result of the request.
 
-<p tit="Java"></p> 
- 
 ```java
 // Graph privileges
 Map<String,List<GraphPrivilege>> graphPrivileges = new HashMap<>();
@@ -645,7 +619,7 @@ System.out.println(response2.getStatus().getErrorCode());
 
 <p tit="Output"></p> 
  
-```java
+```
 SUCCESS
 SUCCESS
 ```

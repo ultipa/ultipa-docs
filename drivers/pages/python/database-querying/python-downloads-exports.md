@@ -19,8 +19,6 @@ Downloads one result file from an algorithm task in the current graph.
 
 - `None`.
 
-<p tit="Python"></p> 
-
 ```python
 requestConfig = RequestConfig(graphName="miniCircle")
 
@@ -54,7 +52,7 @@ Conn.downloadAlgoResultFile(filename, taskID, cb, requestConfig)
 
 <p tit="Output"></p> 
 
-```python
+```
 taskID = 78620
 ```
 
@@ -73,8 +71,6 @@ Downloads all result files from an algorithm task in the current graph.
 **Returns:**
 
 - `None`.
-
-<p tit="Python"></p> 
 
 ```python
 requestConfig = RequestConfig(graphName="miniCircle")
@@ -107,7 +103,7 @@ Conn.downloadAllAlgoResultFile(taskID, cb, requestConfig)
 
 <p tit="Output"></p> 
 
-```Python
+```
 taskId = 1509
 ```
 
@@ -126,8 +122,6 @@ Exports nodes and edges from the current graph.
 **Returns:**
 
 - `None`.
-
-<p tit="Python"></p> 
 
 ```python
 # Exports 10 nodes of schema 'account' with selected properties in graphset 'miniCircle' and prints their information

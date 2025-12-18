@@ -48,8 +48,6 @@ Inserts new nodes of a schema to the current graph.
 
 -  `Response`: Result of the request. The `Response` object contains an alias `nodes` that holds all the inserted nodes when `InsertRequestConfig.slient` is set to false.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 // Inserts two nodes into schema 'user' in graphset 'lcc', prints error code and information of the inserted nodes
 
@@ -84,7 +82,7 @@ console.log(resp.data);
 ```
 <p tit="Output"></p> 
  
-```java
+```
 SUCCESS
 [
   Node { id: 'U001', uuid: '1', schema: 'user', values: {} },
@@ -106,8 +104,6 @@ Inserts new edges of a schema to the current graph.
 
 - `Response`: Result of the request. The `Response` object contains an alias `edges` that holds all the inserted edges when `InsertRequestConfig.slient` is set to false.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 // Inserts two edges into schema 'follows' in graphset 'lcc', prints error code and information of the inserted edges
 
@@ -141,7 +137,7 @@ console.log(resp.data);
 ```
 <p tit="Output"></p> 
  
-```java
+```
 SUCCESS
 [
   Edge {
@@ -179,8 +175,6 @@ Inserts new nodes of a schema into the current graph through gRPC. The propertie
 
 - `Response`: Result of the request. `Response.InsertNodesReply` contains the insertion report when `InsertRequestConfig.slient` is set to false.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 // Inserts two nodes into schema 'user' in graphset 'lcc' and prints error code 
 
@@ -274,7 +268,7 @@ console.log(insert2.status.code_desc);
 ```
 <p tit="Output"></p> 
  
-```java
+```
 SUCCESS
 SUCCESS
 ```
@@ -293,8 +287,6 @@ Inserts new edges of a schema into the current graph through gRPC. The propertie
 
 - `Response`: Result of the request. `Response.InsertNodesReply` contains the insertion report when `InsertRequestConfig.slient` is set to false.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 // Inserts two edges into schema 'follows' in graphset 'lcc' and prints error code
 
@@ -344,7 +336,7 @@ console.log(insert2.status.code_desc);
 ```
 <p tit="Output"></p> 
  
-```java
+```
 SUCCESS
 SUCCESS
 ```
@@ -362,8 +354,6 @@ Inserts new nodes of one or multiple schemas to the current graph through gRPC. 
 
 - `Response`: Result of the request. `Response.InsertNodesReply` contains the insertion report when `InsertRequestConfig.slient` is set to false.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 // Inserts two nodes into schema 'user' and one node into schema `product` in graphset 'lcc' and prints error code
 
@@ -418,7 +408,7 @@ console.log("Node uuids: ", nodeInsert.data.uuids);
 ```
 <p tit="Output"></p> 
  
-```java
+```
 SUCCESS
 Node uuids:  [ '1', '2', '3' ]
 ```
@@ -436,8 +426,6 @@ Inserts new edges of one or multiple schemas to the current graph through gRPC. 
 
 - `Response`: Result of the request. `Response.InsertEdgesReply` contains the insertion report when `InsertRequestConfig.slient` is set to false.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 // Inserts two edges into schema 'follows' and one edge into schema 'purchased' in graphset 'lcc' and prints error code
 
@@ -480,7 +468,7 @@ console.log("Edge uuids: ", edgeInsert.data.uuids);
 ```
 <p tit="Output"></p> 
  
-```java
+```
 SUCCESS
 Edge uuids:  [ '1', '2', '3' ]
 ```
@@ -500,8 +488,6 @@ Deletes nodes that meet the given conditions from the current graph. It's import
 
 - `Response`: Result of the request. The `Response` object contains an alias `nodes` that holds all the deleted nodes when `InsertRequestConfig.slient` is set to false.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 // Deletes one @user nodes whose name is 'Alice' from graphset 'lcc' and prints error code
 // All edges attached to the deleted node are deleted as well
@@ -521,7 +507,7 @@ console.log(resp.status.code_desc);
 ```
 <p tit="Output"></p> 
  
-```java
+```
 SUCCESS
 ```
 
@@ -538,8 +524,6 @@ Deletes edges that meet the given conditions from the current graph.
 
 - `Response`: Result of the request. The `Response` object contains an alias `edges` that holds all the deleted edges when `InsertRequestConfig.slient` is set to false.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 // Deletes all @purchased edges from graphset 'lcc' and prints error code
 
@@ -555,13 +539,11 @@ console.log(resp.status.code_desc);
 ```
 <p tit="Output"></p> 
  
-```java
+```
 SUCCESS
 ```
 
 ## Full Example
-
-<p tit="TypeScript"></p> 
 
 ```ts
 import { ConnectionPool, ULTIPA } from "@ultipa-graph/ultipa-node-sdk";

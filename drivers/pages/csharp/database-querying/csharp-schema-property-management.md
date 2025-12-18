@@ -18,9 +18,7 @@ Retrieves all nodes and edge schemas from the current graphset.
 
 - `List<Schema>`: The list of all schemas in the current graphset.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Retrieves all schemas in graphset 'UltipaTeam' and prints their names and types
 
 RequestConfig requestConfig = new RequestConfig() { Graph = "UltipaTeam" };
@@ -34,7 +32,7 @@ foreach (var schema in schemaInfo)
 
 <p tit="Output"></p> 
  
-```java
+```
 Dbnode: default
 Dbnode: member
 Dbnode: organization
@@ -57,9 +55,7 @@ Retrieves a node or edge schema from the current graphset.
 
 - `Schema`: The retrieved schema.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Retrieves node schema 'member' and edge schema 'connectsTo' in graphset 'UltipaTeam', and prints all their information
 
 RequestConfig requestConfig = new RequestConfig() { Graph = "UltipaTeam" };
@@ -73,7 +69,7 @@ Console.WriteLine("schema2: " + JsonConvert.SerializeObject(schema2));
 
 <p tit="Output"></p> 
  
-```java
+```
 schema1: {"Name":"member","Desc":"","DbType":0,"Total":0,"Properties":[{"Name":"title","Desc":"","Lte":false,"Read":true,"Write":true,"Schema":"member","Type":7,"SubTypes":[],"Extra":"{}","Encrypt":""},{"Name":"profile","Desc":"","Lte":false,"Read":true,"Write":true,"Schema":"member","Type":7,"SubTypes":[],"Extra":"{}","Encrypt":""},{"Name":"startDate","Desc":"","Lte":false,"Read":true,"Write":true,"Schema":"member","Type":8,"SubTypes":[],"Extra":"{}","Encrypt":""}]}
 schema2: null
 ```
@@ -90,9 +86,7 @@ Retrieves all node schemas from the current graphset.
 
 - `List<Schema>`: The list of all node schemas in the current graphset.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Retrieves all node schemas in graphset 'UltipaTeam' and prints their names
 
 RequestConfig requestConfig = new RequestConfig() { Graph = "UltipaTeam" };
@@ -106,7 +100,7 @@ foreach (var schema in schemaList)
 
 <p tit="Output"></p> 
  
-```java
+```
 default
 member
 organization
@@ -124,9 +118,7 @@ Retrieves all edge schemas from the current graphset.
 
 - `List<Schema>`: The list of all edge schemas in the current graphset.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Retrieves all edge schemas in graphset 'UltipaTeam' and prints their names
 
 var schemaList = await ultipa.ShowEdgeSchema(requestConfig);
@@ -138,7 +130,7 @@ foreach (var schema in schemaList)
 
 <p tit="Output"></p> 
  
-```java
+```
 default
 reportsTo
 relatesTo
@@ -157,9 +149,7 @@ Retrieves a node schema from the current graphset.
 
 - `Schema`: The retrieved node schema.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Retrieves node schema 'member' in graphset 'UltipaTeam' and prints its properties
 
 RequestConfig requestConfig = new RequestConfig() { Graph = "UltipaTeam" };
@@ -174,7 +164,7 @@ foreach (var item in schema.Value.Properties)
 
 <p tit="Output"></p> 
  
-```java
+```
 {"Name":"title","Desc":"","Lte":false,"Read":true,"Write":true,"Schema":"member","Type":7,"SubTypes":[],"Extra":"{}","Encrypt":""}
 {"Name":"profile","Desc":"","Lte":false,"Read":true,"Write":true,"Schema":"member","Type":7,"SubTypes":[],"Extra":"{}","Encrypt":""}
 {"Name":"startDate","Desc":"","Lte":false,"Read":true,"Write":true,"Schema":"member","Type":8,"SubTypes":[],"Extra":"{}","Encrypt":""}
@@ -193,9 +183,7 @@ Retrieves an edge schema from the current graphset.
 
 - `Schema`: The retrieved edge schema.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Retrieves edge schema 'relatesTo' in graphset 'UltipaTeam' and prints its properties
 
 RequestConfig requestConfig = new RequestConfig() { Graph = "UltipaTeam" };
@@ -210,7 +198,7 @@ foreach (var item in schema.Value.Properties)
 
 <p tit="Output"></p> 
  
-```java
+```
 {"Name":"type","Desc":"","Lte":false,"Read":true,"Write":true,"Schema":"relatesTo","Type":7,"SubTypes":[],"Extra":"{}","Encrypt":""}
 ```
 
@@ -228,9 +216,7 @@ Creates a new schema in the current graphset.
 
 - `UqlResponse`: Result of the request.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 RequestConfig requestConfig = new RequestConfig() { Graph = "UltipaTeam" };
 
 // Creates node schema 'utility' (with properties) in graphset 'UltipaTeam' and prints all its information
@@ -273,7 +259,7 @@ Console.WriteLine(JsonConvert.SerializeObject(show2.Value));
 
 <p tit="Output"></p> 
  
-```java
+```
 Success
 {"Name":"utility","Desc":"","DbType":0,"Total":0,"Properties":[{"Name":"name","Desc":"","Lte":false,"Read":true,"Write":true,"Schema":"utility","Type":7,"SubTypes":[],"Extra":"{}","Encrypt":""},{"Name":"purchaseDate","Desc":"","Lte":false,"Read":true,"Write":true,"Schema":"utility","Type":8,"SubTypes":[],"Extra":"{}","Encrypt":""}]}
 Success
@@ -295,9 +281,7 @@ Creates a new schema in the current graphset, handling cases where the given sch
 - `UqlResponse`: Result of the request.
 - `bool`: Whether the schema exists.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 RequestConfig requestConfig = new RequestConfig() { Graph = "UltipaTeam" };
 
 
@@ -321,7 +305,7 @@ Console.WriteLine("Schema already exists: " + new2.Item2);
 
 <p tit="Output"></p> 
  
-```java
+```
 Schema already exists: False
 Schema already exists: True
 ```
@@ -340,9 +324,7 @@ Alters the name and description of one existing schema in the current graphset b
 
 - `UqlResponse`: Result of the request.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Renames the node schema 'utility' to 'securityUtility' and removes its description in graphset 'UltipaTeam'
 
 RequestConfig requestConfig = new RequestConfig() { Graph = "UltipaTeam" };
@@ -362,7 +344,7 @@ Console.WriteLine(alter.Status.ErrorCode);
 
 <p tit="Output"></p> 
  
-```java
+```
 Success
 ```
 
@@ -379,9 +361,7 @@ Drops one schema from the current graphset by its name.
 
 - `UqlResponse`: Result of the request.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Drops the node schema 'utility' in graphset 'UltipaTeam'
 
 RequestConfig requestConfig = new RequestConfig() { Graph = "UltipaTeam" };
@@ -395,7 +375,7 @@ Console.WriteLine(res.Status.ErrorCode);
 
 <p tit="Output"></p> 
  
-```java
+```
 Success
 ```
 
@@ -415,9 +395,7 @@ Retrieves custom properties of nodes or edges from the current graphset.
 
 - `List<Property>`: The list of all properties retrieved in the current graphset.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Retrieves all node properties in graphset 'UltipaTeam' and prints their names and associated schemas
 
 RequestConfig requestConfig = new RequestConfig() { Graph = "UltipaTeam" };
@@ -433,7 +411,7 @@ foreach (var item in res)
 
 <p tit="Output"></p> 
  
-```java
+```
 name(String) is associated with schema named member
 title(String) is associated with schema named member
 profile(String) is associated with schema named member
@@ -454,9 +432,7 @@ Retrieves custom properties of nodes from the current graphset.
 
 - `List<Property>`: The list of all properties retrieved in the current graphset.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Retrieves all custom properties of node schema 'member' in graphset 'UltipaTeam' and prints the count
 
 RequestConfig requestConfig = new RequestConfig() { Graph = "UltipaTeam" };
@@ -467,7 +443,7 @@ Console.WriteLine(res.Count);
 
 <p tit="Output"></p> 
  
-```java
+```
 3
 ```
 
@@ -484,9 +460,7 @@ Retrieves custom properties of edges from the current graphset.
 - `string` (Optional): Name of the schema.
 - `List<Property>`: The list of all properties retrieved in the current graphset.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Retrieves all custom properties of edge schema 'relatesTo' in graphset 'UltipaTeam' and prints their names
 
 RequestConfig requestConfig = new RequestConfig() { Graph = "UltipaTeam" };
@@ -500,7 +474,7 @@ foreach (var item in res)
 
 <p tit="Output"></p> 
  
-```java
+```
 type
 ```
 
@@ -519,9 +493,7 @@ Retrieves a custom property of nodes or edges from the current graphset.
 
 - `Property`: The retrieved property.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Retrieves node property @member.title in graphset 'UltipaTeam' and prints all its information
 
 RequestConfig requestConfig = new RequestConfig() { Graph = "UltipaTeam" };
@@ -532,7 +504,7 @@ Console.WriteLine(JsonConvert.SerializeObject(res));
 
 <p tit="Output"></p> 
  
-```java
+```
 {"Name":"title","Desc":"","Lte":false,"Read":true,"Write":true,"Schema":"member","Type":7,"SubTypes":[],"Extra":"{}","Encrypt":""}
 ```
 
@@ -550,9 +522,7 @@ Retrieves a custom property of nodes from the current graphset.
 
 - `Property`: The retrieved property.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Retrieves node property @member.title in graphset 'UltipaTeam' and prints all its information
 
 RequestConfig requestConfig = new RequestConfig() { Graph = "UltipaTeam" };
@@ -563,7 +533,7 @@ Console.WriteLine(JsonConvert.SerializeObject(res));
 
 <p tit="Output"></p> 
  
-```java
+```
 {"Name":"title","Desc":"","Lte":false,"Read":true,"Write":true,"Schema":"member","Type":7,"SubTypes":[],"Extra":"{}","Encrypt":""}
 ```
 
@@ -581,9 +551,7 @@ Retrieves a custom property of edges from the current graphset.
 
 - `Property`: The retrieved property.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Retrieves edge property @relatesTo.type in graphset 'UltipaTeam' and prints all its information
 
 RequestConfig requestConfig = new RequestConfig() { Graph = "UltipaTeam" };
@@ -594,7 +562,7 @@ Console.WriteLine(JsonConvert.SerializeObject(res));
 
 <p tit="Output"></p> 
  
-```java
+```
 {"Name":"type","Desc":"","Lte":false,"Read":true,"Write":true,"Schema":"relatesTo","Type":7,"SubTypes":[],"Extra":"{}","Encrypt":""}
 ```
 
@@ -612,9 +580,7 @@ Creates a new property for a node or edge schema in the current graphset.
 
 - `UqlResponse`: Result of the request.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Creates two properties for node schema 'member' in graphset 'UltipaTeam' and prints error codes
 
 RequestConfig requestConfig = new RequestConfig() { Graph = "UltipaTeam" };
@@ -646,7 +612,7 @@ Console.WriteLine(res2.Status.ErrorCode);
 
 <p tit="Output"></p> 
  
-```java
+```
 Success
 Success
 ```
@@ -666,9 +632,7 @@ Creates a new property for a node or edge schema in the current graphset, handli
 - `UqlResponse`: Result of the request.
 - `bool`: Whether the property exists.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 RequestConfig requestConfig = new RequestConfig() { Graph = "UltipaTeam" };
 
 // Creates a property for node schema 'member' in graphset 'UltipaTeam' and prints if the schema already exists
@@ -702,7 +666,7 @@ Console.WriteLine("Property already exists: " + res2.Item2);
 
 <p tit="Output"></p> 
  
-```java
+```
 Property already exists: False
 Property already exists: True
 ```
@@ -722,9 +686,7 @@ Alters the name and description of one existing custom property in the current g
 
 - `UqlResponse`: Result of the request.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 RequestConfig requestConfig = new RequestConfig() { Graph = "UltipaTeam" };
 
 // Rename properties 'name' associated with all node schemas to `Name` in graphset 'UltipaTeam'
@@ -740,7 +702,7 @@ Console.WriteLine(res.Status.ErrorCode);
 
 <p tit="Output"></p> 
  
-```java
+```
 Success
 ```
 
@@ -759,9 +721,7 @@ Drops one custom property from the current graphset by its name and the associat
 
 - `UqlResponse`: Result of the request.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 RequestConfig requestConfig = new RequestConfig() { Graph = "UltipaTeam" };
 
 // Drops properties 'startDate' assocaited with all node schemas in graphset 'UltipaTeam' and prints error code
@@ -777,16 +737,14 @@ Console.WriteLine(res2.Status.ErrorCode);
 
 <p tit="Output"></p> 
  
-```java
+```
 Success
 Success
 ```
 
 ## Full Example
 
-<p tit="C#" ></p> 
-
-```c#
+```csharp
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Xml.Linq;

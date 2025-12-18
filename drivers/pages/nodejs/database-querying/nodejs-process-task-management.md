@@ -20,8 +20,6 @@ Retrieves all running and stopping processes from the instance.
 
 - `Response`: The list of all processes in the instance.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 // Retrieves all running and stopping processes in the instance
 
@@ -31,7 +29,7 @@ console.log(resp.data);
 
 <p tit="Output"></p> 
  
-```java
+```
 [
   {
     process_id: 'a_0_1519_2',
@@ -56,8 +54,6 @@ Kills running processes in the instance.
 
 - `Response`: Result of the request.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 // Retrieves all running and stopping processes in the instance and kill all
 
@@ -74,7 +70,7 @@ console.log(resp.status.code_desc);
 
 <p tit="Output"></p> 
  
-```java
+```
 [
   [ 'a_2_1542_2', 'n().e().n().e().n().e().n() as p return count(p)' ],
   [ 'a_6_1597_2', 'n().e().n().e().n()as p return count(p)' ]
@@ -100,8 +96,6 @@ Retrieves tasks from the current graphset.
 
 - `Task[]`: The list of all tasks in the graphset.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 let requestConfig = <RequestType.RequestConfig>{
   useMaster: true,
@@ -140,7 +134,7 @@ console.log(
 
 <p tit="Output"></p> 
  
-```java
+```
 Task ID:  54252
 Algo Name:  degree
 Task Result:  {
@@ -164,8 +158,6 @@ Clears (Deletes) tasks from the current graphset. Tasks with the status `COMPUTI
 
 - `Response`: Result of the request.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 let requestConfig = <RequestType.RequestConfig>{
   useMaster: true,
@@ -195,7 +187,7 @@ console.log("Task cleared: ", resp.status.code_desc);
 
 <p tit="Output"></p> 
  
-```java
+```
 Task ID:  60451
 Task cleared:  SUCCESS
 ```
@@ -213,8 +205,6 @@ Stops tasks whose status is `COMPUTING` in the current graphset.
 
 - `Response`: Result of the request.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 let requestConfig = <RequestType.RequestConfig>{
   useMaster: true,
@@ -258,7 +248,7 @@ console.log(
 
 <p tit="Output"></p> 
  
-```java
+```
 Task ID:  60495
 Task stopped:  SUCCESS
 Algo name:  [ 'louvain' ]
@@ -266,8 +256,6 @@ Task result:  [ { community_count: '11', modularity: '0.533843' } ]
 ```
 
 ## Full Example
-
-<p tit="TypeScript"></p> 
 
 ```ts
 import { ConnectionPool, ULTIPA } from "@ultipa-graph/ultipa-node-sdk";

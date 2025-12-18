@@ -21,8 +21,6 @@ Retrieves all running and stopping processes from the instance.
 - `[]Top`: The list of all processes in the instance.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
- 
 ```go
 // Retrieves all running and stopping processes in the instance
 
@@ -40,7 +38,7 @@ println(utils.JSONString(myProcess))
 
 <p tit="Output"></p> 
  
-```java
+```
 [{"process_id":"a_4_12573_2","status":"RUNNING","process_uql":"n().e().n().e().n().e().n() as p return count(p)","duration":"48"}]
 ```
 
@@ -59,8 +57,6 @@ Kills running processes in the instance.
 - `Response`: Result of the request.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
- 
 ```go
 // Retrieves all running and stopping processes in the instance and kill all
 
@@ -74,7 +70,7 @@ println("Operation succeeds:", myProcess.IsSuccess())
 
 <p tit="Output"></p> 
  
-```java
+```
 Operation succeeds: true
 ```
 
@@ -97,8 +93,6 @@ Retrieves tasks from the current graphset.
 - `[]Task`: The list of all tasks in the graphset.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
- 
 ```go
 requestConfig := &configuration.RequestConfig{
   UseMaster: true,
@@ -124,7 +118,7 @@ println("Task result:", utils.JSONString(myTask[0].Result))
 
 <p tit="Output"></p> 
  
-```java
+```
 TaskID: 65843
 Algo name: louvain
 Task result: {"community_count":"10","modularity":"0.528182","result_files":"communityID,ids,num"}
@@ -145,8 +139,6 @@ Clears (Deletes) tasks from the current graphset. Tasks with the status `TaskSta
 - `Response`: Result of the request.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
- 
 ```go
 requestConfig := &configuration.RequestConfig{
   UseMaster: true,
@@ -175,7 +167,7 @@ println("Task cleared:", tClear.IsSuccess())
 
 <p tit="Output"></p> 
  
-```java
+```
 TaskID is: 65874
 Task cleared: true
 ```
@@ -194,8 +186,6 @@ Stops tasks whose status is `COMPUTING` in the current graphset.
 - `Response`: Result of the request.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
- 
 ```go
 requestConfig := &configuration.RequestConfig{
   UseMaster: true,
@@ -224,14 +214,12 @@ println("Task is stopped:", tStop.IsSuccess())
 
 <p tit="Output"></p> 
  
-```java
+```
 TaskID is: 65886
 Task is stopped: true
 ```
 
 ## Full Example
-
-<p tit="Go"></p> 
 
 ```go
 package main

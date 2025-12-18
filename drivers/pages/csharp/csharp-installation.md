@@ -21,8 +21,6 @@ The Ultipa C# SDK requires .NET version 7.0 or higher.
 
 Navigate to your project directory in your terminal and add the SDK to your project using the following command:
 
-<p tit="Bash"></p> 
-
 ```bash
 dotnet add package UltipaSharp --version 1.0.8-s4.4
 ```

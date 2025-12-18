@@ -20,8 +20,6 @@ Executes a UQL query on the current graphset or the database and returns the res
 - `Response`: Result of the request. 
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
- 
 ```go
 // Retrieves 5 @movie nodes in graphset 'miniCircle' and prints their information
 
@@ -37,7 +35,7 @@ printers.PrintNodes(nodeList, schemaList)
 
 <p tit="Output"></p> 
 
-```java
+```
 +-----+------+--------+--------------------------+------------------------+------+--------+
 | ID  | UUID | Schema |           name           |         genre          | year | rating |
 +-----+------+--------+--------------------------+------------------------+------+--------+
@@ -65,8 +63,6 @@ Executes a UQL query on the current graphset or the database and returns the res
 - `UQLResponseStream`: Result of the request. 
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
- 
 ```go
 // Retrieves all 1-step paths in graphset 'miniCircle'
 
@@ -105,7 +101,7 @@ stream.Close()
 
 <p tit="Output"></p> 
 
-```java
+```
 Total Cost : 0.029s | Engine Cost : 0.001s 
 Count =  1250
 Total Cost : 0.029s | Engine Cost : 0.001s 
@@ -114,8 +110,6 @@ End
 ```
 
 ## Full Example
-
-<p tit="Go"></p> 
 
 ```go
 package main

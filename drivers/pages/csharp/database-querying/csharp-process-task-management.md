@@ -20,9 +20,7 @@ Retrieves all running and stopping processes from the instance.
 
 - `List<Process>`: The list of all processes in the instance.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Retrieves all running and stopping processes in the instance
 
 RequestConfig requestConfig = new RequestConfig() { UseMaster = true };
@@ -33,7 +31,7 @@ Console.WriteLine(JsonConvert.SerializeObject(processList));
 
 <p tit="Output"></p> 
  
-```java
+```
 [{"Id":"a_7_33_2","Uql":"n().e().n().e().n().e().n() as p return count(p)","Duration":73,"Status":"RUNNING"}]
 ```
 
@@ -50,9 +48,7 @@ Kills running processes in the instance.
 
 - `Response`: Result of the request.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Retrieves all running and stopping processes in the instance and kill all
 
 RequestConfig requestConfig = new RequestConfig() { UseMaster = true };
@@ -73,7 +69,7 @@ if (res.Status.ErrorCode == 0)
 
 <p tit="Output"></p> 
  
-```java
+```
 Process ID: a_6_41_2
 UQL: n().e().n().e().n().e().n() as p return count(p)
 Operation succeeds
@@ -97,9 +93,7 @@ Retrieves tasks from the current graphset.
 
 - `List<Task>`: The list of all tasks in the graphset.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 RequestConfig requestConfig = new RequestConfig()
 {
     UseMaster = true,
@@ -125,7 +119,7 @@ Console.WriteLine("Task result: " + JsonConvert.SerializeObject(showT[0].result)
 
 <p tit="Output"></p> 
  
-```java
+```
 Task ID: "72122"
 Algo name: "degree"
 Task result: {"total_degree":"1390.000000","avarage_degree":"4.572368","result_files":"degree_all"}
@@ -145,9 +139,7 @@ Clears (Deletes) tasks from the current graphset. Tasks with the status `TaskSta
 
 - `Response`: Result of the request.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 RequestConfig requestConfig = new RequestConfig()
 {
     UseMaster = true,
@@ -180,7 +172,7 @@ else
 
 <p tit="Output"></p> 
  
-```java
+```
 Task ID: 72124
 Task cleared
 ```
@@ -198,9 +190,7 @@ Stops tasks whose status is `COMPUTING` in the current graphset.
 
 - `Response`: Result of the request.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 RequestConfig requestConfig = new RequestConfig()
 {
     UseMaster = true,
@@ -224,16 +214,14 @@ Console.WriteLine("Task is stopped: " + stopT.Status.ErrorCode);
 
 <p tit="Output"></p> 
  
-```java
+```
 Task ID: 72126
 Task is stopped: Success
 ```
 
 ## Full Example
 
-<p tit="C#" ></p> 
-
-```c#
+```csharp
 using System.Data;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml.Linq;

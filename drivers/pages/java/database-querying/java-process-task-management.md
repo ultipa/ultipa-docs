@@ -20,8 +20,6 @@ Retrieves all running and stopping processes from the instance.
 
 - `List<Process>`: The list of all processes in the instance.
 
-<p tit="Java"></p> 
-
 ```java
 // Retrieves all running and stopping processes in the instance
 
@@ -33,7 +31,7 @@ for (Process process : processList) {
 
 <p tit="Output"></p> 
 
-```java
+```
 a_0_539_2 n({_uuid > 300}).e()[:3].n() as p RETURN p{*} LIMIT 500
 ```
 
@@ -50,8 +48,6 @@ Kills running processes in the instance.
 
 - `Response`: Result of the request.
 
-<p tit="Java"></p> 
-
 ```java
 // Retrieves all running and stopping processes in the instance and kill all
 
@@ -65,7 +61,7 @@ System.out.println(response.getStatus().getErrorCode());
 
 <p tit="Output"></p> 
 
-```java
+```
 a_0_540_2 n({_uuid > 300}).e()[:3].n() as p RETURN p{*} LIMIT 500
 SUCCESS
 ```
@@ -118,7 +114,7 @@ for (Task task : taskList) {
 
 <p tit="Output"></p>
 
-```js
+```
 Task ID: 54240
 Server ID: 3
 Algo Name: degree
@@ -165,7 +161,7 @@ System.out.println("Task " + taskID + " cleared: " + response1.getStatus().getEr
 
 <p tit="Output"></p>
 
-```js
+```
 Task 54242 cleared: SUCCESS
 ```
 
@@ -182,9 +178,7 @@ Stops tasks whose status is `COMPUTING` in the current graphset.
 
 - `Response`: Result of the request.
 
-<p tit="Java"></p>
-
-```js
+```java
 RequestConfig requestConfig = new RequestConfig();
 requestConfig.setGraphName("Ad_Click");
 
@@ -217,7 +211,7 @@ for (Task task : taskList) {
 
 <p tit="Output"></p>
 
-```js
+```
 Task 54248 stopped: SUCCESS
 Task ID: 54248
 Server ID: 3

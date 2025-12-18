@@ -21,9 +21,7 @@ Loads one custom property of nodes or edges to the computing engine for query ac
 
 - `UltipaResponse`: Result of the request.
 
-<p tit="Python"></p> 
- 
-```Python
+```python
 # Loads the edge property @relatesTo.type to engine in graphset 'UltipaTeam' and prints error code
 
 requestConfig = RequestConfig(graphName="UltipaTeam")
@@ -32,9 +30,9 @@ response = Conn.lte(DBType.DBEDGE, 'type', 'relatesTo', requestConfig)
 print(response.status.code)
 ```
 
-<p tit="Output:" ></p> 
+<p tit="Output" ></p> 
  
-```Python
+```
 0
 ```
 
@@ -53,9 +51,7 @@ Unloads one custom property of nodes or edges from the computing engine to save 
 
 - `Response`: Result of the request.
 
-<p tit="Python"></p> 
- 
-```Python
+```python
 # Unloads the edge property @relatesTo.type from engine in graphset 'UltipaTeam' and prints error code
 
 requestConfig = RequestConfig(graphName="UltipaTeam")
@@ -66,7 +62,7 @@ print(response.status.code)
 
 <p tit="Output"></p> 
  
-```Python
+```
 0
 ```
 
@@ -84,9 +80,7 @@ Retrieves all indexes of node and edge properties from the current graphset.
 
 - `List[Index]`: The list of all indexes retrieved in the current graphset.
 
-<p tit="Python"></p> 
- 
-```Python
+```python
 # Retrieves indexes in graphset 'Ad_Click' and prints their information
 
 requestConfig = RequestConfig(graphName="Ad_Click")
@@ -98,7 +92,7 @@ for index in indexList:
 
 <p tit="Output"></p> 
  
-```Python
+```
 {"DBType": 0, "name": "shopping_level", "properties": "shopping_level", "schema": "user", "size": "4608287", "status": "done"}
 {"DBType": 0, "name": "price", "properties": "price", "schema": "ad", "size": "5416241", "status": "done"}
 {"DBType": 1, "name": "time", "properties": "time", "schema": "clicks", "size": "12811267", "status": "done"}
@@ -116,9 +110,7 @@ Retrieves all indexes of node properties from the current graphset.
 
 - `List[Index]`: The list of all node indexes retrieved in the current graphset.
 
-<p tit="Python"></p> 
- 
-```Python
+```python
 # Retrieves node indexes in graphset 'Ad_Click' and prints their information
 
 requestConfig = RequestConfig(graphName="Ad_Click")
@@ -130,7 +122,7 @@ for index in indexList:
 
 <p tit="Output"></p> 
  
-```Python
+```
 {"DBType": 0, "name": "shopping_level", "properties": "shopping_level", "schema": "user", "size": "4608287", "status": "done"}
 {"DBType": 0, "name": "price", "properties": "price", "schema": "ad", "size": "5416241", "status": "done"}
 ```
@@ -147,9 +139,7 @@ Retrieves all indexes of edge properties from the current graphset.
 
 - `List[Index]`: The list of all edge indexes retrieved in the current graphset.
 
-<p tit="Python"></p> 
- 
-```Python
+```python
 # Retrieves edge indexes in graphset 'Ad_Click' and prints their information
 
 requestConfig = RequestConfig(graphName="Ad_Click")
@@ -161,7 +151,7 @@ for index in indexList:
 
 <p tit="Output"></p> 
  
-```Python
+```
 {"DBType": 1, "name": "time", "properties": "time", "schema": "clicks", "size": "12811267", "status": "done"}
 ```
 
@@ -180,9 +170,7 @@ Creates a new index in the current graphset.
 
 - `UltipaResponse`: Result of the request.
 
-<p tit="Python"></p> 
- 
-```Python
+```python
 # Creates indexes for all node properties 'name' in graphset 'Ad_Click' and prints the error code
 
 requestConfig = RequestConfig(graphName="Ad_Click")
@@ -193,7 +181,7 @@ print(response.status.code)
 
 <p tit="Output"></p> 
  
-```Python
+```
 0
 ```
 
@@ -212,9 +200,7 @@ Drops indexes in the current graphset.
 
 - `UltipaResponse`: Result of the request.
 
-<p tit="Python"></p> 
- 
-```Python
+```python
 # Drops the index of the node property @ad.name in graphset 'Ad_Click' and prints the error code
 
 requestConfig = RequestConfig(graphName="Ad_Click")
@@ -225,7 +211,7 @@ print(response.status.code)
 
 <p tit="Output"></p> 
  
-```Python
+```
 0
 ```
 
@@ -243,9 +229,7 @@ Retrieves all full-text indexes of node and edge properties from the current gra
 
 - `List[Index]`: The list of all full-text indexes retrieved in the current graphset.
 
-<p tit="Python"></p> 
- 
-```Python
+```python
 # Retrieves the first full-text index returned in graphset 'miniCircle' and prints its information
 
 requestConfig = RequestConfig(graphName="miniCircle")
@@ -256,7 +240,7 @@ print(fulltextList[0].toJSON())
 
 <p tit="Output"></p> 
  
-```Python
+```
 {"DBType": 0, "name": "genreFull", "properties": "genre", "schema": "movie", "size": "", "status": "done"}
 ```
 
@@ -272,9 +256,7 @@ Retrieves all full-text indexes of node properties from the current graphset.
 
 - `List[Index]`:  The list of all full-text indexes of node properties retrieved in the current graphset.
 
-<p tit="Python"></p> 
- 
-```Python
+```python
 # Retrieves the first node full-text index of node properties returned in graphset 'miniCircle' and prints its information
 
 requestConfig = RequestConfig(graphName="miniCircle")
@@ -285,7 +267,7 @@ print(nodeFulltextList[0].toJSON())
 
 <p tit="Output"></p> 
  
-```Python
+```
 {"DBType": 0, "name": "genreFull", "properties": "genre", "schema": "movie", "size": "", "status": "done"}
 ```
 
@@ -301,9 +283,7 @@ Retrieves all full-text indexes of edge properties of edge properties from the c
 
 - `List[Index]`: The list of all edge full-text indexes of edge properties retrieved in the current graphset.
 
-<p tit="Python"></p> 
- 
-```Python
+```python
 # Retrieves the first edge full-text index of edge properties returned in graphset 'miniCircle' and prints its information
 
 requestConfig = RequestConfig(graphName="miniCircle")
@@ -314,7 +294,7 @@ print(edgeFulltextList[0].toJSON())
 
 <p tit="Output"></p> 
  
-```Python
+```
 {"DBType": 1, "name": "nameFull", "properties": "content", "schema": "review", "size": "", "status": "done"}
 ```
 
@@ -334,9 +314,7 @@ Creates a new full-text index in the current graphset.
 
 - `Response`: Result of the request.
 
-<p tit="Python"></p> 
- 
-```Python
+```python
 # Creates full-text index called 'movieName' for the property @movie.name in graphset 'miniCircle' and prints the error code
 
 requestConfig = RequestConfig(graphName="miniCircle")
@@ -347,7 +325,7 @@ print(response.status.code)
 
 <p tit="Output"></p> 
  
-```Python
+```
 0
 ```
 
@@ -365,9 +343,7 @@ Drops a full-text index in the current graphset.
 
 - `UltipaResponse`: Result of the request.
 
-<p tit="Python"></p> 
- 
-```Python
+```python
 # Drops the node full-index 'movieName' in graphset 'miniCircle' and prints the error code
 
 requestConfig = RequestConfig(graphName="miniCircle")
@@ -378,7 +354,7 @@ print(response.status.code)
 
 <p tit="Output"></p> 
  
-```python
+```
 0
 ```
 

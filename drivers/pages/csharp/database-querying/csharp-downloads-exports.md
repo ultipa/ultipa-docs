@@ -19,9 +19,7 @@ Downloads one result file from an algorithm task in the current graph.
 
 - `Response`: Result of the request.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 RequestConfig requestConfig = new RequestConfig()
 {
     UseMaster = true,
@@ -59,7 +57,7 @@ Console.Write(Encoding.UTF8.GetString(bs));
 
 <p tit="Output"></p> 
  
-```java
+```
 TaskId :77218
 Content of the file 'communityID'
 ```
@@ -78,9 +76,7 @@ Downloads all result files from an algorithm task in the current graph.
 
 - `Response`: Result of the request.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Runs the Louvain algorithm in graphset 'miniCircle' and prints the task ID
 
 RequestConfig requestConfig = new RequestConfig() { UseMaster = true, Graph = "miniCircle" };
@@ -121,7 +117,7 @@ RequestConfig requestConfig = new RequestConfig() { UseMaster = true, Graph = "m
 
 <p tit="Output"></p> 
  
-```java
+```
 TaskId :79667
 Content of the file 'communityID'
 Download complete
@@ -145,9 +141,7 @@ Exports nodes and edges from the current graph.
 
 - `ExportReply`: Result of the request.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Exports 10 nodes of schema 'account' with selected properties in graphset 'miniCircle' and prints the result
 RequestConfig requestConfig = new RequestConfig()
 {
@@ -178,7 +172,7 @@ await ultipa.Export(
 
 <p tit="Output"></p> 
  
-```java
+```
 {"Uuid":1,"Id":"ULTIPA8000000000000001","Schema":"account","Values":{"name":"Yu78","year":1978}}
 {"Uuid":2,"Id":"ULTIPA8000000000000002","Schema":"account","Values":{"name":"jibber-jabber","year":1989}}
 {"Uuid":3,"Id":"ULTIPA8000000000000003","Schema":"account","Values":{"name":"mochaeach","year":1982}}
@@ -193,9 +187,7 @@ await ultipa.Export(
 
 ## Full Example
 
-<p tit="C#" ></p> 
-
-```c#
+```csharp
 using System.Data;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml.Linq;
