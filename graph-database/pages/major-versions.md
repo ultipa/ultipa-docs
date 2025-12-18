@@ -1,6 +1,43 @@
 # Major Versions
 
-## v4 Ultipa Blaze
+# v5 Ultipa Powerhouese
+
+**First Release:** Q4 2024<br>
+**Keywords:** Horizontal Scalability, High-Density Computing, ISO GQL<br>
+**Highlights:**
+
+- Unrivaled Performance: Leverages high-density parallel computing and multi-level caching, achieving up to 1,000x faster performance than leading competitors in certain scenarios.
+- Scalability and Flexibility: Offers linear scalability, on-demand provisioning, and supports cloud, hybrid, and on-prem environments.
+- AI and XAI Integration: With graph embedding and real-time explainability, Ultipa PowerHouse is designed to accelerate AI model development and enhance model interpretability.
+- Built-in Visualization: Delivers comprehensive visualization capabilities directly within the DBMS, enabling both technical and non-technical users to leverage interactive visual analytics seamlessly.
+
+**Supporting Products:**
+
+- GQL
+- UQL
+- Ultipa Manager
+- Ultipa Cloud
+- Ultipa Transporter
+- Ultipa Deployer
+- Ultipa Migrator
+- Ultipa CLI
+- Ultipa SDKs
+- Ultipa Restful API
+- Ultipa Monitor
+
+**Release Notes:**
+
+**Ultipa Powerhouse** introduces an overhaul of the system architecture. The new design places an emphasis on horizontal scalability and high performance, while also introducing a range of technical innovations that boost system responsiveness and efficiency.
+
+The architecture is built with scalability in mind. Powerhouse enables seamless horizontal expansion through features like automated sharding, placing storage close to compute, and reducing data migration overhead. It supports elastic graph computing by utilizing High Density Computing (HDC) nodes, which enable real-time, on-the-fly provisioning. Users can scale and synchronize their workloads as needed, and choose between storage-compute coupled or decoupled deployments — or even combine both, thanks to the built-in support for data synchronization and hybrid configurations.
+
+Ultipa Powerhouse is also leading the industry in standards adoption. It is among the first to offer native support for the new **ISO-standardized Graph Query Language (GQL)**. This ensures full conformance to the GQL specification and promotes interoperability across graph platforms, making it easier than ever for users to migrate between systems and adopt modern graph standards.
+
+On top of its architectural advancements, this release continues to expand Ultipa's graph analytics ecosystem. The product now includes an even broader range of hot-pluggable graph algorithms, supporting diverse use cases. Meanwhile, Ultipa Manager has evolved into a robust visual analytics platform, enabling both technical and non-technical users to engage with graph data intuitively and interactively — all within the same DBMS environment.
+
+With Powerhouse, Ultipa not only delivers significant gains in raw performance and scalability but also lays a foundation for standardization and flexibility that future-proofs your graph infrastructure. This is more than just a new version — it's a leap forward in how graph technology is built and used.
+
+# v4 Ultipa Blaze
 
 **First Release:** Q1 2023<br>
 **Keywords:** Demi-schema, Plug-n-play Algorithm, Product Matrix<br>
@@ -15,21 +52,21 @@
 
 **Supporting Products:**
 
-- UQL v4.x
-- Ultipa Manager v4.x
-- Ultipa Transporter v4.x
+- UQL
+- Ultipa Manager
+- Ultipa Transporter
 - Ultipa Cloud
-- Ultipa Deployer v4.x
-- Ultipa Maker v4.x
-- Ultipa Migrator v4.x
-- Ultipa CLI v4.x
-- Ultipa SDKs v4.x
+- Ultipa Deployer
+- Ultipa Maker
+- Ultipa Migrator
+- Ultipa CLI
+- Ultipa SDKs
 - Ultipa Restful API
 - Ultipa Playground
 - Ultipa BI
-- Ultipa Monitor v4.x
-- Ultipa Daemon v4.x
-- Ultipa Name Server v4.x
+- Ultipa Monitor
+- Ultipa Daemon
+- Ultipa Name Server
 
 **Optimizations:**
 
@@ -38,11 +75,11 @@
 - Advanced query optimizers
 - HTAP & Grid (Name Server) architecture support
 - Large enterprise grade one-click deployment
-- enriched graph embedding / GNN support
+- Enriched graph embedding / GNN support
 
 **Release Notes:**
 
-**Ultipa Grid**, the 4th generation of Ultipa Graph System, keeps creating miracles in the industry last past year by constantly surpassing its older versions. 2022 is a very productive year for Ultipa, after long time of technological accumulation, Ultipa has completed its Product Matrix, which in essence covers various comprehensive tool chains to do everything with and about Ultipa Graph. This includes several mandatory steps in a workflow starting from deploying an Ultipa sever either on premise or in the public cloud, migrating data from different types of data sources in diversified data structures, invoking graph queries and graph management via different user interfaces (CLI, Manager, SDKs, etc.), as well as some extensional applications of Ultipa server.
+**Ultipa Grid**, the 4th generation of Ultipa Graph System, keeps creating miracles in the industry last past year by constantly surpassing its older versions. 2022 is a very productive year for Ultipa, after long time of technological accumulation, Ultipa has completed its Product Matrix, which in essence covers various comprehensive tool chains to do everything with and about Ultipa Graph. This includes several mandatory steps in a workflow starting from deploying an Ultipa server either on premise or in the public cloud, migrating data from different types of data sources in diversified data structures, invoking graph queries and graph management via different user interfaces (CLI, Manager, SDKs, etc.), as well as some extensional applications of Ultipa server.
 
 This Engine v4.x adopts a Demi-Schema mechanism that offers ultimate flexibility in terms of how data modeling and processing is done. Users can go either schema-strict during graph modeling and graph query, which offers superior data processing speed particularly when handling convoluted and heterogeneous types of entities and relations, or schema-free that is super flexible when working with complex graph datasets.
 
@@ -52,9 +89,9 @@ The Plug-n-Play Algorithm feature has been upgraded to a new level by empowering
 
 A highlight should be spotted on one product among all that have been published in the high-productivity fiscal year, the web application, Ultipa Cloud, a graph database as a service with which an Ultipa instance can be started in just a few minutes. Choose either a low-cost configuration of server if you are an individual user who wants to learn about graph, or an enterprise ready for a brand-new business experience brought by graph technology, or elect a server configuration competent for your business profile. It is always paid as you go!
 
-With its last update in 2023-Q1, Ultipa Grid has boasted a variety of new features and optimizations to enhance its performance and robustness, including lower memory cost, more efficient K-Hop and Shortest Path calculations, an advanced query optimizer, and the HTAP & Grid (Name Sever) architecture, making it easier and more efficient for users to manage and analyze their business in large graph datasets.
+With its last update in 2023-Q1, Ultipa Grid has boasted a variety of new features and optimizations to enhance its performance and robustness, including lower memory cost, more efficient K-Hop and Shortest Path calculations, an advanced query optimizer, and the HTAP & Grid (Name Server) architecture, making it easier and more efficient for users to manage and analyze their business in large graph datasets.
 
-## v3 Ultipa HTAP
+# v3 Ultipa HTAP
 
 **First Release:** 2021<br>
 **Keywords:** HTAP Graph Data Processing, Enterprise Stability, Upgraded UQL<br>
@@ -72,15 +109,15 @@ With its last update in 2023-Q1, Ultipa Grid has boasted a variety of new featur
 
 **Supporting Products:**
 
-- UQL v3.x
-- Ultipa Manager v3.x
-- Ultipa Transporter v3.x
-- Ultipa CLI v3.0
+- UQL
+- Ultipa Manager
+- Ultipa Transporter
+- Ultipa CLI
 - SDKs (JAVA/Python/Golang/Nodejs/C++)
 
 **Optimizations:**
 
-- Greater HDPC engine performance
+- Greater HDPC (High Density Parallel Computing) engine performance
 - Reduced memory usage
 - 90 * 24 high TPS writing and computing of 24x7 guaranteed stability & data consistency
 
@@ -96,7 +133,7 @@ With a bunch of original products upgraded and adapted to the current engine ver
 
 Ultipa HTAP has been optimized for performance and stability, with improvements to HDC engine performance and reduced memory usage. It now guarantees 90 * 24 high TPS writing and computing, ensuring maximum stability and reliability. It is well-suited for a wide range of use cases in data science, analytics, and research. With its advanced features and optimizations, it delivers unprecedented performance, scalability, and reliability.
 
-## v2 Ultipa Colossus
+# v2 Ultipa Colossus
 
 **First Release:** 2020<br>
 **Keywords:** UQL 1.0, 30+ Algorithms, Storage Engine<br>
@@ -115,14 +152,10 @@ Ultipa HTAP has been optimized for performance and stability, with improvements 
 
 **Supporting Products:**
 
-- UQL v2.x
-- Ultipa Manager v2.x
-- Ultipa Transporter v2.x
+- UQL
+- Ultipa Manager
+- Ultipa Transporter
 - SDKs (Golang/C++)
-
-SDKs for Golang and C++ are also in place for this exclusive graph query language to be invoked when projects or applications are to be built by developers and an Ultipa server can be connected and operated with ease.
-
-Ultipa Colossus retains the powerfulness and versatility from its predecessor while delivering significant improvements. With its advanced features and capabilities listed above, it is well-suited for a wide range of use cases in research, analytics, and data science.
 
 **Ultipa Colossus**, the second generation of the Ultipa Graph System, is introducing exciting new features and capabilities. The upgraded High-Density & Parallel Graph Computing Engine v2.0 boosts performance and efficiency by fully leveraging the underlying infrastructure computing power, while the Graph Native Storage Engine is invented to continue leveraging the strengths of index-free adjacency data structure that enables fast and seamless data management.
 
@@ -132,7 +165,7 @@ Ultipa Manager v2.x and Ultipa Transporter v2.x are the upgraded versions of the
 
 Ultipa Colossus retains the powerfulness and versatility from its predecessor while delivering significant improvements. With its advanced features and capabilities listed above, it is well-suited for a wide range of use cases in research, analytics, and data science.
 
-## v1 Ultipa Genesis
+# v1 Ultipa Genesis
 
 **First Release:** December, 2019<br>
 **Keywords:** High Density Graph Computing Engine<br>
@@ -153,8 +186,8 @@ Ultipa Colossus retains the powerfulness and versatility from its predecessor wh
 
 **Supporting Products:**
 
-- Ultipa Manager v1.x
-- Ultipa Transporter v1.x
+- Ultipa Manager
+- Ultipa Transporter
 
 **Release Notes:**
 
@@ -170,7 +203,7 @@ With Ultipa Transporter v1.x, loading massive datasets becomes effortless. For i
 
 Ultipa Genesis heralds a paradigm shift in graph computing, delivering unmatched performance, scalability, and flexibility.
 
-## v0.5 Ultipa Alpha
+# v0.5 Ultipa Alpha
 
 **First Release:** June, 2019<br>
 **Keywords:** Graph Computing, Next-Gen Scalable Graph Database<br>
@@ -188,7 +221,7 @@ Ultipa Genesis heralds a paradigm shift in graph computing, delivering unmatched
 
 **Supporting Products:**
 
-- Ultipa Manager v0.5
+- Ultipa Manager
 
 **Release Notes:**
 

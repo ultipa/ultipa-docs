@@ -4,6 +4,14 @@
         {
             "pages": [
                 {
+                    "file": "powerhouse-v5.md",
+                    "title": "Powerhouse (v5)"
+                },
+                {
+                    "file": "deployment-options.md",
+                    "title": "Deployment Options"
+                },
+                {
                     "file": "major-versions.md",
                     "title": "Major Versions"
                 },
