@@ -46,7 +46,7 @@ algo(random_walk_struc2vec).params({
 
 Results: File <i>walks</i>
 
-<p run-tag="false" graph="" tit="File" ></p>
+<p tit="File"></p>
 
 ```js
 J,G,I,G,

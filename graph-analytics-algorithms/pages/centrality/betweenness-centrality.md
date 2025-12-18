@@ -75,7 +75,7 @@ algo(betweenness_centrality).params().write({
 
 Results: File <i>centrality</i>
 
-<p run-tag="false" graph="" tit="File" ></p>
+<p tit="File"></p>
 
 ```js
 Billy,0

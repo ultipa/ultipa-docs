@@ -101,7 +101,7 @@ algo(sssp).params({
 
 Results: File <i>costs</i>
 
-<p run-tag="false" graph="" tit="File" ></p>
+<p tit="File"></p>
 
 ```js
 A,0
@@ -129,7 +129,7 @@ algo(sssp).params({
 
 Results: File <i>paths</i>
 
-<p run-tag="false" graph="" tit="File" ></p>
+<p tit="File"></p>
 
 ```js
 A--[101]--B--[104]--C

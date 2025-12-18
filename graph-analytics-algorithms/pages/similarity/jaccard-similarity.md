@@ -107,7 +107,7 @@ algo(similarity).params({
 
 Results: File <i>sc</i>
 
-<p run-tag="false" graph="" tit="File" ></p>
+<p tit="File"></p>
 
 ```js
 userC,userA,0.25
@@ -128,7 +128,7 @@ algo(similarity).params({
 
 Results: File <i>list</i>
 
-<p run-tag="false" graph="" tit="File" ></p>
+<p tit="File"></p>
 
 ```js
 userA,userC,0.25

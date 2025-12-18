@@ -60,7 +60,7 @@ algo(k_core).params({
 
 Results: File <i>3-core</i>
 
-<p run-tag="false" graph="" tit="File" ></p>
+<p tit="File"></p>
 
 ```js
 G

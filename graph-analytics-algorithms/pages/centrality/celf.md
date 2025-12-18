@@ -85,7 +85,7 @@ algo(celf).params({
 
 Results: File <i>seeds</i>
 
-<p run-tag="false" graph="" tit="File" ></p>
+<p tit="File"></p>
 
 ```js
 H,3.608

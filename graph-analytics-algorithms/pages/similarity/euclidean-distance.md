@@ -84,7 +84,7 @@ algo(similarity).params({
 
 Results: File <i>ed</i>
 
-<p run-tag="false" graph="" tit="File" ></p>
+<p tit="File"></p>
 
 ```js
 product1,product2,94.3822
@@ -106,7 +106,7 @@ algo(similarity).params({
 
 Results: File <i>ed_list</i>
 
-<p run-tag="false" graph="" tit="File" ></p>
+<p tit="File"></p>
 
 ```js
 product1,product2,0.010484

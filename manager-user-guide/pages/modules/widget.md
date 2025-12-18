@@ -18,7 +18,7 @@ The Template section uses the Handlebars template. Codes written in this section
 
 Handlebars uses double curly braces `{{ }}` to denote expressions that will be replaced with actual values during rendering.
 
-<p run-tag="false" graph="" tit="Template" ></p>
+<p tit="Template"></p>
 
 ```js
 <h1>{{text}}</h1>
@@ -29,7 +29,7 @@ Handlebars uses double curly braces `{{ }}` to denote expressions that will be r
 
 The Style section employs Less as the CSS preprocessor. Codes written in this section are included at the end within the `<head>` tag in the final HTML output.
 
-<p run-tag="false" graph="" tit="Style" ></p>
+<p tit="Style"></p>
 
 ```js
 body {

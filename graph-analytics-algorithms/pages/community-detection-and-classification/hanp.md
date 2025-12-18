@@ -82,7 +82,7 @@ algo(hanp).params({
 Statistics: label_count = 4<br>
 Results: File <i>hanp</i>
 
-<p run-tag="false" graph="" tit="File" ></p>
+<p tit="File"></p>
 
 ```js
 O,13,-0.600000,

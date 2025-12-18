@@ -96,7 +96,7 @@ algo(sybil_rank).params({
 
 Results: File <i>sybilRank</i>
 
-<p run-tag="false" graph="" tit="File" ></p>
+<p tit="File"></p>
 
 ```js
 S1,0

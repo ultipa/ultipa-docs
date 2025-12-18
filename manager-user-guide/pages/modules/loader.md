@@ -188,7 +188,7 @@ Write the SQL query to retrieve data from the database, then click **Preview** t
 
 Here is an example SQL to return the *name* and *registeredOn* columns from the *users* table:
 
-<p run-tag="false" graph="" tit="SQL" ></p>
+<p tit="SQL"></p>
 
 ```js
 SELECT name, registeredOn FROM users;
@@ -222,7 +222,7 @@ Write the SQL query to retrieve data from BigQuery, then click **Preview** to ma
 
 Here is an example SQL to return all columns from the *users* table:
 
-<p run-tag="false" graph="" tit="SQL" ></p>
+<p tit="SQL"></p>
 
 ```js
 SELECT * FROM users;
@@ -259,7 +259,7 @@ Write the Cypher query to retrieve nodes or edges from Neo4j, then click **Previ
 
 Here is an example Cypher to return all nodes with the *user* label:
 
-<p run-tag="false" graph="" tit="Cypher" ></p>
+<p tit="Cypher"></p>
 
 ```js
 MATCH (n:user)

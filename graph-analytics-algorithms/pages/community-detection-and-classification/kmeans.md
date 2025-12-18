@@ -80,7 +80,7 @@ algo(k_means).params({
 
 Results: File <i>communities</i>
 
-<p run-tag="false" graph="" tit="File" ></p>
+<p tit="File"></p>
 
 ```js
 0:I,

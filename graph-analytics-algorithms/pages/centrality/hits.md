@@ -78,7 +78,7 @@ algo(hits_centrality).params({}).write({
 
 Results: File <i>rank</i>
 
-<p run-tag="false" graph="" tit="File" ></p>
+<p tit="File"></p>
 
 ```js
 H,0.000000,0.000000

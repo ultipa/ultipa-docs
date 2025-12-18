@@ -76,7 +76,7 @@ algo(similarity).params({
 
 Results: File <i>cs_result</i>
 
-<p run-tag="false" graph="" tit="File" ></p>
+<p tit="File"></p>
 
 ```js
 product1,product2,0.986529
@@ -98,7 +98,7 @@ algo(similarity).params({
 
 Results: File <i>list</i>
 
-<p run-tag="false" graph="" tit="File" ></p>
+<p tit="File"></p>
 
 ```js
 product1,product2,0.986529
