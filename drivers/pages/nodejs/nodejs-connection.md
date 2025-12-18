@@ -22,8 +22,6 @@ Below are all the configuration items available for `ConnectionPool`:
 
 Example of connecting to a cluster and using graphset 'default'.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 import { ConnectionPool } from "@ultipa-graph/ultipa-node-sdk";
 import fs from "fs";
@@ -56,8 +54,6 @@ sdkUsage().then(console.log).catch(console.log);
 
 Example of connecting to an instance on Ultipa Cloud and using graphset 'default'.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 import { ConnectionPool } from "@ultipa-graph/ultipa-node-sdk";
 

@@ -47,7 +47,7 @@ public class Main {
 
 <p tit="Output"></p> 
 
-```java
+```
 Hi Welcome To Ultipa!
 ```
 
@@ -90,7 +90,7 @@ Example of the `ultipa.properties` file:
 
 <p tit="ultipa.properties" ></p> 
 
-```properties
+```
 ultipa.hosts=192.168.1.85:60061,192.168.1.86:60061,192.168.1.87:60061
 #ultipa.hosts=mqj4zouys.us-east-1.cloud.ultipa.com:60010
 ultipa.username=<username>

@@ -21,8 +21,6 @@ Loads one custom property of nodes or edges to the computing engine for query ac
 
 - `Response`: Result of the request.
 
-<p tit="Java"></p> 
- 
 ```java
 // Loads the edge property @relatesTo.type to engine in graphset 'UltipaTeam' and prints error code and whether it's LTE-ed
 
@@ -38,7 +36,7 @@ System.out.println("LTE status of the property: " + property.getLte());
 
 <p tit="Output"></p> 
  
-```java
+```
 SUCCESS
 LTE status of the property: true
 ```
@@ -58,8 +56,6 @@ Unloads one custom property of nodes or edges from the computing engine to save 
 
 - `Response`: Result of the request.
 
-<p tit="Java"></p> 
- 
 ```java
 // Unloads the edge property @relatesTo.type from engine in graphset 'UltipaTeam' and prints error code and whether it's LTE-ed
 
@@ -75,7 +71,7 @@ System.out.println("LTE status of the property: " + property.getLte());
 
 <p tit="Output"></p> 
  
-```java
+```
 SUCCESS
 LTE status of the property: false
 ```
@@ -94,8 +90,6 @@ Retrieves all indexes of node and edge properties from the current graphset.
 
 - `List<Index>`: The list of all indexes retrieved in the current graphset.
 
-<p tit="Java"></p> 
- 
 ```java
 // Retrieves indexes in graphset 'Ad_Click' and prints their information
 
@@ -111,7 +105,7 @@ for (Index index : indexList) {
 
 <p tit="Output"></p> 
  
-```java
+```
 {"name":"shopping_level","properties":"shopping_level","schema":"user","status":"done","size":"4608287","dbType":"DBNODE"}
 {"name":"price","properties":"price","schema":"ad","status":"done","size":"7828760","dbType":"DBNODE"}
 {"name":"time","properties":"time","schema":"clicks","status":"done","size":"12811267","dbType":"DBEDGE"}
@@ -129,8 +123,6 @@ Retrieves all indexes of node properties from the current graphset.
 
 - `List<Index>`: The list of all node indexes retrieved in the current graphset.
 
-<p tit="Java"></p> 
- 
 ```java
 // Retrieves node indexes in graphset 'Ad_Click' and prints their information
 
@@ -145,7 +137,7 @@ for (Index index : indexList) {
 
 <p tit="Output"></p> 
  
-```java
+```
 {"name":"shopping_level","properties":"shopping_level","schema":"user","status":"done","size":"4608287","dbType":"DBNODE"}
 {"name":"price","properties":"price","schema":"ad","status":"done","size":"7828760","dbType":"DBNODE"}
 ```
@@ -162,8 +154,6 @@ Retrieves all indexes of edge properties from the current graphset.
 
 - `List<Index>`: The list of all edge indexes retrieved in the current graphset.
 
-<p tit="Java"></p> 
- 
 ```java
 // Retrieves edge indexes in graphset 'Ad_Click' and prints their information
 
@@ -178,7 +168,7 @@ for (Index index : indexList) {
 
 <p tit="Output"></p> 
  
-```java
+```
 {"name":"time","properties":"time","schema":"clicks","status":"done","size":"12811267","dbType":"DBEDGE"}
 ```
 
@@ -197,8 +187,6 @@ Creates a new index in the current graphset.
 
 - `Response`: Result of the request.
 
-<p tit="Java"></p> 
- 
 ```java
 // Creates indexes for all node properties 'name' in graphset 'Ad_Click' and prints the error code
 
@@ -211,7 +199,7 @@ System.out.println(response.getStatus().getErrorCode());
 
 <p tit="Output"></p> 
  
-```java
+```
 SUCCESS
 ```
 
@@ -230,8 +218,6 @@ Drops indexes in the current graphset.
 
 - `Response`: Result of the request.
 
-<p tit="Java"></p> 
- 
 ```java
 // Drops the index of the node property @ad.name in graphset 'Ad_Click' and prints the error code
 
@@ -244,7 +230,7 @@ System.out.println(response.getStatus().getErrorCode());
 
 <p tit="Output"></p> 
  
-```java
+```
 SUCCESS
 ```
 
@@ -262,8 +248,6 @@ Retrieves all full-text indexes of node and edge properties from the current gra
 
 - `List<Index>`: The list of all full-text indexes retrieved in the current graphset.
 
-<p tit="Java"></p> 
- 
 ```java
 // Retrieves the first full-text index returned in graphset 'miniCircle' and prints its information
 
@@ -276,7 +260,7 @@ System.out.println(new Gson().toJson(indexList.get(0)));
 
 <p tit="Output"></p> 
  
-```java
+```
 {"name":"genreFull","properties":"genre","schema":"movie","status":"done"}
 ```
 
@@ -292,8 +276,6 @@ Retrieves all full-text indexes of node properties from the current graphset.
 
 - `List<Index>`: The list of all full-text indexes of node properties retrieved in the current graphset.
 
-<p tit="Java"></p> 
- 
 ```java
 // Retrieves the first node full-text index of node properties returned in graphset 'miniCircle' and prints its information
 
@@ -306,7 +288,7 @@ System.out.println(new Gson().toJson(indexList.get(0)));
 
 <p tit="Output"></p> 
  
-```java
+```
 {"name":"genreFull","properties":"genre","schema":"movie","status":"done"}
 ```
 
@@ -322,8 +304,6 @@ Retrieves all full-text indexes of edge properties from the current graphset.
 
 - `List<Index>`: The list of all edge full-text indexes of edge properties retrieved in the current graphset.
 
-<p tit="Java"></p> 
- 
 ```java
 // Retrieves the first edge full-text index of edge properties returned in graphset 'miniCircle' and prints its information
 
@@ -336,7 +316,7 @@ System.out.println(new Gson().toJson(indexList.get(0)));
 
 <p tit="Output"></p> 
  
-```java
+```
 {"name":"contentFull","properties":"content","schema":"review","status":"done"}
 ```
 
@@ -356,8 +336,6 @@ Creates a new full-text index in the current graphset.
 
 - `Response`: Result of the request.
 
-<p tit="Java"></p> 
- 
 ```java
 // Creates full-text index called 'movieName' for the property @movie.name in graphset 'miniCircle' and prints the error code
 
@@ -370,7 +348,7 @@ System.out.println(response.getStatus().getErrorCode());
 
 <p tit="Output"></p> 
  
-```java
+```
 SUCCESS
 ```
 
@@ -388,8 +366,6 @@ Drops a full-text index in the current graphset.
 
 - `Response`: Result of the request.
 
-<p tit="Java"></p> 
- 
 ```java
 // Drops the node full-index 'movieName' in graphset 'miniCircle' and prints the error code
 
@@ -402,7 +378,7 @@ System.out.println(response.getStatus().getErrorCode());
 
 <p tit="Output"></p> 
  
-```java
+```
 SUCCESS
 ```
 

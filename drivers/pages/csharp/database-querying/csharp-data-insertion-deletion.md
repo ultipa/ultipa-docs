@@ -48,9 +48,7 @@ Inserts new nodes of a schema to the current graph.
 
 - `UqlResponse`: Result of the request. The `Response` object contains an alias `nodes` that holds all the inserted nodes when `InsertRequestConfig.Slient` is set to false.
 
-<p tit="C#" ></p> 
-
-```c#
+```csharp
 InsertRequestConfig insertRequestConfig = new InsertRequestConfig()
 {
     InsertType = InsertType.Normal,
@@ -116,7 +114,7 @@ foreach (var node in insertedNodes)
 ```
 <p tit="Output"></p> 
  
-```java
+```
 Insertion succeeds
 {"Uuid":1,"Id":"U001","Schema":"user","Values":{"name":"Alice","age":18,"score":65.3200000000,"birthday":"1993-05-04T00:00:00Z","location":{"X":23.630000,"Y":104.250000},"profile":"YWJj","interests":["tennis","violin"],"permissionCodes":null}}
 {"Uuid":2,"Id":"U002","Schema":"user","Values":{"name":"Bob","age":null,"score":null,"birthday":null,"location":null,"profile":null,"interests":null,"permissionCodes":null}}
@@ -136,9 +134,7 @@ Inserts new edges of a schema to the current graph.
 
 - `UqlResponse`: Result of the request. The `Response` object contains an alias `edges` that holds all the inserted edges when `InsertRequestConfig.Slient` is set to false.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 InsertRequestConfig insertRequestConfig = new InsertRequestConfig()
 {
     InsertType = InsertType.Normal,
@@ -184,7 +180,7 @@ foreach (var edge in insertedEdges)
 
 <p tit="Output"></p> 
  
-```java
+```
 Insertion succeeds
 {"Uuid":1,"FromUuid":1,"ToUuid":2,"Id":"","FromId":"U001","ToId":"U002","Schema":"follows","Values":{"createdOn":"2024-05-05T16:00:00Z"}}
 {"Uuid":2,"FromUuid":2,"ToUuid":1,"Id":"","FromId":"U002","ToId":"U001","Schema":"follows","Values":{"createdOn":"2024-05-07T16:00:00Z"}}
@@ -204,9 +200,7 @@ Inserts new nodes of a schema into the current graph through gRPC. The propertie
 
 - `InsertResponse`: Result of the request.
 
-<p tit="C#" ></p> 
-
-```c#
+```csharp
 // Inserts two nodes into schema 'user' in graphset 'lcc' and prints error code 
 InsertRequestConfig insertRequestConfig = new InsertRequestConfig()
 {
@@ -294,7 +288,7 @@ Console.WriteLine(JsonConvert.SerializeObject(res));
 ```
 <p tit="Output"></p> 
  
-```java
+```
 Success
 {"Status":{"ErrorCode":0,"Msg":"","ClusterInfo":null},"Statistic":{"NodeAffected":0,"EdgeAffected":0,"TotalCost":0,"EngineCost":0},"Data":{"Uuids":[1,2],"Ids":[],"ErrorItem":{}}}
 ```
@@ -314,9 +308,7 @@ Inserts new edges of a schema into the current graph through gRPC. The propertie
 - `InsertResponse`: Result of the request.
 
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Inserts two edges into schema 'follows' in graphset 'lcc' and prints error code
 
 InsertRequestConfig insertRequestConfig = new InsertRequestConfig()
@@ -356,7 +348,7 @@ Console.WriteLine(JsonConvert.SerializeObject(res.Data));
 ```
 <p tit="Output"></p> 
  
-```java
+```
 Success
 {"Uuids":[1,2],"Ids":[],"ErrorItem":{}}
 ```
@@ -374,9 +366,7 @@ Inserts new nodes of one or multiple schemas to the current graph through gRPC. 
 
 - `Dictionary<string,InsertResponse>`: Result of the request. 
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Inserts two nodes into schema 'user' and one node into schema `product` in graphset 'lcc' and prints error code
 
 InsertRequestConfig insertRequestConfig = new InsertRequestConfig()
@@ -442,7 +432,7 @@ Console.WriteLine(JsonConvert.SerializeObject(res));
 
 <p tit="Output"></p> 
  
-```java
+```
 {"user":{"Status":{"ErrorCode":0,"Msg":"","ClusterInfo":null},"Statistic":{"NodeAffected":0,"EdgeAffected":0,"TotalCost":0,"EngineCost":0},"Data":{"Uuids":[1,2],"Ids":[],"ErrorItem":{}}},"product":{"Status":{"ErrorCode":0,"Msg":"","ClusterInfo":null},"Statistic":{"NodeAffected":0,"EdgeAffected":0,"TotalCost":0,"EngineCost":0},"Data":{"Uuids":[3],"Ids":[],"ErrorItem":{}}}}
 ```
 
@@ -459,9 +449,7 @@ Inserts new edges of one or multiple schemas to the current graph through gRPC. 
 
 - `Dictionary<string,InsertResponse>`: Result of the request.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Inserts two edges into schema 'follows' and one edge into schema 'purchased' in graphset 'lcc' and prints error code
 
 InsertRequestConfig insertRequestConfig = new InsertRequestConfig()
@@ -506,7 +494,7 @@ Console.WriteLine(JsonConvert.SerializeObject(res));
 ```
 <p tit="Output"></p> 
  
-```java
+```
 {"follows":{"Status":{"ErrorCode":0,"Msg":"insert edges succeed!","ClusterInfo":null},"Statistic":{"NodeAffected":0,"EdgeAffected":0,"TotalCost":0,"EngineCost":0},"Data":{"Uuids":[1,2],"Ids":[],"ErrorItem":{}}},"purchased":{"Status":{"ErrorCode":0,"Msg":"insert edges succeed!","ClusterInfo":null},"Statistic":{"NodeAffected":0,"EdgeAffected":0,"TotalCost":0,"EngineCost":0},"Data":{"Uuids":[3],"Ids":[],"ErrorItem":{}}}}
 ```
 
@@ -525,9 +513,7 @@ Deletes nodes that meet the given conditions from the current graph. It's import
 
 - `<UqlResponse, List<Node>?>`: Result of the request. The `Response` object contains an alias `nodes` that holds all the deleted nodes when `InsertRequestConfig.Slient` is set to false.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Deletes one @user nodes whose name is 'Alice' from graphset 'lcc' and prints error code
 // All edges attached to the deleted node are deleted as well
 
@@ -544,7 +530,7 @@ Console.WriteLine(JsonConvert.SerializeObject(res.Item2));
 ```
 <p tit="Output"></p> 
  
-```java
+```
 Success
 [{"Uuid":1,"Id":"U001","Schema":"user","Values":{}}]
 ```
@@ -562,9 +548,7 @@ Deletes edges that meet the given conditions from the current graph.
 
 - `<UqlResponse, List<Edge>?>`: Result of the request. The `Response` object contains an alias `edges` that holds all the deleted edges when `InsertRequestConfig.Slient` is set to false.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Deletes all @purchased edges from graphset 'lcc' and prints error code
 InsertRequestConfig insertRequestConfig = new InsertRequestConfig()
 {
@@ -579,15 +563,13 @@ Console.WriteLine(JsonConvert.SerializeObject(res.Item2));
 ```
 <p tit="Output"></p> 
  
-```java
+```
 Success
 [{"Uuid":3,"FromUuid":2,"ToUuid":3,"Id":"","FromId":"U002","ToId":"P001","Schema":"purchased","Values":{}}]
 ```
 
 ## Full Example
-<p tit="C#" ></p> 
-
-```c#
+```csharp
 using System.Data;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml.Linq;

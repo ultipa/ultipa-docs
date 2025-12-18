@@ -18,8 +18,6 @@ Retrieves all system privileges and graph privileges, which are actually UQL com
 
 - `Privilege`: All system privileges and graph privileges.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 // Retrieves all system privileges and graph privileges
 
@@ -29,7 +27,7 @@ console.log(resp);
 
 <p tit="Output"></p> 
  
-```java
+```
 {
   graph_privileges: [
     'TEMPLATE',       'KHOP',            'AB',
@@ -78,8 +76,6 @@ Retrieves all policies from the instance. A policy includes system privileges, g
 
 - `Policy[]`: The list of all policies in the instance.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 // Retrieves all policies and prints their information
 
@@ -94,7 +90,7 @@ for (let i of resp.data) {
 ```
 <p tit="Output"></p> 
  
-```java
+```
 Policy  manager  includes: 
 - System privileges:  [ 'DROP_POLICY', 'COMPACT' ]
 - Graph privileges:  { '*': [ 'CREATE_INDEX', 'DROP_TRIGGER', 'CREATE_FULLTEXT' ] }
@@ -126,8 +122,6 @@ Retrieves a policy from the instance by its name.
 
 - `Policy`: The retrieved policy.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 // Retrieves a policy 'operator' and prints its information
 
@@ -141,7 +135,7 @@ console.log("Policy ", resp.data.name, " includes: "),
 
 <p tit="Output"></p> 
  
-```java
+```
 Policy  operator  includes: 
 - System privileges:  [ 'MOUNT_GRAPH', 'TRUNCATE', 'SHOW_GRAPH' ]
 - Graph privileges:  { miniCircle: [ 'UPDATE', 'INSERT', 'TEMPLATE', 'UPSERT', 'AUTONET' ] }
@@ -165,8 +159,6 @@ Creates a policy in the instance.
 
 - `Response`: Result of the request.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 // Creates a new policy 'sales' and then retrieves it
 
@@ -209,7 +201,7 @@ console.log("Policy", resp.data.name, "includes: "),
 
 <p tit="Output"></p> 
  
-```java
+```
 Policy sales includes: 
 - System privileges:  [ 'SHOW_GRAPH', 'TRUNCATE' ]
 - Graph privileges:  {
@@ -235,8 +227,6 @@ Alters the system privileges, graph privileges, property privileges and policies
 
 - `Response`: Result of the request.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 // Alters the policy 'sales' and then retrieves it
 
@@ -267,7 +257,7 @@ console.log("Policy", resp.data.name, "includes: "),
 
 <p tit="Output"></p> 
  
-```java
+```
 Policy sales includes: 
 - System privileges:  [ 'SHOW_GRAPH' ]
 - Graph privileges:  {
@@ -301,8 +291,6 @@ Drops one policy from the instance by its name.
 
 - `Response`: Result of the request.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 // Drops the policy 'sales' and prints error code
 
@@ -312,7 +300,7 @@ console.log(resp.status.code_desc);
 
 <p tit="Output"></p> 
  
-```java
+```
 SUCCESS
 ```
 
@@ -330,8 +318,6 @@ Retrieves all database users from the instance.
 
 - `User[]`: The list of all users in the instance.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 // Retrieves all users and prints information of the first returned
 
@@ -347,7 +333,7 @@ console.log("Policies:", user1.policies);
 
 <p tit="Output"></p> 
  
-```java
+```
 Username: test006
 Creation timestamp: 1693550276
 System privileges: [
@@ -383,8 +369,6 @@ Retrieves a database user from the instance by its username.
 
 - `User`: The retrieved user.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 // Retrieves user 'test005' and prints its information
 
@@ -399,7 +383,7 @@ console.log("Policies:", resp.data.policies);
 
 <p tit="Output"></p> 
  
-```java
+```
 Username: test005
 Creation timestamp: 1693473359
 System privileges: [
@@ -435,8 +419,6 @@ Creates a database user in the instance.
 
 - `Response`: Result of the request.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 // Creates a new user 'NodeJsUser' and prints error code
 
@@ -473,7 +455,7 @@ console.log(resp.status.code_desc);
 
 <p tit="Output"></p> 
  
-```java
+```
 SUCCESS
 ```
 
@@ -490,8 +472,6 @@ Alters the password, system privileges, graph privileges, property privileges an
 
 - `Response`: Result of the request.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 // Alters the user 'NodeJsUser' and prints error code
 
@@ -509,7 +489,7 @@ console.log(resp.status.code_desc);
 
 <p tit="Output"></p> 
  
-```java
+```
 SUCCESS
 ```
 
@@ -526,8 +506,6 @@ Drops one database user from the instance by its username.
 
 - `Response`: Result of the request.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 // Drops the user 'NodeJsUser' and prints error code
 
@@ -537,7 +515,7 @@ console.log(resp.status.code_desc);
 
 <p tit="Output"></p> 
  
-```java
+```
 SUCCESS
 ```
 
@@ -558,8 +536,6 @@ Grants new system privileges, graph privileges, property privileges and policies
 
 - `Response`: Result of the request.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 // Grants privileges and policies to user 'johndoe' and prints error code
 
@@ -584,7 +560,7 @@ console.log(resp.status.code_desc);
 
 <p tit="Output"></p> 
  
-```java
+```
 SUCCESS
 ```
 
@@ -605,8 +581,6 @@ Revokes system privileges, graph privileges, property privileges and policies fr
 
 - `Response`: Result of the request.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 let resp = await conn.revokePolicy(
   "johndoe",
@@ -622,13 +596,11 @@ console.log(resp.status.code_desc);
 
 <p tit="Output"></p> 
  
-```java
+```
 SUCCESS
 ```
 
 ## Full Example
-
-<p tit="TypeScript"></p> 
 
 ```ts
 import { ConnectionPool, ULTIPA } from "@ultipa-graph/ultipa-node-sdk";

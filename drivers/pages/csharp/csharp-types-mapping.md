@@ -4,9 +4,7 @@
 
 The `Alias()` method of the `Response` class returns a `DataItem`, which embeds the query result. You should use the `As<Type>()` method of `DataItem` to cast the result to the appropriate driver type.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 var res = await ultipa.Uql("find().nodes() as n return n{*} limit 5");
 var nodeList = res.Alias("n").AsNodes();
 Console.WriteLine(JsonConvert.SerializeObject(nodeList));
@@ -51,9 +49,7 @@ A `Node` object has the following fields:
 | `Schema` | string | Node Schema |
 | `Values` |  Dictionary<string, object?> | Node custom properties |
 
-<p tit="C#" ></p> 
-
-```c#
+```csharp
 var res = await ultipa.Uql("find().nodes() as n return n{*} limit 5", requestConfig);
 var nodeList = res.Alias("n")?.AsNodes();
 Console.WriteLine("ID of the 1st node: " + JsonConvert.SerializeObject(nodeList[0].Id));
@@ -65,7 +61,7 @@ Console.WriteLine(
 
 <p tit="Output"></p> 
  
-```bash
+```
 ID of the 1st node: ULTIPA8000000000000001
 Name of the 1st node: Titanic
 ```
@@ -84,9 +80,7 @@ An `Edge` object has the following fields:
 | `Schema` | string | Edge Schema |
 | `Values` | Dictionary<string, object?> | Edge custom properties |
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 var res = await ultipa.Uql("find().edges() as e return e{*} limit 5", requestConfig);
 var edgeList = res.Alias("e")?.AsEdges();
 Console.WriteLine(
@@ -96,7 +90,7 @@ Console.WriteLine(
 
 <p tit="Output"></p> 
  
-```bash
+```
 Value of the 1st edge: {"datetime":"2019-01-06T02:56:00Z","timestamp":"2019-01-05T18:57:57Z","targetPost":0}
 ```
 
@@ -111,9 +105,7 @@ A `Path` object has the following fields:
 | `NodeSchemas` | object | Infomation of node schema |
 | `EdgeSchemas` | object | Infomation of edge schema |
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 var res = await ultipa.Uql(
     "n().e()[:2].n() as paths return paths{*} limit 5",
     requestConfig
@@ -133,7 +125,7 @@ Console.WriteLine(
 
 <p tit="Output"></p> 
  
-```bash
+```
 Length of the 1st path: 2
 Edge list of the 1st path: [{"Uuid":7,"FromUuid":27,"ToUuid":1,"Id":"","FromId":"ULTIPA800000000000001B","ToId":"ULTIPA8000000000000001","Schema":"follow","Values":{}},{"Uuid":99,"FromUuid":33,"ToUuid":27,"Id":"","FromId":"ULTIPA8000000000000021","ToId":"ULTIPA800000000000001B","Schema":"follow","Values":{}}]
 Information of the 2nd node in the 1st path: {"Uuid":27,"Id":"ULTIPA800000000000001B","Schema":"account","Values":{"year":1988,"industry":"Transportation","name":"Sam123","stringList":[null],"int32List":[null],"float":3.72,"double":3.719999313354492}}
@@ -150,9 +142,7 @@ A `Graph` object has the following fields:
 | `NodeSchemas` | Dictionary<string, Schema> | Map of all node schemas of the path |
 | `EdgeSchemas` | Dictionary<string, Schema>  | Map of all edge schemas of the path |
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 var res = await ultipa.Uql(
     "n(as n1).re(as e).n(as n2).limit(3) with toGraph(collect(n1), collect(n2), collect(e)) as graph return graph",
     requestConfig
@@ -174,7 +164,7 @@ foreach (var edge in edgeList)
 
 <p tit="Output"></p> 
  
-```bash
+```
 Node IDs:
 ULTIPA8000000000000017
 ULTIPA8000000000000001
@@ -199,9 +189,7 @@ A `GraphSet` object has the following fields:
 | `TotalEdges` | ulong | Total number of edges in the graphset |
 | `Status` | string | Graphset status (MOUNTED, MOUNTING, or UNMOUNTED) |
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 var res = await ultipa.Uql("show().graph()");
 var graphSetList = res.Alias("_graph")?.AsGraphSets();
 foreach (var graph in graphSetList)
@@ -215,7 +203,7 @@ foreach (var graph in graphSetList)
 
 <p tit="Output"></p> 
  
-```bash
+```
 DFS_EG
 cyber
 cyber2
@@ -233,9 +221,7 @@ A `Schema` object has the following fields:
 | `Total` | int | Total number of nodes/edges of the schema |
 | `Properties` | List\<Property> | Property list of the schema |
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 var res = await ultipa.Uql("show().node_schema()", requestConfig);
 var schemaList = res.Alias("_nodeSchema")?.AsSchemas();
 foreach (var schema in schemaList)
@@ -246,7 +232,7 @@ foreach (var schema in schemaList)
 
 <p tit="Output"></p> 
  
-```bash
+```
 default has 0 nodes
 user has 1092511 nodes
 ad has 846811 nodes
@@ -268,9 +254,7 @@ A `Property` object has the following fields:
 | `SubTypes` | PropertyType[] | List of property data type |
 | `Extra` | string | Extra information of properties |
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 var res = await ultipa.Uql("show().node_property(@account)", requestConfig);
 var propertyList = res.Alias("_nodeProperty")?.AsProperties();
 foreach (var property in propertyList)
@@ -284,7 +268,7 @@ foreach (var property in propertyList)
 
 <p tit="Output"></p> 
  
-```bash
+```
 LTE-ed property name: year
 ```
 
@@ -298,9 +282,7 @@ An `Algo` object has the following fields:
 | `Param` | string | Parameters of the algorithm |
 | `Detail` | string | Algorithm details |
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 var res = await ultipa.Uql("show().algo()", requestConfig);
 var algoList = res.Alias("_algoList")?.AsAlgos();
 Console.WriteLine(JsonConvert.SerializeObject(algoList[0]));
@@ -308,7 +290,7 @@ Console.WriteLine(JsonConvert.SerializeObject(algoList[0]));
 
 <p tit="Output"></p> 
  
-```bash
+```
 {"Name":"bipartite","Param":"{\"name\":\"bipartite\",\"description\":\"bipartite check\",\"version\":\"1.0.1\",\"parameters\":{},\"result_opt\":\"56\"}","Detail":"base:\r\n  category: Connectivity & Compactness\r\n   name: Bipartite\r\n    desc: Judge if the current graph is bipartite.\r\n}
 ```
 
@@ -325,9 +307,7 @@ An `Exta` object has the following fields:
 | `Version` | string | Exta version |
 | `Detail` | string | Content of the YML configuration file of the Exta |
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 var res = await ultipa.Uql("show().exta()");
 var extaList = res.Alias("_extaList")?.AsExtas();
 Console.WriteLine(JsonConvert.SerializeObject("Exta name: " + extaList[0].Name));
@@ -335,7 +315,7 @@ Console.WriteLine(JsonConvert.SerializeObject("Exta name: " + extaList[0].Name))
 
 <p tit="Output"></p> 
  
-```bash
+```
 "Exta name: page_rank"
 ```
 
@@ -351,9 +331,7 @@ An `Index` object has the following fields:
 | `Status` | string | Index status (done or creating) |
 | `Size` | string | Index size in bytes |
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 var res = await ultipa.Uql("show().index()", requestConfig);
 var indexList = res.Alias("_nodeIndex")?.AsIndexes();
 foreach (var index in indexList)
@@ -366,7 +344,7 @@ foreach (var index in indexList)
 
 <p tit="Output"></p> 
  
-```bash
+```
 Schema name: account
 Properties: name
 Size: 0
@@ -375,9 +353,7 @@ Properties: name
 Size: 2526
 ```
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 var res = await ultipa.Uql("show().fulltext()", requestConfig);
 var fulltextList = res.Alias("_edgeFulltext")?.AsIndexes();
 foreach (var item in fulltextList)
@@ -390,7 +366,7 @@ foreach (var item in fulltextList)
 
 <p tit="Output"></p> 
  
-```bash
+```
 Fulltext name: nameFull
 Schema name: review
 Properties: content
@@ -405,9 +381,7 @@ A `Privilege` object has the following fields:
 | `Name` | string | Privilege name |
 | `Level` | PrivilegeType | Privilege type, including GraphLevel and SystemLevel |
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 var res = await ultipa.Uql("show().privilege()");
 var privilegeList = res.Alias("_privilege")?.AsPrivileges();
 
@@ -425,7 +399,7 @@ Console.WriteLine(JsonConvert.SerializeObject(systemPrivilegeList));
 
 <p tit="Output"></p> 
  
-```bash
+```
 System privileges include:
 ["TRUNCATE","COMPACT","CREATE_GRAPH","SHOW_GRAPH","DROP_GRAPH","ALTER_GRAPH","MOUNT_GRAPH","UNMOUNT_GRAPH","TOP","KILL","STAT","SHOW_POLICY","CREATE_POLICY","DROP_POLICY","ALTER_POLICY","SHOW_USER","CREATE_USER","DROP_USER","ALTER_USER","GRANT","REVOKE","SHOW_PRIVILEGE"]
 ```
@@ -442,9 +416,7 @@ A `Policy` object has the following fields:
 | `SubPolicies` | List\<string> | Policies included in the policy |
 | `PropertyPrivileges` | PropertyPrivilegeMap? | Property privileges included in the policy |
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 var res = await ultipa.Uql("show().policy()");
 var policyList = res.Alias("_policy")?.AsPolicies();
 foreach (var item in policyList)
@@ -455,7 +427,7 @@ foreach (var item in policyList)
 
 <p tit="Output"></p> 
  
-```bash
+```
 Policy name: operator
 Policy name: manager
 ```
@@ -474,9 +446,7 @@ A `User` object has the following fields:
 | `PropertyPrivileges` | PropertyPrivileges | Property privileges granted to the user |
 | `Policies` | List\<string> | Policies granted to the user |
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 var res = await ultipa.Uql("show().user('Tester')");
 var userList = res.Alias("_user")?.AsUsers();
 Console.WriteLine("Username: " + userList[0].Username);
@@ -494,7 +464,7 @@ Console.WriteLine(
 
 <p tit="Output"></p> 
  
-```bash
+```
 Username: Tester
 Created at: 7/26/2024 6:10:06 AM
 Graph privileges: {"Ad_Click":["FIND_EDGE","FIND_NODE"],"DFS_EG":["UPDATE","INSERT"]}
@@ -516,9 +486,7 @@ A `DatabaseStats` object has the following fields:
 | `ServerType` | string | Server type |
 | `Version` | string | Version of the server | 
 
-<p tit="C#" ></p> 
- 
-```c#  
+```csharp  
 var res = await ultipa.Uql("stats()");
 var statsList = res.Alias("_statistic")?.AsStats();
 Console.WriteLine("CPU usage: " + statsList.CpuUsage);
@@ -527,7 +495,7 @@ Console.WriteLine("Memory usage: " + statsList.MemUsage);
 
 <p tit="Output"></p> 
  
-```bash
+```
 CPU usage: 12.204036
 Memory usage: 11348.136719
 ```
@@ -543,9 +511,7 @@ A `Process` object has the following fields:
 | `Duration` | int | The duration in seconds the task has run so far |
 | `Status` | string | Process status |
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 var res = await ultipa.Uql("top()");
 var processList = res.Alias("_top")?.AsProcesses();
 Console.WriteLine("Process ID: " + processList[0].Id);
@@ -553,7 +519,7 @@ Console.WriteLine("Process ID: " + processList[0].Id);
 
 <p tit="Output"></p> 
  
-```bash
+```
 Process ID: a_7_14568_1
 ```
 
@@ -568,9 +534,7 @@ A `UltipaTask` object has the following fields:
 | `result` | object | Algorithm result and statistics and their corresponding values |
 | `ErrorMsg` | string | Error message of the task |
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 var res = await ultipa.Uql("show().task()", requestConfig);
 var taskList = res.Alias("_task")?.AsTasks();
 Console.WriteLine("Algo Name: " + taskList[0].Info.AlgoName);
@@ -580,7 +544,7 @@ Console.WriteLine("Result: " + taskList[0].result);
 
 <p tit="Output"></p> 
  
-```bash
+```
 Algo Name: louvain
 Parameters: {"phase1_loop_num":"20","min_modularity_increase":"0.001"}
 Result: {
@@ -606,9 +570,7 @@ Methods on a `Table` object:
 | ---- | ---- | ---- | 
 | `ToKv()` | List\<Dictionary<string, object?>>  | Convert all rows of the table to a key-value list. |
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 var res = await ultipa.Uql(
     "find().nodes() as n return table(n._id, n._uuid) as myTable limit 5"
 );
@@ -618,7 +580,7 @@ Console.WriteLine("2nd row in table: " + JsonConvert.SerializeObject(myTab.ToKv(
 
 <p tit="Output"></p> 
  
-```bash
+```
 2nd row in table: {"n._id":"ULTIPA8000000000000002","n._uuid":0}
 ```
 
@@ -636,9 +598,7 @@ An `Attr` object has the following fields:
 | `Attrs` | AttrList | List of `Attr` objects|
 | `Value` | object | Value of the data |
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 var res = await ultipa.Uql(
     "find().nodes({@ad}) as n return n.brand limit 5",
     requestConfig
@@ -649,6 +609,6 @@ Console.WriteLine(JsonConvert.SerializeObject(myAttr));
 
 <p tit="Output"></p> 
  
-```bash
+```
 [14655,14655,14655,14655,434760]
 ```

@@ -19,8 +19,6 @@ Executes a UQL query on the current graphset or the database and returns the res
 
 - `UltipaResponse`: Result of the request.
 
-<p tit="Python"></p> 
-
 ```python
 # Retrieves 5 @movie nodes in graphset 'miniCircle' and prints their names
 
@@ -33,7 +31,7 @@ for node in nodeList:
 
 <p tit="Output"></p> 
 
-```Python
+```
 The Shawshank Redemption
 Farewell My Concubine
 Léon: The Professional
@@ -56,8 +54,6 @@ Executes a UQL query on the current graphset or the database and returns the res
 **Returns:**
 
 - `None`
-
-<p tit="Python"></p> 
 
 ```python
 # Retrieves all 1-step paths in graphset 'miniCircle'
@@ -85,7 +81,7 @@ print()
 
 <p tit="Output"></p> 
 
-```python
+```
 Stream started.
 Data received: {'status': <ultipa.types.types.Status object at 0x000001E01762FCA0>, 'items': {'paths': <ultipa.types.types.DataItem object at 0x000001E017635730>}, 'aliases': None, 'req': None, 'statistics': <ultipa.types.types.UltipaStatistics object at 0x000001E017635850>, 'explainPlan': None}
 Data received: {'status': <ultipa.types.types.Status object at 0x000001E01762F2B0>, 'items': {'paths': <ultipa.types.types.DataItem object at 0x000001E0189C4DF0>}, 'aliases': None, 'req': None, 'statistics': <ultipa.types.types.UltipaStatistics object at 0x000001E0189C4D60>, 'explainPlan': None}

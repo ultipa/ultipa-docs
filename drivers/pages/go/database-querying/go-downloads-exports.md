@@ -19,8 +19,6 @@ Downloads one result file from an algorithm task in the current graph.
 
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
- 
 ```go
 requestConfig := &configuration.RequestConfig{
   UseMaster: true,
@@ -66,7 +64,7 @@ if myDownload != nil {
 
 <p tit="Output"></p> 
  
-```java
+```
 TaskID is: 65483
 File is downloaded
 ```
@@ -85,8 +83,6 @@ Downloads all result files from an algorithm task in the current graph.
 
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
- 
 ```go
 requestConfig := &configuration.RequestConfig{
   UseMaster: true,
@@ -127,7 +123,7 @@ if myDownload != nil {
 
 <p tit="Output"></p> 
  
-```java
+```
 TaskID is: 65838
 Files are downloaded
 ```
@@ -146,8 +142,6 @@ Exports nodes and edges from the current graph.
 
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
- 
 ```go
 // Exports 10 nodes of schema 'account' with selected properties in graphset 'miniCircle' and prints the result
 type MyListener struct {
@@ -263,13 +257,11 @@ func main() {
 
 <p tit="Output"></p> 
  
-```java
+```
 File is exported
 ```
 
 ## Full Example
-
-<p tit="Go"></p> 
 
 ```go
 package main

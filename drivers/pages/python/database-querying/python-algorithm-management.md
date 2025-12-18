@@ -18,8 +18,6 @@ Retrieves all Ultipa graph algorithms installed in the instance.
 
 - `List[Algo]`: The list of all algorithms retrieved.
 
-<p tit="Python"></p> 
- 
 ```python
 # Retrieves all Ultipa graph algorithms installed and prints the information of the first returned one
 
@@ -29,7 +27,7 @@ print(algos[0].toJSON())
 
 <p tit="Output"></p> 
  
-```python
+```
 {"name": "lpa", "description": "label propagation algorithm", "version": "1.0.10", "result_opt": "27", "parameters": {"loop_num": "size_t,required", "node_label_property": "optional", "node_weight_property": "optional", "edge_weight_property": "optional", "k": "no more than k labels will be kept for each node", "ids": "labeled nodes, optional, all nodes(with non-NULL value) as labeled nodes if empty"}, "write_to_db_parameters": {"property": "set property name in db, only label with `max probability` will be write to db"}, "write_to_file_parameters": {"filename": "set file name"}}
 ```
 
@@ -47,9 +45,7 @@ Installs an Ultipa graph algorithm in the instance.
 
 - `UltipaResponse`: Result of the request.
 
-<p tit="Python"></p> 
- 
-```Python
+```python
 # Installs the algorithm LPA and uses the leader node to guarantee consistency, and prints the error code
 # The installation package libplugin_lpa.so and the config file lpa.yml are located in the 'algo' folder, which is placed in the same directory as the file you executed
 
@@ -61,7 +57,7 @@ print(response.status.code)
 
 <p tit="Output"></p> 
  
-```python
+```
 0
 ```
 
@@ -78,8 +74,6 @@ Uninstalls an Ultipa graph algorithm in the instance.
 
 - `UltipaResponse`: Result of the request.
 
-<p tit="Python"></p> 
- 
 ```python
 # Uninstalls the algorithm LPA and prints the error code
 
@@ -91,7 +85,7 @@ print(response.status.code)
 
 <p tit="Output"></p> 
  
-```python
+```
 0
 ```
 
@@ -109,8 +103,6 @@ Retrieves all extas installed in the instance.
 
 - `List[Exta]`: The list of all extas retrieved.
 
-<p tit="Python"></p> 
- 
 ```python
 # Retrieves all extas installed and prints the information of the first returned one
 
@@ -120,7 +112,7 @@ print(extas[0].toJSON())
 
 <p tit="Output"></p> 
  
-```python
+```
 {
   "author": "wuchuang",
   "detail": {
@@ -160,8 +152,6 @@ Installs an exta in the instance.
 
 - `UltipaResponse`: Result of the request.
 
-<p tit="Python"></p> 
- 
 ```python
 # Installs the exta page_rank and uses the leader node to guarantee consistency, and prints the error code
 # The installation package libexta_page_rank.so and the config file page_rank.yml are located in the 'exta' folder, which is placed in the same directory as the file you executed
@@ -174,7 +164,7 @@ print(response.status.code)
 
 <p tit="Output"></p> 
  
-```python
+```
 0
 ```
 
@@ -191,8 +181,6 @@ Uninstalls an exta in the instance.
 
 - `UltipaResponse`: Result of the request.
 
-<p tit="Python"></p> 
- 
 ```python
 # Uninstalls the exta page_rank and prints the error code
 
@@ -202,7 +190,7 @@ print(response.status.code)
 
 <p tit="Output"></p> 
  
-```python
+```
 0
 ```
 

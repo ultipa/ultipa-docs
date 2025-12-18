@@ -21,9 +21,7 @@ Loads one custom property of nodes or edges to the computing engine for query ac
 
 - `UqlResponse`: Result of the request. 
 
-<p tit="C#" ></p> 
-
-```c#
+```csharp
 // Loads the edge property @relatesTo.type to engine in graphset 'UltipaTeam' and prints error code
 
 RequestConfig requestConfig = new RequestConfig() { Graph = "UltipaTeam" };
@@ -37,7 +35,7 @@ Console.WriteLine("LTE status of the property: " + prop.Lte);
 
 <p tit="Output"></p> 
  
-```java
+```
 Success
 LTE status of the property: True
 ```
@@ -57,9 +55,7 @@ Unloads one custom property of nodes or edges from the computing engine to save 
 
 - `UqlResponse`: Result of the request. 
 
-<p tit="C#" ></p> 
-
-```c#
+```csharp
 // Unloads the edge property @relatesTo.type from engine in graphset 'UltipaTeam' and prints error code and whether it's LTE-ed
 
 RequestConfig requestConfig = new RequestConfig() { Graph = "UltipaTeam" };
@@ -73,7 +69,7 @@ Console.WriteLine("LTE status of the property: " + prop.Lte);
 
 <p tit="Output"></p> 
  
-```java
+```
 Success
 LTE status of the property: False
 ```
@@ -92,9 +88,7 @@ Retrieves all indexes of node and edge properties from the current graphset.
 
 - `List<Index>`: The list of all indexes retrieved in the current graphset.
 
-<p tit="C#" ></p> 
-
-```c#
+```csharp
 // Retrieves indexes in graphset 'Ad_Click' and prints their information
 
 RequestConfig requestConfig = new RequestConfig() { Graph = "Ad_Click", UseMaster = true };
@@ -108,7 +102,7 @@ foreach (var item in res)
 
 <p tit="Output"></p> 
  
-```java
+```
 {"Schema":"user","Name":"shopping_level","Properties":"shopping_level","Status":"done","size":"4608315"}
 {"Schema":"ad","Name":"price","Properties":"price","Status":"done","size":"7828488"}
 {"Schema":"clicks","Name":"time","Properties":"time","Status":"done","size":"12809771"}
@@ -126,9 +120,7 @@ Retrieves all indexes of node properties from the current graphset.
 
 - `List<Index>`: The list of all indexes retrieved in the current graphset.
 
-<p tit="C#" ></p> 
-
-```c#
+```csharp
 // Retrieves node indexes in graphset 'Ad_Click' and prints their information
 
 RequestConfig requestConfig = new RequestConfig() { Graph = "Ad_Click", UseMaster = true };
@@ -142,7 +134,7 @@ foreach (var item in res)
 
 <p tit="Output"></p> 
  
-```java
+```
 {"Schema":"user","Name":"shopping_level","Properties":"shopping_level","Status":"done","size":"4608315"}
 {"Schema":"ad","Name":"price","Properties":"price","Status":"done","size":"7828488"}
 ```
@@ -159,9 +151,7 @@ Retrieves all indexes of edge properties from the current graphset.
 
 - `List<Index>`: The list of all indexes retrieved in the current graphset.
 
-<p tit="C#" ></p> 
-
-```c#
+```csharp
 // Retrieves edge indexes in graphset 'Ad_Click' and prints their information
 
 RequestConfig requestConfig = new RequestConfig() { Graph = "Ad_Click", UseMaster = true };
@@ -175,7 +165,7 @@ foreach (var item in res)
 
 <p tit="Output"></p> 
  
-```java
+```
 {"Schema":"clicks","Name":"time","Properties":"time","Status":"done","size":"12809771"}
 ```
 
@@ -194,9 +184,7 @@ Creates a new index in the current graphset.
 
 - `UqlResponse`: Result of the request. 
 
-<p tit="C#" ></p> 
-
-```c#
+```csharp
 // Creates indexes for all node properties 'name' in graphset 'Ad_Click' and prints the error code
 
 RequestConfig requestConfig = new RequestConfig() { Graph = "Ad_Click", UseMaster = true };
@@ -207,7 +195,7 @@ Console.WriteLine(res.Status.ErrorCode);
 
 <p tit="Output"></p> 
  
-```java
+```
 Success
 ```
 
@@ -226,9 +214,7 @@ Drops indexes in the current graphset.
 
 - `UqlResponse`: Result of the request. 
 
-<p tit="C#" ></p> 
-
-```c#
+```csharp
 // Drops the index of the node property @ad.name in graphset 'Ad_Click' and prints the error code
 
 RequestConfig requestConfig = new RequestConfig() { Graph = "Ad_Click", UseMaster = true };
@@ -239,7 +225,7 @@ Console.WriteLine(res.Status.ErrorCode);
 
 <p tit="Output"></p> 
  
-```java
+```
 Success
 ```
 
@@ -257,9 +243,7 @@ Retrieves all full-text indexes of node and edge properties from the current gra
 
 - `List<Index>`: The list of all indexes retrieved in the current graphset.
 
-<p tit="C#" ></p> 
-
-```c#
+```csharp
 // Retrieves the first full-text index returned in graphset 'miniCircle' and prints its information
 
 RequestConfig requestConfig = new RequestConfig() { Graph = "miniCircle" };
@@ -270,7 +254,7 @@ Console.WriteLine(JsonConvert.SerializeObject(res[0]));
 
 <p tit="Output"></p> 
  
-```java
+```
 {"Schema":"movie","Name":"genreFull","Properties":"genre","Status":"done","size":null}
 ```
 
@@ -286,9 +270,7 @@ Retrieves all full-text indexes of node properties from the current graphset.
 
 - `List<Index>`: The list of all full-text indexes of node properties retrieved in the current graphset.
 
-<p tit="C#" ></p> 
-
-```c#
+```csharp
 // Retrieves the first node full-text index of node properties returned in graphset 'miniCircle' and prints its information
 
 RequestConfig requestConfig = new RequestConfig() { Graph = "miniCircle" };
@@ -299,7 +281,7 @@ Console.WriteLine(JsonConvert.SerializeObject(res[0]));
 
 <p tit="Output"></p> 
  
-```java
+```
 {"Schema":"movie","Name":"genreFull","Properties":"genre","Status":"done","size":null}
 ```
 
@@ -315,9 +297,7 @@ Retrieves all full-text indexes of edge properties from the current graphset.
 
 - `List<Index>`: The list of all edge full-text indexes of edge properties retrieved in the current graphset.
 
-<p tit="C#" ></p> 
-
-```c#
+```csharp
 // Retrieves the first edge full-text index of edge properties returned in graphset 'miniCircle' and prints its information
 
 RequestConfig requestConfig = new RequestConfig() { Graph = "miniCircle" };
@@ -328,7 +308,7 @@ Console.WriteLine(JsonConvert.SerializeObject(res[0]));
 
 <p tit="Output"></p> 
  
-```java
+```
 {"Schema":"review","Name":"nameFull","Properties":"content","Status":"done","size":null}
 ```
 
@@ -348,9 +328,7 @@ Creates a new full-text index in the current graphset.
 
 - `UqlResponse`: Result of the request. 
 
-<p tit="C#" ></p> 
-
-```c#
+```csharp
 // Creates full-text index called 'movieName' for the property @movie.name in graphset 'miniCircle' and prints the error code
 
 RequestConfig requestConfig = new RequestConfig() { Graph = "miniCircle" };
@@ -367,7 +345,7 @@ Console.WriteLine(res.Status.ErrorCode);
 
 <p tit="Output"></p> 
  
-```java
+```
 Success
 ```
 
@@ -385,9 +363,7 @@ Drops a full-text index in the current graphset.
 
 - `UqlResponse`: Result of the request. 
 
-<p tit="C#" ></p> 
-
-```c#
+```csharp
 // Drops the node full-index 'movieName' in graphset 'miniCircle' and prints the error code
 
 RequestConfig requestConfig = new RequestConfig() { Graph = "miniCircle" };
@@ -398,15 +374,13 @@ Console.WriteLine(res.Status.ErrorCode);
 
 <p tit="Output"></p> 
  
-```java
+```
 Success
 ```
 
 ## Full Example
 
-<p tit="C#" ></p> 
-
-```c#
+```csharp
 
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;

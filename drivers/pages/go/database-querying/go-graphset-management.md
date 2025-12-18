@@ -17,8 +17,6 @@ Retrieves all graphsets from the database.
 - `GraphSet`: The list of all graphsets in the database.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
- 
 ```go
 // Retrieves all graphsets and prints the names of the those who have over 2000 edges
 
@@ -31,7 +29,7 @@ for i := 0; i < len(myGraph); i++ {
 ```
 <p tit="Output"></p> 
  
-```java
+```
 Display_Ad_Click
 ERP_DATA2
 wikiKG
@@ -51,8 +49,6 @@ Retrieves one graphset from the database by its name.
 - `GraphSet`: The retrieved graphset.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
- 
 ```go
 // Retrieves the graphsets named 'wikiKG' and prints all its information
 
@@ -63,7 +59,7 @@ fmt.Println(myGraph)
 
 <p tit="Output"></p> 
  
-```java
+```
 ID Name TotalNodes TotalEdges Status
 &{13844 wikiKG  44449 167799 MOUNTED}
 ```
@@ -82,8 +78,6 @@ Creates a new graphset in the database.
 - `UQLResponse`: Result of the request.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
- 
 ```go
 // Creates one graphset and prints the error code
 
@@ -95,7 +89,7 @@ A new graphset `testGoSDK` is created in the database, and the driver prints:
 
 <p tit="Output"></p> 
  
-```java
+```
 Creation succeeds: true
 ```
 
@@ -113,8 +107,6 @@ Creates a new graphset in the database, handling cases where the given graphset 
 - `Response`: Result of the request.
 - `bool`: Whether the graphset already exists.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.`
-
-<p tit="Go"></p> 
 
 ```go
 // Creates one graphset and prints the error code
@@ -136,7 +128,7 @@ A new graphset `testGoSDK` is created in the database, and the driver prints:
 
 <p tit="Output"></p> 
  
-```java
+```
 Graph already exists: false
 First creation succeeds: true
 Graph already exists: true
@@ -156,8 +148,6 @@ Drops one graphset from the database by its name.
 - `Response`: Result of the request.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.`
 
-<p tit="Go"></p> 
-
 ```go
 // Creates one graphset and then drops it, prints the result
 
@@ -169,7 +159,7 @@ fmt.Println(resp1)
 ```
 <p tit="Output"></p> 
 
-```java
+```
 Creation succeeds: true
 &{map[] status:{} statistics:{table_name:"statistics" headers:{property_name:"node_affected" property_type:STRING} headers:{property_name:"edge_affected" property_type:STRING} headers:{property_name:"total_time_cost" property_type:STRING} headers:{property_name:"engine_time_cost" property_type:STRING} table_rows:{values:"0" values:"0" values:"6" values:"0"}} explain_plan:{} 0xc0002a0648 0xc0004a2040 0xc000484b40 [] 0xc0002814f0}
 ```
@@ -189,8 +179,6 @@ Alters the name and description of one existing graphset in the database by its 
 - `Response`: Result of the request.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.`
 
-<p tit="Go"></p> 
-
 ```go
 // Renames the graphset 'testGoSDK' to 'newGraph', sets a description for it, and prints the result
 
@@ -200,7 +188,7 @@ fmt.Println(resp1)
 
 <p tit="Output"></p> 
 
-```java
+```
 &{map[] status:{}  statistics:{table_name:"statistics"  headers:{property_name:"node_affected"  property_type:STRING}  headers:{property_name:"edge_affected"  property_type:STRING}  headers:{property_name:"total_time_cost"  property_type:STRING}  headers:{property_name:"engine_time_cost"  property_type:STRING}  table_rows:{values:"0"  values:"0"  values:"0"  values:"0"}}  explain_plan:{} 0xc0002327c8 0xc00001cba0 0xc000009248 [] 0xc000207820}
 ```
 
@@ -217,8 +205,6 @@ Truncates (Deletes) the specified nodes or edges in the given graphset or trunca
 
 - `Response`: Result of the request.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.`
-
-<p tit="Go"></p> 
 
 ```go
 // Truncates @user nodes in the graphset 'myGraph_1' and prints the error code
@@ -241,7 +227,7 @@ fmt.Println(myGraph3.Status)
 
 <p tit="Output"></p> 
 
-```java
+```
 &{ SUCCESS}
 &{ SUCCESS}
 &{ SUCCESS}
@@ -261,8 +247,6 @@ Compacts a graphset by clearing its invalid and redundant data on the server dis
 - `Response`: Result of the request.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.`
 
-<p tit="Go"></p> 
-
 ```go
 // Compacts the graphset 'miniCircle' and prints the error code
 
@@ -272,7 +256,7 @@ fmt.Println(resp.Status)
 
 <p tit="Output"></p> 
 
-```java
+```
 &{ SUCCESS}
 ```
 
@@ -290,8 +274,6 @@ Checks the existence of a graphset in the database by its name.
 - `bool`: Result of the request.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.`
 
-<p tit="Go"></p> 
-
 ```go
 // Checks the existence of graphset 'miniCircle' and prints the result
 
@@ -301,7 +283,7 @@ fmt.Println("Graph exists:", resp)
 
 <p tit="Output"></p> 
 
-```java
+```
 Graph exists: true
 ```
 
@@ -319,8 +301,6 @@ Unmounts a graphset to save database memory.
 - `Response`: Result of the request.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.`
 
-<p tit="Go"></p> 
-
 ```go
 // / Unmounts the graphsets 'miniCircle' and prints the result
 
@@ -330,7 +310,7 @@ fmt.Println(resp.Status)
 
 <p tit="Output"></p> 
 
-```java
+```
 &{ SUCCESS}
 ```
 
@@ -348,8 +328,6 @@ Mounts a graphset to the database memory.
 - `Response`: Result of the request.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.`
 
-<p tit="Go"></p> 
-
 ```go
 // Mounts the graphsets 'miniCircle' and prints the result
 
@@ -359,13 +337,11 @@ fmt.Println(resp.Status)
 
 <p tit="Output"></p> 
 
-```java
+```
 &{ SUCCESS}
 ```
 
 ## Full Example
-
-<p tit="Go"></p> 
 
 ```go
 package main

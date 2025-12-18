@@ -19,8 +19,6 @@ Retrieves all nodes and edge schemas from the current graphset.
 - `[]Schema`: The list of all schemas in the current graphset.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
- 
 ```go
 // Retrieves all schemas in graphset 'UltipaTeam' and prints their names and types
 
@@ -37,7 +35,7 @@ for _, item := range mySchema {
 
 <p tit="Output"></p> 
  
-```java
+```
 Schema name:default  Schema type:node
 Schema name:member  Schema type:node
 Schema name:organization  Schema type:node
@@ -62,8 +60,6 @@ Retrieves a node or edge schema from the current graphset.
 - `Schema`: The retrieved schema.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
- 
 ```go
 // Retrieves node schema 'member' and edge schema 'connectsTo' in graphset 'UltipaTeam', and prints all their information
 
@@ -90,7 +86,7 @@ if edgeSchema != nil {
 
 <p tit="Output"></p> 
  
-```java
+```
 Name: member Type: node schema  Number: 7
 Not exists
 ```
@@ -108,8 +104,6 @@ Retrieves all node schemas from the current graphset.
 - `[]Schema`: The list of all node schemas in the current graphset.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
- 
 ```go
 // Retrieves all node schemas in graphset 'UltipaTeam' and prints their names
 
@@ -126,7 +120,7 @@ for _, item := range nodeSchema {
 
 <p tit="Output"></p> 
  
-```java
+```
 default
 member
 organization
@@ -145,8 +139,6 @@ Retrieves all edge schemas from the current graphset.
 - `[]Schema`: The list of all edge schemas in the current graphset.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
- 
 ```go
 // Retrieves all edge schemas in graphset 'UltipaTeam' and prints their names
 
@@ -163,7 +155,7 @@ for _, item := range edgeSchema {
 
 <p tit="Output"></p> 
  
-```java
+```
 default
 reportsTo
 relatesTo
@@ -183,8 +175,6 @@ Retrieves a node schema from the current graphset.
 - `Schema`: The retrieved node schema.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
- 
 ```go
 // Retrieves node schema 'member' in graphset 'UltipaTeam' and prints its properties
 
@@ -199,7 +189,7 @@ println(utils.ToJSONString(mySchema.Properties))
 
 <p tit="Output"></p> 
  
-```java
+```
 [{"Name":"title","Desc":"","Lte":false,"Read":false,"Write":false,"Schema":"member","Type":7,"SubTypes":null,"Extra":"{}","Encrypt":""},{"Name":"profile","Desc":"","Lte":false,"Read":false,"Write":false,"Schema":"member","Type":7,"SubTypes":null,"Extra":"{}","Encrypt":""},{"Name":"age","Desc":"","Lte":false,"Read":false,"Write":false,"Schema":"member","Type":1,"SubTypes":null,"Extra":"{}","Encrypt":""}]
 ```
 
@@ -217,8 +207,6 @@ Retrieves an edge schema from the current graphset.
 - `Schema`: The retrieved edge schema.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
- 
 ```go
 // Retrieves edge schema 'relatesTo' in graphset 'UltipaTeam' and prints its properties
 
@@ -233,7 +221,7 @@ println(utils.ToJSONString(mySchema.Properties))
 
 <p tit="Output"></p> 
  
-```java
+```
 [{"Name":"type","Desc":"","Lte":false,"Read":false,"Write":false,"Schema":"relatesTo","Type":7,"SubTypes":null,"Extra":"{}","Encrypt":""}]
 ```
 
@@ -252,8 +240,6 @@ Creates a new schema in the current graphset.
 - `Response`: Result of the request.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
- 
 ```go
 requestConfig := &configuration.RequestConfig{
     UseMaster: true,
@@ -276,7 +262,7 @@ println(utils.JSONString(newEdgeSchema))
 
 <p tit="Output"></p> 
  
-```java
+```
 Node Schema Creation Succeeds:  true
 {"DataItemMap":{},"Reply":{"status":{},"statistics":{"table_name":"statistics","headers":[{"property_name":"node_affected","property_type":7},{"property_name":"edge_affected","property_type":7},{"property_name":"total_time_cost","property_type":7},{"property_name":"engine_time_cost","property_type":7}],"table_rows":[{"values":["MA==","MA==","MA==","MA=="]}]},"explain_plan":{}},"Status":{"Message":"","Code":0},"Statistic":{"NodeAffected":0,"EdgeAffected":0,"TotalCost":0,"EngineCost":0},"ExplainPlan":{"Explain":[]},"AliasList":null,"Resp":{"ClientStream":{}}}
 Edge Schema Creation Succeeds:  true
@@ -297,8 +283,6 @@ Creates a new schema in the current graphset, handling cases where the given sch
 - `bool`: Whether the schema exists.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
- 
 ```go
 requestConfig := &configuration.RequestConfig{
     UseMaster: true,
@@ -319,7 +303,7 @@ println("Schema already exists: ", cre2)
 
 <p tit="Output"></p> 
  
-```java
+```
 Schema already exists:  false
 Schema already exists:  true
 ```
@@ -339,8 +323,6 @@ Alters the name and description of one existing schema in the current graphset b
 - `Response`: Result of the request.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
- 
 ```go
 // Renames the node schema 'utility' to 'securityUtility' and removes its description in graphset 'UltipaTeam'
 
@@ -355,7 +337,7 @@ println("Operation succeeds:", resp.Status.IsSuccess())
 
 <p tit="Output"></p> 
  
-```java
+```
 Operation succeeds: true
 ```
 
@@ -373,8 +355,6 @@ Drops one schema from the current graphset by its name.
 - `Response`: Result of the request.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
- 
 ```go
 // Drops the node schema 'utility' in graphset 'UltipaTeam'
 
@@ -389,7 +369,7 @@ println("Operation succeeds:", resp.Status.IsSuccess())
 
 <p tit="Output"></p> 
  
-```java
+```
 Operation succeeds: true
 ```
 
@@ -410,8 +390,6 @@ Retrieves custom properties of nodes or edges from the current graphset.
 - `[]Property`: The list of all properties retrieved in the current graphset.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
- 
 ```go
 // Retrieves all node properties in graphset 'UltipaTeam' and prints their names and associated schemas
 
@@ -431,7 +409,7 @@ for _, item := range resp {
 
 <p tit="Output"></p> 
  
-```java
+```
 title is associated with schema named member
 profile is associated with schema named member
 age is associated with schema named member
@@ -453,8 +431,6 @@ Retrieves custom properties of nodes from the current graphset.
 - `[]Property`: The list of all properties retrieved in the current graphset.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
- 
 ```go
 // Retrieves all custom properties of node schema 'member' in graphset 'UltipaTeam' and prints the count
 
@@ -469,7 +445,7 @@ println(len(myCount))
 
 <p tit="Output"></p> 
  
-```java
+```
 3
 ```
 
@@ -487,8 +463,6 @@ Retrieves custom properties of edges from the current graphset.
 - `[]Property`: The list of all properties retrieved in the current graphset.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
- 
 ```go
 // Retrieves all custom properties of edge schema 'relatesTo' in graphset 'UltipaTeam' and prints their names
 
@@ -508,7 +482,7 @@ if myEdge != nil {
 
 <p tit="Output"></p> 
  
-```java
+```
 type
 ```
 
@@ -528,8 +502,6 @@ Retrieves a custom property of nodes or edges from the current graphset.
 - `Property`: The retrieved property.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
- 
 ```go
 // Retrieves node property @member.title in graphset 'UltipaTeam' and prints all its information
 
@@ -545,7 +517,7 @@ println(utils.ToJSONString(proInfo))
 
 <p tit="Output"></p> 
  
-```java
+```
 {"Name":"title","Desc":"","Lte":false,"Read":false,"Write":false,"Schema":"member","Type":7,"SubTypes":null,"Extra":"{}","Encrypt":""}
 ```
 
@@ -564,8 +536,6 @@ Retrieves a custom property of nodes from the current graphset.
 - `Property`: The retrieved property.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
- 
 ```go
 // Retrieves node property @member.title in graphset 'UltipaTeam' and prints all its information
 
@@ -580,7 +550,7 @@ println(utils.ToJSONString(proInfo))
 
 <p tit="Output"></p> 
  
-```java
+```
 {"Name":"title","Desc":"","Lte":false,"Read":false,"Write":false,"Schema":"member","Type":7,"SubTypes":null,"Extra":"{}","Encrypt":""}
 ```
 
@@ -599,8 +569,6 @@ Retrieves a custom property of edges from the current graphset.
 - `Property`: The retrieved property.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
- 
 ```go
 // Retrieves edge property @relatesTo.type in graphset 'UltipaTeam' and prints all its information
 
@@ -615,7 +583,7 @@ println(utils.ToJSONString(proInfo))
 
 <p tit="Output"></p> 
  
-```java
+```
 {"Name":"type","Desc":"","Lte":false,"Read":false,"Write":false,"Schema":"relatesTo","Type":7,"SubTypes":null,"Extra":"{}","Encrypt":""}
 ```
 
@@ -635,8 +603,6 @@ Creates a new property for a node or edge schema in the current graphset.
 - `Response`: Result of the request.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
- 
 ```go
 // Creates two properties for node schema 'member' in graphset 'UltipaTeam' and prints error codes
 
@@ -655,7 +621,7 @@ println("Operation succeeds:", new2.Status.IsSuccess())
 
 <p tit="Output"></p> 
  
-```java
+```
 Operation succeeds: true
 Operation succeeds: true
 ```
@@ -677,8 +643,6 @@ Creates a new property for a node or edge schema in the current graphset, handli
 - `bool`: Whether the property exists.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
- 
 ```go
 requestConfig := &configuration.RequestConfig{
     UseMaster: true,
@@ -699,7 +663,7 @@ println("Property already exists:", new2)
 
 <p tit="Output"></p> 
  
-```java
+```
 Property already exists: false
 Property already exists: true
 ```
@@ -720,8 +684,6 @@ Alters the name and description of one existing custom property in the current g
 - `Response`: Result of the request.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
- 
 ```go
 requestConfig := &configuration.RequestConfig{
     UseMaster: true,
@@ -736,7 +698,7 @@ println("Operation succeeds:", myAlt.Status.IsSuccess())
 
 <p tit="Output"></p> 
  
-```java
+```
 Operation succeeds: true
 ```
 
@@ -756,8 +718,6 @@ Drops one custom property from the current graphset by its name and the associat
 - `Response`: Result of the request.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
- 
 ```go
 requestConfig := &configuration.RequestConfig{
     UseMaster: true,
@@ -778,14 +738,12 @@ println("Operation succeeds:", drop2.Status.IsSuccess())
 
 <p tit="Output"></p> 
  
-```java
+```
 Operation succeeds: true
 Operation succeeds: true
 ```
 
 ## Full Example
-
-<p tit="Go"></p> 
 
 ```go
 package main

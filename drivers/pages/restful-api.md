@@ -74,8 +74,6 @@ Other Parameters:
 ```
 
 - Request Example
-<p tit="JSON">
-
 ```json
 {
     "username": "employee",
@@ -104,8 +102,6 @@ Other Parameters:
 | graph			| string		| no 		| The graphset name (default value: the graphset designated when starting the API service)	|
 
 - Request Example
-<p tit="JSON">
-
 ```json
 {
     "uql": "find().nodes({name == \"abc\"}) return count(nodes)",
@@ -114,8 +110,6 @@ Other Parameters:
 ```
 
 - Success Response
-<p tit="JSON">
-
 ```json
 {
     "Data": [
@@ -159,8 +153,6 @@ Other Parameters:
 | package_num	| int			| no		| The number of packages to return (default value: 0, query but do not return)		|
 
 - Request Example
-<p tit="JSON">
-
 ```json
 {
     "uql": "find().nodes({name == \"abc\"}) return nodes",
@@ -190,8 +182,6 @@ Other Parameters:
 | sync			| bool			| no		| If return the status of request (default value: false). A 'true' value will induce batch waiting time	(`-d`, `--duration`) when the data volume is less than batch size (`-b`, `--batch`), which	will affect the insert performance	|
 
 - Request Example
-<p tit="JSON">
-
 ```json
 {
     "nodes": [{"name":"Jason","_id":"USER001"},{"name":"Alice"}],
@@ -202,8 +192,6 @@ Other Parameters:
 ```
 
 - Success Response
-<p tit="JSON">
-
 ```json
 {
     "Msg": "Insert Nodes Success: [{\"_id\":\"USER001\",\"name\":\"Jason\"},{\"name\":\"Alice\"}]"
@@ -229,8 +217,6 @@ Other Parameters:
 | sync			| bool			| no		| If return the status of request (default value: false). A 'true' value will induce batch waiting time	(`-d`, `--duration`) when the data volume is less than batch size (`-b`, `--batch`), which	will affect the insert performance	|
 
 - Request Example
-<p tit="JSON">
-
 ```json
 {
     "edges": [{"year":"1998", "_from":"USER001", "_to":"USER002"}],
@@ -241,8 +227,6 @@ Other Parameters:
 ```
 
 - Success Response
-<p tit="JSON">
-
 ```json
 {
     "Msg": "Insert Edges Success: [{\"_from\":\"USER001\",\"_to\":\"USER002\",\"year\":\"1998\"}]"
@@ -268,8 +252,6 @@ Update nodes based on `_id` or `_uuid`.
 | graph			| string		| no 		| The graphset name (default value: the graphset designated when starting the API service)	|
 
 - Request Example
-<p tit="JSON">
-
 ```json
 {
     "nodes": [{"age":"35", "_id":"USER001"}, {"name":"John", "_id": "USER002"}],
@@ -278,8 +260,6 @@ Update nodes based on `_id` or `_uuid`.
 ```
 
 - Success Response
-<p tit="JSON">
-
 ```json
 {
     "Msg": "Update nodes on test_text",
@@ -306,8 +286,6 @@ Update edges based on `_from`&`_to` or `_uuid`.
 | graph			| string		| no 		| The graphset name (default value: the graphset designated when starting the API service)	|
 
 - Request Example
-<p tit="JSON">
-
 ```json
 {
     "edges": [{"_uuid":"1","_from_uuid":"2", "age":"55"}],
@@ -316,8 +294,6 @@ Update edges based on `_from`&`_to` or `_uuid`.
 ```
 
 - Success Response
-<p tit="JSON">
-
 ```json
 {
     "Msg": "Update edges on test_text",

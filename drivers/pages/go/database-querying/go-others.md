@@ -17,8 +17,6 @@ Retrieves database server statistics.
 - `Stat`: The retrieved server statistics.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
- 
 ```go
 myStat, err := conn.Stats(nil)
 if err != nil {
@@ -35,7 +33,7 @@ println("Version:", myStat.Version)
 
 <p tit="Output"></p> 
  
-```java
+```
 CPU usage: 16.933905 %
 Memory usage: 11562.433594
 Expiration date: 2024-12-26 23:59:59
@@ -58,8 +56,6 @@ Tests driver and database server connection.
 - `Response`: Result of the request.
 - `error`: An error object containing details about any issues that occurred. `nil` is returned if the operation is successful.
 
-<p tit="Go"></p> 
- 
 ```go
 myTest, err := conn.Test(nil)
 if err != nil {
@@ -70,13 +66,11 @@ println("Test succeeds:", myTest.IsSuccess())
 
 <p tit="Output"></p> 
  
-```java
+```
 Test succeeds: true
 ```
 
 ## Full Example
-
-<p tit="Go"></p> 
 
 ```go
 package main

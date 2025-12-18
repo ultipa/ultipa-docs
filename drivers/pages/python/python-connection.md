@@ -11,8 +11,6 @@ The values of <a href="#Configuration-Items">configuration items</a> are prefere
 
 ## Code Configuration Connection
 
-<p tit="Python"></p> 
-
 ```python
 from ultipa import Connection, UltipaConfig
 
@@ -31,7 +29,7 @@ print("Code = ", response.status.code)
 
 <p tit="Output"></p> 
 
-```python
+```
 Code =  0
 ```
 
@@ -41,9 +39,7 @@ The `Connection.NewConnection()` method obtains a connection to Ultipa. The grap
 
 ## File Configuration Connection
 
-<p tit="Python"></p> 
-
-```Python
+```python
 import os
 from dotenv import load_dotenv, dotenv_values
 from pathlib import Path
@@ -80,7 +76,7 @@ print("Code = ", response.status.code)
 
 <p tit="Output"></p> 
 
-```python
+```
 2024-08-19 10:21:00,347 - INFO: Test Welcome To Ultipa!
 2024-08-19 10:21:00,357 - INFO: Test Welcome To Ultipa!
 2024-08-19 10:21:00,370 - INFO: Test Welcome To Ultipa!

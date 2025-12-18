@@ -18,9 +18,7 @@ Retrieves all system privileges and graph privileges, which are actually UQL com
 
 - `List<Privilege>`: All system privileges and graph privileges.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Retrieves all system privileges and graph privileges
 
 var res = await ultipa.ShowPrivilege();
@@ -45,7 +43,7 @@ Console.WriteLine(JsonConvert.SerializeObject(systemL));
 
 <p tit="Output"></p> 
  
-```java
+```
 Graph privileges:
 ["TEMPLATE","KHOP","AB","SPREAD","AUTONET","FIND","FIND_NODE","FIND_EDGE","INSERT","EXPORT","UPSERT","UPDATE","DELETE","DELETE_NODE","DELETE_EDGE","CREATE_SCHEMA","DROP_SCHEMA","ALTER_SCHEMA","SHOW_SCHEMA","CREATE_TRIGGER","DROP_TRIGGER","SHOW_TRIGGER","CREATE_BACKUP","RESTORE_BACKUP","SHOW_BACKUP","CREATE_PROPERTY","DROP_PROPERTY","ALTER_PROPERTY","SHOW_PROPERTY","CREATE_FULLTEXT","DROP_FULLTEXT","SHOW_FULLTEXT","CREATE_INDEX","DROP_INDEX","SHOW_INDEX","LTE","UFE","CLEAR_TASK","STOP_TASK","PAUSE_TASK","RESUME_TASK","SHOW_TASK","ALGO","SHOW_ALGO"]
 System privileges:
@@ -66,9 +64,7 @@ Retrieves all policies from the instance. A policy includes system privileges, g
 
 - `List<Policy>`: The list of all policies in the instance.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Retrieves all policies and prints their information
 
 var res = await ultipa.ShowPolicy();
@@ -89,7 +85,7 @@ foreach (var item in res)
 ```
 <p tit="Output"></p> 
  
-```java
+```
 Policy 'operator' include:
 - System privileges: ["MOUNT_GRAPH","TRUNCATE","SHOW_GRAPH"]
 - Graph privileges: {"miniCircle":["UPDATE","INSERT","TEMPLATE","UPSERT","AUTONET"]}
@@ -115,9 +111,7 @@ Retrieves a policy from the instance by its name.
 
 - `Policy`: The retrieved policy.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Retrieves a policy 'operator' and prints its information
 
 var res = await ultipa.GetPolicy("operator");
@@ -136,7 +130,7 @@ Console.WriteLine("- Policies: " + JsonConvert.SerializeObject(res.SubPolicies))
 
 <p tit="Output"></p> 
  
-```java
+```
 Policy 'operator' includes:
 - System privileges: ["MOUNT_GRAPH","TRUNCATE","SHOW_GRAPH"]
 - Graph privileges: {"miniCircle":["UPDATE","INSERT","TEMPLATE","UPSERT","AUTONET"]}
@@ -157,9 +151,7 @@ Creates a policy in the instance.
 
 - `UqlResponse`: Result of the request.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Creates a new policy 'sales' and then retrieves it
 
 Policy policy = new Policy()
@@ -231,7 +223,7 @@ Console.WriteLine("- Policies: " + JsonConvert.SerializeObject(res.SubPolicies))
 
 <p tit="Output"></p> 
  
-```java
+```
 Policy 'sales' includes:
 - System privileges: ["SHOW_GRAPH","TRUNCATE"]
 - Graph privileges: {"miniCircle":["SHOW_ALGO","ALGO","RESUME_TASK","CREATE_PROPERTY","UFE"],"lcc":["UPDATE","INSERT","DELETE","UPSERT"]}
@@ -252,9 +244,7 @@ Alters the system privileges, graph privileges, property privileges and policies
 
 - `UqlResponse`: Result of the request.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Alters the policy 'sales' and then retrieves it
 
 Policy policy = new Policy()
@@ -294,7 +284,7 @@ Console.WriteLine("- Policies: " + JsonConvert.SerializeObject(res.SubPolicies))
 
 <p tit="Output"></p> 
  
-```java
+```
 Success
 Policy 'sales' includes:
 - System privileges: ["SHOW_GRAPH"]
@@ -316,9 +306,7 @@ Drops one policy from the instance by its name.
 
 - `UqlResponse`: Result of the request.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Drops the policy 'sales' and prints error code
 
 var res = await ultipa.DropPolicy("sales");
@@ -327,7 +315,7 @@ Console.WriteLine(res.Status.ErrorCode);
 
 <p tit="Output"></p> 
  
-```java
+```
 Success
 ```
 
@@ -345,9 +333,7 @@ Retrieves all database users from the instance.
 
 - `List<User>`: The list of all users in the instance.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Retrieves all users and prints information of the first returned
 
 var res = await ultipa.ShowUser();
@@ -367,7 +353,7 @@ Console.WriteLine("Policies: " + JsonConvert.SerializeObject(res[0].Policies));
 
 <p tit="Output"></p> 
  
-```java
+```
 Username: test006
 Created on: 9/1/2023 6:37:56 AM
 System privileges: ["SHOW_PRIVILEGE","ALTER_USER","DROP_USER","CREATE_USER","SHOW_GRAPH","ALTER_GRAPH","DROP_GRAPH","COMPACT","MOUNT_GRAPH","TOP","CREATE_GRAPH","STAT","UNMOUNT_GRAPH","SHOW_POLICY","TRUNCATE","KILL","ALTER_POLICY","CREATE_POLICY","DROP_POLICY","SHOW_USER"]
@@ -389,9 +375,7 @@ Retrieves a database user from the instance by its username.
 
 - `User`: The retrieved user.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Retrieves user 'test005' and prints its information
 
 var res = await ultipa.GetUser("test005");
@@ -409,7 +393,7 @@ Console.WriteLine("Policies: " + JsonConvert.SerializeObject(res.Policies));
 
 <p tit="Output"></p> 
  
-```java
+```
 Username: test005
 Created on: 8/31/2023 9:15:59 AM
 System privileges: ["SHOW_PRIVILEGE","ALTER_USER","DROP_USER","CREATE_USER","SHOW_GRAPH","ALTER_GRAPH","DROP_GRAPH","COMPACT","MOUNT_GRAPH","TOP","CREATE_GRAPH","STAT","UNMOUNT_GRAPH","SHOW_POLICY","TRUNCATE","KILL","ALTER_POLICY","CREATE_POLICY","DROP_POLICY","SHOW_USER"]
@@ -431,9 +415,7 @@ Creates a database user in the instance.
 
 - `UqlResponse`: Result of the request.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Creates a new user 'CSharpUser' and prints error code
 User newUser = new User()
 {
@@ -479,7 +461,7 @@ User newUser = new User()
 
 <p tit="Output"></p> 
  
-```java
+```
 Success
 ```
 
@@ -496,9 +478,7 @@ Alters the password, system privileges, graph privileges, property privileges an
 
 - `UqlResponse`: Result of the request.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Alters the user 'CSharpUser' and prints error code
 User newUser = new User()
 {
@@ -528,7 +508,7 @@ Console.WriteLine(res.Status.ErrorCode);
 
 <p tit="Output"></p> 
  
-```java
+```
 Success
 ```
 
@@ -545,9 +525,7 @@ Drops one database user from the instance by its username.
 
 - `UqlResponse`: Result of the request.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Drops the user 'CSharpUser' and prints error code
 
 var res = await ultipa.DropUser("CSharpUser");
@@ -556,7 +534,7 @@ Console.WriteLine(res.Status.ErrorCode);
 
 <p tit="Output"></p> 
  
-```java
+```
 Success
 ```
 
@@ -574,9 +552,7 @@ Grants policies to a database user in the instance.
 
 - `UqlResponse`: Result of the request.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Grants policies 'operator' and 'manager' to user 'johndoe' and prints error code
 var res = await ultipa.GrantPolicy("johndoe", policies: new() { "operator", "manager" });
 Console.WriteLine(res.Status.ErrorCode);
@@ -584,7 +560,7 @@ Console.WriteLine(res.Status.ErrorCode);
 
 <p tit="Output"></p> 
  
-```java
+```
 Success
 ```
 
@@ -602,24 +578,20 @@ Revokes policies from a database user in the instance.
 
 - `UqlResponse`: Result of the request.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 var res = await ultipa.RevokePolicy("johndoe", policies: new() { "operator", "manager" });
 Console.WriteLine(res.Status.ErrorCode);
 ```
 
 <p tit="Output"></p> 
  
-```java
+```
 Success
 ```
 
 ## Full Example
 
-<p tit="C#" ></p> 
-
-```c#
+```csharp
 using System.Data;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml.Linq;

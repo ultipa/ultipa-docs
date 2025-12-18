@@ -19,8 +19,6 @@ Downloads one result file from an algorithm task in the current graph.
 
 - `Response`: Result of the request.
 
-<p tit="Java"></p> 
-
 ```java
 RequestConfig requestConfig = new RequestConfig();
 requestConfig.setGraphName("miniCircle");
@@ -59,7 +57,7 @@ System.out.println("resDownLoad = " + new Gson().toJson(resDownLoad));
 
 <p tit="Output"></p> 
 
-```java
+```
 taskId = 54228
 Content of the file 'communityID':
 -----------------------
@@ -85,8 +83,6 @@ Downloads all result files from an algorithm task in the current graph.
 **Returns:**
 
 - `Response`: Result of the request.
-
-<p tit="Java"></p> 
 
 ```java
 RequestConfig requestConfig = new RequestConfig();
@@ -126,7 +122,7 @@ System.out.println("resDownLoad = " + new Gson().toJson(resDownLoad));
 
 <p tit="Output"></p> 
 
-```java
+```
 taskId = 54229
 Content of the file 'communityID':
 -----------------------
@@ -168,8 +164,6 @@ Exports nodes and edges from the current graph.
 
 - `Response`: Result of the request.
 
-<p tit="Java"></p> 
-
 ```java
 // Exports 10 nodes of schema 'account' with selected properties in graphset 'miniCircle' and prints their information
 
@@ -204,7 +198,7 @@ Response response = client.export(exportRequest, new ExportListener() {
 
 <p tit="Output"></p> 
 
-```java
+```
 Node(uuid=1, id=ULTIPA8000000000000001, schema=account, values={_id=ULTIPA8000000000000001, name=Yu78, year=1978})
 Node(uuid=2, id=ULTIPA8000000000000002, schema=account, values={_id=ULTIPA8000000000000002, name=jibber-jabber, year=1989})
 Node(uuid=3, id=ULTIPA8000000000000003, schema=account, values={_id=ULTIPA8000000000000003, name=mochaeach, year=1982})

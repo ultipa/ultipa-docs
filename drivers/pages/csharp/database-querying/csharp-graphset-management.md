@@ -16,9 +16,7 @@ Retrieves all graphsets from the database.
 
 - `List<GraphSet>`: The list of all graphsets in the database.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Retrieves all graphsets and prints the names of the those who have over 2000 edges
 
 var graphsetList = await ultipa.ShowGraph();
@@ -33,7 +31,7 @@ foreach (var graph in graphsetList)
 ```
 <p tit="Output"></p> 
  
-```java
+```
 Display_Ad_Click
 ERP_DATA2
 wikiKG
@@ -52,9 +50,7 @@ Retrieves one graphset from the database by its name.
 
 - `GraphSet`: The retrieved graphset.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Retrieves the graphsets named 'wikiKG' and prints all its information
 
 var graph = await ultipa.GetGraph("wikiKG");
@@ -70,7 +66,7 @@ Console.WriteLine(
 
 <p tit="Output"></p> 
  
-```java
+```
 True
 ID: 13844
 Name: wikiKG
@@ -93,9 +89,7 @@ Creates a new graphset in the database.
 
 - `UqlResponse`: Result of the request.
 
-<p tit="C#" ></p> 
- 
-```c#
+```csharp
 // Creates one graphset and prints the error code
 
 var graph = new GraphSet();
@@ -110,7 +104,7 @@ A new graphset `testCSharpSDK` is created in the database, and the driver prints
 
 <p tit="Output"></p> 
  
-```java
+```
 Success
 ```
 
@@ -128,9 +122,7 @@ Creates a new graphset in the database, handling cases where the given graphset 
 - `UqlResponse`: Result of the request.
 - `bool`: Whether the graphset already exists.
 
-<p tit="C#" ></p> 
-
-```c#
+```csharp
 // Creates one graphset and prints the error code
 
 var graph = new GraphSet();
@@ -156,7 +148,7 @@ A new graphset `testCSharpSDK` is created in the database, and the driver prints
 
 <p tit="Output"></p> 
  
-```java
+```
 Graph already exists: False
 First creation: Success
 Graph already exists: True
@@ -176,9 +168,7 @@ Drops one graphset from the database by its name.
 
 - `UqlResponse`: Result of the request.
 
-<p tit="C#" ></p> 
-
-```c#
+```csharp
 // Creates one graphset and then drops it, prints the result
 
 var graph = new GraphSet();
@@ -196,7 +186,7 @@ Console.WriteLine(JsonConvert.SerializeObject(dropIt));
 
 <p tit="Output"></p> 
 
-```java
+```
 Creation: Success
 {"UqlReply":{"Status":{"ErrorCode":0,"Msg":"","ClusterInfo":null},"TotalTimeCost":0,"EngineTimeCost":0,"Alias":[],"Paths":[],"Nodes":[],"Edges":[],"Attrs":[],"Graphs":[],"Tables":[],"Statistics":null,"ExplainPlan":null},"Status":{"ErrorCode":0,"Msg":"","ClusterInfo":null},"Statistic":{"NodeAffected":0,"EdgeAffected":0,"TotalCost":6,"EngineCost":0},"Explain":[]}
 ```
@@ -215,9 +205,7 @@ Alters the name and description of one existing graphset in the database by its 
 
 - `UqlResponse`: Result of the request.
 
-<p tit="C#" ></p> 
-
-```c#
+```csharp
 // Renames the graphset 'testCSharpSDK' to 'newGraph', sets a description for it, and prints the result
 
 var graph1 = new GraphSet();
@@ -234,7 +222,7 @@ Console.WriteLine(JsonConvert.SerializeObject(alterIt));
 
 <p tit="Output"></p> 
 
-```java
+```
 {"UqlReply":{"Status":{"ErrorCode":0,"Msg":"","ClusterInfo":null},"TotalTimeCost":0,"EngineTimeCost":0,"Alias":[],"Paths":[],"Nodes":[],"Edges":[],"Attrs":[],"Graphs":[],"Tables":[],"Statistics":null,"ExplainPlan":null},"Status":{"ErrorCode":0,"Msg":"","ClusterInfo":null},"Statistic":{"NodeAffected":0,"EdgeAffected":0,"TotalCost":1,"EngineCost":0},"Explain":[]}
 ```
 
@@ -251,9 +239,7 @@ Truncates (Deletes) the specified nodes or edges in the given graphset or trunca
 
 - `UqlResponse`: Result of the request.
 
-<p tit="C#" ></p> 
-
-```c#
+```csharp
 // Truncates @user nodes in the graphset 'myGraph_1' and prints the error code
 
 var truncate1 = new GraphAPI.TruncateParams()
@@ -285,7 +271,7 @@ Console.WriteLine(res3.Status.ErrorCode);
 
 <p tit="Output"></p> 
 
-```java
+```
 Success
 Success
 Success
@@ -304,9 +290,7 @@ Compacts a graphset by clearing its invalid and redundant data on the server dis
 
 - `UqlResponse`: Result of the request.
 
-<p tit="C#" ></p> 
-
-```c#
+```csharp
 // Compacts the graphset 'miniCircle' and prints the error code
 
 var res = await ultipa.CompactGraph("miniCircle");
@@ -315,7 +299,7 @@ Console.WriteLine(res.Status.ErrorCode);
 
 <p tit="Output"></p> 
 
-```java
+```
 Success
 ```
 
@@ -332,9 +316,7 @@ Checks the existence of a graphset in the database by its name.
 
 - `bool`: Result of the request.
 
-<p tit="C#" ></p> 
-
-```c#
+```csharp
 // Checks the existence of graphset 'miniCircle' and prints the result
 
 var res = await ultipa.HasGraph("miniCircle");
@@ -343,7 +325,7 @@ Console.WriteLine("Graph exists: " + res);
 
 <p tit="Output"></p> 
 
-```java
+```
 Graph exists: True
 ```
 
@@ -360,9 +342,7 @@ Unmounts a graphset to save database memory.
 
 - `UqlResponse`: Result of the request.
 
-<p tit="C#" ></p> 
-
-```c#
+```csharp
 // / Unmounts the graphsets 'miniCircle' and prints the result
 
 var res = await ultipa.UnMountGraph("miniCircle");
@@ -371,7 +351,7 @@ Console.WriteLine(res.Status.ErrorCode);
 
 <p tit="Output"></p> 
 
-```java
+```
 Success
 ```
 
@@ -388,9 +368,7 @@ Mounts a graphset to the database memory.
 
 - `UqlResponse`: Result of the request.
 
-<p tit="C#" ></p> 
-
-```c#
+```csharp
 // Mounts the graphsets 'miniCircle' and prints the result
 
 var res = await ultipa.MountGraph("miniCircle");
@@ -399,15 +377,13 @@ Console.WriteLine(res.Status.ErrorCode);
 
 <p tit="Output"></p> 
 
-```java
+```
 Success
 ```
 
 ## Full Example
 
-<p tit="C#" ></p> 
-
-```c#
+```csharp
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Xml.Linq;

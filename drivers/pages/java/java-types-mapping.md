@@ -4,8 +4,6 @@
 
 The `get()` or `alias()` method of the `Response` class returns a `DataItem`, which embeds the query result. You should use the `as<Type>()` method of `DataItem` to cast the result to the appropriate driver type.
 
-<p tit="Java"></p> 
- 
 ```java
 Response response = client.uql("find().nodes() as n return n{*} limit 5");
 List<Node> nodeList = response.alias("n").asNodes();
@@ -60,8 +58,6 @@ Methods on a `Node` object:
 | `get("<propertyName>")` | Object | Get value of the given custom property of the node. |
 | `set("<propertyName>", <propertyValue>)` |  | Set value for the given custom property of the node; or add a key-value pair to the `values` of the node if the given `<propertyName>` does not exist. |
 
-<p tit="Java"></p> 
-
 ```java
 Response response = client.uql("find().nodes() as n return n{*} limit 5");
 List<Node> nodeList = response.alias("n").asNodes();
@@ -72,7 +68,7 @@ System.out.println("Store name of the 1st node: " + nodeList.get(0).get("storeNa
 
 <p tit="Output"></p> 
  
-```bash
+```
 ID of the 1st node: 47370-257954
 Store name of the 1st node: Meritxell, 96
 ```
@@ -98,8 +94,6 @@ Methods on an `Edge` object:
 | `get("<propertyName>")` | Object | Get value of the given custom property of the edge. |
 | `set("<propertyName>", <propertyValue>` |  | Set value for the given custom property of the edge; or add a key-value pair to the values of the edge if the given `<propertyName>` does not exist. |
 
-<p tit="Java"></p> 
- 
 ```java
 Response response = client.uql("find().edges() as e return e{*} limit 5");
 Edge edge = response.alias("e").asFirstEdge();
@@ -108,7 +102,7 @@ System.out.println("Values of the 1st edge: " + edge.getValues());
 
 <p tit="Output"></p> 
  
-```bash
+```
 Values of the 1st edge: {distanceMeters=20, duration=21s, staticDuration=25s, travelMode=Walk, transportationCost=46}
 ```
 
@@ -129,8 +123,6 @@ Methods on a `Path` object:
 | ---- | ---- | ---- | 
 | `length()` | Integer | Get length of the path, i.e., the number of edges in the path. |
 
-<p tit="Java"></p> 
- 
 ```java
 Response response = client.uql("n().e()[:2].n() as paths return paths{*} limit 5");
 List<Path> pathList = response.alias("paths").asPaths();
@@ -142,7 +134,7 @@ System.out.println("Information of the 2nd node in the 1st path: " + pathList.ge
 
 <p tit="Output"></p> 
  
-```bash
+```
 Length of the 1st path: 2
 Edge list of the 1st path: [Edge(uuid=591, fromUuid=20, toUuid=1, from=15219-158845, to=47370-257954, schema=transport, values={distanceMeters=10521283, duration=527864s, staticDuration=52606s, travelMode=Airplane, transportationCost=21043}), Edge(uuid=599, fromUuid=21, toUuid=20, from=15474-156010, to=15219-158845, schema=transport, values={distanceMeters=233389, duration=13469s, staticDuration=1167s, travelMode=Airplane, transportationCost=467})]
 Information of the 2nd node in the 1st path: {"brand":"Starbucks","storeName":"Las Palmas","ownershipType":"Licensed","city":"Pilar","provinceState":"B","timezone":"GMT-03:00 America/Argentina/Bu","point":{"latitude":-33.39,"longitude":-60.22},"_uuid":20,"_id":"15219-158845","schema":"warehouse"}
@@ -159,8 +151,6 @@ A `Graph` object has the following fields:
 | `nodeSchemas` | Map<String, Schema> | Map of all node schemas of the path |
 | `edgeSchemas` | Map<String, Schema> | Map of all edge schemas of the path |
 
-<p tit="Java"></p> 
- 
 ```java
 Response response = client.uql("n(as n1).re(as e).n(as n2).limit(3) with toGraph(collect(n1), collect(n2), collect(e)) as graph return graph");
 Graph graph = response.alias("graph").asGraph();
@@ -179,7 +169,7 @@ for (Edge edge : edges) {
 
 <p tit="Output"></p> 
  
-```bash
+```
 Node IDs:
 ad304833
 u604131
@@ -205,8 +195,6 @@ A `GraphSet` object has the following fields:
 | `totalEdges` | Long | Total number of edges in the graphset |
 | `status` | String | Graphset status (MOUNTED, MOUNTING, or UNMOUNTED) |
 
-<p tit="Java"></p> 
- 
 ```java
 Response response = client.uql("show().graph()");
 List<GraphSet> graphSetList = response.alias("_graph").asGraphSets();
@@ -219,7 +207,7 @@ for (GraphSet graphSet : graphSetList) {
 
 <p tit="Output"></p> 
  
-```bash
+```
 DFS_EG
 cyber
 netflow
@@ -237,8 +225,6 @@ A `Schema` object has the following fields:
 | `dbType` | Ultipa.DBType | Schema type (DBNODE or DBEDGE) |
 | `total` | Integer | Total number of nodes or edges of the schema |
 
-<p tit="Java"></p> 
- 
 ```java
 Response response = client.uql("show().node_schema()");
 List<Schema> schemaList = response.alias("_nodeSchema").asSchemas();
@@ -249,7 +235,7 @@ for (Schema schema : schemaList) {
 
 <p tit="Output"></p> 
  
-```bash
+```
 default has 0 nodes
 user has 1092511 nodes
 ad has 846811 nodes
@@ -267,8 +253,6 @@ A `Property` object has the following fields:
 | `type` | String | Property data type |
 | `lte` | Boolean | Property LTE status (true or false) |
 
-<p tit="Java"></p> 
- 
 ```java
 Response response = client.uql("show().node_property(@user)");
 List<Property> propertyList = response.alias("_nodeProperty").asProperties();
@@ -281,7 +265,7 @@ for (Property property : propertyList) {
 
 <p tit="Output"></p> 
  
-```bash
+```
 LTE-ed property name: cms_group_id
 ```
 
@@ -296,8 +280,6 @@ An `Algo` object has the following fields:
 | `version` | String | Algorithm version |
 | `detail` | String | Algorithm parameters |
 
-<p tit="Java"></p> 
- 
 ```java
 Response res = client.uql("show().algo()");
 List<Algo> algoList = res.alias("_algoList").asAlgos();
@@ -306,7 +288,7 @@ System.out.println(algoList.get(0).toString());
 
 <p tit="Output"></p> 
  
-```bash
+```
 Algo(name=fastRP, desc={"name":"fastRP","description":"Fast and Accurate Network Embeddings via Very Sparse Random Projection","version":"1.0.1","parameters":{"dimension":"int,required","normalizationStrength":"float,optional, 0 as default","iterationWeights":"float[],optional,[0.0,1.0,1.0] as default","edge_schema_property":"optional,for weighted random projection","node_schema_property":"optional","propertyDimension":"int,optional, maximum value is dimension","limit":"optional,-1 for all results, >=0 partial results"},"write_to_db_parameters":{"property":"set write back property name for each schema and nodes"},"write_to_file_parameters":{"filename":"set file name"},"result_opt":"27"}, version=null, params=null)
 ```
 
@@ -323,8 +305,6 @@ An `Exta` object has the following fields:
 | `version` | String | Exta version |
 | `detail` | String | Content of the YML configuration file of the Exta |
 
-<p tit="Java"></p> 
- 
 ```java
 Response response = client.uql("show().exta()");
 List<Exta> extaList = response.alias("_extaList").asExtas();
@@ -333,7 +313,7 @@ System.out.println(extaList.get(0).getName());
 
 <p tit="Output"></p> 
  
-```bash
+```
 page_rank
 ```
 
@@ -350,8 +330,6 @@ An `Index` object has the following fields:
 | `size` | String | Index size in bytes |
 | `dbType` | Ultipa.DBType | Index type (DBNODE or DBEDGE) |
 
-<p tit="Java"></p> 
- 
 ```java
 Response response = client.uql("show().index()");
 List<Index> indexList = response.alias("_nodeIndex").asIndexes();
@@ -363,13 +341,11 @@ for (Index index : indexList) {
 
 <p tit="Output"></p> 
  
-```bash
+```
 account name 0
 movie name 2526
 ```
 
-<p tit="Java"></p> 
- 
 ```java
 Response response = client.uql("show().fulltext()");
 List<Index> indexList = response.alias("_edgeFulltext").asIndexes();
@@ -381,7 +357,7 @@ for (Index index : indexList) {
 
 <p tit="Output"></p> 
  
-```bash
+```
 contentFull content review
 ```
 
@@ -394,8 +370,6 @@ A `Privilege` object has the following fields:
 | `systemPrivileges` | List\<String> | System privileges |
 | `graphPrivileges` | List\<String> | Graph privileges |
 
-<p tit="Java"></p> 
- 
 ```java
 Response response = client.uql("show().privilege()");
 Privilege privilege = response.alias("_privilege").asPrivilege();
@@ -404,7 +378,7 @@ System.out.println(privilege.getSystemPrivileges());
 
 <p tit="Output"></p> 
  
-```bash
+```
 [TRUNCATE, COMPACT, CREATE_GRAPH, SHOW_GRAPH, DROP_GRAPH, ALTER_GRAPH, MOUNT_GRAPH, UNMOUNT_GRAPH, TOP, KILL, STAT, SHOW_POLICY, CREATE_POLICY, DROP_POLICY, ALTER_POLICY, SHOW_USER, CREATE_USER, DROP_USER, ALTER_USER, GRANT, REVOKE, SHOW_PRIVILEGE]
 ```
 
@@ -420,8 +394,6 @@ A `Policy` object has the following fields:
 | `propertyPrivileges` | PropertyPrivilege | Property privileges included in the policy |
 | `policies` | List\<String> | Policies included in the policy |
 
-<p tit="Java"></p> 
- 
 ```java
 Response response = client.uql("show().policy()");
 List<Policy> policyList = response.alias("_policy").asPolicies();
@@ -432,7 +404,7 @@ for (Policy policy : policyList) {
 
 <p tit="Output"></p> 
  
-```bash
+```
 manager
 operator
 ```
@@ -450,8 +422,6 @@ A `User` object has the following fields:
 | `propertyPrivileges` | PropertyPrivilege | Property privileges granted to the user |
 | `policies` | List\<String> | Policies granted to the user |
 
-<p tit="Java"></p> 
- 
 ```java
 Response response = client.uql("show().user('Tester')");
 List<User> user = response.alias("_user").asUsers();
@@ -460,7 +430,7 @@ System.out.println(user.get(0).toString());
 
 <p tit="Output"></p> 
  
-```bash
+```
 User(username=Tester, create=Fri Jul 26 14:10:06 CST 2024, systemPrivileges=[MOUNT_GRAPH, SHOW_GRAPH], graphPrivileges={Ad_Click=[FIND_EDGE, FIND_NODE], DFS_EG=[UPDATE, INSERT]}, propertyPrivileges=PropertyPrivilege(node=PropertyPrivilegeElement(read=[], write=[], deny=[]), edge=PropertyPrivilegeElement(read=[], write=[], deny=[])), policies=[operator])
 ```
 
@@ -478,8 +448,6 @@ A `Stats` object has the following fields:
 | `serverType` | String | Server type |
 | `version` | String | Version of the server | 
 
-<p tit="Java"></p> 
- 
 ```java
 Response response = client.uql("stats()");
 Stats stats = response.get(0).asStats();
@@ -489,7 +457,7 @@ System.out.println("Memory usage: " + stats.getMemUsage());
 
 <p tit="Output"></p> 
  
-```bash
+```
 CPU usage: 5.415697%
 Memory usage: 9292.265625
 ```
@@ -505,8 +473,6 @@ A `Process` object has the following fields:
 | `status` | String | Process status |
 | `duration` | String | The duration in seconds the task has run so far |
 
-<p tit="Java"></p> 
- 
 ```java
 RequestConfig requestConfig = new RequestConfig();
 requestConfig.setGraphName("amz");
@@ -520,7 +486,7 @@ for (Process process : processList) {
 
 <p tit="Output"></p> 
  
-```bash
+```
 a_2_569_2
 a_3_367_1
 ```
@@ -536,8 +502,6 @@ A `Task` object has the following fields:
 | `result` | Map\<String, Object> | Algorithm result and statistics and their corresponding values |
 | `errorMsg` | String | Error message of the task |
 
-<p tit="Java"></p> 
- 
 ```java
 Response response = client.uql("show().task()", requestConfig);
 List<Task> tasks = response.alias("_task").asTasks();
@@ -548,7 +512,7 @@ System.out.println(tasks.get(0).getResult().toString());
 
 <p tit="Output"></p> 
  
-```bash
+```
 degree
 {order=desc, limit=10}
 {total_degree=590.000000, avarage_degree=1.940789, result_files=top10}
@@ -570,8 +534,6 @@ Methods on a `Table` object:
 | ---- | ---- | ---- | 
 | `toKV()` | List\<Value> | Convert all rows of the table to a key-value list. |
 
-<p tit="Java"></p> 
- 
 ```java
 Response response = client.uql("find().nodes() as n return table(n._id, n._uuid) as myTable limit 5");
 Table table = response.alias("myTable").asTable();
@@ -580,7 +542,7 @@ System.out.println("2nd row in table: " + table.toKV().get(1));
 
 <p tit="Output"></p> 
  
-```bash
+```
 2nd row in table: {n._id=u604510, n._uuid=2}
 ```
 
@@ -594,8 +556,6 @@ A `Attr` object has the following fields:
 | `values` | List\<Object> | Attr rows |
 | `type` | Ultipa.PropertyType | Attr type |
 
-<p tit="Java"></p> 
- 
 ```java
 Response response = client.uql("find().nodes({@ad}) as n return n.brand limit 5");
 Attr attr = response.alias("n.brand").asAttr();
@@ -604,6 +564,6 @@ System.out.println(attr.getValues());
 
 <p tit="Output"></p> 
  
-```bash
+```
 [14655, 14655, 14655, 14655, 434760]
 ```

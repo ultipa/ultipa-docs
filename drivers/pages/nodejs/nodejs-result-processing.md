@@ -28,8 +28,6 @@ Retrieves data by the alias index.
 
 - `DataItem`: The retrieved data.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 let resp = await conn.uql(
   "find().nodes() as n return n._id, n._uuid limit 3",
@@ -43,7 +41,7 @@ The UQL statement returns two aliases `n._id` and `n._uuid`; the `get()` method 
 
 <p tit="Output"></p> 
  
-```bash
+```
 DataItem {
   data: {
     alias: 'n._id',
@@ -73,8 +71,6 @@ Retrieves data by the alias name.
 
 - `DataItem`: The retrieved data.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 let resp = await conn.uql(
   "find().nodes() as n return n._id, n._uuid limit 3",
@@ -87,7 +83,7 @@ The UQL statement returns two aliases `n._id` and `n._uuid`; the `alias()` metho
 
 <p tit="Output"></p> 
  
-```bash
+```
 DataItem {
   data: {
     alias: 'n._uuid',

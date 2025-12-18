@@ -16,9 +16,7 @@ Retrieves database server statistics.
 
 - `Stats`: The retrieved server statistics.
 
-<p tit="Python"></p>
-
-```js
+```python
 stats = Conn.stats()
 print("CPU usage (%): " + stats.cpuUsage)
 print("Memory usage (MB): " + stats.memUsage)
@@ -31,7 +29,7 @@ print("Version: " + stats.version)
 
 <p tit="Output"></p>
 
-```js
+```
 CPU usage (%): 116.560783
 Memory usage (MB): 11924.585938
 Expiration date: Thu Dec 26 23:59:59 2024
@@ -53,16 +51,14 @@ Tests driver and database server connection.
 
 - `Response`: Result of the request.
 
-<p tit="Python"></p>
-
-```js
+```python
 response = Conn.test()
 print(response.status.code)
 ```
 
 <p tit="Output"></p>
 
-```js
+```
 0
 ```
 

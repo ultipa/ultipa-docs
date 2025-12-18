@@ -18,8 +18,6 @@ Retrieves all Ultipa graph algorithms installed in the instance.
 
 - `Algo[]`: The list of all algorithms retrieved.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 // Retrieves all Ultipa graph algorithms installed and prints the information of the first returned one
 
@@ -30,7 +28,7 @@ console.log("First algorithm retrieved: ", algo_list[0]);
 ```
 <p tit="Output"></p> 
  
-```java
+```
 First algorithm retrieved:  {
   name: 'bipartite',
   description: 'bipartite check',
@@ -54,8 +52,6 @@ Installs an Ultipa graph algorithm in the instance.
 
 - `Response`: Result of the request.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 // Installs the algorithm LPA and uses the leader node to guarantee consistency, and prints the error code
 
@@ -71,7 +67,7 @@ console.log(resp.status.code_desc);
 ```
 <p tit="Output"></p> 
  
-```java
+```
 ["libplugin_lpa.so","lpa.yml"] upload finished!
 SUCCESS
 ```
@@ -89,8 +85,6 @@ Uninstalls an Ultipa graph algorithm in the instance.
 
 - `Response`: Result of the request.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 // Uninstalls the algorithm LPA and prints the error code
 
@@ -99,7 +93,7 @@ console.log(resp.status.code_desc);
 ```
 <p tit="Output"></p> 
  
-```java
+```
 SUCCESS
 ```
 
@@ -117,8 +111,6 @@ Retrieves all extas installed in the instance.
 
 - `Exta[]`: The list of all extas retrieved.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 // Retrieves all extas installed and prints the information of the first returned one
 
@@ -127,7 +119,7 @@ console.log(resp.data);
 ```
 <p tit="Output"></p> 
  
-```java
+```
 [
   {
     name: 'page_rank 1',
@@ -170,8 +162,6 @@ Installs an exta in the instance.
 
 - `Response`: Result of the request.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 // Installs the exta page_rank and uses the leader node to guarantee consistency, and prints the error code
 
@@ -188,7 +178,7 @@ console.log(resp.status.code_desc);
 ```
 <p tit="Output"></p> 
  
-```java
+```
 ["libexta_page_rank.so","page_rank.yml"] upload finished!
 SUCCESS
 ```
@@ -206,8 +196,6 @@ Uninstalls an exta in the instance.
 
 - `Response`: Result of the request.
 
-<p tit="TypeScript"></p> 
- 
 ```ts
 // Uninstalls the exta page_rank and prints the error code
 
@@ -216,13 +204,11 @@ console.log(resp.status.code_desc);
 ```
 <p tit="Output"></p> 
  
-```java
+```
 SUCCESS
 ```
 
 ## Full Example
-
-<p tit="TypeScript"></p> 
 
 ```ts
 import { ConnectionPool, ULTIPA } from "@ultipa-graph/ultipa-node-sdk";

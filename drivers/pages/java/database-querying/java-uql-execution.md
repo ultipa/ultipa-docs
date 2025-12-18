@@ -19,8 +19,6 @@ Executes a UQL query on the current graphset or the database and returns the res
 
 - `Response`: Result of the request.
 
-<p tit="Java"></p> 
-
 ```java
 // Retrieves 5 @movie nodes in graphset 'miniCircle' and prints their names
 
@@ -36,7 +34,7 @@ for (Node node : nodeList) {
 
 <p tit="Output"></p> 
 
-```java
+```
 The Shawshank Redemption
 Farewell My Concubine
 Léon: The Professional
@@ -59,8 +57,6 @@ Executes a UQL query on the current graphset or the database and returns the res
 **Returns:**
 
 - `void`
-
-<p tit="Java"></p> 
 
 ```java
 // Retrieves all 1-step paths in graphset 'miniCircle'
@@ -98,7 +94,7 @@ client.uqlStream("n().e().n() as paths return paths{*}", new UqlListener() {
 
 <p tit="Output"></p> 
 
-```java
+```
 count = 1250
 count = 1392
 Done
