@@ -70,7 +70,7 @@ algo(graph_centrality).params().write({
 
 Results: File <i>res</i>
 
-<p run-tag="false" graph="" tit="File" ></p>
+<p tit="File"></p>
 
 ```js
 J,0

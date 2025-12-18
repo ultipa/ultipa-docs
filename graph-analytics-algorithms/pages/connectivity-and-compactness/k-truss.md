@@ -61,7 +61,7 @@ algo(k_truss).params({k: 4}).write({
 
 Results: File <i>truss</i>
 
-<p run-tag="false" graph="" tit="File" ></p>
+<p tit="File"></p>
 
 ```js
 d--[102]--a

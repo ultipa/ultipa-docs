@@ -38,7 +38,7 @@ Comparison of different database types is shown below:
 |2D/3D Manager|Support |Support| Support|
 |HTAP (OLTP \& OLAP)<sup>(2)</sup>| N/A | N/A |Support|
 |Dynamically Resizable| N/A |Support| Support|
-|Support Service|Forum Support: Official Q\&A platform and Discord community. Click <a href="https://指向help" target="_blank"> help</a> for details. | Friendly Online Support |7\*24 Technical Support|
+|Support Service|Forum Support: Official Q\&A platform and Discord community. | Friendly Online Support |7\*24 Technical Support|
 |Price<sup>(3)</sup>| Pay-as-you-go, starting from $0.61/hr | Pay-as-you-go, starting from $1.14/hr | Contact the team for pricing|
   
 <sup>(1)</sup> Superfast Graph Algos include the most frequently used graph algorithms with improved design from Ultipa, and Advanced Graph Algos cover all graph algorithms supported by Ultipa Graph.

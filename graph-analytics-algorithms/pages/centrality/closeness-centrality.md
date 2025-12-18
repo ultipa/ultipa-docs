@@ -82,7 +82,7 @@ algo(closeness_centrality).params().write({
 
 Results: File <i>centrality</i>
 
-<p run-tag="false" graph="" tit="File" ></p>
+<p tit="File"></p>
 
 ```js
 LA,0.583333

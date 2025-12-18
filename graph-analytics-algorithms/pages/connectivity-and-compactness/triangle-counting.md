@@ -61,7 +61,7 @@ algo(triangle_counting).params({
 Statistics: triangle_count = 3<br>
 Results: File <i>te</i>
 
-<p run-tag="false" graph="" tit="File" ></p>
+<p tit="File"></p>
 
 ```js
 103,104,101
@@ -82,7 +82,7 @@ algo(triangle_counting).params({
 Statistics: triangle_count = 2<br>
 Results: Files <i>tn</i>
 
-<p run-tag="false" graph="" tit="File" ></p>
+<p tit="File"></p>
 
 ```js
 C4,C2,C1

@@ -65,7 +65,7 @@ algo(degree).params().write({
 Statistics: total_degree = 20, average_degree = 2.25<br>
 Results: File <i>degree_all</i>
 
-<p run-tag="false" graph="" tit="File" ></p>
+<p tit="File"></p>
 
 ```js
 Tim,0

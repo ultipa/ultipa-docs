@@ -83,7 +83,7 @@ algo(harmonic_centrality).params().write({
 
 Results: File <i>centrality</i>
 
-<p run-tag="false" graph="" tit="File" ></p>
+<p tit="File"></p>
 
 ```js
 LH,0

@@ -95,7 +95,7 @@ algo(eigenvector_centrality).params({
 
 Results: File <i>rank</i>
 
-<p run-tag="false" graph="" tit="File" ></p>
+<p tit="File"></p>
 
 ```js
 web7,4.63007e-06

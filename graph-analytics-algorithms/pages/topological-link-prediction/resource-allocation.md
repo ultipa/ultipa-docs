@@ -66,7 +66,7 @@ algo(topological_link_prediction).params({
 
 Results: File <i>ra</i>
 
-<p run-tag="false" graph="" tit="File" ></p>
+<p tit="File"></p>
 
 ```js
 C,A,0.250000

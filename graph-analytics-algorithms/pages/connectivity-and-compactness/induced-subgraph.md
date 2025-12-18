@@ -56,7 +56,7 @@ algo(subgraph).params({
 
 Results: File <i>paths</i>
 
-<p run-tag="false" graph="" tit="File" ></p>
+<p tit="File"></p>
 
 ```js
 C--[102]--A

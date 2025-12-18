@@ -95,7 +95,7 @@ algo(page_rank).params({
 
 Results: File <i>rank</i>
 
-<p run-tag="false" graph="" tit="File" ></p>
+<p tit="File"></p>
 
 ```js
 E,2.3906

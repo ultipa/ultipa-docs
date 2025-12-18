@@ -70,7 +70,7 @@ algo(p_cohesion).params({
 Statistics: num of subgraphs = 2<br>
 Results: File <i>cohesion</i>
 
-<p run-tag="false" graph="" tit="File" ></p>
+<p tit="File"></p>
 
 ```js
 subgraph0:D,C,B,F,A,E,

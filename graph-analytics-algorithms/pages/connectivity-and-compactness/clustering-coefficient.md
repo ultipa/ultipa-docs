@@ -61,7 +61,7 @@ algo(clustering_coefficient).params({
 
 Results: File <i>lcc</i>
 
-<p run-tag="false" graph="" tit="File" ></p>
+<p tit="File"></p>
 
 ```js
 Lee,0.266667

@@ -91,7 +91,7 @@ algo(lpa).params({
 Statistics: label_count = 7<br>
 Results: File <i>lpa</i>
 
-<p run-tag="false" graph="" tit="File" ></p>
+<p tit="File"></p>
 
 ```js
 O,1,0.599162,2,0.400838,

@@ -71,7 +71,7 @@ algo(random_walk).params({
 
 Results: File <i>walks</i>
 
-<p run-tag="false" graph="" tit="File" ></p>
+<p tit="File"></p>
 
 ```js
 K,

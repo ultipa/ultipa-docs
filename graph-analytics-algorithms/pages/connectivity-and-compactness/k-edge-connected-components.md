@@ -68,7 +68,7 @@ algo(kcc).params({
 
 Results: File <i>result</i>
 
-<p run-tag="false" graph="" tit="File" ></p>
+<p tit="File"></p>
 
 ```js
 F,G,I,H,

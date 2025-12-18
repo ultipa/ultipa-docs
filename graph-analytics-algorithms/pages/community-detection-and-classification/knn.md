@@ -61,7 +61,7 @@ algo(knn).params({
 
 Results: File <i>knn</i>
 
-<p run-tag="false" graph="" tit="File" ></p>
+<p tit="File"></p>
 
 ```js
 Gold
