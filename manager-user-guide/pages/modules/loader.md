@@ -90,7 +90,7 @@ Task configurations vary for different data sources. However, the **Settings** p
 
 Here is an example CSV file for *@account* nodes, including a header with property names and types:
 
-<p run-tag="false" graph="" tit="account.csv" ></p>
+<p tit="account.csv"></p>
 
 ```js
 _id:_id,username:string,brithYear:int32
@@ -101,7 +101,7 @@ U003,LondonEYE,1982
 
 Here is an example headless CSV file for *@follow* edges:
 
-<p run-tag="false" graph="" tit="follow.csv" ></p>
+<p tit="follow.csv"></p>
 
 ```js
 103,risotto4cato,jibber-jabber,1634962465
@@ -129,7 +129,7 @@ After uploading or selecting the file, the Mapping section becomes visible:
 
 Here is an example JSON file for *@user* nodes:
 
-<p run-tag="false" graph="" tit="user.json" ></p>
+<p tit="user.json"></p>
 
 ```js
 [{
@@ -149,7 +149,7 @@ Here is an example JSON file for *@user* nodes:
 
 Here is an example JSONL file for *@user* nodes:
 
-<p run-tag="false" graph="" tit="user.jsonl" ></p>
+<p tit="user.jsonl"></p>
 
 ```js
 {"_uuid": 1, "_id": "U001", "level": 2, "registeredOn": "2018-12-1 10:20:23", "tag": null}

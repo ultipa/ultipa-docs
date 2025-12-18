@@ -87,7 +87,7 @@ The import operation via Transporter-Importer includes 2 steps:
 
 Declare information about Ultipa server and data files in a YML file. Below is part of the YML file:
 
-<p run-tag="false" graph="" tit= "YML" type="yaml"></p>
+<p tit="YML"></p>
 
 ```yml
 nodeConfig:

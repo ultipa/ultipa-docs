@@ -61,7 +61,7 @@ algo(khop_all).params({
 
 Results: Files <i>neighbors</i>, <i>aggregations</i>
 
-<p run-tag="false" graph="" tit="File: neighbors" ></p>
+<p tit="File: neighbors"></p>
 
 ```js
 card1,card7
@@ -70,7 +70,7 @@ card1,card4
 card7,card4
 ```
 
-<p run-tag="false" graph="" tit="File: aggregations" ></p>
+<p tit="File: aggregations"></p>
 
 ```js
 card1,4.000000,3174.103333,3.000000,

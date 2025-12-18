@@ -75,7 +75,7 @@ algo(connected_component).params({
 Statistics: community_count = 2<br>
 Results: Files <i>f1</i>, <i>f2</i>, <i>f3</i>
 
-<p run-tag="false" graph="" tit="File: f1" ></p>
+<p tit="File: f1"></p>
 
 ```js
 Alice,0
@@ -88,14 +88,14 @@ Cathy,6
 Mike,6
 ```
 
-<p run-tag="false" graph="" tit="File: f2" ></p>
+<p tit="File: f2"></p>
 
 ```js
 0,Alice,Bill,Bob,Sam,Joe,Anna,
 6,Cathy,Mike,
 ```
 
-<p run-tag="false" graph="" tit="File: f3" ></p>
+<p tit="File: f3"></p>
 
 ```js
 0,6
