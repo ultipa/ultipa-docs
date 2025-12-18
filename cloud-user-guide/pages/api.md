@@ -26,7 +26,7 @@ To list **Graph Powerhouse** and **Graph Blaze** instances, submit a `GET` reque
 
 <p tit="http"></p>
 
-```js
+```
 https://cloud.ultipa.com/open/dbaas/v1/cluster/list
 ```
 
@@ -34,7 +34,7 @@ To list **Manager** instances, submit a `GET` request to the following endpoint:
 
 <p tit="http"></p>
 
-```js
+```
 https://cloud.ultipa.com/open/dbaas/v1/manager/list
 ```
 
@@ -58,7 +58,7 @@ https://cloud.ultipa.com/open/dbaas/v1/manager/list
 
 <p tit="HTTP Request"></p>
 
-```js
+```
 GET https://cloud.ultipa.com/open/dbaas/v1/cluster/list??page=1&size=20&instanceStateFilter=1&directions=desc&sorts=created_at&componentType=GRAPH_V5`
 Authorization: Bearer api_key:{Your Ultipa Cloud API key}
 Accept: application/json
@@ -66,7 +66,7 @@ Accept: application/json
 
 ### Response Example
 
-```js
+```json
 {
     "code": 200,
     "message": "success",
@@ -133,7 +133,7 @@ To view the state of **Graph Powerhouse** and **Graph Blaze** instances, submit 
 
 <p tit="http"></p>
 
-```js
+```
 https://cloud.ultipa.com/open/dbaas/v1/cluster/state
 ```
 
@@ -141,7 +141,7 @@ To view the state of **Manager** instances, submit a `POST` request to the follo
 
 <p tit="http"></p>
 
-```js
+```
 https://cloud.ultipa.com/open/dbaas/v1/manager/state
 ```
 
@@ -153,9 +153,7 @@ https://cloud.ultipa.com/open/dbaas/v1/manager/state
 
 ### Request Body
 
-<p tit="JSON"></p>
-
-```js
+```json
 {
     "clusterIds": ["ultipa-abc123", "ultipa-abc456"]
 }
@@ -169,7 +167,7 @@ https://cloud.ultipa.com/open/dbaas/v1/manager/state
 
 <p tit="HTTP Request"></p>
 
-```js
+```
 POST https://cloud.ultipa.com/open/dbaas/v1/cluster/state
 Authorization: Bearer api_key:{Your Ultipa Cloud API key}
 Content-Type: application/json
@@ -184,7 +182,7 @@ Content-Type: application/json
 
 ### Response Example
 
-```js
+```json
 {
     "code": 200,
     "message": "success",
@@ -245,7 +243,7 @@ To start a **Graph Powerhouse** or **Graph Blaze** instance, submit a `POST` req
 
 <p tit="http"></p>
 
-```js
+```
 https://cloud.ultipa.com/open/dbaas/v1/cluster/start
 ```
 
@@ -253,7 +251,7 @@ To start a **Manager** instance, submit a `POST` request to the following endpoi
 
 <p tit="http"></p>
 
-```js
+```
 https://cloud.ultipa.com/open/dbaas/v1/manager/start
 ```
 
@@ -265,9 +263,7 @@ https://cloud.ultipa.com/open/dbaas/v1/manager/start
 
 ### Request Body
 
-<p tit="JSON"></p>
-
-```js
+```json
 {
     "clusterId": "ultipa-abc123"
 }
@@ -281,7 +277,7 @@ https://cloud.ultipa.com/open/dbaas/v1/manager/start
 
 <p tit="HTTP Request"></p>
 
-```js
+```
 POST https://cloud.ultipa.com/open/dbaas/v1/cluster/start
 Authorization: Bearer api_key:{Your Ultipa Cloud API key}
 Content-Type: application/json
@@ -293,9 +289,7 @@ Content-Type: application/json
 
 ### Response Example
 
-<p tit="JSON"></p>
-
-```js
+```json
 {
     "code": 200,
     "message": "success",
@@ -311,7 +305,7 @@ To stop a **Graph Powerhouse** or **Graph Blaze** instance, submit a `POST` requ
 
 <p tit="http"></p>
 
-```js
+```
 https://cloud.ultipa.com/open/dbaas/v1/cluster/stop
 ```
 
@@ -319,7 +313,7 @@ To stop a **Manager** instance, submit a `POST` request to the following endpoin
 
 <p tit="http"></p>
 
-```js
+```
 https://cloud.ultipa.com/open/dbaas/v1/manager/stop
 ```
 
@@ -331,9 +325,7 @@ https://cloud.ultipa.com/open/dbaas/v1/manager/stop
 
 ### Request Body
 
-<p tit="JSON"></p>
-
-```js
+```json
 {
     "clusterId": "ultipa-abc123"
 }
@@ -347,7 +339,7 @@ https://cloud.ultipa.com/open/dbaas/v1/manager/stop
 
 <p tit="HTTP Request"></p>
 
-```js
+```
 POST https://cloud.ultipa.com/open/dbaas/v1/cluster/stop
 Authorization: Bearer api_key:{Your Ultipa Cloud API key}
 Content-Type: application/json
@@ -359,7 +351,7 @@ Content-Type: application/json
 
 ### Response Example
 
-```js
+```json
 {
     "code": 200,
     "message": "success",
