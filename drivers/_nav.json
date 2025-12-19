@@ -20,8 +20,8 @@
           "folder": "database-operations",
           "pages": [
             {
-              "file": "java-database-operations.md",
-              "title": "Database Operations"
+              "file": "java-database-operations-overview-and-request-configuration.md",
+              "title": "Overview and Request Configuration"
             },
             {
               "file": "java-uql-execution.md",
@@ -90,8 +90,8 @@
           "folder": "database-operations",
           "pages": [
             {
-              "file": "python-database-operations.md",
-              "title": "Database Operations"
+              "file": "python-database-operations-overview-and-request-configuration.md",
+              "title": "Overview and Request Configuration"
             },
             {
               "file": "python-uql-execution.md",
