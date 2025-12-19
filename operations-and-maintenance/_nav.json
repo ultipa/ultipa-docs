@@ -1,0 +1,68 @@
+{
+    "name": "Third Party Tools",
+    "navigation": [
+      {
+        "folder": "deployment-with-docker",
+        "name": "Deployment with Docker",
+        "pages": [
+          {
+            "file": "iinstall-ultipa.md",
+            "title": "Install Ultipa"
+          },
+          {
+            "file": "install-ultipa-manager.md",
+            "title": "Install Ultipa Manager"
+          }
+        ]
+      },
+      {
+        "file": "license.md",
+        "title": "License"
+      },
+      {
+        "folder": "server-management",
+        "pages": [
+          {
+            "file": "smeta-servers.md",
+            "title": "Meta Servers"            
+          },
+          {
+            "file": "sshard-servers.md",
+            "title": "Shard Servers"            
+          },
+          {
+            "file": "shdc-servers.md",
+            "title": "HDC Servers"            
+          },
+          {
+            "file": "vector-servers.md",
+            "title": "Vector Servers"
+          },
+          {"file": "sserver-statistics.md",
+            "title": "Server Statistics"            
+          }
+        ]
+      },
+      {
+        "folder": "access-control",
+        "pages": [
+          {
+            "file": "privilege.md",
+            "title": "Privilege"            
+          },
+          {
+            "file": "role.md",
+            "title": "Role (Policy)"            
+          },
+          {
+            "file": "user.md",
+            "title": "User"            
+          }
+        ]
+      },
+      {
+        "file": "backup-and-restore.md",
+        "title": "Backup and Restore"
+      }
+    ]
+  }
