@@ -2,35 +2,34 @@
 
 ## Installation
 
+The Ultipa Java driver is the official library to interact with Ultipa graph databases through a Java application.
+
 ## Supported Java Versions
 
-The Ultipa Java SDK requires JDK8 or higher.
+The Ultipa Java driver requires JDK8 or higher.
 
+## Installing the Driver
 
-## Add Ultipa as a Dependency
+You can install the latest Ultipa dependencies from <a target="_blank" href="https://mvnrepository.com/artifact/com.ultipa/ultipa-driver">MVNRepository</a>:
 
-If you have a **Maven** project, you can add the Ultipa Java SDK as a dependency in the `pom.xml` file:
+<div tab="code">
 
-<p tit="pom.xml" ></p> 
+<p tit="Maven"></p>
 
-```xml
-<dependencies>
-  ...
-  <!-- https://mvnrepository.com/artifact/com.ultipa/ultipa-java-sdk -->
-  <dependency>
-    <groupId>com.ultipa</groupId>
-    <artifactId>ultipa-java-sdk</artifactId>
-    <version>4.x.x-s4.x</version>
-  </dependency>
-  ...
-</dependencies>
+```
+<dependency>
+  <groupId>com.ultipa</groupId>
+  <artifactId>ultipa-driver</artifactId>
+  <version>5.x.x-s5.x</version>
+</dependency>
 ```
 
-If you are using **Gradle**, add the following to your `build.gradle` dependencies list:
+<p tit="Gradle"></p>
 
-<p tit="build.gradle" ></p> 
-
-```js
+```
 dependencies {
-    implementation group: 'com.ultipa', name: 'ultipa-java-sdk', version: '4.x.x-s4.x'
+  implementation group: 'com.ultipa', name: 'ultipa-driver', version: '5.x.x-s5.x'
 }
+```
+
+</div>

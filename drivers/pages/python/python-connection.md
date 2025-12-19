@@ -1,15 +1,12 @@
-# Connection
+## Connection
 
-After <a href="https://www.ultipa.com/doc/drivers/python-installation">installing the Ultipa Python SDK</a> and setting up a running Ultipa instance, you should be able to connect your application to the Ultipa graph database.
+Once you have <a target="_blank" href="/docs/drivers/python-installation">installed the driver</a> and set up an Ultipa instance, you can connect your application to the database.
 
-Connection to Ultipa can be established by creating a driver with configurations specified using the following methods:
+You can establish a connection using the configurations from `UltipaConfig`. See <a href="#UltipaConfig-Attributes">UltipaConfig Attributes</a>.
 
-- <a href="#Code-Configuration-Connection">Code Configuration Connection</a>: through the `UltipaConfig` class
-- <a href="#File-Configuration-Connection">File Configuration Connection</a>: through the `.env` file and the `UltipaConfig` class
+## Creating a Connection
 
-The values of <a href="#Configuration-Items">configuration items</a> are preferentially determined by `UltipaConfig`, followed by `.env`. If an item is not found in either configuration, the default value is used.
-
-## Code Configuration Connection
+Creates a connection using `Connection.NewConnection()`:
 
 ```python
 from ultipa import Connection, UltipaConfig
@@ -22,112 +19,77 @@ ultipaConfig.password = "<password>"
 
 Conn = Connection.NewConnection(defaultConfig=ultipaConfig)
 
-response = Conn.test()
-# The connection is successfully established if the code is 0
-print("Code = ", response.status.code)
+# Tests the connection
+isSuccess = Conn.test()
+print("Connection succeeds:", isSuccess)
 ```
 
 <p tit="Output"></p> 
 
 ```
-Code =  0
+Connection succeeds: True
 ```
 
-A driver is created with the configurations specified using `UltipaConfig`. Please refer to <a href="#Configuration-Items">Configuration Items</a> for all items available for configuring connection details with `UltipaConfig`.
+## Using Configuration File
 
-The `Connection.NewConnection()` method obtains a connection to Ultipa. The graphset identified by the configuration item `defaultGraph` will be used.
-
-## File Configuration Connection
+This example demonstrates how to use the configuration file `.env` to establish a connection:
 
 ```python
 import os
-from dotenv import load_dotenv, dotenv_values
 from pathlib import Path
+from dotenv import dotenv_values, load_dotenv
 from ultipa import Connection, UltipaConfig
-from ultipa.utils.logger import LoggerConfig
 
-# Loads the .env file into the environment, and overrides system environment variables
+# Loads the .env file and overrides system environment variables
 env_path = Path('./.env')
 env_dict = dotenv_values(dotenv_path=env_path)
 load_dotenv(encoding='utf-8', override=True)
 
-# Fetches environment variables
-env_config = {
-    "hosts": os.getenv("hosts"),
-    "username": os.getenv("username"),
-    "password": os.getenv("password"),
-    "defaultGraph": os.getenv("defaultGraph")
-}
+hosts = os.getenv("hosts").split(",")
+username = os.getenv("username")
+password = os.getenv("password")
 
-def getConn():
-    hosts = env_config.get("hosts", "").split(",")
-    username = env_config.get("username", "")
-    password = env_config.get("password", "")
-    defaultGraph = env_config.get("defaultGraph", "")
+ultipaConfig = UltipaConfig(hosts=hosts, username=username, password=password, heartbeat=10)
+Conn = Connection.NewConnection(defaultConfig=ultipaConfig)
 
-    uqlLoggerConfig = LoggerConfig(name="testLog", fileName="../intergration_tests/Logs/test.log", isWriteToFile=True, isStream=True)
-    defaultConfig = UltipaConfig(hosts=hosts, username=username, password=password, heartBeat=10, uqlLoggerConfig=uqlLoggerConfig)
-    Conn = Connection.NewConnection(defaultConfig)
-    return Conn
-
-response = getConn().test()
-print("Code = ", response.status.code)
+# Tests the connection
+response = Conn.test()
+print(response.status.code.name)
 ```
 
 <p tit="Output"></p> 
 
 ```
-2024-08-19 10:21:00,347 - INFO: Test Welcome To Ultipa!
-2024-08-19 10:21:00,357 - INFO: Test Welcome To Ultipa!
-2024-08-19 10:21:00,370 - INFO: Test Welcome To Ultipa!
-2024-08-19 10:21:00,374 - INFO: Test Welcome To Ultipa!
-Code =  1000
+SUCCESS
 ```
-
-A driver is created with the configurations specified using the `.env` file. The `.env` file should be placed under root path of the project.
 
 Example of the `.env` file:
 
 <p tit=".env" ></p> 
 
-```js
+```
 #hosts=mqj4zouys.us-east-1.cloud.ultipa.com:60010
 hosts=192.168.1.85:60061,192.168.1.86:60061,192.168.1.87:60061
 username=<username>
 password=<password>
-passwordEncrypt=PasswordEncrypt.MD5
-timeoutWithSeconds=300
-consistency=true
-#crtFilePath=F:\\ultipa.crt
-#maxRecvSize=10240
+passwordEncrypt=MD5
 defaultGraph=miniCircle
-#timeZone=Asia/Tokyo
-#timeZoneOffset=+0700
-#responseWithRequestInfo=false
-#debug=false
+#crt=F:\\ultipa.crt
+#maxRecvSize=10240
 ```
 
-Please refer to <a href="#Configuration-Items">Configuration Items</a> for all items available for configuring connection details with the `.env` file.
+## UltipaConfig Attributes
 
-## Configuration Items
+The `UltipaConfig` class includes the following attributes:
 
-Below are all the configuration items available for `UltipaConfig` and `.env` file:
-
-| <div table-width="20">Items</div> | <div table-width="10">Type</div> | <div table-width="8">Default</div> | Description |
+| <div table-width="22">Attribute</div> | <div table-width="10">Type</div> | <div table-width="8">Default</div> | Description |
 | ---- | ---- | ---- | ---- |
-| `hosts` | List[str] | | Database host addresses or URI (excluding `https://` or `http://`). For clusters, multiple addresses are separated by commas. Required. |
-| `username` | str | | Username of the host authentication. Required. |
-| `password` | str | | Password of the host authentication. Required. |
-| `passwordEncrypt` | `PasswordEncrypt` | `PasswordEncrypt.MD5` | Password encryption method of the driver. Supports `MD5`, `LDAP` and `NOTHING`. |
-| `timeoutWithSeconds` | int | 3600 | Request timeout threshold in seconds. |
-| `consistency` | bool | False | Whether to use the leader node to ensure consistency read. |
-| `crtFilePath` | str | | The file path of SSL certificate when both Ultipa server and client-end are in SSL mode. |
-| `maxRecvSize` | int | -1 | Maximum size in bytes when receiving data. |
-| `defaultGraph` | str | default | Name of the graph in the database to use by default. |
-| `heartBeat` | int | 10 | Heartbeat interval in seconds for all instances, set 0 to disable heartbeat. |
-| `heartBeat` | int | 10 | Heartbeat interval in seconds for all instances, set 0 to disable heartbeat. |
-| `timeZone` | str | | Timezone, e.g., Europe/Paris. |
-| `timeZoneOffset` | int/str | | Specifies how far the target timezone is from UTC, either in seconds (if an integer) or a 5-character string such as +0700 and -0430. |
-| `responseWithRequestInfo` | bool | False | Whether to return request. |
-| `debug` | bool | False | Whether to use debug mode. |
-| `uqlLoggerConfig` | `LoggerConfig` | | Configures logging for the UQL operations, including `name`, `filename`, `isWriteToFile`, `level` and `isStream`. |
+| `hosts` | List[str] | / | **Required.** A comma-separated list of database server IPs or URLs. The protocol is automatically identified, do not include `https://` or `http://` as a prefix in the URL. |
+| `username` | str | / | **Required.** Username of the host authentication. |
+| `password` | str | / | **Required.** Password of the host authentication. |
+| `defaultGraph` | str | / | Name of the graph to use by default in the database. |
+| `crt` | str | / | The file path of the SSL certificate used for secure connections. |
+| `passwordEncrypt` | str | `MD5` | Password encryption method of the driver. Supports `MD5`, `LDAP` and `NOTHING`. |
+| `timeout` | int | Maximum | Request timeout threshold (in seconds). |
+| `heartbeat` | int | 0 | The heartbeat interval (in milliseconds), used to keep the connection alive. Set to 0 to disable. |
+| `maxRecvSize` | int | 32 | The maximum size (in MB) of the received data. |

@@ -2,31 +2,24 @@
 
 > This article introduces the minimum procedure of using Ultipa RESTful API proxy.
 
-## Change Log (V4.0 to V4.2)
-
-- Use Go SDK v4.2 
-- Abandon command line parameter `-bodytype`
-- Add interfaces `/uql/stream`, `/update/nodes` and `/update/edges`
-
 ## Prerequisites
 
 - a command line terminal that is compatible with your operating system: 
-    - Linux or MacOS: [bash](https://www.gnu.org/software/bash), [zsh](https://www.zsh.org/), [tcsh](https://www.tcsh.org/)
-    - Windows: [PowerShell](https://learn.microsoft.com/en-us/powershell/)
-- a version of [Ultipa Importer](https://www.ultipa.com/download) compatible with your operating system
-
+    - Linux or MacOS: <a target="_blank" href="https://www.gnu.org/software/bash">Bash</a>, <a target="_blank" href="https://www.zsh.org">Zsh</a>, <a target="_blank" href="https://www.tcsh.org">TCSH</a>
+    - Windows: <a target="_blank" href="https://learn.microsoft.com/en-us/powershell">PowerShell</a>
+- a version of <a target="_blank" href="/download">Ultipa RESTful API</a> compatible with your operating system
 
 ## Start API Service
 
 1. Show help
-<p tit="Command">
+<p tit= "Command"></p>
 
 ```bash
 ./ultipa_restful_api.exe --help
 ```
 
 2. Show current version
-<p tit="Command">
+<p tit= "Command"></p>
 
 ```bash
 ./ultipa_restful_api.exe --version
@@ -67,7 +60,7 @@ Other Parameters:
 ## Login Ultipa Service
 
 - Request URL
-<p tit="URL">
+<p tit= "URL"></p>
 
 ```bash
 .../login
@@ -88,7 +81,7 @@ Other Parameters:
 ## Send UQL
 
 - Request URL
-<p tit="URL">
+<p tit= "URL"></p>
 
 ```bash
 .../uql
@@ -138,7 +131,7 @@ Other Parameters:
 ## Send UQL and limit returns
 
 - Request URL
-<p tit="URL">
+<p tit= "URL"></p>
 
 ```bash
 .../uql/stream
@@ -166,7 +159,7 @@ Other Parameters:
 ## Insert Nodes
 
 - Request URL
-<p tit="URL">
+<p tit= "URL"></p>
 
 ```bash
 .../insert/nodes
@@ -201,7 +194,7 @@ Other Parameters:
 ## Insert Edges
 
 - Request URL
-<p tit="URL">
+<p tit= "URL"></p>
 
 ```bash
 .../insert/edges
@@ -238,7 +231,7 @@ Other Parameters:
 Update nodes based on `_id` or `_uuid`.
 
 - Request URL
-<p tit="URL">
+<p tit= "URL"></p>
 
 ```bash
 .../update/nodes
@@ -272,7 +265,7 @@ Update nodes based on `_id` or `_uuid`.
 Update edges based on `_from`&`_to` or `_uuid`.
 
 - Request URL
-<p tit="URL">
+<p tit= "URL"></p>
 
 ```bash
 .../update/edges
@@ -300,3 +293,5 @@ Update edges based on `_from`&`_to` or `_uuid`.
     "SuccessCount": 1
 }
 ```
+
+
