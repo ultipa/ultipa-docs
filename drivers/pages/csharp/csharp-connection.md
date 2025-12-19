@@ -1,6 +1,6 @@
-# Connection
+## Connection
 
-After <a href="https://www.ultipa.com/doc/drivers/csharp-installation">installing the Ultipa C# SDK</a> and setting up a running Ultipa instance, you should be able to connect your application to the Ultipa graph database.
+After <a target="_blank" href="/docs/drivers/csharp-installation">installing the Ultipa C# SDK</a> and setting up a running Ultipa instance, you should be able to connect your application to the Ultipa graph database.
 
 ## Code Configuration Connection
 
@@ -75,3 +75,18 @@ Below are all the configuration items available for `UltipaConfig`:
 | `Timeout` | uint | 15u | Request timeout threshold in seconds. |
 | `Debug` | bool | false | Whether to use the debug mode. | 
 | `HeartBeat` | int | 0 | Heartbeat interval in milliseconds for all instances, set 0 to disable heartbeat. |
+
+## Connection Test
+
+The `test()` method on a `Connection` object can be used for checking the driver connection.
+
+```csharp
+var res = ultipa.Test();
+Console.WriteLine("Test succeeds: " + res);
+```
+
+<p tit="Output"></p> 
+ 
+```
+Test succeeds: True
+```

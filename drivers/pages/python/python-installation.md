@@ -2,15 +2,16 @@
 
 ## Installation
 
+The Ultipa Python driver is the official library to interact with Ultipa graph databases through a Python application.
+
 ## Supported Python Versions
 
-The Ultipa Python SDK requires Python ≥ 3.6 and ≤ 3.10.
+The Ultipa Python driver supports Python versions 3.9 to 3.12.
 
-## Install the driver
+## Installing the Driver
 
-You can install the latest Ultipa dependencies from <a href="https://pypi.org/project/ultipa" target="blank">PyPI</a>:
+You can install the latest Ultipa dependencies from <a href="https://pypi.org/project/ultipa" target="_blank">PyPI</a>:
 
 ```bash
-pip install ultipa=4.5.2
+pip install ultipa
 ```
-
