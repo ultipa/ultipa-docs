@@ -6,7 +6,7 @@ Each example focuses solely on the method's usage. For a complete code example, 
 
 > GQL (Graph Query Language) is the ISO-standard query language for graph databases. For detailed information on GQL, refer to the <a target="_blank" href="/docs/gql">documentation</a>.
 
-# Gql()
+## Gql()
 
 Executes a GQL query on the current graphset or the database and returns the result.
 

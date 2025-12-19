@@ -2,7 +2,7 @@
 
 This section introduces methods for controlling access to the database, graphs, and data.
 
-# Privilege
+## Privilege
 
 ### showPrivilege()
 

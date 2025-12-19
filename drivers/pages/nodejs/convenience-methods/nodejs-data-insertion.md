@@ -1,6 +1,6 @@
 # Data Insertion
 
-# Example Graph
+## Example Graph
 
 The examples in this section demonstrate the node and edge insertion into a graph with the following schema and property definitions:
 

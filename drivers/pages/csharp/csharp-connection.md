@@ -2,7 +2,7 @@
 
 After <a target="_blank" href="/docs/drivers/csharp-installation">installing the Ultipa C# SDK</a> and setting up a running Ultipa instance, you should be able to connect your application to the Ultipa graph database.
 
-# Code Configuration Connection
+## Code Configuration Connection
 
 Connection to Ultipa can be established by using `UltipaConfig`, which specifies the information of the connection needed.
 

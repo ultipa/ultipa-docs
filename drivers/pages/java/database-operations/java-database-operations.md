@@ -1,5 +1,3 @@
-# Database Operations
-
 # Overview and Request Configuration
 
 After <a target="_blank" href="/docs/drivers/java-connection">establishing the connection</a>, you are ready to use methods on the `UltipaDriver` object to send requests from the application to operate the database.

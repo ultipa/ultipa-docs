@@ -4,7 +4,7 @@ This section introduces the `gql()` and `gqlStream()` methods to execute GQL in 
 
 > GQL (Graph Query Language) is the ISO-standard query language for graph databases. For detailed information on GQL, refer to the <a target="_blank" href="/docs/gql">documentation</a>.
 
-# gql()
+## gql()
 
 Executes a GQL query in the database.
 

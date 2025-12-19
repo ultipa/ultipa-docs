@@ -1,8 +1,6 @@
-# Schema and Property
-
 This section introduces methods for managing schemas and properties in a graph.
 
-# Schema
+## Schema
 
 ### showSchema()
 

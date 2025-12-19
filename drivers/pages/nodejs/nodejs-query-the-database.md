@@ -1,6 +1,6 @@
 # Query the Database
 
-# Querying Methods
+## Querying Methods
 
 After <a target="_blank" href="/docs/drivers/nodejs-connect">connecting to the database</a>, you can use the driver's `gql()` or `uql()` method to execute GQL or UQL queries to fully interact with your database.
 

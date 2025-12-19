@@ -4,7 +4,7 @@ This section introduces methods on a `Connection` object for managing processes 
 
 Each example focuses solely on the method's usage. For a complete code example, please refer to the <a href="#Full-Example">full example</a>.
 
-# Process
+## Process
 
 All UQL queries, except for algorithms executed with the `write()` method, are run as processes. The results of these processes are returned to the client upon completion and are not stored.
 

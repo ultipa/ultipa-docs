@@ -4,7 +4,7 @@ Once you have <a target="_blank" href="/docs/drivers/python-installation">instal
 
 You can establish a connection using the configurations from `UltipaConfig`. See <a href="#UltipaConfig-Attributes">UltipaConfig Attributes</a>.
 
-# Creating a Connection
+## Creating a Connection
 
 Creates a connection using `Connection.NewConnection()`:
 

@@ -2,7 +2,7 @@
 
 The output of the driver depends on the specific request made. Some methods, like `Uql()`, return a `Response` object, which requires you to extract the data and cast it into the corresponding driver type to serve the C# application. Other methods, like `ShowGraph()`, `ShowSchema()`, and `ShowProperty()`, return data of the driver type (`GraphSet`, `Schema`, `Property`, etc.) directly. Please read <a target="_blank" href="/docs/drivers/data-types-mapping-ultipa-and-csharp">Types Mapping Ultipa and C#</a> for a list of the core driver types.
 
-# Response
+## Response
 
 The `Uql()` and some other methods return a `Response` object. `Response` has the following fields:
 

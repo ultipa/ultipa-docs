@@ -2,7 +2,7 @@
 
 All querying methods support an optional request configuration parameter (`RequestConfig` or `InsertRequestConfig`) to customize the behavior of requests made to the database. This parameter allows you to specify various settings, such as graphset name, timeout, and host, to tailor your requests according to your needs.
 
-# RequestConfig
+## RequestConfig
 
 `RequestConfig` defines the information needed when sending non-insert type of requests to the database.
 
