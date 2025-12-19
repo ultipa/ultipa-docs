@@ -4,7 +4,7 @@ This section introduces the `uql()` and `uqlStream()` methods to execute UQL in 
 
 > UQL (Ultipa Query Language) is the native language designed by Ultipa to fully interact with Ultipa graph databases. For detailed information on UQL, refer to the <a target="_blank" href="/docs/uql">documentation</a>.
 
-# uql()
+## uql()
 
 Executes a UQL query in the database.
 
@@ -18,7 +18,7 @@ Executes a UQL query in the database.
 - `Response`: Response of the request.
 
 ```python
-# Retrieves 5 movie nodes from the graph 'miniCircle'
+## Retrieves 5 movie nodes from the graph 'miniCircle'
 
 requestConfig = RequestConfig(graph="miniCircle")
 response = Conn.uql("find().nodes({@movie}) as n return n{*} limit 5", requestConfig)

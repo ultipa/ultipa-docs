@@ -12,7 +12,7 @@ Methods like `gql()` and `uql()` return a `Response` containing the raw query re
 | `status` | `Status` | The status of the execution, including fields `code` and `message`. |
 | `statistics` | `Statistics` | Statistics related to the execution, including fields `nodeAffected`, `edgeAffected`, `totalCost`, and `engineCost`. |
 
-# Extract Query Results
+## Extract Query Results
 
 To extract the query results, i.e., the `DataItem` from `Response.items`, use the `get()` or `alias()` method.
 

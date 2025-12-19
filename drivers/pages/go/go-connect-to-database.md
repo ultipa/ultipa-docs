@@ -2,7 +2,7 @@
 
 Once you have installed the driver and set up an Ultipa instance, you can connect your application to the database.
 
-# Create a Connection
+## Create a Connection
 
 Creates a connection by instantiating `NewUltipaDriver()` with `UltipaConfig`, which holds the configuration details required to connect to the database. 
 

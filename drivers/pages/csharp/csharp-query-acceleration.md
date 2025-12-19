@@ -4,7 +4,7 @@ This section introduces methods on a `Connection` object for managing the LTE st
 
 Each example focuses solely on the method's usage. For a complete code example, please refer to the <a href="#Full-Example">full example</a>.
 
-# LTE
+## LTE
 
 ### lte()
 

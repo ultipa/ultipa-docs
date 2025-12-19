@@ -31,7 +31,7 @@ This section introduces methods for the insertion of nodes and edges.
   </tbody>
 </table>
 
-# Property Type Mapping
+## Property Type Mapping
 
 The mappings between Ultipa property types and Python data types are as follows:
 

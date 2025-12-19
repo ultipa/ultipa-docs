@@ -4,7 +4,7 @@ This section introduces the `gql()` and `gqlStream()` methods to execute GQL in 
 
 > GQL (Graph Query Language) is the ISO-standard query language for graph databases. For detailed information on GQL, refer to the <a target="_blank" href="/docs/gql">documentation</a>.
 
-# gql()
+## gql()
 
 Executes a GQL query in the database.
 
@@ -18,7 +18,7 @@ Executes a GQL query in the database.
 - `Response`: Response of the request.
 
 ```python
-# Retrieves 5 movie nodes from the graph 'miniCircle'
+## Retrieves 5 movie nodes from the graph 'miniCircle'
 
 requestConfig = RequestConfig(graph="miniCircle")
 response = Conn.gql("MATCH (n:movie) RETURN n LIMIT 5", requestConfig)

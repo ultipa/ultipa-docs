@@ -6,7 +6,7 @@ Each example focuses solely on the method's usage. For a complete code example, 
 
 > UQL (Ultipa Query Language) is the language designed for fully interacting with Ultipa graph databases. For detailed information on UQL, refer to the <a target="_blank" href="/docs/uql/">documentation</a>.
 
-# Uql()
+## Uql()
 
 Executes a UQL query on the current graphset or the database and returns the result.
 

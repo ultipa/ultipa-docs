@@ -2,7 +2,7 @@
 
 This section introduces methods for managing graphs in the database.
 
-# showGraph()
+## showGraph()
 
 Retrieves all graphs from the database.
 
@@ -15,7 +15,7 @@ Retrieves all graphs from the database.
 - `List[GraphSet]`: The list of retrieved graphs.
 
 ```python
-# Retrieves all graphs and prints the names of those with over 2000 edges
+## Retrieves all graphs and prints the names of those with over 2000 edges
 
 graphs = Conn.showGraph()
 for graph in graphs:

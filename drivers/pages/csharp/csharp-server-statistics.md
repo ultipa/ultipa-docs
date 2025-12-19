@@ -2,7 +2,7 @@
 
 This section introduce the method on a `Connection` object for checking the database server statistics.
 
-# Stats()
+## Stats()
 
 Retrieves database server statistics.
 

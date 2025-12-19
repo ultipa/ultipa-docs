@@ -4,7 +4,7 @@ This section introduces the `uql()` and `uqlStream()` methods to execute UQL in 
 
 > UQL (Ultipa Query Language) is the native language designed by Ultipa to fully interact with Ultipa graph databases. For detailed information on UQL, refer to the <a target="_blank" href="/docs/uql">documentation</a>.
 
-# uql()
+## uql()
 
 Executes an UQL query in the database.
 

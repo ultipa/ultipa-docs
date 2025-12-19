@@ -2,7 +2,7 @@
 
 This section introduces methods for exporting nodes and edges from graphs. 
 
-# Export()
+## Export()
 
 Exports nodes or edges from the graph.
 

@@ -2,7 +2,7 @@
 
 This section introduces methods for exporting nodes and edges from graphs. 
 
-# export()
+## export()
 
 Exports nodes or edges from the graph.
 
@@ -17,7 +17,7 @@ Exports nodes or edges from the graph.
 - None.
 
 ```python
-# Exports 'account' nodes in the graph 'miniCircle'
+## Exports 'account' nodes in the graph 'miniCircle'
 
 batch_counter = 0 # Global counter for batch tracking
 

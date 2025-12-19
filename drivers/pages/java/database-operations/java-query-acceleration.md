@@ -2,7 +2,7 @@
 
 This section introduces methods for managing various indexes and LTE status for properties in graphs.
 
-# Index
+## Index
 
 ### showIndex()
 
