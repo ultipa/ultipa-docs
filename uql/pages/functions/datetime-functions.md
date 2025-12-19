@@ -1,10 +1,10 @@
 # Datetime Functions
 
-# Datetime Value Functions
+## Datetime Value Functions
 
 A datetime value function returns a temporal instant value.
 
-## date()
+### date()
 
 Returns a value of type `DATE`.
 
@@ -73,7 +73,7 @@ Result:
 | 1993-05-01 |
 | 1993-01-01 |
 
-## local_datetime()
+### local_datetime()
 
 Returns a value of type `LOCAL DATETIME`.
 
@@ -152,7 +152,7 @@ Result:
 | 1993-05-09 03:02:00 |
 | 1993-05-09 03:00:00 |
 
-## local_time()
+### local_time()
 
 Returns a value of type `LOCAL TIME`.
 
@@ -231,7 +231,7 @@ Result:
 | 03:02:00 |
 | 03:00:00 |
 
-## now()
+### now()
 
 Returns the current datetime in Coordinated Universal Time (UTC).
 
@@ -262,7 +262,7 @@ Result:
 | -- |
 | 2025-08-21 09:20:30.625790824 |
 
-## zoned_datetime()
+### zoned_datetime()
 
 Returns a value of type `ZONED DATETIME`.
 
@@ -341,7 +341,7 @@ Result:
 | 1993-05-09 03:02:00-0600 |
 | 1993-05-09 03:00:00-0600 |
 
-## zoned_time()
+### zoned_time()
 
 Returns a value of type `ZONED TIME`.
 
@@ -420,9 +420,9 @@ Result:
 | 03:02:00-0600 |
 | 03:00:00-0600 |
 
-# Other Temporal Functions
+## Other Temporal Functions
 
-## dateAdd()
+### dateAdd()
 
 Adds a specified time interval to a given date.
 
@@ -486,7 +486,7 @@ Result:
 | -- |
 | 1980-01-01 00:00:00 |
 
-## dateDiff()
+### dateDiff()
 
 Computes the difference between two dates (`time1` - `time2`) and returns the result as a specified unit of time.
 
@@ -540,7 +540,7 @@ Result:
 | -- |
 | -120 |
 
-## dateFormat()
+### dateFormat()
 
 Prints a given date in the specific format.
 
@@ -632,7 +632,7 @@ Result:
 | -- |
 | Saturday 25 September, 2010 |
 
-## day()
+### day()
 
 Extracts the day component from a given date.
 
@@ -676,7 +676,7 @@ Result:
 | -- |
 | 5 |
 
-## dayOfWeek()
+### dayOfWeek()
 
 Returns a number (from `1` to `7`, where `1` = Sunday and `7` = Saturaday) representing the day of the week for a given date.
 
@@ -720,7 +720,7 @@ Result:
 | -- |
 | 5 |
 
-## month()
+### month()
 
 Extracts the month component from a given date.
 
@@ -764,7 +764,7 @@ Result:
 | -- |
 | 10 |
 
-## year()
+### year()
 
 Extracts the year component from a given date.
 
@@ -808,7 +808,7 @@ Result:
 | -- |
 | 2022 |
 
-# Datetime String Format
+## Datetime String Format
 
 **Date string**
 

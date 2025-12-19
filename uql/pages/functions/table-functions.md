@@ -1,12 +1,12 @@
 # Table Functions
 
-# Example Graph
+## Example Graph
 
 The following examples run against this graph:
 
 <div align=center drawio-diagram='19685' drawio-name="draw_d95e2cde7fb54025b95488668e362d71.jpg"><img src="https://img.ultipa.cn/draw/draw_d95e2cde7fb54025b95488668e362d71.jpg?v='1733371769627'"/></div>
 
-# table()
+## table()
 
 Constructs an output table in the `RETURN` statement.
 

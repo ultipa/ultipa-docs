@@ -2,13 +2,13 @@
 
 This section contains a summary of all functions supported in UQL.
 
-# Function Naming Convention
+## Function Naming Convention
 
 For function names that follow the camelCase convention (e.g., `pedgeUuids()`), the name must be used exactly as defined, preserving the original capitalization.
 
 For function names that do not follow camelCase, it is acceptable to use either all uppercase or all lowercase when referencing them (e.g., `length()` or `LENGTH()`).
 
-# Path Functions
+## Path Functions
 
 | <div table-width="15">Function</div> | Description |
 | -- | -- |
@@ -18,7 +18,7 @@ For function names that do not follow camelCase, it is acceptable to use either 
 | <a href="/docs/uql/path-functions#pnodes()">pnodes()</a> | Collects nodes in a path into a list. |
 | <a href="/docs/uql/path-functions#pnodeIds()">pnodeIds()</a> | Collects the `_id` values of nodes in a path into a list. |
 
-# Aggregate Functions
+## Aggregate Functions
 
 | <div table-width="20">Function</div> | Description |
 | -- | -- |
@@ -31,7 +31,7 @@ For function names that do not follow camelCase, it is acceptable to use either 
 | <a href="/docs/uql/aggregate-functions#stddev_samp()">stddev_samp()</a> | Computes the sample standard deviation of a set of numeric values. |
 | <a href="/docs/uql/aggregate-functions#sum()">sum()</a> | Computes the sum of a set of numeric values. |
 
-# Mathematical Functions
+## Mathematical Functions
 
 | <div table-width="15">Function</div> | Description |
 | -- | -- |
@@ -43,7 +43,7 @@ For function names that do not follow camelCase, it is acceptable to use either 
 | <a href="/docs/uql/mathematical-functions#round()">round()</a> | Returns the nearest value of a given number, rounded to a specified position of digits. |
 | <a href="/docs/uql/mathematical-functions#sqrt()">sqrt()</a> | Computes the square root of a given number. |
 
-# Trigonometric Functions
+## Trigonometric Functions
 
 | <div table-width="15">Function</div> | Description |
 | -- | -- |
@@ -55,7 +55,7 @@ For function names that do not follow camelCase, it is acceptable to use either 
 | <a href="/docs/uql/trigonometric-functions#sin()">sin()</a> | Computes the sine of an angle expressed in radian. |
 | <a href="/docs/uql/trigonometric-functions#tan()">tan()</a> | Computes the tangent of an angle expressed in radian. |
 
-# String Functions
+## String Functions
 
 | <div table-width="16">Function</div> | Description |
 | -- | -- |
@@ -69,7 +69,7 @@ For function names that do not follow camelCase, it is acceptable to use either 
 | <a href="/docs/uql/string-functions#startsWith()">startsWith()</a> | Checks whether a string begins with a specified substring. |
 | <a href="/docs/uql/string-functions#upper()">upper()</a> | Converts all the characters in a given string to uppercase. |
 
-# List Functions
+## List Functions
 
 | <div table-width="16">Function</div> | Description |
 | -- | -- |
@@ -82,7 +82,7 @@ For function names that do not follow camelCase, it is acceptable to use either 
 | <a href="/docs/uql/list-functions#reduce()">reduce()</a> | Performs a calculation iteratively using each element in a list. |
 | <a href="/docs/uql/list-functions#size()">size()</a> | Returns the number of elements in a list. |
 
-# Datetime Functions
+## Datetime Functions
 
 | <div table-width="20">Function</div> | Description |
 | -- | -- |
@@ -108,19 +108,19 @@ For function names that do not follow camelCase, it is acceptable to use either 
 | <a href="/docs/uql/spatial-functions/#point()">point()</a> | Constructs a two-dimensional geographical coordinate. |
 | <a href="/docs/uql/spatial-functions/#point3d()">point3d()</a> | Constructs a three-dimensional Cartesian coordinate. |
 
-# Table Functions
+## Table Functions
 
 | <div table-width="15">Function</div> | Description |
 | -- | -- |
 | <a href="/docs/uql/table-functions#table()">table()</a> | Constructs an output table. |
 
-# Null Functions
+## Null Functions
 
 | <div table-width="15">Function</div> | Description |
 | -- | -- |
 | <a href="/docs/uql/null-functions#coalesce()">coalesce()</a> | Returns the first non-`null` value from a list of provided values. |
 
-# Type Conversion Functions
+## Type Conversion Functions
 
 | <div table-width="15">Function</div> | Description |
 | -- | -- |

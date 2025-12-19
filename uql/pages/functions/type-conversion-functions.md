@@ -1,6 +1,6 @@
 # Type Conversion Functions
 
-# toDouble()
+## toDouble()
 
 Converts a value to a double-precision floating-point number.
 
@@ -47,7 +47,7 @@ Result:
 | -36.123abc | -36.123 |
 | a10 | 0 |
 
-# toFloat()
+## toFloat()
 
 Converts a value to a single-precision floating-point number.
 
@@ -94,7 +94,7 @@ Result:
 | -36.123abc | -36.123 |
 | a10 | 0 |
 
-# toInteger()
+## toInteger()
 
 Converts a value to a 64-bit integer.
 
@@ -141,7 +141,7 @@ Result:
 | -36.123abc | -36 |
 | a10 | 0 |
 
-# toString()
+## toString()
 
 Converts a value to a string.
 

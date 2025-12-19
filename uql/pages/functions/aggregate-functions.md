@@ -1,24 +1,24 @@
 # Aggregate Functions
 
-# Overview
+## Overview
 
 An aggregate function performs a calculation on a set of values and returns a single scalar value.
 
-## DISTINCT
+### DISTINCT
 
 All aggregate functions support the use of the set quantifier `DISTINCT` to eliminate duplicates before aggregation.
 
-## Null Values
+### Null Values
 
 Rows containing `null` values are ignored by all aggregate functions.
 
-# Example Graph
+## Example Graph
 
 The following examples run against this graph:
 
 <div align=center drawio-diagram='19675' drawio-name='draw_66abc84313b74696bd8d0a14279e6664.jpg'><img src="https://img.ultipa.cn/draw/draw_66abc84313b74696bd8d0a14279e6664.jpg?v='1733308384809'"/></div>
 
-# avg()
+## avg()
 
 Computes the average of a set of numeric values.
 
@@ -63,7 +63,7 @@ Result:
 | -- |
 | 7.33333333333333 |
 
-# collect()
+## collect()
 
 Collects a set of values into a list.
 
@@ -108,7 +108,7 @@ Result:
 | -- |
 | ["Optimizing Queries","Efficient Graph Search","Path Patterns"] |
 
-# count()
+## count()
 
 Returns the number of records in the input.
 
@@ -164,7 +164,7 @@ Result:
 | -- |
 | 4 |
 
-## count(DISTINCT)
+### count(DISTINCT)
 
 You can include the set quantifier `DISTINCT` in `count()` to return the number of distinct records.
 
@@ -179,7 +179,7 @@ Result:
 | -- |
 | 4 |
 
-# max()
+## max()
 
 Returns the maximum value in a set of values.
 
@@ -235,7 +235,7 @@ Result:
 | -- |
 | 2 |
 
-# min()
+## min()
 
 Returns the minimum value in a set of values.
 
@@ -291,7 +291,7 @@ Result:
 | -- |
 | 0 |
 
-# stddev_pop()
+## stddev_pop()
 
 Computes the population standard deviation of a set of numeric values.
 
@@ -390,7 +390,7 @@ Result:
 | -- |
 | 1.24721912892465 |
 
-# stddev_samp()
+## stddev_samp()
 
 Computes the sample standard deviation of a set of numeric values.
 
@@ -491,7 +491,7 @@ Result:
 | -- |
 | 1.52752523165195 |
 
-# sum()
+## sum()
 
 Computes the sum of a set of values.
 

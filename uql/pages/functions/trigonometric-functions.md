@@ -1,6 +1,6 @@
 # Trigonometric Functions
 
-# acos()
+## acos()
 
 Computes the angle in radians whose cosine is a given number. The resulting radians will be in the range [0, 𝜋]. If the result is needed in degrees (range [0º, 180º]), you can convert it using the `degrees()` function.
 
@@ -44,7 +44,7 @@ Result:
 | -- |
 | 60 |
 
-# asin()
+## asin()
 
 Computes the angle in radians whose sine is a given number. The resulting radians will be in the range [-𝜋/2, 𝜋/2]. If the result is needed in degrees (range [-90º, 90º]), you can convert it using the `degrees()` function.
 
@@ -88,7 +88,7 @@ Result:
 | -- |
 | 30 |
 
-# atan()
+## atan()
 
 Computes the angle in radians whose tangent is a given number. The resulting radians will be in the range [-𝜋/2, 𝜋/2]. If the result is needed in degrees (range [-90º, 90º]), you can convert it using the `degrees()` function.
 
@@ -132,7 +132,7 @@ Result:
 | -- |
 | 45 |
 
-# cos()
+## cos()
 
 Computes the cosine of an angle expressed in radians. The output will be in the range [-1, 1]. If the angle is in degrees, you can convert it to radians using the `radians()` function.
 
@@ -176,7 +176,7 @@ Result:
 | -- |
 | 0.5 |
 
-# cot()
+## cot()
 
 Computes the cotangent of an angle expressed in radians. The output will be in the range (−∞, −1] ∪ [1, +∞). If the angle is in degrees, you can convert it to radians using the `radians()` function.
 
@@ -220,7 +220,7 @@ Result:
 | -- |
 | 1 |
 
-# sin()
+## sin()
 
 Computes the sine of an angle expressed in radians. The output will be in the range [-1, 1]. If the angle is in degrees, you can convert it to radians using the `radians()` function.
 
@@ -264,7 +264,7 @@ Result:
 | -- |
 | 0.5 |
 
-# tan()
+## tan()
 
 Computes the tangent of an angle expressed in radians. The output will be in the range (−∞, +∞). If the angle is in degrees, you can convert it to radians using the `radians()` function.
 
