@@ -1,8 +1,8 @@
-## Data Structures
+# Data Structures
 
 This section introduces the core data structures provided by the driver.
 
-## Node
+# Node
 
 `Node` includes the following fields:
 

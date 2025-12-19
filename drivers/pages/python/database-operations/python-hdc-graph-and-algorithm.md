@@ -1,8 +1,8 @@
-## HDC Graph and Algorithm
+# HDC Graph and Algorithm
 
 This section introduces methods for managing HDC graph and HDC algorithms. Note that these methods require the deployment of HDC servers for the database.
 
-## HDC Graph
+# HDC Graph
 
 ### showHDCGraph()
 

@@ -1,6 +1,4 @@
-# Java
-
-## Installation
+# Installation
 
 The Ultipa Java driver is the official library to interact with Ultipa graph databases through a Java application.
 

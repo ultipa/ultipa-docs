@@ -1,6 +1,6 @@
-## Convenience Methods
+# Convenience Methods
 
-## Graph
+# Graph
 
 This section introduces methods for managing graphs in the database.
 

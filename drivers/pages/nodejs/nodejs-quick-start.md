@@ -1,6 +1,4 @@
-# Node.js
-
-## Quick Start
+# Quick Start
 
 The Ultipa Node.js driver is a JavaScript library that allows you to interact with Ultipa from any Node.js environment. It requires **Node.js version 12.22.12 or later**.
 

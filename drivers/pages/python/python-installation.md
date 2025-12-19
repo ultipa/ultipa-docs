@@ -1,6 +1,4 @@
-# Python
-
-## Installation
+# Installation
 
 The Ultipa Python driver is the official library to interact with Ultipa graph databases through a Python application.
 

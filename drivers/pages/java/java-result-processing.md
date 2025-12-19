@@ -1,8 +1,8 @@
-## Result Processing
+# Result Processing
 
 The results from database read and write operations must be properly processed before being utilized in your application.
 
-## Return a Response
+# Return a Response
 
 Methods such as `gql()` and `uql()` return a `Response` object. To serve the application, you need to first extract the `DataItem` from the `Response` object, and then transform it into an appropriate <a target="_blank" href="/docs/drivers/java-driver-data-classes">driver data class</a>.
 

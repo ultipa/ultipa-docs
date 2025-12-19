@@ -1,10 +1,10 @@
-## Connection
+# Connection
 
 Once you have <a target="_blank" href="/docs/drivers/python-installation">installed the driver</a> and set up an Ultipa instance, you can connect your application to the database.
 
 You can establish a connection using the configurations from `UltipaConfig`. See <a href="#UltipaConfig-Attributes">UltipaConfig Attributes</a>.
 
-## Creating a Connection
+# Creating a Connection
 
 Creates a connection using `Connection.NewConnection()`:
 

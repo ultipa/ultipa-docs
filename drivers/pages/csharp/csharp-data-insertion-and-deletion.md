@@ -1,10 +1,10 @@
-## Data Insertion and Deletion
+# Data Insertion and Deletion
 
 This section introduces methods on a `Connection` object for inserting nodes and edges to the graph or deleting nodes and edges from the graphset.
 
 Each example focuses solely on the method's usage. For a complete code example, please refer to the <a href="#Full-Example">full example</a>.
 
-## Example Graph Data Model
+# Example Graph Data Model
 
 The examples below demonstrate how to insert or delete nodes or edges from a graphset with the following schema and property definitions:
 
