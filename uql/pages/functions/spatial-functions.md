@@ -1,12 +1,12 @@
 # Spatial Functions
 
-# Example Graph
+## Example Graph
 
 The following examples run against this graph:
 
 <div align=center drawio-diagram='19689' drawio-name="draw_8af35576d1df48828c54ed4dbc548f28.jpg"><img src="https://img.ultipa.cn/draw/draw_8af35576d1df48828c54ed4dbc548f28.jpg?v='1759984566294'"/></div>
 
-# distance()
+## distance()
 
 Computes the straight-line distance between two points.
 
@@ -57,7 +57,7 @@ Result:
 | -- |
 | 5571177.78487926 |
 
-# point()
+## point()
 
 Constructs a two-dimensional geographical coordinate. The `point()` function can be used to specify the value of a `point`-type property.
 
@@ -117,7 +117,7 @@ Result:
 | -- |
 | POINT(35.7 139.7) |
 
-# point3d()
+## point3d()
 
 Constructs a three-dimensional Cartesian coordinate. The `point3d()` function can be used to specify the value of a `point3d`-type property.
 

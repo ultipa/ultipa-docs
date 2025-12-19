@@ -1,6 +1,6 @@
 # String Functions
 
-# btrim()
+## btrim()
 
 Removes characters from both ends of a given string until encountering a character not included in the specified set of characters.
 
@@ -59,7 +59,7 @@ Result:
 | -- |
 | ABC34 |
 
-# endsWith()
+## endsWith()
 
 Checks whether a string ends with a specified substring, returning `1` for true and `0` for false.
 
@@ -108,7 +108,7 @@ Result:
 | -- |
 | 1 |
 
-# length()
+## length()
 
 Returns the number of characters in a string.
 
@@ -152,7 +152,7 @@ Result:
 | -- |
 | 12 |
 
-# lower()
+## lower()
 
 Converts all the characters in a given string to lowercase.
 
@@ -196,7 +196,7 @@ Result:
 | -- |
 | ultipa graph |
 
-# ltrim()
+## ltrim()
 
 Removes characters from the begining of a given string until encountering a character that is not contained in the specified set of characters.
 
@@ -255,7 +255,7 @@ Result:
 | -- |
 | 4ABC341 |
 
-# rtrim()
+## rtrim()
 
 Removes characters from the end of a given string until encountering a character that is not contained in the specified set of characters.
 
@@ -314,7 +314,7 @@ Result:
 | -- |
 | 123ABC4 |
 
-# split()
+## split()
 
 Splits a string into a list of substrings using the specified delimiter.
 
@@ -363,7 +363,7 @@ Result:
 | -- |
 | ["apple","pumpkin","lemon tart"] |
 
-# startsWith()
+## startsWith()
 
 Checks whether a string begins with a specified substring and returns `1` for true or `0` for false.
 
@@ -412,7 +412,7 @@ Result:
 | -- |
 | 1 |
 
-# upper()
+## upper()
 
 Converts all the characters in a given string to uppercase.
 

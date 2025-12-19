@@ -1,6 +1,6 @@
 # List Functions
 
-# append()
+## append()
 
 Appends an element to the end of the list and returns the updated list.
 
@@ -50,7 +50,7 @@ Result:
 | -- |
 | ["a",1,2,"b"] |
 
-# difference()
+## difference()
 
 Returns the difference between two lists, generating a new list of elements found in the first list but not in the second. Duplicates are preserved.
 
@@ -100,7 +100,7 @@ Result:
 | -- |
 | [1,2,2] |
 
-# head()
+## head()
 
 Returns the first element in a list.
 
@@ -145,7 +145,7 @@ Result:
 | -- |
 | a |
 
-# intersection()
+## intersection()
 
 Returns the intersection of two lists, producing a new list of elements common to both. Duplicates are included.
 
@@ -195,7 +195,7 @@ Result:
 | -- |
 | [3,3] |
 
-# listContains()
+## listContains()
 
 Checks whether a specified element exists in a list, returning `1` for true and `0` for false.
 
@@ -245,7 +245,7 @@ Result:
 | -- |
 | 0 |
 
-# listUnion()
+## listUnion()
 
 Returns the union of two lists as a new list containing elements from either input. Duplicates are removed.
 
@@ -295,7 +295,7 @@ Result:
 | -- |
 | [1,2,3,4,5] |
 
-# reduce()
+## reduce()
 
 Performs a calculation iteratively using  each element in a list. With a specified initial value, the defined calculation takes the first element of the list as input.
 
@@ -360,7 +360,7 @@ Result:
 | -- |
 | 9 |
 
-# size()
+## size()
 
 Returns the number of elements in a list.
 

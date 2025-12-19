@@ -1,12 +1,12 @@
 # Null Functions
 
-# Example Graph
+## Example Graph
 
 The following examples run against this graph:
 
 <div align=center drawio-diagram='19687' drawio-name='draw_781448aac6eb4077b8597909eb08ddcb.jpg'><img src="https://img.ultipa.cn/draw/draw_781448aac6eb4077b8597909eb08ddcb.jpg?v='1733371729705'"/></div>
 
-# coalesce()
+## coalesce()
 
 Returns the first non-`null` value from a list of provided values. It returns `null` if all values are `null`.
 

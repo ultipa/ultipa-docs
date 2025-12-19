@@ -1,12 +1,12 @@
 # Path Functions
 
-# Example Graph
+## Example Graph
 
 The following examples run against this graph:
 
 <div align=center drawio-diagram='19665' drawio-name="draw_78ad73aa8ee943cd9d74a9070e7b16bd.jpg"><img src="https://img.ultipa.cn/draw/draw_78ad73aa8ee943cd9d74a9070e7b16bd.jpg?v='1733307122627'"/></div>
 
-# length()
+## length()
 
 Returns the number of edges in a path.
 
@@ -53,7 +53,7 @@ Result:
 | <div align=center drawio-diagram='19672' drawio-name='draw_72bce7923bba4049a55495596df4f51a.jpg'><img src="https://img.ultipa.cn/draw/draw_72bce7923bba4049a55495596df4f51a.jpg?v='1733307291276'"/></div> | 1 |
 | <div align=center drawio-diagram='19673' drawio-name='draw_7d9cd1dfc5d84fc4b951a7566d7edc7f.jpg'><img src="https://img.ultipa.cn/draw/draw_7d9cd1dfc5d84fc4b951a7566d7edc7f.jpg?v='1733307307475'"/></div> | 1 |
 
-# pedges()
+## pedges()
 
 Collects edges in a path into a list.
 
@@ -99,7 +99,7 @@ Result:
 | [{"from":"P1","to":"P2","uuid":"1","from_uuid":"10448353334522806273","to_uuid":"3098478742654156802","schema":"Cites","values":{}}] |
 | [{"from":"P1","to":"P2","uuid":"1","from_uuid":"10448353334522806273","to_uuid":"3098478742654156802","schema":"Cites","values":{}},{"from":"P2","to":"P3","uuid":"2","from_uuid":"3098478742654156802","to_uuid":"13618887472191635459","schema":"Cites","values":{}}] |
 
-# pedgeUuids()
+## pedgeUuids()
 
 Collects the `_uuid` values of edges in a path into a list.
 
@@ -145,7 +145,7 @@ Result:
 | ["1"] |
 | ["1","2"] |
 
-# pnodes()
+## pnodes()
 
 Collects nodes in a path into a list.
 
@@ -191,7 +191,7 @@ Result:
 | [{"id":"P1","uuid":"10448353334522806273","schema":"Paper","values":{}},{"id":"P2","uuid":"3098478742654156802","schema":"Paper","values":{}}] |
 | [{"id":"P1","uuid":"10448353334522806273","schema":"Paper","values":{}},{"id":"P2","uuid":"3098478742654156802","schema":"Paper","values":{}},{"id":"P3","uuid":"13618887472191635459","schema":"Paper","values":{}}] |
 
-# pnodeIds()
+## pnodeIds()
 
 Collects the `_id` values of nodes in a path into a list.
 

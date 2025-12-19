@@ -220,8 +220,8 @@
           "title": "Full-text Index"
         },
         {
-          "file": "lte.md",
-          "title": "LTE"
+          "file": "vector-index.md",
+          "title": "Vector Index"
         },
         {
           "file": "cache.md",

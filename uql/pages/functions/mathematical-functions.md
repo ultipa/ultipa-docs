@@ -1,6 +1,6 @@
 # Mathematical Functions
 
-# abs()
+## abs()
 
 Returns the absolute value of a given number.
 
@@ -44,7 +44,7 @@ Result:
 | -- |
 | 2.32 |
 
-# ceil()
+## ceil()
 
 Rounds a given number up to the nearest integer.
 
@@ -90,7 +90,7 @@ Result:
 | -2 |
 | 5 |
 
-# floor()
+## floor()
 
 Rounds a given number down to the nearest integer.
 
@@ -136,7 +136,7 @@ Result:
 | -3 |
 | 4 |
 
-# pi()
+## pi()
 
 Returns the mathematical constant π (pi) approximately equal to 3.14159. Pi is the ratio of a circle's circumference to its diameter in Euclidean geometry.
 
@@ -167,7 +167,7 @@ Result:
 | -- |
 | 3.14159265358979 |
 
-# pow()
+## pow()
 
 Raises a number to the power of another number.
 
@@ -216,7 +216,7 @@ Result:
 | -- |
 | 16 |
 
-# round()
+## round()
 
 Returns the nearest value of a given number, rounded to a specified position of digits. If two nearest values are equidistant, it returns the one with the larger absolute value.
 
@@ -265,7 +265,7 @@ Result:
 | -- |
 | 3.142 |
 
-# sqrt()
+## sqrt()
 
 Computes the square root of a given number.
 
