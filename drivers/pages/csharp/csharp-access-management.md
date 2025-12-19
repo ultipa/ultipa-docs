@@ -1,10 +1,10 @@
-## Access Management
+# Access Management
 
 This section introduces methods on a `Connection` object for managing access to the instance and graphsets within it, including privileges, policies and users.
 
 Each example focuses solely on the method's usage. For a complete code example, please refer to the <a href="#Full-Example">full example</a>.
 
-## Privilege
+# Privilege
 
 ### ShowPrivilege()
 

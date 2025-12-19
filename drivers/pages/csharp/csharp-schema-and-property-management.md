@@ -1,10 +1,10 @@
-## Schema and Property Management
+# Schema and Property Management
 
 This section introduces methods on a `Connection` object for managing schemas and properties of nodes and edges in a graphset.
 
 Each example focuses solely on the method's usage. For a complete code example, please refer to the <a href="#Full-Example">full example</a>.
 
-## Schema
+# Schema
 
 ### ShowSchema()
 

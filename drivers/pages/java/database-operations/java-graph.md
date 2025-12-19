@@ -1,8 +1,8 @@
-## Graph
+# Graph
 
 This section introduces methods for managing graphs in the database.
 
-## showGraph()
+# showGraph()
 
 Retrieves all graphs from the database.
 

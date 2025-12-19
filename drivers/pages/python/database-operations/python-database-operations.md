@@ -1,6 +1,6 @@
-## Database Operations
+# Database Operations
 
-## Overview and Request Configuration
+# Overview and Request Configuration
 
 After <a target="_blank" href="/docs/drivers/python-connection">establishing the connection</a>, you are ready to use methods on the `Connection` object to send requests from the application to operate the database.
 

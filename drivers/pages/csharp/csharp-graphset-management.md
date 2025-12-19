@@ -1,10 +1,10 @@
-## Graphset Management
+# Graphset Management
 
 This section introduces methods on a `Connection` object for managing graphsets in the database.
 
 Each example focuses solely on the method's usage. For a complete code example, please refer to the <a href="#Full-Example">full example</a>.
 
-## ShowGraph()
+# ShowGraph()
 
 Retrieves all graphsets from the database.
 

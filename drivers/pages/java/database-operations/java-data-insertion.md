@@ -1,4 +1,4 @@
-## Data Insertion
+# Data Insertion
 
 This section introduces methods for the insertion of nodes and edges.
 
@@ -31,7 +31,7 @@ This section introduces methods for the insertion of nodes and edges.
   </tbody>
 </table>
 
-## Property Type Mapping
+# Property Type Mapping
 
 The mappings between Ultipa property types and Java data types are as follows:
 

@@ -6,10 +6,6 @@
       "title": "Introduction"
     },
     {
-      "file": "restful-api.md",
-      "title": "RESTful API"
-    },
-    {
       "folder": "java",
       "navigation": [
         {
@@ -337,8 +333,16 @@
         {
           "file": "csharp-result-processing.md",
           "title": "Result Processing"
+        }.
+        {
+          "file": "data-types-mapping-ultipa-and-csharp.md"
+          title: "Types Mapping Ultipa and C#"
         }
       ]
+    },
+    {
+      "file": "restful-api.md",
+      "title": "RESTful API"
     }
   ]
 }

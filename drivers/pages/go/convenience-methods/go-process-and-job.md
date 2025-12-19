@@ -1,8 +1,8 @@
-## Process and Job
+# Process and Job
 
 This section introduces methods for managing processes and jobs.
 
-## Process
+# Process
 
 ### Top()
 

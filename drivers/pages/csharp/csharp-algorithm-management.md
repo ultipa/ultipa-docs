@@ -1,10 +1,10 @@
-## Algorithm Management
+# Algorithm Management
 
 This section introduces methods on a `Connection` object for managing <a target="_blank" href="/docs/graph-analytics-algorithms">Ultipa graph algorithms</a> and custom algorithms (EXTA) in the instance.
 
 Each example focuses solely on the method's usage. For a complete code example, please refer to the <a href="#Full-Example">full example</a>.
 
-## Ultipa Graph Algorithms
+# Ultipa Graph Algorithms
 
 ### ShowAlgo()
 

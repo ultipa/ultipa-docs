@@ -1,10 +1,10 @@
-## Downloads and Exports
+# Downloads and Exports
 
 This section introduces methods on a `Connection` object for downloading algorithm result files and exporting nodes and edges from a graphset. 
 
 Each example focuses solely on the method's usage. For a complete code example, please refer to the <a href="#Full-Example">full example</a>.
 
-## DownloadAlgoResultFile()
+# DownloadAlgoResultFile()
 
 Downloads one result file from an algorithm task in the current graph.
  

@@ -1,6 +1,4 @@
-# C#
-
-## Installation
+# Installation
 
 ## Supported NET Framework Versions
 

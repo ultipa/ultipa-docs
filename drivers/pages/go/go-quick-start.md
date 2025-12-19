@@ -1,6 +1,4 @@
-# Go
-
-## Quick Start
+# Quick Start
 
 The Ultipa Go driver is the official library that allows you to interact with Ultipa from a Go application. It requires **Go 1.13 or later**.
 

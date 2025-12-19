@@ -1,4 +1,4 @@
-## Process Query Results
+# Process Query Results
 
 Methods like `gql()` and `uql()` return a `Response` containing the raw query results from the database and execution metadata. To use the query results in your application, you need to **extract** and **convert** them into a usable <a target="_blank" href="/docs/drivers/nodejs-data-structures">data structure</a>.
 
@@ -12,7 +12,7 @@ Methods like `gql()` and `uql()` return a `Response` containing the raw query re
 | `status` | `Status` | The status of the execution, including fields `code` and `message`. |
 | `statistics` | `Statistics` | Statistics related to the execution, including fields `nodeAffected`, `edgeAffected`, `totalCost`, and `engineCost`. |
 
-## Extract Query Results
+# Extract Query Results
 
 To extract the query results, i.e., the `DataItem` from `Response.items`, use the `get()` or `alias()` method.
 
