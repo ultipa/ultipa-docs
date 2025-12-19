@@ -4,26 +4,28 @@
 
 ## Prerequisites
 
-- A command line terminal such as: 
-    - Linux: [bash](https://www.gnu.org/software/bash), [zsh](https://www.zsh.org/), [tcsh](https://www.tcsh.org/)
+- A command line terminal such as:
+    - Linux: <a target="_blank" href="https://www.gnu.org/software/bash">Bash</a>, <a target="_blank" href="https://www.zsh.org">Zsh</a>, <a target="_blank" href="https://www.tcsh.org">TCSH</a>
     - MacOS X Terminal, iTerm
-    - Windows: [PowerShell](https://learn.microsoft.com/en-us/powershell/)
-- A version of [Ultipa LDAP](https://www.ultipa.com/download) compatible with your operating system
+    - Windows: <a target="_blank" href="https://learn.microsoft.com/en-us/powershell">PowerShell</a>
+- A version of <a target="_blank" href="/download">Ultipa LDAP</a> compatible with your operating system
 - phpLDAPadmin deployed on your operating system
 
 ## Operation Procedure
 
 1. Generate sample configuration file `example_config.yaml`
+
 ```bash
-./ultipaLDAP -g 
+./ultipaLDAP -g
 ```
 
 2. Revise `example_config.yaml` and start Ultipa LDAP
+
 ```bash
 ./ultipaLDAP -config example_config.yaml -logfile log.log
 ```
 
-Command options:  
+Command options:
 
 | <div table-width=20>Option</div> | Explanation |
 | - | - |
@@ -32,8 +34,8 @@ Command options:
 | -g  | Generate configuration file template ('example_config.yaml')   |
 | -logfile [string]  | Specify log file name (default 'log.log')     |
 
+## Configuration File
 
-## Configuration File  
 ```yml
 ProxyConfig:
 # proxi listen
@@ -93,4 +95,3 @@ SyncUserConfig:
 <center><img src="https://img.ultipa.cn/img/2024-02-29-17-21-57-ldap-general.jpg"></center>
 
 > According to the setting of `UserNamePrefix` and `UltipaPolicyPrefix` under `SyncUserConfig` in the yaml file, an 'ldap_' will be prefixed to 'mlee' and 'general', this explains why the user name and policy created in Ultipa server is 'ldap_mlee' and 'ldap_general' instead of 'mlee' and 'general'.
-

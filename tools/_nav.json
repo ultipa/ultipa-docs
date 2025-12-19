@@ -10,12 +10,8 @@
       "title": "Monitor"
     },
     {
-      "file": "deployer.md",
-      "title": "Deployer"
-    },
-    {
-      "file": "deployment-procedure.md",
-      "title": "Deployment Procedure"
+      "file": "spark-connector.md",
+      "title": "Spark Connector"
     },
     {
       "file": "ldap.md",
@@ -24,10 +20,6 @@
     {
       "file": "migrator.md",
       "title": "Migrator"
-    },
-    {
-      "file": "spark-connector.md",
-      "title": "Spark Connector"
     }
   ]
 }
