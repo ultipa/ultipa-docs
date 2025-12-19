@@ -10,53 +10,7 @@
       "title": "Terminologies"
     },
     {
-      "folder": "syntax",
-      "pages": [
-        {
-          "file": "reserved-words.md",
-          "title": "Reserved Words"
-        },
-        {
-          "file": "data-types.md",
-          "title": "Data Types"
-        },
-        {
-          "file": "alias.md",
-          "title": "Alias"
-        },
-        {
-          "file": "operators.md",
-          "title": "Operators"
-        },
-        {
-          "file": "expression.md",
-          "title": "Expression"
-        },
-        {
-          "file": "filter.md",
-          "title": "Filter"
-        },
-        {
-          "file": "prefix.md",
-          "title": "Prefix"
-        },
-        {
-          "file": "node-and-edge-templates.md",
-          "title": "Node and Edge Templates"
-        },
-        {
-          "file": "homologous-and-heterologous-data.md",
-          "title": "Homologous and Heterologous Data"
-        },
-        {
-          "file": "clause-execution-times.md",
-          "title": "Clause Execution Times"
-        }
-      ]
-    },
-    {
-      "folder": "graphset-schema-property",
-      "name": "Graphset | Schema | Property",
+      "folder": "graph-management",
       "pages": [
         {
           "file": "graphset.md",
@@ -69,20 +23,23 @@
         {
           "file": "property.md",
           "title": "Property"
+        },
+        {
+          "file": "constraints.md",
+          "title": "Constraints"
         }
       ]
     },
     {
-      "folder": "insert-update-delete",
-      "name": "Insert | Update | Delete",
+      "folder": "data-modification",
       "pages": [
         {
           "file": "insert.md",
           "title": "Insert"
         },
         {
-          "file": "overwrite.md",
-          "title": "Overwrite"
+          "file": "overwrite-or-insert.md",
+          "title": "Overwrite or Insert"
         },
         {
           "file": "upsert.md",
@@ -99,7 +56,7 @@
       ]
     },
     {
-      "folder": "queries",
+      "folder": "querying",
       "pages": [
         {
           "file": "find-nodes.md",
@@ -145,10 +102,6 @@
           ]
         },
         {
-          "file": "find-subgraphs.md",
-          "title": "Find Subgraphs"
-        },
-        {
           "file": "group-by.md",
           "title": "GROUP BY"
         },
@@ -191,523 +144,159 @@
         {
           "file": "call.md",
           "title": "CALL"
-        },
-        {
-          "file": "batch.md",
-          "title": "BATCH"
-        }
-      ]
-    },
-    {
-      "folder": "operators",
-      "pages": [
-        {
-          "folder": "conditional-operator",
-          "pages": [
-            {
-              "file": "schema-checker.md",
-              "title": "Schema Checker"
-            },
-            {
-              "file": "equal.md",
-              "title": "Equal"
-            },
-            {
-              "file": "not-equal.md",
-              "title": "Not Equal"
-            },
-            {
-              "file": "less-than.md",
-              "title": "Less Than"
-            },
-            {
-              "file": "greater-than.md",
-              "title": "Greater Than"
-            },
-            {
-              "file": "less-than-or-equal.md",
-              "title": "Less Than or Equal"
-            },
-            {
-              "file": "greater-than-or-equal.md",
-              "title": "Greater Than or Equal"
-            },
-            {
-              "file": "between.md",
-              "title": "Between"
-            },
-            {
-              "file": "between-or-equal.md",
-              "title": "Between or Equal"
-            },
-            {
-              "file": "belong-to.md",
-              "title": "Beong to"
-            },
-            {
-              "file": "not-belong-to.md",
-              "title": "Not Belong To"
-            },
-            {
-              "file": "contains-string.md",
-              "title": "CONTAINS | String"
-            },
-            {
-              "file": "contains-full-text.md",
-              "title": "CONTAINS | Full-Text"
-            },
-            {
-              "file": "regular-match.md",
-              "title": "Regular Match"
-            },
-            {
-              "file": "is-null.md",
-              "title": "IS NULL"
-            },
-            {
-              "file": "is-not-null.md",
-              "title": "IS NOT NULL"
-            }
-          ]
-        },
-        {
-          "folder": "logical-operator",
-          "pages": [
-            {
-              "file": "and.md",
-              "title": "And"
-            },
-            {
-              "file": "or.md",
-              "title": "Or"
-            },
-            {
-              "file": "not.md",
-              "title": "Not"
-            },
-            {
-              "file": "exclusive-or.md",
-              "title": "Exclusive OR"
-            }
-          ]
-        },
-        {
-          "folder": "other-operator",
-          "pages": [
-            {
-              "file": "distinct.md",
-              "title": "DISTINCT"
-            }
-          ]
         }
       ]
     },
     {
       "folder": "functions",
-      "name": "Functions",
       "pages": [
         {
-          "folder": "type-conversion-functions",
-          "pages": [
-            {
-              "file": "to-string.md",
-              "title": "toString()"
-            },
-            {
-              "file": "to-integer.md",
-              "title": "toInteger()"
-            },
-            {
-              "file": "to-float.md",
-              "title": "toFloat()"
-            },
-            {
-              "file": "to-double.md",
-              "title": "toDouble()"
-            },
-            {
-              "file": "to-decimal.md",
-              "title": "toDecimal()"
-            },
-            {
-              "file": "to-set.md",
-              "title": "toSet()"
-            },
-            {
-              "file": "cast-to-raw.md",
-              "title": "castToRaw()"
-            }
-          ]
+          "file": "all-functions.md",
+          "title": "All Functions"
         },
         {
-          "folder": "temporal-functions",
-          "pages": [
-            {
-              "file": "now.md",
-              "title": "now()"
-            },
-            {
-              "file": "date-add.md",
-              "title": "dateAdd()"
-            },
-            {
-              "file": "date-diff.md",
-              "title": "dateDiff()"
-            },
-            {
-              "file": "year.md",
-              "title": "year()"
-            },
-            {
-              "file": "month.md",
-              "title": "month()"
-            },
-            {
-              "file": "day.md",
-              "title": "day()"
-            },
-            {
-              "file": "day-of-week.md",
-              "title": "dayOfWeek()"
-            },
-            {
-              "file": "date-format.md",
-              "title": "dateFormat()"
-            }
-          ]
+          "file": "path-functions.md",
+          "title": "Path Functions"
         },
         {
-          "folder": "spatial-functions",
-          "name": "Spatial Functions",
-          "pages": [
-            {
-              "file": "point.md",
-              "title": "point()"
-            },
-            {
-              "file": "distance.md",
-              "title": "distance()"
-            },
-            {
-              "file": "point-in-polygon.md",
-              "title": "pointInPolygon()"
-            }
-          ]
+          "file": "aggregate-functions.md",
+          "title": "Aggregate Functions"
         },
         {
-          "folder": "string-functions",
-          "pages": [
-            {
-              "file": "lower.md",
-              "title": "lower()"
-            },
-            {
-              "file": "upper.md",
-              "title": "upper()"
-            },
-            {
-              "file": "reverse.md",
-              "title": "reverse()"
-            },
-            {
-              "file": "starts-with.md",
-              "title": "startsWith()"
-            },
-            {
-              "file": "ends-with.md",
-              "title": "endsWith()"
-            },
-            {
-              "file": "jsondecode.md",
-              "title": "JSON_decode()"
-            },
-            {
-              "file": "jsonmerge.md",
-              "title": "JSON_merge()"
-            },
-            {
-              "file": "trim.md",
-              "title": "trim()"
-            },
-            {
-              "file": "ltrim.md",
-              "title": "ltrim()"
-            },
-            {
-              "file": "rtrim.md",
-              "title": "rtrim()"
-            },
-            {
-              "file": "left.md",
-              "title": "left()"
-            },
-            {
-              "file": "right.md",
-              "title": "right()"
-            },
-            {
-              "file": "substring.md",
-              "title": "substring()"
-            },
-            {
-              "file": "replace.md",
-              "title": "replace()"
-            },
-            {
-              "file": "split.md",
-              "title": "split()"
-            }
-          ]
+          "file": "mathematical-functions.md",
+          "title": "Mathematical Functions"
         },
         {
-          "folder": "list-functions",
-          "pages": [
-            {
-              "file": "intersection.md",
-              "title": "intersection()"
-            },
-            {
-              "file": "difference.md",
-              "title": "difference()"
-            },
-            {
-              "file": "list-union.md",
-              "title": "listUnion()"
-            },
-            {
-              "file": "size.md",
-              "title": "size()"
-            },
-            {
-              "file": "head.md",
-              "title": "head()"
-            },
-            {
-              "file": "reduce.md",
-              "title": "reduce()"
-            },
-            {
-              "file": "list-contains.md",
-              "title": "listContains()"
-            },
-            {
-              "file": "append.md",
-              "title": "append()"
-            }
-          ]
+          "file": "trigonometric-functions.md",
+          "title": "Trigonometric Functions"
         },
         {
-          "folder": "mathematical-functions",
-          "pages": [
-            {
-              "file": "pi.md",
-              "title": "pi()"
-            },
-            {
-              "file": "pow.md",
-              "title": "pow()"
-            },
-            {
-              "file": "sqrt.md",
-              "title": "sqrt()"
-            },
-            {
-              "file": "abs.md",
-              "title": "abs()"
-            },
-            {
-              "file": "floor.md",
-              "title": "floor()"
-            },
-            {
-              "file": "ceil.md",
-              "title": "ceil()"
-            },
-            {
-              "file": "round.md",
-              "title": "round()"
-            }
-          ]
+          "file": "string-functions.md",
+          "title": "String Functions"
         },
         {
-          "folder": "trigonometric-functions",
-          "pages": [
-            {
-              "file": "sin.md",
-              "title": "sin()"
-            },
-            {
-              "file": "cos.md",
-              "title": "cos()"
-            },
-            {
-              "file": "tan.md",
-              "title": "tan()"
-            },
-            {
-              "file": "cot.md",
-              "title": "cot()"
-            },
-            {
-              "file": "asin.md",
-              "title": "asin()"
-            },
-            {
-              "file": "acos.md",
-              "title": "acos()"
-            },
-            {
-              "file": "atan.md",
-              "title": "atan()"
-            }
-          ]
+          "file": "list-functions.md",
+          "title": "List Functions"
         },
         {
-          "folder": "path-functions",
-          "pages": [
-            {
-              "file": "length.md",
-              "title": "length()"
-            },
-            {
-              "file": "pnodes.md",
-              "title": "pnodes()"
-            },
-            {
-              "file": "pedges.md",
-              "title": "pedges()"
-            }
-          ]
+          "file": "datetime-functions.md",
+          "title": "Datetime Functions"
         },
         {
-          "folder": "aggregation-functions",
-          "pages": [
-            {
-              "file": "count.md",
-              "title": "count()"
-            },
-            {
-              "file": "sum.md",
-              "title": "sum()"
-            },
-            {
-              "file": "max.md",
-              "title": "max()"
-            },
-            {
-              "file": "min.md",
-              "title": "min()"
-            },
-            {
-              "file": "avg.md",
-              "title": "avg()"
-            },
-            {
-              "file": "stddev.md",
-              "title": "stddev()"
-            },
-            {
-              "file": "collect.md",
-              "title": "collect()"
-            }
-          ]
+          "file": "spatial-functions.md",
+          "title": "Spatial Functions"
         },
         {
-          "folder": "other-functions",
-          "pages": [
-            {
-              "file": "dedup.md",
-              "title": "dedup()"
-            },
-            {
-              "file": "case.md",
-              "title": "CASE"
-            },
-            {
-              "file": "table.md",
-              "title": "table()"
-            },
-            {
-              "file": "coalesce.md",
-              "title": "coalesce()"
-            },
-            {
-              "file": "ifnull.md",
-              "title": "ifnull()"
-            }
-          ]
+          "file": "table-functions.md",
+          "title": "Table Functions"
+        },
+        {
+          "file": "null-functions.md",
+          "title": "Null Functions"
+        },
+        {
+          "file": "type-conversion-functions.md",
+          "title": "Type Conversion Functions"
         }
       ]
     },
     {
-      "folder": "index-fulltext-lte",
-      "name": "Index | Full-text | LTE",
+      "file": "operators.md",
+      "title": "Operators"
+    },
+    {
+      "file": "expressions.md",
+      "title": "Expressions"
+    },
+    {
+      "folder": "query-acceleration",
       "pages": [
-        {
-          "file": "acceleration.md",
-          "title": "Acceleration"
-        },
         {
           "file": "index.md",
           "title": "Index"
         },
         {
-          "file": "full-text.md",
-          "title": "Full-text"
+          "file": "full-text-index.md",
+          "title": "Full-text Index"
         },
         {
           "file": "lte.md",
           "title": "LTE"
+        },
+        {
+          "file": "cache.md",
+          "title": "Cache"
         }
       ]
     },
     {
-      "folder": "process-task-server",
-      "name": "Process | Task | Server",
+      "folder": "hdc-graphs",
+      "name": "HDC Graphs",
       "pages": [
         {
-          "file": "real-time-process.md",
-          "title": "Real-time Process"
+          "file": "overview.md",
+          "title": "Overview"
         },
         {
-          "file": "backend-task.md",
-          "title": "Backend Task"
+          "file": "managing-hdc-graphs.md",
+          "title": "Managing HDC Graphs"
         },
         {
-          "file": "analytics-node.md",
-          "title": "Analytics Node"
-        },
-        {
-          "file": "server-statistics.md",
-          "title": "Server Statistics"
-        },
-        {
-          "file": "server-backup.md",
-          "title": "Server Backup"
+          "file": "hdc-graph-queries.md",
+          "title": "HDC Graph Queries"
         }
       ]
     },
     {
-      "folder": "privilege-policy-user",
-      "name": "Privilege | Policy | User",
+      "folder": "uql-execution",
+      "name": "UQL Execution",
       "pages": [
         {
-          "file": "privilege.md",
-          "title": "Privilege"
+          "file": "process.md",
+          "title": "Process"
         },
         {
-          "file": "policy.md",
-          "title": "Policy"
+          "file": "job.md",
+          "title": "Job"
         },
         {
-          "file": "user.md",
-          "title": "User"
+          "file": "execution-plan.md",
+          "title": "Execution Plan"
         }
       ]
     },
     {
-      "file": "trigger.md",
-      "title": "Trigger"
+      "folder": "syntax",
+      "pages": [
+        {
+          "file": "alias.md",
+          "title": "Alias"
+        },
+        {
+          "file": "filter.md",
+          "title": "Filter"
+        },
+        {
+          "file": "values-and-types.md",
+          "title": "Values and Types"
+        },
+        {
+          "file": "data-flow.md",
+          "title": "Data Flow in Queries"
+        },
+        {
+          "file": "comments.md",
+          "title": "Comments"
+        },
+        {
+          "file": "reserved-words.md",
+          "title": "Reserved Words"
+        }
+      ]
+    },
+    {
+      "file": "access-control.md",
+      "title": "Access Control"
     }
   ]
 }

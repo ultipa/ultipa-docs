@@ -2,9 +2,9 @@
 
 ### GQL
 
-GQL stands for Graph Query Language. It is a database language designed for modeling structured data as a graph, and for storing, querying, and modifying that data in a graph database. GQL addresses the Property Graph model. 
+GQL stands for Graph Query Language. It is a database language designed for modeling structured data as a graph, and for storing, querying, and modifying that data in a graph database. GQL addresses the Property Graph model.
 
-GQL is the only standard database language since the introduction of SQL in 1987. It was released in April 2024 by the ISO/IEC.  
+GQL is the only standard database language since the introduction of SQL in 1987. It was released in April 2024 by the ISO/IEC.
 
 ### UQL
 
@@ -48,7 +48,7 @@ Undirected edges do not have a specific direction, implying a bidirectional or m
 
 An edge weight is a numerical value assigned to an edge in a graph. Edge weights are used to represent the cost, distance, capacity, or any other quantitative measure associated with the connection between two nodes in the graph.
 
-### Metadata 
+### Metadata
 
 The general term for nodes and edges. They are also called graph elements.
 
@@ -80,7 +80,7 @@ A self-loop in a graph is an edge that connects a node to itself.
 
 ### Subgraph
 
-A subgraph is a portion of a graph that consists of a subset of the nodes and edges. 
+A subgraph is a portion of a graph that consists of a subset of the nodes and edges.
 
 ### GraphSet
 
