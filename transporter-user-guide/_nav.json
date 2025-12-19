@@ -6,75 +6,68 @@
       "title": "Introduction"
     },
     {
-      "folder": "usage-demos",
+      "folder": "data-import",
       "pages": [
         {
-          "file": "import-mysql.md",
-          "title": "Import MySQL"
+          "file": "import-from-csv.md",
+          "title": "Import from CSV"
         },
         {
-          "file": "import-postgresql.md",
-          "title": "Import PostgreSQL"
+          "file": "import-from-json.md",
+          "title": "Import from JSON"
         },
         {
-          "file": "import-sqlserver.md",
-          "title": "Import SQL Server"
+          "file": "import-from-jsonl.md",
+          "title": "Import from JSONL"
         },
         {
-          "file": "import-bigquery.md",
-          "title": "Import BigQuery"
+          "file": "import-from-relational-databases.md",
+          "title": "Import from Relational Databases"
         },
         {
-          "file": "import-neo4j.md",
-          "title": "Import Neo4j"
+          "file": "import-from-neo4j.md",
+          "title": "Import from Neo4j"
         },
         {
-          "file": "import-kafka.md",
-          "title": "Import Kafka"
+          "file": "import-from-graphml.md",
+          "title": "Import from GraphML"
         },
         {
-          "file": "import-csv.md",
-          "title": "Import CSV"
+          "file": "import-from-rdf.md",
+          "title": "Import from RDF"
         },
         {
-          "file": "import-json.md",
-          "title": "Import JSON"
+          "file": "import-from-bigquery.md",
+          "title": "Import from BigQuery"
         },
         {
-          "file": "import-jsonl.md",
-          "title": "Import JSONL"
+          "file": "import-from-kafka.md",
+          "title": "Import from Kafka"
         },
         {
-          "file": "import-graphml.md",
-          "title": "Import GraphML"
-        },
-        {
-          "file": "import-rdf.md",
-          "title": "Import RDF"
-        },
-        {
-          "file": "export-csv.md",
-          "title": "Export CSV"
+          "file": "import-from-salesforce.md",
+          "title": "Import from Salesforce"
         }
       ]
     },
     {
+      "folder": "data-export",
       "pages": [
         {
-          "file": "import-field-config.md",
-          "title": "Import Config | Data Field"
+          "file": "export-to-csv.md",
+          "title": "Export to CSV"
         },
         {
-          "file": "import-settings.md",
-          "title": "Import Config | Settings"
+          "file": "export-to-json.md",
+          "title": "Export to JSON"
         },
         {
-          "file": "export-field-config.md",
-          "title": "Export Config | Data Field"
+          "file": "export-to-jsonl.md",
+          "title": "Export to JSONL"
         },
         {
-          "file": "export-settings.md",
-          "title": "Export Config | Settings"
+          "file": "export-to-graphml.md",
+          "title": "Export to GraphML"
         }
       ]
     },

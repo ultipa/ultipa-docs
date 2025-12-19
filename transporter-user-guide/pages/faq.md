@@ -1,65 +1,81 @@
 # FAQ
 
-<b>Q</b>: <b>Why Ultipa Transporter won't connect with Ultipa server? The server is deployed on Ultipa Cloud</b>
+This page contains frequently asked questions about **Ultipa Transporter**. If you can't find an answer to your question, you may contact us at <a href="mailto:support@ultipa.com">support@ultipa.com</a>.
 
-<b>A</b>: If the Ultipa server is deployed on Ultipa Cloud, the IP of client end , from where the Ultipa Transporter runs, needs to be added to the InBound Allowed IPs under Network Settings of this server, on the page of Ultipa Cloud.
+### Transporter cannot connect to Ultipa Cloud
 
-<b>Q</b>: <b>Got error message 'rpc error: code = ResourceExhausted desc = Received/Sent message larger than max (31324123 vs. 4194304)', what does it mean and how to solve it?</b>
+If you want to connect to Ultipa Cloud from Ultipa Transporter, you must add the IP of Ultipa Transporter to the **Allowed Inbound IPs** in Ultipa Cloud. For details see <a target="_blank" href="/docs/cloud-user-guide/powerhouse-manage-clusters/#(Optional)-Add-Allowed-Inbound-IPs">Graph Powerhouse</a> or <a target="_blank" href="/docs/cloud-user-guide/blaze-manage-instances/#(Optional)-Add-Allowed-Inbound-IPs">Graph Blaze</a>.
 
-<b>A</b>: This message means when importing/exporting a data batch, the packet size which is 31324123 bytes exceeds the limit of 4194304 bytes.The possible reasons are too many properties imported at a time, excessive property volume (long texts stored in text type), or too large batchSize that has been set, as a result of which the data volume of a data batch exceeds the default server config of max_rpc_msgsize (4M) and/or the MaxPacketSize of Go SDK (40M).
+### How to fix "rpc error: code = ResourceExhausted"
 
-Solution A: reduce the `batchSize` in the config file<br>
-Solution B: raise the setting of `MaxPacketSize` in the config file, and/or `max_rpc_msgsize` in the server config (the latter requires a server re-boot).
+This error occurs when the packet size exceeds the limit during data import/export. This issue may be caused by:
 
+- Importing too many properties at once.
+- Large property values (e.g., long text fields).
+- An excessively large `batchSize`.
 
+Try the following solutions:
 
-<b>Q</b>: <b>What format is required when importing time values?</b>
+- Reduce `batchSize` in the Transporter configuration file.
+- Increase `MaxPacketSize` in the Transporter configuration file.
+- Adjust `max_rpc_msgsize` in the server configuration (requires a server reboot).
 
-<b>A</b>: Please follow below format examples:
-- [YY]YY-MM-DD HH:MM:SS
-- [YY]YY-MM-DD HH:MM:SSZ
-- [YY]YY-MM-DDTHH:MM:SSZ 
-- [YY]YY-MM-DDTHH:MM:SS[+/-]0x00
-- [YY]YYMMDDHH:MM:SS[+/-]0x00
+### What is the required format for importing date and time values
 
-Supports year of 4-digit or 2-digit (2-digit year will be parsed as 19xx if year≥70, or parsed as 20xx if year＜70; supports month and day of 2-digit or 1-digit; dash (-) can be replaced with slash (/); `[+/-]0x00` stands for `+0700` or `-0300` dependent, and Z stands for UTC 0 timezone.
+Supported standard `datetime` formats include:
 
+- `[YY]YY-MM-DD HH:MM:SS`
+- `[YY]YY-MM-DD HH:MM:SSZ`
+- `[YY]YY-MM-DDTHH:MM:SSZ`
+- `[YY]YY-MM-DDTHH:MM:SS[+/-]0x00`
+- `[YY]YYMMDDHH:MM:SS[+/-]0x00`
 
+Note:
 
-<b>Q</b>: <b>What timezone is used for the exported time values? </b>
+- Year can be represented as either a 4-digit or 2-digit number. A 2-digit year will be parsed as `19xx` if ≥ 70, or as `20xx` if < 70.
+- Month and day can be represented as either a 2-digit or 1-digit number.
+- Dash (`-`) separator can be replaced with a slash (`/`).
+- `[+/-]0x00` indicates the time zone offset (e.g., `+0700` or `-0300`).
+- Letter `Z` indicates the UTC 0 timezone.
 
-<b>A</b>: Value of <i>datetime</i> has no timezone information, value of <i>timestamp</i> will be exported according to the parameter `timezone` setting, or in local timezone if `timezone` is not set.
+### What timezone is applied to the exported time values
 
+If the `datetime` value doesn't include the timezone information, the time will be exported based on the `timezone` set in the Transporter configuration file. If no `timezone` is specified, it will be exported in the local timezone.
 
+### Understanding quotation mark warnings
 
-<b>Q</b>: <b>Can data fields with names `_id`, `_uuid`, `_from`, `_to`, `_from_uuid`, `_to_uuid` be declared as <i>string</i> or <i>uint64</i>?</b>
+Warnings like `bare " in non-quoted-field` and `extraneous or missing " in quoted-field` occur when double quotation marks (`"`) are not handled correctly in data fields.
 
-<b>A</b>: No. For any data field representing a system property, it should be configured as the name of the corresponding system property. If a data field has same name with a system property but not representing that system property, either should it be configured as <i>_ignore</i> hence will not be imported, or be renamed through parameter `new_name`.
+Check the `settings` > `quotes` option in the Transporter configuration file:
 
+- If sets to `false` (default): Double quotes are treated as field boundaries and must appear at both the beginning and end of the content. Consecutive double quotes (`""`) are interpreted as a single quote character. For example, the text `I like when Jack said "If you jump, I jump".` must be formatted as `"I like when Jack said ""If you jump, I jump""."` for successful import.
+- If sets to `true`: Double quotes are treated as part of the content rather than delimiters. No special formatting is needed for fields containing double quotes. The above example can be imported as-is without errors.
 
+### How to process CSV data that contains commas and line breaks
 
-<b>Q</b>: <b>Got warning message 'bare " in non-quoted-field' or 'extraneous or missing " in quoted-field', what do they mean and how to solve them?</b>
+<b>Handling Commas</b>: If the `settings` > `separator` in the Transporter configuration file is set to comma, data fields containing commas must be enclosed in double quotation marks (`"`) to prevent misinterpretation as a separator. If `separator` is not a comma, no additional formatting is required.
 
-<b>A</b>: These two warnings are related to the double quotation in the data field.
+<p tit="comma"></p>
 
-With `quotes` set to <i>false</i>, a double quotation in a data field will be parsed as the boundary wrapping around the content of this data field (not being recognized as the content and must be located in the begining and end of the content), two consecutive double quotations will be parsed as the character of double quotation (part of the content). For instance, importing some content `I like when Jack said "If you jump I jump".` while `quotes` is <i>false</i> will definitely trigger warnings, and the content should be revised into`"I like when Jack said ""If you jump I jump""."` in order to be imported correctly.
+```csv
+"Alice, CEO", 35, "New York"
+```
 
-With `quotes` set to <i>true</i>, a double quotation will be parsed as the character of double quotation itself (part of the content), hence the data field content in the above example can be imported correctly without any data preprocessing.
-  
-  
+Here, `Alice, CEO` is treated as a single field rather than two separate values.
 
-<b>Q</b>: <b>How to preprocess data when there are double quotations, commas and line breaks in the CSV?</b>
+<b>Handling Line Breaks</b>: Data fields containing line breaks must be wrapped in double quotation marks (`"`).
 
-<b>A</b>: Below are the solutions for each symbol presenting separately in a data field. A conservative solution should be elected if more than one symbol presents.
+<p tit="line break"></p>
 
-For double quotations, please refer to the previous Q&A.
+```csv
+"This is a multi-line
+description of a product."
+```
 
-For commas, if `separator` is also using comma then the data field content should be warpped with double quotations to prevent the comma from being parsed as separator, in which case the `quotes` should be <i>false</i>; otherwise, no data preprocess is needed. 
+The entire text block inside double quotes will be treated as a single field.
 
-For line breaks, must wrap the content with double quotations and guarantee that `quotes` is <i>false</i>.
+In both cases, set `settings` > `quotes` to `false` in the Transporter configuration file.
 
+### Why is "null" fields in a CSV file not imported as null values
 
-
-<b>Q</b>: <b>Why a field in the CSV file with value 'null' won't be imported as <i>null</i> value?</b>
-
-<b>A</b>: The field 'null' in a CSV file will be parsed as a string whose value is 'null'. Only an empty field will be parsed as <i>null</i>, i.e., two consecutive field separators.
+In a CSV file, the string "null" is interpreted literally as a text value, not as a `null` value. To ensure a field is imported as `null`, leave it empty between two consecutive field separators (e.g., `,,`).
