@@ -29,24 +29,24 @@
           "title": "Import from Neo4j"
         },
         {
-          "file": "import-from-graphml.md",
-          "title": "Import from GraphML"
-        },
-        {
           "file": "import-from-rdf.md",
           "title": "Import from RDF"
-        },
-        {
-          "file": "import-from-bigquery.md",
-          "title": "Import from BigQuery"
         },
         {
           "file": "import-from-kafka.md",
           "title": "Import from Kafka"
         },
         {
+          "file": "import-from-bigquery.md",
+          "title": "Import from BigQuery"
+        },
+        {
           "file": "import-from-salesforce.md",
           "title": "Import from Salesforce"
+        },
+        {
+          "file": "import-from-graphml.md",
+          "title": "Import from GraphML"
         }
       ]
     },
