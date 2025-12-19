@@ -2,16 +2,17 @@
     "name": "Third Party Tools",
     "navigation": [
       {
-        "title": "Overview",
-        "file": "overview.md"
+        "file": "overview.md",
+        "title": "Overview"
+        
       },
       {
-        "title": "G.V()",
-        "file": "gdotv.md"
+        "file": "gdotv.md",
+        "title": "G.V()"
       },
       {
-        "title": "Visual Studio Code",
-        "file": "vscode.md"
+        "file": "vscode.md",
+        "title": "Visual Studio Code"
       }
     ]
 }
