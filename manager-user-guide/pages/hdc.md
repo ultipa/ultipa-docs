@@ -4,7 +4,7 @@ Click **HDC** in the left sidebar to manage HDC graphs and algorithms in the dat
 
 <center><img src="https://img.ultipa.cn/img/2025-04-15-10-43-46-hdc.jpg"></center>
 
-To use this module, <a target="_blank" href="/docs/graph-database/ultipa-powerhouse-v5">HDC (High-Density Computing) servers</a> must be deployed for the databases. You can switch between HDC servers using the dropdown menu at the top. Each HDC server maintains its own set of graphs and algorithms independently.
+To use this module, <a target="_blank" href="/docs/graph-database/powerhouse-v5">HDC (High-Density Computing) servers</a> must be deployed for the databases. You can switch between HDC servers using the dropdown menu at the top. Each HDC server maintains its own set of graphs and algorithms independently.
 
 ## HDC Graphs
 
@@ -34,7 +34,7 @@ Click the **Delete** icon on an HDC graph card to remove it from the selected HD
 
 ## HDC Algorithms
 
-Ultipa provides a suite of <a target="_blank" href="/docs/ultipa-graph-analytics-algorithms">algorithms</a> that can be installed on HDC servers. These algorithms are hot-pluggable, allowing you to add or remove them seamlessly without interrupting ongoing database operations. Once installed, they can be executed on HDC graphs.
+Ultipa provides a suite of <a target="_blank" href="/docs/graph-analytics-algorithms">algorithms</a> that can be installed on HDC servers. These algorithms are hot-pluggable, allowing you to add or remove them seamlessly without interrupting ongoing database operations. Once installed, they can be executed on HDC graphs.
 
 You can manage HDC algorithms for the selected server in the **Algo** tab:
 

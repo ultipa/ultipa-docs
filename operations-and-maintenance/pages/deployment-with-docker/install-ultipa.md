@@ -13,7 +13,7 @@ You can install **Ultipa Powerhouse (v5)** on Linux machines. This guide outline
 
 All server roles communicate over an internal network. For high availability and fault tolerance, each role can be deployed redundantly.
 
-For a detailed architectural overview, see the <a target="_blank" href="/docs/graph-database/ultipa-powerhouse-v5">Ultipa Powerhouse (v5)</a>.
+For a detailed architectural overview, see the <a target="_blank" href="/docs/graph-database/powerhouse-v5">Ultipa Powerhouse (v5)</a>.
 
 ## System Requirements
 

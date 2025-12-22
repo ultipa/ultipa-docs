@@ -160,7 +160,7 @@ This example demonstrates the process of importing from a MySQL database using *
 
 ### Download Ultipa Transporter
 
-Download the Ultipa Transporter from <a target="_blank" href="https://www.ultipa.com/download">here</a>. The Windows version will be used for the following operations.
+Download the Ultipa Transporter from <a target="_blank" href="/download">here</a>. The Windows version will be used for the following operations.
 
 ### Prepare the Configuration File
 

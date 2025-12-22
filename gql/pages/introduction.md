@@ -4,7 +4,7 @@
 
 As the first standardized database language since SQL's introduction in 1987, GQL marks a major milestone in data management. The first version of the GQL standard was officially released by the ISO/IEC in April 2024. See Ultipa's <a target="_blank" href="/docs/gql/gql-conformance">GQL Conformance</a>.
 
-To get started with GQL, check out our <a target="_blank" href="/docs/quick-start/what-is-gql">Quick Start</a>. You can also explore and practice GQL for free in our <a target="_blank" href="https://www.ultipa.com/gql-playground">GQL Playground</a>.
+To get started with GQL, check out our <a target="_blank" href="/docs/quick-start/what-is-gql">Quick Start</a>. You can also explore and practice GQL for free in our <a target="_blank" href="/gql-playground">GQL Playground</a>.
 
 ## GQL Execution Context
 
