@@ -5,23 +5,16 @@
 ## Hardware Requirement 
 
 - Minimum 3 nodes  
-
 - Network connection between nodes, it is suggested that all nodes in one cluster are arranged on the same network segment 
-
 - All nodes can be accessed by client (application backend, or Ultipa Manager)  
-
 - CPU & Memory depends on the project or testing requirements 
 
 ## Software Requirement 
 
 - There is ssh permission between current server and target server 
-
 - When target server connects user remotely through ssh, it must have the write permission on WORK_PATH directory in the configuration file 
-
 - Docker CE 19+ or equivalent Docker EE installed on target server 
-
 - There is ultipaServer image package on current server  
-
 - There is ultipaServer license on current server  
 
 ## Deployment Procedure 
