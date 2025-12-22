@@ -12,7 +12,7 @@ Graph centrality takes on values between 0 to 1, nodes with higher scores are cl
 
 ### Shortest Distance
 
-The shortest distance between two nodes is the number of edges in the shortest path connecting them. Please refer to <a target="_blank" href="/doc/graph-analytics-algorithms/closeness-centrality">Closeness Centrality</a> for more details.
+The shortest distance between two nodes is the number of edges in the shortest path connecting them. Please refer to <a target="_blank" href="/docs/graph-analytics-algorithms/closeness-centrality">Closeness Centrality</a> for more details.
 
 ### Graph Centrality
 
