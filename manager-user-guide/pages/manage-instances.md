@@ -1,6 +1,6 @@
 # Manage Instances
 
-After login, users land on the **Instances** page, where you can manage all your Ultipa graph databases. Follow the steps <a target="_blank" href="https://www.ultipa.cn/document/ultipa-manager-user-guide/get-started#Add-Connections">here</a> to add connections to database instances.
+After login, users land on the **Instances** page, where you can manage all your Ultipa graph databases. Follow the steps <a target="_blank" href="https://www.ultipa.cn/document/manager-user-guide/get-started#Add-Connections">here</a> to add connections to database instances.
 
 <center><img src="https://img.ultipa.cn/img/2025-04-08-16-45-12-connections.jpg" /></center>
 

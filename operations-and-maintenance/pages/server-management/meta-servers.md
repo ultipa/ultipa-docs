@@ -2,7 +2,7 @@
 
 ## Overview
 
-**Meta servers** are responsible for the overall system coordination, integrity, and optimization in the <a target="_blank" href="/docs/graph-database/ultipa-powerhouse-v5">Ultipa Powerhouse (v5)</a> architecture.
+**Meta servers** are responsible for the overall system coordination, integrity, and optimization in the <a target="_blank" href="/docs/graph-database/powerhouse-v5">Ultipa Powerhouse (v5)</a> architecture.
 
 ## Showing Meta Servers
 

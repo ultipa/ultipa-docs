@@ -19,7 +19,7 @@ RETURN <item1> as <alias1?>, <item2?> as <alias2?>, ...
 - The `RETURN` statement must include at least one item.
 - The default alias for each return item is the return item expression itself. You may rename a return item using an alias.
 - In each return item expression, you can reference aliases declared in the previous statements. See <a href="#Referencing-Alias-in-RETURN">Referencing Alias in RETURN</a> for more details.
-- Each return item corresponds to one the following <a target = "blank" href="/docs/uqlvalues-and-types/#Result-Types">result types</a>:
+- Each return item corresponds to one the following <a target="_blank" href="/docs/uqlvalues-and-types/#Result-Types">result types</a>:
   - `RESULT_TYPE_NODE`
   - `RESULT_TYPE_EDGE`
   - `RESULT_TYPE_PATH`

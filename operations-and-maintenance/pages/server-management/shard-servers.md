@@ -2,7 +2,7 @@
 
 ## Overview
 
-**Shard servers** are a crucial component of the <a target="_blank" href="/docs/graph-database/ultipa-powerhouse-v5">Ultipa Powerhouse (v5)</a> architecture, typically comprising multiple servers dedicated to distributed graph storage and computation. This design enables horizontal scaling while delivering highly competitive performance.
+**Shard servers** are a crucial component of the <a target="_blank" href="/docs/graph-database/powerhouse-v5">Ultipa Powerhouse (v5)</a> architecture, typically comprising multiple servers dedicated to distributed graph storage and computation. This design enables horizontal scaling while delivering highly competitive performance.
 
 Each shard supports **multi-replica** data storage. In the three-shard setup example below, shards `1` and `2` each have three replicas, while shard `3` has two replicas. Graphs are distributed across these shards: `Graph_1` in all three shards, `Graph_2` and `Graph_3` partially stored across the three shards, and `Graph_4` located in a single shard.
 

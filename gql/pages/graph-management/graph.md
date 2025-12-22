@@ -101,7 +101,7 @@ CREATE GRAPH g3 ANY COMMENT 'Social graph'
 
 ## Graph Sharding and Storage
 
-The graph data is physically stored on the **shard servers** that constitute the <a target="_blank" href="/docs/graph-database/ultipa-powerhouse-v5">Ultipa database deployment</a>. Depending on your setup, you can run one or multiple shard servers. 
+The graph data is physically stored on the **shard servers** that constitute the <a target="_blank" href="/docs/graph-database/powerhouse-v5">Ultipa database deployment</a>. Depending on your setup, you can run one or multiple shard servers. 
 
 When creating a graph, you can assign a single shard to store its data or distribute the data across multiple shards. This sharded architecture enables **horizontal scaling** of your data volume while maintaining high-performance querying.
 

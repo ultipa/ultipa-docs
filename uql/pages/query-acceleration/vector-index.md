@@ -17,7 +17,7 @@ In machine learning and natural language processing (NLP), the term **embedding*
 You can create embeddings for both structured data (e.g., text) and unstructured data (e.g., images, graphs) using various models. Some popular models include:
 
 - <a target="_blank" href="https://platform.openai.com/docs/guides/embeddings/embedding-models">OpenAI</a>: A collection of models to turn text into embeddings.
-- <a target="_blank" href="https://www.ultipa.com/document/ultipa-graph-analytics-algorithms/node2vec">Node2Vec</a>: A model that generates embeddings for graph nodes based on their relationships.
+- <a target="_blank" href="/docs/graph-analytics-algorithms/node2vec">Node2Vec</a>: A model that generates embeddings for graph nodes based on their relationships.
 - <a target="_blank" href="https://en.wikipedia.org/wiki/Residual_neural_network">ResNet</a> (Residual Networks): A series of models for generating image embeddings.
 
 ### Why Embeddings
@@ -125,7 +125,7 @@ create().node_vector_index(@Book.summaryEmbedding, "summary_embedding", {
 | `index_type` | String | `FLAT` | The method used to organize and search the vectors in the index. Supports `FLAT`, `IVF_FLAT`, `IVF_SQ8`, `HNSW`, `HNSW_SQ`, `HNSW_PQ`, `HNSW_PRQ`, and `SCANN`. <a href="#Annex:-Index-Types">Learn more</a> |
 | `dimensions` | Integer | `128` | The dimensions of the vectors to be indexed. Only vectors that match the configured dimension are indexed. Querying the index with a vector of a different dimension results in an error. |
 
-- Specifies the name of the <a target="_blank" href="https://www.ultipa.com/document/ultipa-graph-query-language/vector-servers">vector server</a> that hosts the vector index in the `on()` method.
+- Specifies the name of the <a target="_blank" href="/docs/graph-query-language/vector-servers">vector server</a> that hosts the vector index in the `on()` method.
 
 ## Dropping a Vector Index
 

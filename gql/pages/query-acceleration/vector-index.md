@@ -17,7 +17,7 @@ In the context of machine learning and natural language processing (NLP), the te
 You can create embeddings for both structured data (e.g., text) and unstructured data (e.g., images, graphs) using various models. Some popular models include:
 
 - <a target="_blank" href="https://platform.openai.com/docs/guides/embeddings/embedding-models">OpenAI</a>: A collection of models to turn text into embeddings.
-- <a target="_blank" href="/docs/ultipa-graph-analytics-algorithms/node2vec">Node2Vec</a>: A model that generates embeddings for graph nodes based on their relationships.
+- <a target="_blank" href="/docs/graph-analytics-algorithms/node2vec">Node2Vec</a>: A model that generates embeddings for graph nodes based on their relationships.
 - <a target="_blank" href="https://en.wikipedia.org/wiki/Residual_neural_network">ResNet</a> (Residual Networks): A series of models for generating image embeddings.
 
 ### Why Embeddings

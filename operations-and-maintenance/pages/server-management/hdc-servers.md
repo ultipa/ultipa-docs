@@ -2,7 +2,7 @@
 
 ## Overview
 
-**HDC (High-Density Computing) servers** in the <a href="/docs/graph-database/ultipa-powerhouse-v5">Ultipa Powerhouse (v5)</a> architecture are the computing nodes optimized for maximum performance and efficiency.
+**HDC (High-Density Computing) servers** in the <a href="/docs/graph-database/powerhouse-v5">Ultipa Powerhouse (v5)</a> architecture are the computing nodes optimized for maximum performance and efficiency.
 
 A graph can be loaded from the physical storage of Shard servers into the memory of an HDC server, creating a **HDC graph**. On these HDC graphs you can execute graph queries and algorithms with enhanced performance.
 
