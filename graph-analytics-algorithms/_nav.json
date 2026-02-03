@@ -261,52 +261,62 @@
       "folder": "graph-embedding",
       "pages": [
         {
-          "file": "random-walk.md",
-          "title": "Random Walk"
+          "folder": "algorithms",
+          "pages": [
+            {
+              "file": "random-walk.md",
+              "title": "Random Walk"
+            },
+            {
+              "file": "node2vec-walk.md",
+              "title": "Node2Vec Walk"
+            },
+            {
+              "file": "node2vec.md",
+              "title": "Node2Vec"
+            },
+            {
+              "file": "struc2vec-walk.md",
+              "title": "Struc2Vec Walk"
+            },
+            {
+              "file": "struc2vec.md",
+              "title": "Struc2Vec"
+            },
+            {
+              "file": "line.md",
+              "title": "LINE"
+            },
+            {
+              "file": "fastrp.md",
+              "title": "Fast Random Projection"
+            }
+          ]
         },
         {
-          "file": "node2vec-walk.md",
-          "title": "Node2Vec Walk"
-        },
-        {
-          "file": "node2vec.md",
-          "title": "Node2Vec"
-        },
-        {
-          "file": "struc2vec-walk.md",
-          "title": "Struc2Vec Walk"
-        },
-        {
-          "file": "struc2vec.md",
-          "title": "Struc2Vec"
-        },
-        {
-          "file": "line.md",
-          "title": "LINE"
-        },
-        {
-          "file": "fastrp.md",
-          "title": "Fast Random Projection"
-        },
-        {
-          "file": "summary-of-graph-embedding.md",
-          "title": "Summary of Graph Embedding"
-        },
-        {
-          "file": "gradient-descent.md",
-          "title": "Gradient Descent"
-        },
-        {
-          "file": "backpropagation.md",
-          "title": "Backpropagation"
-        },
-        {
-          "file": "skip-gram.md",
-          "title": "Skip-gram"
-        },
-        {
-          "file": "skip-gram-optimization.md",
-          "title": "Skip-gram Optimization"
+          "folder": "background-knowledge",
+          "pages": [
+            {
+              "file": "summary-of-graph-embedding.md",
+              "title": "Summary of Graph Embedding"
+            },
+            {
+              "file": "gradient-descent.md",
+              "title": "Gradient Descent"
+            },
+            {
+              "file": "backpropagation.md",
+              "title": "Backpropagation"
+            },
+            {
+              "file": "skip-gram.md",
+              "title": "Skip-gram"
+            },
+            {
+              "file": "skip-gram-optimization.md",
+              "title": "Skip-gram Optimization"
+            }
+          ]
         }
       ]
     }
