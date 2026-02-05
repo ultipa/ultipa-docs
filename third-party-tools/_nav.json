@@ -1,5 +1,6 @@
 {
-    "name": "Third Party Tools",
+    "name": "Third-Party Tools",
+    "description": "Integration with external tools",
     "navigation": [
       {
         "file": "overview.md",

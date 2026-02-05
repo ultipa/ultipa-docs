@@ -1,5 +1,6 @@
 {
   "name": "Ultipa Cloud",
+  "description": "Managed graph database cloud service",
   "navigation": [
     {
       "file": "quick-start.md",

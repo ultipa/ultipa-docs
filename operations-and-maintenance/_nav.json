@@ -1,5 +1,6 @@
 {
-    "name": "Operations and Maintenance",
+    "name": "Operations & Maintenance",
+    "description": "System administration and maintenance",
     "navigation": [
         {
           "folder": "deployment-with-docker",
