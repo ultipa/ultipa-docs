@@ -2,7 +2,7 @@
   "published": true,
   "products": [
     { "id": "gql", "published": true },
-    { "id": "stored-procedures", "published": false },
+    { "id": "stored-procedures", "published": true },
     { "id": "drivers", "published": true },
     { "id": "graph-algorithms", "published": true },
     { "id": "ontology", "published": true },
