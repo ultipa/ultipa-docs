@@ -1,4 +1,5 @@
 {
+  "published": true,
   "products": [
     { "id": "quick-start", "published": true },
     { "id": "graph-database", "published": true },
