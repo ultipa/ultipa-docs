@@ -1,4 +1,5 @@
 {
+  "published": true,
   "products": [
     { "id": "gql", "published": true },
     { "id": "drivers", "published": true },
