@@ -1,0 +1,16 @@
+{
+  "products": [
+    { "id": "quick-start", "published": true },
+    { "id": "graph-database", "published": true },
+    { "id": "gql", "published": true },
+    { "id": "uql", "published": true },
+    { "id": "graph-analytics-algorithms", "published": true },
+    { "id": "manager-user-guide", "published": true },
+    { "id": "cloud-user-guide", "published": true },
+    { "id": "transporter-user-guide", "published": true },
+    { "id": "tools", "published": true },
+    { "id": "drivers", "published": true },
+    { "id": "operations-and-maintenance", "published": true },
+    { "id": "third-party-tools", "published": true }
+  ]
+}
