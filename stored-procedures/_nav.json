@@ -1,0 +1,50 @@
+{
+  "name": "Stored Procedures",
+  "description": "Create and manage stored procedures for complex graph logic and algorithms",
+  "navigation": [
+    {
+      "file": "quick-start.md",
+      "title": "Quick Start"
+    },
+    {
+      "file": "procedure-management.md",
+      "title": "Procedure Management"
+    },
+    {
+      "file": "parameters-and-types.md",
+      "title": "Parameters and Types"
+    },
+    {
+      "file": "control-flow.md",
+      "title": "Control Flow"
+    },
+    {
+      "file": "data-operations.md",
+      "title": "Data Operations"
+    },
+    {
+      "file": "iterators-and-traversal.md",
+      "title": "Iterators and Traversal"
+    },
+    {
+      "file": "parallel-execution.md",
+      "title": "Parallel Execution"
+    },
+    {
+      "file": "builtin-functions.md",
+      "title": "Built-in Functions"
+    },
+    {
+      "file": "expressions.md",
+      "title": "Expressions"
+    },
+    {
+      "file": "algorithm-examples.md",
+      "title": "Algorithm Examples"
+    },
+    {
+      "file": "quick-reference.md",
+      "title": "Quick Reference"
+    }
+  ]
+}

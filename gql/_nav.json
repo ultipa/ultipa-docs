@@ -253,10 +253,6 @@
       "title": "Transaction"
     },
     {
-      "file": "procedures.md",
-      "title": "Procedures"
-    },
-    {
       "file": "trigger.md",
       "title": "Trigger"
     },
