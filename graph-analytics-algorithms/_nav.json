@@ -1,5 +1,6 @@
 {
   "name": "Graph Analytics & Algorithms",
+  "description": "Graph algorithms for analytics and data science",
   "navigation": [
     {
       "pages": [

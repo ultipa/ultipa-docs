@@ -1,5 +1,6 @@
 {
-  "name": "Ultipa Manager User Guide",
+  "name": "Ultipa Manager",
+  "description": "Visual graph database management tool",
   "navigation": [
     {
       "file": "introduction.md",

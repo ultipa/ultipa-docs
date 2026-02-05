@@ -1,5 +1,6 @@
 {
   "name": "UQL",
+  "description": "Ultipa Query Language reference and syntax guide",
   "navigation": [
     {
       "file": "introduction.md",

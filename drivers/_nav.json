@@ -1,5 +1,6 @@
 {
   "name": "Ultipa Drivers",
+  "description": "SDKs for Java, Python, Go, Node.js, and C#",
   "navigation": [
     {
       "file": "introduction.md",
