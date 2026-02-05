@@ -1,0 +1,11 @@
+{
+  "products": [
+    { "id": "gql", "published": true },
+    { "id": "drivers", "published": true },
+    { "id": "graph-algorithms", "published": true },
+    { "id": "ontology", "published": true },
+    { "id": "rbac", "published": true },
+    { "id": "ai-functions", "published": true },
+    { "id": "computing-engine", "published": true }
+  ]
+}
