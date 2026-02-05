@@ -1,5 +1,6 @@
 {
   "name": "Computing Engine",
+  "description": "High-performance distributed computing engine",
   "navigation": [
     {
       "file": "overview.md",

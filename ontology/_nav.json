@@ -1,5 +1,6 @@
 {
   "name": "Ontology",
+  "description": "Graph schema and ontology management",
   "navigation": [
     {
       "file": "overview.md",

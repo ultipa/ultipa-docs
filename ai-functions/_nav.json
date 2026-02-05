@@ -1,5 +1,6 @@
 {
   "name": "AI Functions",
+  "description": "Vector search and AI-powered graph functions",
   "navigation": [
     {
       "file": "vector-fundamentals.md",

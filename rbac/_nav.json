@@ -1,5 +1,6 @@
 {
-  "name": "Role-Based Access Control",
+  "name": "Access Control",
+  "description": "Role-based access control and security",
   "navigation": [
     {
       "file": "overview.md",
