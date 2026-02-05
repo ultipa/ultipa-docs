@@ -1,5 +1,6 @@
 {
   "name": "Ultipa Tools",
+  "description": "CLI and other utilities",
   "navigation": [
     {
       "file": "cli.md",
