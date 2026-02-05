@@ -119,8 +119,6 @@ A graph pattern can specify a match mode that applies to all contained path patt
 | `DIFFERENT EDGES` | **The default.** Repeated edges are not permitted in a record. There are no restrictions on nodes. |
 | `REPEATABLE ELEMENTS` | It is non-restrictive. |
 
-> The `REPEATABLE ELEMENTS` is not supported yet.
-
 ### Example Graph
 
 <div align=center drawio-diagram='16878' drawio-name="draw_709f4d9805324c598dc65af9d0a25ff2.jpg"><img src="https://img.ultipa.cn/draw/draw_709f4d9805324c598dc65af9d0a25ff2.jpg?v='1726762893725'"/></div>

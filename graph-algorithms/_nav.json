@@ -1,0 +1,25 @@
+{
+  "name": "Graph Algorithms",
+  "navigation": [
+    {
+      "file": "overview.md",
+      "title": "Overview"
+    },
+    {
+      "file": "centrality.md",
+      "title": "Centrality Algorithms"
+    },
+    {
+      "file": "community-detection.md",
+      "title": "Community Detection"
+    },
+    {
+      "file": "path-finding.md",
+      "title": "Path Finding"
+    },
+    {
+      "file": "similarity.md",
+      "title": "Similarity Algorithms"
+    }
+  ]
+}

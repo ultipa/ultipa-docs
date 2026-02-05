@@ -9,69 +9,56 @@
       "folder": "java",
       "pages": [
         {
-          "file": "java-installation.md",
-          "title": "Installation"
+          "file": "java-quick-start.md",
+          "title": "Quick Start"
         },
         {
-          "file": "java-connection.md",
-          "title": "Connection"
+          "file": "java-configuration.md",
+          "title": "Configuration"
         },
         {
-          "folder": "database-operations",
-          "pages": [
-            {
-              "file": "java-database-operations-overview-and-request-configuration.md",
-              "title": "Overview and Request Configuration"
-            },
-            {
-              "file": "java-uql-execution.md",
-              "title": "UQL Execution"
-            },
-            {
-              "file": "java-gql-execution.md",
-              "title": "GQL Execution"
-            },
-            {
-              "file": "java-graph.md",
-              "title": "Graph"
-            },
-            {
-              "file": "java-schema-and-property.md",
-              "title": "Schema and Property"
-            },
-            {
-              "file": "java-data-insertion.md",
-              "title": "Data Insertion"
-            },
-            {
-              "file": "java-query-acceleration.md",
-              "title": "Query Acceleration"
-            },
-            {
-              "file": "java-hdc-graph-and-algorithm.md",
-              "title": "HDC Graph and Algorithm"
-            },
-            {
-              "file": "java-data-export.md",
-              "title": "Data Export"
-            },
-            {
-              "file": "java-process-and-job.md",
-              "title": "Process and Job"
-            },
-            {
-              "file": "java-access-control.md",
-              "title": "Access Control"
-            }
-          ]
+          "file": "java-connection-and-session.md",
+          "title": "Connection and Session"
         },
         {
-          "file": "java-result-processing.md",
-          "title": "Result Processing"
+          "file": "java-executing-queries.md",
+          "title": "Executing Queries"
         },
         {
-          "file": "java-driver-data-classes.md",
-          "title": "Driver Data Classes"
+          "file": "java-graph-management.md",
+          "title": "Graph Management"
+        },
+        {
+          "file": "java-transactions.md",
+          "title": "Transactions"
+        },
+        {
+          "file": "java-data-operations.md",
+          "title": "Data Operations"
+        },
+        {
+          "file": "java-bulk-import.md",
+          "title": "Bulk Import"
+        },
+        {
+          "file": "java-data-export.md",
+          "title": "Data Export"
+        },
+        {
+          "file": "java-health-and-admin.md",
+          "title": "Health and Administration"
+        },
+        {
+          "file": "java-response-processing.md",
+          "title": "Response Processing"
+        },
+        {
+          "file": "java-data-types.md",
+          "title": "Data Types"
+        },
+        {
+          "file": "java-error-handling.md",
+          "title": "Error Handling"
         }
       ]
     },
@@ -79,69 +66,56 @@
       "folder": "python",
       "pages": [
         {
-          "file": "python-installation.md",
-          "title": "Installation"
+          "file": "python-quick-start.md",
+          "title": "Quick Start"
         },
         {
-          "file": "python-connection.md",
-          "title": "Connection"
+          "file": "python-configuration.md",
+          "title": "Configuration"
         },
         {
-          "folder": "database-operations",
-          "pages": [
-            {
-              "file": "python-database-operations-overview-and-request-configuration.md",
-              "title": "Overview and Request Configuration"
-            },
-            {
-              "file": "python-uql-execution.md",
-              "title": "UQL Execution"
-            },
-            {
-              "file": "python-gql-execution.md",
-              "title": "GQL Execution"
-            },
-            {
-              "file": "python-graph.md",
-              "title": "Graph"
-            },
-            {
-              "file": "python-schema-and-property.md",
-              "title": "Schema and Property"
-            },
-            {
-              "file": "python-data-insertion.md",
-              "title": "Data Insertion"
-            },
-            {
-              "file": "python-query-acceleration.md",
-              "title": "Query Acceleration"
-            },
-            {
-              "file": "python-hdc-graph-and-algorithm.md",
-              "title": "HDC Graph and Algorithm"
-            },
-            {
-              "file": "python-data-export.md",
-              "title": "Data Export"
-            },
-            {
-              "file": "python-process-and-job.md",
-              "title": "Process and Job"
-            },
-            {
-              "file": "python-access-control.md",
-              "title": "Access Control"
-            }
-          ]
+          "file": "python-connection-and-session.md",
+          "title": "Connection and Session"
         },
         {
-          "file": "python-result-processing.md",
-          "title": "Result Processing"
+          "file": "python-executing-queries.md",
+          "title": "Executing Queries"
         },
         {
-          "file": "python-driver-data-classes.md",
-          "title": "Driver Data Classes"
+          "file": "python-graph-management.md",
+          "title": "Graph Management"
+        },
+        {
+          "file": "python-transactions.md",
+          "title": "Transactions"
+        },
+        {
+          "file": "python-data-operations.md",
+          "title": "Data Operations"
+        },
+        {
+          "file": "python-bulk-import.md",
+          "title": "Bulk Import"
+        },
+        {
+          "file": "python-data-export.md",
+          "title": "Data Export"
+        },
+        {
+          "file": "python-health-and-admin.md",
+          "title": "Health and Administration"
+        },
+        {
+          "file": "python-response-processing.md",
+          "title": "Response Processing"
+        },
+        {
+          "file": "python-data-types.md",
+          "title": "Data Types"
+        },
+        {
+          "file": "python-error-handling.md",
+          "title": "Error Handling"
         }
       ]
     },
@@ -153,57 +127,52 @@
           "title": "Quick Start"
         },
         {
-          "file": "go-connect-to-database.md",
-          "title": "Connect to Database"
+          "file": "go-configuration.md",
+          "title": "Configuration"
         },
         {
-          "file": "go-query-the-database.md",
-          "title": "Query the Database"
+          "file": "go-connection-and-session.md",
+          "title": "Connection and Session"
         },
         {
-          "folder": "convenience-methods",
-          "pages": [
-            {
-              "file": "go-graph.md",
-              "title": "Graph"
-            },
-            {
-              "file": "go-schema-and-property.md",
-              "title": "Schema and Property"
-            },
-            {
-              "file": "go-data-insertion.md",
-              "title": "Data Insertion"
-            },
-            {
-              "file": "go-query-acceleration.md",
-              "title": "Query Acceleration"
-            },
-            {
-              "file": "go-hdc-graph-and-algorithm.md",
-              "title": "HDC Graph and Algorithm"
-            },
-            {
-              "file": "go-data-export.md",
-              "title": "Data Export"
-            },
-            {
-              "file": "go-process-and-job.md",
-              "title": "Process and Job"
-            },
-            {
-              "file": "go-access-control.md",
-              "title": "Access Control"
-            }
-          ]
+          "file": "go-executing-queries.md",
+          "title": "Executing Queries"
         },
         {
-          "file": "go-process-query-results.md",
-          "title": "Process Query Results"
+          "file": "go-graph-management.md",
+          "title": "Graph Management"
         },
         {
-          "file": "go-data-structures.md",
-          "title": "Data Structures"
+          "file": "go-transactions.md",
+          "title": "Transactions"
+        },
+        {
+          "file": "go-data-operations.md",
+          "title": "Data Operations"
+        },
+        {
+          "file": "go-bulk-import.md",
+          "title": "Bulk Import"
+        },
+        {
+          "file": "go-data-export.md",
+          "title": "Data Export"
+        },
+        {
+          "file": "go-health-and-admin.md",
+          "title": "Health and Administration"
+        },
+        {
+          "file": "go-response-processing.md",
+          "title": "Response Processing"
+        },
+        {
+          "file": "go-data-types.md",
+          "title": "Data Types"
+        },
+        {
+          "file": "go-error-handling.md",
+          "title": "Error Handling"
         }
       ]
     },
@@ -216,133 +185,54 @@
           "title": "Quick Start"
         },
         {
-          "file": "nodejs-connect-to-database.md",
-          "title": "Connect to Database"
+          "file": "nodejs-configuration.md",
+          "title": "Configuration"
         },
         {
-          "file": "nodejs-query-the-database.md",
-          "title": "Query the Database"
+          "file": "nodejs-connection-and-session.md",
+          "title": "Connection and Session"
         },
         {
-          "folder": "convenience-methods",
-          "pages": [
-            {
-              "file": "nodejs-graph.md",
-              "title": "Graph"
-            },
-            {
-              "file": "nodejs-schema-and-property.md",
-              "title": "Schema and Property"
-            },
-            {
-              "file": "nodejs-data-insertion.md",
-              "title": "Data Insertion"
-            },
-            {
-              "file": "nodejs-query-acceleration.md",
-              "title": "Query Acceleration"
-            },
-            {
-              "file": "nodejs-hdc-graph-and-algorithm.md",
-              "title": "HDC Graph and Algorithm"
-            },
-            {
-              "file": "nodejs-data-export.md",
-              "title": "Data Export"
-            },
-            {
-              "file": "nodejs-process-and-job.md",
-              "title": "Process and Job"
-            },
-            {
-              "file": "nodejs-access-control.md",
-              "title": "Access Control"
-            }
-          ]
+          "file": "nodejs-executing-queries.md",
+          "title": "Executing Queries"
         },
         {
-          "file": "nodejs-process-query-results.md",
-          "title": "Process Query Results"
+          "file": "nodejs-graph-management.md",
+          "title": "Graph Management"
         },
         {
-          "file": "nodejs-data-structures.md",
-          "title": "Data Structures"
+          "file": "nodejs-transactions.md",
+          "title": "Transactions"
+        },
+        {
+          "file": "nodejs-data-operations.md",
+          "title": "Data Operations"
+        },
+        {
+          "file": "nodejs-bulk-import.md",
+          "title": "Bulk Import"
+        },
+        {
+          "file": "nodejs-data-export.md",
+          "title": "Data Export"
+        },
+        {
+          "file": "nodejs-health-and-admin.md",
+          "title": "Health and Administration"
+        },
+        {
+          "file": "nodejs-response-processing.md",
+          "title": "Response Processing"
+        },
+        {
+          "file": "nodejs-data-types.md",
+          "title": "Data Types"
+        },
+        {
+          "file": "nodejs-error-handling.md",
+          "title": "Error Handling"
         }
       ]
-    },
-    {
-      "folder": "csharp",
-      "name": "C#",
-      "pages": [
-        {
-          "file": "csharp-installation.md",
-          "title": "Installation"
-        },
-        {
-          "file": "csharp-connection.md",
-          "title": "Connection"
-        },
-        {
-          "file": "csharp-request-configuration.md",
-          "title": "Request Configuration"
-        },
-        {
-          "file": "csharp-uql-execution.md",
-          "title": "UQL Execution"
-        },
-        {
-          "file": "csharp-gql-execution.md",
-          "title": "GQL Execution"
-        },
-        {
-          "file": "csharp-graphset-management.md",
-          "title": "Graphset Management"
-        },
-        {
-          "file": "csharp-schema-and-property-management.md",
-          "title": "Schema and Property Management"
-        },
-        {
-          "file": "csharp-data-insertion-and-deletion.md",
-          "title": "Data Insertion and Deletion"
-        },
-        {
-          "file": "csharp-query-acceleration.md",
-          "title": "Query Acceleration"
-        },
-        {
-          "file": "csharp-algorithm-management.md",
-          "title": "Algorithm Management"
-        },
-        {
-          "file": "csharp-downloads-and-exports.md",
-          "title": "Downloads and Exports"
-        },
-        {
-          "file": "csharp-process-and-task-management.md",
-          "title": "Process and Task Management"
-        },
-        {
-          "file": "csharp-access-management.md",
-          "title": "Access Management"
-        },
-        {
-          "file": "csharp-server-statistics.md",
-          "title": "Server Statistics"
-        },
-        {
-          "file": "csharp-result-processing.md",
-          "title": "Result Processing"
-        },
-        {
-          "file": "data-types-mapping-ultipa-and-csharp.md",
-          "title": "Types Mapping Ultipa and C#"
-        }
-      ]
-    },
-    {
-      "file": "restful-api.md",
-      "title": "RESTful API"
     }
   ]
 }

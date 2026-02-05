@@ -1,0 +1,17 @@
+{
+  "name": "Computing Engine",
+  "navigation": [
+    {
+      "file": "overview.md",
+      "title": "Overview"
+    },
+    {
+      "file": "configuration.md",
+      "title": "Configuration"
+    },
+    {
+      "file": "memory-management.md",
+      "title": "Memory Management"
+    }
+  ]
+}

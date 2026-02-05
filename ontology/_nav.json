@@ -1,0 +1,25 @@
+{
+  "name": "Ontology",
+  "navigation": [
+    {
+      "file": "overview.md",
+      "title": "Overview"
+    },
+    {
+      "file": "class-definitions.md",
+      "title": "Class Definitions"
+    },
+    {
+      "file": "property-definitions.md",
+      "title": "Property Definitions"
+    },
+    {
+      "file": "label-syntax.md",
+      "title": "Using Ontology Labels"
+    },
+    {
+      "file": "validation.md",
+      "title": "Validation & Enforcement"
+    }
+  ]
+}

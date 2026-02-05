@@ -135,8 +135,46 @@ For function names that do not follow camelCase, it is acceptable to use either 
 | <a href="/docs/gql/spatial-functions/#point3d()">point3d()</a> | Constructs a three-dimensional Cartesian coordinate. |
 | <a href="/docs/gql/spatial-functions/#pointget()">pointget()</a> | Extracts the coordinate values in the `point` or `point3d` property. |
 
+## Type Conversion Functions
+
+| <div table-width="16">Function</div> | Description |
+| -- | -- |
+| <a href="/docs/gql/type-conversion-functions#TOINTEGER()">TOINTEGER()</a> | Converts a value to an integer. |
+| <a href="/docs/gql/type-conversion-functions#TOFLOAT()">TOFLOAT()</a> | Converts a value to a float. |
+| <a href="/docs/gql/type-conversion-functions#TOSTRING()">TOSTRING()</a> | Converts a value to a string. |
+| <a href="/docs/gql/type-conversion-functions#TOBOOLEAN()">TOBOOLEAN()</a> | Converts a value to a boolean. |
+| <a href="/docs/gql/type-conversion-functions#TOLIST()">TOLIST()</a> | Converts a value to a list. |
+
 ## Table Functions
 
 | <div table-width="16">Function</div> | Description |
 | -- | -- |
 | <a href="/docs/gql/table-functions#table()">table()</a> | Constructs a table. |
+
+## AI & Vector Functions
+
+| <div table-width="20">Function</div> | Description |
+| -- | -- |
+| <a href="/docs/gql/ai-vector-functions#AI.VECTOR()">AI.VECTOR()</a> | Creates a vector from an array of numbers. |
+| <a href="/docs/gql/ai-vector-functions#AI.EMBED()">AI.EMBED()</a> | Generates an embedding vector from text using AI. |
+| <a href="/docs/gql/ai-vector-functions#AI.COSINE()">AI.COSINE()</a> | Calculates cosine similarity between two vectors. |
+| <a href="/docs/gql/ai-vector-functions#AI.EUCLIDEAN()">AI.EUCLIDEAN()</a> | Calculates Euclidean distance between two vectors. |
+| <a href="/docs/gql/ai-vector-functions#AI.MANHATTAN()">AI.MANHATTAN()</a> | Calculates Manhattan distance between two vectors. |
+| <a href="/docs/gql/ai-vector-functions#AI.DOT()">AI.DOT()</a> | Calculates dot product of two vectors. |
+| <a href="/docs/gql/ai-vector-functions#AI.DISTANCE()">AI.DISTANCE()</a> | General distance function with configurable metric. |
+| <a href="/docs/gql/ai-vector-functions#AI.DIMENSION()">AI.DIMENSION()</a> | Returns the number of dimensions in a vector. |
+| <a href="/docs/gql/ai-vector-functions#AI.MAGNITUDE()">AI.MAGNITUDE()</a> | Returns the length (magnitude) of a vector. |
+| <a href="/docs/gql/ai-vector-functions#AI.NORMALIZE()">AI.NORMALIZE()</a> | Normalizes a vector to a unit vector. |
+| <a href="/docs/gql/ai-vector-functions#AI.TOLIST()">AI.TOLIST()</a> | Converts a vector to a list of numbers. |
+| <a href="/docs/gql/ai-vector-functions#AI.ADD()">AI.ADD()</a> | Adds two vectors element-wise. |
+| <a href="/docs/gql/ai-vector-functions#AI.SUBTRACT()">AI.SUBTRACT()</a> | Subtracts the second vector from the first. |
+| <a href="/docs/gql/ai-vector-functions#AI.SCALE()">AI.SCALE()</a> | Multiplies a vector by a scalar value. |
+| <a href="/docs/gql/ai-vector-functions#AI.SETAPIKEY()">AI.SETAPIKEY()</a> | Sets the API key for an AI provider. |
+| <a href="/docs/gql/ai-vector-functions#AI.PROVIDER()">AI.PROVIDER()</a> | Returns the current AI provider. |
+| <a href="/docs/gql/ai-vector-functions#AI.EMBEDDIM()">AI.EMBEDDIM()</a> | Returns the embedding dimensions for the current provider/model. |
+
+## Database Functions
+
+| <div table-width="16">Function</div> | Description |
+| -- | -- |
+| <a href="/docs/gql/database-functions#db.stats()">db.stats()</a> | Returns database statistics as a map. |

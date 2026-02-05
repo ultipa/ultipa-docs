@@ -1,0 +1,29 @@
+{
+  "name": "Role-Based Access Control",
+  "navigation": [
+    {
+      "file": "overview.md",
+      "title": "Overview"
+    },
+    {
+      "file": "user-management.md",
+      "title": "User Management"
+    },
+    {
+      "file": "role-management.md",
+      "title": "Role Management"
+    },
+    {
+      "file": "grant-revoke.md",
+      "title": "Grant & Revoke"
+    },
+    {
+      "file": "permission-levels.md",
+      "title": "Permission Levels"
+    },
+    {
+      "file": "best-practices.md",
+      "title": "Best Practices"
+    }
+  ]
+}

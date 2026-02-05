@@ -1,390 +1,279 @@
 # Quick Start
 
-The Ultipa Go driver is the official library that allows you to interact with Ultipa from a Go application. It requires **Go 1.13 or later**.
+This guide helps you get started with the GQLDB Go driver.
 
-## Install the Driver
+## Requirements
 
-After initializing a local Go module, you can add the latest <a target="_blank" href="https://pkg.go.dev/github.com/ultipa/ultipa-go-driver/v5">Ultipa Go driver</a> as a dependency:
+- Go 1.18 or higher
+
+## Installation
+
+Install the GQLDB Go driver using `go get`:
 
 ```bash
-go get github.com/ultipa/ultipa-go-driver/v5@latest
+go get github.com/gqldb/gqldb-go
 ```
 
-## Connect to Database
-
-You need a running Ultipa database to use the driver. The easiest way to get an instance is via <a target="_blank" href="http://cloud.ultipa.com/">Ultipa Cloud</a> (free trial available), or you can use an on-premises deployment if you already have one.
-
-Creates a connection and tests the connection:
-
-<p tit="Go"></p> 
+## Basic Usage
 
 ```go
 package main
 
 import (
-	"log"
+    "context"
+    "fmt"
+    "log"
+    "time"
 
-	"github.com/ultipa/ultipa-go-driver/v5/sdk"
-	"github.com/ultipa/ultipa-go-driver/v5/sdk/configuration"
+    gqldb "github.com/gqldb/gqldb-go"
 )
 
 func main() {
-	config := &configuration.UltipaConfig{
-        // URI example: Hosts: []string{"xxxx.us-east-1.cloud.ultipa.com:60010"},
-		Hosts:    []string{"10.xx.xx.xx:60010"},
-		Username: "<username>",
-		Password: "<password>",
-	}
-
-	driver, err := sdk.NewUltipaDriver(config)
-	if err != nil {
-		log.Fatalln("Failed to connect to Ultipa:", err)
-	}
-
-    // Tests the connection
-	isSuccess, _ := driver.Test(nil)
-	println("Connection succeeds:", isSuccess)
-}
-```
-
-<p tit="Output"></p> 
-
-```
-Connection succeeds: true
-```
-
-<a target="_blank" href="/docs/drivers/go-connect">More info on database connection →</a>
-
-## Query the Database
-
-**GQL** is the international standardized query language for graph databases. You can use the driver's `Gql()` method to send GQL queries and fully operate the database. If you're new to GQL, check out the <a target="_blank" href="/docs/quick-start/what-is-gql">GQL Quick Start</a> or the <a target="_blank" href="/docs/gql">GQL documentation</a> for a detailed orientation.
-
-<a target="_blank" href="/docs/drivers/go-query">More info on querying the database →</a>
-
-### Create a Graph
-
-To create a new graph in the database:
-
-<p tit="Go"></p> 
-
-```go
-package main
-
-import (
-	"fmt"
-	"log"
-
-	"github.com/ultipa/ultipa-go-driver/v5/sdk"
-	"github.com/ultipa/ultipa-go-driver/v5/sdk/configuration"
-)
-
-func main() {
-	config := &configuration.UltipaConfig{
-        // URI example: Hosts: []string{"xxxx.us-east-1.cloud.ultipa.com:60010"},
-		Hosts:    []string{"10.xx.xx.xx:60010"},
-		Username: "<username>",
-		Password: "<password>",
-	}
-
-	driver, err := sdk.NewUltipaDriver(config)
-	if err != nil {
-		log.Fatalln("Failed to connect to Ultipa:", err)
-	}
-
-    // Creates a new open graph named 'g1'
-	response, _ := driver.Gql("CREATE GRAPH g1 ANY", nil)
-	fmt.Println(response.Status.Code)
-}
-```
-
-<p tit="Output"></p> 
-
-```
-SUCCESS
-```
-
-### Insert Nodes and Edges
-
-To insert nodes and edges into a graph:
-
-<p tit="Go"></p> 
-
-```go
-package main
-
-import (
-	"fmt"
-	"log"
-
-	"github.com/ultipa/ultipa-go-driver/v5/sdk"
-	"github.com/ultipa/ultipa-go-driver/v5/sdk/configuration"
-)
-
-func main() {
-	config := &configuration.UltipaConfig{
-        // URI example: Hosts: []string{"xxxx.us-east-1.cloud.ultipa.com:60010"},
-		Hosts:    []string{"10.xx.xx.xx:60010"},
-		Username: "<username>",
-		Password: "<password>",
-		DefaultGraph: "g1", // Sets the default graph to 'g1'
-	}
-
-	driver, err := sdk.NewUltipaDriver(config)
-	if err != nil {
-		log.Fatalln("Failed to connect to Ultipa:", err)
-	}
-
-	// Inserts nodes and edges into graph the 'g1'
-	response, _ := driver.Gql(`INSERT 
-		(u1:User {_id: 'U1', name: 'rowlock'}),
-		(u2:User {_id: 'U2', name: 'Brainy'}),
-		(u3:User {_id: 'U3', name: 'purplechalk'}),
-		(u4:User {_id: 'U4', name: 'mochaeach'}),
-		(u5:User {_id: 'U5', name: 'lionbower'}),
-		(u1)-[:Follows {createdOn: DATE('2024-01-05')}]->(u2),
-		(u4)-[:Follows {createdOn: DATE('2024-02-10')}]->(u2),
-		(u2)-[:Follows {createdOn: DATE('2024-02-01')}]->(u3),
-		(u3)-[:Follows {createdOn: DATE('2024-05-03')}]->(u5)`, nil)
-	fmt.Println(response.Status.Code)
-}
-```
-
-<p tit="Output"></p> 
-
-```
-SUCCESS
-```
-
-### Retrieve Nodes
-
-To retrieve nodes from a graph:
-
-<p tit="Go"></p> 
-
-```go
-package main
-
-import (
-	"encoding/json"
-	"fmt"
-	"log"
-
-	"github.com/ultipa/ultipa-go-driver/v5/sdk"
-	"github.com/ultipa/ultipa-go-driver/v5/sdk/configuration"
-)
-
-func main() {
-	config := &configuration.UltipaConfig{
-        // URI example: Hosts: []string{"xxxx.us-east-1.cloud.ultipa.com:60010"},
-		Hosts:    []string{"10.xx.xx.xx:60010"},
-		Username: "<username>",
-		Password: "<password>",
-		DefaultGraph: "amz", // Optional; sets the default graph as 'amz'
-	}
-
-	driver, err := sdk.NewUltipaDriver(config)
-	if err != nil {
-		log.Fatalln("Failed to connect to Ultipa:", err)
-	}
-
-	// Retrieves 3 User nodes from the graph 'g1'
-	requestConfig := &configuration.RequestConfig{
-		Graph: "g1", // Sets the graph for the specific request as 'g1'
-	}
-	response, _ := driver.Gql("MATCH (u:User) RETURN u LIMIT 3", requestConfig)
-	nodes, _, _ := response.Alias("u").AsNodes()
-	for _, node := range nodes {
-		jsonData, err := json.MarshalIndent(node, "", "  ")
-		if err != nil {
-			fmt.Println("Error:", err)
-			continue
-		}
-		fmt.Println(string(jsonData))
-	}
-}
-```
-
-<p tit="Output"></p> 
-
-```
-{
-  "ID": "U4",
-  "UUID": 6557243256474697731,
-  "Schema": "User",
-  "Values": {
-    "Data": {
-      "name": "mochaeach"
+    // Create configuration
+    config := &gqldb.Config{
+        Hosts:   []string{"192.168.1.100:9000"},
+        Timeout: 30 * time.Second,
     }
-  }
-}
-{
-  "ID": "U2",
-  "UUID": 7926337543195328514,
-  "Schema": "User",
-  "Values": {
-    "Data": {
-      "name": "Brainy"
+
+    // Create client
+    client, err := gqldb.NewClient(config)
+    if err != nil {
+        log.Fatal(err)
     }
-  }
-}
-{
-  "ID": "U5",
-  "UUID": 14771808976798482436,
-  "Schema": "User",
-  "Values": {
-    "Data": {
-      "name": "lionbower"
+    defer client.Close()
+
+    ctx := context.Background()
+
+    // Authenticate
+    _, err = client.Login(ctx, "username", "password")
+    if err != nil {
+        log.Fatal(err)
     }
-  }
+
+    // Create a graph
+    err = client.CreateGraph(ctx, "myGraph", gqldb.GraphTypeOpen, "")
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    err = client.UseGraph(ctx, "myGraph")
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    // Insert data
+    _, err = client.Gql(ctx, `
+        INSERT (a:Person {_id: "p1", name: "Alice", age: 30}),
+               (b:Person {_id: "p2", name: "Bob", age: 25}),
+               (a)-[:Knows {since: 2020}]->(b)
+    `, nil)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    // Query data
+    response, err := client.Gql(ctx, "MATCH (n:Person) RETURN n.name, n.age", nil)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    for _, row := range response.Rows {
+        name, _ := row.GetString(0)
+        age, _ := row.GetInt(1)
+        fmt.Printf("%s: %d\n", name, age)
+    }
+
+    // Clean up
+    client.DropGraph(ctx, "myGraph", true)
 }
 ```
 
-## Process Query Results
-
-The driver's `Gql()` method returns a `Response` containing the raw query results from the database and execution metadata. To use the query results in your application, you need to **extract** and **convert** them into a usable data structure.
-
-The above node retrieval example demonstrates this by using the `Alias()` method to extract the query results and the `AsNodes()` method to convert them into a list of `Node`s:
-
-<p tit="Go"></p> 
-
-```go
-// Retrieves 3 User nodes from the graph 'g1'
-requestConfig := &configuration.RequestConfig{
-  Graph: "g1", // Sets the graph for the specific request as 'g1'
-}
-response, _ := driver.Gql("MATCH (u:User) RETURN u LIMIT 3", requestConfig)
-nodes, _, _ := response.Alias("u").AsNodes()
-for _, node := range nodes {
-  jsonData, err := json.MarshalIndent(node, "", "  ")
-  if err != nil {
-    fmt.Println("Error:", err)
-    continue
-  }
-  fmt.Println(string(jsonData))
-}
-```
-
-The conversion method you choose depends on the type of query results you receive, such as nodes, edges, paths, property values, etc. For a complete list of available conversion methods and examples, refer to <a target="_blank" href="/docs/drivers/go-query-results">here</a>.
-
-## Convenience Methods
-
-In addition to the `Gql()` method for executing custom GQL queries, the driver provides a suite of **convenience methods** to simplify common database operations. These methods eliminate the need to write full queries for tasks in the following categories:
-
-- <a target="_blank" href="/docs/drivers/go-graph">Graph</a>: Show, create, alter, and delete graphs in a database instance.
-- <a target="_blank" href="/docs/drivers/go-schema-and-property">Schema and Property</a>: Define and modify node and edge schemas and their properties.
-- <a target="_blank" href="/docs/drivers/go-data-insertion">Data Insertion</a>: Insert nodes and edges into a graph efficiently.
-- <a target="_blank" href="/docs/drivers/go-query-acceleration">Query Acceleration</a>: Manage indexes and full-text indexes to optimize query performance.
-- <a target="_blank" href="/docs/drivers/go-hdc-graph-and-algorithm">HDC Graph and Algorithm</a>: Manage HDC graphs and run algorithms on them.
-- <a target="_blank" href="/docs/drivers/go-process-and-job">Process and Job</a>: Monitor running processes and manage backend jobs.
-- <a target="_blank" href="/docs/drivers/go-access-control">Access Control</a>: Configure user privileges and policies (roles).
-- <a target="_blank" href="/docs/drivers/go-data-export">Data Export</a>: Export nodes and edges from a graph.
-
-For example, the `ShowGraph()` retrieves all graphs in the database, it returns a list of `GraphSet`s:
-
-<p tit="Go"></p> 
+## Connection with TLS
 
 ```go
 package main
 
 import (
-	"log"
+    "crypto/tls"
+    "crypto/x509"
+    "os"
 
-	"github.com/ultipa/ultipa-go-driver/v5/sdk"
-	"github.com/ultipa/ultipa-go-driver/v5/sdk/configuration"
+    gqldb "github.com/gqldb/gqldb-go"
 )
 
 func main() {
-	config := &configuration.UltipaConfig{
-        // URI example: Hosts: []string{"xxxx.us-east-1.cloud.ultipa.com:60010"},
-		Hosts:    []string{"10.xx.xx.xx:60010"},
-		Username: "<username>",
-		Password: "<password>",
-	}
+    // Load CA certificate
+    caCert, err := os.ReadFile("/path/to/ca.crt")
+    if err != nil {
+        panic(err)
+    }
 
-	driver, err := sdk.NewUltipaDriver(config)
-	if err != nil {
-		log.Fatalln("Failed to connect to Ultipa:", err)
-	}
+    caCertPool := x509.NewCertPool()
+    caCertPool.AppendCertsFromPEM(caCert)
 
-	// Retrieves all graphs in the database
-	graphs, _ := driver.ShowGraph(nil)
-	for _, graph := range graphs {
-		println(graph.Name)
-	}
+    // Load client certificate
+    cert, err := tls.LoadX509KeyPair("/path/to/client.crt", "/path/to/client.key")
+    if err != nil {
+        panic(err)
+    }
+
+    tlsConfig := &tls.Config{
+        Certificates: []tls.Certificate{cert},
+        RootCAs:      caCertPool,
+    }
+
+    config := &gqldb.Config{
+        Hosts:     []string{"192.168.1.100:9000"},
+        TLSConfig: tlsConfig,
+    }
+
+    client, err := gqldb.NewClient(config)
+    if err != nil {
+        panic(err)
+    }
+    defer client.Close()
+
+    // ... use the client
 }
-
 ```
 
-<p tit="Output"></p> 
-
-```
-g1
-miniCircle
-amz
-```
-
-For example, the `InsertNodes()` method allows you to insert nodes into a graph by providing the target schema and a list of `Node`s:
-
-<p tit="Go"></p> 
+## Using the Config Builder
 
 ```go
 package main
 
 import (
-	"fmt"
-	"log"
+    "time"
 
-	"github.com/ultipa/ultipa-go-driver/v5/sdk"
-	"github.com/ultipa/ultipa-go-driver/v5/sdk/configuration"
-	"github.com/ultipa/ultipa-go-driver/v5/sdk/structs"
+    gqldb "github.com/gqldb/gqldb-go"
 )
 
 func main() {
-	config := &configuration.UltipaConfig{
-        // URI example: Hosts: []string{"xxxx.us-east-1.cloud.ultipa.com:60010"},
-		Hosts:    []string{"10.xx.xx.xx:60010"},
-		Username: "<username>",
-		Password: "<password>",
-	}
+    config := gqldb.NewConfigBuilder().
+        Hosts("192.168.1.100:9000", "192.168.1.101:9000").
+        Timeout(60 * time.Second).
+        DefaultGraph("myGraph").
+        PoolSize(20).
+        RetryCount(5).
+        Build()
 
-	driver, err := sdk.NewUltipaDriver(config)
-	if err != nil {
-		log.Fatalln("Failed to connect to Ultipa:", err)
-	}
+    client, err := gqldb.NewClient(config)
+    if err != nil {
+        panic(err)
+    }
+    defer client.Close()
 
-	// Inserts two User nodes into the graph 'g1'
-
-	requestConfig := &configuration.RequestConfig{Graph: "g1"}
-	insertRequestConfig := &configuration.InsertRequestConfig{RequestConfig: requestConfig}
-
-	nodes := []*structs.Node{
-		{
-			ID: "U6",
-			Values: &structs.Values{
-				Data: map[string]interface{}{
-					"name": "Alice",
-					"age":  28,
-				},
-			},
-		},
-		{
-			ID: "U7",
-			Values: &structs.Values{
-				Data: map[string]interface{}{
-					"name": "Quars",
-				},
-			},
-		},
-	}
-
-	response, _ := driver.InsertNodes("User", nodes, insertRequestConfig)
-	fmt.Println(response.Status.Code)
+    // ... use the client
 }
-
 ```
 
-<p tit="Output"></p> 
+## Complete Example
 
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "log"
+    "time"
+
+    gqldb "github.com/gqldb/gqldb-go"
+)
+
+func main() {
+    config := gqldb.NewConfigBuilder().
+        Hosts("192.168.1.100:9000").
+        Timeout(30 * time.Second).
+        DefaultGraph("socialNetwork").
+        Build()
+
+    client, err := gqldb.NewClient(config)
+    if err != nil {
+        log.Fatalf("Failed to create client: %v", err)
+    }
+    defer client.Close()
+
+    ctx := context.Background()
+
+    // Login
+    session, err := client.Login(ctx, "admin", "password")
+    if err != nil {
+        log.Fatalf("Login failed: %v", err)
+    }
+    fmt.Printf("Logged in with session ID: %d\n", session.ID)
+
+    // Check if graph exists, create if not
+    _, err = client.GetGraphInfo(ctx, "socialNetwork")
+    if err != nil {
+        err = client.CreateGraph(ctx, "socialNetwork", gqldb.GraphTypeOpen, "")
+        if err != nil {
+            log.Fatalf("Failed to create graph: %v", err)
+        }
+        fmt.Println("Created graph")
+    }
+
+    err = client.UseGraph(ctx, "socialNetwork")
+    if err != nil {
+        log.Fatalf("Failed to use graph: %v", err)
+    }
+
+    // Insert data
+    _, err = client.Gql(ctx, `
+        INSERT (alice:User {_id: "u1", name: "Alice", email: "alice@example.com"}),
+               (bob:User {_id: "u2", name: "Bob", email: "bob@example.com"}),
+               (charlie:User {_id: "u3", name: "Charlie", email: "charlie@example.com"}),
+               (alice)-[:Follows]->(bob),
+               (bob)-[:Follows]->(charlie),
+               (charlie)-[:Follows]->(alice)
+    `, nil)
+    if err != nil {
+        log.Fatalf("Insert failed: %v", err)
+    }
+
+    // Query users
+    response, err := client.Gql(ctx, "MATCH (u:User) RETURN u.name, u.email ORDER BY u.name", nil)
+    if err != nil {
+        log.Fatalf("Query failed: %v", err)
+    }
+
+    fmt.Println("\nUsers:")
+    for _, row := range response.Rows {
+        name, _ := row.GetString(0)
+        email, _ := row.GetString(1)
+        fmt.Printf("  %s - %s\n", name, email)
+    }
+
+    // Count relationships
+    countResp, err := client.Gql(ctx, "MATCH ()-[r:Follows]->() RETURN count(r)", nil)
+    if err != nil {
+        log.Fatalf("Count query failed: %v", err)
+    }
+    count, _ := countResp.SingleInt()
+    fmt.Printf("\nTotal follows: %d\n", count)
+
+    // Find paths
+    pathResp, err := client.Gql(ctx, `
+        MATCH p = (a:User)-[:Follows*1..2]->(b:User)
+        WHERE a._id = "u1"
+        RETURN p
+        LIMIT 5
+    `, nil)
+    if err != nil {
+        log.Fatalf("Path query failed: %v", err)
+    }
+    paths, _ := pathResp.AsPaths()
+    fmt.Printf("\nPaths from Alice: %d\n", len(paths))
+
+    // Clean up
+    client.DropGraph(ctx, "socialNetwork", true)
+    fmt.Println("\nGraph dropped")
+}
 ```
-SUCCESS
-```
+
+## Next Steps
+
+- <a href="/docs/drivers/go-configuration">Configuration</a> - Learn about all configuration options
+- <a href="/docs/drivers/go-connection-and-session">Connection and Session</a> - Detailed connection management
+- <a href="/docs/drivers/go-executing-queries">Executing Queries</a> - Query methods and options
+- <a href="/docs/drivers/go-response-processing">Response Processing</a> - Working with query results

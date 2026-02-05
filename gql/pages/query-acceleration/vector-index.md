@@ -115,14 +115,24 @@ CREATE VECTOR INDEX "summary_embedding" ON NODE Book (summaryEmbedding) OPTIONS 
   vector_server: "vector_server_1"
 }
 ```
-  
+
+To create a vector index for all node labels:
+
+```gql
+CREATE VECTOR INDEX "all_embeddings" ON NODE * (embedding) OPTIONS {
+  similarity_function: "COSINE",
+  index_type: "HNSW",
+  dimensions: 1536
+}
+```
+
 **Details**
 
 - The vector index name must be unique. Naming conventions are:
   - 2 to 64 characters.
   - Begins with a letter.
   - Allowed characters: letters (A-Z, a-z), numbers (0-9) and underscores (<code>_</code>).
-- A vector index is applied to a single schema and a single property.
+- A vector index is applied to a single label and a single property. Use `*` to apply to all labels.
 - Configurations for a vector index:
 
 | <div table-width="22">Item</div> | <div table-width="9">Type</div> | <div table-width="8">Default</div> | Description |
@@ -130,11 +140,13 @@ CREATE VECTOR INDEX "summary_embedding" ON NODE Book (summaryEmbedding) OPTIONS 
 | `similarity_function` | String | `L2` | The similarity function used to assess the similarity of two vectors. Supports `L2`, `COSINE`, and `IP`. <a href="#Vector-Search">Learn more</a>  |
 | `index_type` | String | `FLAT` | The method used to organize and search the vectors in the index. Supports `FLAT`, `IVF_FLAT`, `IVF_SQ8`, `HNSW`, `HNSW_SQ`, `HNSW_PQ`, `HNSW_PRQ`, and `SCANN`. <a href="#Annex:-Index-Types">Learn more</a> |
 | `dimensions` | Integer | `128` | The dimensions of the vectors to be indexed. Only vectors of the configured dimension are indexed, and querying the index with a vector of a different dimensions will return an error. |
+| `m` | Integer | `16` | HNSW parameter: Maximum number of connections per node. Higher values improve recall but increase memory and build time. |
+| `efConstruction` | Integer | `200` | HNSW parameter: Size of dynamic candidate list during index construction. Higher values improve quality but increase build time. |
 | `vector_server` | String | / | The name of the <a target="_blank" href="/docs/gql/vector-servers">vector server</a> that hosts the vector index. |
 
 ## Dropping a Vector Index
 
-You can drop a vector index using the `DROP VECTOR INDEX` statement. Dropping a vector index does not affect the actual property values stored in shards. 
+You can drop a vector index using the `DROP VECTOR INDEX` statement. Dropping a vector index does not affect the actual property values stored in shards.
 
 > A property with a vector index cannot be dropped until the vector index is deleted.
 
@@ -142,6 +154,12 @@ To drop the node vector index `summary_embedding`:
 
 ```gql
 DROP NODE VECTOR INDEX summary_embedding
+```
+
+Use `IF EXISTS` to avoid errors when dropping a non-existent index:
+
+```gql
+DROP NODE VECTOR INDEX IF EXISTS summary_embedding
 ```
 
 ## Using Vector Indexes

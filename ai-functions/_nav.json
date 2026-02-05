@@ -1,0 +1,17 @@
+{
+  "name": "AI Functions",
+  "navigation": [
+    {
+      "file": "vector-fundamentals.md",
+      "title": "Vector Fundamentals"
+    },
+    {
+      "file": "similarity-search.md",
+      "title": "Similarity & Search"
+    },
+    {
+      "file": "utilities-config.md",
+      "title": "Utilities & Configuration"
+    }
+  ]
+}

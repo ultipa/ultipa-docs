@@ -6,18 +6,18 @@ The `INSERT` statement allows you to add new nodes and edges into the graph usin
 
 Different from <a target="_blank" href="/docs/gql/graph-pattern-matching">graph pattern matching</a>, `INSERT` supports variable declarations, label/schema expressions, and property specifications in node and edge patterns; while `WHERE` clauses are not allowed. Only basic concatenations of node and edge patterns are permitted, and the indication of edge direction is necessary.
 
-Ultipa supports both typed graphs and open graphs. Their data insertion syntax is similar, but with important differences in requirements.
+Ultipa supports both closed graphs and open graphs. Their data insertion syntax is similar, but with important differences in requirements.
 
-### Typed Graph
+### Closed Graph
 
-For a **typed graph**, any node or edge inserted must conform to its defined graph type. Nodes or edges with undefined schemas or properties cannot be added. 
+For a **closed graph**, any node or edge inserted must conform to its defined graph type. Nodes or edges with undefined schemas or properties cannot be added.
 
-You must assign exactly one schema to a node or edge in a typed graph. Any given property value will be checked against the defined value type; any property not explicitly provided defaults to `null`. 
+You must assign exactly one schema to a node or edge in a closed graph. Any given property value will be checked against the defined value type; any property not explicitly provided defaults to `null`.
 
-To create a typed graph:
+To create a closed graph:
 
 ```gql
-CREATE GRAPH g1 { 
+CREATE GRAPH g1 {
   NODE User ({name STRING, gender STRING}),
   NODE Club (),
   EDGE Follows ()-[{since DATE}]->(),
@@ -25,7 +25,7 @@ CREATE GRAPH g1 {
 }
 ```
 
-<a target="_blank" href="/docs/gql/typed-graph">Learn more about typed graphs →</a>
+<a target="_blank" href="/docs/gql/closed-graph">Learn more about closed graphs →</a>
 
 ### Open Graph
 

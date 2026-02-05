@@ -8,7 +8,7 @@
 
 ### Index Types
 
-Ultipa supports **single index** on one property and **composite index** which involve multiple properties from a schema.
+Ultipa supports **single index** on one property and **composite index** which involve multiple properties from a label.
 
 ## Showing Indexes
 
@@ -31,7 +31,7 @@ The information about indexes is organized into the `_nodeIndex` or `_edgeIndex`
 | `id` | Index id. |
 | `name` | Index name. |
 | `properties` | The properties involved in the index. |
-| `schema` | The schema of the properties involved in the index. |
+| `label` | The label of the properties involved in the index. |
 | `status` | Index status, which can be `DONE` or `CREATING`. |
 
 ## Creating an Index
@@ -44,7 +44,7 @@ System properties in Ultipa are inherently optimized for query performance and h
 
 ```gql
 <create index statement> ::=
-  "CREATE INDEX" <index name> "ON" < "NODE" | "EDGE" > <schema name>
+  "CREATE INDEX" <index name> "ON" < "NODE" | "EDGE" > <label name>
   "(" <property index item> [ { "," <property index item> }... ] ")"
 
 <property index item> ::=
@@ -99,58 +99,40 @@ DROP EDGE INDEX transAmountNotes
 
 ### Applicable Queries
 
-Indexes are automatically applied when the corresponding properties are used in the following types of queries. They are not effective in other types of queries.
+Indexes accelerate the following types of queries:
 
-**1. Node retrieval using a single node pattern.** For example, 
+| Query Type | Example |
+| -- | -- |
+| Exact match | `WHERE p.name = 'Alice'` |
+| Range queries | `WHERE p.age > 25`, `WHERE p.age >= 20 AND p.age < 40` |
+| Prefix search | `WHERE p.name STARTS WITH 'Al'` |
+
+**Exact match:**
 
 ```gql
-CREATE INDEX user_age_index ON NODE user (age)
+MATCH (p:Person WHERE p.name = 'Alice')
+RETURN p
 ```
 
-The `user_age_index` is effective in the following queries:
+**Range queries:**
 
 ```gql
-MATCH (n:user {age: 45}) RETURN n
+MATCH (p:Person WHERE p.age >= 25 AND p.age < 40)
+RETURN p.name, p.age
 ```
 
+**Prefix search:**
+
 ```gql
-MATCH (n) WHERE n.age > 45 RETURN n
+MATCH (p:Person WHERE p.name STARTS WITH 'Al')
+RETURN p.name
 ```
 
-In the second query, the node label is not specified, so `user_age_index` is only partially used during the search for `user` nodes.
-
-**2. Edge retrieval using a one-step path pattern.** For example, 
+**Edge property queries:**
 
 ```gql
-CREATE INDEX links_weight_index ON EDGE links (weight)
-```
-
-The `links_weight_index` is effective in the following query:
-
-```gql
-MATCH ()-[e:links WHERE e.weight = 2]->() RETURN e
-```
-
-The edge direction can be left (`<-[]-`), right (`-[]->`), or any (`-[]-`). 
-
-The following query does not use `links_weight_index` because it retrieves paths, not edges:
-
-```gql
-MATCH p = ()-[e:links WHERE e.weight = 2]->() RETURN p
-```
-
-**3. Start node filtering in path patterns.**  
-
-The above `user_age_index` is effective in the following query:
-
-```gql
-MATCH p = (n:user WHERE n.age > 45)-[]-()-[]-() RETURN p
-```
-
-It does not apply to the following query:
-
-```gql
-MATCH p = ()-[]-(n:user WHERE n.age > 45) RETURN p
+MATCH ()-[e:Links WHERE e.weight > 5]->()
+RETURN e
 ```
 
 ### Leftmost Prefix Rule

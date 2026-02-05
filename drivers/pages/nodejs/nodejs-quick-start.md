@@ -1,300 +1,234 @@
 # Quick Start
 
-The Ultipa Node.js driver is a JavaScript library that allows you to interact with Ultipa from any Node.js environment. It requires **Node.js version 12.22.12 or later**.
+The GQLDB Node.js driver is a gRPC-based client library for interacting with GQLDB graph database. It requires **Node.js version 18.0.0 or later**.
 
 ## Install the Driver
 
-You can install the latest package from <a target = "_blank" href="https://www.npmjs.com/package/@ultipa-graph/ultipa-driver">npm registry</a>:
+Install the package using npm:
 
 ```bash
-npm install @ultipa-graph/ultipa-driver
+npm install gqldb-nodejs
 ```
 
 ## Connect to Database
 
-You need a running Ultipa database to use the driver. The easiest way to get an instance is via <a target="_blank" href="http://cloud.ultipa.com/">Ultipa Cloud</a> (free trial available), or you can use an on-premises deployment if you already have one.
+You need a running GQLDB instance to use the driver. Create a client and authenticate:
 
-Creates a connection and tests the connection:
+```typescript
+import { GqldbClient, createConfig } from 'gqldb-nodejs';
 
-```ts
-import { UltipaDriver } from "@ultipa-graph/ultipa-driver";
-import type { ULTIPA } from "@ultipa-graph/ultipa-driver/dist/types/index.js";
+async function main() {
+  // Create configuration
+  const config = createConfig({
+    hosts: ['192.168.1.100:9000'],
+    defaultGraph: 'myGraph'
+  });
 
-let sdkUsage = async () => {
-  const ultipaConfig: ULTIPA.UltipaConfig = {
-    // URI example: hosts: ["xxxx.us-east-1.cloud.ultipa.com:60010"]
-    hosts: ["10.xx.xx.xx:60010"],
-    username: "<username>",
-    password: "<password>"
-  };
+  // Create client
+  const client = new GqldbClient(config);
 
-  const driver = new UltipaDriver(ultipaConfig);
-  
-  // Tests the connection
-  const isSuccess = await driver.test();
-  console.log(`Connection succeeds: ${isSuccess}`);
-};
+  try {
+    // Authenticate
+    const session = await client.login('username', 'password');
+    console.log('Logged in successfully');
 
-sdkUsage().catch(console.error);
+    // Test connection with ping
+    const latency = await client.ping();
+    console.log(`Ping latency: ${latency}ns`);
+
+  } finally {
+    // Always close the client when done
+    await client.close();
+  }
+}
+
+main().catch(console.error);
 ```
-
-<p tit="Output"></p> 
-
-```
-Connection succeeds: true
-```
-
-<a target="_blank" href="/docs/drivers/nodejs-connect">More info on database connection →</a>
 
 ## Query the Database
 
-**GQL** is the international standardized query language for graph databases. You can use the driver's `gql()` method to send GQL queries and fully operate the database. If you're new to GQL, check out the <a target="_blank" href="/docs/quick-start/what-is-gql">GQL Quick Start</a> or the <a target="_blank" href="/docs/gql">GQL documentation</a> for a detailed orientation.
+Use the `gql()` method to execute GQL queries:
 
-<a target="_blank" href="/docs/drivers/nodejs-query">More info on querying the database →</a>
+```typescript
+import { GqldbClient, createConfig } from 'gqldb-nodejs';
 
-### Create a Graph
+async function main() {
+  const config = createConfig({
+    hosts: ['192.168.1.100:9000'],
+    defaultGraph: 'myGraph'
+  });
 
-To create a new graph in the database:
+  const client = new GqldbClient(config);
 
-```ts
-import { UltipaDriver } from "@ultipa-graph/ultipa-driver";
-import type { ULTIPA } from "@ultipa-graph/ultipa-driver/dist/types/index.js";
+  try {
+    await client.login('username', 'password');
 
-let sdkUsage = async () => {
-  const ultipaConfig: ULTIPA.UltipaConfig = {
-    // URI example: hosts: ["xxxx.us-east-1.cloud.ultipa.com:60010"]
-    hosts: ["10.xx.xx.xx:60010"],
-    username: "<username>",
-    password: "<password>"
-  };
+    // Execute a GQL query
+    const response = await client.gql('MATCH (n) RETURN n LIMIT 10');
 
-  const driver = new UltipaDriver(ultipaConfig);
-  
-  // Creates a new open graph named 'g1'
-  let response = await driver.gql("CREATE GRAPH g1 ANY")
-  console.log(response.status?.message)
-};
+    // Process results
+    console.log(`Columns: ${response.columns}`);
+    console.log(`Row count: ${response.rowCount}`);
 
-sdkUsage().catch(console.error);
-```
+    for (const row of response.rows) {
+      console.log(row.get(0));
+    }
 
-<p tit="Output"></p> 
-
-```
-SUCCESS
-```
-
-### Insert Nodes and Edges
-
-To insert nodes and edges into a graph:
-
-```ts
-import { UltipaDriver } from "@ultipa-graph/ultipa-driver";
-import type { ULTIPA } from "@ultipa-graph/ultipa-driver/dist/types/index.js";
-
-async function sdkUsage() {
-  const ultipaConfig: ULTIPA.UltipaConfig = {
-    // URI example: hosts: ["xxxx.us-east-1.cloud.ultipa.com:60010"]
-    hosts: ["10.xx.xx.xx:60010"],
-    username: "<username>",
-    password: "<password>",
-    defaultGraph: "g1" // Sets the default graph to 'g1'
-  };
-
-  const driver = new UltipaDriver(ultipaConfig);
-
-  // Inserts nodes and edges into graph the 'g1'
-  let response = await driver.gql(`INSERT 
-    (u1:User {_id: 'U1', name: 'rowlock'}),
-    (u2:User {_id: 'U2', name: 'Brainy'}),
-    (u3:User {_id: 'U3', name: 'purplechalk'}),
-    (u4:User {_id: 'U4', name: 'mochaeach'}),
-    (u5:User {_id: 'U5', name: 'lionbower'}),
-    (u1)-[:Follows {createdOn: DATE('2024-01-05')}]->(u2),
-    (u4)-[:Follows {createdOn: DATE('2024-02-10')}]->(u2),
-    (u2)-[:Follows {createdOn: DATE('2024-02-01')}]->(u3),
-    (u3)-[:Follows {createdOn: DATE('2024-05-03')}]->(u5)`);
-  console.log(response.status?.message);
+  } finally {
+    await client.close();
+  }
 }
 
-sdkUsage().catch(console.error);
+main().catch(console.error);
 ```
 
-<p tit="Output"></p> 
+## Create a Graph
 
-```
-SUCCESS
-```
+Create a new graph in the database:
 
-### Retrieve Nodes
+```typescript
+import { GqldbClient, createConfig, GraphType } from 'gqldb-nodejs';
 
-To retrieve nodes from a graph:
+async function main() {
+  const config = createConfig({
+    hosts: ['192.168.1.100:9000']
+  });
 
-```ts
-import { UltipaDriver } from "@ultipa-graph/ultipa-driver";
-import type { ULTIPA } from "@ultipa-graph/ultipa-driver/dist/types/index.js";
-import { RequestConfig } from "@ultipa-graph/ultipa-driver/dist/types/types.js";
+  const client = new GqldbClient(config);
 
-let sdkUsage = async () => {
-  const ultipaConfig: ULTIPA.UltipaConfig = {
-    // URI example: hosts: ["xxxx.us-east-1.cloud.ultipa.com:60010"]
-    hosts: ["10.xx.xx.xx:60010"],
-    username: "<username>",
-    password: "<password>",
-    defaultGraph: "amz" // Optional; sets the default graph as 'amz'
-  };
+  try {
+    await client.login('username', 'password');
 
-  const driver = new UltipaDriver(ultipaConfig);
-  
-  // Retrieves 3 User nodes from the graph 'g1'
-  const requestConfig: RequestConfig = {
-    graph: "g1" // Sets the graph for the specific request as 'g1'
-  }; 
-  let response = await driver.gql("MATCH (u:User) RETURN u LIMIT 3", requestConfig);
-  const nodes = response.alias("u").asNodes();
-  for (const node of nodes) {
-    console.log(node)
-  };
-};
+    // Create an open (schema-less) graph
+    await client.createGraph('myNewGraph', GraphType.OPEN, 'My graph description');
+    console.log('Graph created successfully');
 
-sdkUsage().catch(console.error);
-```
+    // Use the graph
+    await client.useGraph('myNewGraph');
 
-<p tit="Output"></p> 
-
-```
-Node {
-  uuid: '6557243256474697731',
-  id: 'U4',
-  schema: 'User',
-  values: { name: 'mochaeach', gender: "male" }
+  } finally {
+    await client.close();
+  }
 }
-Node {
-  uuid: '7926337543195328514',
-  id: 'U2',
-  schema: 'User',
-  values: { name: 'Brainy', gender: "female"  }
+
+main().catch(console.error);
+```
+
+## Insert Data
+
+Insert nodes and edges into a graph:
+
+```typescript
+import { GqldbClient, createConfig } from 'gqldb-nodejs';
+
+async function main() {
+  const config = createConfig({
+    hosts: ['192.168.1.100:9000'],
+    defaultGraph: 'myGraph'
+  });
+
+  const client = new GqldbClient(config);
+
+  try {
+    await client.login('username', 'password');
+
+    // Insert nodes
+    const nodeResult = await client.insertNodes('myGraph', [
+      { id: 'user1', labels: ['User'], properties: { name: 'Alice', age: 30 } },
+      { id: 'user2', labels: ['User'], properties: { name: 'Bob', age: 25 } }
+    ]);
+    console.log(`Inserted ${nodeResult.nodeCount} nodes`);
+
+    // Insert edges
+    const edgeResult = await client.insertEdges('myGraph', [
+      { id: 'e1', label: 'Follows', fromNodeId: 'user1', toNodeId: 'user2', properties: {} }
+    ]);
+    console.log(`Inserted ${edgeResult.edgeCount} edges`);
+
+  } finally {
+    await client.close();
+  }
 }
-Node {
-  uuid: '14771808976798482436',
-  id: 'U5',
-  schema: 'User',
-  values: { name: 'lionbower', gender: "male"  }
-}
+
+main().catch(console.error);
 ```
 
 ## Process Query Results
 
-The driver's `gql()` method returns a `Response` containing the raw query results from the database and execution metadata. To use the query results in your application, you need to **extract** and **convert** them into a usable data structure.
+The `gql()` method returns a `Response` object with methods to extract different data types:
 
-The above node retrieval example demonstrates this by using the `alias()` method to extract the query results and the `asNodes()` method to convert them into a list of `Node`s:
+```typescript
+import { GqldbClient, createConfig } from 'gqldb-nodejs';
 
-```ts
-// Retrieves 3 User nodes from the graph 'g1'
-const requestConfig: RequestConfig = {
-  graph: "g1" // Sets the graph for the specific request as 'g1'
-}; 
-let response = await driver.gql("MATCH (u:User) RETURN u LIMIT 3", requestConfig);
-const nodes = response.alias("u").asNodes();
-for (const node of nodes) {
-  console.log(node)
-};
-```
+async function main() {
+  const config = createConfig({
+    hosts: ['192.168.1.100:9000'],
+    defaultGraph: 'myGraph'
+  });
 
-The conversion method you choose depends on the type of query results you receive, such as nodes, edges, paths, property values, etc. For a complete list of available conversion methods and examples, refer to <a target="_blank" href="/docs/drivers/nodejs-query-results">here</a>.
+  const client = new GqldbClient(config);
 
-## Convenience Methods
+  try {
+    await client.login('username', 'password');
 
-In addition to the `gql()` method for executing custom GQL queries, the driver provides a suite of **convenience methods** to simplify common database operations. These methods eliminate the need to write full queries for tasks in the following categories:
+    // Query nodes
+    const response = await client.gql('MATCH (u:User) RETURN u LIMIT 5');
 
-- <a target="_blank" href="/docs/drivers/nodejs-graph">Graph</a>: Show, create, alter, and delete graphs in a database instance.
-- <a target="_blank" href="/docs/drivers/nodejs-schema-and-property">Schema and Property</a>: Define and modify node and edge schemas and their properties.
-- <a target="_blank" href="/docs/drivers/nodejs-data-insertion">Data Insertion</a>: Insert nodes and edges into a graph efficiently.
-- <a target="_blank" href="/docs/drivers/nodejs-query-acceleration">Query Acceleration</a>: Manage indexes and full-text indexes to optimize query performance.
-- <a target="_blank" href="/docs/drivers/nodejs-hdc-graph-and-algorithm">HDC Graph and Algorithm</a>: Manage HDC graphs and run algorithms on them.
-- <a target="_blank" href="/docs/drivers/nodejs-process-and-job">Process and Job</a>: Monitor running processes and manage backend jobs.
-- <a target="_blank" href="/docs/drivers/nodejs-access-control">Access Control</a>: Configure user privileges and policies (roles).
-- <a target="_blank" href="/docs/drivers/nodejs-data-export">Data Export</a>: Export nodes and edges from a graph.
+    // Extract as Node objects
+    const { nodes, schemas } = response.asNodes();
+    for (const node of nodes) {
+      console.log(`Node: ${node.id}, Labels: ${node.labels}, Properties:`, node.properties);
+    }
 
-For example, the `showGraph()` retrieves all graphs in the database, it returns a list of `GraphSet`s:
+    // Or convert to plain objects
+    const objects = response.toObjects();
+    console.log(objects);
 
-```ts
-import { UltipaDriver } from "@ultipa-graph/ultipa-driver";
-import type { ULTIPA } from "@ultipa-graph/ultipa-driver/dist/types/index.js";
-
-let sdkUsage = async () => {
-  const ultipaConfig: ULTIPA.UltipaConfig = {
-    // URI example: hosts: ["xxxx.us-east-1.cloud.ultipa.com:60010"]
-    hosts: ["10.xx.xx.xx:60010"],
-    username: "<username>",
-    password: "<password>"
-  };
-
-  const driver = new UltipaDriver(ultipaConfig);
-  
-  // Retrieves all graphs in the database
-  const graphs = await driver.showGraph();
-  for (const graph of graphs) {
-    console.log(graph.name)
+  } finally {
+    await client.close();
   }
-};
+}
 
-sdkUsage().catch(console.error);
+main().catch(console.error);
 ```
 
-<p tit="Output"></p> 
+## Use Transactions
 
-```
-g1
-miniCircle
-amz
-```
+Execute multiple operations atomically:
 
-For example, the `insertNodes()` method allows you to insert nodes into a graph by providing the target schema and a list of `Node`s:
+```typescript
+import { GqldbClient, createConfig } from 'gqldb-nodejs';
 
-```ts
-import { UltipaDriver } from "@ultipa-graph/ultipa-driver";
-import type { ULTIPA } from "@ultipa-graph/ultipa-driver/dist/types/index.js";
-import { InsertRequestConfig } from "@ultipa-graph/ultipa-driver/dist/types/types.js";
+async function main() {
+  const config = createConfig({
+    hosts: ['192.168.1.100:9000']
+  });
 
-let sdkUsage = async () => {
-  const ultipaConfig: ULTIPA.UltipaConfig = {
-    // URI example: hosts: ["xxxx.us-east-1.cloud.ultipa.com:60010"]
-    hosts: ["10.xx.xx.xx:60010"],
-    username: "<username>",
-    password: "<password>"
-  };
+  const client = new GqldbClient(config);
 
-  const driver = new UltipaDriver(ultipaConfig);
-  
-  // Inserts two User nodes into the graph 'g1'
+  try {
+    await client.login('username', 'password');
 
-  const insertRequestConfig: InsertRequestConfig = { graph: "g1" };
+    // Use withTransaction for automatic commit/rollback
+    const result = await client.withTransaction('myGraph', async (txId) => {
+      await client.gql('INSERT (n:User {_id: "u1", name: "Alice"})', { transactionId: txId });
+      await client.gql('INSERT (n:User {_id: "u2", name: "Bob"})', { transactionId: txId });
+      return 'Transaction completed';
+    });
 
-  const node1 = {
-    id: "U6",
-    values: {
-      name: "Alice",
-      age: 28
-    },
-  };
-  const node2 = {
-    id: "U7",
-    values: {
-      name: "Quars"
-    },
-  };
-  const nodes = [node1, node2]
+    console.log(result);
 
-  let response = await driver.insertNodes("User", nodes, insertRequestConfig);
-  console.log(response.status?.message);
-};
+  } finally {
+    await client.close();
+  }
+}
 
-sdkUsage().catch(console.error);
+main().catch(console.error);
 ```
 
-<p tit="Output"></p> 
+## Next Steps
 
-```
-SUCCESS
-```
+- <a href="/docs/drivers/nodejs-configuration">Configuration</a> - Learn about all configuration options
+- <a href="/docs/drivers/nodejs-connection-and-session">Connection and Session</a> - Detailed connection management
+- <a href="/docs/drivers/nodejs-executing-queries">Executing Queries</a> - Query methods and options
+- <a href="/docs/drivers/nodejs-response-processing">Response Processing</a> - Working with query results

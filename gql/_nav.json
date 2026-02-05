@@ -6,6 +6,10 @@
       "title": "Introduction"
     },
     {
+      "file": "gql-vs-other-languages.md",
+      "title": "GQL vs Other Languages"
+    },
+    {
       "folder": "graph-pattern-matching",
       "pages": [
         {
@@ -42,8 +46,8 @@
           "title": "Overview"
         },
         {
-          "file": "typed-graph.md",
-          "title": "Typed Graph"
+          "file": "closed-graph.md",
+          "title": "Closed Graph"
         },
         {
           "file": "open-graph.md",
@@ -197,8 +201,20 @@
           "title": "Spatial Functions"
         },
         {
+          "file": "type-conversion-functions.md",
+          "title": "Type Conversion Functions"
+        },
+        {
           "file": "table-functions.md",
           "title": "Table Functions"
+        },
+        {
+          "file": "ai-vector-functions.md",
+          "title": "AI & Vector Functions"
+        },
+        {
+          "file": "database-functions.md",
+          "title": "Database Functions"
         }
       ]
     },
@@ -232,22 +248,12 @@
       ]
     },
     {
-      "folder": "hdc-graphs",
-      "name": "HDC Graphs",
-      "pages": [
-        {
-          "file": "managing-hdc-graphs.md",
-          "title": "Managing HDC Graphs"
-        },
-        {
-          "file": "hdc-graph-queries.md",
-          "title": "HDC Graph Queries"
-        }
-      ]
-    },
-    {
       "file": "transaction.md",
       "title": "Transaction"
+    },
+    {
+      "file": "procedures.md",
+      "title": "Procedures"
     },
     {
       "file": "trigger.md",
@@ -295,10 +301,6 @@
           "title": "Syntactic Notation"
         }          
       ]
-    },
-    {
-      "file": "access-control.md",
-      "title": "Access Control"
     },
     {
       "file": "gql-conformance.md",
