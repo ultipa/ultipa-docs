@@ -1,19 +1,17 @@
 {
-    "name": "Third-Party Tools",
-    "description": "Integration with external tools",
-    "navigation": [
-      {
-        "file": "overview.md",
-        "title": "Overview"
-        
-      },
-      {
-        "file": "gdotv.md",
-        "title": "G.V()"
-      },
-      {
-        "file": "vscode.md",
-        "title": "Visual Studio Code"
-      }
-    ]
+  "name": "Third-Party Tools",
+  "navigation": [
+    {
+      "file": "overview.md",
+      "title": "Overview"
+    },
+    {
+      "file": "gdotv.md",
+      "title": "G.V()"
+    },
+    {
+      "file": "vscode.md",
+      "title": "Visual Studio Code"
+    }
+  ]
 }

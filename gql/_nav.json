@@ -1,6 +1,5 @@
 {
   "name": "ISO GQL",
-  "description": "Graph Query Language reference and syntax guide",
   "navigation": [
     {
       "file": "introduction.md",
@@ -294,7 +293,7 @@
         {
           "file": "syntactic-notation.md",
           "title": "Syntactic Notation"
-        }          
+        }
       ]
     },
     {
