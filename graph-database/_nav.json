@@ -1,18 +1,17 @@
 {
-    "name": "Ultipa Graph Database",
-    "description": "Database introduction, versions and release notes",
-    "navigation": [
+  "name": "Ultipa Graph Database",
+  "navigation": [
+    {
+      "pages": [
         {
-            "pages": [
-                {
-                    "file": "major-versions.md",
-                    "title": "Major Versions"
-                },
-                {
-                    "file": "release-notes.md",
-                    "title": "Release Notes"
-                }
-            ]
+          "file": "major-versions.md",
+          "title": "Major Versions"
+        },
+        {
+          "file": "release-notes.md",
+          "title": "Release Notes"
         }
-    ]
+      ]
+    }
+  ]
 }

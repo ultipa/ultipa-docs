@@ -1,6 +1,5 @@
 {
   "name": "Ultipa Transporter",
-  "description": "Data import and export tool",
   "navigation": [
     {
       "file": "introduction.md",
