@@ -1,17 +1,77 @@
 {
   "published": true,
   "products": [
-    { "id": "quick-start", "published": true },
-    { "id": "graph-database", "published": true },
-    { "id": "gql", "published": true },
-    { "id": "uql", "published": true },
-    { "id": "graph-analytics-algorithms", "published": true },
-    { "id": "manager-user-guide", "published": true },
-    { "id": "cloud-user-guide", "published": true },
-    { "id": "transporter-user-guide", "published": true },
-    { "id": "tools", "published": true },
-    { "id": "drivers", "published": true },
-    { "id": "operations-and-maintenance", "published": true },
-    { "id": "third-party-tools", "published": true }
+    {
+      "id": "quick-start",
+      "name": "Quick Start",
+      "published": true,
+      "description": "Get started quickly with Ultipa"
+    },
+    {
+      "id": "graph-database",
+      "name": "Ultipa Graph Database",
+      "published": true,
+      "description": "Database introduction, versions and release notes"
+    },
+    {
+      "id": "gql",
+      "name": "ISO GQL",
+      "published": true,
+      "description": "Graph Query Language reference and syntax guide"
+    },
+    {
+      "id": "uql",
+      "name": "UQL",
+      "published": true,
+      "description": "Ultipa Query Language reference"
+    },
+    {
+      "id": "graph-analytics-algorithms",
+      "name": "Graph Analytics & Algorithms",
+      "published": true,
+      "description": "Graph algorithms and analytics"
+    },
+    {
+      "id": "manager-user-guide",
+      "name": "Ultipa Manager",
+      "published": true,
+      "description": "Visual graph database management tool"
+    },
+    {
+      "id": "cloud-user-guide",
+      "name": "Ultipa Cloud",
+      "published": true,
+      "description": "Managed graph database cloud service"
+    },
+    {
+      "id": "transporter-user-guide",
+      "name": "Ultipa Transporter",
+      "published": true,
+      "description": "Data import and export tool"
+    },
+    {
+      "id": "tools",
+      "name": "Ultipa Tools",
+      "published": true,
+      "description": "CLI and other utilities"
+    },
+    {
+      "id": "drivers",
+      "name": "Ultipa Drivers",
+      "published": true,
+      "description": "SDKs for Java, Python, Go, Node.js, and C#"
+    },
+    {
+      "id": "operations-and-maintenance",
+      "name": "Operations & Maintenance",
+      "published": true,
+      "description": "System administration and maintenance"
+    },
+    {
+      "id": "third-party-tools",
+      "name": "Third-Party Tools",
+      "published": true,
+      "description": "Integration with external tools"
+    }
   ]
 }
