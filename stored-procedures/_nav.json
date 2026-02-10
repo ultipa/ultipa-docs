@@ -1,6 +1,5 @@
 {
   "name": "Stored Procedures",
-  "description": "Manage procedures for complex graph logic and algorithms",
   "navigation": [
     {
       "file": "quick-start.md",

@@ -1,6 +1,5 @@
 {
   "name": "Graph Algorithms",
-  "description": "Graph algorithms for analytics and data science",
   "navigation": [
     {
       "file": "overview.md",
