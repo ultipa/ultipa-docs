@@ -4,9 +4,11 @@ This page covers all iterator sources and the FOR...IN MATCH traversal system.
 
 ## Iterators
 
-### SCAN — Node Iterator
+### SCAN - Node Iterator
 
 Iterate over nodes by label:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 FOR node IN SCAN(:Person) {
@@ -16,6 +18,8 @@ FOR node IN SCAN(:Person) {
 
 With property filter:
 
+<p tit="Procedure Body Language"></p>
+
 ```gql
 FOR node IN SCAN(:Person {active: true}) {
     PRINT node.name || ' is active'
@@ -23,6 +27,8 @@ FOR node IN SCAN(:Person {active: true}) {
 ```
 
 Scan all nodes (no label filter):
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 FOR node IN SCAN() {
@@ -32,6 +38,8 @@ FOR node IN SCAN() {
 
 With batching for better throughput:
 
+<p tit="Procedure Body Language"></p>
+
 ```gql
 FOR node IN SCAN(:Person).batch(1000) {
     -- Nodes are fetched in batches of 1000
@@ -39,9 +47,11 @@ FOR node IN SCAN(:Person).batch(1000) {
 }
 ```
 
-### EDGES — Edge Iterator
+### EDGES - Edge Iterator
 
 Iterate over all edges:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 FOR edge IN EDGES() {
@@ -49,7 +59,9 @@ FOR edge IN EDGES() {
 }
 ```
 
-By edge type:
+By edge label:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 FOR edge IN EDGES(:KNOWS) {
@@ -59,15 +71,19 @@ FOR edge IN EDGES(:KNOWS) {
 
 With batching:
 
+<p tit="Procedure Body Language"></p>
+
 ```gql
 FOR edge IN EDGES(:FOLLOWS).batch(1000) {
     -- process edges in batches
 }
 ```
 
-### NEIGHBORS — Neighbor Iterator
+### NEIGHBORS - Neighbor Iterator
 
 Get neighbors of a node:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 -- Both directions (default)
@@ -85,7 +101,7 @@ FOR neighbor IN NEIGHBORS(node, IN) {
     PRINT neighbor._id
 }
 
--- Filter by edge type
+-- Filter by edge label
 FOR neighbor IN NEIGHBORS(node, OUT, :KNOWS) {
     PRINT neighbor.name
 }
@@ -93,9 +109,11 @@ FOR neighbor IN NEIGHBORS(node, OUT, :KNOWS) {
 
 Direction options: `OUT`, `IN`, `BOTH`
 
-### RANGE — Numeric Iterator
+### RANGE - Numeric Iterator
 
 Generate a sequence of numbers:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 FOR i IN RANGE(0, 10) {
@@ -109,13 +127,15 @@ FOR i IN RANGE(1, 100) {
 
 `RANGE(start, end)` generates values from `start` (inclusive) to `end` (exclusive).
 
-## FOR...IN MATCH — Graph Traversal
+## FOR...IN MATCH - Graph Traversal
 
 The procedure language supports powerful graph traversal with multiple algorithms through the `FOR...IN MATCH` syntax.
 
 ### Variable Binding
 
-**Single variable** — binds the destination node:
+**Single variable** - binds the destination node:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 FOR node IN MATCH (start)-[:EDGE]->{1,5}(node) {
@@ -123,7 +143,9 @@ FOR node IN MATCH (start)-[:EDGE]->{1,5}(node) {
 }
 ```
 
-**Tuple** — binds both node and depth:
+**Tuple** - binds both node and depth:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 FOR (node, depth) IN MATCH (start)-[:EDGE]->{1,5}(node) {
@@ -131,7 +153,9 @@ FOR (node, depth) IN MATCH (start)-[:EDGE]->{1,5}(node) {
 }
 ```
 
-**Path variable** — binds the full path (for shortest path modes):
+**Path variable** - binds the full path (for shortest path modes):
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 FOR path IN MATCH SHORTEST (a)-[:ROAD]->{1,50}(b) {
@@ -153,9 +177,11 @@ FOR path IN MATCH SHORTEST (a)-[:ROAD]->{1,50}(b) {
 | K Shortest | `MATCH SHORTEST k` | Top-k shortest paths |
 | All Shortest | `MATCH ALL SHORTEST` | All shortest paths |
 
-### DFS Traversal (Default)
+#### DFS Traversal (Default)
 
 Depth-first exploration:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 FOR (node, depth) IN MATCH (start)-[:KNOWS]->{1,5}(node) {
@@ -165,9 +191,11 @@ FOR (node, depth) IN MATCH (start)-[:KNOWS]->{1,5}(node) {
 
 DFS visits deeper paths first. Useful for exploring tree-like structures or when you want to find any path quickly.
 
-### BFS Traversal
+#### BFS Traversal
 
 Level-by-level exploration. Guarantees shortest hop count:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 FOR (node, depth) IN MATCH BFS (start)-[:KNOWS]->{1,5}(node) {
@@ -181,9 +209,11 @@ BFS is preferred when:
 - You want to process nodes level by level
 - You need early termination at a specific depth
 
-### KHOP — K-Hop Neighbors
+#### KHOP (K-Hop Neighbors)
 
 Alias for BFS. Find all nodes within k hops:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 -- Friends of friends (exactly 2 hops)
@@ -197,9 +227,11 @@ FOR (node, depth) IN MATCH KHOP (start)-[:CONNECTS]-{1,3}(node) {
 }
 ```
 
-### Shortest Path
+#### Shortest Path
 
 **Single shortest path:**
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 LET path = MATCH SHORTEST (source)-[:ROAD]->{1,20}(target)
@@ -214,6 +246,8 @@ IF path IS NOT NULL {
 
 **K shortest paths:**
 
+<p tit="Procedure Body Language"></p>
+
 ```gql
 FOR path IN MATCH SHORTEST 5 (source)-[:ROAD]->{}(target) {
     RETURN path.length, path.nodes
@@ -222,6 +256,8 @@ FOR path IN MATCH SHORTEST 5 (source)-[:ROAD]->{}(target) {
 
 **All shortest paths:**
 
+<p tit="Procedure Body Language"></p>
+
 ```gql
 FOR path IN MATCH ALL SHORTEST (source)-[:ROAD]->{}(target) {
     RETURN path.nodes, path.length
@@ -229,6 +265,8 @@ FOR path IN MATCH ALL SHORTEST (source)-[:ROAD]->{}(target) {
 ```
 
 ### Direction Patterns
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 -- Outgoing edges only
@@ -243,7 +281,9 @@ FOR (n, d) IN MATCH BFS (start)-[:KNOWS]-{1,5}(n) { ... }
 
 ### Edge Filters
 
-Filter edges during traversal using WHERE on the edge pattern:
+Filter edges during traversal using `WHERE` on the edge pattern:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 -- Only traverse edges with weight > 0.5
@@ -260,6 +300,8 @@ FOR (node, depth) IN MATCH (start)-[:ROAD WHERE distance < 100 AND active = true
 ### Hop Range
 
 The `{min,max}` quantifier controls traversal depth:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 -- Exactly 2 hops
@@ -278,6 +320,8 @@ The `{min,max}` quantifier controls traversal depth:
 ### Combining Traversal with BREAK
 
 Early termination during traversal:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 FOR (node, depth) IN MATCH BFS (start)-[:EDGE]->{1,10}(node) {

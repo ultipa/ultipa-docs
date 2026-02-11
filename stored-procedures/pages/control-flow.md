@@ -1,10 +1,12 @@
 # Control Flow
 
-This page covers all control flow statements available in stored procedures.
+This page covers all control flow statements available in stored procedure bodies.
 
 ## IF / ELSE IF / ELSE
 
 Conditional branching:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 IF age > 18 {
@@ -17,6 +19,8 @@ IF age > 18 {
 ```
 
 Conditions can use any expression that evaluates to a boolean:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 IF node.active = true AND OUT_DEGREE(node) > 5 {
@@ -36,6 +40,8 @@ IF SIZE(friends) > 0 {
 
 ### Over a List
 
+<p tit="Procedure Body Language"></p>
+
 ```gql
 FOR item IN [1, 2, 3, 4, 5] {
     PRINT item
@@ -43,6 +49,8 @@ FOR item IN [1, 2, 3, 4, 5] {
 ```
 
 ### Over a RANGE
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 FOR i IN RANGE(0, 10) {
@@ -56,6 +64,8 @@ FOR i IN RANGE(1, 100) {
 
 ### Over Nodes (SCAN)
 
+<p tit="Procedure Body Language"></p>
+
 ```gql
 FOR node IN SCAN(:Person) {
     PRINT node.name
@@ -64,6 +74,8 @@ FOR node IN SCAN(:Person) {
 
 ### Over Edges (EDGES)
 
+<p tit="Procedure Body Language"></p>
+
 ```gql
 FOR edge IN EDGES(:KNOWS) {
     PRINT edge._from || ' -> ' || edge._to
@@ -71,6 +83,8 @@ FOR edge IN EDGES(:KNOWS) {
 ```
 
 ### Over Neighbors
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 FOR neighbor IN NEIGHBORS(node, OUT, :KNOWS) {
@@ -83,6 +97,8 @@ See <a href="/docs/stored-procedures/iterators-and-traversal">Iterators and Trav
 ## PARALLEL FOR
 
 Executes loop iterations across multiple worker goroutines:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 -- Auto-detect worker count
@@ -101,6 +117,8 @@ See <a href="/docs/stored-procedures/parallel-execution">Parallel Execution</a> 
 
 ## WHILE Loop
 
+<p tit="Procedure Body Language"></p>
+
 ```gql
 LET i = 0
 WHILE i < 10 {
@@ -109,7 +127,9 @@ WHILE i < 10 {
 }
 ```
 
-Common pattern — iterate until convergence:
+Iterates until convergence:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 LET changed = 1
@@ -135,6 +155,8 @@ WHILE changed > 0 {
 
 Exit the innermost loop immediately:
 
+<p tit="Procedure Body Language"></p>
+
 ```gql
 FOR i IN RANGE(1, 1000) {
     IF i > 50 {
@@ -144,7 +166,9 @@ FOR i IN RANGE(1, 1000) {
 }
 ```
 
-Works with FOR, PARALLEL FOR, WHILE, and FOR...IN MATCH:
+Works with `FOR`, `PARALLEL FOR`, `WHILE`, and `FOR...IN MATCH`:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 FOR (node, depth) IN MATCH BFS (start)-[:KNOWS]->{1,10}(node) {
@@ -159,6 +183,8 @@ FOR (node, depth) IN MATCH BFS (start)-[:KNOWS]->{1,10}(node) {
 
 Skip the rest of the current iteration and move to the next:
 
+<p tit="Procedure Body Language"></p>
+
 ```gql
 FOR i IN RANGE(1, 100) {
     IF i % 2 = 0 {
@@ -167,6 +193,8 @@ FOR i IN RANGE(1, 100) {
     PRINT i  -- only prints odd numbers
 }
 ```
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 FOR node IN SCAN(:Person) {
@@ -180,9 +208,11 @@ FOR node IN SCAN(:Person) {
 
 ## TRY / CATCH
 
-Error handling with optional error variable:
+Catches runtime errors and prevents them from terminating the procedure. If any statement in the `TRY` block fails, execution jumps to the `CATCH` block. If no error occurs, the `CATCH` block is skipped.
 
 ### Basic TRY/CATCH
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 TRY {
@@ -195,16 +225,50 @@ TRY {
 
 ### With Error Variable
 
+Use `CATCH (e)` to capture the error. The error variable has two properties:
+
+| Property | Description |
+|----------|-------------|
+| `e.message` | Error message string |
+| `e.code` | Error code (e.g., `EXECUTION_ERROR`, `USER_ERROR`) |
+
+<p tit="Procedure Body Language"></p>
+
 ```gql
 TRY {
-    MATCH (n {_id: 'nonexistent'})
-    PRINT n.name
+    LET val = 1 / 0
 } CATCH (e) {
     PRINT 'Error: ' || e.message
+    PRINT 'Code: ' || e.code
 }
 ```
 
+### Execution Flow
+
+When an error occurs in the `TRY` block:
+1. Remaining `TRY` statements are skipped
+2. The error is captured in the error variable (if provided)
+3. The `CATCH` block executes
+4. Execution continues normally after the `TRY/CATCH` block
+
+<p tit="Procedure Body Language"></p>
+
+```gql
+TRY {
+    PRINT 'Step 1'       -- runs
+    LET x = bad_call()   -- error here
+    PRINT 'Step 2'       -- skipped
+} CATCH (e) {
+    PRINT 'Caught: ' || e.message  -- runs
+}
+PRINT 'Continues'        -- runs
+```
+
 ### Re-throwing Errors
+
+Use bare `THROW` inside a `CATCH` block to re-throw the caught error. This is useful for logging or cleanup before propagating the error:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 TRY {
@@ -215,9 +279,31 @@ TRY {
 }
 ```
 
+### Nested TRY/CATCH
+
+`TRY/CATCH` blocks can be nested. Each block handles its own errors independently:
+
+<p tit="Procedure Body Language"></p>
+
+```gql
+TRY {
+    TRY {
+        LET x = risky_step_1()
+    } CATCH (e1) {
+        PRINT 'Step 1 failed: ' || e1.message
+    }
+    -- continues even if step 1 failed
+    LET y = risky_step_2()
+} CATCH (e2) {
+    PRINT 'Step 2 failed: ' || e2.message
+}
+```
+
 ## THROW
 
 Raise an error explicitly:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 IF $iterations < 1 {
@@ -230,6 +316,8 @@ IF node IS NULL {
 ```
 
 Re-throw inside a CATCH block (no argument):
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 TRY {
@@ -244,6 +332,8 @@ TRY {
 
 All statements inside execute as a single transaction. If any statement fails, all changes are rolled back:
 
+<p tit="Procedure Body Language"></p>
+
 ```gql
 ATOMIC {
     INSERT (:Account {_id: 'a1', balance: 100})
@@ -253,9 +343,11 @@ ATOMIC {
 ```
 
 Use cases:
-- Multi-statement data mutations that must succeed or fail together
-- Ensuring consistency when creating related nodes and edges
-- Bank transfers, inventory updates, and other transactional operations
+- Multi-statement data mutations that must succeed or fail together.
+- Ensuring consistency when creating related nodes and edges.
+- Bank transfers, inventory updates, and other transactional operations.
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 ATOMIC {
@@ -270,6 +362,8 @@ ATOMIC {
 ## Nesting
 
 Control flow statements can be nested arbitrarily:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 FOR node IN SCAN(:Person) {

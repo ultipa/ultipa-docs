@@ -2,9 +2,11 @@
 
 This page covers variable assignment, data manipulation, and output operations within stored procedures.
 
-## LET — Variable Assignment
+## LET
 
 Declare and assign variables:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 LET count = 0
@@ -17,6 +19,8 @@ LET data = {key: 'value', count: 42}
 
 Reassign existing variables:
 
+<p tit="Procedure Body Language"></p>
+
 ```gql
 LET count = 0
 FOR node IN SCAN(:Person) {
@@ -25,17 +29,19 @@ FOR node IN SCAN(:Person) {
 PRINT 'Total: ' || TOSTRING(count)
 ```
 
-### Subquery Assignment
-
 Assign the result of a subquery to a variable:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 LET friends = (MATCH (p {_id: 'alice'})-[:KNOWS]->(f) RETURN f)
 ```
 
-## Temp Property — In-Memory Only
+## Temp Property (In-Memory Only)
 
 Assign properties to nodes that exist only during procedure execution. These are NOT persisted to storage:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 node.visited = true
@@ -44,9 +50,11 @@ node.level = depth
 ```
 
 Use cases:
-- Marking visited nodes during traversal
-- Storing intermediate computation results
-- Attaching temporary metadata
+- Marking visited nodes during traversal.
+- Storing intermediate computation results.
+- Attaching temporary metadata.
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 FOR node IN SCAN(:Person) {
@@ -63,6 +71,8 @@ FOR (node, depth) IN MATCH BFS (start)-[:KNOWS]->{1,5}(node) {
 
 Query the graph within a procedure:
 
+<p tit="Procedure Body Language"></p>
+
 ```gql
 -- Find a specific node
 MATCH (p:Person {_id: $person_id})
@@ -78,7 +88,9 @@ MATCH (a)-[:KNOWS]->(b)
 WHERE a.city = b.city
 ```
 
-Results from MATCH bind variables for subsequent statements:
+Results from `MATCH` bind variables for subsequent statements:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 MATCH (p {_id: $person_id})
@@ -90,6 +102,8 @@ PRINT 'Node ' || p._id || ' has degree ' || TOSTRING(degree)
 
 Create nodes and edges:
 
+<p tit="Procedure Body Language"></p>
+
 ```gql
 -- Insert a node
 INSERT (:Person {_id: 'bob', name: 'Bob', age: 30})
@@ -100,9 +114,11 @@ MATCH (b {_id: 'bob'})
 INSERT (a)-[:KNOWS {since: 2024}]->(b)
 ```
 
-## SET — Persistent Property Update
+## SET
 
 Modify properties that are persisted to storage:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 MATCH (n {_id: $node_id})
@@ -113,6 +129,8 @@ SET n.score = 0.95
 ## DELETE
 
 Remove nodes and edges:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 -- Delete a node (must have no edges)
@@ -126,9 +144,11 @@ DETACH DELETE n
 
 ## RETURN
 
-Return results from the procedure. Each RETURN statement adds a row to the output:
+Return results from the procedure. Each `RETURN` statement adds a row to the output:
 
 ### Named Columns
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 RETURN node._id AS node_id, score AS rank_score
@@ -136,13 +156,15 @@ RETURN node._id AS node_id, score AS rank_score
 
 ### Multiple Columns
 
+<p tit="Procedure Body Language"></p>
+
 ```gql
 RETURN name, age, score
 ```
 
 ### Streaming Returns (Inside Loops)
 
-Each iteration's RETURN adds a row:
+Each iteration's `RETURN` adds a row:
 
 ```gql
 CREATE PROCEDURE list_people()
@@ -170,20 +192,24 @@ AS {
 
 Output debug messages to stderr:
 
+<p tit="Procedure Body Language"></p>
+
 ```gql
 PRINT 'Starting computation...'
 PRINT 'Count: ' || TOSTRING(count)
 PRINT 'Node ' || node._id || ' score = ' || TOSTRING(score)
 ```
 
-PRINT is useful for:
-- Debugging procedure logic
-- Progress reporting in long-running procedures
-- Logging iteration counts in convergence loops
+`PRINT` is useful for:
+- Debugging procedure logic.
+- Progress reporting in long-running procedures.
+- Logging iteration counts in convergence loops.
 
 ## FLUSH
 
 Force commit buffered writes to storage:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 -- After inserting many nodes
@@ -196,16 +222,18 @@ FOR i IN RANGE(0, 10000) {
 FLUSH  -- final flush
 ```
 
-FLUSH is important when:
-- Inserting large amounts of data in a loop
-- You need subsequent reads to see earlier writes
-- Preventing excessive memory usage from buffered writes
+`FLUSH` is important when:
+- Inserting large amounts of data in a loop.
+- You need subsequent reads to see earlier writes.
+- Preventing excessive memory usage from buffered writes.
 
-## BATCH_INSERT_NODES / BATCH_INSERT_EDGES
+## Batch Insert
 
 High-throughput batch insertion for loading data from procedures:
 
 ### BATCH_INSERT_NODES
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 -- Insert nodes from a list of data
@@ -219,6 +247,8 @@ BATCH_INSERT_NODES('Person', node_data)
 
 ### BATCH_INSERT_EDGES
 
+<p tit="Procedure Body Language"></p>
+
 ```gql
 -- Insert edges from a list
 -- Arguments: edge type, list of edge specs
@@ -229,4 +259,4 @@ LET edge_data = [
 BATCH_INSERT_EDGES('KNOWS', edge_data)
 ```
 
-These batch operations are significantly faster than individual INSERT statements for large datasets.
+These batch operations are significantly faster than individual `INSERT` statements for large datasets.

@@ -1,12 +1,14 @@
 # Parallel Execution
 
-This page covers PARALLEL FOR, the slice property system, and parallel reduction functions — the key building blocks for high-performance graph algorithms.
+This page covers `PARALLEL FOR`, the slice property system, and parallel reduction functions. They are the key building blocks for high-performance graph algorithms.
 
 ## PARALLEL FOR
 
 Execute loop iterations across multiple worker goroutines:
 
 ### Basic Syntax
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 -- Auto-detect worker count (uses all CPU cores)
@@ -16,6 +18,8 @@ PARALLEL FOR node IN SCAN(:Person) {
 ```
 
 ### Explicit Worker Count
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 PARALLEL FOR node IN SCAN(:Person) WORKERS 8 {
@@ -28,6 +32,8 @@ PARALLEL FOR node IN SCAN(:Person) WORKERS 8 {
 
 Use `.batch(N)` for better throughput — nodes are fetched in batches of N:
 
+<p tit="Procedure Body Language"></p>
+
 ```gql
 PARALLEL FOR node IN SCAN(:Person).batch(1000) WORKERS 4 {
     LET degree = OUT_DEGREE(node)
@@ -37,11 +43,11 @@ PARALLEL FOR node IN SCAN(:Person).batch(1000) WORKERS 4 {
 
 ### Thread Safety Notes
 
-- **Slice properties** (`GET_SLICE_PROP`, `SET_SLICE_PROP`) are safe for parallel access — each node has its own slot indexed by `_internal_id`
-- **Temp properties** (`node.prop = value`) are safe — assigned per-node
-- **LET** variables inside the loop body are local to each iteration
-- **Shared accumulators** (e.g., `LET count = count + 1`) may have race conditions. For reductions, use `SUM_SLICE_PROP` instead
-- **RETURN** statements are thread-safe — results are collected atomically
+- **Slice properties** (`GET_SLICE_PROP`, `SET_SLICE_PROP`) are safe for parallel access, each node has its own slot indexed by `_internal_id`.
+- **Temp properties** (`node.prop = value`) are safe — assigned per-node.
+- **LET** variables inside the loop body are local to each iteration.
+- **Shared accumulators** (e.g., `LET count = count + 1`) may have race conditions. For reductions, use `SUM_SLICE_PROP` instead.
+- **RETURN** statements are thread-safe, results are collected atomically.
 
 ## Slice Property System
 
@@ -49,7 +55,9 @@ Slice properties provide O(1) per-node value storage backed by contiguous arrays
 
 ### _internal_id
 
-Every node has an `_internal_id` — a system-assigned integer used as the array index for slice properties. Access it via `node._internal_id`:
+Every node has an `_internal_id`, a system-assigned integer used as the array index for slice properties. Access it via `node._internal_id`:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 PARALLEL FOR node IN SCAN() WORKERS 8 {
@@ -61,6 +69,8 @@ PARALLEL FOR node IN SCAN() WORKERS 8 {
 ### INIT_SLICE_PROP
 
 Initialize a slice property with a uniform value for all nodes:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 -- Initialize all nodes with rank = 1/N
@@ -77,11 +87,15 @@ Internally parallelized for large graphs (>10K nodes).
 
 Read a node's slice property value by internal ID:
 
+<p tit="Procedure Body Language"></p>
+
 ```gql
 LET rank = GET_SLICE_PROP(node._internal_id, 'rank')
 ```
 
 Also accepts integer index directly:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 LET val = GET_SLICE_PROP(42, 'score')
@@ -91,6 +105,8 @@ LET val = GET_SLICE_PROP(42, 'score')
 
 Write a node's slice property value:
 
+<p tit="Procedure Body Language"></p>
+
 ```gql
 SET_SLICE_PROP(node._internal_id, 'rank', new_rank)
 ```
@@ -98,6 +114,8 @@ SET_SLICE_PROP(node._internal_id, 'rank', new_rank)
 ### COPY_SLICE_PROP
 
 Copy all values from one slice to another (bulk operation):
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 -- Copy new_rank → rank (for iterative algorithms)
@@ -109,6 +127,8 @@ Internally parallelized for large slices. Useful between iterations of algorithm
 ### INIT_OUT_DEGREES
 
 Initialize a slice with out-degree values from the topology accelerator:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 INIT_OUT_DEGREES('out_degree')
@@ -126,13 +146,17 @@ High-performance aggregate operations over slice properties. Automatically paral
 
 Sum all values in a slice property:
 
+<p tit="Procedure Body Language"></p>
+
 ```gql
 LET total_rank = SUM_SLICE_PROP('rank')
 ```
 
 ### SUM_SLICE_PROP_SQ
 
-Sum of squares — essential for L2 normalization:
+Sum of squares - essential for L2 normalization:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 LET norm_sq = SUM_SLICE_PROP_SQ('score')
@@ -142,6 +166,8 @@ LET norm = SQRT(norm_sq)
 ### MAX_SLICE_PROP / MIN_SLICE_PROP
 
 Find extremes across all nodes:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 LET max_rank = MAX_SLICE_PROP('rank')
@@ -157,6 +183,8 @@ Persist slice property values to actual node properties in storage.
 
 Persist a single slice to storage:
 
+<p tit="Procedure Body Language"></p>
+
 ```gql
 -- After PageRank completes, save results
 BATCH_PERSIST_SLICE('rank', 'pagerank_score')
@@ -168,19 +196,23 @@ This writes `slice['rank'][node._internal_id]` → `node.pagerank_score` for all
 
 Persist multiple slices in a single efficient pass:
 
+<p tit="Procedure Body Language"></p>
+
 ```gql
 -- HITS algorithm: persist both hub and authority scores
 BATCH_PERSIST_SLICES('hub', 'hub_score', 'auth', 'authority_score')
 ```
 
 `BATCH_PERSIST_SLICES` is more efficient than multiple `BATCH_PERSIST_SLICE` calls because it:
-- Reads from property cache only once per node
-- Copies property map only once per node
-- Encodes and writes only once per node
+- Reads from property cache only once per node.
+- Copies property map only once per node.
+- Encodes and writes only once per node.
 
 ### BATCH_SLICE_ADD
 
 Add a constant value to all elements in a slice:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 -- Add teleportation probability to all ranks
@@ -238,6 +270,8 @@ AS {
 
 Batching reduces scheduling overhead:
 
+<p tit="Procedure Body Language"></p>
+
 ```gql
 -- Without batching: each node is dispatched individually
 PARALLEL FOR node IN SCAN(:Person) WORKERS 8 { ... }
@@ -248,7 +282,9 @@ PARALLEL FOR node IN SCAN(:Person).batch(1000) WORKERS 8 { ... }
 
 ### Prefer Slice Properties Over Temp Properties
 
-For algorithms that access properties in PARALLEL FOR:
+For algorithms that access properties in `PARALLEL FOR`:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 -- FAST: O(1) array access
@@ -263,6 +299,8 @@ LET rank = node.rank
 ### Use Fused Neighbor Operations
 
 Instead of manually iterating neighbors:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 -- SLOW: Per-neighbor interpreter overhead

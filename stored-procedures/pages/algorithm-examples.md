@@ -1,6 +1,6 @@
 # Algorithm Examples
 
-Complete stored procedure implementations for common graph algorithms. Each example uses the procedure-specific built-in functions documented in <a href="/docs/stored-procedures/builtin-functions">Builtin Functions</a>.
+Complete stored procedure implementations for common graph algorithms. Each example uses the procedure-specific built-in functions documented in <a href="/docs/stored-procedures/builtin-functions">Built-in Functions</a>.
 
 ## Centrality Algorithms
 

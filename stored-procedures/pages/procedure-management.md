@@ -6,6 +6,8 @@ This page covers the lifecycle of stored procedures: creating, calling, listing,
 
 ### Basic Syntax
 
+<p tit="Syntax"></p>
+
 ```gql
 CREATE PROCEDURE procedure_name(param1: TYPE, param2: TYPE)
 RETURNS (col1: TYPE, col2: TYPE)
@@ -18,10 +20,10 @@ AS {
 
 ```gql
 CREATE PROCEDURE count_all_nodes()
-RETURNS (count: INTEGER)
+RETURNS (cnt: INTEGER)
 AS {
-    LET count = NODE_COUNT()
-    RETURN count
+    LET cnt = NODE_COUNT()
+    RETURN cnt
 }
 ```
 
@@ -54,6 +56,26 @@ AS {
 }
 ```
 
+### Dotted Procedure Names
+
+Procedures can be organized using dot notation for logical grouping:
+
+```gql
+CREATE PROCEDURE algo.pagerank(iterations: INT = 20, damping: FLOAT = 0.85)
+RETURNS (node_id: STRING, rank: FLOAT)
+AS {
+    -- algorithm implementation
+}
+
+CREATE PROCEDURE algo.hits(iterations: INT = 20)
+RETURNS (node_id: STRING, hub: FLOAT, authority: FLOAT)
+AS {
+    -- algorithm implementation
+}
+```
+
+The dot notation is purely a naming convention — `algo.pagerank` is stored as a single name string. Use `DROP PROCEDURE algo.pagerank` to remove it.
+
 ### CREATE OR REPLACE
 
 Overwrites an existing procedure with the same name:
@@ -78,52 +100,79 @@ DROP PROCEDURE IF EXISTS my_proc
 
 ## SHOW PROCEDURES
 
+Returns a table with columns: `body`, `name`, `parameters`, and `returns`.
+
 ```gql
 -- List all procedures
 SHOW PROCEDURES
 
 -- Filter by name pattern
+
+-- Starts with "find"
+SHOW PROCEDURES LIKE 'find%'
+
+-- Starts with "find_" followed by at least 1 character
 SHOW PROCEDURES LIKE 'find_%'
-SHOW PROCEDURES LIKE '%rank%'
+
+-- Contains "path" anywhere in the name
+SHOW PROCEDURES LIKE '%path%'
+
+-- Ends with "rank"
+SHOW PROCEDURES LIKE '%rank'
+
+-- "get" followed by exactly 3 characters
+SHOW PROCEDURES LIKE 'get___'
 ```
 
-Returns a table with columns: name, parameters, return type, and body.
+The `LIKE` name pattern uses SQL-style matching (case-insensitive):
+
+| Wildcard | Meaning |
+|----------|---------|
+| `%` | Matches any sequence of characters (zero or more) |
+| `_` | Matches exactly one character |
 
 ## CALL
 
-### Basic Call with YIELD
+### Call with YIELD
 
-The `YIELD` clause captures the output columns of a procedure:
+Without `YIELD`, a procedure still returns all its output columns. The `YIELD` clause selects specific columns or renames them:
 
 ```gql
 CALL greet('World') YIELD message
 ```
 
-### Call without YIELD
-
-For VOID procedures or when output is not needed:
+Select specific columns from multi-column output:
 
 ```gql
+CALL pagerank(20) YIELD node_id, rank
+```
+
+Rename columns using `AS`:
+
+```gql
+CALL pagerank(20) YIELD node_id AS id, rank AS score
+```
+
+### Call without YIELD
+
+Without `YIELD`, all output columns are returned. For VOID procedures, there is no output:
+
+```gql
+-- Returns all output columns
+CALL greet('World')
+
+-- VOID procedure, no output
 CALL log_event('System started')
 ```
 
 ### Using Results in Subsequent Queries
 
-Results from CALL can flow into subsequent query clauses:
+Results from YIELD can flow into subsequent query clauses:
 
 ```gql
-CALL count_all_nodes() YIELD count
-MATCH (n:Person)
-RETURN n LIMIT count
-```
-
-### Qualified Names (Namespaces)
-
-Procedures can be organized in namespaces using dot notation:
-
-```gql
-CALL algo.pagerank(20, 0.85) YIELD node_id, rank
-CALL graph.shortest_path('a', 'b') YIELD path_length
+CALL count_all_nodes() YIELD cnt
+MATCH (n:Person) WHERE n.age > cnt*3
+RETURN n
 ```
 
 ### CALL ON Projection
@@ -136,54 +185,6 @@ CALL pagerank(20) ON my_projection YIELD node_id, rank
 
 This executes the procedure using the topology of the specified projection rather than the full graph.
 
-### Inline CALL (Subquery)
-
-Execute an inline subquery as a procedure call:
-
-```gql
-MATCH (n:Person)
-CALL {
-    MATCH (n)-[:KNOWS]->(friend)
-    RETURN friend
-}
-RETURN n, friend
-```
-
-### OPTIONAL CALL
-
-Like a LEFT JOIN — returns NULL for non-matching rows instead of filtering them out:
-
-```gql
-MATCH (n:Person)
-OPTIONAL CALL {
-    MATCH (n)-[:WORKS_AT]->(c:Company)
-    RETURN c.name AS company
-}
-RETURN n.name, company
-```
-
-### Variable Import with CALL
-
-Explicitly specify which variables to import from the outer scope:
-
-```gql
-MATCH (n:Person)
-CALL (n) {
-    MATCH (n)-[:KNOWS]->(friend)
-    RETURN friend._id AS friend_id
-}
-RETURN n.name, friend_id
-```
-
-Without variable specification:
-
-```gql
-CALL () {
-    MATCH (n:Person)
-    RETURN COUNT(n) AS total
-}
-RETURN total
-```
 
 ### Nested CALL Within Procedures
 

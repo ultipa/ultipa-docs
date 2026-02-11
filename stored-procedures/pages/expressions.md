@@ -13,6 +13,8 @@ Complete reference for all expression types available in stored procedures.
 | `%` | Modulo | `a % b` |
 | `^` | Exponentiation | `a ^ b` |
 
+<p tit="Procedure Body Language"></p>
+
 ```gql
 LET sum = x + y
 LET ratio = count / total
@@ -41,6 +43,8 @@ LET squared = x ^ 2
 | `NOT` | Logical NOT | `NOT a` |
 | `XOR` | Exclusive OR | `a XOR b` |
 
+<p tit="Procedure Body Language"></p>
+
 ```gql
 IF age > 18 AND active = true {
     PRINT 'Active adult'
@@ -59,6 +63,8 @@ IF NOT visited {
 
 Use `||` for string concatenation:
 
+<p tit="Procedure Body Language"></p>
+
 ```gql
 LET greeting = 'Hello, ' || name || '!'
 LET info = 'Count: ' || TOSTRING(count) || ', Score: ' || TOSTRING(score)
@@ -70,6 +76,8 @@ LET info = 'Count: ' || TOSTRING(count) || ', Score: ' || TOSTRING(score)
 |------------|-------------|
 | `expr IS NULL` | True if value is NULL |
 | `expr IS NOT NULL` | True if value is not NULL |
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 IF node.email IS NOT NULL {
@@ -85,6 +93,8 @@ IF path IS NULL {
 
 Check membership in a list:
 
+<p tit="Procedure Body Language"></p>
+
 ```gql
 IF node._id IN ['alice', 'bob', 'charlie'] {
     PRINT 'Found known person'
@@ -99,6 +109,8 @@ IF label NOT IN excluded_labels {
 
 ### Simple CASE
 
+<p tit="Procedure Body Language"></p>
+
 ```gql
 LET category = CASE status
     WHEN 'active' THEN 'A'
@@ -109,6 +121,8 @@ END
 ```
 
 ### Searched CASE
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 LET tier = CASE
@@ -123,6 +137,8 @@ END
 
 ### Transform
 
+<p tit="Procedure Body Language"></p>
+
 ```gql
 -- [expr FOR var IN list]
 LET doubled = [x * 2 IN RANGE(1, 6)]
@@ -132,6 +148,8 @@ LET names = [node.name | node IN friends]
 ```
 
 ### Filter and Transform
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 -- [expr FOR var IN list WHERE condition]
@@ -145,6 +163,8 @@ LET scores = [GET_SLICE_PROP(n._internal_id, 'rank') | n IN nodes WHERE OUT_DEGR
 
 Aggregate a list into a single value:
 
+<p tit="Procedure Body Language"></p>
+
 ```gql
 LET total = REDUCE(acc = 0, x IN numbers | acc + x)
 LET product = REDUCE(acc = 1, x IN values | acc * x)
@@ -154,12 +174,16 @@ LET product = REDUCE(acc = 1, x IN values | acc * x)
 
 ### List Indexing
 
+<p tit="Procedure Body Language"></p>
+
 ```gql
 LET first = myList[0]
 LET third = myList[2]
 ```
 
 ### List Slicing
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 LET sub = myList[1:3]    -- elements at index 1 and 2
@@ -168,12 +192,16 @@ LET head = myList[0:5]   -- first 5 elements
 
 ### Map Access
 
+<p tit="Procedure Body Language"></p>
+
 ```gql
 LET value = myMap['key']
 LET name = record['name']
 ```
 
 ## Property Access
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 -- Node properties
@@ -197,6 +225,8 @@ LET edges = path.edges
 
 Use a subquery as an expression to assign its result to a variable:
 
+<p tit="Procedure Body Language"></p>
+
 ```gql
 LET result = (MATCH (n:Person WHERE n.age > 30) RETURN COUNT(n) AS cnt)
 ```
@@ -206,6 +236,8 @@ This returns the result of the inner query as a value.
 ## EXISTS / NOT EXISTS
 
 Check whether a subquery returns any results:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 IF EXISTS {
@@ -224,6 +256,8 @@ IF NOT EXISTS {
 ## MAP Expression
 
 Transform each element of a list:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 LET result = MAP(x IN myList | x * 2)
@@ -248,6 +282,8 @@ From highest to lowest:
 | 11 (lowest) | `OR` |
 
 Use parentheses to override default precedence:
+
+<p tit="Procedure Body Language"></p>
 
 ```gql
 LET result = (a + b) * (c - d)
