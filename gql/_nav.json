@@ -252,8 +252,8 @@
       "title": "Transactions"
     },
     {
-      "file": "trigger.md",
-      "title": "Trigger"
+      "file": "triggers.md",
+      "title": "Triggers"
     },
     {
       "folder": "gql-execution",
