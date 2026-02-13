@@ -124,7 +124,7 @@ SHOW TRIGGERS ON EDGE "labelName"
 
 Returns a table with the following columns:
 
-| <div table-width="15">Field</div> | Description |
+| Field | Description |
 | -- | -- |
 | `name` | The name of the trigger. |
 | `entity_type` | The entity type: `NODE`. |

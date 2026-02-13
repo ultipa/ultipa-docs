@@ -9,6 +9,7 @@ The `REMOVE` statement only supports **open graphs**.
 ## Example Graph
 
 <div align=center drawio-diagram='29507' drawio-name='draw_0c6b39b01a314cd0bd3c493509c4e9ff.jpg'><img src="https://img.ultipa.cn/draw/draw_0c6b39b01a314cd0bd3c493509c4e9ff.jpg?v='1760090769245'"/></div>
+
 <div tab="code">
 
 <p tit="Create the graph"></p>

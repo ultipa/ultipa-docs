@@ -256,22 +256,8 @@
       "title": "Triggers"
     },
     {
-      "folder": "gql-execution",
-      "name": "GQL Execution",
-      "pages": [
-        {
-          "file": "process.md",
-          "title": "Process"
-        },
-        {
-          "file": "job.md",
-          "title": "Job"
-        },
-        {
-          "file": "execution-plan.md",
-          "title": "Execution Plan"
-        }
-      ]
+      "file": "query-management.md",
+      "title": "Query Management"
     },
     {
       "folder": "syntax",
