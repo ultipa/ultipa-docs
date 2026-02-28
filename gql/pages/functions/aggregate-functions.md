@@ -421,10 +421,8 @@ Computes the discrete percentile value over a set of numeric values.
 `percentile_disc()` is computed using the following steps:
 
 - Sort the values in ascending order.
-- Compute the percentile position as `p = percentile × (n − 1) + 1`, where `n` is the number of non-null values.
-- Determine the percentile value:
-  - If `p` is an integer, the value at that exact position is selected as the percentile value.
-  - If `p` is not an integer, it is rounded to `p'`, the value at the position `p'` is selected as the percentile value.
+- Compute the percentile position as `p = ceil(percentile × n)`, where `n` is the number of non-null values.
+- The value at the position `p` is selected as the percentile value.
 
 ```gql
 FOR item IN [3, 9, 4, 7, 6]
@@ -435,7 +433,7 @@ Result:
 
 | percentile_disc(item, 0.4) |
 | -- |
-| 6 |
+| 4 |
 
 ```gql
 FOR item IN [3, 9, 4, 7, 6]
