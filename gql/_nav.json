@@ -260,6 +260,10 @@
       "title": "Query Management"
     },
     {
+      "file": "backup-and-restore.md",
+      "title": "Backup and Restore"
+    },
+    {
       "folder": "syntax",
       "pages": [
         {
