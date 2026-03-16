@@ -1,6 +1,4 @@
-# Graph Management
-
-## Overview
+# Overview
 
 An Ultipa instance can host multiple **graphs**, each representing a dataset of interconnected nodes and edges.
 
