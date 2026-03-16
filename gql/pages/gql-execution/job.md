@@ -56,3 +56,54 @@ To delete the job with ID `83` in the current graph:
 ```gql
 DELETE JOB 83
 ```
+
+## Scheduled Jobs
+
+A scheduled job automatically executes a GQL query at recurring intervals or cron-based schedules.
+
+### Creating a Scheduled Job
+
+Using a cron expression (standard 5-field format):
+
+```gql
+CREATE SCHEDULED JOB daily_cleanup ON GRAPH myGraph
+SCHEDULE CRON '0 2 * * *'
+AS 'MATCH (n:TempNode) DELETE n'
+```
+
+Using an interval:
+
+```gql
+CREATE SCHEDULED JOB hourly_stats ON GRAPH myGraph
+SCHEDULE EVERY 1 HOUR
+AS 'MATCH (n:User) RETURN count(n)'
+```
+
+Supported interval units: `SECOND`, `MINUTE`, `HOUR`, `DAY`.
+
+To create a scheduled job in a disabled state:
+
+```gql
+CREATE SCHEDULED JOB my_job ON GRAPH myGraph
+SCHEDULE EVERY 30 MINUTE DISABLED
+AS 'MATCH (n:Log) WHERE n.created < local_datetime("2025-01-01") DELETE n'
+```
+
+### Showing Scheduled Jobs
+
+```gql
+SHOW SCHEDULED JOB
+```
+
+### Dropping a Scheduled Job
+
+```gql
+DROP SCHEDULED JOB daily_cleanup
+```
+
+### Pausing and Resuming
+
+```gql
+PAUSE SCHEDULED JOB daily_cleanup
+RESUME SCHEDULED JOB daily_cleanup
+```

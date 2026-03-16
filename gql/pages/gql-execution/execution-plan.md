@@ -34,7 +34,7 @@ Return{expr:[n.name]  row_type:n.name:STRING}
 
 ## PROFILE
 
-`PROFILE` runs the query and returns both the query results and a `profile_info` table. This table includes details such as the execution operators used, the number of rows each operator produces, and the time cost of each step.
+`PROFILE` runs the query and returns both the query results and a `profile_info` table. This table includes details such as the execution operators used, the number of rows each operator produces, the time cost of each step, and the number of database hits.
 
 ```gql
 PROFILE
@@ -45,9 +45,11 @@ LIMIT 10
 
 Sample `profile_info` output:
 
-| level | op_name | op_id | time_cost | rows |
-| -- | -- | -- | -- | -- |
-| --1 | RETURN | 1 | 17μs | 121 |
-| ----2 | WITH | 2 | 8μs | 121 |
-| ------3 | LIMIT_SKIP | 3 | 1μs | 121 |
-| --------4 | NODE_SCAN | 4 | 440μs | 121 |
+| level | op_name | op_id | time_cost | rows | db_hits |
+| -- | -- | -- | -- | -- | -- |
+| --1 | RETURN | 1 | 17μs | 121 | 0 |
+| ----2 | WITH | 2 | 8μs | 121 | 0 |
+| ------3 | LIMIT_SKIP | 3 | 1μs | 121 | 0 |
+| --------4 | NODE_SCAN | 4 | 440μs | 121 | 243 |
+
+The `db_hits` column shows the number of RocksDB API calls (Get, MultiGet, Iterator Seek/Next) made by each operator. This metric reflects logical I/O rather than physical disk operations — cached reads are still counted. Operators that only process in-memory data (e.g., RETURN, LIMIT_SKIP) report 0 db_hits.

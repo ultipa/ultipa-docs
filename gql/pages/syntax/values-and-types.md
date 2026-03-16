@@ -81,7 +81,7 @@ A property value type refers to the data type of the values of a property. Ultip
 
 | <div table-width="12">Type</div> | Description |
 | -- | -- |
-| `RECORD` | A set of fields, each such field has a name and a value. |
+| `RECORD` | A set of fields, each such field has a name and a value. Supports JSON-like nested data structures. |
 
 ### Binary
 

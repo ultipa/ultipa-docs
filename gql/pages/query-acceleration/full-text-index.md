@@ -4,7 +4,9 @@
 
 A full-text index is a type of index specialized for efficient searching for `string` or `text` properties, especially in large text fields like descriptions, comments, or articles.
 
-Full-text indexes work by breaking down the text into smaller segments called tokens. When a query is performed, the search engine matches specified keywords against these tokens instead of the original full text, allowing for faster retrieval of relevant results. Full-text indexes support both precise and fuzzy matches.
+Full-text indexes work by breaking down the text into smaller segments called tokens. When a query is performed, the search engine matches specified keywords against these tokens instead of the original full text, allowing for faster retrieval of relevant results.
+
+Ultipa's full-text search engine provides BM25 relevance scoring, fuzzy search, phrase search, boolean queries, and Chinese text support.
 
 ## Showing Full-text Indexes
 
@@ -52,14 +54,44 @@ System properties in Ultipa are inherently optimized for query performance and h
 To create a full-text index named `prodDesc` for the property `description` of `product` nodes:
 
 ```gql
-CREATE FULLTEXT prodDesc on NODE product (description)
+CREATE FULLTEXT prodDesc ON NODE product (description)
 ```
 
 To create a full-text index named `review` for the property `content` of `review` edges:
 
 ```gql
-CREATE FULLTEXT review on EDGE review (content)
+CREATE FULLTEXT review ON EDGE review (content)
 ```
+
+### Multi-Schema Full-text Index
+
+A full-text index can span multiple schemas, enabling unified search across different node or edge types with results ranked by a single relevance score.
+
+**Shared properties** — all schemas use the same property list:
+
+```gql
+CREATE FULLTEXT search_name ON NODE movie|account (name)
+```
+
+**Per-schema properties** — each schema specifies its own properties:
+
+```gql
+CREATE FULLTEXT unified_search ON NODE movie(title)|account(name)
+```
+
+You can also combine multiple schemas with multiple properties:
+
+```gql
+CREATE FULLTEXT global_search ON NODE movie(title, director)|account(name, industry)|book(title, author)
+```
+
+Multi-schema full-text indexes for edges follow the same syntax:
+
+```gql
+CREATE FULLTEXT rel_search ON EDGE knows(project)|works_with(title, department)
+```
+
+> The shared-property syntax and per-schema-property syntax cannot be mixed in the same statement.
 
 ## Dropping a Full-text Index
 
@@ -81,38 +113,81 @@ DROP EDGE FULLTEXT review
 
 ## Using Full-text Indexes
 
-To use a full-text index in the search conditions, use the syntax `~<fulltextName> CONTAINS "<keyword1> <keyword2> ..."`:
+To use a full-text index in the search conditions, use the syntax `~<fulltextName> CONTAINS '<query>'`:
 
 - The `~` symbol marks the full-text index.
-- The operator `CONTAINS` checks if the segmented tokens in the full-text index include all the specified keywords.
-- Multiple keywords should be separated by spaces. If a double quotation mark appears in a keyword, prefix it with a backslash (`\`) to escape.
+- The operator `CONTAINS` checks if the segmented tokens in the full-text index match the query.
 
-There are two search modes for full-text indexes:
+### Basic Search
 
-- **Precise search** matches exact tokens to keywords.
-- **Fuzzy search** occurs when a keyword ends with an asterisk (`*`), matching tokens that begin with the keyword.
-
-### Retrieving Nodes or Edges
-
-To find nodes using the full-text index `prodDesc` where their tokens include "graph" and "database":
+To find nodes where tokens include "graph" and "database":
 
 ```gql
-MATCH (n WHERE ~prodDesc CONTAINS "graph database")
+MATCH (n WHERE ~prodDesc CONTAINS 'graph database')
 RETURN n
 ```
 
-To find nodes using the full-text index `prodDesc` where their tokens include "graph" or "database":
+### BM25 Relevance Scoring
+
+Use the `score()` function to retrieve BM25 relevance scores for full-text search results:
 
 ```gql
-MATCH (n WHERE ~prodDesc CONTAINS "graph" OR ~prodDesc contains "database")
-RETURN n
+MATCH (n:doc WHERE ~ft_content CONTAINS 'graph database')
+RETURN n._id, score(n) AS relevance
+ORDER BY relevance DESC
 ```
 
-To find edges using the full-text index `review` where their tokens include "graph" and those start with "ult":
+The `score()` function works for both node and edge full-text searches:
 
 ```gql
-MATCH ()-[e WHERE ~review CONTAINS "graph ult*"]-()
-RETURN e
+MATCH ()-[e:cites WHERE ~ft_note CONTAINS 'important']->()
+RETURN e, score(e) AS relevance
+```
+
+### Fuzzy Search
+
+Append `~` followed by an edit distance to a keyword for fuzzy matching:
+
+```gql
+// Edit distance 1: matches "grpah", "grph", etc.
+MATCH (n:doc WHERE ~ft_content CONTAINS 'graph~1') RETURN n
+
+// Edit distance 2 (default when ~ has no number)
+MATCH (n:doc WHERE ~ft_content CONTAINS 'graph~') RETURN n
+```
+
+### Phrase Search
+
+Enclose keywords in double quotes for exact phrase matching:
+
+```gql
+MATCH (n:doc WHERE ~ft_content CONTAINS '"graph database"') RETURN n
+```
+
+### Boolean Queries
+
+Use boolean operators to combine search terms:
+
+```gql
+// AND — both terms must match
+MATCH (n:doc WHERE ~ft_content CONTAINS 'graph AND database') RETURN n
+
+// OR — either term matches
+MATCH (n:doc WHERE ~ft_content CONTAINS 'graph OR tree') RETURN n
+
+// NOT — exclude a term
+MATCH (n:doc WHERE ~ft_content CONTAINS 'graph NOT tree') RETURN n
+
+// +/- operators — require or exclude terms
+MATCH (n:doc WHERE ~ft_content CONTAINS '+graph -tree') RETURN n
+```
+
+### Chinese Text Support
+
+Chinese text is automatically tokenized using the Jieba tokenizer:
+
+```gql
+MATCH (n:doc WHERE ~ft_content CONTAINS '图数据库') RETURN n
 ```
 
 ### Retrieving Paths
@@ -152,3 +227,24 @@ MATCH ()-[e WHERE ~review CONTAINS "ult*"]-()
 MATCH p = ()-[e]-()
 RETURN p
 ```
+
+## Configuration
+
+Add the following section to `shard-server.config` to configure the full-text search engine:
+
+```ini
+[Fulltext]
+engine = tantivy
+tantivy_memory_mb = 64
+```
+
+| <div table-width="25">Parameter</div> | Default | Hot-Updatable | Description |
+| -- | -- | -- | -- |
+| `engine` | `tantivy` | Yes | Full-text search engine. |
+| `tantivy_memory_mb` | `64` | Yes | Writer memory limit in MB (minimum 16). |
+
+## Limitations
+
+- Full-text index updates are applied immediately and are not transactional. An INSERT within a transaction is visible in full-text search before COMMIT, and ROLLBACK does not undo the full-text index entries.
+- Edge full-text queries with named endpoints (e.g., `MATCH (a)-[e:schema WHERE ~idx CONTAINS 'x']->(b)`) may produce errors. Use anonymous endpoints instead: `MATCH ()-[e:schema WHERE ~idx CONTAINS 'x']->()`.
+- The `score()` function must be used directly in the `RETURN` clause. Using it in a `WITH` pipeline (e.g., `WITH n, score(n) AS s WHERE s > 0.5`) is not supported.

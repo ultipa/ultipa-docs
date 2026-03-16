@@ -1,6 +1,4 @@
-# Functions
-
-## All Functions
+# All Functions
 
 This section contains a summary of all functions supported in GQL.
 
@@ -17,17 +15,18 @@ For function names that do not follow camelCase, it is acceptable to use either 
 | <a href="/docs/gql/scalar-functions#cardinality()">cardinality()</a> | Returns the cardinality of a path, a list, or a record. |
 | <a href="/docs/gql/scalar-functions#cast()">cast()</a> | Specifies a data conversion. |
 | <a href="/docs/gql/scalar-functions#element_id()">element_id()</a> | Gets the unique identifier `_uuid` of a graph element. |
-| <a href="/docs/gql/scalar-functions#labels()">labels()</a> | Gets the label of a graph element. |
 
 ## Path Functions
 
 | <div table-width="17">Function</div> | Description |
 | -- | -- |
+| <a href="/docs/gql/path-functions#nodes()">nodes()</a> | Extracts all nodes from a path as a list. |
 | <a href="/docs/gql/path-functions#path_length()">path_length()</a> | Returns the number of edges in a path. |
 | <a href="/docs/gql/path-functions#pedges()">pedges()</a> | Collects edges in a path into a list. |
 | <a href="/docs/gql/path-functions#pedgeUuids()">pedgeUuids()</a> | Collects the `_uuid` values of edges in a path into a list. |
 | <a href="/docs/gql/path-functions#pnodes()">pnodes()</a> | Collects nodes in a path into a list. |
 | <a href="/docs/gql/path-functions#pnodeIds()">pnodeIds()</a> | Collects the `_id` values of nodes in a path into a list. |
+| <a href="/docs/gql/path-functions#relationships()">relationships()</a> | Extracts all edges from a path as a list. |
 
 ## Aggregate Functions
 
@@ -134,6 +133,24 @@ For function names that do not follow camelCase, it is acceptable to use either 
 | <a href="/docs/gql/spatial-functions/#point()">point()</a> | Constructs a two-dimensional geographical coordinate. |
 | <a href="/docs/gql/spatial-functions/#point3d()">point3d()</a> | Constructs a three-dimensional Cartesian coordinate. |
 | <a href="/docs/gql/spatial-functions/#pointget()">pointget()</a> | Extracts the coordinate values in the `point` or `point3d` property. |
+
+## Label Functions
+
+| <div table-width="20">Function</div> | Description |
+| -- | -- |
+| <a href="/docs/gql/label-functions#labelContains()">labelContains()</a> | Checks whether an entity has a specific label. |
+| <a href="/docs/gql/label-functions#labelHasAny()">labelHasAny()</a> | Checks whether an entity has at least one label. |
+| <a href="/docs/gql/label-functions#labels()">labels()</a> | Returns a list of all labels on an entity. |
+
+## Record Functions
+
+| <div table-width="20">Function</div> | Description |
+| -- | -- |
+| <a href="/docs/gql/record-functions#keys()">keys()</a> | Returns a list of all field names in a record. |
+| <a href="/docs/gql/record-functions#recordContains()">recordContains()</a> | Returns `true` if the record contains the specified field. |
+| <a href="/docs/gql/record-functions#recordGet()">recordGet()</a> | Returns the value of the specified field in a record. |
+| <a href="/docs/gql/record-functions#recordRemove()">recordRemove()</a> | Returns a new record with the specified field removed. |
+| <a href="/docs/gql/record-functions#recordSet()">recordSet()</a> | Returns a new record with the specified field set to the given value. |
 
 ## Table Functions
 

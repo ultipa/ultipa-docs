@@ -197,6 +197,14 @@
           "title": "Spatial Functions"
         },
         {
+          "file": "label-functions.md",
+          "title": "Label Functions"
+        },
+        {
+          "file": "record-functions.md",
+          "title": "Record Functions"
+        },
+        {
           "file": "table-functions.md",
           "title": "Table Functions"
         }
@@ -228,6 +236,10 @@
         {
           "file": "vector-index.md",
           "title": "Vector Index"
+        },
+        {
+          "file": "spatial-index.md",
+          "title": "Spatial Index"
         }
       ]
     },
@@ -235,6 +247,10 @@
       "folder": "hdc-graphs",
       "name": "HDC Graphs",
       "pages": [
+        {
+          "file": "hdc-graphs.md",
+          "title": "Overview"
+        },
         {
           "file": "managing-hdc-graphs.md",
           "title": "Managing HDC Graphs"
@@ -254,12 +270,20 @@
       "title": "Trigger"
     },
     {
+      "file": "stored-procedure.md",
+      "title": "Stored Procedure"
+    },
+    {
       "folder": "gql-execution",
       "name": "GQL Execution",
       "pages": [
         {
           "file": "process.md",
           "title": "Process"
+        },
+        {
+          "file": "session.md",
+          "title": "Session"
         },
         {
           "file": "job.md",

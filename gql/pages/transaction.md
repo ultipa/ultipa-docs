@@ -56,6 +56,42 @@ START TRANSACTION
 
 Once a transaction is started, you can perform both read and write operations against the current graph in the transaction.
 
+To start a read-only transaction:
+
+```gql
+START TRANSACTION READ ONLY
+```
+
+A read-only transaction cannot perform write operations (INSERT, SET, DELETE).
+
+## Savepoints
+
+You can create savepoints within a transaction to mark intermediate states. If an error occurs, you can roll back to a savepoint instead of discarding all changes.
+
+To create a savepoint:
+
+```gql
+SAVEPOINT sp1
+```
+
+To roll back to a savepoint:
+
+```gql
+ROLLBACK TO SAVEPOINT sp1
+```
+
+Rolling back to a savepoint undoes all operations performed after that savepoint, but the transaction remains open.
+
+## Transaction Timeout
+
+You can configure a per-session transaction timeout:
+
+```gql
+SET SESSION TRANSACTION_TIMEOUT = 30000
+```
+
+The value is in milliseconds. If a transaction exceeds this timeout, it is automatically rolled back.
+
 ## Rolling Back Transaction
 
 To discard all operations within the transaction and terminate the transaction:

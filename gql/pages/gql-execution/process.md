@@ -20,6 +20,8 @@ It returns the following information for each process:
 | `process_query` | Query of the process. |
 | `duration` | The duration in seconds for which the process has been running. |
 | `status` | Current state of the process, which can only be `RUNNING`. |
+| `graph_name` | The graph on which the process is executing. |
+| `username` | The user executing the process. |
 
 ## Stopping Processes
 
@@ -28,3 +30,4 @@ To stop a currently running process with id `2097156` in the database:
 ```gql
 KILL 2097156
 ```
+

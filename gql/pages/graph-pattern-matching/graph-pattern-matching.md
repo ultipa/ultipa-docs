@@ -1,6 +1,4 @@
-# Graph Pattern Matching
-
-## Overview
+# Overview
 
 In GQL, **Graph Pattern Matching (GPM)** is the fundamental operation used to query graph databases. GPM is the process of declaratively searching for nodes, edges, and paths within a graph that conform to a specified structural pattern.
 

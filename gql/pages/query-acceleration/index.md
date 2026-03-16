@@ -1,6 +1,4 @@
-# Query Acceleration
-
-## Index
+# Index
 
 ## Overview
 
@@ -8,7 +6,7 @@
 
 ### Index Types
 
-Ultipa supports **single index** on one property and **composite index** which involve multiple properties from a schema.
+Ultipa supports **single index** on one property, **composite index** which involve multiple properties from a schema, and **expression index** on computed expressions of properties.
 
 ## Showing Indexes
 
@@ -184,3 +182,87 @@ The query below won't utilize the `Username` index as the specified string `Aven
 MATCH (n:user {name: "Aventurine"})
 RETURN n
 ```
+
+## Expression Index
+
+An expression index indexes the **computed result** of a function applied to a property, rather than the raw property value. When a query contains a matching function expression, the optimizer automatically uses the expression index to accelerate the query.
+
+### Supported Functions
+
+| Function | Input Type | Output Type | Description |
+| -- | -- | -- | -- |
+| `lower()` | STRING | STRING | Converts to lowercase. |
+| `upper()` | STRING | STRING | Converts to uppercase. |
+| `year()` | DATETIME | INT32 | Extracts the year. |
+| `month()` | DATETIME | INT32 | Extracts the month (1–12). |
+| `day()` | DATETIME | INT32 | Extracts the day (1–31). |
+| `abs()` | INT32/INT64/FLOAT/DOUBLE | Same as input | Returns the absolute value. |
+
+### Creating an Expression Index
+
+```gql
+CREATE INDEX <indexName> ON NODE <schemaName> (<function>(<propertyName>))
+CREATE INDEX <indexName> ON EDGE <schemaName> (<function>(<propertyName>))
+```
+
+Expression indexes can also be combined with regular properties in a composite index:
+
+```gql
+CREATE INDEX <indexName> ON NODE <schemaName> (<function>(<propertyName>), <propertyName2>)
+```
+
+### Examples
+
+Case-insensitive string matching:
+
+```gql
+CREATE INDEX idx_lower_name ON NODE Person (lower(name))
+
+MATCH (n:Person) WHERE lower(n.name) = "alice" RETURN n
+```
+
+Filtering by date component:
+
+```gql
+CREATE INDEX idx_year_bday ON NODE Person (year(birthday))
+
+MATCH (n:Person) WHERE year(n.birthday) = 1994 RETURN n
+```
+
+Absolute value query:
+
+```gql
+CREATE INDEX idx_abs_salary ON NODE Person (abs(salary))
+
+MATCH (n:Person) WHERE abs(n.salary) = 5000.0 RETURN n
+```
+
+Composite expression index:
+
+```gql
+CREATE INDEX idx_lower_name_age ON NODE Person (lower(name), age)
+
+MATCH (n:Person) WHERE lower(n.name) = "alice" AND n.age = 30 RETURN n
+```
+
+Edge expression index:
+
+```gql
+CREATE INDEX idx_year_since ON EDGE KNOWS (year(since))
+
+MATCH ()-[e:KNOWS]->() WHERE year(e.since) = 2020 RETURN e
+```
+
+### Expression Index Behavior
+
+- Expression indexes are automatically maintained when data is inserted, updated, upserted, or deleted.
+- The `SHOW NODE INDEX` and `SHOW EDGE INDEX` output displays expression functions in the `properties` field (e.g., `lower(name)` instead of `name`).
+- Duplicate detection prevents creating two expression indexes with the same function and property combination. Different functions on the same property are allowed (e.g., `lower(name)` and `upper(name)`).
+- Regular property queries (e.g., `n.name = "Alice"`) do not use expression indexes (e.g., `lower(name)` index).
+- The <a href="#Leftmost-Prefix-Rule">leftmost prefix rule</a> applies to composite expression indexes.
+
+### Expression Index Limitations
+
+- Only equality queries (`=`) can use expression indexes. Range queries (`<`, `>`, `BETWEEN`) are not supported.
+- Only the six functions listed above are supported.
+- Each expression function applies to a single property only; multi-property expressions (e.g., `lower(first_name + last_name)`) are not supported.

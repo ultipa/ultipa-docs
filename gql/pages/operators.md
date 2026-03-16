@@ -319,7 +319,12 @@ RETURN p1 || p2
 
 ### Record Construction
 
-The `{}` or `RECORD{}` creates a record. You can define its fields and corresponding values.
+The `{}` or `RECORD{}` creates a record. You can define its fields and corresponding values, including nested records:
+
+```gql
+RETURN {name: 'Alice', age: 30}
+RETURN {user: {name: 'Alice', role: 'admin'}, count: 5}
+```
 
 ```gql
 LET rec = {length: 20, width: 59, height: 10}
@@ -328,13 +333,13 @@ RETURN rec.length
 
 Result:
 
-| rec.length | 
+| rec.length |
 | -- |
 | 20 |
 
 ### Field Reference
 
-The `.` (period) operator allows you to reference a field of a record.
+The `.` (period) operator allows you to reference a field of a record:
 
 ```gql
 LET rec = RECORD{length: 20, width: 59, height: 10}
@@ -343,9 +348,24 @@ RETURN rec.length * rec.width * rec.height AS capacity
 
 Result:
 
-| capacity | 
+| capacity |
 | -- |
 | 11800 |
+
+Fields can also be accessed using the `recordGet()` function:
+
+```gql
+RETURN recordGet({name: 'Alice', age: 30}, 'name')
+```
+
+### MAP Projection
+
+MAP projection creates a record from entity properties by selecting specific fields:
+
+```gql
+MATCH (n:Person {_id: 'alice'})
+RETURN n{.name, .age}
+```
 
 ## Deduplication
 
