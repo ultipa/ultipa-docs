@@ -1,6 +1,4 @@
-# Functions
-
-## All Functions
+# All Functions
 
 This section contains a summary of all functions supported in GQL.
 
