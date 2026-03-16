@@ -1,6 +1,4 @@
-# Ontology
-
-## Overview
+# Overview
 
 GQLDB supports ontology features that bring semantic web capabilities to your graph database. This allows you to define classes, properties with domain/range constraints, and enable inference based on class hierarchies.
 
