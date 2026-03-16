@@ -8,7 +8,8 @@ Ultipa supports the following constraints in **typed graphs**:
 
 - <a href="#NOT-NULL">NOT NULL</a>: Ensures that a property never contains `null` values.
 - <a href="#UNIQUE">UNIQUE</a>: Ensures that a property contains no duplicate values.
-- <a href="#EDGE-KEY">EDGE KEY</a>: Specifies a property as the unique identifier for all edges in the graph.
+- <a href="#NODE-KEY">NODE KEY</a>: Ensures that key properties are non-null and the combination is unique within a specific node schema.
+- <a href="#EDGE-KEY">EDGE KEY</a>: Ensures that key properties are non-null and the combination is unique across all edge schemas in the graph.
 
 ## Showing Constraints
 
@@ -34,13 +35,13 @@ Each constraint provides the following essential metadata:
 | `type` | Constraint type. |
 | `schema` | The node or edge schemas where the constraint applies. |
 | `properties` | The node or edge properties where the constraint applies. |
-| `status` | Constraint status, which can be `DONE` or `CREATING`. |
+| `status` | Constraint status, which can be `DONE`, `CREATING`, or `FAILED`. |
 
 ## Creating Constraints
 
 You can define constraints when **creating a graph**, **creating a graph type**, or **within an existing graph**. When creating constraints in an existing graph, it execute as a job, you may run `SHOW JOB <id?>` afterward to verify its success.
 
-Note that creating a constraint in a large graph may take time, as the system must scan all existing data to ensure compliance. The creation will fail if any existing data violates the constraint. To maintain data consistency, all other data modification operations are temporarily suspended during the constraint creation process.
+Note that creating a constraint in a large graph may take time, as the system must scan all existing data to ensure compliance. The creation will fail if any existing data violates the constraint, and the constraint status will be set to `FAILED`. To maintain data consistency, all other data modification operations are temporarily suspended during the constraint creation process.
 
 ### NOT NULL
 
@@ -114,6 +115,14 @@ ALTER EDGE link ADD CONSTRAINT UNIQUE ON weight, eid
 
 The `UNIQUE` constraint can be created successfully only when the combined values of all specified properties contain no duplicates.
 
+#### UNIQUE with max_length
+
+You can specify a `max_length` option for string properties when creating a `UNIQUE` constraint:
+
+```gql
+ALTER NODE User ADD CONSTRAINT UNIQUE ON email WITH {max_length: {email: 100}}
+```
+
 #### UNIQUE During Graph Creation
 
 You can apply the `UNIQUE` constraint to any property when creating a typed graph:
@@ -133,6 +142,66 @@ You can also apply the `UNIQUE` constraint to any property when creating a graph
 CREATE GRAPH TYPE gType { 
   NODE User ({name STRING UNIQUE, age UINT32}),
   EDGE Follows ()-[{createdOn LOCAL DATETIME UNIQUE}]->()
+}
+```
+
+### NODE KEY
+
+The `NODE KEY` constraint combines `NOT NULL` and `UNIQUE` — all key properties must be non-null, and the combination of key property values must be unique within a schema. A `NODE KEY` constraint can be defined on either a single property or multiple properties. It applies to nodes only.
+
+#### Single-Property NODE KEY
+
+To create a `NODE KEY` constraint on the property `ssn` of the `User` nodes:
+
+```gql
+ALTER NODE User ADD CONSTRAINT NODE KEY ON ssn
+```
+
+To successfully create the `NODE KEY`:
+
+- The `ssn` property must not contain any `null` values.
+- The `ssn` property must not contain any duplicate values.
+
+#### Composite NODE KEY
+
+To create a composite `NODE KEY` constraint on the properties `first_name`, `last_name`, and `date_of_birth` of the `User` nodes:
+
+```gql
+ALTER NODE User ADD CONSTRAINT NODE KEY ON first_name, last_name, date_of_birth
+```
+
+To successfully create the `NODE KEY`:
+
+- None of the specified properties may contain `null` values.
+- The combination of values across all specified properties must not contain any duplicates.
+
+#### NODE KEY with max_length
+
+You can specify a `max_length` option for string properties:
+
+```gql
+ALTER NODE User ADD CONSTRAINT NODE KEY ON first_name, last_name WITH {max_length: {first_name: 50, last_name: 50}}
+```
+
+#### NODE KEY During Graph Creation
+
+You can apply the `NODE KEY` constraint when creating a typed graph:
+
+```gql
+CREATE GRAPH g1 {
+  NODE User ({ssn STRING NODE KEY, name STRING, age UINT32}),
+  EDGE Follows ()-[{createdOn LOCAL DATETIME}]->()
+}
+```
+
+#### NODE KEY During Graph Type Creation
+
+You can also apply the `NODE KEY` constraint when creating a graph type:
+
+```gql
+CREATE GRAPH TYPE gType {
+  NODE User ({ssn STRING NODE KEY, name STRING, age UINT32}),
+  EDGE Follows ()-[{createdOn LOCAL DATETIME}]->()
 }
 ```
 
@@ -216,7 +285,7 @@ The specified `EDGE KEY` property `eID` will be automatically created for all ed
 
 ### Using IF NOT EXISTS
 
-The `IF NOT EXISTS` clause is used to prevent errors when attempting to create a constraint that already exists. It allows the statement to be safely executed.
+The `IF NOT EXISTS` clause prevents errors when attempting to create a constraint that already exists.
 
 ```gql
 ALTER NODE User ADD CONSTRAINT IF NOT EXISTS NOT NULL ON name
@@ -224,7 +293,7 @@ ALTER NODE User ADD CONSTRAINT IF NOT EXISTS NOT NULL ON name
 
 This creates the constraint only if there is no existing `NOT NULL` constraint on the `name` property of `User` nodes. If such a constraint already exists, the statement is ignored without throwing an error.
 
-### Naming Convetions
+### Naming Conventions
 
 Constraint names must be unique. Each constraint name must:
 
@@ -246,10 +315,31 @@ To drop the `UNIQUE` constraint on the `name` property of `User` nodes from the 
 ALTER NODE User DROP CONSTRAINT UNIQUE ON name
 ```
 
+To drop the `NODE KEY` constraint on the `ssn` property of `User` nodes from the current graph:
+
+```gql
+ALTER NODE User DROP CONSTRAINT NODE KEY ON ssn
+```
+
 To drop the `EDGE KEY` constraint from the current graph:
 
 ```gql
 ALTER EDGE * DROP EDGE KEY
+```
+
+You can also drop a constraint by its name:
+
+```gql
+ALTER NODE User DROP CONSTRAINT unique_email
+```
+
+### Using IF EXISTS
+
+The `IF EXISTS` clause prevents errors when attempting to drop a constraint that does not exist:
+
+```gql
+ALTER NODE User DROP CONSTRAINT IF EXISTS NOT NULL ON name
+ALTER NODE User DROP CONSTRAINT IF EXISTS unique_email
 ```
 
 ## Restrictions on Properties with Constraints

@@ -2,7 +2,56 @@
 
 Backing up the database is essential to protect data integrity, prevent data loss, and ensure disaster recovery in case of hardware failure, accidental deletion, or corruption. It also enables database migration, replication, and rollback to a previous state if needed.
 
-You can create a backup from a running database using either UQL or the `ultipa_backup_client` tool. The backup includes user-created graphs on Shard servers and system global graphs on both Shard and Meta servers. To restore a backup, you can only use the `ultipa_backup_client`.
+You can create a backup from a running database using GQL, UQL, or the `ultipa_backup_client` tool. The backup includes user-created graphs on Shard servers and system global graphs on both Shard and Meta servers.
+
+## Using GQL
+
+### Create a Backup
+
+Create a backup named `backup_20250101`:
+
+```gql
+CREATE BACKUP backup_20250101
+```
+
+If the specified backup name already exists, differential backup is performed; otherwise, a full backup is created.
+
+### Show Backups
+
+Show all backups:
+
+```gql
+SHOW BACKUP
+```
+
+Show a specific backup:
+
+```gql
+SHOW BACKUP backup_20250101
+```
+
+Each backup provides the following metadata:
+
+| <div table-width="17">Field</div> | Description |
+| -- | -- |
+| `backup_name` | The name of the backup. |
+| `backup_uuid` | The UUID of the backup. |
+| `start_time` | The timestamp when the backup creation began. |
+| `end_time` | The timestamp when the backup creation ended. |
+| `status` | Current status: `DONE`, `RUNNING`, or `FAILED`. |
+| `msg` | Error message, if any. |
+
+### Drop a Backup
+
+```gql
+DROP BACKUP backup_20250101
+```
+
+### Restore a Backup
+
+```gql
+RESTORE BACKUP backup_20250101
+```
 
 ## Using UQL
 
@@ -214,3 +263,113 @@ Run the command to restore the database to the specified backup:
 | `-config` | Specifies path to the configuration file (default: `backup.config`). |
 | `-sample` | Generates a sample configuration file (`example.backup.config`). |
 | `-version` | Displays the version of `ultipa_backup_client`. |
+
+## Point-in-Time Recovery
+
+> PITR is only available via GQL.
+
+Point-in-Time Recovery (PITR) enables restoring the database to any consistent point in time. It works by continuously archiving WAL (Write-Ahead Log) files and periodically creating cross-shard recovery points. Combined with a base backup, you can recover the database to any moment between your oldest backup and the latest recovery point.
+
+### Disk Protection
+
+Ultipa monitors disk usage on shard servers and responds with graduated protection levels:
+
+| Level | Usage Range | Behavior |
+| -- | -- | -- |
+| NORMAL | < 70% | All operations allowed. |
+| WARN | 70% – 85% | Warning logged; all operations allowed. |
+| HIGH | 85% – 95% | Warning logged; WAL archiving paused. |
+| CRITICAL | > 95% | DML writes (INSERT, SET, DELETE, UPSERT) blocked; reads always allowed. |
+
+Add the following section to both `shard-server.config` and `name-server.config`:
+
+```ini
+[Disk]
+disk_monitor_enabled = true
+disk_monitor_interval_s = 10
+disk_warn_percent = 70
+disk_high_percent = 85
+disk_critical_percent = 95
+```
+
+| <div table-width="30">Parameter</div> | Default | Hot-Updatable | Description |
+| -- | -- | -- | -- |
+| `disk_monitor_enabled` | `true` | Yes | Enables or disables background disk monitoring. |
+| `disk_monitor_interval_s` | `10` | Yes | Disk check interval in seconds. |
+| `disk_warn_percent` | `70` | Yes | Usage % threshold for WARN level. |
+| `disk_high_percent` | `85` | Yes | Usage % threshold for HIGH level. |
+| `disk_critical_percent` | `95` | Yes | Usage % threshold for CRITICAL level. |
+
+### Recovery Points
+
+When PITR is enabled, the name server periodically collects sequence numbers from all shard servers to create recovery points — consistent cross-shard snapshots that mark a restorable point in time. Meanwhile, each shard server continuously archives its WAL files to a designated directory.
+
+To show all available recovery points:
+
+```gql
+SHOW RECOVERY POINTS
+```
+
+Each recovery point provides the following metadata:
+
+| <div table-width="17">Field</div> | Description |
+| -- | -- |
+| `id` | Monotonically increasing recovery point identifier. |
+| `timestamp` | When the recovery point was created. |
+| `shard_count` | Number of shards included in this recovery point. |
+| `label` | A descriptive label (e.g., `auto-barrier-1`). |
+
+Add the following section to `name-server.config`:
+
+```ini
+[PITR]
+enabled = false
+barrier_interval_s = 60
+retention_hours = 24
+archive_path = /data/wal_archive
+max_archive_size_mb = 10240
+```
+
+| <div table-width="28">Parameter</div> | Default | Hot-Updatable | Description |
+| -- | -- | -- | -- |
+| `enabled` | `false` | Yes | Enables or disables PITR (recovery point collection and WAL archiving). |
+| `barrier_interval_s` | `60` | Yes | Interval between recovery points in seconds. |
+| `retention_hours` | `24` | Yes | How long to retain recovery points. |
+| `archive_path` | (empty) | No | Directory for WAL archive files on shard servers. Requires a restart to change. |
+| `max_archive_size_mb` | `10240` | Yes | Maximum total archive size in MB. Oldest archives are purged when exceeded. |
+
+> When PITR is disabled (`enabled = false`), there is zero performance impact — no background threads, RPCs, or additional disk I/O.
+
+### Restoring to a Point in Time
+
+To restore the database to a specific timestamp:
+
+```gql
+RESTORE DATABASE AS OF TIMESTAMP '2026-02-22 14:30:00'
+```
+
+The timestamp format is `YYYY-MM-DD HH:MM:SS`. This statement runs asynchronously and returns a `job_id` that you can monitor.
+
+The restore process:
+
+1. Finds the nearest recovery point at or before the target timestamp.
+2. Locates the most recent base backup before the target.
+3. Restores each shard from the base backup.
+4. Replays archived WAL files up to the target sequence number.
+5. Resumes normal cluster operation.
+
+**Prerequisites:**
+
+- PITR must be enabled (`[PITR] enabled = true`).
+- At least one recovery point must exist.
+- A base backup (created via `CREATE BACKUP`) must exist before the target timestamp.
+
+The `PITR_RESTORE` system privilege is required to execute PITR restore. The root user has this privilege by default.
+
+### PITR Limitations
+
+- The finest recovery granularity is determined by the `barrier_interval_s` setting (default 60 seconds).
+- PITR restore is a cluster-wide operation that affects all graphs and all shards simultaneously.
+- A base backup must exist before the target timestamp.
+- The `archive_path` cannot be changed at runtime; a server restart is required.
+- WAL archiving is paused when disk usage reaches the HIGH or CRITICAL level. Recovery points created during this period may have incomplete WAL coverage.

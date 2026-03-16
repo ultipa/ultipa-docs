@@ -2,7 +2,17 @@
 
 ## Overview
 
-A trigger is a mechanism that automatically executes predefined operations in response to specific events on nodes or edges. Triggers can be set to run **before or after** events such as **insertion, update, or deletion of data**. They allow you to enforce business rules, maintain data integrity, or perform auxiliary operations without manual intervention, ensuring that logic tied to DML operations is executed consistently and automatically.
+A trigger is a mechanism that automatically executes predefined operations in response to specific events on nodes or edges. Triggers can be set to run **before or after** events such as **insertion, update, upsert, or deletion of data**. They allow you to enforce business rules, maintain data integrity, or perform auxiliary operations without manual intervention, ensuring that logic tied to DML operations is executed consistently and automatically.
+
+Ultipa supports 8 trigger types:
+
+| Timing | Events |
+| -- | -- |
+| `BEFORE` | `INSERT`, `SET`, `UPSERT`, `DELETE` |
+| `AFTER` | `INSERT`, `SET`, `UPSERT`, `DELETE` |
+
+- **BEFORE triggers** can modify data and block operations.
+- **AFTER triggers** execute after the data is written and cannot modify the written data.
 
 ## Showing Triggers
 
@@ -32,7 +42,7 @@ Each trigger provides the following essential metadata:
 | `schema` | The name of node or edge schema to which the trigger applies. |
 | `description` | The comment given to the trigger. |
 | `timing` | When the trigger takes effect — either `before` or `after` the event. |
-| `event` | The type of event that activates the trigger, including `insert`, `update`, and `delete`. |
+| `event` | The type of event that activates the trigger, including `insert`, `set` (update), `upsert`, and `delete`. |
 | `call` | The operation or logic executed by the trigger. |
 
 ## Creating Trigger

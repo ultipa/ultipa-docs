@@ -16,6 +16,14 @@
       ]
     },
     {
+      "file": "deployment-with-kubernetes.md",
+      "title": "Deployment with Kubernetes"
+    },
+    {
+      "file": "standalone-mode.md",
+      "title": "Standalone Mode"
+    },
+    {
       "file": "license.md",
       "title": "License"
     },
@@ -58,12 +66,36 @@
         {
           "file": "user.md",
           "title": "User"
+        },
+        {
+          "file": "resource-group.md",
+          "title": "Resource Group"
         }
       ]
     },
     {
+      "file": "configuration.md",
+      "title": "Configuration"
+    },
+    {
+      "file": "monitoring.md",
+      "title": "Monitoring"
+    },
+    {
+      "file": "security.md",
+      "title": "Security"
+    },
+    {
       "file": "backup-and-restore.md",
       "title": "Backup and Restore"
+    },
+    {
+      "file": "auto-sharding-rebalancing.md",
+      "title": "Auto-Sharding Rebalancing"
+    },
+    {
+      "file": "cdc.md",
+      "title": "Change Data Capture (CDC)"
     }
   ]
 }

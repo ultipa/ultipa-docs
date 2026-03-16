@@ -1,6 +1,4 @@
-# Querying
-
-## Query Composition
+# Query Composition
 
 A GQL query is composed of multiple **statements**. Each statement is a unit that can be executed by the database. A typical GQL query begins with a `MATCH` statement to retrieve data from the graph, and ends with a `RETURN` statement to output results to the client.
 

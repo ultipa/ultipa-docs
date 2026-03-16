@@ -4,6 +4,11 @@
 
 A vector index is designed to efficiently store and manage high-dimensional vectors (or embeddings), enabling fast retrieval of similar vectors based on a chosen similarity metric. Instead of performing an exhaustive search across all stored vectors, the vector index significantly reduces the search space, making nearest-neighbor retrieval more efficient.
 
+Ultipa supports two vector index modes:
+
+- **Embedded mode** (default): Uses a built-in HNSW (Hierarchical Navigable Small World) index within the shard server process. No external dependencies required, with automatic DML synchronization.
+- **External mode**: Uses an external vector server deployed as a separate Docker container. Supports additional index types beyond HNSW.
+
 ### Vectors and Embeddings
 
 **Vectors** can be viewed as an ordered list of numbers. For example, the vector `[1, 2]` represents a direction from the origin to the point `(1, 2)` in a two-dimensional space, and the distance (or magnitude) to that point. 
@@ -90,14 +95,20 @@ To retrieve node vector indexes in the current graph:
 SHOW NODE VECTOR INDEX
 ```
 
-The information about vector indexes is organized into a `_nodeVectorIndex` table with the following fields:
+To retrieve edge vector indexes in the current graph:
+
+```gql
+SHOW EDGE VECTOR INDEX
+```
+
+The information about vector indexes is organized into a `_nodeVectorIndex` or `_edgeVectorIndex` table with the following fields:
 
 | <div table-width="25">Field</div> | Description |
 | -- | -- |
 | `name` | Vector index name. |
 | `schema` | The schema of the vector index. |
 | `properties` | The property of the vector index. |
-| `vector_server_name` | The vector server that hosts the vector index. |
+| `vector_server_name` | The vector server that hosts the vector index. Shows `embedded` when using embedded mode. |
 | `status` | Vector index status, which can be `DONE` or `CREATING`. |
 | `config` | Vector index configuration, including `similarity_function`, `index_type`, and `dimensions`. |
 
@@ -130,7 +141,43 @@ CREATE VECTOR INDEX "summary_embedding" ON NODE Book (summaryEmbedding) OPTIONS 
 | `similarity_function` | String | `L2` | The similarity function used to assess the similarity of two vectors. Supports `L2`, `COSINE`, and `IP`. <a href="#Vector-Search">Learn more</a>  |
 | `index_type` | String | `FLAT` | The method used to organize and search the vectors in the index. Supports `FLAT`, `IVF_FLAT`, `IVF_SQ8`, `HNSW`, `HNSW_SQ`, `HNSW_PQ`, `HNSW_PRQ`, and `SCANN`. <a href="#Annex:-Index-Types">Learn more</a> |
 | `dimensions` | Integer | `128` | The dimensions of the vectors to be indexed. Only vectors of the configured dimension are indexed, and querying the index with a vector of a different dimensions will return an error. |
-| `vector_server` | String | / | The name of the <a target="_blank" href="/docs/gql/vector-servers">vector server</a> that hosts the vector index. |
+| `vector_server` | String | / | The name of the <a target="_blank" href="/docs/gql/vector-servers">vector server</a> that hosts the vector index. Not required in embedded mode. |
+
+### Embedded Mode
+
+In embedded mode, the `vector_server` parameter is not required. The index uses the built-in HNSW algorithm:
+
+```gql
+CREATE VECTOR INDEX "idx_embedding" ON NODE Person (embedding) OPTIONS {
+  similarity_function: "COSINE",
+  index_type: "HNSW",
+  dimensions: 128
+}
+```
+
+### Edge Vector Index
+
+You can also create vector indexes on edge properties:
+
+```gql
+CREATE VECTOR INDEX "idx_edge_vec" ON EDGE Relation (weight_vector) OPTIONS {
+  similarity_function: "IP",
+  index_type: "HNSW",
+  dimensions: 64
+}
+```
+
+### Using IF NOT EXISTS
+
+The `IF NOT EXISTS` clause prevents errors when creating a vector index that already exists:
+
+```gql
+CREATE VECTOR INDEX "idx_embedding" ON NODE Person (embedding) OPTIONS {
+  similarity_function: "COSINE",
+  index_type: "HNSW",
+  dimensions: 128
+} IF NOT EXISTS
+```
 
 ## Dropping a Vector Index
 
@@ -138,15 +185,21 @@ You can drop a vector index using the `DROP VECTOR INDEX` statement. Dropping a 
 
 > A property with a vector index cannot be dropped until the vector index is deleted.
 
-To drop the node vector index `summary_embedding`:
+To drop a node vector index:
 
 ```gql
-DROP NODE VECTOR INDEX summary_embedding
+DROP VECTOR INDEX "summary_embedding" ON NODE
+```
+
+To drop an edge vector index:
+
+```gql
+DROP VECTOR INDEX "idx_edge_vec" ON EDGE
 ```
 
 ## Using Vector Indexes
 
-You can use a vector index for vector search by calling the `vector.queryNodes()` procedure.
+You can use a vector index for vector search by calling the `vector.queryNodes()` or `vector.queryEdges()` procedure.
 
 ### Syntax
 
@@ -189,6 +242,50 @@ Result:
 | One Hundred Years of Solitude | 0.39629873633384705 |
 | The Great Gatsby | 0.3709701597690582 |
   
+### Edge Vector Search
+
+To search edge vectors, use the `vector.queryEdges()` procedure:
+
+```gql
+CALL vector.queryEdges("<vectorIndexName>", <numMostSimEdges>, <targetVector>)
+YIELD result
+RETURN result
+```
+
+The parameters and return fields are the same as `vector.queryNodes()`.
+
+## DML Auto-Maintenance
+
+In embedded mode, vector indexes are automatically synchronized when data changes:
+
+| Operation | Behavior |
+| -- | -- |
+| `INSERT` | New vectors are automatically added to the HNSW index. |
+| `SET` | Updated vectors replace the old vectors in the index. |
+| `DELETE` | Deleted vectors are removed from the index. |
+| `INSERT OVERWRITE` | Existing vectors are updated; new vectors are added. |
+
+## Configuration
+
+In embedded mode, add the following section to `shard-server.config`:
+
+```ini
+[VectorIndex]
+vector_mode = embedded
+hnsw_m = 16
+hnsw_ef_construction = 200
+hnsw_ef_search = 100
+save_interval_s = 60
+```
+
+| <div table-width="25">Parameter</div> | Default | Description |
+| -- | -- | -- |
+| `vector_mode` | `embedded` | Vector index mode: `embedded` (built-in HNSW) or `external` (external gRPC vector server). |
+| `hnsw_m` | `16` | Maximum connections per node. Higher values improve recall but increase memory. |
+| `hnsw_ef_construction` | `200` | Search width during index building. Higher values improve index quality but slow construction. |
+| `hnsw_ef_search` | `100` | Search width during queries. Higher values improve precision but slow queries. |
+| `save_interval_s` | `60` | Interval in seconds for persisting index to disk. Set to `0` to save only on shutdown. |
+
 ## Annex: Index Types
 
 | <div table-width="15">Index Type</div> | Description |

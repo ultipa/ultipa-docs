@@ -6,6 +6,59 @@ The following examples run against this graph:
 
 <div align=center drawio-diagram='17198' drawio-name="draw_e4339232f5454cf2ac26f62c1bc9a53a.jpg"><img src="https://img.ultipa.cn/draw/draw_e4339232f5454cf2ac26f62c1bc9a53a.jpg?v='1733306685458'"/></div>
 
+## nodes()
+
+Extracts all nodes from a path as a list. Supports index access and slicing.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col>
+    <col>
+    <col style="width:40%;">
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>nodes(&lt;pathVar&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;pathVar&gt;</code></td>
+      <td><code>PATH</code></td>
+      <td>Path variable reference</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>LIST&lt;NODE&gt;</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+MATCH p = ({_id: "P1"})-[]->{1,2}()
+RETURN nodes(p)
+```
+
+Index access (0-based, negative indices supported):
+
+```gql
+MATCH p = ({_id: "P1"})-[]->{2}()
+RETURN nodes(p)[0] AS first, nodes(p)[-1] AS last
+```
+
+Slicing:
+
+```gql
+MATCH p = ({_id: "P1"})-[]->{3}()
+RETURN nodes(p)[0:2] AS first_two, nodes(p)[1:] AS rest
+```
+
 ## path_length()
 
 Returns the number of edges in a path.
@@ -236,3 +289,60 @@ Result:
 | -- |
 | ["P1","P2"] |
 | ["P1","P2","P3"] |
+
+## relationships()
+
+Extracts all edges from a path as a list. Supports index access and slicing.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col>
+    <col>
+    <col style="width:40%;">
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>relationships(&lt;pathVar&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;pathVar&gt;</code></td>
+      <td><code>PATH</code></td>
+      <td>Path variable reference</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>LIST&lt;EDGE&gt;</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+MATCH p = ({_id: "P1"})-[]->{1,2}()
+RETURN relationships(p)
+```
+
+Index access:
+
+```gql
+MATCH p = ({_id: "P1"})-[]->{2}()
+RETURN relationships(p)[0] AS first_edge
+```
+
+### Relationship to Other Path Functions
+
+| Function | Returns | Description |
+| -- | -- | -- |
+| `nodes(p)` | `LIST<NODE>` | All nodes in the path. |
+| `relationships(p)` | `LIST<EDGE>` | All edges in the path. |
+| `pnodes(p)` | `LIST<NODE>` | All nodes in the path (same as `nodes()`). |
+| `pedges(p)` | `LIST<EDGE>` | All edges in the path (same as `relationships()`). |
+
+> `nodes(p)[0].name` (chained property access) is not supported. Use `nodes(p)[0]` to retrieve the node, then access properties separately.

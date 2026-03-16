@@ -63,6 +63,11 @@ Ultipa supports the following system privileges:
 | `LICENSE_DUMP` | Dumps license of the database. |
 | `SHOW_BACKUP` | Shows backups of the database. |
 | `CREATE_BACKUP` | Creates backups for the database. |
+| `PITR_RESTORE` | Restores the database to a point in time. |
+| `CREATE_PROCEDURE` | Creates stored procedures in graphs. |
+| `DROP_PROCEDURE` | Drops stored procedures in graphs. |
+| `SHOW_PROCEDURE` | Shows stored procedures in graphs. |
+| `CALL_PROCEDURE` | Calls stored procedures in graphs. |
 
 ## Graph Privileges
 

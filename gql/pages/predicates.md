@@ -6,7 +6,7 @@ A predicate specifies a condition that can be evaluated to give a boolean value 
 
 | <div table-width="30">Category</div> | Predicates |
 | -- | -- |
-| <a href="#Comparison-Predicates">Comparison Predicates</a> | `=`, `<>` (or `!=`), `>`, `<`, `>=`, `<=`, `=~` |
+| <a href="#Comparison-Predicates">Comparison Predicates</a> | `=`, `<>` (or `!=`), `>`, `<`, `>=`, `<=`, `=~` (or `REGEXP`) |
 | <a href="#Exists-Predicate">Exists Predicate</a> | `EXISTS` |
 | <a href="#None-Predicate">None Predicate</a> | `NONE` |
 | <a href="#Null-Predicates">Null Predicates</a> | `IS NULL`, `IS NOT NULL` |
@@ -19,6 +19,7 @@ A predicate specifies a condition that can be evaluated to give a boolean value 
 | <a href="#Same-Predicate">Same Predicate</a> | `SAME` |
 | <a href="#Source/Destination-Predicates">Source/Destination Predicates</a> | `IS SOURCE OF`, `IS NOT SOURCE OF`, `IS DESTINATION OF`, `IS NOT DESTINATION OF` |
 | <a href="#Directed-Predicates">Directed Predicates</a> | `IS DIRECTED`, `IS NOT DIRECTED` |
+| <a href="#List-Predicates">List Predicates</a> | `ALL`, `ANY`, `SINGLE`, `NONE` |
 
 ## Comparison Predicates
 
@@ -30,9 +31,11 @@ Compares two values or expressions and returns true or false. GQL supports the f
 - Less than: `<`
 - Greater than or equal to: `>=`
 - Less than or equal to: `<=`
-- Regular match: `=~`
+- Regular match: `=~` (or `REGEXP`)
 
 The `>`, `<`, `>=`, and `<=` can be used only with numeric, textual, temporal, boolean, and `null` values.
+
+The `=~` and `REGEXP` operators use **full-string matching** (the pattern must match the entire string). Use `.*pattern.*` for substring matching. Both operands must be strings (or null). The regex flavor is ECMAScript.
 
 ### Comparable Values
 
@@ -63,6 +66,23 @@ RETURN email =~ "[a-zA-Z0-9_.-]+@[a-zA-Z0-9]+\.(com|cn)" // true
 ```
 
 This query returns `true` because the `email` matches the specified email address pattern.
+
+The `REGEXP` keyword is equivalent to `=~`:
+
+```gql
+MATCH (n:Person) WHERE n.name REGEXP "A.*" RETURN n.name
+```
+
+Common regex patterns:
+
+```gql
+RETURN "abc123" =~ "[a-z]+[0-9]+"       // true — character classes
+RETURN "cat" =~ "cat|dog|bird"           // true — alternation
+RETURN "ababab" =~ "(ab)+"              // true — grouping and quantifiers
+RETURN "color" =~ "colou?r"             // true — optional character
+RETURN "hello world" =~ "hello"          // false — full match required
+RETURN "hello world" =~ ".*hello.*"      // true — substring via .*
+```
 
 ### Comparing Temporal Values
 
@@ -474,3 +494,109 @@ Result:
 | e IS DIRECTED |
 | -- |
 | 1 |
+
+## List Predicates
+
+List predicates evaluate a condition over each element of a list. They use the syntax:
+
+```gql
+<function>(variable IN list WHERE predicate)
+```
+
+- `variable`: Iterator variable bound to each element during evaluation.
+- `list`: Any expression evaluating to a list (literal list, property, or variable).
+- `predicate`: Boolean expression that can reference the iterator variable and outer scope variables.
+
+| Function | Description |
+| -- | -- |
+| `ALL` | Returns `true` if all elements satisfy the predicate. |
+| `ANY` | Returns `true` if at least one element satisfies the predicate. |
+| `SINGLE` | Returns `true` if exactly one element satisfies the predicate. |
+| `NONE` | Returns `true` if no element satisfies the predicate. |
+
+**Behavior with empty and NULL lists:**
+
+| Function | Empty List | NULL List |
+| -- | -- | -- |
+| `ALL` | `true` | `true` |
+| `ANY` | `false` | `false` |
+| `SINGLE` | `false` | `false` |
+| `NONE` | `true` | `true` |
+
+NULL elements in a list do not satisfy any predicate (treated as `false`).
+
+### Examples
+
+Basic usage:
+
+```gql
+RETURN ALL(x IN [1, 2, 3] WHERE x > 0)
+```
+
+Result:
+
+| ALL(x IN [1, 2, 3] WHERE x > 0) |
+| -- |
+| true |
+
+```gql
+RETURN ANY(x IN ["a", "b", "c"] WHERE x = "b")
+```
+
+Result:
+
+| ANY(x IN ["a", "b", "c"] WHERE x = "b") |
+| -- |
+| true |
+
+```gql
+RETURN SINGLE(x IN [1, 2, 3] WHERE x > 2)
+```
+
+Result:
+
+| SINGLE(x IN [1, 2, 3] WHERE x > 2) |
+| -- |
+| true |
+
+```gql
+RETURN NONE(x IN [1, 2, 3] WHERE x < 0)
+```
+
+Result:
+
+| NONE(x IN [1, 2, 3] WHERE x < 0) |
+| -- |
+| true |
+
+Using list predicates with graph data:
+
+```gql
+MATCH (n:Person)
+WHERE ALL(x IN [n.age] WHERE x > 20)
+RETURN n._id
+```
+
+Using list predicates with complex expressions:
+
+```gql
+RETURN ALL(x IN [2, 4, 6, 8] WHERE x % 2 = 0)
+```
+
+Result:
+
+| ALL(x IN [2, 4, 6, 8] WHERE x % 2 = 0) |
+| -- |
+| true |
+
+Nested list predicates:
+
+```gql
+RETURN ALL(x IN [1, 2, 3] WHERE ANY(y IN [0, 1] WHERE y < x))
+```
+
+Result:
+
+| ALL(x IN [1, 2, 3] WHERE ANY(y IN [0, 1] WHERE y < x)) |
+| -- |
+| true |
