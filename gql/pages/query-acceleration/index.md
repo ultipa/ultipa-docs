@@ -1,6 +1,4 @@
-# Query Acceleration
-
-## Index
+# Index
 
 ## Overview
 
