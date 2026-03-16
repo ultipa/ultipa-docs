@@ -52,4 +52,4 @@ Sample `profile_info` output:
 | ------3 | LIMIT_SKIP | 3 | 1μs | 121 | 0 |
 | --------4 | NODE_SCAN | 4 | 440μs | 121 | 243 |
 
-The `db_hits` column shows the number of RocksDB API calls (Get, MultiGet, Iterator Seek/Next) made by each operator. This metric reflects logical I/O rather than physical disk operations — cached reads are still counted. Operators that only process in-memory data (e.g., RETURN, LIMIT_SKIP) report 0 db_hits.
+The `db_hits` column shows the number of storage engine reads made by each operator. This metric reflects logical I/O rather than physical disk operations — cached reads are still counted. Operators that only process in-memory data (e.g., RETURN, LIMIT_SKIP) report 0 db_hits.

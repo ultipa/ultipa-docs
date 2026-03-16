@@ -2,7 +2,7 @@
 
 ## Encryption at Rest
 
-Ultipa supports transparent file-level encryption for data stored on disk using AES-256-CTR or SM4-CTR algorithms. When enabled, all RocksDB files (SST, WAL, MANIFEST) are encrypted with less than 5% performance overhead for AES.
+Ultipa supports transparent file-level encryption for data stored on disk using AES-256-CTR or SM4-CTR algorithms. When enabled, all data files are encrypted with less than 5% performance overhead for AES.
 
 ### Configuration
 
@@ -25,7 +25,7 @@ key_file = /path/to/encryption.key
 
 ## SM/TLS Encryption
 
-Ultipa supports Chinese national standard SM2/SM3/SM4 TLS ciphers via the Tongsuo library for compliance with domestic regulations. The system auto-detects whether to use standard RSA or SM2 certificates based on the certificate files provided.
+Ultipa supports Chinese national standard SM2/SM3/SM4 TLS ciphers for compliance with domestic regulations. The system auto-detects whether to use standard RSA or SM2 certificates based on the certificate files provided.
 
 ### Configuration
 

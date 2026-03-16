@@ -109,8 +109,8 @@ curl -X POST http://<name-server-host>:9091/config \
 | `Server.default_timeout` | `300` | Default query timeout in seconds. |
 | `Server.heartbeat_interval_s` | `10` | Heartbeat check interval in seconds. |
 | `Network.load_balance_read_only_workloads` | `false` | Enables read-only load balancing. |
-| `Network.shard_client_timeout_ms` | `10000` | Shard RPC client timeout in milliseconds. |
-| `Network.meta_client_timeout_ms` | `10000` | Meta RPC client timeout in milliseconds. |
+| `Network.shard_client_timeout_ms` | `10000` | Shard server communication timeout in milliseconds. |
+| `Network.meta_client_timeout_ms` | `10000` | Meta server communication timeout in milliseconds. |
 | `Session.idle_timeout_second` | `3600` | Session idle timeout in seconds. |
 | `Session.count_limit` | `-1` | Maximum session count. `-1` means unlimited. |
 | `Audit.file_retain_counts` | `10` | Maximum number of audit log files to retain. |
@@ -133,11 +133,10 @@ These keys use the `Shard.` prefix when sent to the Name Server HTTP API.
 | `Shard.Server.disk_min_free_mb` | - | Minimum free disk space in MB. |
 | `Shard.Log.file_retain_counts` | `5` | Maximum number of Shard log files. |
 | `Shard.Log.log_file_size` | `200` | Maximum Shard log file size in MB. |
-| `Shard.ComputeEngine.default_timeout` | - | Compute engine timeout in seconds. |
+| `Shard.ComputeEngine.default_timeout` | - | Query execution timeout in seconds. |
 | `Shard.ComputeEngine.default_max_depth` | - | Maximum traversal depth. |
-| `Shard.ComputeEngine.parallel_threshold` | - | Parallel execution threshold. |
-| `Shard.Network.shard_client_timeout_ms` | `10000` | Shard RPC timeout in milliseconds. |
-| `Shard.Network.meta_client_timeout_ms` | `10000` | Meta RPC timeout in milliseconds. |
+| `Shard.Network.shard_client_timeout_ms` | `10000` | Shard server communication timeout in milliseconds. |
+| `Shard.Network.meta_client_timeout_ms` | `10000` | Meta server communication timeout in milliseconds. |
 | `Shard.PITR.barrier_interval_s` | - | Recovery point interval in seconds. |
 | `Shard.PITR.retention_hours` | - | Recovery point retention in hours. |
 
@@ -147,9 +146,9 @@ These keys use the `Meta.` prefix when sent to the Name Server HTTP API.
 
 | <div table-width="50">Key</div> | Default | Description |
 | -- | -- | -- |
-| `Meta.Server.real_time_sync_meta_to_shards` | - | Enables real-time meta sync to Shard Servers. |
-| `Meta.Server.heartbeat_sync_meta_to_shards` | - | Enables heartbeat meta sync to Shard Servers. |
-| `Meta.Server.enable_ddl_shard_health_check` | - | Enables DDL health pre-check. |
+| `Meta.Server.real_time_sync_meta_to_shards` | - | Enables real-time metadata sync to Shard Servers. |
+| `Meta.Server.heartbeat_sync_meta_to_shards` | - | Enables heartbeat-based metadata sync to Shard Servers. |
+| `Meta.Server.enable_ddl_shard_health_check` | - | Enables shard health check before DDL operations. |
 | `Meta.Log.file_retain_counts` | `5` | Maximum number of Meta log files. |
 | `Meta.Log.log_file_size` | `200` | Maximum Meta log file size in MB. |
 
@@ -159,31 +158,19 @@ The storage engine configuration is set in `shard-server.config` under the `[Sto
 
 ### Hot-Updatable Parameters
 
-#### DB-Level Options
-
 | <div table-width="45">Key</div> | Default | Description |
 | -- | -- | -- |
 | `max_background_flushes` | `2` | Maximum concurrent flush threads. |
 | `max_background_compactions` | `0` (auto) | Maximum concurrent compaction threads. `0` uses CPU core count. |
-| `bytes_per_sync` | `0` | Periodically sync SST writes (bytes). `0` disables. |
-| `wal_bytes_per_sync` | `0` | Periodically sync WAL writes (bytes). `0` disables. |
-
-#### Column-Family-Level Options
-
-| <div table-width="45">Key</div> | Default | Description |
-| -- | -- | -- |
-| `level0_file_num_compaction_trigger` | `4` | L0 file count to trigger compaction. |
-| `level0_slowdown_writes_trigger` | `20` | L0 file count to slow down writes. |
-| `level0_stop_writes_trigger` | `36` | L0 file count to stop writes. |
-| `max_bytes_for_level_base` | `256` | L1 total size target in MB. |
-| `target_file_size_base` | `256` | L1 SST file size target in MB. |
-| `compression` | `snappy` | Compression for non-bottommost levels: `none`, `snappy`, `lz4`, `zstd`. Only affects new SST files. |
+| `bytes_per_sync` | `0` | Periodically sync data file writes (bytes). `0` disables. |
+| `wal_bytes_per_sync` | `0` | Periodically sync write-ahead log writes (bytes). `0` disables. |
+| `level0_file_num_compaction_trigger` | `4` | Level-0 file count to trigger compaction. |
+| `level0_slowdown_writes_trigger` | `20` | Level-0 file count to slow down writes. |
+| `level0_stop_writes_trigger` | `36` | Level-0 file count to stop writes. |
+| `max_bytes_for_level_base` | `256` | Level-1 total size target in MB. |
+| `target_file_size_base` | `256` | Level-1 data file size target in MB. |
+| `compression` | `snappy` | Compression for non-bottommost levels: `none`, `snappy`, `lz4`, `zstd`. Only affects new data files. |
 | `bottommost_compression` | (empty) | Compression for the bottommost level. Empty means same as `compression`. |
-
-#### Block Cache
-
-| <div table-width="45">Key</div> | Default | Description |
-| -- | -- | -- |
 | `block_cache_size` | `1024` | Block cache size in MB. Dynamically resized without restart. |
 
 #### Example
@@ -206,10 +193,9 @@ The following parameters require a server restart to take effect:
 | -- | -- | -- |
 | `block_size` | `4` | Block size in KB. |
 | `cache_index_and_filter_blocks` | `false` | Place index/filter blocks in block cache. |
-| `pin_l0_filter_and_index_blocks_in_cache` | `false` | Pin L0 index blocks in cache. |
 | `enable_pipelined_write` | `false` | Enable pipelined write. |
 | `use_direct_io_for_flush_and_compaction` | `false` | Use direct I/O for compaction. |
-| `min_write_buffer_number_to_merge` | `1` | Number of memtables to merge before flush. |
+| `min_write_buffer_number_to_merge` | `1` | Number of write buffers to merge before flush. |
 
 ### High-Performance Configuration Template
 
@@ -224,7 +210,7 @@ block_cache_size = 4096
 max_background_flushes = 4
 max_background_compactions = 8
 
-# L0 triggers
+# Compaction triggers
 level0_file_num_compaction_trigger = 8
 level0_slowdown_writes_trigger = 40
 level0_stop_writes_trigger = 64
@@ -239,7 +225,7 @@ bottommost_compression = zstd
 bytes_per_sync = 1048576
 wal_bytes_per_sync = 524288
 
-# Pipelined write + memtable merge
+# Pipelined write + write buffer merge
 enable_pipelined_write = true
 min_write_buffer_number_to_merge = 2
 

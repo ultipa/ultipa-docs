@@ -107,12 +107,4 @@ Edge events include additional key fields for endpoint references:
 
 ## Prerequisites
 
-CDC requires the `librdkafka` library to be available on the Shard Server. If the library is not found, CDC remains disabled gracefully without affecting server operation.
-
-Install via package manager:
-
-```bash
-yum install librdkafka-devel
-```
-
-Or place `librdkafka.so` in the server's library path.
+CDC requires the Kafka client library to be available on the Shard Server. If the library is not found, CDC remains disabled gracefully without affecting server operation. Refer to the installation guide for setup instructions.

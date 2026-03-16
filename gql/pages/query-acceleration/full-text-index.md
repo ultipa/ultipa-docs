@@ -184,7 +184,7 @@ MATCH (n:doc WHERE ~ft_content CONTAINS '+graph -tree') RETURN n
 
 ### Chinese Text Support
 
-Chinese text is automatically tokenized using the Jieba tokenizer:
+Chinese text is automatically tokenized:
 
 ```gql
 MATCH (n:doc WHERE ~ft_content CONTAINS '图数据库') RETURN n
@@ -234,14 +234,12 @@ Add the following section to `shard-server.config` to configure the full-text se
 
 ```ini
 [Fulltext]
-engine = tantivy
-tantivy_memory_mb = 64
+writer_memory_mb = 64
 ```
 
 | <div table-width="25">Parameter</div> | Default | Hot-Updatable | Description |
 | -- | -- | -- | -- |
-| `engine` | `tantivy` | Yes | Full-text search engine. |
-| `tantivy_memory_mb` | `64` | Yes | Writer memory limit in MB (minimum 16). |
+| `writer_memory_mb` | `64` | Yes | Writer memory limit in MB (minimum 16). |
 
 ## Limitations
 

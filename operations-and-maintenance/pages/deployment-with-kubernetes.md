@@ -98,10 +98,10 @@ kind: UltipaCluster
 metadata:
   name: my-cluster
 spec:
-  version: "5.3.cc.1"
+  version: "5.3.0"
   image:
-    graphdb: "registry/distribute-graphdb-htap:5.3.cc.1"
-    meta: "registry/meta-server:5.3.cc.1"
+    graphdb: "<your-registry>/ultipa-server:5.3.0"
+    meta: "<your-registry>/ultipa-meta:5.3.0"
   metaServer:
     replicas: 3
     storage: { size: "10Gi" }
@@ -136,7 +136,7 @@ kubectl get ultipacluster
 
 ```
 NAME         PHASE     READY   TOTAL   VERSION      AGE
-my-cluster   Running   8       8       5.3.cc.1     2h
+my-cluster   Running   8       8       5.3.0        2h
 ```
 
 The `PHASE` field indicates the cluster state: `Pending`, `Forming`, `Running`, or `Degraded`.
@@ -149,8 +149,8 @@ To test a deployment locally using minikube or kind:
 minikube start --cpus=4 --memory=16g
 
 # Load Ultipa images
-minikube image load distribute-graphdb-htap:5.3.cc.1
-minikube image load meta-server:5.3.cc.1
+minikube image load ultipa-server:5.3.0
+minikube image load ultipa-meta:5.3.0
 
 # Deploy
 helm install test ./ultipa-helm-chart \

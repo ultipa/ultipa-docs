@@ -69,7 +69,7 @@ resource_path = /data/ultipa/resource
 ### Using the Startup Script
 
 ```bash
-cd /opt/distribute-graphdb
+cd /opt/ultipa
 ./start_standalone.sh
 ```
 
@@ -91,7 +91,7 @@ sleep 3
 
 ## Limitations
 
-- Only supports `engine_type=default`. The `engine_type=speed` (SpeedCache) is not compatible with standalone mode and will cause a crash. Use `enable_graph_cache=true` with `graph_cache_max_memory_policy=s3fifo` or `lru` as an alternative.
+- Only supports `engine_type=default`. Other engine types are not compatible with standalone mode.
 - No shard-level fault isolation.
 - No horizontal scaling.
 - Migrating from standalone mode to standard mode requires data export and re-import.
