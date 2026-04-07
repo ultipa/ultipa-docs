@@ -7,7 +7,7 @@ The GQLDB Node.js driver provides methods to create, delete, list, and manage gr
 GQLDB supports three graph types defined in the `GraphType` enum:
 
 ```typescript
-import { GraphType } from 'gqldb-nodejs';
+import { GraphType } from '@ultipa-graph/ultipa-driver';
 
 GraphType.OPEN      // Schema-less graph (default)
 GraphType.CLOSED    // Schema-enforced graph
@@ -27,7 +27,7 @@ GraphType.ONTOLOGY  // Ontology-enabled graph
 Create a new graph in the database:
 
 ```typescript
-import { GqldbClient, createConfig, GraphType } from 'gqldb-nodejs';
+import { GqldbClient, createConfig, GraphType } from '@ultipa-graph/ultipa-driver';
 
 async function createGraphExample(client: GqldbClient) {
   // Create an open (schema-less) graph
@@ -102,7 +102,7 @@ After calling `useGraph()`, all queries without an explicit `graphName` in their
 Retrieve all graphs in the database:
 
 ```typescript
-import { GraphInfo } from 'gqldb-nodejs';
+import { GraphInfo } from '@ultipa-graph/ultipa-driver';
 
 async function listGraphsExample(client: GqldbClient) {
   const graphs: GraphInfo[] = await client.listGraphs();
@@ -153,7 +153,7 @@ import {
   GraphExistsError,
   CreateGraphFailedError,
   DropGraphFailedError
-} from 'gqldb-nodejs';
+} from '@ultipa-graph/ultipa-driver';
 
 async function safeGraphOperations(client: GqldbClient) {
   try {
@@ -192,11 +192,11 @@ async function safeGraphOperations(client: GqldbClient) {
 ## Complete Example
 
 ```typescript
-import { GqldbClient, createConfig, GraphType } from 'gqldb-nodejs';
+import { GqldbClient, createConfig, GraphType } from '@ultipa-graph/ultipa-driver';
 
 async function main() {
   const client = new GqldbClient(createConfig({
-    hosts: ['192.168.1.100:9000']
+    hosts: ['localhost:9000']
   }));
 
   try {

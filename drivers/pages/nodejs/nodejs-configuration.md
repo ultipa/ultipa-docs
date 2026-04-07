@@ -8,7 +8,7 @@ The `GqldbConfig` interface supports the following options:
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `hosts` | `string[]` | `['192.168.1.100:9000']` | Server hosts in `host:port` format |
+| `hosts` | `string[]` | `['localhost:9000']` | Server hosts in `host:port` format |
 | `username` | `string` | - | Username for authentication |
 | `password` | `string` | - | Password for authentication |
 | `defaultGraph` | `string` | - | Default graph to use for queries |
@@ -25,11 +25,11 @@ The `GqldbConfig` interface supports the following options:
 The simplest way to create a configuration with sensible defaults:
 
 ```typescript
-import { createConfig, GqldbClient } from 'gqldb-nodejs';
+import { createConfig, GqldbClient } from '@ultipa-graph/ultipa-driver';
 
 // Minimal configuration
 const config = createConfig({
-  hosts: ['192.168.1.100:9000']
+  hosts: ['localhost:9000']
 });
 
 // Full configuration
@@ -53,7 +53,7 @@ const client = new GqldbClient(config);
 For a fluent API approach, use the `ConfigBuilder` class:
 
 ```typescript
-import { ConfigBuilder, GqldbClient } from 'gqldb-nodejs';
+import { ConfigBuilder, GqldbClient } from '@ultipa-graph/ultipa-driver';
 
 const config = new ConfigBuilder()
   .hosts('server1:9000', 'server2:9000')
@@ -92,7 +92,7 @@ const client = new GqldbClient(config);
 For secure connections, configure TLS options:
 
 ```typescript
-import { createConfig, GqldbClient } from 'gqldb-nodejs';
+import { createConfig, GqldbClient } from '@ultipa-graph/ultipa-driver';
 import * as fs from 'fs';
 
 const config = createConfig({
@@ -111,7 +111,7 @@ const client = new GqldbClient(config);
 Or using ConfigBuilder:
 
 ```typescript
-import { ConfigBuilder, GqldbClient } from 'gqldb-nodejs';
+import { ConfigBuilder, GqldbClient } from '@ultipa-graph/ultipa-driver';
 import * as fs from 'fs';
 
 const config = new ConfigBuilder()
@@ -130,10 +130,10 @@ const client = new GqldbClient(config);
 You can load configuration from environment variables:
 
 ```typescript
-import { createConfig, GqldbClient } from 'gqldb-nodejs';
+import { createConfig, GqldbClient } from '@ultipa-graph/ultipa-driver';
 
 const config = createConfig({
-  hosts: process.env.GQLDB_HOSTS?.split(',') || ['192.168.1.100:9000'],
+  hosts: process.env.GQLDB_HOSTS?.split(',') || ['localhost:9000'],
   username: process.env.GQLDB_USERNAME,
   password: process.env.GQLDB_PASSWORD,
   defaultGraph: process.env.GQLDB_DEFAULT_GRAPH,
@@ -153,11 +153,11 @@ Both `createConfig()` and `ConfigBuilder.build()` validate the configuration:
 - `poolSize` must be positive (defaults to 10 if invalid)
 
 ```typescript
-import { createConfig, validateConfig } from 'gqldb-nodejs';
+import { createConfig, validateConfig } from '@ultipa-graph/ultipa-driver';
 
 // Manual validation
 const config = {
-  hosts: ['192.168.1.100:9000']
+  hosts: ['localhost:9000']
 };
 
 try {
@@ -173,11 +173,11 @@ try {
 The driver provides default values through `DEFAULT_CONFIG`:
 
 ```typescript
-import { DEFAULT_CONFIG } from 'gqldb-nodejs';
+import { DEFAULT_CONFIG } from '@ultipa-graph/ultipa-driver';
 
 console.log(DEFAULT_CONFIG);
 // {
-//   hosts: ['192.168.1.100:9000'],
+//   hosts: ['localhost:9000'],
 //   timeout: 30000,
 //   maxRecvSize: 67108864,  // 64MB
 //   poolSize: 10,

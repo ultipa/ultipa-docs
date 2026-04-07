@@ -5,7 +5,7 @@ The GQLDB Node.js driver provides a comprehensive set of error classes for handl
 ## Base Error Class
 
 ```typescript
-import { GqldbError } from 'gqldb-nodejs';
+import { GqldbError } from '@ultipa-graph/ultipa-driver';
 
 class GqldbError extends Error {
   readonly code: number;
@@ -29,7 +29,7 @@ All GQLDB errors include:
 | `InvalidTimeoutError` | Invalid timeout value specified |
 
 ```typescript
-import { NoHostsError, InvalidTimeoutError } from 'gqldb-nodejs';
+import { NoHostsError, InvalidTimeoutError } from '@ultipa-graph/ultipa-driver';
 
 try {
   const config = createConfig({ hosts: [] });
@@ -55,7 +55,7 @@ import {
   ConnectionFailedError,
   AllHostsFailedError,
   HealthCheckFailedError
-} from 'gqldb-nodejs';
+} from '@ultipa-graph/ultipa-driver';
 
 async function connectWithRetry(client: GqldbClient, maxRetries: number) {
   for (let i = 0; i < maxRetries; i++) {
@@ -93,7 +93,7 @@ import {
   NotLoggedInError,
   LoginFailedError,
   SessionExpiredError
-} from 'gqldb-nodejs';
+} from '@ultipa-graph/ultipa-driver';
 
 async function ensureLoggedIn(client: GqldbClient) {
   try {
@@ -122,7 +122,7 @@ async function ensureLoggedIn(client: GqldbClient) {
 import {
   TransactionFailedError,
   TransactionNotFoundError
-} from 'gqldb-nodejs';
+} from '@ultipa-graph/ultipa-driver';
 
 async function safeTransaction(client: GqldbClient, fn: (txId: number) => Promise<void>) {
   try {
@@ -154,7 +154,7 @@ import {
   QueryTimeoutError,
   InvalidQueryError,
   EmptyQueryError
-} from 'gqldb-nodejs';
+} from '@ultipa-graph/ultipa-driver';
 
 async function executeQuery(client: GqldbClient, query: string) {
   try {
@@ -190,7 +190,7 @@ import {
   GraphNotFoundError,
   GraphExistsError,
   CreateGraphFailedError
-} from 'gqldb-nodejs';
+} from '@ultipa-graph/ultipa-driver';
 
 async function ensureGraph(client: GqldbClient, graphName: string) {
   try {
@@ -226,7 +226,7 @@ async function ensureGraph(client: GqldbClient, graphName: string) {
 | `ExportFailedError` | Export operation failed |
 
 ```typescript
-import { InsertFailedError, DeleteFailedError } from 'gqldb-nodejs';
+import { InsertFailedError, DeleteFailedError } from '@ultipa-graph/ultipa-driver';
 
 async function safeInsert(client: GqldbClient, nodes: NodeData[]) {
   try {
@@ -252,7 +252,7 @@ async function safeInsert(client: GqldbClient, nodes: NodeData[]) {
 | `UnsupportedTypeError` | Type is not supported |
 
 ```typescript
-import { TypeConversionError, UnsupportedTypeError } from 'gqldb-nodejs';
+import { TypeConversionError, UnsupportedTypeError } from '@ultipa-graph/ultipa-driver';
 
 function processValue(row: Row, index: number) {
   try {
@@ -272,7 +272,7 @@ function processValue(row: Row, index: number) {
 ### Comprehensive Try-Catch
 
 ```typescript
-import { GqldbError } from 'gqldb-nodejs';
+import { GqldbError } from '@ultipa-graph/ultipa-driver';
 
 async function handleAllErrors(client: GqldbClient) {
   try {
@@ -328,7 +328,7 @@ async function withRetry<T>(
 }
 
 // Usage
-import { ConnectionFailedError, QueryTimeoutError } from 'gqldb-nodejs';
+import { ConnectionFailedError, QueryTimeoutError } from '@ultipa-graph/ultipa-driver';
 
 const result = await withRetry(
   () => client.gql('MATCH (n) RETURN n LIMIT 100'),
@@ -395,11 +395,11 @@ import {
   QueryTimeoutError,
   GraphNotFoundError,
   TransactionFailedError
-} from 'gqldb-nodejs';
+} from '@ultipa-graph/ultipa-driver';
 
 async function main() {
   const client = new GqldbClient(createConfig({
-    hosts: ['192.168.1.100:9000'],
+    hosts: ['localhost:9000'],
     timeout: 30000
   }));
 

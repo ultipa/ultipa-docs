@@ -7,7 +7,7 @@ The GQLDB Node.js driver provides the `Response` and `Row` classes for working w
 The `gql()` method returns a `Response` object containing query results:
 
 ```typescript
-import { GqldbClient, Response } from 'gqldb-nodejs';
+import { GqldbClient, Response } from '@ultipa-graph/ultipa-driver';
 
 async function queryExample(client: GqldbClient) {
   const response: Response = await client.gql('MATCH (n:User) RETURN n.name, n.age');
@@ -164,14 +164,58 @@ for (const row of response.rows) {
 }
 ```
 
-## Extracting Graph Elements
+## Column Access with alias() and get()
+
+The preferred way to access typed results is through `alias()` (by column name) or `get()` (by column index), which return an `AliasResult` object with methods to extract nodes, edges, paths, tables, and attributes:
+
+```typescript
+const response = await client.gql('MATCH (u:User)-[r:Follows]->(f:User) RETURN u, r, f');
+
+// Access by column name
+const users = response.alias('u').asNodes();
+const follows = response.alias('r').asEdges();
+const friends = response.alias('f').asNodes();
+
+// Or by column index
+const usersAlt = response.get(0).asNodes();
+```
+
+### AliasResult Methods
+
+| Method | Returns | Description |
+|--------|---------|-------------|
+| `asNodes()` | `NodeResult` | Extract as node objects |
+| `asEdges()` | `EdgeResult` | Extract as edge objects |
+| `asPaths()` | `Path[]` | Extract as path objects |
+| `asTable()` | `Table` | Extract as table |
+| `asAttr()` | `Attr` | Extract as attribute |
+
+```typescript
+// Extract nodes with schemas
+const nodeResult = response.alias('u').asNodes();
+for (const node of nodeResult.nodes) {
+  console.log('ID:', node.id);
+  console.log('Labels:', node.labels);
+  console.log('Properties:', node.properties);
+}
+
+// Extract edges
+const edgeResult = response.alias('r').asEdges();
+for (const edge of edgeResult.edges) {
+  console.log('From:', edge.from, 'To:', edge.to, 'Label:', edge.label);
+}
+```
+
+## Extracting Graph Elements (Deprecated)
+
+> The following methods on `Response` are deprecated. Use `response.alias(name)` or `response.get(index)` instead.
 
 ### asNodes()
 
 Extract nodes from the response:
 
 ```typescript
-import { Node, NodeResult, Schema } from 'gqldb-nodejs';
+import { Node, NodeResult, Schema } from '@ultipa-graph/ultipa-driver';
 
 const response = await client.gql('MATCH (u:User) RETURN u');
 const result: NodeResult = response.asNodes();
@@ -209,7 +253,7 @@ interface NodeResult {
 Extract edges from the response:
 
 ```typescript
-import { Edge, EdgeResult } from 'gqldb-nodejs';
+import { Edge, EdgeResult } from '@ultipa-graph/ultipa-driver';
 
 const response = await client.gql('MATCH ()-[e:Follows]->() RETURN e');
 const result: EdgeResult = response.asEdges();
@@ -245,7 +289,7 @@ interface EdgeResult {
 Extract paths from the response:
 
 ```typescript
-import { Path } from 'gqldb-nodejs';
+import { Path } from '@ultipa-graph/ultipa-driver';
 
 const response = await client.gql('MATCH p = (a)-[*1..3]->(b) RETURN p LIMIT 10');
 const paths: Path[] = response.asPaths();
@@ -280,7 +324,7 @@ interface Path {
 Get the response as a generic table:
 
 ```typescript
-import { Table, Header } from 'gqldb-nodejs';
+import { Table, Header } from '@ultipa-graph/ultipa-driver';
 
 const response = await client.gql('MATCH (u:User) RETURN u.name, u.age');
 const table: Table = response.asTable();
@@ -311,7 +355,7 @@ interface Header {
 Extract values from a specific column:
 
 ```typescript
-import { Attr } from 'gqldb-nodejs';
+import { Attr } from '@ultipa-graph/ultipa-driver';
 
 const response = await client.gql('MATCH (u:User) RETURN u.age AS age');
 const ageAttr: Attr = response.asAttr('age');
@@ -339,11 +383,11 @@ interface Attr {
 ## Complete Example
 
 ```typescript
-import { GqldbClient, createConfig } from 'gqldb-nodejs';
+import { GqldbClient, createConfig } from '@ultipa-graph/ultipa-driver';
 
 async function main() {
   const client = new GqldbClient(createConfig({
-    hosts: ['192.168.1.100:9000'],
+    hosts: ['localhost:9000'],
     defaultGraph: 'socialNetwork'
   }));
 

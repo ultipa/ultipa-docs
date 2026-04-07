@@ -7,7 +7,7 @@ The GQLDB Node.js driver supports a comprehensive set of data types for storing 
 The `PropertyType` enum defines all supported data types:
 
 ```typescript
-import { PropertyType } from 'gqldb-nodejs';
+import { PropertyType } from '@ultipa-graph/ultipa-driver';
 ```
 
 ### Numeric Types
@@ -47,20 +47,20 @@ import { PropertyType } from 'gqldb-nodejs';
 
 | Type | Description | JavaScript Type |
 |------|-------------|-----------------|
-| `TIMESTAMP` | Unix timestamp with nanoseconds | `Date` |
+| `TIMESTAMP` | Unix timestamp with nanoseconds | `{ year, month, day, hour, minute, second, nanosecond }` |
 | `DATETIME` | Date and time (deprecated, use TIMESTAMP) | `Date` |
 | `DATE` | Date only | `Date` |
-| `LOCAL_DATETIME` | Local date and time | `{ nanos: bigint }` |
-| `ZONED_DATETIME` | Date and time with timezone | `{ nanos: bigint, offsetSeconds: number }` |
-| `LOCAL_TIME` | Local time of day | `{ nanosOfDay: bigint }` |
-| `ZONED_TIME` | Time with timezone | `{ nanosOfDay: bigint, offsetSeconds: number }` |
+| `LOCAL_DATETIME` | Local date and time | `{ year, month, day, hour, minute, second, nanosecond }` |
+| `ZONED_DATETIME` | Date and time with timezone | `{ year, month, day, hour, minute, second, nanosecond, offsetMinutes }` |
+| `LOCAL_TIME` | Local time of day | `{ hour, minute, second, nanosecond }` |
+| `ZONED_TIME` | Time with timezone | `{ hour, minute, second, nanosecond, offsetMinutes }` |
 
 ### Duration Types
 
 | Type | Description | JavaScript Type |
 |------|-------------|-----------------|
 | `YEAR_TO_MONTH` | Year-month duration | `{ months: number }` |
-| `DAY_TO_SECOND` | Day-second duration | `{ nanos: bigint }` |
+| `DAY_TO_SECOND` | Day-second duration | `{ seconds: number, nanoseconds: number }` |
 
 ### Geospatial Types
 
@@ -82,9 +82,9 @@ import { PropertyType } from 'gqldb-nodejs';
 
 | Type | Description | JavaScript Type |
 |------|-------------|-----------------|
-| `NODE` | Graph node | `GqldbNode` |
-| `EDGE` | Graph edge | `GqldbEdge` |
-| `PATH` | Graph path | `GqldbPath` |
+| `NODE` | Graph node | `Node` |
+| `EDGE` | Graph edge | `Edge` |
+| `PATH` | Graph path | `Path` |
 
 ### Other Types
 
@@ -173,20 +173,13 @@ enum CacheType {
 ```typescript
 // Data for inserting nodes
 interface NodeData {
-  id: string;
+  id?: string;                        // Optional node ID
   labels: string[];
   properties: Record<string, any>;
 }
 
 // Node from query results
 interface Node {
-  id: string;
-  labels: string[];
-  properties: Record<string, any>;
-}
-
-// Internal node representation
-interface GqldbNode {
   id: string;
   labels: string[];
   properties: Record<string, any>;
@@ -198,7 +191,6 @@ interface GqldbNode {
 ```typescript
 // Data for inserting edges
 interface EdgeData {
-  id: string;
   label: string;
   fromNodeId: string;
   toNodeId: string;
@@ -214,14 +206,6 @@ interface Edge {
   properties: Record<string, any>;
 }
 
-// Internal edge representation
-interface GqldbEdge {
-  id: string;
-  label: string;
-  fromNodeId: string;
-  toNodeId: string;
-  properties: Record<string, any>;
-}
 ```
 
 ### Path Type
@@ -230,11 +214,6 @@ interface GqldbEdge {
 interface Path {
   nodes: Node[];
   edges: Edge[];
-}
-
-interface GqldbPath {
-  nodes: GqldbNode[];
-  edges: GqldbEdge[];
 }
 ```
 
@@ -254,11 +233,13 @@ interface GraphInfo {
 
 ```typescript
 interface TransactionInfo {
-  id: number;
+  transactionId: number;
+  sessionId: number;
   graphName: string;
   readOnly: boolean;
-  startTime: number;
-  timeout: number;
+  createdAt: number;
+  durationMs: number;
+  internalTxId: number;
 }
 ```
 
@@ -324,13 +305,13 @@ interface TypedValue {
 }
 
 // Create a TypedValue
-import { createTypedValue, PropertyType } from 'gqldb-nodejs';
+import { createTypedValue, PropertyType } from '@ultipa-graph/ultipa-driver';
 
 const intValue = createTypedValue(PropertyType.INT64, 42);
 const stringValue = createTypedValue(PropertyType.STRING, 'hello');
 
 // Convert TypedValue to JavaScript value
-import { typedValueToJS } from 'gqldb-nodejs';
+import { typedValueToJS } from '@ultipa-graph/ultipa-driver';
 
 const jsValue = typedValueToJS(intValue);  // 42
 ```
@@ -423,11 +404,11 @@ console.log('Vector values:', embedding.values);
 ## Complete Example
 
 ```typescript
-import { GqldbClient, createConfig, PropertyType } from 'gqldb-nodejs';
+import { GqldbClient, createConfig, PropertyType } from '@ultipa-graph/ultipa-driver';
 
 async function main() {
   const client = new GqldbClient(createConfig({
-    hosts: ['192.168.1.100:9000']
+    hosts: ['localhost:9000']
   }));
 
   try {

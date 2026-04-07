@@ -19,7 +19,7 @@ The GQLDB Node.js driver supports ACID transactions, allowing you to execute mul
 Start a new transaction on a specific graph:
 
 ```typescript
-import { GqldbClient, Transaction } from 'gqldb-nodejs';
+import { GqldbClient, Transaction } from '@ultipa-graph/ultipa-driver';
 
 async function startTransaction(client: GqldbClient) {
   // Start a read-write transaction
@@ -160,14 +160,14 @@ async function readOnlyTransaction(client: GqldbClient) {
 Get information about active transactions:
 
 ```typescript
-import { TransactionInfo } from 'gqldb-nodejs';
+import { TransactionInfo } from '@ultipa-graph/ultipa-driver';
 
 async function listActiveTransactions(client: GqldbClient) {
   const transactions: TransactionInfo[] = await client.listTransactions();
 
   console.log(`Active transactions: ${transactions.length}`);
   for (const tx of transactions) {
-    console.log(`- ID: ${tx.id}, Graph: ${tx.graphName}, ReadOnly: ${tx.readOnly}`);
+    console.log(`- ID: ${tx.transactionId}, Graph: ${tx.graphName}, ReadOnly: ${tx.readOnly}`);
   }
 }
 ```
@@ -176,11 +176,13 @@ async function listActiveTransactions(client: GqldbClient) {
 
 ```typescript
 interface TransactionInfo {
-  id: number;
+  transactionId: number;
+  sessionId: number;
   graphName: string;
   readOnly: boolean;
-  startTime: number;
-  timeout: number;
+  createdAt: number;
+  durationMs: number;
+  internalTxId: number;
 }
 ```
 
@@ -225,7 +227,7 @@ import {
   TransactionFailedError,
   TransactionNotFoundError,
   TransactionAlreadyOpenError
-} from 'gqldb-nodejs';
+} from '@ultipa-graph/ultipa-driver';
 
 async function safeTransaction(client: GqldbClient) {
   try {
@@ -302,11 +304,11 @@ async function transactionWithTimeout(client: GqldbClient) {
 ## Complete Example
 
 ```typescript
-import { GqldbClient, createConfig } from 'gqldb-nodejs';
+import { GqldbClient, createConfig } from '@ultipa-graph/ultipa-driver';
 
 async function main() {
   const client = new GqldbClient(createConfig({
-    hosts: ['192.168.1.100:9000']
+    hosts: ['localhost:9000']
   }));
 
   try {

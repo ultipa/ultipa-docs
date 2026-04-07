@@ -7,7 +7,7 @@ The GQLDB Node.js driver is a gRPC-based client library for interacting with GQL
 Install the package using npm:
 
 ```bash
-npm install gqldb-nodejs
+npm install @ultipa-graph/ultipa-driver
 ```
 
 ## Connect to Database
@@ -15,12 +15,12 @@ npm install gqldb-nodejs
 You need a running GQLDB instance to use the driver. Create a client and authenticate:
 
 ```typescript
-import { GqldbClient, createConfig } from 'gqldb-nodejs';
+import { GqldbClient, createConfig } from '@ultipa-graph/ultipa-driver';
 
 async function main() {
   // Create configuration
   const config = createConfig({
-    hosts: ['192.168.1.100:9000'],
+    hosts: ['localhost:9000'],
     defaultGraph: 'myGraph'
   });
 
@@ -50,11 +50,11 @@ main().catch(console.error);
 Use the `gql()` method to execute GQL queries:
 
 ```typescript
-import { GqldbClient, createConfig } from 'gqldb-nodejs';
+import { GqldbClient, createConfig } from '@ultipa-graph/ultipa-driver';
 
 async function main() {
   const config = createConfig({
-    hosts: ['192.168.1.100:9000'],
+    hosts: ['localhost:9000'],
     defaultGraph: 'myGraph'
   });
 
@@ -87,11 +87,11 @@ main().catch(console.error);
 Create a new graph in the database:
 
 ```typescript
-import { GqldbClient, createConfig, GraphType } from 'gqldb-nodejs';
+import { GqldbClient, createConfig, GraphType } from '@ultipa-graph/ultipa-driver';
 
 async function main() {
   const config = createConfig({
-    hosts: ['192.168.1.100:9000']
+    hosts: ['localhost:9000']
   });
 
   const client = new GqldbClient(config);
@@ -119,11 +119,11 @@ main().catch(console.error);
 Insert nodes and edges into a graph:
 
 ```typescript
-import { GqldbClient, createConfig } from 'gqldb-nodejs';
+import { GqldbClient, createConfig } from '@ultipa-graph/ultipa-driver';
 
 async function main() {
   const config = createConfig({
-    hosts: ['192.168.1.100:9000'],
+    hosts: ['localhost:9000'],
     defaultGraph: 'myGraph'
   });
 
@@ -141,7 +141,7 @@ async function main() {
 
     // Insert edges
     const edgeResult = await client.insertEdges('myGraph', [
-      { id: 'e1', label: 'Follows', fromNodeId: 'user1', toNodeId: 'user2', properties: {} }
+      { label: 'Follows', fromNodeId: 'user1', toNodeId: 'user2', properties: {} }
     ]);
     console.log(`Inserted ${edgeResult.edgeCount} edges`);
 
@@ -158,11 +158,11 @@ main().catch(console.error);
 The `gql()` method returns a `Response` object with methods to extract different data types:
 
 ```typescript
-import { GqldbClient, createConfig } from 'gqldb-nodejs';
+import { GqldbClient, createConfig } from '@ultipa-graph/ultipa-driver';
 
 async function main() {
   const config = createConfig({
-    hosts: ['192.168.1.100:9000'],
+    hosts: ['localhost:9000'],
     defaultGraph: 'myGraph'
   });
 
@@ -197,11 +197,11 @@ main().catch(console.error);
 Execute multiple operations atomically:
 
 ```typescript
-import { GqldbClient, createConfig } from 'gqldb-nodejs';
+import { GqldbClient, createConfig } from '@ultipa-graph/ultipa-driver';
 
 async function main() {
   const config = createConfig({
-    hosts: ['192.168.1.100:9000']
+    hosts: ['localhost:9000']
   });
 
   const client = new GqldbClient(config);

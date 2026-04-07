@@ -7,7 +7,6 @@ The GQLDB Node.js driver provides a bulk import service for high-throughput data
 | Method | Description |
 |--------|-------------|
 | `startBulkImport()` | Start a bulk import session |
-| `checkpoint()` | Flush accumulated data to disk |
 | `endBulkImport()` | End the session with a final checkpoint |
 | `abortBulkImport()` | Cancel the session without saving |
 | `getBulkImportStatus()` | Get the current status of a session |
@@ -19,7 +18,7 @@ The GQLDB Node.js driver provides a bulk import service for high-throughput data
 Initialize a bulk import session for a graph:
 
 ```typescript
-import { GqldbClient, BulkImportSession, BulkImportOptions } from 'gqldb-nodejs';
+import { GqldbClient, BulkImportSession, BulkImportOptions } from '@ultipa-graph/ultipa-driver';
 
 async function startBulkImportExample(client: GqldbClient) {
   // Basic start
@@ -29,7 +28,6 @@ async function startBulkImportExample(client: GqldbClient) {
 
   // Start with options
   const options: BulkImportOptions = {
-    checkpointEvery: 10000,    // Auto-checkpoint every 10,000 records
     estimatedNodes: 1000000,   // Hint for pre-allocating node ID cache
     estimatedEdges: 5000000    // Hint for edge batch sizing
   };
@@ -42,7 +40,6 @@ async function startBulkImportExample(client: GqldbClient) {
 
 ```typescript
 interface BulkImportOptions {
-  checkpointEvery?: number;   // Records between auto-checkpoints (0 = manual only)
   estimatedNodes?: number;    // Hint for pre-allocating node ID cache
   estimatedEdges?: number;    // Hint for edge batch sizing
 }
@@ -99,52 +96,6 @@ async function bulkInsertExample(client: GqldbClient) {
 }
 ```
 
-## Checkpoints
-
-### checkpoint()
-
-Manually flush accumulated data to disk for durability:
-
-```typescript
-import { CheckpointResult } from 'gqldb-nodejs';
-
-async function checkpointExample(client: GqldbClient) {
-  const session = await client.startBulkImport('myGraph');
-
-  // Insert some data...
-  await client.insertNodes('myGraph', nodes1, {
-    bulkImportSessionId: session.sessionId
-  });
-
-  // Checkpoint to ensure data is persisted
-  const result: CheckpointResult = await client.checkpoint(session.sessionId);
-
-  console.log('Checkpoint success:', result.success);
-  console.log('Records since start:', result.recordCount);
-  console.log('Records since last checkpoint:', result.lastCheckpointCount);
-  console.log('Message:', result.message);
-
-  // Continue importing...
-  await client.insertNodes('myGraph', nodes2, {
-    bulkImportSessionId: session.sessionId
-  });
-
-  // Final checkpoint and end
-  await client.endBulkImport(session.sessionId);
-}
-```
-
-### CheckpointResult Interface
-
-```typescript
-interface CheckpointResult {
-  success: boolean;
-  recordCount: number;          // Total records since session start
-  lastCheckpointCount: number;  // Records since last checkpoint
-  message: string;
-}
-```
-
 ## Ending a Bulk Import
 
 ### endBulkImport()
@@ -152,7 +103,7 @@ interface CheckpointResult {
 Complete the session with a final checkpoint:
 
 ```typescript
-import { EndBulkImportResult } from 'gqldb-nodejs';
+import { EndBulkImportResult } from '@ultipa-graph/ultipa-driver';
 
 async function endBulkImportExample(client: GqldbClient) {
   const session = await client.startBulkImport('myGraph');
@@ -184,7 +135,7 @@ interface EndBulkImportResult {
 Cancel a session without saving uncommitted data:
 
 ```typescript
-import { AbortBulkImportResult } from 'gqldb-nodejs';
+import { AbortBulkImportResult } from '@ultipa-graph/ultipa-driver';
 
 async function abortBulkImportExample(client: GqldbClient) {
   const session = await client.startBulkImport('myGraph');
@@ -224,7 +175,7 @@ interface AbortBulkImportResult {
 Get the current status of a bulk import session:
 
 ```typescript
-import { BulkImportStatus } from 'gqldb-nodejs';
+import { BulkImportStatus } from '@ultipa-graph/ultipa-driver';
 
 async function checkStatusExample(client: GqldbClient) {
   const session = await client.startBulkImport('myGraph');
@@ -333,11 +284,11 @@ async function robustBulkImport(client: GqldbClient, data: NodeData[][]) {
 ## Complete Example
 
 ```typescript
-import { GqldbClient, createConfig, NodeData, EdgeData } from 'gqldb-nodejs';
+import { GqldbClient, createConfig, NodeData, EdgeData } from '@ultipa-graph/ultipa-driver';
 
 async function main() {
   const client = new GqldbClient(createConfig({
-    hosts: ['192.168.1.100:9000']
+    hosts: ['localhost:9000']
   }));
 
   try {

@@ -18,7 +18,7 @@ The GQLDB Node.js driver provides several methods for executing GQL queries and 
 Execute a GQL query and get the complete result:
 
 ```typescript
-import { GqldbClient, createConfig } from 'gqldb-nodejs';
+import { GqldbClient, createConfig } from '@ultipa-graph/ultipa-driver';
 
 async function queryExample(client: GqldbClient) {
   // Simple query
@@ -46,6 +46,7 @@ interface QueryConfig {
   transactionId?: number;  // Transaction ID for transactional queries
   timeout?: number;        // Query timeout in milliseconds
   readOnly?: boolean;      // Mark query as read-only
+  maxPathResults?: number; // Limit path query results
 }
 ```
 
@@ -263,7 +264,7 @@ import {
   InvalidQueryError,
   EmptyQueryError,
   GraphNotFoundError
-} from 'gqldb-nodejs';
+} from '@ultipa-graph/ultipa-driver';
 
 async function safeQuery(client: GqldbClient, query: string) {
   try {
@@ -290,11 +291,11 @@ async function safeQuery(client: GqldbClient, query: string) {
 ## Complete Example
 
 ```typescript
-import { GqldbClient, createConfig } from 'gqldb-nodejs';
+import { GqldbClient, createConfig } from '@ultipa-graph/ultipa-driver';
 
 async function main() {
   const client = new GqldbClient(createConfig({
-    hosts: ['192.168.1.100:9000'],
+    hosts: ['localhost:9000'],
     defaultGraph: 'socialNetwork'
   }));
 

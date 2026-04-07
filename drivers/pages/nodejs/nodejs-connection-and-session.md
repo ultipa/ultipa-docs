@@ -7,10 +7,10 @@ This guide covers creating a client connection, authentication, session manageme
 Create a `GqldbClient` instance with a configuration object:
 
 ```typescript
-import { GqldbClient, createConfig } from 'gqldb-nodejs';
+import { GqldbClient, createConfig } from '@ultipa-graph/ultipa-driver';
 
 const config = createConfig({
-  hosts: ['192.168.1.100:9000'],
+  hosts: ['localhost:9000'],
   defaultGraph: 'myGraph'
 });
 
@@ -26,11 +26,11 @@ The client establishes gRPC connections to the specified hosts. Multiple hosts c
 Authenticate with the database using `login()`:
 
 ```typescript
-import { GqldbClient, createConfig, Session } from 'gqldb-nodejs';
+import { GqldbClient, createConfig, Session } from '@ultipa-graph/ultipa-driver';
 
 async function connect() {
   const client = new GqldbClient(createConfig({
-    hosts: ['192.168.1.100:9000']
+    hosts: ['localhost:9000']
   }));
 
   try {
@@ -112,7 +112,7 @@ async function testConnection(client: GqldbClient) {
 Check the health status of the server:
 
 ```typescript
-import { GqldbClient, HealthStatus } from 'gqldb-nodejs';
+import { GqldbClient, HealthStatus } from '@ultipa-graph/ultipa-driver';
 
 async function checkHealth(client: GqldbClient) {
   const status = await client.healthCheck();
@@ -136,7 +136,7 @@ async function checkHealth(client: GqldbClient) {
 Monitor health status changes with streaming:
 
 ```typescript
-import { GqldbClient, HealthStatus } from 'gqldb-nodejs';
+import { GqldbClient, HealthStatus } from '@ultipa-graph/ultipa-driver';
 
 function watchHealth(client: GqldbClient) {
   const watcher = client.watch();
@@ -169,7 +169,7 @@ Always close the client when done to release resources:
 ```typescript
 async function main() {
   const client = new GqldbClient(createConfig({
-    hosts: ['192.168.1.100:9000']
+    hosts: ['localhost:9000']
   }));
 
   try {
@@ -203,12 +203,12 @@ console.log('Timeout:', config.timeout);
 ## Complete Example
 
 ```typescript
-import { GqldbClient, createConfig, HealthStatus } from 'gqldb-nodejs';
+import { GqldbClient, createConfig, HealthStatus } from '@ultipa-graph/ultipa-driver';
 
 async function main() {
   // Create client with configuration
   const client = new GqldbClient(createConfig({
-    hosts: ['192.168.1.100:9000'],
+    hosts: ['localhost:9000'],
     timeout: 30000,
     defaultGraph: 'myGraph'
   }));
@@ -268,7 +268,7 @@ import {
   LoginFailedError,
   ConnectionFailedError,
   NotLoggedInError
-} from 'gqldb-nodejs';
+} from '@ultipa-graph/ultipa-driver';
 
 async function safeConnect(client: GqldbClient) {
   try {

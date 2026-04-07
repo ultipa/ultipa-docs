@@ -18,7 +18,7 @@ The GQLDB Node.js driver provides methods for inserting and deleting nodes and e
 Insert one or more nodes into a graph:
 
 ```typescript
-import { GqldbClient, NodeData, InsertNodesResult } from 'gqldb-nodejs';
+import { GqldbClient, NodeData, InsertNodesResult } from '@ultipa-graph/ultipa-driver';
 
 async function insertNodesExample(client: GqldbClient) {
   const nodes: NodeData[] = [
@@ -62,7 +62,7 @@ async function insertNodesExample(client: GqldbClient) {
 
 ```typescript
 interface NodeData {
-  id: string;                        // Unique node identifier
+  id?: string;                       // Optional node identifier
   labels: string[];                  // One or more labels
   properties: Record<string, any>;   // Node properties
 }
@@ -84,7 +84,7 @@ interface InsertNodesResult {
 Control node insertion behavior with `InsertNodesConfig`:
 
 ```typescript
-import { BulkCreateNodesOptions } from 'gqldb-nodejs';
+import { BulkCreateNodesOptions } from '@ultipa-graph/ultipa-driver';
 
 async function insertWithOptions(client: GqldbClient) {
   const nodes: NodeData[] = [
@@ -131,7 +131,7 @@ async function insertWithBulkImport(client: GqldbClient) {
 Insert one or more edges into a graph:
 
 ```typescript
-import { GqldbClient, EdgeData, InsertEdgesResult } from 'gqldb-nodejs';
+import { GqldbClient, EdgeData, InsertEdgesResult } from '@ultipa-graph/ultipa-driver';
 
 async function insertEdgesExample(client: GqldbClient) {
   const edges: EdgeData[] = [
@@ -176,7 +176,6 @@ async function insertEdgesExample(client: GqldbClient) {
 
 ```typescript
 interface EdgeData {
-  id: string;                        // Unique edge identifier
   label: string;                     // Edge label/type
   fromNodeId: string;                // Source node ID
   toNodeId: string;                  // Target node ID
@@ -199,7 +198,7 @@ interface InsertEdgesResult {
 ### Edge Insert Options
 
 ```typescript
-import { BulkCreateEdgesOptions } from 'gqldb-nodejs';
+import { BulkCreateEdgesOptions } from '@ultipa-graph/ultipa-driver';
 
 async function insertEdgesWithOptions(client: GqldbClient) {
   const edges: EdgeData[] = [
@@ -225,7 +224,7 @@ async function insertEdgesWithOptions(client: GqldbClient) {
 Delete nodes from a graph:
 
 ```typescript
-import { GqldbClient, DeleteResult } from 'gqldb-nodejs';
+import { GqldbClient, DeleteResult } from '@ultipa-graph/ultipa-driver';
 
 async function deleteNodesExample(client: GqldbClient) {
   // Delete specific nodes by ID
@@ -309,7 +308,7 @@ import {
   InsertFailedError,
   DeleteFailedError,
   GraphNotFoundError
-} from 'gqldb-nodejs';
+} from '@ultipa-graph/ultipa-driver';
 
 async function safeDataOperations(client: GqldbClient) {
   try {
@@ -337,11 +336,11 @@ async function safeDataOperations(client: GqldbClient) {
 ## Complete Example
 
 ```typescript
-import { GqldbClient, createConfig, NodeData, EdgeData } from 'gqldb-nodejs';
+import { GqldbClient, createConfig, NodeData, EdgeData } from '@ultipa-graph/ultipa-driver';
 
 async function main() {
   const client = new GqldbClient(createConfig({
-    hosts: ['192.168.1.100:9000']
+    hosts: ['localhost:9000']
   }));
 
   try {

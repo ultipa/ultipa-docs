@@ -17,6 +17,9 @@ The GQLDB Node.js driver provides methods for monitoring server health, managing
 | `getCacheStats()` | Get cache statistics |
 | `clearCache()` | Clear specified caches |
 | `getStatistics()` | Get database statistics |
+| `getSystemMetrics()` | Get system metrics (CPU, memory, disk, network) |
+| `compact()` | Trigger storage compaction |
+| `waitForComputeTopology()` | Wait for compute engine topology to be ready |
 | `invalidatePermissionCache()` | Invalidate RBAC permission cache |
 
 ## Health Checks
@@ -26,7 +29,7 @@ The GQLDB Node.js driver provides methods for monitoring server health, managing
 Check the current health status of the server:
 
 ```typescript
-import { GqldbClient, HealthStatus } from 'gqldb-nodejs';
+import { GqldbClient, HealthStatus } from '@ultipa-graph/ultipa-driver';
 
 async function checkHealth(client: GqldbClient) {
   // Check overall server health
@@ -69,7 +72,7 @@ enum HealthStatus {
 Monitor health status changes with server-side streaming:
 
 ```typescript
-import { GqldbClient, HealthStatus, HealthWatcher } from 'gqldb-nodejs';
+import { GqldbClient, HealthStatus, HealthWatcher } from '@ultipa-graph/ultipa-driver';
 
 function watchHealth(client: GqldbClient): HealthWatcher {
   const watcher = client.watch();
@@ -123,7 +126,7 @@ enum CacheType {
 Get statistics about caches:
 
 ```typescript
-import { GqldbClient, CacheType, CacheStats } from 'gqldb-nodejs';
+import { GqldbClient, CacheType, CacheStats } from '@ultipa-graph/ultipa-driver';
 
 async function getCacheStatistics(client: GqldbClient) {
   // Get all cache stats
@@ -144,19 +147,21 @@ async function getCacheStatistics(client: GqldbClient) {
 
 ```typescript
 interface CacheStats {
-  astCache?: ASTCacheStats;
-  planCache?: PlanCacheStats;
+  astStats?: ASTCacheStats;
+  planStats?: PlanCacheStats;
 }
 
 interface ASTCacheStats {
-  size: number;
   hits: number;
   misses: number;
+  evictions: number;
+  entries: number;
   hitRate: number;
 }
 
 interface PlanCacheStats {
   size: number;
+  capacity: number;
   hits: number;
   misses: number;
   hitRate: number;
@@ -206,7 +211,7 @@ This is useful before high-load periods to reduce latency from parser initializa
 Get statistics about the database or a specific graph:
 
 ```typescript
-import { Statistics } from 'gqldb-nodejs';
+import { Statistics } from '@ultipa-graph/ultipa-driver';
 
 async function getStats(client: GqldbClient) {
   // Get overall database statistics
@@ -223,11 +228,10 @@ async function getStats(client: GqldbClient) {
 
 ```typescript
 interface Statistics {
-  graphCount?: number;
-  totalNodes?: number;
-  totalEdges?: number;
-  storageSize?: number;
-  // ... additional fields based on server response
+  nodeCount: number;
+  edgeCount: number;
+  labelCounts: Record<string, number>;
+  edgeLabelCounts: Record<string, number>;
 }
 ```
 
@@ -254,7 +258,7 @@ Use this after changing user permissions to ensure changes take effect immediate
 ## Error Handling
 
 ```typescript
-import { HealthCheckFailedError } from 'gqldb-nodejs';
+import { HealthCheckFailedError } from '@ultipa-graph/ultipa-driver';
 
 async function safeHealthCheck(client: GqldbClient) {
   try {
@@ -273,11 +277,11 @@ async function safeHealthCheck(client: GqldbClient) {
 ## Complete Example
 
 ```typescript
-import { GqldbClient, createConfig, HealthStatus, CacheType } from 'gqldb-nodejs';
+import { GqldbClient, createConfig, HealthStatus, CacheType } from '@ultipa-graph/ultipa-driver';
 
 async function main() {
   const client = new GqldbClient(createConfig({
-    hosts: ['192.168.1.100:9000']
+    hosts: ['localhost:9000']
   }));
 
   try {

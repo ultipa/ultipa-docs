@@ -17,7 +17,7 @@ The GQLDB Node.js driver provides streaming export capabilities for efficiently 
 Export nodes and/or edges in JSON Lines format with streaming:
 
 ```typescript
-import { GqldbClient, ExportConfig, ExportChunk } from 'gqldb-nodejs';
+import { GqldbClient, ExportConfig, ExportChunk } from '@ultipa-graph/ultipa-driver';
 
 async function exportExample(client: GqldbClient) {
   const config: ExportConfig = {
@@ -201,7 +201,7 @@ async function exportToArray(client: GqldbClient) {
 Stream nodes from a graph:
 
 ```typescript
-import { ExportNodesResult } from 'gqldb-nodejs';
+import { ExportNodesResult } from '@ultipa-graph/ultipa-driver';
 
 async function legacyExportNodes(client: GqldbClient) {
   await client.exportNodes(
@@ -227,7 +227,7 @@ async function legacyExportNodes(client: GqldbClient) {
 Stream edges from a graph:
 
 ```typescript
-import { ExportEdgesResult } from 'gqldb-nodejs';
+import { ExportEdgesResult } from '@ultipa-graph/ultipa-driver';
 
 async function legacyExportEdges(client: GqldbClient) {
   await client.exportEdges(
@@ -281,7 +281,7 @@ interface ExportedEdge {
 ## Error Handling
 
 ```typescript
-import { ExportFailedError, GraphNotFoundError } from 'gqldb-nodejs';
+import { ExportFailedError, GraphNotFoundError } from '@ultipa-graph/ultipa-driver';
 
 async function safeExport(client: GqldbClient) {
   try {
@@ -304,12 +304,12 @@ async function safeExport(client: GqldbClient) {
 ## Complete Example
 
 ```typescript
-import { GqldbClient, createConfig } from 'gqldb-nodejs';
+import { GqldbClient, createConfig } from '@ultipa-graph/ultipa-driver';
 import * as fs from 'fs';
 
 async function main() {
   const client = new GqldbClient(createConfig({
-    hosts: ['192.168.1.100:9000']
+    hosts: ['localhost:9000']
   }));
 
   try {
