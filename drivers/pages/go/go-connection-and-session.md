@@ -18,11 +18,11 @@ The GQLDB Go driver manages connections through a connection pool and provides s
 import (
     "context"
 
-    gqldb "github.com/gqldb/gqldb-go"
+    gqldb "github.com/ultipa/ultipa-go-driver"
 )
 
 config := &gqldb.Config{
-    Hosts: []string{"192.168.1.100:9000"},
+    Hosts: []string{"localhost:9000"},
 }
 
 client, err := gqldb.NewClient(config)
@@ -63,7 +63,7 @@ fmt.Printf("Logged in: %v\n", client.IsLoggedIn())
 
 ```go
 config := &gqldb.Config{
-    Hosts:        []string{"192.168.1.100:9000"},
+    Hosts:        []string{"localhost:9000"},
     DefaultGraph: "myGraph",
 }
 
@@ -198,7 +198,7 @@ if err != nil {
 import (
     "errors"
 
-    gqldb "github.com/gqldb/gqldb-go"
+    gqldb "github.com/ultipa/ultipa-go-driver"
 )
 
 ctx := context.Background()
@@ -273,12 +273,12 @@ import (
     "log"
     "time"
 
-    gqldb "github.com/gqldb/gqldb-go"
+    gqldb "github.com/ultipa/ultipa-go-driver"
 )
 
 func main() {
     config := gqldb.NewConfigBuilder().
-        Hosts("192.168.1.100:9000", "192.168.1.101:9000").
+        Hosts("localhost:9000", "192.168.1.101:9000").
         Timeout(30 * time.Second).
         PoolSize(10).
         RetryCount(3).

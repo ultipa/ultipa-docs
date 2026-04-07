@@ -10,7 +10,7 @@ The `Gql()` method returns a `Response` pointer containing query results:
 import (
     "context"
 
-    gqldb "github.com/gqldb/gqldb-go"
+    gqldb "github.com/ultipa/ultipa-go-driver"
 )
 
 ctx := context.Background()
@@ -182,6 +182,53 @@ for _, row := range response.Rows {
 }
 ```
 
+## Alias and Get Methods
+
+Query results are accessed through `AliasResult`, which is obtained from the `Response` using `Alias()` or `Get()`. These methods return `(*AliasResult, error)`.
+
+### Alias()
+
+Retrieve a result column by its alias name:
+
+```go
+response, _ := client.Gql(ctx, "MATCH (u:User) RETURN u, u.age AS age", nil)
+
+// Get the alias result for "u"
+alias, err := response.Alias("u")
+if err != nil {
+    log.Fatal(err)
+}
+
+// Now use AliasResult methods
+nodes, schemas, err := alias.AsNodes()
+```
+
+### Get()
+
+Retrieve a result column by its positional index:
+
+```go
+response, _ := client.Gql(ctx, "MATCH (u:User) RETURN u, u.age AS age", nil)
+
+// Get the first column (index 0)
+alias, err := response.Get(0)
+if err != nil {
+    log.Fatal(err)
+}
+
+nodes, schemas, err := alias.AsNodes()
+```
+
+### AliasResult Methods
+
+| Method | Return Type | Description |
+|--------|-------------|-------------|
+| `AsNodes()` | `([]*Node, map[string]*Schema, error)` | Extract nodes |
+| `AsEdges()` | `([]*Edge, map[string]*Schema, error)` | Extract edges |
+| `AsPaths()` | `([]*Path, error)` | Extract paths |
+| `AsTable()` | `(*Table, error)` | Get as table |
+| `AsAttr()` | `(*Attr, error)` | Extract attribute values |
+
 ## Extracting Graph Elements
 
 ### AsNodes()
@@ -190,7 +237,12 @@ Extract nodes from the response:
 
 ```go
 response, _ := client.Gql(ctx, "MATCH (u:User) RETURN u", nil)
-nodes, schemas, err := response.AsNodes()
+
+alias, err := response.Alias("u")
+if err != nil {
+    log.Fatal(err)
+}
+nodes, schemas, err := alias.AsNodes()
 if err != nil {
     log.Fatal(err)
 }
@@ -224,7 +276,12 @@ Extract edges from the response:
 
 ```go
 response, _ := client.Gql(ctx, "MATCH ()-[e:Follows]->() RETURN e", nil)
-edges, schemas, err := response.AsEdges()
+
+alias, err := response.Alias("e")
+if err != nil {
+    log.Fatal(err)
+}
+edges, schemas, err := alias.AsEdges()
 
 for _, edge := range edges {
     fmt.Printf("ID: %s\n", edge.ID)
@@ -253,7 +310,12 @@ Extract paths from the response:
 
 ```go
 response, _ := client.Gql(ctx, "MATCH p = (a)-[*1..3]->(b) RETURN p LIMIT 10", nil)
-paths, err := response.AsPaths()
+
+alias, err := response.Alias("p")
+if err != nil {
+    log.Fatal(err)
+}
+paths, err := alias.AsPaths()
 
 for _, path := range paths {
     fmt.Printf("Path nodes: %d\n", len(path.Nodes))
@@ -286,7 +348,12 @@ Get the response as a generic table:
 
 ```go
 response, _ := client.Gql(ctx, "MATCH (u:User) RETURN u.name, u.age", nil)
-table, err := response.AsTable()
+
+alias, err := response.Get(0)
+if err != nil {
+    log.Fatal(err)
+}
+table, err := alias.AsTable()
 
 fmt.Printf("Table: %s\n", table.Name)
 fmt.Printf("Headers: ")
@@ -320,7 +387,12 @@ Extract values from a specific column:
 
 ```go
 response, _ := client.Gql(ctx, "MATCH (u:User) RETURN u.age AS age", nil)
-ageAttr, err := response.AsAttr("age")
+
+alias, err := response.Alias("age")
+if err != nil {
+    log.Fatal(err)
+}
+ageAttr, err := alias.AsAttr()
 
 fmt.Printf("Column name: %s\n", ageAttr.Name)
 fmt.Printf("Type: %v\n", ageAttr.Type)
@@ -358,12 +430,12 @@ import (
     "log"
     "time"
 
-    gqldb "github.com/gqldb/gqldb-go"
+    gqldb "github.com/ultipa/ultipa-go-driver"
 )
 
 func main() {
     config := gqldb.NewConfigBuilder().
-        Hosts("192.168.1.100:9000").
+        Hosts("localhost:9000").
         DefaultGraph("socialNetwork").
         Timeout(30 * time.Second).
         Build()
@@ -392,7 +464,8 @@ func main() {
     // Query nodes
     fmt.Println("=== Query Nodes ===")
     nodeResponse, _ := client.Gql(ctx, "MATCH (u:User) RETURN u LIMIT 5", nil)
-    nodes, _, _ := nodeResponse.AsNodes()
+    uAlias, _ := nodeResponse.Alias("u")
+    nodes, _, _ := uAlias.AsNodes()
     for _, node := range nodes {
         fmt.Printf("User %s: %v\n", node.ID, node.Properties["name"])
     }
@@ -412,7 +485,8 @@ func main() {
         "MATCH p = (a:User)-[:Follows*1..2]->(b:User) RETURN p LIMIT 3",
         nil,
     )
-    paths, _ := pathResponse.AsPaths()
+    pAlias, _ := pathResponse.Alias("p")
+    paths, _ := pAlias.AsPaths()
     for _, path := range paths {
         var route []string
         for _, n := range path.Nodes {
@@ -434,7 +508,8 @@ func main() {
     // Extract attribute values
     fmt.Println("\n=== Attribute Extraction ===")
     ageResponse, _ := client.Gql(ctx, "MATCH (u:User) RETURN u.age AS age", nil)
-    ages, _ := ageResponse.AsAttr("age")
+    ageAlias, _ := ageResponse.Alias("age")
+    ages, _ := ageAlias.AsAttr()
 
     var minAge, maxAge int64 = 999, 0
     for _, v := range ages.Values {

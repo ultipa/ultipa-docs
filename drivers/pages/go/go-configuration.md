@@ -10,11 +10,11 @@ The GQLDB Go driver uses the `Config` struct for client configuration. You can c
 import (
     "time"
 
-    gqldb "github.com/gqldb/gqldb-go"
+    gqldb "github.com/ultipa/ultipa-go-driver"
 )
 
 config := &gqldb.Config{
-    Hosts:        []string{"192.168.1.100:9000"},
+    Hosts:        []string{"localhost:9000"},
     Username:     "admin",
     Password:     "password",
     DefaultGraph: "myGraph",
@@ -44,7 +44,7 @@ The `ConfigBuilder` provides a fluent interface for creating configurations:
 
 ```go
 config := gqldb.NewConfigBuilder().
-    Hosts("192.168.1.100:9000", "192.168.1.101:9000").
+    Hosts("localhost:9000", "192.168.1.101:9000").
     Username("admin").
     Password("password").
     DefaultGraph("myGraph").
@@ -81,7 +81,7 @@ Use `DefaultConfig()` to get a configuration with default values:
 
 ```go
 config := gqldb.DefaultConfig()
-config.Hosts = []string{"192.168.1.100:9000"}
+config.Hosts = []string{"localhost:9000"}
 ```
 
 ## TLS Configuration
@@ -92,7 +92,7 @@ config.Hosts = []string{"192.168.1.100:9000"}
 import (
     "crypto/tls"
 
-    gqldb "github.com/gqldb/gqldb-go"
+    gqldb "github.com/ultipa/ultipa-go-driver"
 )
 
 tlsConfig := &tls.Config{
@@ -100,7 +100,7 @@ tlsConfig := &tls.Config{
 }
 
 config := &gqldb.Config{
-    Hosts:     []string{"192.168.1.100:9000"},
+    Hosts:     []string{"localhost:9000"},
     TLSConfig: tlsConfig,
 }
 ```
@@ -135,7 +135,7 @@ tlsConfig := &tls.Config{
 }
 
 config := gqldb.NewConfigBuilder().
-    Hosts("192.168.1.100:9000").
+    Hosts("localhost:9000").
     TLS(tlsConfig).
     Build()
 ```
@@ -149,7 +149,7 @@ tlsConfig := &tls.Config{
 }
 
 config := &gqldb.Config{
-    Hosts:     []string{"192.168.1.100:9000"},
+    Hosts:     []string{"localhost:9000"},
     TLSConfig: tlsConfig,
 }
 ```
@@ -161,7 +161,7 @@ Configure multiple hosts for high availability:
 ```go
 config := &gqldb.Config{
     Hosts: []string{
-        "192.168.1.100:9000",
+        "localhost:9000",
         "192.168.1.101:9000",
         "192.168.1.102:9000",
     },
@@ -203,7 +203,7 @@ import (
     "os"
     "time"
 
-    gqldb "github.com/gqldb/gqldb-go"
+    gqldb "github.com/ultipa/ultipa-go-driver"
 )
 
 func createProductionConfig() *gqldb.Config {
@@ -237,7 +237,7 @@ func createProductionConfig() *gqldb.Config {
 
 func createDevelopmentConfig() *gqldb.Config {
     return &gqldb.Config{
-        Hosts:    []string{"192.168.1.100:9000"},
+        Hosts:    []string{"localhost:9000"},
         Timeout:  30 * time.Second,
         PoolSize: 5,
     }

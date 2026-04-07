@@ -11,8 +11,10 @@ This guide helps you get started with the GQLDB Go driver.
 Install the GQLDB Go driver using `go get`:
 
 ```bash
-go get github.com/gqldb/gqldb-go
+go get github.com/ultipa/ultipa-go-driver
 ```
+
+> Check <a href="https://github.com/ultipa/ultipa-go-driver" target="_blank">GitHub</a> for the latest version. To install a specific version: `go get github.com/ultipa/ultipa-go-driver@v6.0.4`
 
 ## Basic Usage
 
@@ -25,13 +27,13 @@ import (
     "log"
     "time"
 
-    gqldb "github.com/gqldb/gqldb-go"
+    gqldb "github.com/ultipa/ultipa-go-driver"
 )
 
 func main() {
     // Create configuration
     config := &gqldb.Config{
-        Hosts:   []string{"192.168.1.100:9000"},
+        Hosts:   []string{"localhost:9000"},
         Timeout: 30 * time.Second,
     }
 
@@ -98,7 +100,7 @@ import (
     "crypto/x509"
     "os"
 
-    gqldb "github.com/gqldb/gqldb-go"
+    gqldb "github.com/ultipa/ultipa-go-driver"
 )
 
 func main() {
@@ -123,7 +125,7 @@ func main() {
     }
 
     config := &gqldb.Config{
-        Hosts:     []string{"192.168.1.100:9000"},
+        Hosts:     []string{"localhost:9000"},
         TLSConfig: tlsConfig,
     }
 
@@ -145,12 +147,12 @@ package main
 import (
     "time"
 
-    gqldb "github.com/gqldb/gqldb-go"
+    gqldb "github.com/ultipa/ultipa-go-driver"
 )
 
 func main() {
     config := gqldb.NewConfigBuilder().
-        Hosts("192.168.1.100:9000", "192.168.1.101:9000").
+        Hosts("localhost:9000", "192.168.1.101:9000").
         Timeout(60 * time.Second).
         DefaultGraph("myGraph").
         PoolSize(20).
@@ -178,12 +180,12 @@ import (
     "log"
     "time"
 
-    gqldb "github.com/gqldb/gqldb-go"
+    gqldb "github.com/ultipa/ultipa-go-driver"
 )
 
 func main() {
     config := gqldb.NewConfigBuilder().
-        Hosts("192.168.1.100:9000").
+        Hosts("localhost:9000").
         Timeout(30 * time.Second).
         DefaultGraph("socialNetwork").
         Build()
@@ -262,7 +264,8 @@ func main() {
     if err != nil {
         log.Fatalf("Path query failed: %v", err)
     }
-    paths, _ := pathResp.AsPaths()
+    pAlias, _ := pathResp.Alias("p")
+    paths, _ := pAlias.AsPaths()
     fmt.Printf("\nPaths from Alice: %d\n", len(paths))
 
     // Clean up

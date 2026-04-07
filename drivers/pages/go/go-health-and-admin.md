@@ -31,7 +31,7 @@ Check the current health status of the server:
 import (
     "context"
 
-    gqldb "github.com/gqldb/gqldb-go"
+    gqldb "github.com/ultipa/ultipa-go-driver"
 )
 
 ctx := context.Background()
@@ -325,12 +325,12 @@ import (
     "log"
     "time"
 
-    gqldb "github.com/gqldb/gqldb-go"
+    gqldb "github.com/ultipa/ultipa-go-driver"
 )
 
 func main() {
     config := gqldb.NewConfigBuilder().
-        Hosts("192.168.1.100:9000").
+        Hosts("localhost:9000").
         Timeout(30 * time.Second).
         Build()
 

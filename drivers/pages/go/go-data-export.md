@@ -19,7 +19,7 @@ import (
     "context"
     "fmt"
 
-    gqldb "github.com/gqldb/gqldb-go"
+    gqldb "github.com/ultipa/ultipa-go-driver"
 )
 
 ctx := context.Background()
@@ -255,12 +255,12 @@ import (
     "strings"
     "time"
 
-    gqldb "github.com/gqldb/gqldb-go"
+    gqldb "github.com/ultipa/ultipa-go-driver"
 )
 
 func main() {
     config := gqldb.NewConfigBuilder().
-        Hosts("192.168.1.100:9000").
+        Hosts("localhost:9000").
         Timeout(60 * time.Second).
         Build()
 

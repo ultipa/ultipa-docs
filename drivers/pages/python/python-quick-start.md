@@ -1,11 +1,6 @@
 # Quick Start
 
-This guide helps you get started with the GQLDB Python driver.
-
-## Requirements
-
-- Python 3.9 or higher
-- pip package manager
+This guide helps you get started with the GQLDB Python driver. It requires **Python 3.9 or higher**.
 
 ## Installation
 

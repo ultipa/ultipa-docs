@@ -22,7 +22,7 @@ import (
     "context"
     "fmt"
 
-    gqldb "github.com/gqldb/gqldb-go"
+    gqldb "github.com/ultipa/ultipa-go-driver"
 )
 
 ctx := context.Background()
@@ -49,11 +49,12 @@ Configure query execution with `QueryConfig`:
 
 ```go
 queryConfig := &gqldb.QueryConfig{
-    GraphName:     "myGraph",           // Target graph
-    Parameters:    map[string]interface{}{"limit": 10},  // Query parameters
-    TransactionID: 0,                   // Transaction ID (0 = no transaction)
-    Timeout:       60,                  // Query timeout in seconds
-    ReadOnly:      true,                // Read-only mode
+    GraphName:      "myGraph",           // Target graph
+    Parameters:     map[string]interface{}{"limit": 10},  // Query parameters
+    TransactionID:  0,                   // Transaction ID (0 = no transaction)
+    Timeout:        60,                  // Query timeout in seconds
+    ReadOnly:       true,                // Read-only mode
+    MaxPathResults: 1000,               // Max path results (0 = no limit)
 }
 
 response, err := client.Gql(ctx,
@@ -71,6 +72,7 @@ response, err := client.Gql(ctx,
 | `TransactionID` | `uint64` | `0` | Transaction ID for transactional queries |
 | `Timeout` | `int` | `0` | Query timeout in seconds (0 = use client default) |
 | `ReadOnly` | `bool` | `false` | Execute as read-only |
+| `MaxPathResults` | `int64` | `0` | Maximum number of path results to return (0 = no limit) |
 
 ## Parameterized Queries
 
@@ -250,7 +252,11 @@ _, err := client.Gql(ctx, `
 
 // Query and retrieve
 response, err := client.Gql(ctx, "MATCH (n:DataNode) RETURN n", nil)
-nodes, schemas, err := response.AsNodes()
+alias, err := response.Alias("n")
+if err != nil {
+    log.Fatal(err)
+}
+nodes, schemas, err := alias.AsNodes()
 
 for _, node := range nodes {
     fmt.Printf("ID: %s\n", node.ID)
@@ -264,7 +270,7 @@ for _, node := range nodes {
 import (
     "errors"
 
-    gqldb "github.com/gqldb/gqldb-go"
+    gqldb "github.com/ultipa/ultipa-go-driver"
 )
 
 response, err := client.Gql(ctx, "MATCH (n) RETURN n", nil)
@@ -292,12 +298,12 @@ import (
     "log"
     "time"
 
-    gqldb "github.com/gqldb/gqldb-go"
+    gqldb "github.com/ultipa/ultipa-go-driver"
 )
 
 func main() {
     config := gqldb.NewConfigBuilder().
-        Hosts("192.168.1.100:9000").
+        Hosts("localhost:9000").
         Timeout(30 * time.Second).
         Build()
 
@@ -364,7 +370,8 @@ func main() {
         WHERE a.name = 'Alice'
         RETURN p
     `, nil)
-    paths, _ := response.AsPaths()
+    pAlias, _ := response.Alias("p")
+    paths, _ := pAlias.AsPaths()
     for _, path := range paths {
         var names []string
         for _, node := range path.Nodes {

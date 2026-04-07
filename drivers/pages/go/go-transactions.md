@@ -20,7 +20,7 @@ The GQLDB Go driver supports ACID transactions for ensuring data consistency acr
 import (
     "context"
 
-    gqldb "github.com/gqldb/gqldb-go"
+    gqldb "github.com/ultipa/ultipa-go-driver"
 )
 
 ctx := context.Background()
@@ -100,7 +100,7 @@ type Transaction struct {
     GraphName string
     ReadOnly  bool
     CreatedAt time.Time
-    Timeout   int
+    Timeout   time.Duration
 }
 
 // Methods
@@ -157,10 +157,24 @@ if err != nil {
 
 for _, txInfo := range transactions {
     fmt.Printf("Transaction %d:\n", txInfo.TransactionID)
+    fmt.Printf("  Internal TX ID: %d\n", txInfo.InternalTxID)
     fmt.Printf("  Graph: %s\n", txInfo.GraphName)
     fmt.Printf("  Read-only: %v\n", txInfo.ReadOnly)
     fmt.Printf("  Created: %s\n", txInfo.CreatedAt)
     fmt.Printf("  Duration: %dms\n", txInfo.DurationMs)
+}
+```
+
+### TransactionInfo Struct
+
+```go
+type TransactionInfo struct {
+    TransactionID uint64
+    InternalTxID  uint64
+    GraphName     string
+    ReadOnly      bool
+    CreatedAt     string
+    DurationMs    int64
 }
 ```
 
@@ -245,7 +259,7 @@ err := executeWithRetry(ctx, client, "myGraph", func(txID uint64) error {
 import (
     "errors"
 
-    gqldb "github.com/gqldb/gqldb-go"
+    gqldb "github.com/ultipa/ultipa-go-driver"
 )
 
 tx, err := client.BeginTransaction(ctx, "myGraph", false, 60)
@@ -285,12 +299,12 @@ import (
     "log"
     "time"
 
-    gqldb "github.com/gqldb/gqldb-go"
+    gqldb "github.com/ultipa/ultipa-go-driver"
 )
 
 func main() {
     config := gqldb.NewConfigBuilder().
-        Hosts("192.168.1.100:9000").
+        Hosts("localhost:9000").
         Timeout(30 * time.Second).
         Build()
 

@@ -7,8 +7,7 @@ The GQLDB Go driver provides bulk import functionality for high-throughput data 
 | Method | Description |
 |--------|-------------|
 | `StartBulkImport(ctx, graphName, opts)` | Start a bulk import session |
-| `Checkpoint(ctx, sessionID)` | Flush data to disk |
-| `EndBulkImport(ctx, sessionID)` | End session with final checkpoint |
+| `EndBulkImport(ctx, sessionID)` | End session |
 | `AbortBulkImport(ctx, sessionID)` | Cancel session without final sync |
 | `GetBulkImportStatus(ctx, sessionID)` | Get session status |
 
@@ -18,15 +17,13 @@ The GQLDB Go driver provides bulk import functionality for high-throughput data 
 import (
     "context"
 
-    gqldb "github.com/gqldb/gqldb-go"
+    gqldb "github.com/ultipa/ultipa-go-driver"
 )
 
 ctx := context.Background()
 
 // Start bulk import session
-opts := &gqldb.BulkImportOptions{
-    CheckpointEvery: 10000,  // Auto-checkpoint every 10,000 records
-}
+opts := &gqldb.BulkImportOptions{}
 
 session, err := client.StartBulkImport(ctx, "myGraph", opts)
 if err != nil {
@@ -60,7 +57,7 @@ for _, batch := range edgeBatches {
     }
 }
 
-// End session (final checkpoint)
+// End session
 result, err := client.EndBulkImport(ctx, session.SessionID)
 if err != nil {
     log.Fatal(err)
@@ -74,11 +71,8 @@ fmt.Printf("Import complete: %d total records\n", result.TotalRecords)
 
 ```go
 opts := &gqldb.BulkImportOptions{
-    CheckpointEvery: 10000,       // Records between auto-checkpoints (0 = manual only)
     EstimatedNodes:  1000000,     // Hint for pre-allocating node ID cache
     EstimatedEdges:  5000000,     // Hint for edge batch sizing
-    MemtableSize:    67108864,    // Memtable size in bytes (default: 64MB)
-    MaxMemtables:    4,           // Max immutable memtables before stall
 }
 
 session, err := client.StartBulkImport(ctx, "myGraph", opts)
@@ -94,45 +88,11 @@ type BulkImportSession struct {
 }
 ```
 
-## Checkpointing
-
-### Manual Checkpoint
-
-```go
-// Manually flush data to disk
-result, err := client.Checkpoint(ctx, session.SessionID)
-if err != nil {
-    log.Fatal(err)
-}
-
-fmt.Printf("Checkpoint complete:\n")
-fmt.Printf("  Records flushed: %d\n", result.RecordCount)
-fmt.Printf("  Message: %s\n", result.Message)
-```
-
-### Auto-Checkpoint
-
-With `CheckpointEvery` set, checkpoints happen automatically:
-
-```go
-opts := &gqldb.BulkImportOptions{
-    CheckpointEvery: 50000,  // Checkpoint every 50,000 records
-}
-
-session, _ := client.StartBulkImport(ctx, "myGraph", opts)
-
-// Auto-checkpoints happen during inserts
-nodeConfig := &gqldb.InsertNodesConfig{BulkImportSessionID: session.SessionID}
-for _, batch := range batches {
-    client.InsertNodes(ctx, "myGraph", batch, nodeConfig)
-}
-```
-
 ## Ending a Bulk Import
 
 ### EndBulkImport()
 
-Complete the session with a final checkpoint:
+Complete the bulk import session:
 
 ```go
 result, err := client.EndBulkImport(ctx, session.SessionID)
@@ -148,7 +108,7 @@ fmt.Printf("  Message: %s\n", result.Message)
 
 ### AbortBulkImport()
 
-Cancel without final sync (discards unflushed data):
+Cancel the bulk import session:
 
 ```go
 result, err := client.AbortBulkImport(ctx, session.SessionID)
@@ -171,9 +131,8 @@ if err != nil {
 fmt.Printf("Session: %s\n", status.GraphName)
 fmt.Printf("Active: %v\n", status.IsActive)
 fmt.Printf("Records: %d\n", status.RecordCount)
-fmt.Printf("Last checkpoint: %d\n", status.LastCheckpointCount)
-fmt.Printf("Created: %s\n", status.CreatedAt)
-fmt.Printf("Last activity: %s\n", status.LastActivity)
+fmt.Printf("Created: %d\n", status.CreatedAt)
+fmt.Printf("Last activity: %d\n", status.LastActivity)
 ```
 
 ## Batch Processing Pattern
@@ -195,7 +154,8 @@ func bulkImportData(ctx context.Context, client *gqldb.Client, graphName string,
     nodes []*gqldb.NodeData, edges []*gqldb.EdgeData, batchSize int) (*gqldb.EndBulkImportResult, error) {
 
     opts := &gqldb.BulkImportOptions{
-        CheckpointEvery: int32(batchSize * 10),
+        EstimatedNodes: int64(len(nodes)),
+        EstimatedEdges: int64(len(edges)),
     }
 
     session, err := client.StartBulkImport(ctx, graphName, opts)
@@ -239,17 +199,6 @@ func bulkImportData(ctx context.Context, client *gqldb.Client, graphName string,
 
 ## Result Structs
 
-### CheckpointResult
-
-```go
-type CheckpointResult struct {
-    Success             bool
-    RecordCount         int64
-    LastCheckpointCount int64
-    Message             string
-}
-```
-
 ### EndBulkImportResult
 
 ```go
@@ -273,12 +222,11 @@ type AbortBulkImportResult struct {
 
 ```go
 type BulkImportStatus struct {
-    IsActive            bool
-    GraphName           string
-    RecordCount         int64
-    LastCheckpointCount int64
-    CreatedAt           string
-    LastActivity        string
+    IsActive     bool
+    GraphName    string
+    RecordCount  int64
+    CreatedAt    int64
+    LastActivity int64
 }
 ```
 
@@ -293,7 +241,7 @@ import (
     "log"
     "time"
 
-    gqldb "github.com/gqldb/gqldb-go"
+    gqldb "github.com/ultipa/ultipa-go-driver"
 )
 
 func generateTestData(numNodes, numEdges int) ([]*gqldb.NodeData, []*gqldb.EdgeData) {
@@ -326,7 +274,7 @@ func generateTestData(numNodes, numEdges int) ([]*gqldb.NodeData, []*gqldb.EdgeD
 
 func main() {
     config := gqldb.NewConfigBuilder().
-        Hosts("192.168.1.100:9000").
+        Hosts("localhost:9000").
         Timeout(5 * time.Minute).
         Build()
 
@@ -353,9 +301,8 @@ func main() {
     startTime := time.Now()
 
     opts := &gqldb.BulkImportOptions{
-        CheckpointEvery: 50000,
-        EstimatedNodes:  int32(numNodes),
-        EstimatedEdges:  int32(numEdges),
+        EstimatedNodes:  int64(numNodes),
+        EstimatedEdges:  int64(numEdges),
     }
 
     session, err := client.StartBulkImport(ctx, "bulkDemo", opts)
@@ -390,11 +337,6 @@ func main() {
         }
     }
     fmt.Printf("  Total nodes imported: %d\n", importedNodes)
-
-    // Manual checkpoint before edges
-    fmt.Println("\n=== Checkpoint Before Edges ===")
-    cpResult, _ := client.Checkpoint(ctx, session.SessionID)
-    fmt.Printf("  Flushed %d records\n", cpResult.RecordCount)
 
     // Import edges in batches
     fmt.Println("\n=== Importing Edges ===")
