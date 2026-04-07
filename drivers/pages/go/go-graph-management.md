@@ -22,7 +22,7 @@ Create a new graph:
 import (
     "context"
 
-    gqldb "github.com/ultipa/ultipa-go-driver"
+    gqldb "github.com/ultipa/ultipa-go-driver/v6"
 )
 
 ctx := context.Background()
@@ -136,7 +136,7 @@ Get detailed information about a specific graph:
 import (
     "errors"
 
-    gqldb "github.com/ultipa/ultipa-go-driver"
+    gqldb "github.com/ultipa/ultipa-go-driver/v6"
 )
 
 info, err := client.GetGraphInfo(ctx, "myGraph")
@@ -161,7 +161,7 @@ fmt.Printf("Description: %s\n", info.Description)
 import (
     "errors"
 
-    gqldb "github.com/ultipa/ultipa-go-driver"
+    gqldb "github.com/ultipa/ultipa-go-driver/v6"
 )
 
 // Handle graph already exists
@@ -258,7 +258,7 @@ import (
     "log"
     "time"
 
-    gqldb "github.com/ultipa/ultipa-go-driver"
+    gqldb "github.com/ultipa/ultipa-go-driver/v6"
 )
 
 func main() {

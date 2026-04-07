@@ -17,7 +17,7 @@ The GQLDB Go driver provides bulk import functionality for high-throughput data 
 import (
     "context"
 
-    gqldb "github.com/ultipa/ultipa-go-driver"
+    gqldb "github.com/ultipa/ultipa-go-driver/v6"
 )
 
 ctx := context.Background()
@@ -241,7 +241,7 @@ import (
     "log"
     "time"
 
-    gqldb "github.com/ultipa/ultipa-go-driver"
+    gqldb "github.com/ultipa/ultipa-go-driver/v6"
 )
 
 func generateTestData(numNodes, numEdges int) ([]*gqldb.NodeData, []*gqldb.EdgeData) {

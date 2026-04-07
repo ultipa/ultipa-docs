@@ -10,7 +10,7 @@ All common errors are defined as package-level variables that can be checked usi
 import (
     "errors"
 
-    gqldb "github.com/ultipa/ultipa-go-driver"
+    gqldb "github.com/ultipa/ultipa-go-driver/v6"
 )
 ```
 
@@ -375,7 +375,7 @@ import (
     "log"
     "time"
 
-    gqldb "github.com/ultipa/ultipa-go-driver"
+    gqldb "github.com/ultipa/ultipa-go-driver/v6"
 )
 
 func main() {

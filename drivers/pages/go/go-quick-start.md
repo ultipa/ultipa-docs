@@ -1,20 +1,16 @@
 # Quick Start
 
-This guide helps you get started with the GQLDB Go driver.
-
-## Requirements
-
-- Go 1.18 or higher
+This guide helps you get started with the GQLDB Go driver. It requires **Go 1.24 or higher**.
 
 ## Installation
 
 Install the GQLDB Go driver using `go get`:
 
 ```bash
-go get github.com/ultipa/ultipa-go-driver
+go get github.com/ultipa/ultipa-go-driver/v6
 ```
 
-> Check <a href="https://github.com/ultipa/ultipa-go-driver" target="_blank">GitHub</a> for the latest version. To install a specific version: `go get github.com/ultipa/ultipa-go-driver@v6.0.4`
+> Check <a href="https://github.com/ultipa/ultipa-go-driver" target="_blank">GitHub</a> for the latest version. To install a specific version: `go get github.com/ultipa/ultipa-go-driver/v6@v6.0.4`
 
 ## Basic Usage
 
@@ -27,7 +23,7 @@ import (
     "log"
     "time"
 
-    gqldb "github.com/ultipa/ultipa-go-driver"
+    gqldb "github.com/ultipa/ultipa-go-driver/v6"
 )
 
 func main() {
@@ -100,7 +96,7 @@ import (
     "crypto/x509"
     "os"
 
-    gqldb "github.com/ultipa/ultipa-go-driver"
+    gqldb "github.com/ultipa/ultipa-go-driver/v6"
 )
 
 func main() {
@@ -147,7 +143,7 @@ package main
 import (
     "time"
 
-    gqldb "github.com/ultipa/ultipa-go-driver"
+    gqldb "github.com/ultipa/ultipa-go-driver/v6"
 )
 
 func main() {
@@ -180,7 +176,7 @@ import (
     "log"
     "time"
 
-    gqldb "github.com/ultipa/ultipa-go-driver"
+    gqldb "github.com/ultipa/ultipa-go-driver/v6"
 )
 
 func main() {

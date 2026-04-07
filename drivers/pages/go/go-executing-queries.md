@@ -22,7 +22,7 @@ import (
     "context"
     "fmt"
 
-    gqldb "github.com/ultipa/ultipa-go-driver"
+    gqldb "github.com/ultipa/ultipa-go-driver/v6"
 )
 
 ctx := context.Background()
@@ -270,7 +270,7 @@ for _, node := range nodes {
 import (
     "errors"
 
-    gqldb "github.com/ultipa/ultipa-go-driver"
+    gqldb "github.com/ultipa/ultipa-go-driver/v6"
 )
 
 response, err := client.Gql(ctx, "MATCH (n) RETURN n", nil)
@@ -298,7 +298,7 @@ import (
     "log"
     "time"
 
-    gqldb "github.com/ultipa/ultipa-go-driver"
+    gqldb "github.com/ultipa/ultipa-go-driver/v6"
 )
 
 func main() {

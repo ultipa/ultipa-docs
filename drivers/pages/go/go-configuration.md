@@ -10,7 +10,7 @@ The GQLDB Go driver uses the `Config` struct for client configuration. You can c
 import (
     "time"
 
-    gqldb "github.com/ultipa/ultipa-go-driver"
+    gqldb "github.com/ultipa/ultipa-go-driver/v6"
 )
 
 config := &gqldb.Config{
@@ -92,7 +92,7 @@ config.Hosts = []string{"localhost:9000"}
 import (
     "crypto/tls"
 
-    gqldb "github.com/ultipa/ultipa-go-driver"
+    gqldb "github.com/ultipa/ultipa-go-driver/v6"
 )
 
 tlsConfig := &tls.Config{
@@ -203,7 +203,7 @@ import (
     "os"
     "time"
 
-    gqldb "github.com/ultipa/ultipa-go-driver"
+    gqldb "github.com/ultipa/ultipa-go-driver/v6"
 )
 
 func createProductionConfig() *gqldb.Config {

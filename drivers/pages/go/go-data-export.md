@@ -19,7 +19,7 @@ import (
     "context"
     "fmt"
 
-    gqldb "github.com/ultipa/ultipa-go-driver"
+    gqldb "github.com/ultipa/ultipa-go-driver/v6"
 )
 
 ctx := context.Background()
@@ -255,7 +255,7 @@ import (
     "strings"
     "time"
 
-    gqldb "github.com/ultipa/ultipa-go-driver"
+    gqldb "github.com/ultipa/ultipa-go-driver/v6"
 )
 
 func main() {

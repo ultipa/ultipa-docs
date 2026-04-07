@@ -21,7 +21,7 @@ Insert multiple nodes into a graph:
 import (
     "context"
 
-    gqldb "github.com/ultipa/ultipa-go-driver"
+    gqldb "github.com/ultipa/ultipa-go-driver/v6"
 )
 
 ctx := context.Background()
@@ -259,7 +259,7 @@ type DeleteResult struct {
 import (
     "errors"
 
-    gqldb "github.com/ultipa/ultipa-go-driver"
+    gqldb "github.com/ultipa/ultipa-go-driver/v6"
 )
 
 result, err := client.InsertNodes(ctx, "myGraph", nodes, nil)
@@ -290,7 +290,7 @@ import (
     "log"
     "time"
 
-    gqldb "github.com/ultipa/ultipa-go-driver"
+    gqldb "github.com/ultipa/ultipa-go-driver/v6"
 )
 
 func main() {

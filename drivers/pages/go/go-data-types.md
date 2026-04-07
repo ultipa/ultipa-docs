@@ -7,7 +7,7 @@ The GQLDB Go driver supports a comprehensive set of data types for storing and q
 The `PropertyType` constants define all supported data types:
 
 ```go
-import gqldb "github.com/ultipa/ultipa-go-driver"
+import gqldb "github.com/ultipa/ultipa-go-driver/v6"
 ```
 
 ### Numeric Types
@@ -364,7 +364,7 @@ import (
     "log"
     "time"
 
-    gqldb "github.com/ultipa/ultipa-go-driver"
+    gqldb "github.com/ultipa/ultipa-go-driver/v6"
 )
 
 func main() {

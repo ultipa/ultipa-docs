@@ -20,7 +20,7 @@ The GQLDB Go driver supports ACID transactions for ensuring data consistency acr
 import (
     "context"
 
-    gqldb "github.com/ultipa/ultipa-go-driver"
+    gqldb "github.com/ultipa/ultipa-go-driver/v6"
 )
 
 ctx := context.Background()
@@ -259,7 +259,7 @@ err := executeWithRetry(ctx, client, "myGraph", func(txID uint64) error {
 import (
     "errors"
 
-    gqldb "github.com/ultipa/ultipa-go-driver"
+    gqldb "github.com/ultipa/ultipa-go-driver/v6"
 )
 
 tx, err := client.BeginTransaction(ctx, "myGraph", false, 60)
@@ -299,7 +299,7 @@ import (
     "log"
     "time"
 
-    gqldb "github.com/ultipa/ultipa-go-driver"
+    gqldb "github.com/ultipa/ultipa-go-driver/v6"
 )
 
 func main() {
