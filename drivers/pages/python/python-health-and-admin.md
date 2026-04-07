@@ -19,6 +19,8 @@ The GQLDB Python driver provides methods for monitoring server health, managing 
 | `clear_cache(cache_type)` | Clear specified caches |
 | `get_statistics(graph_name)` | Get database statistics |
 | `invalidate_permission_cache(username)` | Invalidate RBAC permission cache |
+| `compact(graph_name)` | Trigger compaction for a graph |
+| `get_system_metrics()` | Get system-level metrics |
 
 ## Health Checks
 
@@ -30,7 +32,7 @@ Check the current health status of the server:
 from gqldb import GqldbClient, GqldbConfig
 from gqldb.types import HealthStatus
 
-config = GqldbConfig(hosts=["192.168.1.100:9000"])
+config = GqldbConfig(hosts=["localhost:9000"])
 
 with GqldbClient(config) as client:
     client.login("admin", "password")
@@ -141,8 +143,9 @@ class CacheStats:
 class ASTCacheStats:
     hits: int
     misses: int
-    size: int
-    capacity: int
+    evictions: int
+    entries: int
+    hit_rate: float
 
 @dataclass
 class PlanCacheStats:
@@ -150,6 +153,7 @@ class PlanCacheStats:
     misses: int
     size: int
     capacity: int
+    hit_rate: float
 ```
 
 ### clear_cache()
@@ -213,8 +217,8 @@ print(f"Graph statistics: {graph_stats}")
 class Statistics:
     node_count: int
     edge_count: int
-    graph_count: int
-    # Additional fields depending on implementation
+    label_counts: Dict[str, int]
+    edge_label_counts: Dict[str, int]
 ```
 
 ## Permission Cache
@@ -245,7 +249,7 @@ import time
 
 def main():
     config = GqldbConfig(
-        hosts=["192.168.1.100:9000"],
+        hosts=["localhost:9000"],
         timeout=30
     )
 

@@ -21,7 +21,7 @@ Insert multiple nodes into a graph:
 from gqldb import GqldbClient, GqldbConfig
 from gqldb.types import NodeData
 
-config = GqldbConfig(hosts=["192.168.1.100:9000"])
+config = GqldbConfig(hosts=["localhost:9000"])
 
 with GqldbClient(config) as client:
     client.login("admin", "password")
@@ -30,17 +30,14 @@ with GqldbClient(config) as client:
     # Create node data
     nodes = [
         NodeData(
-            id="u1",
             labels=["User"],
             properties={"name": "Alice", "age": 30, "email": "alice@example.com"}
         ),
         NodeData(
-            id="u2",
             labels=["User"],
             properties={"name": "Bob", "age": 25, "email": "bob@example.com"}
         ),
         NodeData(
-            id="u3",
             labels=["User", "Admin"],
             properties={"name": "Charlie", "age": 35}
         )
@@ -62,7 +59,6 @@ from typing import List, Dict, Any
 
 @dataclass
 class NodeData:
-    id: str                           # Node ID (_id property)
     labels: List[str]                 # Node labels
     properties: Dict[str, Any]        # Node properties
 ```
@@ -73,8 +69,7 @@ class NodeData:
 from gqldb.types import BulkCreateNodesOptions
 
 options = BulkCreateNodesOptions(
-    upsert=True,          # Update if exists, insert if not
-    ignore_errors=False   # Stop on first error
+    overwrite=True          # Overwrite if exists
 )
 
 result = client.insert_nodes("myGraph", nodes, options)
@@ -91,21 +86,18 @@ from gqldb.types import EdgeData
 
 edges = [
     EdgeData(
-        id="e1",
         label="Follows",
         from_node_id="u1",
         to_node_id="u2",
         properties={"since": "2023-01-15"}
     ),
     EdgeData(
-        id="e2",
         label="Follows",
         from_node_id="u2",
         to_node_id="u3",
         properties={"since": "2023-06-20"}
     ),
     EdgeData(
-        id="e3",
         label="Knows",
         from_node_id="u1",
         to_node_id="u3",
@@ -128,7 +120,6 @@ from typing import Dict, Any
 
 @dataclass
 class EdgeData:
-    id: str                        # Edge ID
     label: str                     # Edge label (type)
     from_node_id: str              # Source node ID
     to_node_id: str                # Target node ID
@@ -141,9 +132,7 @@ class EdgeData:
 from gqldb.types import BulkCreateEdgesOptions
 
 options = BulkCreateEdgesOptions(
-    upsert=True,              # Update if exists
-    ignore_errors=False,      # Stop on first error
-    skip_missing_nodes=True   # Skip edges with missing endpoints
+    skip_invalid_nodes=True   # Skip edges with invalid endpoints
 )
 
 result = client.insert_edges("myGraph", edges, options)
@@ -304,7 +293,7 @@ from gqldb.errors import GqldbError
 
 def main():
     config = GqldbConfig(
-        hosts=["192.168.1.100:9000"],
+        hosts=["localhost:9000"],
         timeout=30
     )
 
@@ -316,26 +305,26 @@ def main():
         # Insert nodes
         print("=== Inserting Nodes ===")
         users = [
-            NodeData("u1", ["User"], {"name": "Alice", "age": 30, "active": True}),
-            NodeData("u2", ["User"], {"name": "Bob", "age": 25, "active": True}),
-            NodeData("u3", ["User"], {"name": "Charlie", "age": 35, "active": False}),
-            NodeData("u4", ["User", "Admin"], {"name": "Diana", "age": 28, "active": True}),
+            NodeData(labels=["User"], properties={"name": "Alice", "age": 30, "active": True}),
+            NodeData(labels=["User"], properties={"name": "Bob", "age": 25, "active": True}),
+            NodeData(labels=["User"], properties={"name": "Charlie", "age": 35, "active": False}),
+            NodeData(labels=["User", "Admin"], properties={"name": "Diana", "age": 28, "active": True}),
         ]
 
-        options = BulkCreateNodesOptions(upsert=True)
+        options = BulkCreateNodesOptions(overwrite=True)
         result = client.insert_nodes("dataOpsDemo", users, options)
         print(f"  Inserted {result.node_count} users")
 
         # Insert edges
         print("\n=== Inserting Edges ===")
         relationships = [
-            EdgeData("e1", "Follows", "u1", "u2", {"since": "2023-01"}),
-            EdgeData("e2", "Follows", "u2", "u3", {"since": "2023-03"}),
-            EdgeData("e3", "Follows", "u1", "u4", {"since": "2023-06"}),
-            EdgeData("e4", "Knows", "u3", "u4", {"years": 3}),
+            EdgeData(label="Follows", from_node_id="u1", to_node_id="u2", properties={"since": "2023-01"}),
+            EdgeData(label="Follows", from_node_id="u2", to_node_id="u3", properties={"since": "2023-03"}),
+            EdgeData(label="Follows", from_node_id="u1", to_node_id="u4", properties={"since": "2023-06"}),
+            EdgeData(label="Knows", from_node_id="u3", to_node_id="u4", properties={"years": 3}),
         ]
 
-        edge_options = BulkCreateEdgesOptions(skip_missing_nodes=True)
+        edge_options = BulkCreateEdgesOptions(skip_invalid_nodes=True)
         result = client.insert_edges("dataOpsDemo", relationships, edge_options)
         print(f"  Inserted {result.edge_count} relationships")
 
@@ -349,14 +338,14 @@ def main():
         for row in response:
             print(f"  {row.get_string(0)}: {row.get_int(1)} edges")
 
-        # Update with upsert
-        print("\n=== Upsert (Update Existing) ===")
+        # Update with overwrite
+        print("\n=== Overwrite (Update Existing) ===")
         updated_users = [
-            NodeData("u1", ["User"], {"name": "Alice", "age": 31, "active": True}),  # Update age
-            NodeData("u5", ["User"], {"name": "Eve", "age": 22, "active": True}),    # New user
+            NodeData(labels=["User"], properties={"name": "Alice", "age": 31, "active": True}),  # Update age
+            NodeData(labels=["User"], properties={"name": "Eve", "age": 22, "active": True}),    # New user
         ]
 
-        result = client.insert_nodes("dataOpsDemo", updated_users, BulkCreateNodesOptions(upsert=True))
+        result = client.insert_nodes("dataOpsDemo", updated_users, BulkCreateNodesOptions(overwrite=True))
         print(f"  Upserted {result.node_count} users")
 
         # Delete inactive users

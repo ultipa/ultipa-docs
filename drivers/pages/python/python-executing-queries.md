@@ -20,7 +20,7 @@ Execute a GQL query and return the results:
 ```python
 from gqldb import GqldbClient, GqldbConfig
 
-config = GqldbConfig(hosts=["192.168.1.100:9000"])
+config = GqldbConfig(hosts=["localhost:9000"])
 
 with GqldbClient(config) as client:
     client.login("admin", "password")
@@ -68,6 +68,7 @@ response = client.gql(
 | `transaction_id` | `int` | `0` | Transaction ID for transactional queries |
 | `timeout` | `int` | `0` | Query timeout in seconds (0 = use client default) |
 | `read_only` | `bool` | `False` | Execute as read-only |
+| `max_path_results` | `int` | `0` | Maximum number of path results to return (0 = unlimited) |
 
 ## Parameterized Queries
 
@@ -232,7 +233,7 @@ client.gql("""
 
 # Query and retrieve
 response = client.gql("MATCH (n:DataNode) RETURN n")
-nodes, schemas = response.as_nodes()
+nodes, schemas = response.alias("n").as_nodes()
 
 for node in nodes:
     print(f"ID: {node.id}")
@@ -270,7 +271,7 @@ from gqldb.errors import GqldbError
 
 def main():
     config = GqldbConfig(
-        hosts=["192.168.1.100:9000"],
+        hosts=["localhost:9000"],
         timeout=30
     )
 
@@ -320,7 +321,7 @@ def main():
             WHERE a.name = 'Alice'
             RETURN p
         """)
-        paths = response.as_paths()
+        paths = response.alias("p").as_paths()
         for path in paths:
             names = [n.properties.get("name", n.id) for n in path.nodes]
             print(f"  Path: {' -> '.join(names)}")

@@ -9,7 +9,7 @@ The `gql()` method returns a `Response` object containing query results:
 ```python
 from gqldb import GqldbClient, GqldbConfig
 
-config = GqldbConfig(hosts=["192.168.1.100:9000"])
+config = GqldbConfig(hosts=["localhost:9000"])
 
 with GqldbClient(config) as client:
     client.login("admin", "password")
@@ -164,17 +164,58 @@ for row in response:
     print(f"{name}: {age}")
 ```
 
+## Accessing Result Columns
+
+Query results are organized by columns (aliases). To extract typed data such as nodes, edges, paths, tables, or attributes, you must first select a column using `alias()` (by name) or `get()` (by index). These return an `AliasResult` object with type-specific extraction methods.
+
+### alias()
+
+Select a column by its alias name:
+
+```python
+response = client.gql("MATCH (u:User)-[e:Follows]->(f:User) RETURN u, e, f")
+
+# Access by alias name
+users = response.alias("u").as_nodes()
+edges = response.alias("e").as_edges()
+friends = response.alias("f").as_nodes()
+```
+
+### get()
+
+Select a column by its positional index:
+
+```python
+response = client.gql("MATCH (u:User) RETURN u, u.name")
+
+# Access by index
+nodes, schemas = response.get(0).as_nodes()
+names = response.get(1).as_attr()
+```
+
+### AliasResult Class
+
+The `AliasResult` object returned by `alias()` and `get()` provides the following methods:
+
+| Method | Return Type | Description |
+|--------|-------------|-------------|
+| `as_nodes()` | `Tuple[List[Node], Dict]` | Extract nodes and schemas |
+| `as_edges()` | `Tuple[List[Edge], Dict]` | Extract edges and schemas |
+| `as_paths()` | `List[Path]` | Extract paths |
+| `as_table()` | `Table` | Extract as a table |
+| `as_attr()` | `Attr` | Extract as attribute values |
+
 ## Extracting Graph Elements
 
 ### as_nodes()
 
-Extract nodes from the response:
+Extract nodes from a specific column of the response using `alias()` or `get()`:
 
 ```python
 from gqldb import Node
 
 response = client.gql("MATCH (u:User) RETURN u")
-nodes, schemas = response.as_nodes()
+nodes, schemas = response.alias("u").as_nodes()
 
 # Access nodes
 for node in nodes:
@@ -199,13 +240,13 @@ class Node:
 
 ### as_edges()
 
-Extract edges from the response:
+Extract edges from a specific column of the response using `alias()` or `get()`:
 
 ```python
 from gqldb import Edge
 
 response = client.gql("MATCH ()-[e:Follows]->() RETURN e")
-edges, schemas = response.as_edges()
+edges, schemas = response.alias("e").as_edges()
 
 for edge in edges:
     print(f"ID: {edge.id}")
@@ -229,13 +270,13 @@ class Edge:
 
 ### as_paths()
 
-Extract paths from the response:
+Extract paths from a specific column of the response using `alias()` or `get()`:
 
 ```python
 from gqldb import Path
 
 response = client.gql("MATCH p = (a)-[*1..3]->(b) RETURN p LIMIT 10")
-paths = response.as_paths()
+paths = response.alias("p").as_paths()
 
 for path in paths:
     print(f"Path nodes: {len(path.nodes)}")
@@ -261,11 +302,11 @@ class Path:
 
 ### as_table()
 
-Get the response as a generic table:
+Get a specific column of the response as a generic table using `alias()` or `get()`:
 
 ```python
 response = client.gql("MATCH (u:User) RETURN u.name, u.age")
-table = response.as_table()
+table = response.get(0).as_table()
 
 print(f"Headers: {[h.name for h in table.headers]}")
 print(f"Rows: {table.rows}")
@@ -290,11 +331,11 @@ class Header:
 
 ### as_attr()
 
-Extract values from a specific column:
+Extract values from a specific column using `alias()` or `get()`:
 
 ```python
 response = client.gql("MATCH (u:User) RETURN u.age AS age")
-age_attr = response.as_attr("age")
+age_attr = response.alias("age").as_attr()
 
 print(f"Column name: {age_attr.name}")
 print(f"Type: {age_attr.type}")
@@ -325,7 +366,7 @@ from gqldb.errors import GqldbError
 
 def main():
     config = GqldbConfig(
-        hosts=["192.168.1.100:9000"],
+        hosts=["localhost:9000"],
         default_graph="socialNetwork"
     )
 
@@ -347,7 +388,7 @@ def main():
         # Query nodes
         print("=== Query Nodes ===")
         node_response = client.gql("MATCH (u:User) RETURN u LIMIT 5")
-        nodes, schemas = node_response.as_nodes()
+        nodes, schemas = node_response.alias("u").as_nodes()
         for node in nodes:
             print(f"User {node.id}: {node.properties.get('name')}")
 
@@ -364,7 +405,7 @@ def main():
         path_response = client.gql(
             "MATCH p = (a:User)-[:Follows*1..2]->(b:User) RETURN p LIMIT 3"
         )
-        paths = path_response.as_paths()
+        paths = path_response.alias("p").as_paths()
         for path in paths:
             route = " -> ".join(n.properties.get("name", n.id) for n in path.nodes)
             print(f"Path: {route}")
@@ -377,7 +418,7 @@ def main():
         # Extract attribute values
         print("\n=== Attribute Extraction ===")
         age_response = client.gql("MATCH (u:User) RETURN u.age AS age")
-        ages = age_response.as_attr("age")
+        ages = age_response.alias("age").as_attr()
         numeric_ages = [v for v in ages.values if isinstance(v, (int, float))]
 
         if numeric_ages:

@@ -19,7 +19,7 @@ The GQLDB Python driver supports ACID transactions for ensuring data consistency
 ```python
 from gqldb import GqldbClient, GqldbConfig
 
-config = GqldbConfig(hosts=["192.168.1.100:9000"])
+config = GqldbConfig(hosts=["localhost:9000"])
 
 with GqldbClient(config) as client:
     client.login("admin", "password")
@@ -144,10 +144,12 @@ client.with_transaction(
 transactions = client.list_transactions()
 
 for tx_info in transactions:
-    print(f"Transaction {tx_info.id}:")
+    print(f"Transaction {tx_info.transaction_id}:")
+    print(f"  Session: {tx_info.session_id}")
     print(f"  Graph: {tx_info.graph_name}")
     print(f"  Read-only: {tx_info.read_only}")
-    print(f"  Created: {tx_info.created_at}")
+    print(f"  Duration: {tx_info.duration_ms}ms")
+    print(f"  Internal TX ID: {tx_info.internal_tx_id}")
 ```
 
 ## Transaction Patterns
@@ -262,7 +264,7 @@ from gqldb.errors import GqldbError, TransactionFailedError
 
 def main():
     config = GqldbConfig(
-        hosts=["192.168.1.100:9000"],
+        hosts=["localhost:9000"],
         timeout=30
     )
 

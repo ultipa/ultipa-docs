@@ -20,7 +20,7 @@ Export nodes and/or edges in JSON Lines format with streaming:
 from gqldb import GqldbClient, GqldbConfig
 from gqldb.response import ExportConfig
 
-config = GqldbConfig(hosts=["192.168.1.100:9000"])
+config = GqldbConfig(hosts=["localhost:9000"])
 
 with GqldbClient(config) as client:
     client.login("admin", "password")
@@ -63,8 +63,8 @@ class ExportConfig:
     batch_size: int = 0            # Records per chunk
     export_nodes: bool = True      # Include nodes
     export_edges: bool = True      # Include edges
-    node_labels: List[str] = None  # Filter by node labels
-    edge_labels: List[str] = None  # Filter by edge labels
+    node_labels: List[str] = []    # Filter by node labels
+    edge_labels: List[str] = []    # Filter by edge labels
     include_metadata: bool = False # Include metadata in output
 ```
 
@@ -250,7 +250,7 @@ import os
 
 def main():
     config = GqldbConfig(
-        hosts=["192.168.1.100:9000"],
+        hosts=["localhost:9000"],
         timeout=60
     )
 

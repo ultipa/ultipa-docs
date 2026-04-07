@@ -12,13 +12,13 @@ This guide helps you get started with the GQLDB Python driver.
 Install the GQLDB Python driver using pip:
 
 ```bash
-pip install gqldb-python
+pip install ultipa
 ```
 
 For development with additional tools:
 
 ```bash
-pip install gqldb-python[dev]
+pip install ultipa[dev]
 ```
 
 ## Basic Usage
@@ -28,7 +28,7 @@ from gqldb import GqldbClient, GqldbConfig
 
 # Create configuration
 config = GqldbConfig(
-    hosts=["192.168.1.100:9000"],
+    hosts=["localhost:9000"],
     timeout=30
 )
 
@@ -75,7 +75,7 @@ ssl_ctx = create_ssl_context(
 )
 
 config = GqldbConfig(
-    hosts=["192.168.1.100:9000"],
+    hosts=["localhost:9000"],
     ssl_context=ssl_ctx
 )
 
@@ -90,7 +90,7 @@ with GqldbClient(config) as client:
 from gqldb.config import ConfigBuilder
 
 config = (ConfigBuilder()
-    .hosts("192.168.1.100:9000", "192.168.1.101:9000")
+    .hosts("localhost:9000", "192.168.1.101:9000")
     .timeout(60)
     .default_graph("myGraph")
     .pool_size(20)
@@ -110,7 +110,7 @@ from gqldb.errors import GqldbError, GraphNotFoundError
 
 def main():
     config = GqldbConfig(
-        hosts=["192.168.1.100:9000"],
+        hosts=["localhost:9000"],
         timeout=30,
         default_graph="socialNetwork"
     )
@@ -158,7 +158,7 @@ def main():
                 RETURN p
                 LIMIT 5
             """)
-            paths = path_response.as_paths()
+            paths = path_response.alias("p").as_paths()
             print(f"\nPaths from Alice: {len(paths)}")
 
             # Clean up

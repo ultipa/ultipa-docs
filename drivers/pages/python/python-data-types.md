@@ -172,7 +172,6 @@ from gqldb.types import NodeData, GqldbNode
 # Data for inserting nodes
 @dataclass
 class NodeData:
-    id: str
     labels: List[str]
     properties: Dict[str, Any]
 
@@ -192,7 +191,6 @@ from gqldb.types import EdgeData, GqldbEdge
 # Data for inserting edges
 @dataclass
 class EdgeData:
-    id: str
     label: str
     from_node_id: str
     to_node_id: str
@@ -247,7 +245,8 @@ class YearToMonth:
 
 @dataclass
 class DayToSecond:
-    nanos: int
+    seconds: int
+    nanoseconds: int
 ```
 
 ### Vector Type
@@ -258,10 +257,6 @@ from gqldb.types import Vector
 @dataclass
 class Vector:
     values: List[float]
-
-    @property
-    def dimension(self) -> int:
-        return len(self.values)
 ```
 
 ## TypedValue
@@ -287,7 +282,6 @@ from gqldb.types import Int32, UInt32, Float32, UInt64
 
 # Wrap values with explicit types
 node = NodeData(
-    id="n1",
     labels=["Test"],
     properties={
         "int32_val": Int32(42),
@@ -378,7 +372,7 @@ from gqldb.errors import GqldbError
 
 def main():
     config = GqldbConfig(
-        hosts=["192.168.1.100:9000"],
+        hosts=["localhost:9000"],
         timeout=30
     )
 

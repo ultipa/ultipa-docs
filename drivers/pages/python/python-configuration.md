@@ -10,7 +10,7 @@ The GQLDB Python driver uses `GqldbConfig` for client configuration. You can cre
 from gqldb import GqldbConfig
 
 config = GqldbConfig(
-    hosts=["192.168.1.100:9000"],
+    hosts=["localhost:9000"],
     username="admin",
     password="password",
     default_graph="myGraph",
@@ -42,7 +42,7 @@ The `ConfigBuilder` provides a fluent interface for creating configurations:
 from gqldb.config import ConfigBuilder
 
 config = (ConfigBuilder()
-    .hosts("192.168.1.100:9000", "192.168.1.101:9000")
+    .hosts("localhost:9000", "192.168.1.101:9000")
     .username("admin")
     .password("password")
     .default_graph("myGraph")
@@ -89,7 +89,7 @@ ssl_ctx = create_ssl_context(
 )
 
 config = GqldbConfig(
-    hosts=["192.168.1.100:9000"],
+    hosts=["localhost:9000"],
     ssl_context=ssl_ctx
 )
 ```
@@ -110,7 +110,7 @@ config = GqldbConfig(
 ssl_ctx = create_ssl_context(verify=False)
 
 config = GqldbConfig(
-    hosts=["192.168.1.100:9000"],
+    hosts=["localhost:9000"],
     ssl_context=ssl_ctx
 )
 ```
@@ -126,7 +126,7 @@ ssl_ctx.load_cert_chain("/path/to/client.crt", "/path/to/client.key")
 ssl_ctx.load_verify_locations("/path/to/ca.crt")
 
 config = GqldbConfig(
-    hosts=["192.168.1.100:9000"],
+    hosts=["localhost:9000"],
     ssl_context=ssl_ctx
 )
 ```
@@ -138,7 +138,7 @@ Configure multiple hosts for high availability:
 ```python
 config = GqldbConfig(
     hosts=[
-        "192.168.1.100:9000",
+        "localhost:9000",
         "192.168.1.101:9000",
         "192.168.1.102:9000"
     ],
@@ -162,7 +162,7 @@ except ValueError as e:
     print(f"Invalid config: {e}")
 
 # Manual validation
-config = GqldbConfig(hosts=["192.168.1.100:9000"])
+config = GqldbConfig(hosts=["localhost:9000"])
 config.validate()  # Raises ValueError if invalid
 ```
 
@@ -197,7 +197,7 @@ def create_production_config():
 def create_development_config():
     """Create configuration for development environment."""
     return GqldbConfig(
-        hosts=["192.168.1.100:9000"],
+        hosts=["localhost:9000"],
         timeout=30,
         pool_size=5
     )

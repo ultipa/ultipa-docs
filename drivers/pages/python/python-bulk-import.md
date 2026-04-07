@@ -7,8 +7,7 @@ The GQLDB Python driver provides bulk import functionality for high-throughput d
 | Method | Description |
 |--------|-------------|
 | `start_bulk_import(...)` | Start a bulk import session |
-| `checkpoint(session_id)` | Flush data to disk |
-| `end_bulk_import(session_id)` | End session with final checkpoint |
+| `end_bulk_import(session_id)` | End the bulk import session |
 | `abort_bulk_import(session_id)` | Cancel session without final sync |
 | `get_bulk_import_status(session_id)` | Get session status |
 
@@ -18,7 +17,7 @@ The GQLDB Python driver provides bulk import functionality for high-throughput d
 from gqldb import GqldbClient, GqldbConfig
 from gqldb.types import NodeData, EdgeData
 
-config = GqldbConfig(hosts=["192.168.1.100:9000"])
+config = GqldbConfig(hosts=["localhost:9000"])
 
 with GqldbClient(config) as client:
     client.login("admin", "password")
@@ -26,8 +25,7 @@ with GqldbClient(config) as client:
 
     # Start bulk import session
     session = client.start_bulk_import(
-        graph_name="myGraph",
-        checkpoint_every=10000  # Auto-checkpoint every 10,000 records
+        graph_name="myGraph"
     )
 
     print(f"Session ID: {session.session_id}")
@@ -41,9 +39,9 @@ with GqldbClient(config) as client:
         for batch in edge_batches:
             client.insert_edges("myGraph", batch, bulk_import_session_id=session.session_id)
 
-        # End session (final checkpoint)
+        # End session
         result = client.end_bulk_import(session.session_id)
-        print(f"Import complete: {result.nodes_imported} nodes, {result.edges_imported} edges")
+        print(f"Import complete: {result.total_records} records, {result.message}")
 
     except Exception as e:
         # Abort on error
@@ -58,7 +56,6 @@ with GqldbClient(config) as client:
 ```python
 session = client.start_bulk_import(
     graph_name="myGraph",
-    checkpoint_every=10000,     # Records between auto-checkpoints (0 = manual only)
     estimated_nodes=1000000,    # Hint for pre-allocating node ID cache
     estimated_edges=5000000,    # Hint for edge batch sizing
     memtable_size=67108864,     # Memtable size in bytes (default: 64MB)
@@ -71,54 +68,24 @@ session = client.start_bulk_import(
 ```python
 @dataclass
 class BulkImportSession:
+    success: bool
     session_id: str
-    graph_name: str
-    created_at: str
-    status: str
-```
-
-## Checkpointing
-
-### Manual Checkpoint
-
-```python
-# Manually flush data to disk
-result = client.checkpoint(session.session_id)
-
-print(f"Checkpoint complete:")
-print(f"  Nodes flushed: {result.nodes_flushed}")
-print(f"  Edges flushed: {result.edges_flushed}")
-print(f"  Duration: {result.duration_ms}ms")
-```
-
-### Auto-Checkpoint
-
-With `checkpoint_every` set, checkpoints happen automatically:
-
-```python
-session = client.start_bulk_import(
-    graph_name="myGraph",
-    checkpoint_every=50000  # Checkpoint every 50,000 records
-)
-
-# Auto-checkpoints happen during inserts
-for batch in batches:
-    client.insert_nodes("myGraph", batch, bulk_import_session_id=session.session_id)
+    message: str
 ```
 
 ## Ending a Bulk Import
 
 ### end_bulk_import()
 
-Complete the session with a final checkpoint:
+Complete the bulk import session:
 
 ```python
 result = client.end_bulk_import(session.session_id)
 
 print(f"Bulk import completed:")
-print(f"  Total nodes: {result.nodes_imported}")
-print(f"  Total edges: {result.edges_imported}")
-print(f"  Duration: {result.duration_ms}ms")
+print(f"  Success: {result.success}")
+print(f"  Total records: {result.total_records}")
+print(f"  Message: {result.message}")
 ```
 
 ### abort_bulk_import()
@@ -137,11 +104,12 @@ print(f"Bulk import aborted: {result.message}")
 ```python
 status = client.get_bulk_import_status(session.session_id)
 
-print(f"Session: {status.session_id}")
-print(f"Status: {status.status}")
-print(f"Nodes pending: {status.nodes_pending}")
-print(f"Edges pending: {status.edges_pending}")
-print(f"Last checkpoint: {status.last_checkpoint}")
+print(f"Active: {status.is_active}")
+print(f"Graph: {status.graph_name}")
+print(f"Records: {status.record_count}")
+print(f"Last checkpoint count: {status.last_checkpoint_count}")
+print(f"Created at: {status.created_at}")
+print(f"Last activity: {status.last_activity}")
 ```
 
 ## Batch Processing Pattern
@@ -157,8 +125,7 @@ def batch_generator(items, batch_size):
 def bulk_import_data(client, graph_name, nodes, edges, batch_size=5000):
     """Import large amounts of data efficiently."""
     session = client.start_bulk_import(
-        graph_name=graph_name,
-        checkpoint_every=batch_size * 10
+        graph_name=graph_name
     )
 
     try:
@@ -193,26 +160,13 @@ def bulk_import_data(client, graph_name, nodes, edges, batch_size=5000):
 
 ## Result Classes
 
-### CheckpointResult
-
-```python
-@dataclass
-class CheckpointResult:
-    success: bool
-    nodes_flushed: int
-    edges_flushed: int
-    duration_ms: int
-```
-
 ### EndBulkImportResult
 
 ```python
 @dataclass
 class EndBulkImportResult:
     success: bool
-    nodes_imported: int
-    edges_imported: int
-    duration_ms: int
+    total_records: int
     message: str
 ```
 
@@ -230,12 +184,12 @@ class AbortBulkImportResult:
 ```python
 @dataclass
 class BulkImportStatus:
-    session_id: str
-    status: str
-    nodes_pending: int
-    edges_pending: int
-    last_checkpoint: str
-    errors: List[str]
+    is_active: bool
+    graph_name: str
+    record_count: int
+    last_checkpoint_count: int
+    created_at: str
+    last_activity: str
 ```
 
 ## Error Handling
@@ -272,7 +226,6 @@ def generate_test_data(num_nodes, num_edges):
     """Generate test nodes and edges."""
     nodes = [
         NodeData(
-            id=f"n{i}",
             labels=["TestNode"],
             properties={"index": i, "value": f"value_{i}"}
         )
@@ -281,7 +234,6 @@ def generate_test_data(num_nodes, num_edges):
 
     edges = [
         EdgeData(
-            id=f"e{i}",
             label="TestEdge",
             from_node_id=f"n{i % num_nodes}",
             to_node_id=f"n{(i + 1) % num_nodes}",
@@ -294,7 +246,7 @@ def generate_test_data(num_nodes, num_edges):
 
 def main():
     config = GqldbConfig(
-        hosts=["192.168.1.100:9000"],
+        hosts=["localhost:9000"],
         timeout=300  # 5 minute timeout for bulk operations
     )
 
@@ -316,7 +268,6 @@ def main():
 
         session = client.start_bulk_import(
             graph_name="bulkDemo",
-            checkpoint_every=50000,
             estimated_nodes=num_nodes,
             estimated_edges=num_edges
         )
@@ -339,14 +290,9 @@ def main():
                 # Check status periodically
                 if imported_nodes % 50000 == 0:
                     status = client.get_bulk_import_status(session.session_id)
-                    print(f"  Progress: {imported_nodes} nodes, pending: {status.nodes_pending}")
+                    print(f"  Progress: {imported_nodes} nodes, records: {status.record_count}")
 
             print(f"  Total nodes imported: {imported_nodes}")
-
-            # Manual checkpoint before edges
-            print("\n=== Checkpoint Before Edges ===")
-            cp_result = client.checkpoint(session.session_id)
-            print(f"  Flushed {cp_result.nodes_flushed} nodes in {cp_result.duration_ms}ms")
 
             # Import edges in batches
             print("\n=== Importing Edges ===")
@@ -371,8 +317,9 @@ def main():
 
             elapsed = time.time() - start_time
             print(f"  Completed in {elapsed:.2f} seconds")
-            print(f"  Final nodes: {end_result.nodes_imported}")
-            print(f"  Final edges: {end_result.edges_imported}")
+            print(f"  Success: {end_result.success}")
+            print(f"  Total records: {end_result.total_records}")
+            print(f"  Message: {end_result.message}")
 
             # Verify
             print("\n=== Verification ===")
