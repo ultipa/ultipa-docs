@@ -15,6 +15,8 @@ Install the GQLDB Python driver using pip:
 pip install ultipa
 ```
 
+> Check <a href="https://pypi.org/project/ultipa/" target="_blank">PyPI</a> for the latest version. To install a specific version: `pip install ultipa==6.0.4`
+
 For development with additional tools:
 
 ```bash

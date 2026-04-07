@@ -62,7 +62,6 @@ for (Row row : response) {
 | `get(index)` | `Object` | Get value at index |
 | `getString(index)` | `String` | Get value as String |
 | `getLong(index)` | `long` | Get value as long |
-| `getInt(index)` | `int` | Get value as int |
 | `getDouble(index)` | `double` | Get value as double |
 | `getBoolean(index)` | `boolean` | Get value as boolean |
 | `size()` | `int` | Number of values in row |
@@ -158,17 +157,46 @@ for (Row row : response) {
 }
 ```
 
+## Accessing Aliases
+
+### alias() and get()
+
+Query results are organized by aliases. Use `alias()` or `get()` to access a specific `AliasResult`, then call extraction methods on it:
+
+```java
+import com.gqldb.*;
+
+Response response = client.gql("MATCH (u:User)-[e:Follows]->(f:User) RETURN u, e, f");
+
+// Access by alias name
+AliasResult uResult = response.alias("u");
+AliasResult eResult = response.alias("e");
+
+// Access by index
+AliasResult firstAlias = response.get(0);  // Same as response.alias("u")
+```
+
+### AliasResult Class
+
+| Method | Return Type | Description |
+|--------|-------------|-------------|
+| `asNodes()` | `NodeResult` | Extract nodes from this alias |
+| `asEdges()` | `EdgeResult` | Extract edges from this alias |
+| `asPaths()` | `List<Path>` | Extract paths from this alias |
+| `asTable()` | `Table` | Get alias data as a table |
+| `asAttr()` | `Attr` | Extract attribute values from this alias |
+
 ## Extracting Graph Elements
 
 ### asNodes()
 
-Extract nodes from the response:
+Extract nodes from the response via an alias:
 
 ```java
 import com.gqldb.*;
 
 Response response = client.gql("MATCH (u:User) RETURN u");
-NodeResult result = response.asNodes();
+NodeResult result = response.alias("u").asNodes();
 
 // Access nodes
 for (Node node : result.getNodes()) {
@@ -200,11 +228,11 @@ public class NodeResult {
 
 ### asEdges()
 
-Extract edges from the response:
+Extract edges from the response via an alias:
 
 ```java
 Response response = client.gql("MATCH ()-[e:Follows]->() RETURN e");
-EdgeResult result = response.asEdges();
+EdgeResult result = response.alias("e").asEdges();
 
 for (Edge edge : result.getEdges()) {
     System.out.println("ID: " + edge.getId());
@@ -234,11 +262,11 @@ public class EdgeResult {
 
 ### asPaths()
 
-Extract paths from the response:
+Extract paths from the response via an alias:
 
 ```java
 Response response = client.gql("MATCH p = (a)-[*1..3]->(b) RETURN p LIMIT 10");
-List<Path> paths = response.asPaths();
+List<Path> paths = response.alias("p").asPaths();
 
 for (Path path : paths) {
     System.out.println("Path nodes: " + path.getNodes().size());
@@ -270,8 +298,8 @@ public class Path {
 Get the response as a generic table:
 
 ```java
-Response response = client.gql("MATCH (u:User) RETURN u.name, u.age");
-Table table = response.asTable();
+Response response = client.gql("MATCH (u:User) RETURN u.name AS name, u.age AS age");
+Table table = response.get(0).asTable();
 
 System.out.println("Headers: " + table.getHeaders().stream()
     .map(Header::getName).collect(Collectors.toList()));
@@ -301,7 +329,7 @@ Extract values from a specific column:
 
 ```java
 Response response = client.gql("MATCH (u:User) RETURN u.age AS age");
-Attr ageAttr = response.asAttr("age");
+Attr ageAttr = response.alias("age").asAttr();
 
 System.out.println("Column name: " + ageAttr.getName());
 System.out.println("Type: " + ageAttr.getType());
@@ -336,7 +364,7 @@ import java.util.*;
 public class ResponseProcessingExample {
     public static void main(String[] args) {
         GqldbConfig config = GqldbConfig.builder()
-            .hosts("192.168.1.100:9000")
+            .hosts("localhost:9000")
             .defaultGraph("socialNetwork")
             .build();
 
@@ -346,7 +374,7 @@ public class ResponseProcessingExample {
             // Query nodes
             System.out.println("=== Query Nodes ===");
             Response nodeResponse = client.gql("MATCH (u:User) RETURN u LIMIT 5");
-            NodeResult nodeResult = nodeResponse.asNodes();
+            NodeResult nodeResult = nodeResponse.alias("u").asNodes();
             for (Node node : nodeResult.getNodes()) {
                 System.out.println("User " + node.getId() + ": " + node.getProperties().get("name"));
             }
@@ -364,7 +392,7 @@ public class ResponseProcessingExample {
             Response pathResponse = client.gql(
                 "MATCH p = (a:User)-[:Follows*1..2]->(b:User) RETURN p LIMIT 3"
             );
-            List<Path> paths = pathResponse.asPaths();
+            List<Path> paths = pathResponse.alias("p").asPaths();
             for (Path path : paths) {
                 String route = path.getNodes().stream()
                     .map(n -> (String) n.getProperties().getOrDefault("name", n.getId()))
@@ -380,7 +408,7 @@ public class ResponseProcessingExample {
             // Extract attribute values
             System.out.println("\n=== Attribute Extraction ===");
             Response ageResponse = client.gql("MATCH (u:User) RETURN u.age AS age");
-            Attr ages = ageResponse.asAttr("age");
+            Attr ages = ageResponse.alias("age").asAttr();
             List<Number> numericAges = ages.getValues().stream()
                 .filter(a -> a instanceof Number)
                 .map(a -> (Number) a)

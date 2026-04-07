@@ -43,9 +43,10 @@ The `QueryConfig` class allows you to customize query execution:
 public class QueryConfig {
     private String graphName;      // Target graph (overrides default)
     private Map<String, Object> parameters;  // Query parameters
-    private Long transactionId;    // Transaction ID for transactional queries
-    private Integer timeout;       // Query timeout in seconds
-    private Boolean readOnly;      // Mark query as read-only
+    private long transactionId;    // Transaction ID for transactional queries
+    private int timeout;           // Query timeout in seconds
+    private boolean readOnly;      // Mark query as read-only
+    private int maxPathResults;    // Maximum number of path results to return
 }
 ```
 
@@ -207,21 +208,21 @@ List<Map<String, Object>> users = response.toMaps();
 ```java
 // Get nodes
 Response nodeResponse = client.gql("MATCH (n:User) RETURN n");
-NodeResult nodeResult = nodeResponse.asNodes();
+NodeResult nodeResult = nodeResponse.alias("n").asNodes();
 for (Node node : nodeResult.getNodes()) {
     System.out.println("Node: " + node.getId());
 }
 
 // Get edges
 Response edgeResponse = client.gql("MATCH ()-[e:Follows]->() RETURN e");
-EdgeResult edgeResult = edgeResponse.asEdges();
+EdgeResult edgeResult = edgeResponse.alias("e").asEdges();
 for (Edge edge : edgeResult.getEdges()) {
     System.out.println("Edge: " + edge.getId());
 }
 
 // Get paths
 Response pathResponse = client.gql("MATCH p = (a)-[*]->(b) RETURN p");
-List<Path> paths = pathResponse.asPaths();
+List<Path> paths = pathResponse.alias("p").asPaths();
 ```
 
 ## Transactional Queries
@@ -284,7 +285,7 @@ import java.util.Map;
 public class QueryExample {
     public static void main(String[] args) {
         GqldbConfig config = GqldbConfig.builder()
-            .hosts("192.168.1.100:9000")
+            .hosts("localhost:9000")
             .defaultGraph("socialNetwork")
             .build();
 

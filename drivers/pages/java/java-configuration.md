@@ -31,7 +31,7 @@ import java.time.Duration;
 
 // Minimal configuration
 GqldbConfig config = GqldbConfig.builder()
-    .hosts("192.168.1.100:9000")
+    .hosts("localhost:9000")
     .build();
 
 // Full configuration
@@ -114,7 +114,7 @@ import com.gqldb.GqldbClient;
 import java.util.Arrays;
 
 String hostsEnv = System.getenv("GQLDB_HOSTS");
-String[] hosts = hostsEnv != null ? hostsEnv.split(",") : new String[]{"192.168.1.100:9000"};
+String[] hosts = hostsEnv != null ? hostsEnv.split(",") : new String[]{"localhost:9000"};
 
 GqldbConfig config = GqldbConfig.builder()
     .hosts(hosts)

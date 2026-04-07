@@ -7,7 +7,6 @@ The GQLDB Java driver provides a bulk import service for high-throughput data in
 | Method | Description |
 |--------|-------------|
 | `startBulkImport()` | Start a bulk import session |
-| `checkpoint()` | Flush accumulated data to disk |
 | `endBulkImport()` | End the session with a final checkpoint |
 | `abortBulkImport()` | Cancel the session without saving |
 | `getBulkImportStatus()` | Get the current status of a session |
@@ -82,46 +81,6 @@ public void bulkInsertExample(GqldbClient client) {
         client.abortBulkImport(session.getSessionId());
         throw e;
     }
-}
-```
-
-## Checkpoints
-
-### checkpoint()
-
-Manually flush accumulated data to disk for durability:
-
-```java
-public void checkpointExample(GqldbClient client) {
-    BulkImportSession session = client.startBulkImport("myGraph");
-
-    // Insert some data...
-    client.insertNodes("myGraph", nodes1, false, session.getSessionId());
-
-    // Checkpoint to ensure data is persisted
-    CheckpointResult result = client.checkpoint(session.getSessionId());
-
-    System.out.println("Checkpoint success: " + result.isSuccess());
-    System.out.println("Records since start: " + result.getRecordCount());
-    System.out.println("Records since last checkpoint: " + result.getLastCheckpointCount());
-    System.out.println("Message: " + result.getMessage());
-
-    // Continue importing...
-    client.insertNodes("myGraph", nodes2, false, session.getSessionId());
-
-    // Final checkpoint and end
-    client.endBulkImport(session.getSessionId());
-}
-```
-
-### CheckpointResult Class
-
-```java
-public class CheckpointResult {
-    boolean isSuccess();
-    long getRecordCount();          // Total records since session start
-    long getLastCheckpointCount();  // Records since last checkpoint
-    String getMessage();
 }
 ```
 
@@ -238,7 +197,7 @@ import java.util.*;
 public class BulkImportExample {
     public static void main(String[] args) {
         GqldbConfig config = GqldbConfig.builder()
-            .hosts("192.168.1.100:9000")
+            .hosts("localhost:9000")
             .build();
 
         try (GqldbClient client = new GqldbClient(config)) {
@@ -263,7 +222,6 @@ public class BulkImportExample {
                 for (int i = 0; i < 10000; i++) {
                     int id = batch * 10000 + i;
                     nodes.add(new NodeData(
-                        "user" + id,
                         Arrays.asList("User"),
                         Map.of("name", "User " + id, "index", id)
                     ));
@@ -277,15 +235,10 @@ public class BulkImportExample {
             BulkImportStatus status = client.getBulkImportStatus(session.getSessionId());
             System.out.println("Current status: " + status.getRecordCount() + " records");
 
-            // Manual checkpoint
-            CheckpointResult checkpoint = client.checkpoint(session.getSessionId());
-            System.out.println("Checkpoint: " + checkpoint.getRecordCount() + " records saved");
-
             // Generate and insert edges
             List<EdgeData> edges = new ArrayList<>();
             for (int i = 0; i < 50000; i++) {
                 edges.add(new EdgeData(
-                    "edge" + i,
                     "Knows",
                     "user" + i,
                     "user" + ((i + 1) % 100000),

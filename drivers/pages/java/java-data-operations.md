@@ -23,11 +23,11 @@ import java.util.*;
 
 public void insertNodesExample(GqldbClient client) {
     List<NodeData> nodes = Arrays.asList(
-        new NodeData("user1", Arrays.asList("User"),
+        new NodeData(Arrays.asList("User"),
             Map.of("name", "Alice", "age", 30, "email", "alice@example.com")),
-        new NodeData("user2", Arrays.asList("User"),
+        new NodeData(Arrays.asList("User"),
             Map.of("name", "Bob", "age", 25)),
-        new NodeData("user3", Arrays.asList("User", "Admin"),  // Multiple labels
+        new NodeData(Arrays.asList("User", "Admin"),  // Multiple labels
             Map.of("name", "Charlie", "role", "administrator"))
     );
 
@@ -44,9 +44,8 @@ public void insertNodesExample(GqldbClient client) {
 
 ```java
 public class NodeData {
-    public NodeData(String id, List<String> labels, Map<String, Object> properties);
+    public NodeData(List<String> labels, Map<String, Object> properties);
 
-    String getId();
     List<String> getLabels();
     Map<String, Object> getProperties();
 }
@@ -58,7 +57,7 @@ public class NodeData {
 public class InsertNodesResult {
     boolean isSuccess();
     List<String> getNodeIds();
-    int getNodeCount();
+    long getNodeCount();
     String getMessage();
 }
 ```
@@ -108,11 +107,11 @@ import java.util.*;
 
 public void insertEdgesExample(GqldbClient client) {
     List<EdgeData> edges = Arrays.asList(
-        new EdgeData("e1", "Follows", "user1", "user2",
+        new EdgeData("Follows", "user1", "user2",
             Map.of("since", "2024-01-15")),
-        new EdgeData("e2", "Follows", "user2", "user3",
+        new EdgeData("Follows", "user2", "user3",
             Map.of()),
-        new EdgeData("e3", "Knows", "user1", "user3",
+        new EdgeData("Knows", "user1", "user3",
             Map.of("strength", 0.8))
     );
 
@@ -130,10 +129,9 @@ public void insertEdgesExample(GqldbClient client) {
 
 ```java
 public class EdgeData {
-    public EdgeData(String id, String label, String fromNodeId, String toNodeId,
+    public EdgeData(String label, String fromNodeId, String toNodeId,
                     Map<String, Object> properties);
 
-    String getId();
     String getLabel();
     String getFromNodeId();
     String getToNodeId();
@@ -147,9 +145,9 @@ public class EdgeData {
 public class InsertEdgesResult {
     boolean isSuccess();
     List<String> getEdgeIds();
-    int getEdgeCount();
+    long getEdgeCount();
     String getMessage();
-    int getSkippedCount();  // Edges skipped due to missing nodes
+    long getSkippedCount();  // Edges skipped due to missing nodes
 }
 ```
 
@@ -200,7 +198,7 @@ public void deleteNodesExample(GqldbClient client) {
 ```java
 public class DeleteResult {
     boolean isSuccess();
-    int getDeletedCount();
+    long getDeletedCount();
     String getMessage();
 }
 ```
@@ -265,7 +263,7 @@ import java.util.*;
 public class DataOperationsExample {
     public static void main(String[] args) {
         GqldbConfig config = GqldbConfig.builder()
-            .hosts("192.168.1.100:9000")
+            .hosts("localhost:9000")
             .build();
 
         try (GqldbClient client = new GqldbClient(config)) {
@@ -276,15 +274,15 @@ public class DataOperationsExample {
 
             // Insert users
             List<NodeData> users = Arrays.asList(
-                new NodeData("alice", Arrays.asList("User"),
+                new NodeData(Arrays.asList("User"),
                     Map.of("name", "Alice", "age", 30)),
-                new NodeData("bob", Arrays.asList("User"),
+                new NodeData(Arrays.asList("User"),
                     Map.of("name", "Bob", "age", 25)),
-                new NodeData("charlie", Arrays.asList("User"),
+                new NodeData(Arrays.asList("User"),
                     Map.of("name", "Charlie", "age", 35)),
-                new NodeData("temp1", Arrays.asList("TempUser"),
+                new NodeData(Arrays.asList("TempUser"),
                     Map.of("name", "Temp1")),
-                new NodeData("temp2", Arrays.asList("TempUser"),
+                new NodeData(Arrays.asList("TempUser"),
                     Map.of("name", "Temp2"))
             );
 
@@ -293,9 +291,9 @@ public class DataOperationsExample {
 
             // Insert relationships
             List<EdgeData> relationships = Arrays.asList(
-                new EdgeData("r1", "Follows", "alice", "bob", Map.of()),
-                new EdgeData("r2", "Follows", "bob", "charlie", Map.of()),
-                new EdgeData("r3", "Knows", "alice", "charlie", Map.of("years", 5))
+                new EdgeData("Follows", "alice", "bob", Map.of()),
+                new EdgeData("Follows", "bob", "charlie", Map.of()),
+                new EdgeData("Knows", "alice", "charlie", Map.of("years", 5))
             );
 
             InsertEdgesResult edgeResult = client.insertEdges("dataOpsDemo", relationships);

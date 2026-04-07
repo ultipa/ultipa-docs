@@ -10,6 +10,8 @@ Install the package using npm:
 npm install @ultipa-graph/ultipa-driver
 ```
 
+> Check <a href="https://www.npmjs.com/package/@ultipa-graph/ultipa-driver" target="_blank">npm</a> for the latest version. To install a specific version: `npm install @ultipa-graph/ultipa-driver@6.0.0`
+
 ## Connect to Database
 
 You need a running GQLDB instance to use the driver. Create a client and authenticate:

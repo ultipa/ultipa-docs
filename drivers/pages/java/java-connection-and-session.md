@@ -11,7 +11,7 @@ import com.gqldb.GqldbClient;
 import com.gqldb.GqldbConfig;
 
 GqldbConfig config = GqldbConfig.builder()
-    .hosts("192.168.1.100:9000")
+    .hosts("localhost:9000")
     .defaultGraph("myGraph")
     .build();
 
@@ -32,7 +32,7 @@ import com.gqldb.GqldbConfig;
 import com.gqldb.Session;
 
 GqldbConfig config = GqldbConfig.builder()
-    .hosts("192.168.1.100:9000")
+    .hosts("localhost:9000")
     .build();
 
 try (GqldbClient client = new GqldbClient(config)) {
@@ -206,7 +206,7 @@ public class ConnectionExample {
     public static void main(String[] args) {
         // Create client with configuration
         GqldbConfig config = GqldbConfig.builder()
-            .hosts("192.168.1.100:9000")
+            .hosts("localhost:9000")
             .timeout(30)
             .defaultGraph("myGraph")
             .build();

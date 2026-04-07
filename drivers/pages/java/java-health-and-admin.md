@@ -18,6 +18,9 @@ The GQLDB Java driver provides methods for monitoring server health, managing ca
 | `clearCache()` | Clear specified caches |
 | `getStatistics()` | Get database statistics |
 | `invalidatePermissionCache()` | Invalidate RBAC permission cache |
+| `compact()` | Trigger storage compaction |
+| `getSystemMetrics()` | Get system-level metrics (CPU, memory, disk) |
+| `waitForComputeTopology()` | Wait until the compute topology is ready |
 
 ## Health Checks
 
@@ -239,7 +242,7 @@ import com.gqldb.services.AdminService;
 public class HealthAdminExample {
     public static void main(String[] args) {
         GqldbConfig config = GqldbConfig.builder()
-            .hosts("192.168.1.100:9000")
+            .hosts("localhost:9000")
             .build();
 
         try (GqldbClient client = new GqldbClient(config)) {

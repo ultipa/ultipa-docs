@@ -8,17 +8,19 @@ Add the dependency to your Maven `pom.xml`:
 
 ```xml
 <dependency>
-    <groupId>com.gqldb</groupId>
-    <artifactId>gqldb-java</artifactId>
-    <version>0.1.0</version>
+    <groupId>com.ultipa</groupId>
+    <artifactId>ultipa-gqldb-driver</artifactId>
+    <version>LATEST</version>
 </dependency>
 ```
 
 Or for Gradle, add to `build.gradle`:
 
 ```groovy
-implementation 'com.gqldb:gqldb-java:0.1.0'
+implementation 'com.ultipa:ultipa-gqldb-driver:LATEST'
 ```
+
+> Replace `LATEST` with a specific version (e.g., `6.0.1-s6.0`). Check <a href="https://mvnrepository.com/artifact/com.ultipa/ultipa-gqldb-driver" target="_blank">Maven Central</a> for the latest version.
 
 ## Connect to Database
 
@@ -33,7 +35,7 @@ public class QuickStart {
     public static void main(String[] args) {
         // Create configuration
         GqldbConfig config = GqldbConfig.builder()
-            .hosts("192.168.1.100:9000")
+            .hosts("localhost:9000")
             .defaultGraph("myGraph")
             .build();
 
@@ -62,7 +64,7 @@ import com.gqldb.*;
 public class QueryExample {
     public static void main(String[] args) {
         GqldbConfig config = GqldbConfig.builder()
-            .hosts("192.168.1.100:9000")
+            .hosts("localhost:9000")
             .defaultGraph("myGraph")
             .build();
 
@@ -95,7 +97,7 @@ import com.gqldb.types.GraphType;
 public class CreateGraphExample {
     public static void main(String[] args) {
         GqldbConfig config = GqldbConfig.builder()
-            .hosts("192.168.1.100:9000")
+            .hosts("localhost:9000")
             .build();
 
         try (GqldbClient client = new GqldbClient(config)) {
@@ -123,7 +125,7 @@ import java.util.*;
 public class InsertDataExample {
     public static void main(String[] args) {
         GqldbConfig config = GqldbConfig.builder()
-            .hosts("192.168.1.100:9000")
+            .hosts("localhost:9000")
             .defaultGraph("myGraph")
             .build();
 
@@ -132,9 +134,9 @@ public class InsertDataExample {
 
             // Create node data
             List<NodeData> nodes = Arrays.asList(
-                new NodeData("user1", Arrays.asList("User"),
+                new NodeData(Arrays.asList("User"),
                     Map.of("name", "Alice", "age", 30)),
-                new NodeData("user2", Arrays.asList("User"),
+                new NodeData(Arrays.asList("User"),
                     Map.of("name", "Bob", "age", 25))
             );
 
@@ -144,7 +146,7 @@ public class InsertDataExample {
 
             // Create edge data
             List<EdgeData> edges = Arrays.asList(
-                new EdgeData("e1", "Follows", "user1", "user2", Map.of())
+                new EdgeData("Follows", "user1", "user2", Map.of())
             );
 
             // Insert edges
@@ -165,7 +167,7 @@ import com.gqldb.*;
 public class ProcessResultsExample {
     public static void main(String[] args) {
         GqldbConfig config = GqldbConfig.builder()
-            .hosts("192.168.1.100:9000")
+            .hosts("localhost:9000")
             .defaultGraph("myGraph")
             .build();
 
@@ -175,8 +177,8 @@ public class ProcessResultsExample {
             // Query nodes
             Response response = client.gql("MATCH (u:User) RETURN u LIMIT 5");
 
-            // Extract as Node objects
-            NodeResult nodeResult = response.asNodes();
+            // Extract as Node objects via alias
+            NodeResult nodeResult = response.alias("u").asNodes();
             for (Node node : nodeResult.getNodes()) {
                 System.out.println("Node: " + node.getId() +
                     ", Labels: " + node.getLabels() +
@@ -201,7 +203,7 @@ import com.gqldb.*;
 public class TransactionExample {
     public static void main(String[] args) {
         GqldbConfig config = GqldbConfig.builder()
-            .hosts("192.168.1.100:9000")
+            .hosts("localhost:9000")
             .build();
 
         try (GqldbClient client = new GqldbClient(config)) {

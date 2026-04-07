@@ -151,7 +151,7 @@ public void listActiveTransactions(GqldbClient client) {
 
     System.out.println("Active transactions: " + transactions.size());
     for (TransactionInfo tx : transactions) {
-        System.out.println("- ID: " + tx.getId() +
+        System.out.println("- ID: " + tx.getTransactionId() +
             ", Graph: " + tx.getGraphName() +
             ", ReadOnly: " + tx.isReadOnly());
     }
@@ -170,11 +170,13 @@ List<TransactionInfo> allTransactions = client.listAllTransactions();
 
 ```java
 public class TransactionInfo {
-    long getId();
+    long getTransactionId();
     String getGraphName();
     boolean isReadOnly();
-    long getStartTime();
-    int getTimeout();
+    long getCreatedAt();
+    int getDurationMs();
+    String getSessionId();
+    long getInternalTxId();
 }
 ```
 
@@ -273,7 +275,7 @@ import com.gqldb.*;
 public class TransactionExample {
     public static void main(String[] args) {
         GqldbConfig config = GqldbConfig.builder()
-            .hosts("192.168.1.100:9000")
+            .hosts("localhost:9000")
             .build();
 
         try (GqldbClient client = new GqldbClient(config)) {
