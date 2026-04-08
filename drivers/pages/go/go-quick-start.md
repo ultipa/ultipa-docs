@@ -10,7 +10,7 @@ Install the GQLDB Go driver using `go get`:
 go get github.com/ultipa/ultipa-go-driver/v6
 ```
 
-> Check <a href="https://github.com/ultipa/ultipa-go-driver" target="_blank">GitHub</a> for the latest version. To install a specific version: `go get github.com/ultipa/ultipa-go-driver/v6@v6.0.5`
+> Check <a href="https://github.com/ultipa/ultipa-go-driver" target="_blank">GitHub</a> for the latest version. To install a specific version: `go get github.com/ultipa/ultipa-go-driver/v6@v6.0.6`
 
 ## Basic Usage
 
