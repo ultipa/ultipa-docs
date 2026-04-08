@@ -399,7 +399,7 @@ import {
 
 async function main() {
   const client = new GqldbClient(createConfig({
-    hosts: ['localhost:9000'],
+    hosts: ['localhost:60061'],
     timeout: 30000
   }));
 

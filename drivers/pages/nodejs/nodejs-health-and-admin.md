@@ -281,7 +281,7 @@ import { GqldbClient, createConfig, HealthStatus, CacheType } from '@ultipa-grap
 
 async function main() {
   const client = new GqldbClient(createConfig({
-    hosts: ['localhost:9000']
+    hosts: ['localhost:60061']
   }));
 
   try {

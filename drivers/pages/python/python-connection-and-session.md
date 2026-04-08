@@ -17,7 +17,7 @@ The GQLDB Python driver manages connections through a connection pool and provid
 ```python
 from gqldb import GqldbClient, GqldbConfig
 
-config = GqldbConfig(hosts=["localhost:9000"])
+config = GqldbConfig(hosts=["localhost:60061"])
 
 # Using context manager (recommended)
 with GqldbClient(config) as client:
@@ -43,7 +43,7 @@ Authenticate with the server and create a session:
 ```python
 from gqldb import GqldbClient, GqldbConfig
 
-config = GqldbConfig(hosts=["localhost:9000"])
+config = GqldbConfig(hosts=["localhost:60061"])
 
 with GqldbClient(config) as client:
     # Login returns a Session object
@@ -57,7 +57,7 @@ with GqldbClient(config) as client:
 
 ```python
 config = GqldbConfig(
-    hosts=["localhost:9000"],
+    hosts=["localhost:60061"],
     default_graph="myGraph"
 )
 
@@ -138,7 +138,7 @@ The driver maintains a connection pool for efficient resource usage:
 
 ```python
 config = GqldbConfig(
-    hosts=["localhost:9000"],
+    hosts=["localhost:60061"],
     pool_size=20,  # Connections per host
     health_check_interval=30.0  # Health check every 30 seconds
 )
@@ -159,7 +159,7 @@ from gqldb.errors import (
     AllHostsFailedError
 )
 
-config = GqldbConfig(hosts=["localhost:9000"])
+config = GqldbConfig(hosts=["localhost:60061"])
 
 try:
     with GqldbClient(config) as client:
@@ -218,7 +218,7 @@ from gqldb.errors import GqldbError, LoginFailedError
 
 def main():
     config = GqldbConfig(
-        hosts=["localhost:9000", "192.168.1.101:9000"],
+        hosts=["localhost:60061", "192.168.1.101:9000"],
         timeout=30,
         pool_size=10,
         retry_count=3

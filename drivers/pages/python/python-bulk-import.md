@@ -17,7 +17,7 @@ The GQLDB Python driver provides bulk import functionality for high-throughput d
 from gqldb import GqldbClient, GqldbConfig
 from gqldb.types import NodeData, EdgeData
 
-config = GqldbConfig(hosts=["localhost:9000"])
+config = GqldbConfig(hosts=["localhost:60061"])
 
 with GqldbClient(config) as client:
     client.login("admin", "password")
@@ -246,7 +246,7 @@ def generate_test_data(num_nodes, num_edges):
 
 def main():
     config = GqldbConfig(
-        hosts=["localhost:9000"],
+        hosts=["localhost:60061"],
         timeout=300  # 5 minute timeout for bulk operations
     )
 

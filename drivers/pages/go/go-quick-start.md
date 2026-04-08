@@ -10,7 +10,7 @@ Install the GQLDB Go driver using `go get`:
 go get github.com/ultipa/ultipa-go-driver/v6
 ```
 
-> Check <a href="https://github.com/ultipa/ultipa-go-driver" target="_blank">GitHub</a> for the latest version. To install a specific version: `go get github.com/ultipa/ultipa-go-driver/v6@v6.0.4`
+> Check <a href="https://github.com/ultipa/ultipa-go-driver" target="_blank">GitHub</a> for the latest version. To install a specific version: `go get github.com/ultipa/ultipa-go-driver/v6@v6.0.5`
 
 ## Basic Usage
 
@@ -29,7 +29,7 @@ import (
 func main() {
     // Create configuration
     config := &gqldb.Config{
-        Hosts:   []string{"localhost:9000"},
+        Hosts:   []string{"localhost:60061"},
         Timeout: 30 * time.Second,
     }
 
@@ -121,7 +121,7 @@ func main() {
     }
 
     config := &gqldb.Config{
-        Hosts:     []string{"localhost:9000"},
+        Hosts:     []string{"localhost:60061"},
         TLSConfig: tlsConfig,
     }
 
@@ -148,7 +148,7 @@ import (
 
 func main() {
     config := gqldb.NewConfigBuilder().
-        Hosts("localhost:9000", "192.168.1.101:9000").
+        Hosts("localhost:60061", "192.168.1.101:9000").
         Timeout(60 * time.Second).
         DefaultGraph("myGraph").
         PoolSize(20).
@@ -181,7 +181,7 @@ import (
 
 func main() {
     config := gqldb.NewConfigBuilder().
-        Hosts("localhost:9000").
+        Hosts("localhost:60061").
         Timeout(30 * time.Second).
         DefaultGraph("socialNetwork").
         Build()
@@ -252,7 +252,7 @@ func main() {
 
     // Find paths
     pathResp, err := client.Gql(ctx, `
-        MATCH p = (a:User)-[:Follows*1..2]->(b:User)
+        MATCH p = (a:User)-[:Follows]->{1,2}(b:User)
         WHERE a._id = "u1"
         RETURN p
         LIMIT 5

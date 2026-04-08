@@ -10,7 +10,7 @@ Install the package using npm:
 npm install @ultipa-graph/ultipa-driver
 ```
 
-> Check <a href="https://www.npmjs.com/package/@ultipa-graph/ultipa-driver" target="_blank">npm</a> for the latest version. To install a specific version: `npm install @ultipa-graph/ultipa-driver@6.0.4`
+> Check <a href="https://www.npmjs.com/package/@ultipa-graph/ultipa-driver" target="_blank">npm</a> for the latest version. To install a specific version: `npm install @ultipa-graph/ultipa-driver@6.0.5`
 
 ## Connect to Database
 
@@ -22,7 +22,7 @@ import { GqldbClient, createConfig } from '@ultipa-graph/ultipa-driver';
 async function main() {
   // Create configuration
   const config = createConfig({
-    hosts: ['localhost:9000'],
+    hosts: ['localhost:60061'],
     defaultGraph: 'myGraph'
   });
 
@@ -56,7 +56,7 @@ import { GqldbClient, createConfig } from '@ultipa-graph/ultipa-driver';
 
 async function main() {
   const config = createConfig({
-    hosts: ['localhost:9000'],
+    hosts: ['localhost:60061'],
     defaultGraph: 'myGraph'
   });
 
@@ -93,7 +93,7 @@ import { GqldbClient, createConfig, GraphType } from '@ultipa-graph/ultipa-drive
 
 async function main() {
   const config = createConfig({
-    hosts: ['localhost:9000']
+    hosts: ['localhost:60061']
   });
 
   const client = new GqldbClient(config);
@@ -125,7 +125,7 @@ import { GqldbClient, createConfig } from '@ultipa-graph/ultipa-driver';
 
 async function main() {
   const config = createConfig({
-    hosts: ['localhost:9000'],
+    hosts: ['localhost:60061'],
     defaultGraph: 'myGraph'
   });
 
@@ -164,7 +164,7 @@ import { GqldbClient, createConfig } from '@ultipa-graph/ultipa-driver';
 
 async function main() {
   const config = createConfig({
-    hosts: ['localhost:9000'],
+    hosts: ['localhost:60061'],
     defaultGraph: 'myGraph'
   });
 
@@ -177,7 +177,7 @@ async function main() {
     const response = await client.gql('MATCH (u:User) RETURN u LIMIT 5');
 
     // Extract as Node objects
-    const { nodes, schemas } = response.asNodes();
+    const { nodes, schemas } = response.alias('u').asNodes();
     for (const node of nodes) {
       console.log(`Node: ${node.id}, Labels: ${node.labels}, Properties:`, node.properties);
     }
@@ -203,7 +203,7 @@ import { GqldbClient, createConfig } from '@ultipa-graph/ultipa-driver';
 
 async function main() {
   const config = createConfig({
-    hosts: ['localhost:9000']
+    hosts: ['localhost:60061']
   });
 
   const client = new GqldbClient(config);

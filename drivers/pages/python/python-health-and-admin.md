@@ -32,7 +32,7 @@ Check the current health status of the server:
 from gqldb import GqldbClient, GqldbConfig
 from gqldb.types import HealthStatus
 
-config = GqldbConfig(hosts=["localhost:9000"])
+config = GqldbConfig(hosts=["localhost:60061"])
 
 with GqldbClient(config) as client:
     client.login("admin", "password")
@@ -249,7 +249,7 @@ import time
 
 def main():
     config = GqldbConfig(
-        hosts=["localhost:9000"],
+        hosts=["localhost:60061"],
         timeout=30
     )
 

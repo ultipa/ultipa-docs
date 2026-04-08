@@ -265,7 +265,7 @@ public class EdgeResult {
 Extract paths from the response via an alias:
 
 ```java
-Response response = client.gql("MATCH p = (a)-[*1..3]->(b) RETURN p LIMIT 10");
+Response response = client.gql("MATCH p = (a)->{1,3}(b) RETURN p LIMIT 10");
 List<Path> paths = response.alias("p").asPaths();
 
 for (Path path : paths) {
@@ -364,7 +364,7 @@ import java.util.*;
 public class ResponseProcessingExample {
     public static void main(String[] args) {
         GqldbConfig config = GqldbConfig.builder()
-            .hosts("localhost:9000")
+            .hosts("localhost:60061")
             .defaultGraph("socialNetwork")
             .build();
 
@@ -390,7 +390,7 @@ public class ResponseProcessingExample {
             // Query paths
             System.out.println("\n=== Query Paths ===");
             Response pathResponse = client.gql(
-                "MATCH p = (a:User)-[:Follows*1..2]->(b:User) RETURN p LIMIT 3"
+                "MATCH p = (a:User)-[:Follows]->{1,2}(b:User) RETURN p LIMIT 3"
             );
             List<Path> paths = pathResponse.alias("p").asPaths();
             for (Path path : paths) {

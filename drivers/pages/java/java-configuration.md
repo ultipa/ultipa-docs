@@ -8,7 +8,7 @@ The `GqldbConfig` class supports the following options:
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `hosts` | `List<String>` | `["localhost:9000"]` | Server hosts in `host:port` format |
+| `hosts` | `List<String>` | `["localhost:60061"]` | Server hosts in `host:port` format |
 | `username` | `String` | `null` | Username for authentication |
 | `password` | `String` | `null` | Password for authentication |
 | `defaultGraph` | `String` | `null` | Default graph to use for queries |
@@ -31,7 +31,7 @@ import java.time.Duration;
 
 // Minimal configuration
 GqldbConfig config = GqldbConfig.builder()
-    .hosts("localhost:9000")
+    .hosts("localhost:60061")
     .build();
 
 // Full configuration
@@ -114,7 +114,7 @@ import com.gqldb.GqldbClient;
 import java.util.Arrays;
 
 String hostsEnv = System.getenv("GQLDB_HOSTS");
-String[] hosts = hostsEnv != null ? hostsEnv.split(",") : new String[]{"localhost:9000"};
+String[] hosts = hostsEnv != null ? hostsEnv.split(",") : new String[]{"localhost:60061"};
 
 GqldbConfig config = GqldbConfig.builder()
     .hosts(hosts)

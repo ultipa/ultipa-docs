@@ -22,7 +22,7 @@ Create a new graph:
 from gqldb import GqldbClient, GqldbConfig
 from gqldb.types import GraphType
 
-config = GqldbConfig(hosts=["localhost:9000"])
+config = GqldbConfig(hosts=["localhost:60061"])
 
 with GqldbClient(config) as client:
     client.login("admin", "password")
@@ -194,7 +194,7 @@ client.use_graph("myGraph")
 from gqldb import GqldbClient, GqldbConfig
 from gqldb.client import QueryConfig
 
-config = GqldbConfig(hosts=["localhost:9000"])
+config = GqldbConfig(hosts=["localhost:60061"])
 
 with GqldbClient(config) as client:
     client.login("admin", "password")
@@ -228,7 +228,7 @@ from gqldb.errors import GqldbError, GraphNotFoundError, GraphExistsError
 
 def main():
     config = GqldbConfig(
-        hosts=["localhost:9000"],
+        hosts=["localhost:60061"],
         timeout=30
     )
 

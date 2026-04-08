@@ -22,7 +22,7 @@ import (
 )
 
 config := &gqldb.Config{
-    Hosts: []string{"localhost:9000"},
+    Hosts: []string{"localhost:60061"},
 }
 
 client, err := gqldb.NewClient(config)
@@ -63,7 +63,7 @@ fmt.Printf("Logged in: %v\n", client.IsLoggedIn())
 
 ```go
 config := &gqldb.Config{
-    Hosts:        []string{"localhost:9000"},
+    Hosts:        []string{"localhost:60061"},
     DefaultGraph: "myGraph",
 }
 
@@ -278,7 +278,7 @@ import (
 
 func main() {
     config := gqldb.NewConfigBuilder().
-        Hosts("localhost:9000", "192.168.1.101:9000").
+        Hosts("localhost:60061", "192.168.1.101:9000").
         Timeout(30 * time.Second).
         PoolSize(10).
         RetryCount(3).

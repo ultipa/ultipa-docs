@@ -9,7 +9,7 @@ The `gql()` method returns a `Response` object containing query results:
 ```python
 from gqldb import GqldbClient, GqldbConfig
 
-config = GqldbConfig(hosts=["localhost:9000"])
+config = GqldbConfig(hosts=["localhost:60061"])
 
 with GqldbClient(config) as client:
     client.login("admin", "password")
@@ -275,7 +275,7 @@ Extract paths from a specific column of the response using `alias()` or `get()`:
 ```python
 from gqldb import Path
 
-response = client.gql("MATCH p = (a)-[*1..3]->(b) RETURN p LIMIT 10")
+response = client.gql("MATCH p = (a)->{1,3}(b) RETURN p LIMIT 10")
 paths = response.alias("p").as_paths()
 
 for path in paths:
@@ -366,7 +366,7 @@ from gqldb.errors import GqldbError
 
 def main():
     config = GqldbConfig(
-        hosts=["localhost:9000"],
+        hosts=["localhost:60061"],
         default_graph="socialNetwork"
     )
 
@@ -403,7 +403,7 @@ def main():
         # Query paths
         print("\n=== Query Paths ===")
         path_response = client.gql(
-            "MATCH p = (a:User)-[:Follows*1..2]->(b:User) RETURN p LIMIT 3"
+            "MATCH p = (a:User)-[:Follows]->{1,2}(b:User) RETURN p LIMIT 3"
         )
         paths = path_response.alias("p").as_paths()
         for path in paths:

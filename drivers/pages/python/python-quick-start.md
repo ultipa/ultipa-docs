@@ -10,7 +10,7 @@ Install the GQLDB Python driver using pip:
 pip install ultipa
 ```
 
-> Check <a href="https://pypi.org/project/ultipa/" target="_blank">PyPI</a> for the latest version. To install a specific version: `pip install ultipa==6.0.4`
+> Check <a href="https://pypi.org/project/ultipa/" target="_blank">PyPI</a> for the latest version. To install a specific version: `pip install ultipa==6.0.5`
 
 For development with additional tools:
 
@@ -25,7 +25,7 @@ from gqldb import GqldbClient, GqldbConfig
 
 # Create configuration
 config = GqldbConfig(
-    hosts=["localhost:9000"],
+    hosts=["localhost:60061"],
     timeout=30
 )
 
@@ -72,7 +72,7 @@ ssl_ctx = create_ssl_context(
 )
 
 config = GqldbConfig(
-    hosts=["localhost:9000"],
+    hosts=["localhost:60061"],
     ssl_context=ssl_ctx
 )
 
@@ -87,7 +87,7 @@ with GqldbClient(config) as client:
 from gqldb.config import ConfigBuilder
 
 config = (ConfigBuilder()
-    .hosts("localhost:9000", "192.168.1.101:9000")
+    .hosts("localhost:60061", "192.168.1.101:9000")
     .timeout(60)
     .default_graph("myGraph")
     .pool_size(20)
@@ -107,7 +107,7 @@ from gqldb.errors import GqldbError, GraphNotFoundError
 
 def main():
     config = GqldbConfig(
-        hosts=["localhost:9000"],
+        hosts=["localhost:60061"],
         timeout=30,
         default_graph="socialNetwork"
     )
@@ -150,7 +150,7 @@ def main():
 
             # Find paths
             path_response = client.gql("""
-                MATCH p = (a:User)-[:Follows*1..2]->(b:User)
+                MATCH p = (a:User)-[:Follows]->{1,2}(b:User)
                 WHERE a._id = "u1"
                 RETURN p
                 LIMIT 5

@@ -275,7 +275,7 @@ import com.gqldb.*;
 public class TransactionExample {
     public static void main(String[] args) {
         GqldbConfig config = GqldbConfig.builder()
-            .hosts("localhost:9000")
+            .hosts("localhost:60061")
             .build();
 
         try (GqldbClient client = new GqldbClient(config)) {

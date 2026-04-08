@@ -1,6 +1,6 @@
 # Quick Start
 
-The GQLDB Java driver is a gRPC-based client library for interacting with GQLDB graph database. It requires **Java 11 or later**.
+The GQLDB Java driver is a gRPC-based client library for interacting with GQLDB graph database. It requires **Java 8 or later**.
 
 ## Install the Driver
 
@@ -10,17 +10,17 @@ Add the dependency to your Maven `pom.xml`:
 <dependency>
     <groupId>com.ultipa</groupId>
     <artifactId>ultipa-gqldb-driver</artifactId>
-    <version>6.0.4</version>
+    <version>6.0.5</version>
 </dependency>
 ```
 
 Or for Gradle, add to `build.gradle`:
 
 ```groovy
-implementation 'com.ultipa:ultipa-gqldb-driver:6.0.4'
+implementation 'com.ultipa:ultipa-gqldb-driver:6.0.5'
 ```
 
-> Replace `6.0.4` with a specific version. Check <a href="https://mvnrepository.com/artifact/com.ultipa/ultipa-gqldb-driver" target="_blank">Maven Central</a> for the latest version.
+> Replace `6.0.5` with a specific version. Check <a href="https://mvnrepository.com/artifact/com.ultipa/ultipa-gqldb-driver" target="_blank">Maven Central</a> for the latest version.
 
 ## Connect to Database
 
@@ -35,7 +35,7 @@ public class QuickStart {
     public static void main(String[] args) {
         // Create configuration
         GqldbConfig config = GqldbConfig.builder()
-            .hosts("localhost:9000")
+            .hosts("localhost:60061")
             .defaultGraph("myGraph")
             .build();
 
@@ -64,7 +64,7 @@ import com.gqldb.*;
 public class QueryExample {
     public static void main(String[] args) {
         GqldbConfig config = GqldbConfig.builder()
-            .hosts("localhost:9000")
+            .hosts("localhost:60061")
             .defaultGraph("myGraph")
             .build();
 
@@ -97,7 +97,7 @@ import com.gqldb.types.GraphType;
 public class CreateGraphExample {
     public static void main(String[] args) {
         GqldbConfig config = GqldbConfig.builder()
-            .hosts("localhost:9000")
+            .hosts("localhost:60061")
             .build();
 
         try (GqldbClient client = new GqldbClient(config)) {
@@ -125,7 +125,7 @@ import java.util.*;
 public class InsertDataExample {
     public static void main(String[] args) {
         GqldbConfig config = GqldbConfig.builder()
-            .hosts("localhost:9000")
+            .hosts("localhost:60061")
             .defaultGraph("myGraph")
             .build();
 
@@ -167,7 +167,7 @@ import com.gqldb.*;
 public class ProcessResultsExample {
     public static void main(String[] args) {
         GqldbConfig config = GqldbConfig.builder()
-            .hosts("localhost:9000")
+            .hosts("localhost:60061")
             .defaultGraph("myGraph")
             .build();
 
@@ -203,7 +203,7 @@ import com.gqldb.*;
 public class TransactionExample {
     public static void main(String[] args) {
         GqldbConfig config = GqldbConfig.builder()
-            .hosts("localhost:9000")
+            .hosts("localhost:60061")
             .build();
 
         try (GqldbClient client = new GqldbClient(config)) {

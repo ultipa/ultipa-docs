@@ -307,7 +307,7 @@ from gqldb.errors import (
 
 def main():
     config = GqldbConfig(
-        hosts=["localhost:9000"],
+        hosts=["localhost:60061"],
         timeout=30
     )
 

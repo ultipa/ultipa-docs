@@ -274,7 +274,7 @@ func generateTestData(numNodes, numEdges int) ([]*gqldb.NodeData, []*gqldb.EdgeD
 
 func main() {
     config := gqldb.NewConfigBuilder().
-        Hosts("localhost:9000").
+        Hosts("localhost:60061").
         Timeout(5 * time.Minute).
         Build()
 

@@ -160,7 +160,7 @@ fmt.Println(plan)
 ```go
 config := &gqldb.QueryConfig{GraphName: "myGraph"}
 plan, err := client.Explain(ctx,
-    "MATCH (n:Person)-[:Knows*1..3]->(m:Person) RETURN m",
+    "MATCH (n:Person)-[:Knows]->{1,3}(m:Person) RETURN m",
     config,
 )
 fmt.Println(plan)
@@ -191,7 +191,7 @@ config := &gqldb.QueryConfig{
 }
 
 stats, err := client.Profile(ctx,
-    "MATCH (a:User)-[:Follows*1..3]->(b:User) RETURN DISTINCT b LIMIT 1000",
+    "MATCH (a:User)-[:Follows]->{1,3}(b:User) RETURN DISTINCT b LIMIT 1000",
     config,
 )
 fmt.Println(stats)
@@ -303,7 +303,7 @@ import (
 
 func main() {
     config := gqldb.NewConfigBuilder().
-        Hosts("localhost:9000").
+        Hosts("localhost:60061").
         Timeout(30 * time.Second).
         Build()
 
@@ -366,7 +366,7 @@ func main() {
     // Path query
     fmt.Println("\n=== Path Query ===")
     response, _ = client.Gql(ctx, `
-        MATCH p = (a:Person)-[:Knows*1..2]->(b:Person)
+        MATCH p = (a:Person)-[:Knows]->{1,2}(b:Person)
         WHERE a.name = 'Alice'
         RETURN p
     `, nil)

@@ -20,7 +20,7 @@ Execute a GQL query and return the results:
 ```python
 from gqldb import GqldbClient, GqldbConfig
 
-config = GqldbConfig(hosts=["localhost:9000"])
+config = GqldbConfig(hosts=["localhost:60061"])
 
 with GqldbClient(config) as client:
     client.login("admin", "password")
@@ -153,7 +153,7 @@ from gqldb.client import QueryConfig
 
 config = QueryConfig(graph_name="myGraph")
 plan = client.explain(
-    "MATCH (n:Person)-[:Knows*1..3]->(m:Person) RETURN m",
+    "MATCH (n:Person)-[:Knows]->{1,3}(m:Person) RETURN m",
     config
 )
 print(plan)
@@ -182,7 +182,7 @@ config = QueryConfig(
 )
 
 stats = client.profile(
-    "MATCH (a:User)-[:Follows*1..3]->(b:User) RETURN DISTINCT b LIMIT 1000",
+    "MATCH (a:User)-[:Follows]->{1,3}(b:User) RETURN DISTINCT b LIMIT 1000",
     config
 )
 print(stats)
@@ -271,7 +271,7 @@ from gqldb.errors import GqldbError
 
 def main():
     config = GqldbConfig(
-        hosts=["localhost:9000"],
+        hosts=["localhost:60061"],
         timeout=30
     )
 
@@ -317,7 +317,7 @@ def main():
         # Path query
         print("\n=== Path Query ===")
         response = client.gql("""
-            MATCH p = (a:Person)-[:Knows*1..2]->(b:Person)
+            MATCH p = (a:Person)-[:Knows]->{1,2}(b:Person)
             WHERE a.name = 'Alice'
             RETURN p
         """)

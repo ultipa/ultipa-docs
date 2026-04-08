@@ -147,6 +147,10 @@ public enum CacheType {
 // Data for inserting nodes
 public class NodeData {
     public NodeData(List<String> labels, Map<String, Object> properties);
+    static NodeData create(String label);
+    static NodeData create(String label, Map<String, Object> properties);
+    static NodeData create(List<String> labels, Map<String, Object> properties);
+    NodeData withProperty(String key, Object value);
     List<String> getLabels();
     Map<String, Object> getProperties();
 }
@@ -340,7 +344,7 @@ import java.util.*;
 public class DataTypesExample {
     public static void main(String[] args) {
         GqldbConfig config = GqldbConfig.builder()
-            .hosts("localhost:9000")
+            .hosts("localhost:60061")
             .build();
 
         try (GqldbClient client = new GqldbClient(config)) {

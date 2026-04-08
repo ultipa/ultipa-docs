@@ -208,17 +208,15 @@ for (const edge of edgeResult.edges) {
 
 ## Extracting Graph Elements (Deprecated)
 
-> The following methods on `Response` are deprecated. Use `response.alias(name)` or `response.get(index)` instead.
-
 ### asNodes()
 
-Extract nodes from the response:
+Extract nodes from the response via an alias:
 
 ```typescript
 import { Node, NodeResult, Schema } from '@ultipa-graph/ultipa-driver';
 
 const response = await client.gql('MATCH (u:User) RETURN u');
-const result: NodeResult = response.asNodes();
+const result: NodeResult = response.alias('u').asNodes();
 
 // Access nodes
 for (const node of result.nodes) {
@@ -256,7 +254,7 @@ Extract edges from the response:
 import { Edge, EdgeResult } from '@ultipa-graph/ultipa-driver';
 
 const response = await client.gql('MATCH ()-[e:Follows]->() RETURN e');
-const result: EdgeResult = response.asEdges();
+const result: EdgeResult = response.alias('e').asEdges();
 
 for (const edge of result.edges) {
   console.log('ID:', edge.id);
@@ -291,8 +289,8 @@ Extract paths from the response:
 ```typescript
 import { Path } from '@ultipa-graph/ultipa-driver';
 
-const response = await client.gql('MATCH p = (a)-[*1..3]->(b) RETURN p LIMIT 10');
-const paths: Path[] = response.asPaths();
+const response = await client.gql('MATCH p = (a)->{1,3}(b) RETURN p LIMIT 10');
+const paths: Path[] = response.alias('p').asPaths();
 
 for (const path of paths) {
   console.log('Path nodes:', path.nodes.length);
@@ -387,7 +385,7 @@ import { GqldbClient, createConfig } from '@ultipa-graph/ultipa-driver';
 
 async function main() {
   const client = new GqldbClient(createConfig({
-    hosts: ['localhost:9000'],
+    hosts: ['localhost:60061'],
     defaultGraph: 'socialNetwork'
   }));
 
@@ -413,7 +411,7 @@ async function main() {
     // Query paths
     console.log('\n=== Query Paths ===');
     const pathResponse = await client.gql(
-      'MATCH p = (a:User)-[:Follows*1..2]->(b:User) RETURN p LIMIT 3'
+      'MATCH p = (a:User)-[:Follows]->{1,2}(b:User) RETURN p LIMIT 3'
     );
     const paths = pathResponse.asPaths();
     for (const path of paths) {

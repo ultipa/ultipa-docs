@@ -408,7 +408,7 @@ import { GqldbClient, createConfig, PropertyType } from '@ultipa-graph/ultipa-dr
 
 async function main() {
   const client = new GqldbClient(createConfig({
-    hosts: ['localhost:9000']
+    hosts: ['localhost:60061']
   }));
 
   try {

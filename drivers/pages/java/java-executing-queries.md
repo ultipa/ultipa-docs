@@ -85,7 +85,7 @@ QueryConfig config = new QueryConfig();
 config.setTimeout(300);  // seconds
 
 Response response = client.gql(
-    "MATCH p = (a)-[*1..10]->(b) RETURN p",
+    "MATCH p = (a)->{1,10}(b) RETURN p",
     config
 );
 ```
@@ -285,7 +285,7 @@ import java.util.Map;
 public class QueryExample {
     public static void main(String[] args) {
         GqldbConfig config = GqldbConfig.builder()
-            .hosts("localhost:9000")
+            .hosts("localhost:60061")
             .defaultGraph("socialNetwork")
             .build();
 

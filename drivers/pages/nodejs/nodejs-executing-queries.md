@@ -83,7 +83,7 @@ Set a custom timeout for long-running queries:
 ```typescript
 // 5 minute timeout
 const response = await client.gql(
-  'MATCH p = (a)-[*1..10]->(b) RETURN p',
+  'MATCH p = (a)->{1,10}(b) RETURN p',
   { timeout: 300000 }
 );
 ```
@@ -295,7 +295,7 @@ import { GqldbClient, createConfig } from '@ultipa-graph/ultipa-driver';
 
 async function main() {
   const client = new GqldbClient(createConfig({
-    hosts: ['localhost:9000'],
+    hosts: ['localhost:60061'],
     defaultGraph: 'socialNetwork'
   }));
 

@@ -19,7 +19,7 @@ The GQLDB Python driver supports ACID transactions for ensuring data consistency
 ```python
 from gqldb import GqldbClient, GqldbConfig
 
-config = GqldbConfig(hosts=["localhost:9000"])
+config = GqldbConfig(hosts=["localhost:60061"])
 
 with GqldbClient(config) as client:
     client.login("admin", "password")
@@ -264,7 +264,7 @@ from gqldb.errors import GqldbError, TransactionFailedError
 
 def main():
     config = GqldbConfig(
-        hosts=["localhost:9000"],
+        hosts=["localhost:60061"],
         timeout=30
     )
 

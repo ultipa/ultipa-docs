@@ -309,7 +309,7 @@ type Edge struct {
 Extract paths from the response:
 
 ```go
-response, _ := client.Gql(ctx, "MATCH p = (a)-[*1..3]->(b) RETURN p LIMIT 10", nil)
+response, _ := client.Gql(ctx, "MATCH p = (a)->{1,3}(b) RETURN p LIMIT 10", nil)
 
 alias, err := response.Alias("p")
 if err != nil {
@@ -435,7 +435,7 @@ import (
 
 func main() {
     config := gqldb.NewConfigBuilder().
-        Hosts("localhost:9000").
+        Hosts("localhost:60061").
         DefaultGraph("socialNetwork").
         Timeout(30 * time.Second).
         Build()
@@ -482,7 +482,7 @@ func main() {
     // Query paths
     fmt.Println("\n=== Query Paths ===")
     pathResponse, _ := client.Gql(ctx,
-        "MATCH p = (a:User)-[:Follows*1..2]->(b:User) RETURN p LIMIT 3",
+        "MATCH p = (a:User)-[:Follows]->{1,2}(b:User) RETURN p LIMIT 3",
         nil,
     )
     pAlias, _ := pathResponse.Alias("p")
