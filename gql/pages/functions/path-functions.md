@@ -2,9 +2,15 @@
 
 ## Example Graph
 
-The following examples run against this graph:
+<div align=center drawio-diagram='17191' drawio-name="draw_5fb3914b116b4a06ac12fbf6c9d30f68.jpg"><img src="https://img.ultipa.cn/draw/draw_5fb3914b116b4a06ac12fbf6c9d30f68.jpg?v='1733369467835'"/></div>
 
-<div align=center drawio-diagram='17198' drawio-name="draw_e4339232f5454cf2ac26f62c1bc9a53a.jpg"><img src="https://img.ultipa.cn/draw/draw_e4339232f5454cf2ac26f62c1bc9a53a.jpg?v='1733306685458'"/></div>
+```gql
+INSERT (p1:Paper {_id:'P1', title:'Efficient Graph Search', score:6, author:'Alex'}),
+       (p2:Paper {_id:'P2', title:'Optimizing Queries', score:9, author:'Alex'}),
+       (p3:Paper {_id:'P3', title:'Path Patterns', score:7, author:'Zack'}),
+       (p1)-[:Cites {weight:2}]->(p2),
+       (p2)-[:Cites {weight:1}]->(p3)
+```
 
 ## path_length()
 
@@ -42,20 +48,20 @@ Returns the number of edges in a path.
 
 ```gql
 MATCH p = ()->{1,3}()
-RETURN p, PATH_LENGTH(p) AS length
+RETURN p, path_length(p) AS length
 ```
 
 Result:
 
-| p | <div table-width="10">length</div> |
+| p | length |
 | -- | -- |
 | <div align=center drawio-diagram='19668' drawio-name="draw_fefc93ef1d1245a39919bf2133d3cbd4.jpg"><img src="https://img.ultipa.cn/draw/draw_fefc93ef1d1245a39919bf2133d3cbd4.jpg?v='1733307011924'"/></div> | 2 |
 | <div align=center drawio-diagram='19669' drawio-name="draw_24c0ac6993314eb99bac44e1e644c3e0.jpg"><img src="https://img.ultipa.cn/draw/draw_24c0ac6993314eb99bac44e1e644c3e0.jpg?v='1733306886856'"/></div> | 1 |
 | <div align=center drawio-diagram='19670' drawio-name="draw_164ef437545f46259711092a3ec32443.jpg"><img src="https://img.ultipa.cn/draw/draw_164ef437545f46259711092a3ec32443.jpg?v='1733306931330'"/></div> | 1 |
 
-## pedges()
+## elements()
 
-Collects edges in a path into a list.
+Returns a list containing the nodes and edges that make up a path, interleaved in order.
 
 <table style="width: 100%;">
   <colgroup>
@@ -67,7 +73,7 @@ Collects edges in a path into a list.
   <tbody>
     <tr>
       <td><b>Syntax</b></td>
-      <td colspan="3"><code>pedges(&lt;pathVar&gt;)</code></td>
+      <td colspan="3"><code>elements(&lt;pathVar&gt;)</code></td>
     </tr>
     <tr>
       <td rowspan="2"><b>Arguments</b></td>
@@ -88,66 +94,27 @@ Collects edges in a path into a list.
 </table>
 
 ```gql
-MATCH p = ({_id: "P1"})-[]->{1,2}()
-RETURN pedges(p)
+MATCH p = ()->()
+LET items = elements(p)
+FOR item IN items WITH ORDINALITY index
+FILTER index %2 = 1
+RETURN item
 ```
 
 Result:
 
-| pedges(p) |
-| -- |
-| [{"from":"P1","to":"P2","uuid":"1","from_uuid":"8791028671650463745","to_uuid":"8718971077612535810","schema":"Cites","values":{"weight":2}}] |
-| [{"from":"P1","to":"P2","uuid":"1","from_uuid":"8791028671650463745","to_uuid":"8718971077612535810","schema":"Cites","values":{"weight":2}},{"from":"P2","to":"P3","uuid":"2","from_uuid":"8718971077612535810","to_uuid":"12033620403357220867","schema":"Cites","values":{"weight":1}}] |
-
-## pedgeUuids()
-
-Collects the `_uuid` values of edges in a path into a list.
-
-<table style="width: 100%;">
-  <colgroup>
-    <col style="width:20%;">
-    <col>
-    <col>
-    <col style="width:40%;">
-  </colgroup>
-  <tbody>
-    <tr>
-      <td><b>Syntax</b></td>
-      <td colspan="3"><code>pedgeUuids(&lt;pathAlias&gt;)</code></td>
-    </tr>
-    <tr>
-      <td rowspan="2"><b>Arguments</b></td>
-      <td><b>Name</b></td>
-      <td><b>Type</b></td>
-      <td><b>Description</b></td>
-    </tr>
-    <tr>
-      <td><code>&lt;pathAlias&gt;</code></td>
-      <td><code>PATH</code></td>
-      <td>Path alias reference</td>
-    </tr>
-    <tr>
-      <td><b>Return Type</b></td>
-      <td colspan="3"><code>LIST</code></td>
-    </tr>
-  </tbody>
-</table>
-
-```gql
-MATCH p = ({_id: "P1"})-[]->{1,2}()
-RETURN pedgeUuids(p)
+```json
+[
+  {"id": "P2", "labels": ["Paper"], "properties": {"title": "Optimizing Queries", "author": "Alex", "score": 9}},
+  {"id": "P3", "labels": ["Paper"], "properties": {"title": "Path Patterns", "author": "Zack", "score": 7}},
+  {"id": "P1", "labels": ["Paper"], "properties": {"title": "Efficient Graph Search", "author": "Alex", "score": 6}},
+  {"id": "P2", "labels": ["Paper"], "properties": {"title": "Optimizing Queries", "author": "Alex", "score": 9}}
+]
 ```
-
-Result:
-
-| pedgeUuids(p) |
-| -- |
-| ["1"] |
-| ["1","2"] |
 
 ## pnodes()
 
-Collects nodes in a path into a list.
+Returns the nodes of a path as a list. `nodes()` is a synonym.
 
 <table style="width: 100%;">
   <colgroup>
@@ -180,16 +147,79 @@ Collects nodes in a path into a list.
 </table>
 
 ```gql
-MATCH p = ({_id: "P1"})-[]->{1,2}()
+MATCH p = ({_id: "P1"})->()
 RETURN pnodes(p)
 ```
 
 Result:
 
-| pnodes(p) |
-| -- |
-| [{"id":"P1","uuid":"8791028671650463745","schema":"Paper","values":{"author":"Alex","title":"Efficient Graph Search","score":6}},{"id":"P2","uuid":"8718971077612535810","schema":"Paper","values":{"author":"Alex","title":"Optimizing Queries","score":9}}] |
-| [{"id":"P1","uuid":"8791028671650463745","schema":"Paper","values":{"author":"Alex","title":"Efficient Graph Search","score":6}},{"id":"P2","uuid":"8718971077612535810","schema":"Paper","values":{"author":"Alex","title":"Optimizing Queries","score":9}},{"id":"P3","uuid":"12033620403357220867","schema":"Paper","values":{"author":"Zack","title":"Path Patterns","score":7}}] |
+```json
+[
+  {
+    "id": "P1",
+    "labels": ["Paper"],
+    "properties": {"score": 6, "author": "Alex", "title": "Efficient Graph Search"}
+  },
+  {
+    "id": "P2",
+    "labels": ["Paper"],
+    "properties": {"title": "Optimizing Queries", "score": 9, "author": "Alex"}
+  }
+]
+```
+
+## pedges()
+
+Returns the edges of a path as a list. `relationships()` is a synonym.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col>
+    <col>
+    <col style="width:40%;">
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>pedges(&lt;pathVar&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;pathVar&gt;</code></td>
+      <td><code>PATH</code></td>
+      <td>Path variable reference</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>LIST</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+MATCH p = ({_id: "P1"})->()
+RETURN pedges(p)
+```
+
+Result:
+
+```json
+[
+  {
+    "id": "e:1",
+    "label": "Cites",
+    "fromNodeId": "P1",
+    "toNodeId": "P2",
+    "properties": {"weight": 2}
+  }
+]
+```
 
 ## pnodeIds()
 
@@ -236,3 +266,49 @@ Result:
 | -- |
 | ["P1","P2"] |
 | ["P1","P2","P3"] |
+
+## pedgeUuids()
+
+Collects the `_id` values of edges in a path into a list.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col>
+    <col>
+    <col style="width:40%;">
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>pedgeUuids(&lt;pathAlias&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;pathAlias&gt;</code></td>
+      <td><code>PATH</code></td>
+      <td>Path alias reference</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>LIST</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+MATCH p = ({_id: "P1"})-[]->{1,2}()
+RETURN pedgeUuids(p)
+```
+
+Result:
+
+| pedgeUuids(p) |
+| -- |
+| ["e:1"] |
+| ["e:1","e:2"] |

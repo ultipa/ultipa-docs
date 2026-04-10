@@ -1,214 +1,249 @@
 # Backup and Restore
 
-Ultipa GQL provides built-in commands and functions for backing up and restoring your graph data. You can back up individual graphs or an entire database, create incremental backups to save space, and verify backup integrity before relying on them.
+Ultipa provides built-in commands and functions for backing up and restoring your graph data. You can back up individual graphs or an entire database, create incremental backups to save space, and verify backup integrity before relying on them.
 
-## Quick Start
+## Graph-Level
 
-```gql
--- Back up the current graph
-BACKUP GRAPH TO '/backups/my_backup'
-
--- List available backups
-SHOW BACKUPS
-
--- Restore from a backup (replaces existing graph data)
-RESTORE GRAPH FROM '/backups/my_backup.gqlbackup.tar.gz' OVERWRITE
-
--- Verify a backup file is valid
-VERIFY BACKUP '/backups/my_backup.gqlbackup.tar.gz'
-```
-
-## Backing Up a Graph
+### Backing Up a Graph
 
 Use `BACKUP GRAPH` to create a backup of a single graph as a compressed archive.
 
-### Syntax
+<p tit="Syntax"></p>
 
-```gql
-BACKUP GRAPH [<graphName>] TO '<path>'
+```
+<backup graph statement> ::=
+  "BACKUP GRAPH" [ <graph name>]  "TO" <directory and prefix string>
+
+<directory and prefix> ::=
+  <directory> "/" <prefix>
 ```
 
-| Argument | Description |
-|----------|-------------|
-| `<graphName>` | Optional. The name of the graph to back up. If omitted, backs up the current (active) graph |
-| `<path>` | The destination file path for the backup. This is an absolute filesystem path (e.g., `/backups/my_backup`); the `.gqlbackup.tar.gz` extension is added automatically. The parent directory must already exist |
+**Details**
 
-### Examples
+- `<graph name>` is optional. If omitted, backs up the current graph.
+- `<directory>` is the absolute path where the backup file is created on the database host. The directory must already exist.
+- The backup file will be named as `<prefix>.gqlbackup.tar.gz`.
 
-Back up the current graph:
+Back up the current graph to `/data/backups/`, creating the file `default.gqlbackup.tar.gz`:
 
 ```gql
-BACKUP GRAPH TO '/backups/my_backup'
+BACKUP GRAPH TO "/data/backups/default"
 ```
 
 Back up a specific graph without switching to it:
 
 ```gql
-BACKUP GRAPH analytics TO '/backups/analytics_backup'
+BACKUP GRAPH myGraph TO "/data/backups/myGraph"
 ```
 
-> The database remains available for reads and writes while a backup is in progress.
-
-## Restoring a Graph
+### Restoring a Graph
 
 Use `RESTORE GRAPH` to restore a graph from a backup archive.
 
-### Syntax
+<p tit="Syntax"></p>
 
-```gql
-RESTORE GRAPH FROM '<path>' [OVERWRITE]
+```
+<restore graph statement> ::=
+  "RESTORE GRAPH FROM" <filepath string> [ "OVERWRITE" ]
 ```
 
-| Argument | Description |
-|----------|-------------|
-| `<path>` | The full path to the backup file, including the `.gqlbackup.tar.gz` extension |
-| `OVERWRITE` | Optional. If specified, replaces the existing graph data. Without it, the command fails if the target graph already exists |
+**Details**
 
-### Examples
+- `<filepath string>` is the full path to the backup file, including the `.gqlbackup.tar.gz` extension.
+- The keyword `OVERWRITE` is optional. If specified, replaces the existing graph data. Without it, the command fails if the target graph already exists.
 
 Restore a graph from a backup:
 
 ```gql
-RESTORE GRAPH FROM '/backups/my_backup.gqlbackup.tar.gz'
+RESTORE GRAPH FROM "data/backups/my_backup.gqlbackup.tar.gz"
 ```
 
 Restore and overwrite an existing graph:
 
 ```gql
-RESTORE GRAPH FROM '/backups/my_backup.gqlbackup.tar.gz' OVERWRITE
+RESTORE GRAPH FROM "data/backups/my_backup.gqlbackup.tar.gz" OVERWRITE
 ```
 
-> **After an overwrite restore**, the graph reflects exactly the state captured in the backup. Any data added after the backup was taken is lost.
-
-## Incremental Backup
+### Incremental Backup
 
 Incremental backups capture only the changes made since a base (full) backup. They are smaller and faster to create, but require the base backup to be available during restoration.
-
-### Creating an Incremental Backup
 
 First, create a full backup, then reference it as the base:
 
 ```gql
 -- Step 1: Create a full backup
-BACKUP GRAPH TO '/backups/full'
+BACKUP GRAPH TO "data/backups/full"
 
 -- Step 2: Make data changes
-INSERT (:Person {name: 'NewUser'})
+INSERT (:Person {name: "NewUser"})
 
 -- Step 3: Create an incremental backup referencing the full backup
-BACKUP GRAPH TO '/backups/incr' INCREMENTAL BASE '/backups/full.gqlbackup.tar.gz'
+BACKUP GRAPH TO 'data/backups/incr' INCREMENTAL BASE 'data/backups/full.gqlbackup.tar.gz'
 ```
 
 Incremental backup files use the extension `.gqlbackup.inc.tar.gz`.
 
-### Restoring from an Incremental Backup
-
 Restore the full backup first, then apply the incremental backup on top:
 
 ```gql
-RESTORE GRAPH FROM '/backups/full.gqlbackup.tar.gz' OVERWRITE
-RESTORE GRAPH FROM '/backups/incr.gqlbackup.inc.tar.gz' OVERWRITE
+-- Step 1: Restore the full backup
+RESTORE GRAPH FROM 'data/backups/full.gqlbackup.tar.gz' OVERWRITE
+
+-- Step 2: Restore a incremental backup
+RESTORE GRAPH FROM 'data/backups/incr.gqlbackup.inc.tar.gz' OVERWRITE
 ```
 
-## Database-Level Backup
-
-Use `BACKUP DATABASE` and `RESTORE DATABASE` to back up and restore all graphs in a database at once.
+## Database-Level
 
 ### Backup
 
-```gql
-BACKUP DATABASE TO '/backups/db_snapshot'
+Use `BACKUP DATABASE` to back up all graphs in a database at once.
+
+<p tit="Syntax"></p>
+
+```
+<backup database statement> ::=
+  "BACKUP DATABASE TO" <directory string>
 ```
 
-This creates a directory containing a separate backup file for each graph along with a metadata manifest.
+**Details**
+
+- `<directory string>` specifies the absolute path on the database host. The directory is created automatically if it doesn't exist.
+
+```gql
+BACKUP DATABASE TO 'data/backups/db_snapshot'
+```
+
+This creates a directory at the specified path with the following structure:
+
+<p tit="File Structure"></p>
+
+```
+data/backups/db_snapshot/
+├── <graph1>.gqlbackup.tar.gz   -- backup archive for each graph
+├── <graph2>.gqlbackup.tar.gz
+├── meta.json                    -- global database metadata
+└── db_backup_meta.json          -- database backup manifest
+```
 
 ### Restore
 
-```gql
-RESTORE DATABASE FROM '/backups/db_snapshot' OVERWRITE
+Use `RESTORE DATABASE` to restore all graphs in a database at once.
+
+<p tit="Syntax"></p>
+
+```
+<restore database statement> ::=
+  "RESTORE DATABASE FROM" <directory string> [ "OVERWRITE" ]
 ```
 
-### Example
+**Details**
+
+- `<directory string>` specifies the absolute path of the database backup directory.
+- The keyword `OVERWRITE` is optional. If specified, replaces the existing graph data. Without it, the command fails if any target graph already exists.
 
 ```gql
--- Set up two graphs with data
-INSERT (:Person {name: 'Alice'})
-
-CREATE GRAPH analytics
-USE GRAPH analytics
-INSERT (:Metric {name: 'clicks', value: 1000})
-USE GRAPH default
-
--- Back up the entire database
-BACKUP DATABASE TO '/backups/full_db'
-
--- Later, restore all graphs
-RESTORE DATABASE FROM '/backups/full_db' OVERWRITE
-
--- Verify data in both graphs
-USE GRAPH default
-MATCH (p:Person) RETURN p.name
--- Result: Alice
-
-USE GRAPH analytics
-MATCH (m:Metric) RETURN m.name, m.value
--- Result: clicks, 1000
+RESTORE DATABASE FROM 'data/backups/db_snapshot' OVERWRITE
 ```
 
 ## Managing Backups
 
-### Listing Backups
+### Showing Backups
 
-Use `SHOW BACKUPS` to view recorded backups from the catalog or scan a directory:
+Show all entries from the backup catalog:
 
 ```gql
--- Show all entries from the backup catalog
 SHOW BACKUPS
-
--- Filter by graph name
-SHOW BACKUPS FOR GRAPH analytics
-
--- Scan a directory for backup files
-SHOW BACKUPS FROM '/backups/directory'
 ```
+
+Filter by graph name:
+
+```gql
+SHOW BACKUPS FOR GRAPH myGraph
+```
+
+Scan a directory for backup files:
+
+```gql
+SHOW BACKUPS FROM "/backups/directory"
+```
+
+Returns a table with the following columns:
+
+| Field | Description |
+| -- | -- |
+| `id` | Unique backup ID. |
+| `type` | Backup type: `full` or `incremental`. |
+| `scope` | Backup scope: `graph` or `database`. |
+| `graph_name` | The source graph name. |
+| `path` | Backup file path. |
+| `node_count` | Number of nodes in the backup. |
+| `edge_count` | Number of edges in the backup. |
+| `size` | Backup file size in bytes. |
+| `wal_sequence` | WAL sequence number at backup time. |
+| `duration_ms` | Backup duration in milliseconds. |
+| `status` | Backup status: `completed` or `failed`. |
+| `timestamp` | When the backup was created. |
 
 ### Viewing Backup Details
 
-Use `SHOW BACKUP` with a file path to retrieve metadata for a specific backup:
+Retrieve metadata for a specific backup file:
 
 ```gql
-SHOW BACKUP '/backups/my_backup.gqlbackup.tar.gz'
+SHOW BACKUP "data/backups/my_backup.gqlbackup.tar.gz"
 ```
+
+Returns a table with the following columns:
+
+| Field | Description |
+| -- | -- |
+| `type` | Backup type: `full` or `incremental`. |
+| `graph_name` | The source graph name. |
+| `path` | Backup file path. |
+| `node_count` | Number of nodes in the backup. |
+| `edge_count` | Number of edges in the backup. |
+| `size` | Backup file size in bytes. |
+| `wal_sequence` | WAL sequence number at backup time. |
+| `compressed` | Whether the backup is compressed. |
+| `timestamp` | When the backup was created. |
 
 ### Verifying a Backup
 
-Use `VERIFY BACKUP` to check that a backup archive is structurally valid before relying on it:
+Check that a backup archive is structurally valid before relying on it:
 
 ```gql
 VERIFY BACKUP '/backups/my_backup.gqlbackup.tar.gz'
 ```
 
-The result includes a `valid` field (`true` or `false`) and an `errors` field listing any issues found.
+Returns a table with the following columns:
 
-> Always verify backups before using them for disaster recovery.
+| Field | Description |
+| -- | -- |
+| `valid` | Whether the backup is structurally valid (`true` or `false`). |
+| `graph_name` | The source graph name. |
+| `file_count` | Number of files in the backup archive. |
+| `total_size` | Total uncompressed size in bytes. |
+| `wal_sequence` | WAL sequence number at backup time. |
+| `timestamp` | When the backup was created. |
+| `errors` | Validation errors, if any (empty string if valid). |
 
 ## Backup Functions
 
 As an alternative to the DDL statements above, you can use built-in functions that return backup metadata as map values. These are useful when you need to process backup information programmatically within a query.
 
-### DB.BACKUP()
+### db.backup()
 
 Creates a backup of the current graph.
 
 ```gql
 -- Basic backup
-RETURN DB.BACKUP('/path/to/backup')
+RETURN DB.BACKUP("data/backups/myGraph")
 
 -- With options
-RETURN DB.BACKUP('/path/to/backup', {compress: true})
+RETURN DB.BACKUP("data/backups/myGraph", {compress: true})
 
 -- Incremental backup
-RETURN DB.BACKUP('/path/to/backup', {incremental: true})
+RETURN DB.BACKUP("data/backups/myGraph", {incremental: true})
 ```
 
 | Option | Type | Default | Description |
@@ -218,16 +253,16 @@ RETURN DB.BACKUP('/path/to/backup', {incremental: true})
 
 Returns a map containing `status`, `path`, `type`, `graphName`, `nodeCount`, `edgeCount`, `size`, `walSequence`, `timestamp`, and `compressed`.
 
-### DB.RESTORE()
+### db.restore()
 
 Restores a graph from a backup file.
 
 ```gql
 -- Restore (fails if graph exists)
-RETURN DB.RESTORE('/path/to/backup.gqlbackup.tar.gz')
+RETURN db.restore("data/backups/myGraph.gqlbackup.tar.gz")
 
 -- Restore with overwrite
-RETURN DB.RESTORE('/path/to/backup.gqlbackup.tar.gz', {overwrite: true})
+RETURN db.restore("data/backups/myGraph.gqlbackup.tar.gz", {overwrite: true})
 ```
 
 | Option | Type | Default | Description |
@@ -236,12 +271,12 @@ RETURN DB.RESTORE('/path/to/backup.gqlbackup.tar.gz', {overwrite: true})
 
 Returns a map containing `status`, `graphName`, `nodeCount`, `edgeCount`, `type`, and `timestamp`.
 
-### DB.BACKUPS()
+### db.backups()
 
-Lists backup files found in a directory.
+Lists graph backup files found in a directory.
 
 ```gql
-RETURN DB.BACKUPS('/backups/directory')
+RETURN db.backups("data/backups")
 ```
 
 Returns a list of maps, each containing `path`, `type`, `graphName`, `nodeCount`, `edgeCount`, `size`, `walSequence`, `timestamp`, and `compressed`.
@@ -253,16 +288,16 @@ A backup captures the complete state of a graph, including:
 - All nodes, edges, labels, and their properties
 - Property indexes
 - Stored procedures
-- Constraints (NOT NULL, UNIQUE)
+- Constraints
 - Ontology definitions
 - Triggers
 - Projections
 
 The following are **not** included in the backup but are rebuilt automatically on restore:
 
-- Fulltext indexes
+- Full-text indexes (rebuilt automatically)
+- Vector indexes (rebuilt automatically)
 - Node ID cache
-- Computing engine topology cache
 
 ## File Extensions
 
@@ -271,7 +306,7 @@ The following are **not** included in the backup but are rebuilt automatically o
 | Full graph backup | `.gqlbackup.tar.gz` |
 | Incremental backup | `.gqlbackup.inc.tar.gz` |
 
-> Do not include the extension when specifying the destination path in `BACKUP GRAPH` -- it is added automatically.
+> Do not include the extension when specifying the destination path in `BACKUP GRAPH` or `db.backup()`, it is added automatically.
 
 ## Important Notes
 

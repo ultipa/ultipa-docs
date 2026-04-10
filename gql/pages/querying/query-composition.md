@@ -6,9 +6,10 @@ A **clause** is a component of a statement that performs a specific function, su
 
 GQL supports the following statement for querying the database:
 
-| <div table-width="15">Statement</div> | Description | <div table-width="18">Supported Clauses</div> |
+| Statement | Description | Supported Clauses |
 | -- | -- | -- |
 | <a href="/docs/gql/match">MATCH</a> | Retrieves nodes, edges, and paths from the graph using <a target="_blank" href="/docs/gql/graph-pattern-matching">patterns</a>. | `WHERE`, `YIELD` |
+| <a href="/docs/gql/optional-match">OPTIONAL MATCH</a> | Same as `MATCH`, but returns `null` instead of empty results when no match is found. | `WHERE` |
 | <a href="/docs/gql/filter">FILTER</a> | Discards records in the intermediate result table that do not satisfy the specified conditions. |
 | <a href="/docs/gql/let">LET</a> | Defines variables and adds corresponding columns to the intermediate result table. |
 | <a href="/docs/gql/for">FOR</a> | Unnests a list into individual rows. |
@@ -22,18 +23,7 @@ GQL supports the following statement for querying the database:
 
 A **linear query** executes sequentially, where each statement is processed one after another without any branching or conditional logic. The result is returned in a straightforward progression.
 
-Every linear query must conclude with a result statement, which can be one of the following:
-
-- `RETURN ...`
-- `RETURN ... ORDER BY ...`
-- `RETURN ... ORDER BY ... SKIP ...`
-- `RETURN ... ORDER BY ... LIMIT ...`
-- `RETURN ... ORDER BY ... SKIP ... LIMIT ...`
-- `RETURN ... SKIP...`
-- `RETURN ... SKIP ... LIMIT ...`
-- `RETURN ... LIMIT ...`
-
-The `RETURN` is mandatory. Optional result modifiers - `ORDER BY`, `SKIP`, and `LIMIT` - may follow `RETURN`; however, only the combinations listed above are valid. Unsupported combinations—such as `RETURN ... LIMIT ... SKIP ...` are not permitted.
+Every linear query must conclude with a `RETURN` statement. Optional result modifiers — `ORDER BY`, `SKIP`, and `LIMIT` — can follow `RETURN` in any order and combination.
 
 For example, this is a linear query where the `MATCH`, `FILTER` and `RETURN` statements processed in a linear order:
 

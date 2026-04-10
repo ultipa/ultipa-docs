@@ -11,7 +11,7 @@ Shortest paths between two nodes are those with the fewest number of edges. You 
 | `SHORTEST k` | Selects any `k` (non-negative integer) shortest paths from each partition. If a partition has fewer than `k` shortest paths, continue selecting the second shortest, third shortest, and so on, until the required number is reached or no more paths are available. |
 | `SHORTEST k GROUP` | Groups the paths in each partition by length, sorts the groups in ascending order, and selects all paths from the first `k` groups in each partition. |
 
-The shortest path selectors are typically used with variable-length <a target="_blank" href="/docs/gql/quantified-paths">quantified paths</a>. When a shortest path selector is used, the path mode is compulsively set to `TRAIL` where repeated edges are not allowed.
+The shortest path selectors are typically used with variable-length <a target="_blank" href="/docs/gql/quantified-paths">quantified paths</a>. When a shortest path selector is used, the path mode defaults to `TRAIL` where repeated edges are not allowed.
 
 ## Note on Shortest Path Algorithms
 
@@ -27,19 +27,6 @@ These algorithms are recommended for computing **weighted shortest paths** (i.e.
 ## Example Graph
 
 <div align=center drawio-diagram='16791' drawio-name="draw_1899538f3dd346f4baf2d998287f7820.jpg"><img src="https://img.ultipa.cn/draw/draw_1899538f3dd346f4baf2d998287f7820.jpg?v='1726757651042'"/></div>
-
-<div tab="code">
-
-<p tit="Create the graph"></p>
-
-```gql
-CREATE GRAPH myGraph { 
-  NODE City ({name string}),
-  EDGE Links ()-[]->()
-} SHARDS [1]
-```
-
-<p tit="Insert data to the graph"></p>
 
 ```gql
 INSERT (zenith:City {_id: "Zenith"}),
@@ -62,8 +49,6 @@ INSERT (zenith:City {_id: "Zenith"}),
        (solara)-[:Links]->(eldoria),
        (lunaria)-[:Links]->(solara)
 ```
-
-</div>
 
 ## ALL SHORTEST
 

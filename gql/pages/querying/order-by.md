@@ -2,11 +2,11 @@
 
 ## Overview
 
-The `ORDER BY` statement allows you to sort the intermediate result or output table based on the specified columns.
+The `ORDER BY` statement allows you to sort the intermediate result table or output table based on the specified items.
 
 <p tit="Syntax"></p>
 
-```gql
+```
 <order by statement> ::= 
   "ORDER BY" <sort specification> [ { "," <sort specification> }... ]
 
@@ -25,19 +25,6 @@ The `ORDER BY` statement allows you to sort the intermediate result or output ta
 
 <div align=center drawio-diagram='16841' drawio-name="draw_0665940066934954aa021f12215db8b1.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_0665940066934954aa021f12215db8b1.jpg?v='1737964169285'"/></div>
 
-<div tab="code">
-  
-<p tit="Create the graph"></p>
-
-```gql
-CREATE GRAPH myGraph { 
-  NODE Paper ({title string, score uint32, author string, publisher string}),
-  EDGE Cites ()-[{weight uint32}]->()
-} PARTITION BY HASH(Crc32) SHARDS [1]
-```
-  
-<p tit="Insert data into the graph"></p>
-
 ```gql
 INSERT (p1:Paper {_id:'P1', title:'Efficient Graph Search', score:6, author:'Alex', publisher:'PulsePress'}),
        (p2:Paper {_id:'P2', title:'Optimizing Queries', score:9, author:'Alex'}),
@@ -45,8 +32,6 @@ INSERT (p1:Paper {_id:'P1', title:'Efficient Graph Search', score:6, author:'Ale
        (p1)-[:Cites {weight:2}]->(p2),
        (p2)-[:Cites {weight:1}]->(p3)
 ```
-  
-</div>
 
 ## Ordering by Property
 
@@ -66,7 +51,7 @@ Result:
 
 ## Ordering by Node or Edge Variable
 
-When a node or edge variable is specified, it is sorted on the `_uuid` of the nodes or edges. 
+When a node or edge variable is specified, it is sorted on the `_id` of the nodes or edges.
 
 ```gql
 MATCH (n:Paper)
@@ -77,9 +62,9 @@ Result:
 
 | n.title | element_id(n) |
 | -- | -- |
-| Optimizing Queries | 8718971077612535810 |
-| Efficient Graph Search | 8791028671650463745 |
-| Path Patterns | 12033620403357220867 |
+| Efficient Graph Search | P1 |
+| Optimizing Queries | P2 |
+| Path Patterns | P3 |
 
 ## Ordering by Expression
 
@@ -121,7 +106,7 @@ Result:
 
 ## Multi-level Ordering
 
-When there are multiple specifications, it is sorted by the first specification listed, and for equals values, go to the next specification, and so on.
+When there are multiple ordering specifications, it is sorted by the first specification listed, and for equals values, go to the next specification, and so on.
 
 ```gql
 MATCH (n:Paper)
@@ -139,9 +124,9 @@ Result:
 
 ## Discarding and Retaining Records After Ordering
 
-You may use the `SKIP` or `LIMIT` statement after the `ORDER BY` statement to skip a specified number of records from the top, or to limit the number of records retained.
+You may use the `SKIP` or `LIMIT` statement after `ORDER BY` to skip a specified number of rows from the top, or to limit the number of rows retained.
 
-To return titles of the two papers with the second and third highest scores:
+Return titles of the two papers with the second and third highest scores:
 
 ```gql
 MATCH (n:Paper)
@@ -158,7 +143,7 @@ Result:
 
 ## Null Ordering
 
-To return titles of the two papers with the second and third highest scores, ensuring `null` values appear at the front if applicable:
+Return titles of the two papers with the second and third highest scores, ensuring `null` values appear at the front if applicable:
 
 ```gql
 MATCH (n:Paper)
@@ -168,7 +153,7 @@ ORDER BY n.publisher NULLS FIRST
 
 Result: 
 
-| n.title | n.score |
+| n.title | n.publisher |
 | -- | -- |
 | Optimizing Queries | `null` |
 | Path Patterns | BrightLeaf |

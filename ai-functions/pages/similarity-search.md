@@ -6,57 +6,193 @@ Compare vectors and perform semantic search to find related content.
 
 ## Similarity Functions
 
-Compare vectors using different similarity measures:
+### ai.cosine()
 
-| Function | Description | Range | Best For |
-| -- | -- | -- | -- |
-| `AI.COSINE(v1, v2)` | Cosine similarity | -1 to 1 | Text embeddings |
-| `AI.EUCLIDEAN(v1, v2)` | Euclidean distance | 0 to ∞ | Spatial data |
-| `AI.DOT(v1, v2)` | Dot product | varies | Normalized vectors |
+Computes cosine similarity between two vectors. Returns a value between -1 and 1, where 1 means identical direction.
 
-**Cosine Similarity** is most common for text because it measures angle (direction), not magnitude.
-
-Semantic search using cosine similarity:
-
-```gql
-LET query = AI.embed('graph database tutorial')
-MATCH (d:Document)
-RETURN d.title, AI.COSINE(d.embedding, query) AS similarity
-ORDER BY similarity DESC
-LIMIT 5
-```
-
-| d.title | similarity |
-| -- | -- |
-| Introduction to Graph Databases | 0.94 |
-| GQL Query Language Guide | 0.87 |
-| Database Design Patterns | 0.72 |
-
-Find nearest products by Euclidean distance:
-
-```gql
-MATCH (p1:Product {id: 'A'}), (p2:Product)
-WHERE p1 <> p2
-RETURN p2.name, AI.EUCLIDEAN(p1.embedding, p2.embedding) AS distance
-ORDER BY distance ASC
-LIMIT 5
-```
-
-| p2.name | distance |
-| -- | -- |
-| Similar Product 1 | 0.23 |
-| Similar Product 2 | 0.45 |
-| Related Product | 0.67 |
-
-Find related article pairs:
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>ai.cosine(&lt;vector1&gt;, &lt;vector2&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="3"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;vector1&gt;</code></td>
+      <td><code>VECTOR</code></td>
+      <td>The first vector</td>
+    </tr>
+    <tr>
+      <td><code>&lt;vector2&gt;</code></td>
+      <td><code>VECTOR</code></td>
+      <td>The second vector; must have the same dimension as <code>&lt;vector1&gt;</code></td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>FLOAT</code></td>
+    </tr>
+  </tbody>
+</table>
 
 ```gql
-MATCH (a:Article), (b:Article)
-WHERE a.id < b.id  // Avoid duplicates
-RETURN a.title, b.title, AI.DOT(a.embedding, b.embedding) AS similarity
-ORDER BY similarity DESC
-LIMIT 10
+LET v1 = ai.vector([1.0, 0.0, 0.0])
+LET v2 = ai.vector([1.0, 1.0, 0.0])
+RETURN ai.cosine(v1, v2)
 ```
+
+Result: 0.7071067690849304
+
+### ai.euclidean()
+
+Computes Euclidean distance between two vectors. Lower values indicate more similarity.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>ai.euclidean(&lt;vector1&gt;, &lt;vector2&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="3"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;vector1&gt;</code></td>
+      <td><code>VECTOR</code></td>
+      <td>The first vector</td>
+    </tr>
+    <tr>
+      <td><code>&lt;vector2&gt;</code></td>
+      <td><code>VECTOR</code></td>
+      <td>The second vector; must have the same dimension as <code>&lt;vector1&gt;</code></td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>FLOAT</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+LET v1 = ai.vector([1.0, 0.0])
+LET v2 = ai.vector([0.0, 1.0])
+RETURN ai.euclidean(v1, v2)
+```
+
+Result: 1.4142135381698608
+
+### ai.dot()
+
+Computes the dot product of two vectors.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>ai.dot(&lt;vector1&gt;, &lt;vector2&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="3"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;vector1&gt;</code></td>
+      <td><code>VECTOR</code></td>
+      <td>The first vector</td>
+    </tr>
+    <tr>
+      <td><code>&lt;vector2&gt;</code></td>
+      <td><code>VECTOR</code></td>
+      <td>The second vector; must have the same dimension as <code>&lt;vector1&gt;</code></td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>FLOAT</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+LET v1 = ai.vector([1.0, 2.0, 3.0])
+LET v2 = ai.vector([4.0, 5.0, 6.0])
+RETURN ai.dot(v1, v2)
+```
+
+Result: 32
+
+### ai.distance()
+
+Computes the cosine distance between two vectors (1 - cosine similarity). Lower values indicate more similarity.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>ai.distance(&lt;vector1&gt;, &lt;vector2&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="3"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;vector1&gt;</code></td>
+      <td><code>VECTOR</code></td>
+      <td>The first vector</td>
+    </tr>
+    <tr>
+      <td><code>&lt;vector2&gt;</code></td>
+      <td><code>VECTOR</code></td>
+      <td>The second vector; must have the same dimension as <code>&lt;vector1&gt;</code></td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>FLOAT</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+LET v1 = ai.vector([1.0, 0.0, 0.0])
+LET v2 = ai.vector([1.0, 1.0, 0.0])
+RETURN ai.distance(v1, v2)
+```
+
+Result: 0.2928932309150696
 
 ## Vector Search
 
@@ -77,7 +213,7 @@ OPTIONS {
 Efficient ANN search using index:
 
 ```gql
-LET query = AI.embed('how to model relationships in graphs')
+LET query = ai.embed('how to model relationships in graphs')
 CALL db.index.vector.search('doc_search', query, 10)
 YIELD node, score
 RETURN node.title, score
@@ -92,7 +228,7 @@ RETURN node.title, score
 Vector search combined with graph traversal:
 
 ```gql
-LET query = AI.embed('machine learning applications')
+LET query = ai.embed('machine learning applications')
 CALL db.index.vector.search('doc_search', query, 5)
 YIELD node AS doc, score
 MATCH (doc)-[:AUTHORED_BY]->(author:Person)
@@ -112,12 +248,12 @@ Combine vector similarity with traditional graph queries for best results.
 Vector search with property filters:
 
 ```gql
-LET query = AI.embed('cloud computing tutorial')
+LET query = ai.embed('cloud computing tutorial')
 MATCH (d:Document)
 WHERE d.category = 'Technology'
   AND d.published > date('2023-01-01')
-  AND AI.COSINE(d.embedding, query) > 0.7
-RETURN d.title, d.published, AI.COSINE(d.embedding, query) AS relevance
+  AND ai.cosine(d.embedding, query) > 0.7
+RETURN d.title, d.published, ai.cosine(d.embedding, query) AS relevance
 ORDER BY relevance DESC
 LIMIT 10
 ```
@@ -128,7 +264,7 @@ Combine graph relationships with similarity:
 MATCH (doc:Document {id: 'DOC-123'})-[:AUTHORED_BY]->(author)
 MATCH (author)-[:AUTHORED_BY]-(other:Document)
 WHERE other <> doc
-RETURN other.title, AI.COSINE(doc.embedding, other.embedding) AS similarity
+RETURN other.title, ai.cosine(doc.embedding, other.embedding) AS similarity
 ORDER BY similarity DESC
 LIMIT 5
 ```
@@ -137,7 +273,7 @@ Retrieve context for RAG applications:
 
 ```gql
 LET question = 'How do I create a graph index?'
-LET questionVector = AI.embed(question)
+LET questionVector = ai.embed(question)
 CALL db.index.vector.search('doc_search', questionVector, 3)
 YIELD node, score
 RETURN COLLECT_LIST(node.content) AS context

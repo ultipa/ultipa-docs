@@ -29,6 +29,10 @@
           "title": "Quantified Paths"
         },
         {
+          "file": "questioned-paths.md",
+          "title": "Questioned Paths"
+        },
+        {
           "file": "shortest-paths.md",
           "title": "Shortest Paths"
         },
@@ -46,16 +50,12 @@
           "title": "Overview"
         },
         {
-          "file": "closed-graph.md",
-          "title": "Closed Graph"
-        },
-        {
           "file": "open-graph.md",
           "title": "Open Graph"
         },
         {
-          "file": "graph-sharding-and-storage.md",
-          "title": "Graph Sharding and Storage"
+          "file": "closed-graph.md",
+          "title": "Closed Graph"
         },
         {
           "file": "constraints.md",
@@ -77,10 +77,6 @@
         {
           "file": "insert-overwrite.md",
           "title": "INSERT OVERWRITE"
-        },
-        {
-          "file": "upsert.md",
-          "title": "UPSERT"
         },
         {
           "file": "set.md",
@@ -165,8 +161,8 @@
           "title": "All Functions"
         },
         {
-          "file": "scalar-functions.md",
-          "title": "Scalar Functions"
+          "file": "element-functions.md",
+          "title": "Element Functions"
         },
         {
           "file": "path-functions.md",
@@ -201,6 +197,14 @@
           "title": "Spatial Functions"
         },
         {
+          "file": "null-functions.md",
+          "title": "Null Functions"
+        },
+        {
+          "file": "utility-functions.md",
+          "title": "Utility Functions"
+        },
+        {
           "file": "type-conversion-functions.md",
           "title": "Type Conversion Functions"
         },
@@ -227,8 +231,25 @@
       "title": "Predicates"
     },
     {
-      "file": "expressions.md",
-      "title": "Expressions"
+      "folder": "expressions",
+      "pages": [
+        {
+          "file": "case.md",
+          "title": "CASE"
+        },
+        {
+          "file": "let-value-expression.md",
+          "title": "LET Value Expression"
+        },
+        {
+          "file": "value-query-expression.md",
+          "title": "Value Query Expression"
+        },
+        {
+          "file": "list-comprehension.md",
+          "title": "List Comprehension"
+        }
+      ]
     },
     {
       "folder": "query-acceleration",
@@ -238,7 +259,7 @@
           "title": "Index"
         },
         {
-          "file": "full-text-index.md",
+          "file": "fulltext-index.md",
           "title": "Full-text Index"
         },
         {

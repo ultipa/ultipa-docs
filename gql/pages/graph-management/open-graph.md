@@ -6,78 +6,50 @@ The **open graph** is schema-free, requiring no explicit schema definitions befo
 
 In an open graph,
 
-- Each node or edge can have zero, one, or multiple labels.
+- Each node has zero, one, or multiple labels, each edge has zero or one label.
 - Each node or edge has its own set of properties.
 
-Open graphs do not require explicit definitions of labels and properties; they are automatically created as you insert nodes and edges into the graph. However, you still have the option to manually create labels beforehand if desired.
+Open graphs do not require explicit definitions of labels and properties; they are automatically created as you insert nodes and edges into the graph.
 
-## Creating Open Graph
+## Creating Open Graphs
 
-To create an open graph `g1`:
+Create an open graph `g1`:
+
+```gql
+CREATE GRAPH g1
+```
+
+The optional `ANY` keyword can be used to explicitly indicate an open graph:
 
 ```gql
 CREATE GRAPH g1 ANY
 ```
 
-The `ANY` keyword identifies an open graph.
+A graph created without a graph type specification is an open graph by default.
 
 ## Showing Labels
 
-To show labels in the current graph:
+Show labels in the current graph:
 
 ```gql
-SHOW LABEL
+SHOW LABELS
 ```
 
-The plural form `SHOW LABELS` is also supported.
-
-To show node labels in the current graph:
+Show node labels in the current graph:
 
 ```gql
-SHOW NODE LABEL
+SHOW NODE LABELS
 ```
 
-To show edge labels in the current graph:
+Show edge labels in the current graph:
 
 ```gql
-SHOW EDGE LABEL
+SHOW EDGE LABELS
 ```
 
 Each label provides the following essential metadata:
 
 | <div table-width="17">Field</div> | Description |
 | -- | -- |
-| `label_name` | The name of the label. |
-| `label_id` | The ID of the label. |
-
-## Creating Label
-
-You can create new labels within an open graph.
-
-To create a node label `User` within the current graph:
-
-```gql
-CREATE NODE LABEL User
-```
-
-To create an edge label `Transfers` within the current graph:
-
-```gql
-CREATE EDGE LABEL Transfers
-```
-
-## Dropping Label
-
-You can delete labels from a graph. Deleting a label will not remove the nodes or edges that use it.
-
-To drop the node label `Person` from the current graph:
-
-```gql
-DROP NODE LABEL Person
-```
-
-To drop the edge label `LINKS` from the current graph:
-
-```gql
-DROP EDGE LABEL LINKS
-```
+| `label` | The name of the label. |
+| `type` | The type of the label, `NODE` or `EDGE`. |

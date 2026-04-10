@@ -2,71 +2,47 @@
 
 ## Overview
 
-The `FILTER` statement allows you to discard records in the intermediate result table that do not satisfy the specified conditions.
+The `FILTER` statement allows you to discard records in the intermediate result table that do not satisfy the search conditions.
 
 <p tit="Syntax"></p>
 
-```gql
-<filter statement> ::= "FILTER" [ "WHERE" ] <search condition>
+```
+<filter statement> ::= "FILTER" <search condition>
 ```
 
-The `FILTER` and `FILTER WHERE` behave the same way. The use of `WHERE` in this context is often a matter of style or readability. For example:
+## FILTER vs. WHERE
+
+`WHERE` is a clause bound to the `MATCH` statement, which is evaluated **during** pattern matching. `FILTER` is a standalone statement that is evaluated **after** the preceding statement produces its result.
+
+In many cases they produce the same result:
 
 ```gql
+-- Using WHERE (evaluated during MATCH)
+MATCH (n:User) WHERE n.age > 25
+RETURN n
+
+-- Using FILTER (evaluated after MATCH)
 MATCH (n:User)
 FILTER n.age > 25
 RETURN n
 ```
 
-is functionally identical to:
+The difference matters with `OPTIONAL MATCH`. `WHERE` is applied before the optional logic, while `FILTER` is applied after — see <a target="_blank" href="/docs/gql/optional-match#The-Evaluation-of-WHERE">OPTIONAL MATCH</a> for details.
+
+`FILTER` also works with non-`MATCH` statements like `FOR`:
 
 ```gql
-MATCH (n:User)
-FILTER WHERE n.age > 25
-RETURN n
+FOR item IN [20, 34, 56]
+FILTER item > 30
+RETURN item
 ```
 
-In both cases, the `FILTER` statement returns nodes where the user's `age` is greater than 25.
-
-## FILTER vs. MATCH WHERE
-
-The `FILTER` statement and the `WHERE` clause are both used to apply filtering conditions in queries, but they differ in when and how they are evaluated.
-
-The `WHERE` is a clause that can only be used with the `MATCH` statement. It can appear inside node or edge patterns, or directly after the list of path patterns, and is evaluated as part of the graph pattern matching process.
-
-```gql
-MATCH (n:User)
-WHERE n.age > 25
-RETURN n
-```
-
-`FILTER` is a standalone statement that offers greater flexibility and can be used wherever needed within a query.
-
-```gql
-MATCH (n:User)
-FILTER n.age > 25
-RETURN n
-```
+Replacing `FILTER` with `WHERE` in this query will cause syntax error.
 
 ## Example Graph
 
 <div align=center drawio-diagram='16851' drawio-name="draw_f04fe554a1d442009a57dfceb1928bd0.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_f04fe554a1d442009a57dfceb1928bd0.jpg?v='1751441410308'"/></div>
 
-<div tab="code">
-
-<p tit="Create the graph"></p>
-
-```gql
-CREATE GRAPH myGraph { 
-  NODE User ({name string}),
-  NODE Club ({since uint32}),
-  EDGE Follows ()-[{createdOn date}]->(),
-  EDGE Joins ()-[{memberNo uint32}]->()
-} PARTITION BY HASH(Crc32) SHARDS [1]
-```
-
-<p tit="Insert data to the graph"></p>
-  
 ```gql
 INSERT (rowlock:User {_id: 'U01', name: 'rowlock'}),
        (brainy:User {_id: 'U02', name: 'Brainy'}),
@@ -84,8 +60,6 @@ INSERT (rowlock:User {_id: 'U01', name: 'rowlock'}),
        (mochaeach)-[:Joins {memberNo: 9}]->(c02)
 ```
 
-</div>
-
 ## Simple Filtering
 
 ```gql
@@ -94,24 +68,13 @@ FILTER c._id = "C01"
 RETURN c
 ```
 
-Result: `c`
+Result:
 
-| \_id | \_uuid | schema | <div table-width="50">values</div> |
-| -- | -- | -- | -- |
-| C01 | <span style="color: #999;">Sys-gen</span> | Club | {since: 2005} |
-
-```gql
-FOR item IN [1,2,3] 
-FILTER item > 1
-RETURN item
+```json
+[
+  {"id": "C01", "labels": ["Club"], "properties": {"since": 2005}}
+]
 ```
-
-Result: `item`
-
-| item |
-| -- |
-| 2 |
-| 3 |
 
 ## Filtering with Cartesian Product
 
@@ -124,10 +87,12 @@ FILTER u1 = u2
 RETURN u1
 ```
 
-Result: `u1`
+Result:
 
-| \_id | \_uuid | schema | <div table-width="50">values</div> |
-| -- | -- | -- | -- |
-| U04 | <span style="color: #999;">Sys-gen</span> | User | {name: "mochaeach"} |
+```json
+[
+  {"id": "U04", "labels": ["User"], "properties": {"name": "mochaeach"}}
+]
+```
 
 Note that the Cartesian product is formed between `u1` and `u2`, as they are produced by different `MATCH` statements, before the `FILTER` statement is applied to perform the filtering.

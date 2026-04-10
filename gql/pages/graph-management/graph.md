@@ -4,34 +4,45 @@ An Ultipa instance can host multiple **graphs**, each representing a dataset of 
 
 ## Showing Graphs
 
-To show graphs in the database:
+Show graphs in the database:
 
 ```gql
 SHOW GRAPHS
 ```
 
-Each graph provides the following essential metadata:
+Each graph provides the following metadata:
 
 | <div table-width="20">Field</div> | Description |
 | -- | -- |
+| `graph_id` | The ID of the graph. |
 | `graph_name` | The unique name of the graph. |
 | `current` | Whether the graph is the current graph. |
+| `graph_type` | The type of the graph (`OPEN` or `CLOSED`). |
+| `node_count` | The number of nodes in the graph. |
+| `edge_count` | The number of edges in the graph. |
+| `node_label_count` | The number of node labels in the graph. |
+| `edge_label_count` | The number of edge labels in the graph. |
+| `procedure_count` | The number of stored procedures in the graph. |
+| `fulltext_index_count` | The number of full-text indexes in the graph. |
+| `trigger_count` | The number of triggers in the graph. |
+| `created_at` | The creation time of the graph. |
+| `comment` | The comment of the graph. |
 
 ## Creating Graph
 
-Ultipa supports two types of graphs: **Closed Graph** and **Open Graph**. This design offers both flexibility and control, supporting workflows ranging from agile exploration to production-grade applications demanding strict data integrity requirements.
-
-### Closed Graph
-
-A **closed graph** requires that any node to be inserted must conform to a defined node type, and any edge to be inserted must conform to a defined edge type. This ensures consistent structure, guaranteeing high data integrity and consistency.
-
-<a target="_blank" href="/docs/gql/closed-graph">Learn more about closed graphs →</a>
+Ultipa supports two types of graphs: **Open Graph** and **Closed Graph**. This design offers both flexibility and control, supporting workflows ranging from agile exploration to production-grade applications demanding strict data integrity requirements.
 
 ### Open Graph
 
-The **open graph** is schema-free, requiring no explicit schema definitions before data insertion. You can directly insert nodes and edges into the graph, and their labels and properties are created on the fly. This offers maximum flexibility for early-stage data exploration.
+An **open graph** is schema-free, requiring no explicit schema definitions before data insertion. You can directly insert nodes and edges into the graph, and their labels and properties are created on the fly. This offers maximum flexibility for early-stage data exploration.
 
 <a target="_blank" href="/docs/gql/open-graph">Learn more about open graphs →</a>
+
+### Closed Graph
+
+A **closed graph** requires that any node or edge to be inserted must conform to a defined node or edge type. This ensures consistent structure, guaranteeing high data integrity and consistency.
+
+<a target="_blank" href="/docs/gql/closed-graph">Learn more about closed graphs →</a>
 
 ### Using IF NOT EXISTS
 
@@ -43,9 +54,51 @@ CREATE GRAPH IF NOT EXISTS myGraph
 
 This creates the graph `myGraph` only if a graph with that name does not exist. If `myGraph` already exists, the statement is ignored without throwing an error.
 
+## Selecting Graph
+
+Most GQL queries operate on a specific graph. Use the `USE` statement to set the current graph:
+
+```gql
+USE myGraph
+```
+
+All subsequent queries in the session will run against `myGraph` until another `USE` is issued.
+
+## Altering Graph
+
+### Renaming
+
+```gql
+ALTER GRAPH myGraph RENAME TO newName
+```
+
+### Setting Comment
+
+```gql
+ALTER GRAPH myGraph COMMENT "This is a description"
+```
+
+### Converting Between Open and Closed
+
+A closed graph can be converted to an open graph, and vice versa.
+
+Convert a closed graph to open. Existing type definitions are preserved but no longer enforced:
+
+```gql
+ALTER GRAPH myGraph SET OPEN
+```
+
+Convert an open graph to closed:
+
+```gql
+ALTER GRAPH myGraph SET CLOSED
+```
+
+After conversion, the graph has no node/edge types defined. You must add types (via `ALTER GRAPH ... ADD NODE/EDGE [TYPE]`) before inserting new data. Existing data is not validated against the new types, only future inserts are checked.
+
 ## Dropping Graph
 
-To drop the graph `myGraph`:
+Drop the graph `myGraph`:
 
 ```gql
 DROP GRAPH myGraph
@@ -61,14 +114,14 @@ This deletes the graph `myGraph` only if a graph with that name does exist. If `
 
 ## Truncating Graph
 
-The truncating operation deletes nodes and edges from the graph while preserving the graph itself and its graph type (closed graph) or labels (open graph).
+The truncating operation deletes all nodes, edges, and index data from the graph while preserving the graph itself. For closed graphs, the graph type is preserved.
 
 You may truncate the entire graph, all nodes or edges, or nodes or edges with a specific label. **Note that truncating nodes will also remove any edges connected to them.**
 
 To truncate `myGraph`:
 
 ```gql
-TRUNCATE myGraph
+TRUNCATE GRAPH myGraph
 ```
 
 To truncate all nodes in `myGraph`, note that all edges will be removed too:
@@ -83,7 +136,9 @@ To truncate all edges in `myGraph`:
 TRUNCATE EDGE * ON myGraph
 ```
 
-In a closed graph, you can truncate nodes or edges of a specified schema. For example, to truncate all `User` nodes in `myGraph`, note that all edges connected to `User` nodes will be removed too:
+You can truncate nodes or edges of a specified label (open graph) or type (closed graph). 
+
+For example, to truncate all `User` nodes in `myGraph`, note that all edges connected to `User` nodes will be removed too:
 
 ```gql
 TRUNCATE NODE User ON myGraph
@@ -101,7 +156,7 @@ TRUNCATE EDGE Follows ON myGraph
 
 Graph names must be unique. Each graph name must:
 
-- Contain 2 to 127 characters.
+- Contain 1 to 64 characters.
 - Begin with a letter.
 - Allowed characters: letters (A-Z, a-z), numbers (0-9) and underscores (<code>_</code>).
 
@@ -109,20 +164,29 @@ Graph names must be unique. Each graph name must:
 
 Graph type names must be unique. Each graph type name must:
 
-- Contain 2 to 64 characters.
+- Contain 1 to 64 characters.
 - Begin with a letter.
 - Allowed characters: letters (A-Z, a-z), numbers (0-9) and underscores (<code>_</code>).
 
-### Schema, Label
+### Node/Edge Type
 
-Each schema name or label must:
+In a closed graph, each node type or edge type name must:
 
 - Contain 2 to 127 characters.
 - Cannot start with an underscore (`_`) or a tilde (`~`).
 - Cannot contain backticks (<code>`</code>).
 - Cannot use system property names or <a target="_blank" href="/docs/gql/reserved-words">reserved words</a>.
 
-In a closed graph, node schema names must be unique, and edge schema names must be unique. However, a node schema and an edge schema may share the same name.
+Node type names must be unique, and edge type names must be unique. However, a node type and an edge type may share the same name.
+
+### Label
+
+Each label must:
+
+- Contain 2 to 127 characters.
+- Cannot start with an underscore (`_`) or a tilde (`~`).
+- Cannot contain backticks (<code>`</code>).
+- Cannot use system property names or <a target="_blank" href="/docs/gql/reserved-words">reserved words</a>.
 
 ### Property
 
@@ -133,4 +197,4 @@ Each property name must:
 - Cannot contain backticks (<code>`</code>).
 - Cannot use system property names or <a target="_blank" href="/docs/gql/reserved-words">reserved words</a>.
 
-In a closed graph, property names must be unique among a node schema or an edge schema.
+In a closed graph, property names must be unique within a node type or an edge type.

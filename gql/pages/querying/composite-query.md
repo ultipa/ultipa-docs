@@ -2,9 +2,9 @@
 
 ## Overview
 
-A composite query combines the result sets of multiple <a target="_blank" href="/docs/gql/query-composition">linear queries</a> using the following query conjunctions:
+A composite query combines the result sets of multiple <a target="_blank" href="/docs/gql/query-composition#Linear-Query">linear queries</a> using the following query conjunctions:
 
-| <div table-width="22">Query Conjunction</div> | Description |
+| Query Conjunction | Description |
 | -- | -- |
 | `UNION` | Returns **distinct** records from all result sets. |
 | `UNION ALL` | Returns all records from all result sets. |
@@ -16,7 +16,7 @@ A composite query combines the result sets of multiple <a target="_blank" href="
 
 **Details**
 
-- `UNION`, `EXCEPT`, and `INTERSECT` perform deduplication on the final result set by default. They are equivalent to `UNION DISTINCT`, `EXCEPT DISTINCT`, and `INTERSECT DISTINCT`.
+- `UNION`, `EXCEPT`, and `INTERSECT` perform deduplication on the final result set by default.
 - Different query conjunctions can be used within a composite query statement.
 
 To combine the result sets of multiple linear queries, the `RETURN` statements in all linear queries include the same number of return items, in the same order and with the same names. Each return item with the same name must also have the same type.
@@ -24,21 +24,6 @@ To combine the result sets of multiple linear queries, the `RETURN` statements i
 ## Example Graph
 
 <div align=center drawio-diagram='17053' drawio-name="draw_93e533a0a4df40389f5e67f0b8abbde4.jpg"><img src="https://img.ultipa.cn/draw/draw_93e533a0a4df40389f5e67f0b8abbde4.jpg?v='1726718106654'"/></div>
-
-<div tab="code">
-
-<p tit="Create the graph"></p>
-
-```gql
-CREATE GRAPH myGraph { 
-  NODE User ({name string}),
-  NODE Club (),
-  EDGE Follows ()-[{}]->(),
-  EDGE Joins ()-[{}]->()
-} PARTITION BY HASH(Crc32) SHARDS [1]
-```
-
-<p tit="Insert data to the graph"></p>
 
 ```gql
 INSERT (rowlock:User {_id:'U01', name:'rowlock'}),
@@ -58,8 +43,6 @@ INSERT (rowlock:User {_id:'U01', name:'rowlock'}),
        (mochaeach)-[:Joins]->(c02)
 ```
 
-</div>
-
 ## UNION
 
 ```gql
@@ -68,17 +51,19 @@ UNION
 MATCH (n) RETURN n
 ```
 
-Result: `n`
+Result:
 
-| \_id | \_uuid | schema | <div table-width="50">values</div> |
-| -- | -- | -- | -- |
-| C02 | <span style="color: #999;">Sys-gen</span> | Club | |
-| C01 | <span style="color: #999;">Sys-gen</span> | Club | |
-| U05 | <span style="color: #999;">Sys-gen</span> | User | {name: "lionbower"} |
-| U04 | <span style="color: #999;">Sys-gen</span> | User | {name: "mochaeach"} |
-| U03 | <span style="color: #999;">Sys-gen</span> | User | {name: "purplechalk"} |
-| U02 | <span style="color: #999;">Sys-gen</span> | User | {name: "Brainy"} |
-| U01 | <span style="color: #999;">Sys-gen</span> | User | {name: "rowlock"} |
+```json
+[
+  {"id": "C02", "labels": ["Club"], "properties": {}},
+  {"id": "C01", "labels": ["Club"], "properties": {}},
+  {"id": "U01", "labels": ["User"], "properties": {"name": "rowlock"}},
+  {"id": "U02", "labels": ["User"], "properties": {"name": "Brainy"}},
+  {"id": "U03", "labels": ["User"], "properties": {"name": "purplechalk"}},
+  {"id": "U04", "labels": ["User"], "properties": {"name": "mochaeach"}},
+  {"id": "U05", "labels": ["User"], "properties": {"name": "lionbower"}}
+]
+```
 
 ## UNION ALL
 
@@ -88,19 +73,21 @@ UNION ALL
 MATCH (n) RETURN n
 ```
 
-Result: `n`
+Result:
 
-| \_id | \_uuid | schema | <div table-width="50">values</div> |
-| -- | -- | -- | -- |
-| C02 | <span style="color: #999;">Sys-gen</span> | Club | |
-| C01 | <span style="color: #999;">Sys-gen</span> | Club | |
-| U05 | <span style="color: #999;">Sys-gen</span> | User | {name: "lionbower"} |
-| U04 | <span style="color: #999;">Sys-gen</span> | User | {name: "mochaeach"} |
-| U03 | <span style="color: #999;">Sys-gen</span> | User | {name: "purplechalk"} |
-| U02 | <span style="color: #999;">Sys-gen</span> | User | {name: "Brainy"} |
-| U01 | <span style="color: #999;">Sys-gen</span> | User | {name: "rowlock"} |
-| C02 | <span style="color: #999;">Sys-gen</span> | Club | |
-| C01 | <span style="color: #999;">Sys-gen</span> | Club | |
+```json
+[
+  {"id": "C02", "labels": ["Club"], "properties": {}},
+  {"id": "C01", "labels": ["Club"], "properties": {}},
+  {"id": "U01", "labels": ["User"], "properties": {"name": "rowlock"}},
+  {"id": "U02", "labels": ["User"], "properties": {"name": "Brainy"}},
+  {"id": "U03", "labels": ["User"], "properties": {"name": "purplechalk"}},
+  {"id": "U04", "labels": ["User"], "properties": {"name": "mochaeach"}},
+  {"id": "U05", "labels": ["User"], "properties": {"name": "lionbower"}},
+  {"id": "C02", "labels": ["Club"], "properties": {}},
+  {"id": "C01", "labels": ["Club"], "properties": {}}
+]
+```
 
 ## EXCEPT
 
@@ -110,13 +97,15 @@ EXCEPT
 MATCH ({_id: "U05"})-(n) RETURN n
 ```
 
-Result: `n`
+Result:
 
-| \_id | \_uuid | schema | <div table-width="50">values</div> |
-| -- | -- | -- | -- |
-| U04 | <span style="color: #999;">Sys-gen</span> | User | {name: "mochaeach"} |
-| U03 | <span style="color: #999;">Sys-gen</span> | User | {name: "purplechalk"} |
-| U01 | <span style="color: #999;">Sys-gen</span> | User | {name: "rowlock"} |
+```json
+[
+  {"id": "U04", "labels": ["User"], "properties": {"name": "mochaeach"}},
+  {"id": "U03", "labels": ["User"], "properties": {"name": "purplechalk"}},
+  {"id": "U01", "labels": ["User"], "properties": {"name": "rowlock"}}
+]
+```
 
 ## EXCEPT ALL
 
@@ -126,15 +115,17 @@ EXCEPT ALL
 MATCH ({_id: "U05"})-(n) RETURN n
 ```
 
-Result: `n`
+Result:
 
-| \_id | \_uuid | schema | <div table-width="50">values</div> |
-| -- | -- | -- | -- |
-| U01 | <span style="color: #999;">Sys-gen</span> | User | {name: "rowlock"} |
-| U03 | <span style="color: #999;">Sys-gen</span> | User | {name: "purplechalk"} |
-| U04 | <span style="color: #999;">Sys-gen</span> | User | {name: "mochaeach"} |
-| U03 | <span style="color: #999;">Sys-gen</span> | User | {name: "purplechalk"} |
-| U01 | <span style="color: #999;">Sys-gen</span> | User | {name: "rowlock"} |
+```json
+[
+  {"id": "U01", "labels": ["User"], "properties": {"name": "rowlock"}},
+  {"id": "U03", "labels": ["User"], "properties": {"name": "purplechalk"}},
+  {"id": "U04", "labels": ["User"], "properties": {"name": "mochaeach"}},
+  {"id": "U03", "labels": ["User"], "properties": {"name": "purplechalk"}},
+  {"id": "U01", "labels": ["User"], "properties": {"name": "rowlock"}}
+]
+```
 
 ## INTERSECT
 
@@ -144,11 +135,13 @@ INTERSECT
 MATCH ({_id: "U03"})-(u:User) RETURN u
 ```
 
-Result: `u`
+Result:
 
-| \_id | \_uuid | schema | <div table-width="50">values</div> |
-| -- | -- | -- | -- |
-| U02 | <span style="color: #999;">Sys-gen</span> | User | {name: "Brainy"} |
+```json
+[
+  {"id": "U02", "labels": ["User"], "properties": {"name": "Brainy"}}
+]
+```
 
 ## INTERSECT ALL
 
@@ -158,12 +151,14 @@ INTERSECT ALL
 MATCH ({_id: "U03"})-(u:User) RETURN u
 ```
 
-Result: `u`
+Result:
 
-| \_id | \_uuid | schema | <div table-width="50">values</div> |
-| -- | -- | -- | -- |
-| U02 | <span style="color: #999;">Sys-gen</span> | User | {name: "Brainy"} |
-| U02 | <span style="color: #999;">Sys-gen</span> | User | {name: "Brainy"} |
+```json
+[
+  {"id": "U02", "labels": ["User"], "properties": {"name": "Brainy"}},
+  {"id": "U02", "labels": ["User"], "properties": {"name": "Brainy"}}
+]
+```
 
 ## OTHERWISE
 
@@ -173,13 +168,15 @@ OTHERWISE
 MATCH ({_id: "U02"})<-[]-(u:User) RETURN u
 ```
 
-Result: `u`
+Result:
 
-| \_id | \_uuid | schema | <div table-width="50">values</div> |
-| -- | -- | -- | -- |
-| U01 | <span style="color: #999;">Sys-gen</span> | User | {name: "rowlock"} |
-| U03 | <span style="color: #999;">Sys-gen</span> | User | {name: "purplechalk"} |
-| U04 | <span style="color: #999;">Sys-gen</span> | User | {name: "mochaeach"} |
+```json
+[
+  {"id": "U01", "labels": ["User"], "properties": {"name": "rowlock"}},
+  {"id": "U03", "labels": ["User"], "properties": {"name": "purplechalk"}},
+  {"id": "U04", "labels": ["User"], "properties": {"name": "mochaeach"}}
+]
+```
 
 In this example, the result set of the first linear query returns a `null` value due to the usage of `OPTIONAL`:
 
@@ -232,37 +229,3 @@ Result:
 | U05 |
 | U04 |
 | U02 |
-
-## Deduplicating Multiple Return Items
-
-When the `RETURN` statements contain multiple return items, `DISTINCT` removes duplicate records based on the combined values of all return items.
-
-```gql
-MATCH (u1 {name: "rowlock"})-(u2:User) RETURN u1.name, u2.name
-UNION DISTINCT
-MATCH (u1 {name: "purplechalk"})-(u2:User) RETURN u1.name, u2.name
-```
-
-Result:
-
-| u1.name | u2.name
-| -- | -- |
-| rowlock | Brainy |
-| purplechalk | Brainy |
-
-You may compare the results returned by `UNION ALL`:
-
-```gql
-MATCH (u1 {name: "rowlock"})-(u2:User) RETURN u1.name, u2.name
-UNION ALL
-MATCH (u1 {name: "purplechalk"})-(u2:User) RETURN u1.name, u2.name
-```
-
-Result:
-
-| u1.name | u2.name
-| -- | -- |
-| rowlock | Brainy |
-| rowlock | Brainy |
-| purplechalk | Brainy |
-| purplechalk | Brainy |

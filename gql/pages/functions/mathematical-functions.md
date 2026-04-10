@@ -38,17 +38,11 @@ Returns the absolute value of a given number.
 RETURN abs(-2.32)
 ```
 
-Result: 
-
-| abs(-2.32) |
-| -- |
-| 2.32 |
+Result: 2.32
 
 ## ceil()
 
-Rounds a given number up to the nearest integer.
-
-> `ceiling()` is a synonym to `ceil()`.
+Rounds a given number up to the nearest integer. `ceiling()` is a synonym to `ceil()`
 
 <table style="width: 100%;">
   <colgroup>
@@ -85,56 +79,12 @@ For item in [-2.92, 4.2]
 RETURN ceil(item)
 ```
 
-Result: 
+Result:
 
 | ceil(item) |
 | -- |
 | -2 |
 | 5 |
-
-## exp()
-
-Computes the value of Euler's number 𝑒 raised to the power of a given number, where 𝑒 is approximately equal to 2.71828.
-
-<table style="width: 100%;">
-  <colgroup>
-    <col style="width:20%;">
-    <col>
-    <col>
-    <col style="width:40%;">
-  </colgroup>
-  <tbody>
-    <tr>
-      <td><b>Syntax</b></td>
-      <td colspan="3"><code>exp(&lt;num&gt;)</code></td>
-    </tr>
-    <tr>
-      <td rowspan="2"><b>Arguments</b></td>
-      <td><b>Name</b></td>
-      <td><b>Type</b></td>
-      <td><b>Description</b></td>
-    </tr>
-    <tr>
-      <td><code>&lt;num&gt;</code></td>
-      <td>Numeric</td>
-      <td>The power to which 𝑒 is raised</td>
-    </tr>
-    <tr>
-      <td><b>Return Type</b></td>
-      <td colspan="3"><code>DOUBLE</code></td>
-    </tr>
-  </tbody>
-</table>
-
-```gql
-RETURN exp(2)
-```
-
-Result: 
-
-| exp(2) |
-| -- |
-| 7.38905609893065 |
 
 ## floor()
 
@@ -175,278 +125,12 @@ For item in [-2.92, 4.2]
 RETURN floor(item)
 ```
 
-Result: 
+Result:
 
 | floor(item) |
 | -- |
 | -3 |
 | 4 |
-
-## ln()
-
-Computes the natural logarithm of a given number,  i.e., the logarithm to the base 𝑒 (Euler's number, approximately 2.71828).
-
-<table style="width: 100%;">
-  <colgroup>
-    <col style="width:20%;">
-    <col>
-    <col>
-    <col style="width:50%">
-  </colgroup>
-  <tbody>
-    <tr>
-      <td><b>Syntax</b></td>
-      <td colspan="3"><code>ln(&lt;num&gt;)</code></td>
-    </tr>
-    <tr>
-      <td rowspan="2"><b>Arguments</b></td>
-      <td><b>Name</b></td>
-      <td><b>Type</b></td>
-      <td><b>Description</b></td>
-    </tr>
-    <tr>
-      <td><code>&lt;num&gt;</code></td>
-      <td>Numeric</td>
-      <td>A positive number to for which the logarithm is to be computed</td>
-    </tr>
-    <tr>
-      <td><b>Return Type</b></td>
-      <td colspan="3"><code>DOUBLE</code></td>
-    </tr>
-  </tbody>
-</table>
-
-```gql
-RETURN ln(100)
-```
-
-Result: 
-
-| ln(100) |
-| -- |
-| 4.60517018598809 |
-
-## log()
-
-Computes the logarithm of a specified number with respect to a given base. 
-
-<table style="width: 100%;">
-  <colgroup>
-    <col style="width:20%;">
-    <col>
-    <col>
-    <col style="width:50%">
-  </colgroup>
-  <tbody>
-    <tr>
-      <td><b>Syntax</b></td>
-      <td colspan="3"><code>log(&lt;base&gt;, &lt;num&gt;)</code></td>
-    </tr>
-    <tr>
-      <td rowspan="3"><b>Arguments</b></td>
-      <td><b>Name</b></td>
-      <td><b>Type</b></td>
-      <td><b>Description</b></td>
-    </tr>
-    <tr>
-      <td><code>&lt;base&gt;</code></td>
-      <td>Numeric</td>
-      <td>A postive number as the base of the logarithm</td>
-    </tr>
-    <tr>
-      <td><code>&lt;num&gt;</code></td>
-      <td>Numeric</td>
-      <td>A positive number to for which the logarithm is to be computed</td>
-    </tr>
-    <tr>
-      <td><b>Return Type</b></td>
-      <td colspan="3"><code>DOUBLE</code></td>
-    </tr>
-  </tbody>
-</table>
-
-```gql
-RETURN log(2, 8)
-```
-
-Result: 
-
-| log(2, 8) |
-| -- |
-| 3 |
-
-## log10()
-
-Computes the base 10 logarithm of a given number. 
-
-<table style="width: 100%;">
-  <colgroup>
-    <col style="width:20%;">
-    <col>
-    <col>
-    <col style="width:50%">
-  </colgroup>
-  <tbody>
-    <tr>
-      <td><b>Syntax</b></td>
-      <td colspan="3"><code>log10(&lt;num&gt;)</code></td>
-    </tr>
-    <tr>
-      <td rowspan="2"><b>Arguments</b></td>
-      <td><b>Name</b></td>
-      <td><b>Type</b></td>
-      <td><b>Description</b></td>
-    </tr>
-    <tr>
-      <td><code>&lt;num&gt;</code></td>
-      <td>Numeric</td>
-      <td>A positive number to for which the logarithm is to be computed</td>
-    </tr>
-    <tr>
-      <td><b>Return Type</b></td>
-      <td colspan="3"><code>DOUBLE</code></td>
-    </tr>
-  </tbody>
-</table>
-
-```gql
-RETURN log10(100)
-```
-
-Result: 
-
-| log10(100) |
-| -- |
-| 2 |
-
-## mod()
-
-Computes the modulus, or the remainder when one number is divided by another.
-
-<table style="width: 100%;">
-  <colgroup>
-    <col style="width:20%;">
-    <col>
-    <col>
-    <col style="width:45%">
-  </colgroup>
-  <tbody>
-    <tr>
-      <td><b>Syntax</b></td>
-      <td colspan="3"><code>mod(&lt;dividend&gt;, &lt;divisor&gt;)</code></td>
-    </tr>
-    <tr>
-      <td rowspan="3"><b>Arguments</b></td>
-      <td><b>Name</b></td>
-      <td><b>Type</b></td>
-      <td><b>Description</b></td>
-    </tr>
-    <tr>
-      <td><code>&lt;dividend&gt;</code></td>
-      <td>Numeric</td>
-      <td>The number to be divided</td>
-    </tr>
-    <tr>
-      <td><code>&lt;divisor&gt;</code></td>
-      <td>Numeric</td>
-      <td>The number by which the dividend is divided</td>
-    </tr>
-    <tr>
-      <td><b>Return Type</b></td>
-      <td colspan="3"><code>DOUBLE</code></td>
-    </tr>
-  </tbody>
-</table>
-
-```gql
-RETURN mod(9.2, 2)
-```
-
-Result: 
-
-| mod(9.2, 2) |
-| -- |
-| 1.2 |
-
-## pi()
-
-Returns the mathematical constant π (pi) approximately equal to 3.14159. Pi is the ratio of a circle's circumference to its diameter in Euclidean geometry.
-
-<table style="width: 100%;">
-  <colgroup>
-    <col style="width:20%;">
-    <col>
-  </colgroup>
-  <tbody>
-    <tr>
-      <td><b>Syntax</b></td>
-      <td><code>pi()</code></td>
-    </tr>
-    <tr>
-      <td><b>Return Type</b></td>
-      <td><code>DOUBLE</code></td>
-    </tr>
-  </tbody>
-</table>
-
-```gql
-RETURN pi()
-```
-
-Result: 
-
-| pi() |
-| -- |
-| 3.14159265358979 |
-
-## power()
-
-Raises a number to the power of another number.
-
-<table style="width: 100%;">
-  <colgroup>
-    <col style="width:20%;">
-    <col style="width:18%;">
-    <col>
-    <col style="width:48%">
-  </colgroup>
-  <tbody>
-    <tr>
-      <td><b>Syntax</b></td>
-      <td colspan="3"><code>power(&lt;base&gt;, &lt;exponent&gt;)</code></td>
-    </tr>
-    <tr>
-      <td rowspan="3"><b>Arguments</b></td>
-      <td><b>Name</b></td>
-      <td><b>Type</b></td>
-      <td><b>Description</b></td>
-    </tr>
-    <tr>
-      <td><code>&lt;base&gt;</code></td>
-      <td>Numeric</td>
-      <td>The number to be raised to a power</td>
-    </tr>
-    <tr>
-      <td><code>&lt;exponent&gt;</code></td>
-      <td>Numeric</td>
-      <td>The power to which the base is raised</td>
-    </tr>
-    <tr>
-      <td><b>Return Type</b></td>
-      <td colspan="3"><code>DOUBLE</code></td>
-    </tr>
-  </tbody>
-</table>
-
-```gql
-RETURN power(2, 4)
-```
-
-Result: 
-
-| power(2, 4) |
-| -- |
-| 16 |
 
 ## round()
 
@@ -491,11 +175,52 @@ Returns the nearest value of a given number, rounded to a specified position of 
 RETURN round(3.1415926, 3)
 ```
 
-Result: 
+Result: 3.142
 
-| round(3.1415926, 3) |
-| -- |
-| 3.142 |
+## mod()
+
+Computes the modulus, or the remainder when one number is divided by another.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col>
+    <col>
+    <col style="width:45%">
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>mod(&lt;dividend&gt;, &lt;divisor&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="3"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;dividend&gt;</code></td>
+      <td>Numeric</td>
+      <td>The number to be divided</td>
+    </tr>
+    <tr>
+      <td><code>&lt;divisor&gt;</code></td>
+      <td>Numeric</td>
+      <td>The number by which the dividend is divided</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>DOUBLE</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN mod(9.2, 2)
+```
+
+Result: 1.2
 
 ## sqrt()
 
@@ -535,8 +260,318 @@ Computes the square root of a given number.
 RETURN sqrt(16)
 ```
 
-Result: 
+Result: 4
 
-| sqrt(16) |
-| -- |
-| 4 |
+## exp()
+
+Computes the value of Euler's number 𝑒 raised to the power of a given number, where 𝑒 is approximately equal to 2.71828.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col>
+    <col>
+    <col style="width:40%;">
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>exp(&lt;num&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;num&gt;</code></td>
+      <td>Numeric</td>
+      <td>The power to which 𝑒 is raised</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>DOUBLE</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN exp(2)
+```
+
+Result: 7.38905609893065
+
+## power()
+
+Raises a number to the power of another number.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:18%;">
+    <col>
+    <col style="width:48%">
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>power(&lt;base&gt;, &lt;exponent&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="3"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;base&gt;</code></td>
+      <td>Numeric</td>
+      <td>The number to be raised to a power</td>
+    </tr>
+    <tr>
+      <td><code>&lt;exponent&gt;</code></td>
+      <td>Numeric</td>
+      <td>The power to which the base is raised</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>DOUBLE</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN power(2, 4)
+```
+
+Result: 16
+
+## ln()
+
+Computes the natural logarithm of a given number,  i.e., the logarithm to the base 𝑒 (Euler's number, approximately 2.71828).
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col>
+    <col>
+    <col style="width:50%">
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>ln(&lt;num&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;num&gt;</code></td>
+      <td>Numeric</td>
+      <td>A positive number to for which the logarithm is to be computed</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>DOUBLE</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN ln(100)
+```
+
+Result: 4.605170185988092
+
+## log()
+
+Computes the logarithm of a specified number with respect to a given base.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col>
+    <col>
+    <col style="width:50%">
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>log(&lt;base&gt;, &lt;num&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="3"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;base&gt;</code></td>
+      <td>Numeric</td>
+      <td>A postive number as the base of the logarithm</td>
+    </tr>
+    <tr>
+      <td><code>&lt;num&gt;</code></td>
+      <td>Numeric</td>
+      <td>A positive number to for which the logarithm is to be computed</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>DOUBLE</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN log(2, 8)
+```
+
+Result: 3
+
+## log10()
+
+Computes the base 10 logarithm of a given number.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col>
+    <col>
+    <col style="width:50%">
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>log10(&lt;num&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;num&gt;</code></td>
+      <td>Numeric</td>
+      <td>A positive number to for which the logarithm is to be computed</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>DOUBLE</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN log10(100)
+```
+
+Result: 2
+
+## pi()
+
+Returns the mathematical constant π (pi) approximately equal to 3.14159. Pi is the ratio of a circle's circumference to its diameter in Euclidean geometry.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td><code>pi()</code></td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td><code>DOUBLE</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN pi()
+```
+
+Result: 3.141592653589793
+
+## random()
+
+Returns a random floating-point number between 0 (inclusive) and 1 (exclusive). `rand()` is an alias for `random()`.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col>
+    <col>
+    <col style="width:40%">
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>random()</code> or <code>rand()</code></td>
+    </tr>
+    <tr>
+      <td><b>Arguments</b></td>
+      <td colspan="3">None</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>FLOAT</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN random()
+```
+
+Result: A random value such as 0.4094453725342517
+
+## sign()
+
+Returns the sign of a number: `-1` for negative, `0` for zero, `1` for positive.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col>
+    <col>
+    <col style="width:40%">
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>sign(&lt;num&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;num&gt;</code></td>
+      <td>Numeric</td>
+      <td>The target number</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>INT</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN sign(-5), sign(0), sign(3.14)
+```
+
+Result:
+
+| sign(-5) | sign(0) | sign(3.14) |
+| -- | -- | -- |
+| -1 | 0 | 1 |

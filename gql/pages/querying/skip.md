@@ -2,32 +2,19 @@
 
 ## Overview
 
-The `SKIP` statement allows you to discard a specified number of records from the start of the intermediate result or output table. A non-negative integer must be specified in `SKIP`.
+The `SKIP` statement allows you to discard a specified number of rows from the start of the intermediate result table or output table. A non-negative integer must be specified in `SKIP`.
 
 > `OFFSET` can be used as a synonym to `SKIP`.
 
 <p tit="Syntax"></p>
 
-```gql
+```
 <skip statement> ::= "SKIP" <non-negative integer>
 ```
 
 ## Example Graph
 
 <div align=center drawio-diagram='16850' drawio-name="draw_48d050d22da344528aa2e26d3ca63913.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_48d050d22da344528aa2e26d3ca63913.jpg?v='1737965734232'"/></div>
-
-<div tab="code">
-
-<p tit="Create the graph"></p>
-
-```gql
-CREATE GRAPH myGraph { 
-  NODE Paper ({title string, score uint32, author string}),
-  EDGE Cites ()-[{}]->()
-} PARTITION BY HASH(Crc32) SHARDS [1]
-```
-
-<p tit="Insert data to the graph"></p>
 
 ```gql
 INSERT (p1:Paper {_id:'P1', title:'Efficient Graph Search', score:6, author:'Alex'}),
@@ -37,9 +24,7 @@ INSERT (p1:Paper {_id:'P1', title:'Efficient Graph Search', score:6, author:'Ale
        (p2)-[:Cites]->(p3)
 ```
 
-</div>
-
-## Skipping N Records
+## Skipping N Rows
 
 ```gql
 MATCH (n:Paper)
@@ -53,7 +38,7 @@ Result:
 | Efficient Graph Search |
 | Path Patterns |
 
-## Skipping N Ordered Records
+## Skipping N Ordered Rows
 
 ```gql
 MATCH (n:Paper)

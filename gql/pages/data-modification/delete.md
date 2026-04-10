@@ -8,26 +8,11 @@ An edge cannot exist when any of its endpoints is removed from the graph. Theref
 
 <div align=center drawio-diagram='16693' drawio-name="draw_d01257ea48b84ca0b9077ab433dfb328.jpg"><img src="https://img.ultipa.cn/draw/draw_d01257ea48b84ca0b9077ab433dfb328.jpg?v='1726308511020'"/></div>
 
-In the case of `DELETE` or `NODETACH DELETE`, the deletion of node `B` will fail, which can be useful as a security measure to prevent unintended deletions. If not explicitly specified, `NODETACH` is applied. 
+Without `DETACH`, the deletion of node `B` will fail, which can be useful as a security measure to prevent unintended deletions.
 
 ## Example Graph
 
 <div align=center drawio-diagram='16780' drawio-name="draw_6b12dbc2db4f47d9ba29a1ebedd2a588.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_6b12dbc2db4f47d9ba29a1ebedd2a588.jpg?v='1737864364502'"/></div>
-
-<div tab="code">
-
-<p tit="Create the graph"></p>
-
-```gql
-CREATE GRAPH myGraph {
-  NODE User ({name STRING}),
-  NODE Club (),
-  EDGE Follows ()-[]->(),
-  EDGE Joins ()-[]->()
-}
-```
-
-<p tit="Insert data to the graph"></p>
 
 ```gql
 INSERT (rowlock:User {_id: "U01", name: "rowlock"}),
@@ -41,22 +26,20 @@ INSERT (rowlock:User {_id: "U01", name: "rowlock"}),
        (brainy)-[:Joins]->(c)
 ```
 
-</div>
-
 ## Deleting Isolated Nodes
 
-To delete the isolated nodes `purplechalk` and `lionbower`:
+Delete the isolated nodes `purplechalk` and `lionbower`:
 
 ```gql
 MATCH (n:User) WHERE n.name IN ["purplechalk", "lionbower"] 
 DELETE n
 ```
 
-The `[NODETACH] DELETE` statement can only delete isolated nodes, if any node specified has connected edges, an error will be thrown, and no nodes will be deleted.
+The `DELETE` statement (without `DETACH`) can only delete isolated nodes. If any node specified has connected edges, an error will be thrown.
 
 ## Deleting Any Nodes
 
-To delete the node `rowlock` along with its connected edges:
+Delete the node `rowlock` along with its connected edges:
 
 ```gql
 MATCH (n:User {name: 'rowlock'})
@@ -65,7 +48,7 @@ DETACH DELETE n
 
 ## Deleting All Nodes and Edges
 
-To delete all nodes along with all edges:
+Delete all nodes along with all edges:
 
 ```gql
 MATCH (n)
@@ -74,7 +57,7 @@ DETACH DELETE n
 
 ## Deleting Edges
 
-To delete all `Follows` edges:
+Delete all `Follows` edges:
 
 ```gql
 MATCH ()-[e:Follows]->()
@@ -85,7 +68,7 @@ DELETE e
 
 To limit the number of nodes or edges to delete, apply the `LIMIT` statement after `MATCH` to keep only the first N records before passing the variable to the `DELETE` statement.
 
-To delete any two edges:
+Delete any two edges:
 
 ```gql
 MATCH ()-[e]->() LIMIT 2

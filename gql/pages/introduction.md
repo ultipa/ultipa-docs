@@ -1,6 +1,6 @@
 # Introduction
 
-**GQL** (Graph Query Language) is a database language designed for modeling, querying and modifying data in graph database.
+**GQL** (Graph Query Language) is a database language designed for modeling, querying and modifying data in graph databases.
 
 As the first standardized database language since SQL's introduction in 1987, GQL marks a major milestone in data management. The first version of the GQL standard was officially released by the ISO/IEC in April 2024. See Ultipa's <a target="_blank" href="/docs/gql/gql-conformance">GQL Conformance</a>.
 
@@ -39,7 +39,7 @@ Before diving into GQL, understand these fundamental concepts:
 
 ## GQL Execution Context
 
-While administrative GQL statements affect the database overall, most GQL queries apply to a specific graph in the database. A database may contain multiple graphs, and you need to explicitly select the graph before executing a GQL query.
+While administrative GQL statements affect the database overall, most GQL queries apply to a specific graph in the database. A database may contain multiple graphs, and you can explicitly select a graph as the current with the GQL query `USE <graphName>`.
 
 ## Transactions and ACID Compliance
 

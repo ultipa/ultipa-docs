@@ -2,95 +2,100 @@
 
 ## Overview
 
-**Indexing**, or **property indexing**, is a technique used in Ultipa to accelerate the retrieval of nodes and edges with specific properties. By avoiding full graph scans, indexes enable the database to quickly locate relevant data. This is especially advantageous when working with large graphs.
+**Indexing**, or **property indexing**, is a technique used to accelerate the retrieval of nodes and edges with specific properties. By avoiding full graph scans, indexes enable the database to quickly locate relevant data. This is especially advantageous when working with large graphs.
 
-### Index Types
+An index is created on a single property of a label.
 
-Ultipa supports **single index** on one property and **composite index** which involve multiple properties from a label.
+## Showing Index
 
-## Showing Indexes
+Retrieve all indexes in the current graph:
 
-To retrieve node indexes in the current graph:
+```gql
+SHOW INDEX
+```
+
+Retrieve only node or edge indexes:
 
 ```gql
 SHOW NODE INDEX
 ```
 
-To retrieve edge indexes in the current graph:
-
 ```gql
 SHOW EDGE INDEX
 ```
 
-The information about indexes is organized into the `_nodeIndex` or `_edgeIndex` table with the following fields:
+The result includes the following fields:
 
 | <div table-width="15">Field</div> | Description |
 | -- | -- |
-| `id` | Index id. |
-| `name` | Index name. |
-| `properties` | The properties involved in the index. |
-| `label` | The label of the properties involved in the index. |
-| `status` | Index status, which can be `DONE` or `CREATING`. |
+| `index_name` | Index name. |
+| `entity_type` | `NODE` or `EDGE`. |
+| `label` | The label of the indexed property. |
+| `property` | The indexed property name. |
+| `prefix_length` | For string/text properties, the maximum indexed byte length. `null` if not set. |
+| `status` | Index status: `ready`, `building`, or `error`. |
+| `progress` | Build progress (e.g., `100%`, `50.0% (500/1000)`). |
+| `indexed_count` | Number of entries indexed. |
+| `total_count` | Total number of entries to index. |
+| `error` | Error message if the build failed. |
 
-## Creating an Index
+## Creating Index
 
-You can create an index using the `CREATE INDEX` statement. Note that each property can only have one single index. The index creation runs as a job, you may run `SHOW JOB <id?>` afterward to verify the success of the creation.
-
-System properties in Ultipa are inherently optimized for query performance and have built-in efficiencies. They do not support indexing.
+You can create an index using the `CREATE INDEX` statement. The index is built asynchronously in the background, use `SHOW INDEX` to check build progress.
 
 <p tit="Syntax"></p>
 
-```gql
+```
 <create index statement> ::=
-  "CREATE INDEX" <index name> "ON" < "NODE" | "EDGE" > <label name>
-  "(" <property index item> [ { "," <property index item> }... ] ")"
-
-<property index item> ::=
-  <property name> [ "(" <bytes> ")" ]
+  "CREATE INDEX" <index name> "ON" < "NODE" | "EDGE" > <label>
+  "(" <property name> [ "(" <length> ")" ] ")"
 ```
 
 **Details**
 
 - The `<index name>` must be unique among nodes and among edges, but a node index and an edge index may share the same name.
-- For a <b>single index</b>, specifies one `<property index item>`; for a <b>composite index</b>, lists multiple `<property index item>`.
-- If a specified property is of type `string` or `text`, you can specify the maximum number of **bytes** <sup>[1]</sup> (count from left) to be indexed for each value. If omitted, the default indexing length is `1024` bytes for `string` and `2048` bytes for `text`. Learn more about <a href="#String-Byte-Length-Limitation">how this byte-length limitation affects queries</a>.
+- For `STRING` or `TEXT` properties, you can optionally specify `<length>` to limit the number of characters indexed per value. If omitted, the full string is indexed. See <a href="#String-Length-Limitation">String Length Limitation</a>.
 
-<sup>[1]</sup> In standard English text, most encodings (such as ASCII or UTF-8) use 1 byte per character. However, for non-English characters, the byte size may vary—for example, one Chinese character typically occupies 3 bytes.
-
-To create single index named `cBalance` for the property `balance` of `card` nodes:
+Create single index `cBalance` for the `balance` property of `card` nodes:
 
 ```gql
 CREATE INDEX cBalance ON NODE card (balance)
 ```
 
-To create single index named `name` for the property `name` (`string` type) of `card` nodes, restricting the indexed byte-length as `10`:
+Create single index `name` for the `STRING`-type property `name` of `card` nodes, limiting the indexed length to `10` characters:
 
 ```gql
 CREATE INDEX name ON NODE card (name(10))
 ```
 
-To create composite index named `transAmountNotes` for properties `amount` and `notes` (`text` type, restricting the indexed byte-length as `10`) for `transfer` edges:
+Create an edge index `transAmount` for the `amount` property of `transfer` edges:
 
 ```gql
-CREATE INDEX transAmountNotes ON EDGE transfer (amount, notes(10))
+CREATE INDEX transAmount ON EDGE transfer (amount)
 ```
 
-## Dropping an Index
+## Dropping Index
 
-You can drop an index using the `DROP NODE INDEX` or `DROP EDGE INDEX` statement. Dropping an index does not affect the actual property values stored in shards. 
+Dropping an index does not affect the actual property values.
 
-> A property with an index cannot be dropped until the index is deleted.
+```gql
+DROP INDEX cBalance
+```
 
-To drop the node index `cBalance`:
+You can also specify `NODE` or `EDGE` explicitly:
 
 ```gql
 DROP NODE INDEX cBalance
 ```
 
-To drop the edge index `transAmountNotes`:
-
 ```gql
 DROP EDGE INDEX transAmountNotes
+```
+
+Use `IF EXISTS` to avoid errors when the index doesn't exist:
+
+```gql
+DROP INDEX IF EXISTS cBalance
 ```
 
 ## Using Indexes
@@ -115,8 +120,8 @@ RETURN p
 **Range queries:**
 
 ```gql
-MATCH (p:Person WHERE p.age >= 25 AND p.age < 40)
-RETURN p.name, p.age
+MATCH ()-[e:Links WHERE e.weight > 5]->()
+RETURN e
 ```
 
 **Prefix search:**
@@ -126,41 +131,26 @@ MATCH (p:Person WHERE p.name STARTS WITH 'Al')
 RETURN p.name
 ```
 
-**Edge property queries:**
+### String Length Limitation
 
-```gql
-MATCH ()-[e:Links WHERE e.weight > 5]->()
-RETURN e
-```
+When a length limit `N` is specified for a string index, the index stores only the first `N` characters of each value. Queries that filter by a string longer than the limit won't match in the index.
 
-### Leftmost Prefix Rule
-
-The order of properties in a composite index matters — queries that match the leftmost properties of the index (i.e., the first property or the first few properties in the defined order) will benefit from the index.
-
-For example:
-
-```gql
-CREATE INDEX name_age ON NODE user (name(10),age)
-```
-
-- `MATCH (u:user WHERE u.name = "Kavi" AND u.age > 20)` uses the index.
-- `MATCH (u:user WHERE u.name = "Kavi")` uses the index.
-- `MATCH (u:user WHERE u.age > 20)` doesn't use the index.
-- `MATCH (u:user WHERE u.name = "Kavi" AND u.age > 20 AND u.grade = 7)` uses the index, meanwhile it contains the filtering for the `grade` property which lacks an index.
-
-### String Byte-Length Limitation
-
-When using indexes with `string` or `text` properties, ensure the byte-length of the string used in the filter does not exceed the defined limit when creating the index.
-
-For example, an index `Username` is created for the `name` property of the `user` nodes with a 8-byte limitation:
+For example, an index `Username` is created for the `name` property of `user` nodes with an 8-character limit:
 
 ```gql
 CREATE INDEX Username ON NODE user (name(8))
 ```
 
-The query below won't utilize the `Username` index as the specified string `Aventurine` exceeds the 8-byte limit:
+The query below won't utilize the `Username` index because `"Aventurine"` (10 characters) exceeds the 8-character limit:
 
 ```gql
 MATCH (n:user {name: "Aventurine"})
+RETURN n
+```
+
+Queries with strings of 8 characters or fewer will use the index:
+
+```gql
+MATCH (n:user {name: "Kavi"})
 RETURN n
 ```

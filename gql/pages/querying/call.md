@@ -4,50 +4,42 @@
 
 The `CALL` statement is used to invoke an **inline procedure** or a **named procedure**.
 
+<p tit="Syntax"></p>
+
+```
+<call statement> ::= <call inline procedure> | <call named procedure>
+```
+
 ## Calling Inline Procedures
 
-An **inline procedure** is a user-defined procedure embedded within a query, commonly used to execute subqueries or perform data modifications. It enables complex logic such as looping and enhances efficiency by managing resources more effectively—especially when working with large graphs—thereby reducing memory overhead.
+An **inline procedure** is a user-defined procedure embedded within a query, commonly used to execute subqueries or perform data modifications. It enables complex logic such as looping and enhances efficiency by managing resources more effectively, especially when working with large graphs, thereby reducing memory overhead.
 
 <p tit="Syntax"></p>
 
-```gql
-<call inline procedure statement> ::= 
-  [ "OPTIONAL" ] "CALL" [ "(" [ <variable reference list> ] ")" ] "{" 
-    <statement block>
-  "}"
+```
+<call inline procedure> ::= 
+  [ "OPTIONAL" ] "CALL" [ <variable reference list> ] <procedure specification>
 
 <variable reference list> ：：=
-  <variable reference> [ { "," <variable reference> }... ]
+  "(" <variable reference> [ { "," <variable reference> }... ] ")"
+
+<procedure specification> ::=
+  "{" <statement block> "}"
 ```
 
 **Details**
 
 - You can import variables from earlier parts of the query into `CALL`. If omitted, all current variables are implicitly imported. 
-- Each imported record is processed independently by the `<statement block>` inside the `CALL`.
+- The imported variables are processed row by row independently inside `CALL`.
 - When used for subqueries, the `<statement block>` must end with a `RETURN` statement to output variables to the outer query:
   - Each returned variable becomes a new column in the intermediate result table.
   - If a subquery yields no records, the associated imported record is **discarded**. The `OPTIONAL` keyword can be used to handle this case - producing a `null` value instead of discarding the record.
   - If multiple records are returned, the imported row is **duplicated** accordingly.
-- For data modification procedures, a `RETURN` statement is not required. In such cases, the number of records in the intermediate result table remains the same after the `CALL`.
+- For data modification procedures, a `RETURN` statement is not required. In such cases, the number of records in the intermediate result table remains the same after `CALL`.
 
 ### Example Graph
 
 <div align=center drawio-diagram='16932' drawio-name="draw_8900c35205e1442fa1a12c929a716edf.jpg"><img src="https://img.ultipa.cn/draw/draw_8900c35205e1442fa1a12c929a716edf.jpg?v='1733216427377'"/></div>
-
-<div tab="code">
-
-<p tit="Create the graph"></p>
-
-```gql
-CREATE GRAPH myGraph { 
-  NODE User ({name string}),
-  NODE Club (),
-  EDGE Follows ()-[]->(),
-  EDGE Joins ()-[{rates uint32}]->()
-} PARTITION BY HASH(Crc32) SHARDS [1]
-```
-
-<p tit="Insert data to the graph"></p>
 
 ```gql
 INSERT (rowlock:User {_id:'U01', name:'rowlock'}),
@@ -67,11 +59,9 @@ INSERT (rowlock:User {_id:'U01', name:'rowlock'}),
        (mochaeach)-[:Joins]->(c02)
 ```
 
-</div>
-
 ### Subqueries
 
-To find members of each club:
+Find members of each club:
 
 ```gql
 MATCH (c:Club)
@@ -91,7 +81,7 @@ Result:
 
 ### OPTIONAL CALL
 
-To retrieve the followers of each member in club `C01`, ensure that members with no followers are still included in the results:
+Retrieve the followers of each member in club `C01`, ensure that members with no followers are still included in the results:
 
 ```gql
 MATCH (c)<-[:Joins]-(u:User) WHERE c._id = "C01"
@@ -107,7 +97,7 @@ Result:
 | u.name | followers |
 | -- | -- |
 | Brainy | ["rowlock","mochaeach"] |
-| lionbower | `null` |
+| lionbower | [] |
 
 ### Execution Order of Subqueries
 
@@ -120,7 +110,7 @@ MATCH (u:User)
 ORDER BY u.name
 CALL {
   MATCH (u)<-[:Follows]-(follower)
-  RETURN COUNT(follower) AS followersNo
+  RETURN count(follower) AS followersNo
 }
 RETURN u.name, followersNo
 ```
@@ -137,7 +127,7 @@ Result:
 
 ### Data Modifications
 
-To set values for the property `rates` of `Joins` edges:
+Set values for the property `rates` of `Joins` edges:
 
 ```gql
 FOR score IN [1,2,3,4]
@@ -149,14 +139,16 @@ CALL {
 RETURN e
 ```
 
-Result: `e`
+Result:
 
-| <div table-width="9">_uuid</div> | <div table-width="6">_from</div> | <div table-width="5">_to</div> | <div table-width="12">_from_uuid</div> | <div table-width="12">_to_uuid</div> | <div table-width="10">schema</div> | values |
-| -- | -- | -- | -- | -- | -- | -- |
-| <span style="color: #999;">Sys-gen</span> | U04 | C02 | <span style="color: #999;">UUID of U04</span> | <span style="color: #999;">UUID of C02</span> | Joins | {rates: 1} |
-| <span style="color: #999;">Sys-gen</span> | U02 | C01 | <span style="color: #999;">UUID of U02</span> | <span style="color: #999;">UUID of C01</span> | Joins | {rates: 2} |
-| <span style="color: #999;">Sys-gen</span> | U02 | C02 | <span style="color: #999;">UUID of U02</span> | <span style="color: #999;">UUID of C02</span> | Joins | {rates: 3} |
-| <span style="color: #999;">Sys-gen</span> | U05 | C01 | <span style="color: #999;">UUID of U05</span> | <span style="color: #999;">UUID of C01</span> | Joins | {rates: 4} |
+```json
+[
+  {"id": "e:7", "label": "Joins", "fromNodeId": "U02", "toNodeId": "C02", "properties": {"rates": 1}},
+  {"id": "e:8", "label": "Joins", "fromNodeId": "U04", "toNodeId": "C02", "properties": {"rates": 2}},
+  {"id": "e:5", "label": "Joins", "fromNodeId": "U02", "toNodeId": "C01", "properties": {"rates": 3}},
+  {"id": "e:6", "label": "Joins", "fromNodeId": "U05", "toNodeId": "C01", "properties": {"rates": 4}}
+]
+```
 
 ## Calling Named Procedures
 
@@ -164,15 +156,12 @@ A **named procedure** refers to a predefined procedure, such as an algorithm, th
 
 <p tit="Syntax"></p>
 
-```gql
-<call named procedure statement> ::=
-  "CALL" <procedure reference> [ <yield clause> ]
+```
+<call named procedure> ::= "CALL" <procedure reference> [ <yield clause> ]
 
-<yield clause> ::= 
-  "YIELD" <yield item> [ { "," <yield item> }... ]
+<yield clause> ::= "YIELD" <yield item> [ { "," <yield item> }... ]
 
-<yield item> ::=
-  <column name> [ "AS" <binding variable> ]
+<yield item> ::= <column name> [ "AS" <binding variable> ]
 ```
 
 **Details**
@@ -181,14 +170,12 @@ A **named procedure** refers to a predefined procedure, such as an algorithm, th
 
 ### Running an Algorithm
 
-The following query executes the <a target="_blank" href="/docs/graph-analytics-algorithms/degree-centrality">Degree Centrality</a> algorithm. Note that the algorithm is run on the HDC graph `my_hdc_graph` derived from the current graph.
+The following query executes the <a target="_blank" href="/docs/graph-algorithms/degree-centrality">Degree Centrality</a> algorithm:
 
 ```gql
-CALL algo.degree.run("my_hdc_graph", {
-  direction: "in",
+CALL algo.degree({
   order: "desc"
-}) YIELD r
-RETURN r
+}) YIELD nodeId, degree
 ```
 
-To learn more about available algorithms, refer to the <a target="_blank" href="/docs/graph-analytics-algorithms">Graph Analytics & Algorithms</a> documentation.
+To learn more about available algorithms, refer to the <a target="_blank" href="/docs/graph-algorithms">Graph Algorithms</a> documentation.

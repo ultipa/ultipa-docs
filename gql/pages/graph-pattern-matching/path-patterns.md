@@ -10,11 +10,9 @@ A path pattern is to match paths in the graph. It is composed of three parts:
 
 <p tit="Syntax"></p>
 
-```gql
+```
 <path pattern> ::=
-  [ <path variable declaration> ]
-  [ <path pattern prefix> ]
-  <path pattern expression>
+  [ <path variable declaration> ] [ <path pattern prefix> ] <path pattern expression>
 ```
 
 ## Path Pattern Expression
@@ -58,11 +56,12 @@ This path pattern reuses the variable `a` to form a ring-like structure that sta
 GQL supports the following advanced path patterns:
 
 - <a target="_blank" href="/docs/gql/quantified-paths">Quantified Paths</a>
+- <a target="_blank" href="/docs/gql/questioned-paths">Questioned Paths</a>
 - <a target="_blank" href="/docs/gql/shortest-paths">Shortest Paths</a>
 
 ## Path Variable Declaration
 
-A path variable is declared at the start of a path pattern with `=`, representing a path binding.
+A path variable is declared at the start of a path pattern with `=`.
 
 The variable `p` is bound to paths connecting any two nodes through an outgoing `Follows` edge:
 
@@ -82,16 +81,6 @@ There are two types of path pattern prefixes:
 
 <div align=center drawio-diagram='16782' drawio-name="draw_69a928e0e8cb4d508e7c93b470c4849a.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_69a928e0e8cb4d508e7c93b470c4849a.jpg?v='1751861598938'"/></div>
 
-<div tab="code">
-
-<p tit="Create the graph"></p>
-
-```gql
-CREATE GRAPH myGraph SHARDS [1]
-```
-
-<p tit="Insert data to the graph"></p>
-
 ```gql
 INSERT (c1:default {_id: 'C1'}),
        (c2:default {_id: 'C2'}),
@@ -103,11 +92,9 @@ INSERT (c1:default {_id: 'C1'}),
        (c3)-[:default]->(c4)
 ```
 
-</div>
-
 ### Path Mode
 
-Path modes control how paths are traversed and whether nodes or edges can be revisited. A path mode may be placed either at the head of a path pattern expression.
+Path modes control how paths are traversed and whether nodes or edges can be revisited. A path mode may be placed at the head of a path pattern expression.
 
 | <div table-width="15">Path Mode</div> | Description |
 | -- | -- |
@@ -223,7 +210,7 @@ Result: `p`
 
 When a query includes both a path selector and a path mode, the path selector should precede the path mode.
 
-To find any 1- to 3-step outgoing `WALK` paths from `C1` (from each partition):
+Find any 1- to 3-step outgoing `WALK` paths from `C1` (from each partition):
 
 ```gql
 MATCH p = ANY WALK ({_id: 'C1'})->{1,3}()

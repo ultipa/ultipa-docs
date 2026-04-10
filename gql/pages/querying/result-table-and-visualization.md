@@ -1,14 +1,33 @@
 # Result Table and Visualization
 
-Even though GQL operates on graphs, its results are still logically represented as tables composed of records (rows).
+Even though GQL operates on graphs, its results are still logically represented as tables composed of rows.
 
 ## Intermediate Result Table
 
 The intermediate result table is a conceptual model to understand how queries are processed.
 
-Here is the example graph and query:
+Example graph:
 
 <div align=center drawio-diagram='25643' drawio-name="draw_a08c0407baa0426b840f458d61b271d7.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_a08c0407baa0426b840f458d61b271d7.jpg?v='1751249910591'"/></div>
+
+```gql
+INSERT (mochaeach:User {_id: 'U1', name: 'mochaeach', age: 31}),
+       (purplechalk:User {_id: 'U2', name: 'purplechalk', age: 45}),
+       (brainy:User {_id: 'U3', name: 'Brainy', age: 36}),
+       (jody:User {_id: 'U4', name: 'Jody', age: 29}),
+       (c1:Club {_id: 'C1', since: 2002}),
+       (c2:Club {_id: 'C2', since: 2020}),
+       (c3:Club {_id: 'C3', since: 2011}),
+       (purplechalk)-[:Follows]->(mochaeach),
+       (purplechalk)-[:Follows]->(brainy),
+       (jody)-[:Follows]->(brainy),
+       (mochaeach)-[:Joins]->(c1),
+       (purplechalk)-[:Joins]->(c1),
+       (purplechalk)-[:Joins]->(c3),
+       (jody)-[:Joins]->(c2)
+```
+
+Example query:
 
 ```gql
 MATCH (u:User) WHERE u.age > 30
@@ -27,22 +46,34 @@ RETURN u.name, c._id
 <tbody style="background: #fff;">
   <tr>
     <td><code>MATCH (u:User)</code><br><code>WHERE u.age > 30</code></td>
-    <td>The intermediate table contains one column (variable) <code>u</code> with three records (rows).
+    <td>The intermediate table contains one column (variable) <code>u</code> with three rows.<br><br>
       <table>
         <thead>
           <tr>
-            <th><code>u</code></th>
+            <th>u</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>(:User {_id: "U1", name: "mochaeach", age: 31})</td>
+            <td><pre>{
+  "id": "U1",
+  "labels": ["User"],
+  "properties": {"name": "mochaeach", "age": 31}
+}</pre></td>
           </tr>
           <tr>
-            <td>(:User {_id: "U2", name: "purplechalk", age: 45})</td>
+            <td><pre>{
+  "id": "U2",
+  "labels": ["User"],
+  "properties": {"name": "purplechalk", "age": 45}
+}</pre></td>
           </tr>
           <tr>
-            <td>(:User {_id: "U3", name: "Brainy", age: 36})</td>
+            <td><pre>{
+  "id": "U3",
+  "labels": ["User"],
+  "properties": {"name": "Brainy", "age": 36}
+}</pre></td>
           </tr>
         </tbody>
       </table>
@@ -50,26 +81,50 @@ RETURN u.name, c._id
   </tr>
   <tr>
     <td><code>MATCH (u)->(c:Club)</code></td>
-    <td>The statement evaluates <code>u</code> row by row and adds a new column <code>c</code> to the intermediate result table:<ul><li>If a record of <code>u</code> yields no result, that record is discarded.</li><li>If it yields a single result, that value is added to column <code>c</code>.</li><li>If it yields multiple results, the record of <code>v</code> is duplicated for each result, and each corresponding <code>c</code> record is added.</li></ul>
+    <td>The statement evaluates <code>u</code> row by row and adds a new column <code>c</code> to the intermediate result table:<ul><li>If a record of <code>u</code> yields no result, that record is discarded.</li><li>If it yields a single result, that value is added to column <code>c</code>.</li><li>If it yields multiple results, the record of <code>u</code> is duplicated for each result, and each corresponding <code>c</code> record is added.</li></ul>
       <table>
         <thead>
           <tr>
-            <th><code>u</code></th>
-            <th><code>c</code></th>
+            <th>u</th>
+            <th>c</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>(:User {_id: "U1", name: "mochaeach", age: 31})</td>
-            <td>(:Club {_id: "C1", since: 2002})</td>
+            <td><pre>{
+  "id": "U1",
+  "labels": ["User"],
+  "properties": {"name": "mochaeach", "age": 31}
+}</pre></td>
+            <td><pre>{
+  "id": "C1",
+  "labels": ["Club"],
+  "properties": {"since": 2002}
+}</pre></td>
           </tr>
           <tr>
-            <td>(:User {_id: "U2", name: "purplechalk", age: 31})</td>
-            <td>(:Club {_id: "C1", since: 2002})</td>
+            <td><pre>{
+  "id": "U2",
+  "labels": ["User"],
+  "properties": {"name": "purplechalk", "age": 45}
+}</pre></td>
+            <td><pre>{
+  "id": "C1",
+  "labels": ["Club"],
+  "properties": {"since": 2002}
+}</pre></td>
           </tr>
           <tr>
-            <td>(:User {_id: "U2", name: "purplechalk", age: 31}</td>
-            <td>(:Club {_id: "C3", since: 2011})</td>
+            <td><pre>{
+  "id": "U2",
+  "labels": ["User"],
+  "properties": {"name": "purplechalk", "age": 45}
+}</pre></td>
+            <td><pre>{
+  "id": "C3",
+  "labels": ["Club"],
+  "properties": {"since": 2011}
+}</pre></td>
           </tr>
         </tbody>
       </table>
@@ -77,18 +132,26 @@ RETURN u.name, c._id
   </tr>
   <tr>
     <td><code>FILTER c.since > 2010</code></td>
-    <td>The statement evaluates <code>c</code> row by row and discards records that don't meet the filtering condition.
+    <td>The statement evaluates <code>c</code> row by row and discards records that don't meet the filtering condition.<br><br>
       <table>
         <thead>
           <tr>
-            <th><code>u</code></th>
-            <th><code>c</code></th>
+            <th>u</th>
+            <th>c</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>(:User {_id: "U2", name: "purplechalk", age: 31}</td>
-            <td>(:Club {_id: "C3", since: 2011})</td>
+            <td><pre>{
+  "id": "U2",
+  "labels": ["User"],
+  "properties": {"name": "purplechalk", "age": 45}
+}</pre></td>
+            <td><pre>{
+  "id": "C3",
+  "labels": ["Club"],
+  "properties": {"since": 2011}
+}</pre></td>
           </tr>
         </tbody>
       </table>
@@ -100,12 +163,12 @@ RETURN u.name, c._id
   </tr>
   <tr>
     <td><code>RETURN u.name, c._id</code></td>
-    <td>The <code>RETURN</code> statement defines the output table.
+    <td>The <code>RETURN</code> statement defines the output table.<br><br>
       <table>
         <thead>
           <tr>
-            <th><code>u.name</code></th>
-            <th><code>c._id</code></th>
+            <th>u.name</th>
+            <th>c._id</th>
           </tr>
         </thead>
         <tbody>
@@ -144,20 +207,20 @@ RETURN u.name, c._id
 
 There are 4 `User` nodes and 3 `Club` nodes. Since there’s no relationship between `u` and `c`, the query produces a Cartesian product, yielding `4*3 = 12` records:
 
-| `u.name` | `c._id` |
+| u.name | c._id |
 | -- | -- |
-| Jody | C1 | 
-| purplechalk | C1 |
-| mochaeach | C1 |
-| Brainy | C1 |
-| Jody | C3 |
-| purplechalk | C3 |
-| mochaeach | C3| 
-| Brainy | C3 |
-| Jody | C2 |
-| purplechalk | C2 |
 | mochaeach | C2 |
+| mochaeach | C3 |
+| mochaeach | C1 |
+| purplechalk | C2 |
+| purplechalk | C3 |
+| purplechalk | C1 |
 | Brainy | C2 |
+| Brainy | C3 |
+| Brainy | C1 |
+| Jody | C2 |
+| Jody | C3 |
+| Jody | C1 |
 
 While this is a small example, in a real-world graph with large datasets, Cartesian products can lead to huge result sets, consuming significant memory and degrading performance. Therefore, avoid Cartesian products unless they are explicitly intended.
 
@@ -165,6 +228,6 @@ While this is a small example, in a real-world graph with large datasets, Cartes
 
 While GQL results can be returned in tabular format, one of the defining features of graph databases is the ability to visualize results as graph structures, making it easier for users to see and explore the relationships within their data.
 
-When running GQL queries in Ultipa products such as <a target="_blank" href="/docs/manager-user-guide">Ultipa Manager</a> and <a target="_blank" href="/gql-playground">GQL Playground</a>, query results of nodes and paths can be rendered in **graph view**, offering an intuitive and interactive way to navigate the result graph.
+When running GQL queries in Ultipa products such as **Ultipa Manager** and <a target="_blank" href="https://gql.ultipa.com">GQL Playground</a>, query results of nodes and paths can be rendered in **graph view**, offering an intuitive and interactive way to navigate the result graph.
 
-<center><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/img/2025-06-30-12-23-11-result-visualization.jpg"><span style="color:#999;">Result Visualization in Ultipa Manager</span></center>
+<div align=center><img src="images/result visualization.png"/><span style="color:#999;">Result Visualization in Ultipa Manager</span></div>

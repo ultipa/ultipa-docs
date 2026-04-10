@@ -2,62 +2,62 @@
 
 This section contains a summary of all functions supported in GQL.
 
-## Function Naming Convention
+## Element Functions
 
-For function names that follow the camelCase convention (e.g., `pedgeUuids()`), the name must be used exactly as defined, preserving the original capitalization.
-
-For function names that do not follow camelCase, it is acceptable to use either all uppercase or all lowercase when referencing them (e.g., `path_length()` or `PATH_LENGTH()`).
-
-## Scalar Functions
-
-| <div table-width="15">Function</div> | Description |
+| Function | Description |
 | -- | -- |
-| <a href="/docs/gql/scalar-functions#cardinality">cardinality()</a> | Returns the cardinality of a path, a list, or a record. |
-| <a href="/docs/gql/scalar-functions#cast">cast()</a> | Specifies a data conversion. |
-| <a href="/docs/gql/scalar-functions#element_id">element_id()</a> | Gets the unique identifier `_uuid` of a graph element. |
-| <a href="/docs/gql/scalar-functions#labels">labels()</a> | Gets the label of a graph element. |
+| <a href="/docs/gql/element-functions#id-element_id">id() / element_id()</a> | Gets the unique identifier `_id` of a graph element. |
+| <a href="/docs/gql/element-functions#labels">labels()</a> | Gets the labels of a graph element. |
+| <a href="/docs/gql/element-functions#type">type()</a> | Gets the label of an edge. |
+| <a href="/docs/gql/element-functions#keys">keys()</a> | Returns the property names of a node, edge, or the key names of a record. |
+| <a href="/docs/gql/element-functions#values">values()</a> | Returns the property values of a node, edge, or the values of a record. |
+| <a href="/docs/gql/element-functions#properties">properties()</a> | Returns the properties of a node or edge as a record. |
+| <a href="/docs/gql/element-functions#property_exists">property_exists()</a> | Checks whether a property exists on a node or edge. |
 
 ## Path Functions
 
-| <div table-width="17">Function</div> | Description |
+| Function | Description |
 | -- | -- |
 | <a href="/docs/gql/path-functions#path_length">path_length()</a> | Returns the number of edges in a path. |
-| <a href="/docs/gql/path-functions#pedges">pedges()</a> | Collects edges in a path into a list. |
-| <a href="/docs/gql/path-functions#pedgeUuids">pedgeUuids()</a> | Collects the `_uuid` values of edges in a path into a list. |
-| <a href="/docs/gql/path-functions#pnodes">pnodes()</a> | Collects nodes in a path into a list. |
+| <a href="/docs/gql/path-functions#elements">elements()</a> | Returns the nodes and edges of a path as a list. |
+| <a href="/docs/gql/path-functions#pnodes">pnodes()</a> | Returns the nodes of a path as a list. |
+| <a href="/docs/gql/path-functions#pedges">pedges()</a> | Returns the edges of a path as a list. |
 | <a href="/docs/gql/path-functions#pnodeIds">pnodeIds()</a> | Collects the `_id` values of nodes in a path into a list. |
+| <a href="/docs/gql/path-functions#pedgeUuids">pedgeUuids()</a> | Collects the `_id` values of edges in a path into a list. |
 
 ## Aggregate Functions
 
-| <div table-width="20">Function</div> | Description |
+| Function | Description |
 | -- | -- |
-| <a href="/docs/gql/aggregate-functions#avg">avg()</a> | Computes the average of a set of numeric values. |
 | <a href="/docs/gql/aggregate-functions#collect_list">collect_list()</a> | Collects a set of values into a list. |
 | <a href="/docs/gql/aggregate-functions#count">count()</a> | Returns the number of rows in the input. |
 | <a href="/docs/gql/aggregate-functions#max">max()</a> | Returns the maximum value in a set of values. |
 | <a href="/docs/gql/aggregate-functions#min">min()</a> | Returns the minimum value in a set of values. |
+| <a href="/docs/gql/aggregate-functions#avg">avg()</a> | Computes the average of a set of numeric values. |
+| <a href="/docs/gql/aggregate-functions#sum">sum()</a> | Computes the sum of a set of numeric values. |
 | <a href="/docs/gql/aggregate-functions#percentile_cont">percentile_cont()</a> | Computes the continuous percentile value over a set of numeric values. |
 | <a href="/docs/gql/aggregate-functions#percentile_disc">percentile_disc()</a> | Computes the discrete percentile value over a set of numeric values. |
 | <a href="/docs/gql/aggregate-functions#stddev_pop">stddev_pop()</a> | Computes the population standard deviation of a set of numeric values. |
 | <a href="/docs/gql/aggregate-functions#stddev_samp">stddev_samp()</a> | Computes the sample standard deviation of a set of numeric values. |
-| <a href="/docs/gql/aggregate-functions#sum">sum()</a> | Computes the sum of a set of numeric values. |
 
 ## Mathematical Functions
 
-| <div table-width="15">Function</div> | Description |
+| Function | Description |
 | -- | -- |
 | <a href="/docs/gql/mathematical-functions#abs">abs()</a> | Returns the absolute value of a given number. |
 | <a href="/docs/gql/mathematical-functions#ceil">ceil()</a> | Rounds a given number up to the nearest integer. |
-| <a href="/docs/gql/mathematical-functions#exp">exp()</a> | Computes the value of Euler's number 𝑒 raised to the power of a given number. |
 | <a href="/docs/gql/mathematical-functions#floor">floor()</a> | Rounds a given number down to the nearest integer. |
+| <a href="/docs/gql/mathematical-functions#round">round()</a> | Returns the nearest value of a given number, rounded to a specified position of digits. |
+| <a href="/docs/gql/mathematical-functions#mod">mod()</a> | Computes the modulus, or the remainder when one number is divided by another. |
+| <a href="/docs/gql/mathematical-functions#sqrt">sqrt()</a> | Computes the square root of a given number. |
+| <a href="/docs/gql/mathematical-functions#exp">exp()</a> | Computes the value of Euler's number 𝑒 raised to the power of a given number. |
+| <a href="/docs/gql/mathematical-functions#power">power()</a> | Raises a number to the power of another number. |
 | <a href="/docs/gql/mathematical-functions#ln">ln()</a> | Computes the natural logarithm of a given number. |
 | <a href="/docs/gql/mathematical-functions#log">log()</a> | Computes the logarithm of a specified number with respect to a given base. |
 | <a href="/docs/gql/mathematical-functions#log10">log10()</a> | Computes the base 10 logarithm of a given number. |
-| <a href="/docs/gql/mathematical-functions#mod">mod()</a> | Computes the modulus, or the remainder when one number is divided by another. |
 | <a href="/docs/gql/mathematical-functions#pi">pi()</a> | Returns the mathematical constant π (pi). |
-| <a href="/docs/gql/mathematical-functions#power">power()</a> | Raises a number to the power of another number. |
-| <a href="/docs/gql/mathematical-functions#round">round()</a> | Returns the nearest value of a given number, rounded to a specified position of digits. |
-| <a href="/docs/gql/mathematical-functions#sqrt">sqrt()</a> | Computes the square root of a given number. |
+| <a href="/docs/gql/mathematical-functions#random">random()</a> | Returns a random floating-point number between 0 and 1. |
+| <a href="/docs/gql/mathematical-functions#sign">sign()</a> | Returns the sign of a number: -1, 0, or 1. |
 
 ## Trigonometric Functions
 
@@ -78,70 +78,106 @@ For function names that do not follow camelCase, it is acceptable to use either 
 
 ## String Functions
 
-| <div table-width="16">Function</div> | Description |
+| Function | Description |
 | -- | -- |
-| <a href="/docs/gql/string-functions#btrim">btrim()</a> | Removes characters from both ends of a given string until encountering a character that is not contained in the specified set of characters. |
 | <a href="/docs/gql/string-functions#char_length">char_length()</a> | Returns the number of characters in a string. |
-| <a href="/docs/gql/string-functions#left">left()</a> | Returns a substring of the given string containing the specified number of leftmost characters. |
-| <a href="/docs/gql/string-functions#lower">lower()</a> | Converts all the characters in a given string to lowercase. |
-| <a href="/docs/gql/string-functions#ltrim">ltrim()</a> | Removes characters from the begining of a given string until encountering a character that is not contained in the specified set of characters. |
-| <a href="/docs/gql/string-functions#normalize">normalize()</a> | Converts a string into a consistent format based on the normalization form specified. |
-| <a href="/docs/gql/string-functions#replace">replace()</a> | Returns a string where all occurrences of a specified substring are replaced with another string. |
-| <a href="/docs/gql/string-functions#right">right()</a> | Returns a substring of the given string containing the specified number of rightmost characters. |
-| <a href="/docs/gql/string-functions#rtrim">rtrim()</a> | Removes characters from the end of a given string until encountering a character that is not contained in the specified set of characters. |
-| <a href="/docs/gql/string-functions#split">split()</a> | Returns a list of string resulting from the splitting of the given string around matches of the given delimiter. |
-| <a href="/docs/gql/string-functions#substring">substring()</a> | Returns a substring of a given length from the given string, beginning with a 0-based index start. |
-| <a href="/docs/gql/string-functions#trim">trim()</a> | Removes all the occurrences of the specified single character from either the leftmost, rightmost, or both ends of a given string. |
-| <a href="/docs/gql/string-functions#upper">upper()</a> | Converts all the characters in a given string to uppercase. |
+| <a href="/docs/gql/string-functions#byte_length">byte_length()</a> | Returns the number of bytes in a string. |
+| <a href="/docs/gql/string-functions#lower">lower()</a> | Converts all characters to lowercase. |
+| <a href="/docs/gql/string-functions#upper">upper()</a> | Converts all characters to uppercase. |
+| <a href="/docs/gql/string-functions#left">left()</a> | Returns the specified number of leftmost characters. |
+| <a href="/docs/gql/string-functions#right">right()</a> | Returns the specified number of rightmost characters. |
+| <a href="/docs/gql/string-functions#substring">substring()</a> | Returns a substring from the given string. |
+| <a href="/docs/gql/string-functions#trim">trim()</a> | Removes characters from either end of a string. |
+| <a href="/docs/gql/string-functions#ltrim">ltrim()</a> | Removes characters from the beginning of a string. |
+| <a href="/docs/gql/string-functions#rtrim">rtrim()</a> | Removes characters from the end of a string. |
+| <a href="/docs/gql/string-functions#btrim">btrim()</a> | Removes characters from both ends of a string. |
+| <a href="/docs/gql/string-functions#replace">replace()</a> | Replaces all occurrences of a substring with another string. |
+| <a href="/docs/gql/string-functions#split">split()</a> | Splits a string by a delimiter into a list. |
+| <a href="/docs/gql/string-functions#contains">contains()</a> | Returns `true` if a string contains the specified substring. |
+| <a href="/docs/gql/string-functions#starts_with">starts_with()</a> | Returns `true` if a string starts with the specified prefix. |
+| <a href="/docs/gql/string-functions#ends_with">ends_with()</a> | Returns `true` if a string ends with the specified suffix. |
+| <a href="/docs/gql/string-functions#normalize">normalize()</a> | Converts a string to a Unicode normalization form. |
+| <a href="/docs/gql/string-functions#hex">hex()</a> | Encodes a string to hexadecimal. |
+| <a href="/docs/gql/string-functions#unhex">unhex()</a> | Decodes a hexadecimal string to bytes. |
+| <a href="/docs/gql/string-functions#base64">base64()</a> | Encodes a string to a Base64 string. |
+| <a href="/docs/gql/string-functions#unbase64">unbase64()</a> | Decodes a Base64 string to bytes. |
 
 ## List Functions
 
-| <div table-width="16">Function</div> | Description |
+| Function | Description |
 | -- | -- |
-| <a href="/docs/gql/list-functions#append">append()</a> | Adds an element to the end of a list and returns the new list. |
-| <a href="/docs/gql/list-functions#difference">difference()</a> | Returns the difference between two lists. |
-| <a href="/docs/gql/list-functions#elements">elements()</a> | Returns a list containing the nodes and edges that make up a path. |
 | <a href="/docs/gql/list-functions#head">head()</a> | Returns the first element in a list. |
-| <a href="/docs/gql/list-functions#intersection">intersection()</a> | Returns the intersection of two lists. |
-| <a href="/docs/gql/list-functions#listContains">listContains()</a> | Checks whether a specified element exists in a list. |
-| <a href="/docs/gql/list-functions#listUnion">listUnion()</a> | Returns the union of two lists. |
-| <a href="/docs/gql/list-functions#reduce">reduce()</a> | Performs a calculation iteratively using each element in a list. |
+| <a href="/docs/gql/list-functions#last">last()</a> | Returns the last element of a list. |
+| <a href="/docs/gql/list-functions#tail">tail()</a> | Returns all elements except the first. |
 | <a href="/docs/gql/list-functions#size">size()</a> | Returns the number of elements in a list. |
-| <a href="/docs/gql/list-functions#append">trim()</a> | Removes a specified number of elements from the right end of the list. |
+| <a href="/docs/gql/list-functions#append">append()</a> | Adds an element to the end of a list. |
+| <a href="/docs/gql/list-functions#range">range()</a> | Generates a list of integers. |
+| <a href="/docs/gql/list-functions#list_contains">list_contains()</a> | Returns `true` if a value exists in a specified list. |
+| <a href="/docs/gql/list-functions#list_union">list_union()</a> | Returns the union of two lists. |
+| <a href="/docs/gql/list-functions#intersection">intersection()</a> | Returns the intersection of two lists. |
+| <a href="/docs/gql/list-functions#difference">difference()</a> | Returns the difference between two lists. |
+| <a href="/docs/gql/list-functions#list_sort">list_sort()</a> | Sorts a list. |
+| <a href="/docs/gql/list-functions#list_filter">list_filter()</a> | Filters a list by a condition. |
+| <a href="/docs/gql/list-functions#reduce">reduce()</a> | Performs a calculation iteratively using each element in a list. |
+
 
 ## Datetime Functions
 
 | <div table-width="20">Function</div> | Description |
 | -- | -- |
-| <a href="/docs/gql/datetime-functions#date">date()</a> | Returns a value of type `DATE`. |
-| <a href="/docs/gql/datetime-functions#local_datetime">local_datetime()</a> | Returns a value of type `LOCAL DATETIME`. |
-| <a href="/docs/gql/datetime-functions#local_time">local_time()</a> | Returns a value of type `LOCAL TIME`. |
-| <a href="/docs/gql/datetime-functions#now">now()</a> | Returns the current datetime in UTC. |
-| <a href="/docs/gql/datetime-functions#zoned_datetime">zoned_datetime()</a> | Returns a value of type `ZONED DATETIME`. |
-| <a href="/docs/gql/datetime-functions#zoned_time">zoned_time()</a> | Returns a value of type `ZONED TIME`. |
-| <a href="/docs/gql/datetime-functions#dateAdd">dateAdd()</a> | Adds a specified time interval to a given date. |
-| <a href="/docs/gql/datetime-functions#dateDiff">dateDiff()</a> | Computes the difference between two dates and returns the result as a specified unit of time. |
-| <a href="/docs/gql/datetime-functions#dateFormat">dateFormat()</a> | Prints a given date in the specific format. |
-| <a href="/docs/gql/datetime-functions#dayOfWeek">dayOfWeek()</a> | Returns a number representing the day of the week for a given date. |
+| <a href="/docs/gql/datetime-functions#date">date()</a> | Creates a value of type `DATE` (`LOCAL DATE`). |
+| <a href="/docs/gql/datetime-functions#local_time">local_time()</a> | Creates a value of type `LOCAL TIME`. |
+| <a href="/docs/gql/datetime-functions#local_datetime">local_datetime()</a> | Creates a value of type `LOCAL DATETIME`. |
+| <a href="/docs/gql/datetime-functions#zoned_time">zoned_time()</a> | Creates a value of type `ZONED TIME`. |
+| <a href="/docs/gql/datetime-functions#zoned_datetime">zoned_datetime()</a> | Creates a value of type `ZONED DATETIME`. |
+| <a href="/docs/gql/datetime-functions#now">now()</a> | Returns the current zoned datetime in the server's local timezone. |
+| <a href="/docs/gql/datetime-functions#duration">duration()</a> | Creates a value of type `DURATION`. |
+| <a href="/docs/gql/datetime-functions#date_add">date_add()</a> | Adds a time interval to a date. |
+| <a href="/docs/gql/datetime-functions#date_diff">date_diff()</a> | Computes the difference between two dates. |
+| <a href="/docs/gql/datetime-functions#day_of_week">day_of_week()</a> | Returns the day of the week for a given date. |
+| <a href="/docs/gql/datetime-functions#year">year()</a> | Extracts the year. |
+| <a href="/docs/gql/datetime-functions#month">month()</a> | Extracts the month. |
+| <a href="/docs/gql/datetime-functions#day">day()</a> | Extracts the day. |
+| <a href="/docs/gql/datetime-functions#hour">hour()</a> | Extracts the hour. |
+| <a href="/docs/gql/datetime-functions#minute">minute()</a> | Extracts the minute. |
+| <a href="/docs/gql/datetime-functions#second">second()</a> | Extracts the second. |
+| <a href="/docs/gql/datetime-functions#duration_between">duration_between()</a> | Computes the duration between two temporal values. |
 
 ## Spatial Functions
 
 | <div table-width="16">Function</div> | Description |
 | -- | -- |
-| <a href="/docs/gql/spatial-functions/#distance">distance()</a> | Computes the straight-line distance between two points. |
-| <a href="/docs/gql/spatial-functions/#point">point()</a> | Constructs a two-dimensional geographical coordinate. |
-| <a href="/docs/gql/spatial-functions/#point3d">point3d()</a> | Constructs a three-dimensional Cartesian coordinate. |
-| <a href="/docs/gql/spatial-functions/#pointget">pointget()</a> | Extracts the coordinate values in the `point` or `point3d` property. |
+| <a href="/docs/gql/spatial-functions/#point">point()</a> | Creates a two-dimensional geographical coordinate. |
+| <a href="/docs/gql/spatial-functions/#point3d">point3d()</a> | Creates a three-dimensional Cartesian coordinate. |
+| <a href="/docs/gql/spatial-functions/#distance">distance()</a> | Computes the distance between two points. |
+| <a href="/docs/gql/spatial-functions/#pointget">pointget()</a> | Extracts a coordinate value from a point by index. |
+
+## Null Functions
+
+| Function | Description |
+| -- | -- |
+| <a href="/docs/gql/null-functions#coalesce">coalesce()</a> | Returns the first non-null value from the argument list. |
+| <a href="/docs/gql/null-functions#nullif">nullif()</a> | Returns `null` if two arguments are equal; otherwise returns the first. |
+
+## Utility Functions
+
+| Function | Description |
+| -- | -- |
+| <a href="/docs/gql/utility-functions#cardinality">cardinality()</a> | Returns the size of a path, list, or record. |
+| <a href="/docs/gql/utility-functions#typeof">typeof()</a> | Returns the type name of a value as a string. |
+| <a href="/docs/gql/utility-functions#all_different">all_different()</a> | Returns `true` if all arguments are different graph elements. |
 
 ## Type Conversion Functions
 
-| <div table-width="16">Function</div> | Description |
+| Function | Description |
 | -- | -- |
-| <a href="/docs/gql/type-conversion-functions#TOINTEGER">TOINTEGER()</a> | Converts a value to an integer. |
-| <a href="/docs/gql/type-conversion-functions#TOFLOAT">TOFLOAT()</a> | Converts a value to a float. |
-| <a href="/docs/gql/type-conversion-functions#TOSTRING">TOSTRING()</a> | Converts a value to a string. |
-| <a href="/docs/gql/type-conversion-functions#TOBOOLEAN">TOBOOLEAN()</a> | Converts a value to a boolean. |
-| <a href="/docs/gql/type-conversion-functions#TOLIST">TOLIST()</a> | Converts a value to a list. |
+| <a href="/docs/gql/type-conversion-functions#cast">cast()</a> | Converts a value to the specified type. |
+| <a href="/docs/gql/type-conversion-functions#toInteger">toInteger()</a> | Converts a value to an integer. |
+| <a href="/docs/gql/type-conversion-functions#toFloat">toFloat()</a> | Converts a value to a float. |
+| <a href="/docs/gql/type-conversion-functions#toString">toString()</a> | Converts a value to a string. |
+| <a href="/docs/gql/type-conversion-functions#toBoolean">toBoolean()</a> | Converts a value to a boolean. |
+| <a href="/docs/gql/type-conversion-functions#toList">toList()</a> | Converts a value to a list. |
+| <a href="/docs/gql/type-conversion-functions#toMap">toMap()</a> | Creates a record from key-value pairs. |
 
 ## Table Functions
 
@@ -153,26 +189,41 @@ For function names that do not follow camelCase, it is acceptable to use either 
 
 | <div table-width="20">Function</div> | Description |
 | -- | -- |
-| <a href="/docs/gql/ai-vector-functions#AI.VECTOR">AI.VECTOR()</a> | Creates a vector from an array of numbers. |
-| <a href="/docs/gql/ai-vector-functions#AI.EMBED">AI.EMBED()</a> | Generates an embedding vector from text using AI. |
-| <a href="/docs/gql/ai-vector-functions#AI.COSINE">AI.COSINE()</a> | Calculates cosine similarity between two vectors. |
-| <a href="/docs/gql/ai-vector-functions#AI.EUCLIDEAN">AI.EUCLIDEAN()</a> | Calculates Euclidean distance between two vectors. |
-| <a href="/docs/gql/ai-vector-functions#AI.MANHATTAN">AI.MANHATTAN()</a> | Calculates Manhattan distance between two vectors. |
-| <a href="/docs/gql/ai-vector-functions#AI.DOT">AI.DOT()</a> | Calculates dot product of two vectors. |
-| <a href="/docs/gql/ai-vector-functions#AI.DISTANCE">AI.DISTANCE()</a> | General distance function with configurable metric. |
-| <a href="/docs/gql/ai-vector-functions#AI.DIMENSION">AI.DIMENSION()</a> | Returns the number of dimensions in a vector. |
-| <a href="/docs/gql/ai-vector-functions#AI.MAGNITUDE">AI.MAGNITUDE()</a> | Returns the length (magnitude) of a vector. |
-| <a href="/docs/gql/ai-vector-functions#AI.NORMALIZE">AI.NORMALIZE()</a> | Normalizes a vector to a unit vector. |
-| <a href="/docs/gql/ai-vector-functions#AI.TOLIST">AI.TOLIST()</a> | Converts a vector to a list of numbers. |
-| <a href="/docs/gql/ai-vector-functions#AI.ADD">AI.ADD()</a> | Adds two vectors element-wise. |
-| <a href="/docs/gql/ai-vector-functions#AI.SUBTRACT">AI.SUBTRACT()</a> | Subtracts the second vector from the first. |
-| <a href="/docs/gql/ai-vector-functions#AI.SCALE">AI.SCALE()</a> | Multiplies a vector by a scalar value. |
-| <a href="/docs/gql/ai-vector-functions#AI.SETAPIKEY">AI.SETAPIKEY()</a> | Sets the API key for an AI provider. |
-| <a href="/docs/gql/ai-vector-functions#AI.PROVIDER">AI.PROVIDER()</a> | Returns the current AI provider. |
-| <a href="/docs/gql/ai-vector-functions#AI.EMBEDDIM">AI.EMBEDDIM()</a> | Returns the embedding dimensions for the current provider/model. |
+| <a href="/docs/gql/ai-vector-functions#aigql">ai.gql()</a> | Converts natural language to a GQL query. |
+| <a href="/docs/gql/ai-vector-functions#airead">ai.read()</a> | Converts natural language to a GQL query, executes it, and returns results. |
+| <a href="/docs/gql/ai-vector-functions#aivector">ai.vector()</a> | Creates a vector from a list of numbers. |
+| <a href="/docs/gql/ai-vector-functions#aiembed">ai.embed()</a> | Generates an embedding vector from text. |
+| <a href="/docs/gql/ai-vector-functions#aicosine">ai.cosine()</a> | Computes cosine similarity between two vectors. |
+| <a href="/docs/gql/ai-vector-functions#aieuclidean">ai.euclidean()</a> | Computes Euclidean distance between two vectors. |
+| <a href="/docs/gql/ai-vector-functions#aidot">ai.dot()</a> | Computes dot product of two vectors. |
+| <a href="/docs/gql/ai-vector-functions#aidistance">ai.distance()</a> | Computes cosine distance between two vectors. |
+| <a href="/docs/gql/ai-vector-functions#aidimension">ai.dimension()</a> | Returns the number of dimensions in a vector. |
+| <a href="/docs/gql/ai-vector-functions#aimagnitude">ai.magnitude()</a> | Returns the magnitude of a vector. |
+| <a href="/docs/gql/ai-vector-functions#ainormalize">ai.normalize()</a> | Normalizes a vector to a unit vector. |
+| <a href="/docs/gql/ai-vector-functions#aitoList">ai.toList()</a> | Converts a vector to a list of numbers. |
+| <a href="/docs/gql/ai-vector-functions#aiadd">ai.add()</a> | Adds two vectors element-wise. |
+| <a href="/docs/gql/ai-vector-functions#aisubtract">ai.subtract()</a> | Subtracts the second vector from the first. |
+| <a href="/docs/gql/ai-vector-functions#aiscale">ai.scale()</a> | Multiplies a vector by a scalar value. |
+| <a href="/docs/gql/ai-vector-functions#aisetapikey">ai.setapikey()</a> | Sets the API key for an AI provider. |
+| <a href="/docs/gql/ai-vector-functions#aisetprovider">ai.setprovider()</a> | Sets the active embedding provider. |
+| <a href="/docs/gql/ai-vector-functions#aiprovider">ai.provider()</a> | Returns the current AI provider. |
+| <a href="/docs/gql/ai-vector-functions#aiembeddim">ai.embeddim()</a> | Returns the embedding dimension of the current provider. |
+| <a href="/docs/gql/ai-vector-functions#aisetCompletionProvider">ai.setCompletionProvider()</a> | Sets the active completion provider. |
+| <a href="/docs/gql/ai-vector-functions#aicompletionProvider">ai.completionProvider()</a> | Returns the current completion provider. |
 
 ## Database Functions
 
-| <div table-width="16">Function</div> | Description |
+| <div table-width="20">Function</div> | Description |
 | -- | -- |
-| <a href="/docs/gql/database-functions#db.stats">db.stats()</a> | Returns database statistics as a map. |
+| <a href="/docs/gql/database-functions#dbversion">db.version()</a> | Returns the database version. |
+| <a href="/docs/gql/database-functions#dblicense">db.license()</a> | Returns license information. |
+| <a href="/docs/gql/database-functions#dbplugins">db.plugins()</a> | Returns loaded plugins. |
+| <a href="/docs/gql/database-functions#dbstats">db.stats()</a> | Returns statistics of the current graph. |
+| <a href="/docs/gql/database-functions#dboverview">db.overview()</a> | Returns the current graph overview with label counts and edge patterns. |
+| <a href="/docs/gql/database-functions#dbnodelabels">db.nodeLabels()</a> | Returns all node labels in the current graph. |
+| <a href="/docs/gql/database-functions#dbedgelabels">db.edgeLabels()</a> | Returns all edge labels in the current graph. |
+| <a href="/docs/gql/database-functions#dblabelproperty">db.labelProperty()</a> | Returns properties defined for each label in the current graph. |
+| <a href="/docs/gql/database-functions#dbreloadstats">db.reloadStats()</a> | Rebuilds statistics from storage for the current graph. |
+| <a href="/docs/gql/backup-and-restore#dbbackup">db.backup()</a> | Creates a backup of the current graph. |
+| <a href="/docs/gql/backup-and-restore#dbrestore">db.restore()</a> | Restores a graph from a backup file. |
+| <a href="/docs/gql/backup-and-restore#dbbackups">db.backups()</a> | Lists backup files found in a directory. |

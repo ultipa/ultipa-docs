@@ -6,18 +6,15 @@ The `RETURN` statement allows you to specify items to include in the query resul
 
 <p tit="Syntax"></p>
 
-```gql
+```
 <return statement> ::= 
-  "RETURN" [ "DISTINCT" | "ALL" ] { <"*"> | <return items> } [ <group by clause> ]
+  "RETURN" [ "DISTINCT" | "ALL" ] { < "*" > | <return items> } [ <group by clause> ]
                           
-<return items> ::= 
-  <return item> [ { "," <return item> }... ]
+<return items> ::= <return item> [ { "," <return item> }... ]
 
-<return item> ::= 
-  <value expression> [ "AS" <identifier> ]
+<return item> ::= <value expression> [ "AS" <identifier> ]
   
-<group by clause> ::= 
-  "GROUP BY" <grouping key> [ { "," <grouping key> }... ]
+<group by clause> ::= "GROUP BY" <grouping key> [ { "," <grouping key> }... ]
 ```
 
 **Details**
@@ -31,20 +28,6 @@ The `RETURN` statement allows you to specify items to include in the query resul
 
 <div align=center drawio-diagram='15735' drawio-name="draw_1ba1d5628722444894a94a69c1b18d8c.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_1ba1d5628722444894a94a69c1b18d8c.jpg?v='1738726313830'"/></div>
 
-<div tab="code">
-  
-<p tit="Create this graph"></p>
-
-```gql
-CREATE GRAPH myGraph { 
-  NODE Student ({name string, gender string}),
-  NODE Course ({name string, credit uint32}),
-  EDGE Take ()-[{year uint32, term string}]->()
-} PARTITION BY HASH(Crc32) SHARDS [1]
-```
-
-<p tit="Insert data to the graph"></p> 
-
 ```gql
 INSERT (alex:Student {_id: 's1', name: 'Alex', gender: 'male'}),
        (susan:Student {_id: 's2', name: 'Susan', gender: 'female'}),
@@ -55,8 +38,6 @@ INSERT (alex:Student {_id: 's1', name: 'Alex', gender: 'male'}),
        (susan)-[:Take {year: 2023, term: 'Spring'}]->(literature)
 ```
 
-</div>
-
 ## Returning Nodes
 
 A variable bound to nodes returns all information about each node.
@@ -66,12 +47,12 @@ MATCH (n:Course)
 RETURN n
 ```
 
-Result: `n`
+Result:
 
-| \_id | \_uuid | schema | <div table-width="50">values</div> |
+| _id | label | name | credit |
 | -- | -- | -- | -- |
-| c1 | <span style="color: #999;">Sys-gen</span> | Course | {name: "Art", credit: 13} |
-| c2 | <span style="color: #999;">Sys-gen</span> | Course | {name: "Literature", credit: 15} |
+| c2 | Course | Literature | 15 |
+| c1 | Course | Art | 13 |
 
 ## Returning Edges
 
@@ -82,13 +63,13 @@ MATCH ()-[e]->()
 RETURN e
 ```
 
-Result: `e`
+Result:
 
-| <div table-width="9">_uuid</div> | <div table-width="6">_from</div> | <div table-width="5">_to</div> | <div table-width="12">_from_uuid</div> | <div table-width="12">_to_uuid</div> | <div table-width="10">schema</div> | values |
-| -- | -- | -- | -- | -- | -- | -- |
-| <span style="color: #999;">Sys-gen</span> | s2 | c1 | <span style="color: #999;">UUID of s2</span> | <span style="color: #999;">UUID of c1</span> | Take | {year: 2023, term: "Fall"} |
-| <span style="color: #999;">Sys-gen</span> | s2 | c2 | <span style="color: #999;">UUID of s2</span> | <span style="color: #999;">UUID of c2</span> | Take | {year: 2023, term: "Spring"} |
-| <span style="color: #999;">Sys-gen</span> | s1 | c1 | <span style="color: #999;">UUID of s1</span> | <span style="color: #999;">UUID of c1</span> | Take | {year: 2024, term: "Spring"} |
+| _id | _from | _to | label | year | term |
+| -- | -- | -- | -- | -- | -- |
+| e:3 | s2 | c2 | Take | 2023 | Spring |
+| e:2 | s2 | c1 | Take | 2023 | Fall |
+| e:1 | s1 | c1 | Take | 2024 | Spring |
 
 ## Returning Paths
 
@@ -116,8 +97,8 @@ Result:
 
 | labels(e) | labels(n) |
 | -- | -- |
-| Take | Course |
-| Take | Course |
+| ["Take"] | ["Course"] |
+| ["Take"] | ["Course"] |
 
 ## Returning Properties
 
@@ -144,21 +125,29 @@ MATCH (s:Student {name:"Susan"})-[]->(c:Course)
 RETURN *
 ```
 
-Result: 
+Result:
 
-`s`
+<div tab="code">
 
-| \_id | \_uuid | schema | <div table-width="50">values</div> |
-| -- | -- | -- | -- |
-| s2 | <span style="color: #999;">Sys-gen</span> | Student | {name: "Susan", gender: "female"} |
-| s2 | <span style="color: #999;">Sys-gen</span> | Student | {name: "Susan", gender: "female"} |
+<p tit="s"></p>
 
-`c`
+```json
+[
+  {"id": "s2", "labels": ["Student"], "properties": {"name": "Susan", "gender": "female"}},
+  {"id": "s2", "labels": ["Student"], "properties": {"name": "Susan", "gender": "female"}},
+]
+```
 
-| \_id | \_uuid | schema | <div table-width="50">values</div> |
-| -- | -- | -- | -- |
-| c1 | <span style="color: #999;">Sys-gen</span> | Course | {name: "Art", credit: 13} |
-| c2 | <span style="color: #999;">Sys-gen</span> | Course | {name: "Literature", credit: 15} |
+<p tit="c"></p>
+
+```json
+[
+   {"id": "c2", "labels": ["Course"], "properties": {"name": "Literature", "credit": 15}},
+   {"id": "c1", "labels": ["Course"], "properties": {"name": "Art", "credit": 13}}
+]
+```
+
+</div>
 
 ## Return Item Alias
 
@@ -192,27 +181,6 @@ Result:
 | -- |
 | 28 |
 
-Due to the use of the aggregate function, the `c` returned by this query contains only one record, as expected:
-
-```gql
-MATCH (:Student {name:"Susan"})-[]->(c:Course)
-RETURN c, sum(c.credit)
-```
-
-Result:
-
-`c`
-
-| \_id | \_uuid | schema | <div table-width="50">values</div> |
-| -- | -- | -- | -- |
-| c1 | <span style="color: #999;">Sys-gen</span> | Course | {name: "Art", credit: 13} |
-
-`sum(c.credit)`
-
-| sum(c.credit) |
-| -- |
-| 28 |
-
 ## Returning by CASE
 
 ```gql
@@ -240,7 +208,7 @@ Result:
 
 | n.name |
 | -- |
-| Art |
+| Literature |
 
 ## Returning Ordered Records
 
@@ -251,12 +219,12 @@ MATCH (n:Course)
 RETURN n ORDER BY n.credit DESC
 ```
 
-Result: `n`
+Result:
 
-| \_id | \_uuid | schema | <div table-width="50">values</div> |
-| -- | -- | -- | -- |
-| c2 | <span style="color: #999;">Sys-gen</span> | Course | {name: "Literature", credit: 15} |
-| c1 | <span style="color: #999;">Sys-gen</span> | Course | {name: "Art", credit: 13} |
+| _id | name | credit |
+| -- | -- | -- |
+| c2 | Literature | 15 |
+| c1 | Art | 13 |
 
 ## Returning with Grouping
 
@@ -290,8 +258,8 @@ Result:
 | e.year | e.term |
 | --  | -- |
 | 2023 | Spring |
-| 2024 | Spring |
 | 2023 | Fall |
+| 2024 | Spring |
 
 ### Grouping and Aggregation
 

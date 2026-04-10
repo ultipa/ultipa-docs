@@ -9,15 +9,14 @@ Node patterns and edge patterns are conjunctively referred to as **element patte
 A node pattern is to match nodes in the graph, represented using a pair of parentheses `()`. A node pattern is composed of three optional parts:
 
 - <a href="#Element-Variable-Declaration">Node Variable Declaration</a>
-- <a href="#Label/Schema-Expression">Label/Schema Expression</a>
+- <a href="#Label-Expression">Label Expression</a>
 - <a href="#Property-Specification">Property Specification</a> or <a href="#WHERE-Clause">WHERE Clause</a>
 
 <p tit="Syntax"></p>
 
-```gql
+```
 <node pattern> ::=
-  "(" [ <node variable declaration> ]
-      [ <label or schema expression> ]
+  "(" [ <node variable declaration> ] [ <label expression> ]
       [ <property specification> | <where clause> ] ")" 
 ```
     
@@ -29,7 +28,7 @@ The simplest empty node pattern matches any node in the graph:
 () 
 ```
 
-To match `Person` nodes and bind them to the variable `n`:
+Match `Person` nodes and bind them to the variable `n`:
 
 <p tit="Node Pattern"></p>
 
@@ -37,7 +36,7 @@ To match `Person` nodes and bind them to the variable `n`:
 (n:Person)
 ```
 
-To match nodes whose properties `fullname` and `age` with specific values:
+Match nodes whose properties `fullname` and `age` with specific values:
 
 <p tit="Node Pattern"></p>
 
@@ -45,7 +44,7 @@ To match nodes whose properties `fullname` and `age` with specific values:
 ({fullname: "John Doe", age: 30})
 ```
 
-To match `Person` nodes where the property `age` is greater than 30, and bind these nodes to the variable `n`:
+Match `Person` nodes where the property `age` is greater than 30, and bind these nodes to the variable `n`:
 
 <p tit="Node Pattern"></p>
 
@@ -61,15 +60,15 @@ An edge pattern is either a **full edge pattern** or an **abbreviated edge patte
 
 ### Full Edge Pattern
 
-A full edge pattern is represented using a pair of suqare brackets `[]` and includes an indication of the edge's direction (left/incoming, right/outgoing, or any). A full edge pattern is composed of three optional parts:
+A full edge pattern is represented using a pair of square brackets `[]` and includes an indication of the edge's direction (left/incoming, right/outgoing, or any). A full edge pattern is composed of three optional parts:
 
 - <a href="#Element-Variable-Declaration">Edge Variable Declaration</a>
-- <a href="#Label/Schema-Expression">Label/Schema Expression</a>
+- <a href="#Label-Expression">Label Expression</a>
 - <a href="#Property-Specification">Property Specification</a> or <a href="#WHERE-Clause">WHERE Clause</a>
   
 <p tit="Syntax"></p>
 
-```gql
+```
 <full edge pattern> ::=
   <full edge pointing left> | <full edge pointing right> | <full edge any direction>
 
@@ -83,12 +82,11 @@ A full edge pattern is represented using a pair of suqare brackets `[]` and incl
   "-[" <edge pattern filter> "]-"
 
 <edge pattern filter> ::=
-  [ <edge variable declaration> ] 
-  [ <label or schema expression> ] 
+  [ <edge variable declaration> ] [ <label expression> ] 
   [ <property specification> | <where clause> ]
 ```
 
-To match all edges in the graph and bind them to the variable `e`:
+Match all edges in the graph and bind them to the variable `e`:
 
 <p tit="Path Pattern"></p>
 
@@ -96,7 +94,7 @@ To match all edges in the graph and bind them to the variable `e`:
 ()-[e]->()
 ```
 
-To match `Works_for` edges whose property `role` has a specific value, and bind them to the variable `e`:
+Match `Works_for` edges whose property `role` has a specific value, and bind them to the variable `e`:
 
 <p tit="Path Pattern"></p>
 
@@ -104,7 +102,7 @@ To match `Works_for` edges whose property `role` has a specific value, and bind 
 ()-[e:Works_for {role: "Manager"}]->()
 ```
 
-To match edges where the property `score` is less than 2, and bind them to the variable `e`:
+Match edges where the property `score` is less than 2, and bind them to the variable `e`:
 
 <p tit="Path Pattern"></p>
 
@@ -118,11 +116,11 @@ An abbreviated edge pattern only indicates the edge direction (left/incoming, ri
 
 <p tit="Syntax"></p>
 
-```gql
+```
 <abbreviated edge pattern> ::= "<-" | "->" | "-"
 ```
 
-To match nodes that `User` nodes can reach through an outgoing edge:
+Match nodes that `User` nodes can reach through an outgoing edge:
 
 <p tit="Path Pattern"></p>
 
@@ -130,7 +128,7 @@ To match nodes that `User` nodes can reach through an outgoing edge:
 (:User)->(n)
 ```
 
-To match all one-step paths in the graph:
+Match all one-step paths in the graph:
 
 <p tit="Path Pattern"></p>
 
@@ -162,11 +160,11 @@ MATCH ()-[e:Follows]->()
 RETURN e
 ```
 
-### Label/Schema Expression
+### Label Expression
 
-A label/schema expression starts with a colon `:` or the keyword `IS`. It can be used in a node or full edge pattern. A label/schema expression specifies one or more labels/schemas.
+A label expression starts with a colon `:` or the keyword `IS`. It can be used in a node or full edge pattern. A label expression specifies one or more labels.
 
-To match `Movie` nodes:
+Match `Movie` nodes:
 
 <p tit="Node Pattern"></p>
 
@@ -182,7 +180,7 @@ This is equivalent to:
 (m IS Movie)
 ```
 
-The label/schema expression supports the following operators:
+The label expression supports the following operators:
 
 | Operator | Description |
 | -- | -- |
@@ -191,7 +189,7 @@ The label/schema expression supports the following operators:
 | `\|` | Disjunction (OR) |
 | `%` | Wildcard |
 
-To match nodes with the label/schema `Movie` or `Country`:
+Match nodes with the label `Movie` or `Country`:
 
 <p tit="Node Pattern"></p>
 
@@ -199,7 +197,7 @@ To match nodes with the label/schema `Movie` or `Country`:
 (n:Movie|Country)
 ```
 
-To match nodes with labels/schemas `Teacher` and `Student`:
+Match nodes with labels `Teacher` and `Student`:
 
 <p tit="Node Pattern"></p>
 
@@ -207,7 +205,7 @@ To match nodes with labels/schemas `Teacher` and `Student`:
 (n:Teacher&Student)
 ```
 
-To match edges with labels/schemas other than `LIVING_IN`:
+Match edges with labels other than `LIVING_IN`:
 
 <p tit="Path Pattern"></p>
 
@@ -215,7 +213,7 @@ To match edges with labels/schemas other than `LIVING_IN`:
 ()-[e:!LIVING_IN]-()
 ```
 
-To match nodes with any label/schema:
+Match nodes with any label:
 
 <p tit="Node Pattern"></p>
 
@@ -223,7 +221,7 @@ To match nodes with any label/schema:
 (n:%)
 ```
 
-To match nodes without a label/schema:
+Match nodes without a label:
 
 <p tit="Node Pattern"></p>
 
@@ -235,7 +233,7 @@ To match nodes without a label/schema:
 
 Property specification encloses property key-value pairs in a pair of curly braces `{}` inside a node or full edge pattern. This applies **joint equalities** to filter nodes or edges based on the values of their properties.
 
-To match nodes whose properties `type` and `level` with specific values:
+Match nodes whose properties `type` and `level` with specific values:
 
 <p tit="Node Pattern"></p>
 
@@ -255,7 +253,7 @@ This is equivalent to the following using the `WHERE` clause:
 
 You can use the `WHERE` clause within a node or full edge pattern to apply conditions on properties. It offers more flexible filtering rules compared to the <a href="#Property-Specification">property specification</a>.
 
-To match `Card` nodes where the property `level` is greater than 3:
+Match `Card` nodes where the property `level` is greater than 3:
 
 <p tit="Node Pattern"></p>
 
@@ -263,7 +261,7 @@ To match `Card` nodes where the property `level` is greater than 3:
 (c:Card WHERE c.level > 3)
 ```
 
-To filter edges whose properties `amount` and `currency` meet the specified conditions:
+Filter edges whose properties `amount` and `currency` meet the specified conditions:
 
 <p tit="Path Pattern"></p>
 

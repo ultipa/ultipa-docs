@@ -33,39 +33,21 @@ This contextual information makes embeddings much more powerful for downstream t
 
 ### Loading Embeddings into Ultipa
 
-After creating embeddings for entities, they can be imported or stored into Ultipa as properties of type `list<float>` or `list<double>`. By creating vector indexes for these properties, you can perform vector searches.
+After creating embeddings, they can be stored in Ultipa using the `ai.vector()` function or imported as vector-type properties. By creating vector indexes for these properties, you can perform vector searches.
 
 ### Vector Search
 
 Vector search refers to the process of finding vectors that are most similar to a given query vector, using a similarity measure. Ultipa supports the following similarity measures:
 
-- **L2 Distance (Euclidean Distance):** Calculates the straight-line distance between two points in a high-dimensional space. This measure is sensitive to the magnitude of the vectors.
-
-<center><img width="250" src="https://img.ultipa.cn/img/2025-03-25-16-46-17-L2.jpg"></center>
-
+- **Euclidean Distance:** Calculates the straight-line distance between two points in a high-dimensional space. This measure is sensitive to the magnitude of the vectors.
 - **Cosine Similarity:** Measures the cosine of the angle between two vectors, indicating their orientation in space. It is independent of vector magnitude.
-
-<center><img width="365" src="https://img.ultipa.cn/img/2025-03-25-16-48-13-cosine.jpg"></center>
-
-- **Inner Product:** Computes the dot product between two vectors, often used when the magnitude of the vectors is important.
-
-<center><img width="230" src="https://img.ultipa.cn/img/2025-03-25-16-44-42-inner-product.jpg"></center>
+- **Dot Product:** Computes the dot product between two vectors, often used when the magnitude of the vectors is important.
 
 ## Example Graph
 
 The example graph consists of 10 `Book` nodes, each containing the properties `name`, `author`, `summary`, and `summaryEmbedding`. The `summaryEmbedding` holds the 384-dimensional text embeddings of the summary, generated using the `all-MiniLM-L6-v2` model from <a target="_blank" href="https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2">Hugging Face</a>.
 
-<div tab="code">
-
-<p tit="Create the graph"></p>
-
-```gql
-CREATE GRAPH myGraph { 
-  NODE Book ({title string, author string, summary text, summaryEmbedding list<double>})
-} PARTITION BY HASH(Crc32) SHARDS [1]
-```
-
-<p tit="Insert data to the graph"></p>
+<p tit="GQL" fold="true"></p>
 
 ```gql
 INSERT (:Book {_id: 'B1', title: 'Pride and Prejudice', author: 'Jane Austen', summary: 'Elizabeth Bennet navigates love and social class in Regency-era England, clashing with the proud Mr. Darcy before realizing their true feelings for each other. The novel explores themes of marriage, reputation, and personal growth with Austen\'s sharp wit.', summaryEmbedding: [-0.016981, -0.042364, 0.065666, 0.038906, 0.014976, 0.031358, 0.096271, -0.074125, -0.015277, 0.018961, -0.104336, 0.028773, 0.044179, -0.003503, -0.051337, 0.126421, -0.015187, -0.027225, 0.028287, 0.002713, -0.026236, 0.032444, 0.019729, 0.04396, -0.044703, -0.094819, 0.059223, 0.030913, -0.039863, 0.009686, -0.01894, 0.030413, 0.006824, 0.010569, -0.012861, 0.017635, 0.027373, 0.021346, 0.007833, 0.006646, -0.06523, -0.0176, -0.020286, 0.032384, -0.021207, -0.015802, -0.016896, -0.027521, -0.024199, -0.03487, 0.011316, 0.009509, -0.070896, -0.069814, 0.025057, 0.129979, -0.058228, 0.010542, 0.032511, -0.018214, 0.028891, -0.008495, 0.063497, 0.02867, 0.016084, 0.096362, -0.035903, 0.103503, -0.031934, -0.034265, 0.022387, -0.039978, 0.025089, -0.047174, 0.022442, -0.031838, -0.046405, -0.064129, -0.080437, -0.054828, -0.131105, -0.001171, 0.073839, 0.051653, 0.009277, -0.022276, 0.030624, -0.10131, -0.037987, -0.015313, -0.070821, -0.0613, -0.015217, 0.070322, -0.025163, 0.00224, 0.017138, -0.009221, -0.042655, 0.0309, -0.029513, 0.049603, -0.08939, 0.05721, -0.006558, -0.06228, -0.001606, -0.028527, 0.023108, -0.071744, 0.03202, -0.032745, -0.034466, -0.022568, 0.057977, -0.0705, 0.017743, 0.029623, 0.063704, 0.039302, 0.0351, 0.098135, -0.13042, -0.029174, -0.046425, -0.043677, 0.019011, 0.0, -0.049401, 0.019659, 0.00434, 0.103655, 0.03646, -0.006406, 0.01709, 0.010093, -0.035342, -0.021223, -0.02989, 0.004757, -0.04085, -0.049541, -0.028237, 0.010764, -0.023065, 0.019279, 0.043719, 0.022844, 0.005614, 0.047042, -0.00966, -0.028841, -0.141512, -0.046094, 0.093529, 0.076752, 0.051903, 0.005952, -0.009119, 0.010468, 0.020529, -0.117752, -0.025551, -0.020633, -0.035827, -0.045041, 0.021877, 0.104439, -0.102344, 0.061173, 0.051902, -0.033153, -0.108546, 0.025007, 0.072691, 0.077366, 0.011611, 0.04351, -0.025391, -0.05113, 0.007496, 0.034405, -0.02956, 0.068544, 0.001138, 0.003294, 0.053225, -0.050753, 0.111305, -0.119559, 0.030768, -0.083323, 0.027577, 0.056574, 0.018864, -0.054351, -0.049986, -0.049595, -0.053463, 0.13749, 0.00749, -0.015237, 0.026897, 0.05586, -0.053209, -0.045824, 0.002495, -0.041811, -0.088512, -0.045982, 0.001083, 0.0257, -0.025021, -0.056821, 0.079298, -0.04138, 0.05842, 0.12725, 0.075797, -0.063705, 0.02849, -0.059318, -0.056288, -0.0, 0.008574, 0.003689, -0.050495, 0.019619, 0.014629, -0.01671, -0.091144, -0.046019, 0.033841, 0.041957, 0.036199, -0.038631, 0.102301, 0.037733, -0.048338, -0.015469, 0.088624, -0.01908, 0.036952, -0.064097, 0.002211, -0.016333, -0.041148, -0.136672, 0.031455, 0.05582, -0.057396, -0.033742, -0.040174, 0.019922, 0.024373, 0.028434, -0.041116, -0.010636, 0.015855, 0.065905, 0.043568, -0.086017, 0.07593, 0.030394, -0.033286, -0.062302, -2.2e-05, 0.03797, 0.023304, 0.035934, 0.004769, 0.031986, 0.037367, 0.08025, 0.008816, 0.075706, 0.018465, -0.045595, 0.039721, -0.06825, 0.077457, 0.014606, -0.020432, 0.001111, -0.046646, 0.029667, -0.053344, 0.022936, -0.049127, 0.09749, -0.117611, 0.009198, 0.027363, 0.013929, -0.059453, -0.024981, -0.014964, -0.052099, -0.072152, -0.029434, 0.064085, -0.061669, -0.025979, 0.044384, -0.024857, -0.029748, 0.03433, 0.025258, -0.068556, -0.01208, 0.012232, 0.037907, -0.008201, -0.011246, -0.010428, -0.021744, 0.024465, -0.051146, 0.089513, -0.0, -0.088108, -0.059916, -0.068388, -0.033385, -0.011911, 0.046535, -0.013162, 0.038588, 0.013721, 0.082723, -0.063084, -0.020575, 0.003376, -0.028997, 0.024753, 0.066644, 0.130634, -0.075558, 0.01607, 0.009222, 0.08584, -0.006819, -0.008291, -0.028557, -0.043678, 0.028515, 0.039927, -0.062592, -0.011772, 0.066762, 0.027508, 0.049087, -0.044781, -0.011181, 0.01947, 0.042389, -0.043233, 0.150881, 0.056146, 0.058995, 0.006498, 0.0312, -0.048804, 0.042909, 0.055467, -0.010208, -0.039895, 0.025032, 0.003819, -0.007193, 0.067929, -0.006023, 0.100482, 0.045188, -0.026133, 0.041239, -0.00594, 0.043054, -0.029386, 0.037435, -0.055699, 0.083548, 0.020668, -0.081702]}),
@@ -80,142 +62,149 @@ INSERT (:Book {_id: 'B1', title: 'Pride and Prejudice', author: 'Jane Austen', s
        (:Book {_id: 'B10', title: 'One Hundred Years of Solitude', author: 'Gabriel García Márquez', summary: 'Following the Buendía family across multiple generations in the fictional town of Macondo, this novel blends history, myth, and magical realism to explore themes of fate, solitude, and the cyclical nature of time.', summaryEmbedding: [0.026657, 0.028431, -0.032534, 0.056663, -0.022202, 0.038214, -0.007063, -0.097044, -0.024331, -0.042871, -0.00251, -0.01553, 0.04323, -0.108958, -0.037939, 0.044918, -0.02538, 0.022936, 0.015863, 0.027742, 0.034097, -0.021096, 0.024324, 0.119196, -0.073228, 0.006559, 0.093397, 0.018486, -0.077086, -0.066561, -0.061422, 0.083535, -0.017346, -0.049387, -0.001638, 0.014735, 0.012934, 0.054124, -0.018105, 0.008935, -0.008215, 0.013462, 0.006916, -0.057713, -0.036141, -0.076769, -0.01255, -0.042816, 0.033945, 0.011049, 0.012599, 0.006512, -0.013986, 0.011707, 0.011394, 0.138732, -0.090052, -0.001359, 0.047595, -0.031377, 0.048807, 0.015989, -0.040635, -0.000918, 0.049152, 0.006386, 0.014818, 0.06819, -0.012148, -0.115982, 0.081899, 0.009315, -0.008733, -0.010497, 0.055025, 0.063113, -0.065804, -0.046015, -0.054258, -0.10576, -0.030416, -0.030894, 0.052531, -0.0009, -0.078448, 0.002013, 0.083189, -0.036041, 0.044023, 0.002832, 0.011774, -0.039046, 0.005307, -0.024456, -0.024371, 0.04093, 0.013415, 0.002909, 0.030738, 0.046649, -0.015398, -0.013008, 0.077159, 0.028251, 0.03245, -0.077669, -0.002729, -0.031976, -0.024357, -0.040971, 0.019992, -0.036634, -0.002091, -0.000272, 0.032189, 0.027045, -0.000631, -0.048646, -0.005171, 0.045688, 0.083919, 0.078233, -0.07958, 0.019427, 9.8e-05, 0.017786, 0.064538, -0.0, 0.011291, 0.031707, -0.065485, 0.062288, 0.066205, 0.03635, -0.068279, 0.012186, -0.066348, -0.103788, -0.000231, 0.046946, -0.059594, -0.012265, -0.005379, 0.03138, -0.093309, 0.028483, 0.129385, -0.010616, -0.036748, 0.04558, -0.108451, -0.056888, -0.075547, 0.018319, -0.002528, 0.016778, 0.002166, 0.040355, 0.062555, 0.102585, -6e-05, -0.149261, 0.010235, 0.03125, 0.011882, -0.041834, -0.002033, 0.042827, -0.057175, -0.027426, -0.110007, 0.047332, -0.000561, -0.067093, 0.073731, -0.022006, 0.016884, 0.024503, -0.078724, -0.021635, -0.0234, 0.000914, -0.027096, 0.000546, -0.006549, -0.023952, 0.066146, 0.005767, 0.162328, 0.019604, 0.048126, 0.022859, 0.066474, -0.015293, 0.006383, 0.100716, 0.058188, -0.036845, -0.026259, 0.004199, 0.040034, 0.007741, -0.006, 0.03083, 0.016829, -0.018671, -0.063338, -0.016366, -0.052646, -0.035678, -0.024429, 0.059136, 0.047461, 0.003303, 0.057969, -0.068163, -0.095383, 0.001882, 0.062801, 0.057053, 0.041009, -0.070887, -0.064489, -0.0, 0.046044, -0.058527, 0.012656, -0.020662, 0.065134, -0.078622, -0.137736, 0.058991, -0.036417, -0.025577, -0.001395, -0.053878, 0.099823, -0.000594, 0.032634, -0.033411, 0.084393, -0.023813, -0.061469, 0.007068, -0.038479, -0.041105, -0.091287, -0.116455, 0.109362, 0.032847, -0.016454, 0.000362, -0.121496, 0.070174, -0.000928, -0.009022, 0.047538, 0.005848, -0.010767, 0.059154, 0.050466, -0.022684, 0.029563, -0.074714, -0.032717, -0.059118, -0.010511, -0.060255, -0.000631, 0.090146, 0.01357, 0.05687, 0.040539, -0.024013, 0.096113, 0.030667, 0.0207, -0.046447, 0.022878, -0.048885, 0.009639, -0.055045, -0.056503, 0.057068, -0.045769, 0.032228, -0.002691, 0.011516, -0.007624, 0.007416, -0.079591, -0.053043, -0.029711, -0.01563, -0.065008, -0.046114, -0.042554, -0.004175, -0.067101, 0.114811, 0.004281, -0.009707, -0.023001, 0.027512, -0.007294, -0.036965, 0.011704, 0.00298, -0.066851, 0.009078, -0.078874, 0.004576, 0.013394, 0.029089, -0.02249, -0.052906, -0.004407, -0.044846, 0.006333, -0.0, 0.081447, -0.018687, 0.007597, -0.033239, 0.009538, 0.013418, 0.045043, -0.052031, -0.062322, 0.056952, -0.032707, -0.013834, 0.053223, 0.068142, 0.051683, 0.024035, 0.150549, -0.024804, -0.037482, -0.018459, 0.021708, 0.00225, 0.061038, -0.057281, -0.018757, 0.038778, -0.048686, -0.073497, 0.098296, 0.001349, 0.099337, 0.037205, -0.004721, 0.068433, -0.018506, -0.041574, -0.063517, 0.100771, -0.093404, -0.085058, 0.122797, -0.036402, -0.04629, -0.001159, 0.054401, -0.06072, 0.074008, 0.051591, 0.009301, 0.019513, -0.057999, -0.015122, 0.074181, 0.053202, 0.052196, -0.000656, -0.006664, 0.027594, -0.028435, -0.004762, 0.018872, 0.074735, 0.010855, -0.005242]})
 ```
   
-</div>
-  
-## Showing Vector Indexes
+## Showing Vector Index
 
-To retrieve node vector indexes in the current graph:
+Retrieve all vector indexes in the current graph:
 
 ```gql
-SHOW NODE VECTOR INDEX
+SHOW VECTOR INDEX
 ```
 
-The information about vector indexes is organized into a `_nodeVectorIndex` table with the following fields:
+The result includes the following fields:
 
-| <div table-width="25">Field</div> | Description |
+| <div table-width="18">Field</div> | Description |
 | -- | -- |
-| `name` | Vector index name. |
-| `schema` | The schema of the vector index. |
-| `properties` | The property of the vector index. |
-| `vector_server_name` | The vector server that hosts the vector index. |
-| `status` | Vector index status, which can be `DONE` or `CREATING`. |
-| `config` | Vector index configuration, including `similarity_function`, `index_type`, and `dimensions`. |
+| `index_name` | Vector index name. |
+| `label` | The label of the indexed nodes (`*` if applied to all labels). |
+| `property` | The indexed property. |
+| `dimensions` | The number of vector dimensions. |
+| `node_count` | Number of vectors currently indexed. |
+| `metric` | The similarity metric (`cosine`, `euclidean`, or `dot`). |
+| `m` | HNSW connectivity parameter. |
+| `ef_construction` | HNSW construction parameter. |
+| `ef_search` | HNSW search parameter. |
+| `quantized` | Whether product quantization is enabled. |
+| `memory_bytes` | Memory usage of the index in bytes. |
+| `status` | Index status: `READY`, `BUILDING`, `REBUILDING`, or `STALE`. |
 
-## Creating a Vector Index
+## Creating Vector Index
 
-You can create a vector index using the `CREATE VECTOR INDEX` statement for a node property of the `list<float>` or `list<double>` type. The vector index creation runs as a job, you may run `SHOW JOB <id?>` afterward to verify the success of the creation.
+You can create a vector index using the `CREATE VECTOR INDEX` statement for a vector-type node or edge property. The index is built asynchronously — use `SHOW VECTOR INDEX` to check build progress.
 
-To create a vector index named `summary_embedding` for the property `summaryEmbedding` of `Book` nodes:
+<p tit="Syntax"></p>
+
+```
+<create vector index statement> ::=
+  "CREATE VECTOR INDEX" [ "IF NOT EXISTS" ] <index name> "ON NODE" <label>
+  "(" <property name> ")" [ "OPTIONS" "{" <option list> "}" ]
+```
+
+Create a vector index named `summary_embedding` for the property `summaryEmbedding` of `Book` nodes:
 
 ```gql
-CREATE VECTOR INDEX "summary_embedding" ON NODE Book (summaryEmbedding) OPTIONS {
-  similarity_function: "COSINE",
-  index_type: "FLAT",
+CREATE VECTOR INDEX summary_embedding ON NODE Book (summaryEmbedding) OPTIONS {
   dimensions: 384,
-  vector_server: "vector_server_1"
+  metric: "cosine"
 }
 ```
 
-To create a vector index for all node labels:
+Create a vector index for all node labels:
 
 ```gql
-CREATE VECTOR INDEX "all_embeddings" ON NODE * (embedding) OPTIONS {
-  similarity_function: "COSINE",
-  index_type: "HNSW",
+CREATE VECTOR INDEX all_embeddings ON NODE * (embedding) OPTIONS {
   dimensions: 1536
 }
 ```
 
 **Details**
 
-- The vector index name must be unique. Naming conventions are:
-  - 2 to 64 characters.
-  - Begins with a letter.
-  - Allowed characters: letters (A-Z, a-z), numbers (0-9) and underscores (<code>_</code>).
+- The `<index name>` must be unique among vector indexes.
 - A vector index is applied to a single label and a single property. Use `*` to apply to all labels.
-- Configurations for a vector index:
+- Use `IF NOT EXISTS` to avoid errors when the index already exists.
+- Options for a vector index:
 
-| <div table-width="22">Item</div> | <div table-width="9">Type</div> | <div table-width="8">Default</div> | Description |
+| <div table-width="18">Option</div> | <div table-width="9">Type</div> | <div table-width="10">Default</div> | Description |
 | -- | -- | -- | -- |
-| `similarity_function` | String | `L2` | The similarity function used to assess the similarity of two vectors. Supports `L2`, `COSINE`, and `IP`. <a href="#Vector-Search">Learn more</a>  |
-| `index_type` | String | `FLAT` | The method used to organize and search the vectors in the index. Supports `FLAT`, `IVF_FLAT`, `IVF_SQ8`, `HNSW`, `HNSW_SQ`, `HNSW_PQ`, `HNSW_PRQ`, and `SCANN`. <a href="#Annex:-Index-Types">Learn more</a> |
-| `dimensions` | Integer | `128` | The dimensions of the vectors to be indexed. Only vectors of the configured dimension are indexed, and querying the index with a vector of a different dimensions will return an error. |
+| `dimensions` | Integer | (required) | The number of dimensions of the vectors to be indexed. Vectors with a different dimension are rejected. |
+| `metric` | String | `cosine` | The similarity metric. Supports `cosine`, `euclidean`, and `dot`. <a href="#Vector-Search">Learn more</a> |
 | `m` | Integer | `16` | HNSW parameter: Maximum number of connections per node. Higher values improve recall but increase memory and build time. |
 | `efConstruction` | Integer | `200` | HNSW parameter: Size of dynamic candidate list during index construction. Higher values improve quality but increase build time. |
-| `vector_server` | String | / | The name of the <a target="_blank" href="/docs/gql/vector-servers">vector server</a> that hosts the vector index. |
 
-## Dropping a Vector Index
+## Dropping Vector Index
 
-You can drop a vector index using the `DROP VECTOR INDEX` statement. Dropping a vector index does not affect the actual property values stored in shards.
-
-> A property with a vector index cannot be dropped until the vector index is deleted.
-
-To drop the node vector index `summary_embedding`:
+Dropping a vector index does not affect the actual property values.
 
 ```gql
-DROP NODE VECTOR INDEX summary_embedding
+DROP VECTOR INDEX summary_embedding
 ```
 
-Use `IF EXISTS` to avoid errors when dropping a non-existent index:
+Use `IF EXISTS` to avoid errors when the index doesn't exist:
 
 ```gql
-DROP NODE VECTOR INDEX IF EXISTS summary_embedding
+DROP VECTOR INDEX IF EXISTS summary_embedding
 ```
 
-## Using Vector Indexes
+## Using Vector Index
 
-You can use a vector index for vector search by calling the `vector.queryNodes()` procedure.
+When a vector index exists, queries using `ai.distance()` or `ai.cosine()` with `ORDER BY ... LIMIT` or `WHERE` threshold conditions are automatically optimized to use the index for fast approximate nearest neighbor (ANN) search.
 
-### Syntax
+### k-NN Search
 
-<p tit="Syntax"></p>
+Find the k nearest neighbors, use `ORDER BY` with `LIMIT`. The optimizer automatically uses the vector index:
 
-```gql
-CALL vector.queryNodes("<vectorIndexName>", <numMostSimNodes>, <targetVector>)
-```
-
-**Parameters**
-
-| <div table-width="27">Params</div> | Description |
-| -- | -- |
-| `vectorIndexName` | The name of the vector index to be used. |
-| `<numMostSimNodes>` | Number of the nodes to retrieve that have the most similar vectors to `<targetVector>`. Note that the `<targetVector>` itself is included. |
-| `<targetVector>` | The target vector. |
-
-**Returns**
-
-- `_uuid`: `_uuid` of the retrieved node.
-- `score`: The similarity score between the vector of retrieved node and the target vector. 
-
-### Example
-
-Finds the top two books most similar to *Pride and Prejudice* by the vector index `summary_embedding`, return the book names along with the similarity scores between them:
-  
 ```gql
 MATCH (target:Book {title: "Pride and Prejudice"})
-CALL vector.queryNodes('summary_embedding', 3, target.summaryEmbedding)
-YIELD result
-MATCH (book WHERE book._uuid = result._uuid)
-RETURN table(book.title, result.score)
+MATCH (b:Book)
+WHERE b <> target
+RETURN b.title, ai.cosine(b.summaryEmbedding, target.summaryEmbedding) AS similarity
+ORDER BY similarity DESC
+LIMIT 3
 ```
-  
+
 Result:
 
-| book.title | result.score |
+| b.title | similarity |
 | -- | -- |
-| Pride and Prejudice | 1 |
 | One Hundred Years of Solitude | 0.39629873633384705 |
 | The Great Gatsby | 0.3709701597690582 |
-  
-## Annex: Index Types
+| Crime and Punishment | 0.3523418605327606 |
 
-| <div table-width="15">Index Type</div> | Description |
-| -- | -- |
-| `FLAT` | A brute-force method where all vectors are stored and compared directly. This method ensures accurate results, but it is computationally expensive and inefficient when dealing with large datasets. |
-| `IVF_FLAT` | The `IVF` (Inverted File) method partitions the vectors into cluster units, and the search only takes place within the most relevant units. `IVF_FLAT` uses a `FLAT` approach within each unit, providing faster searches with a slight compromise on accuracy. |
-| `IVF_SQ8` | `SQ8` (Scalar Quantization with 8-bit) uses scalar quantization to compress vectors in each unit into an 8-bit representation. It reduces storage requirements and increases search speed at the cost of slightly lower precision. |
-| `HNSW` | `HNSW` (Hierarchical Navigable Small World) is a graph-based indexing method that organizes vectors into a graph structure for fast approximate nearest neighbor search. It is highly efficient, especially for large datasets, and tends to outperform other methods in terms of search speed and recall. |
-| `HNSW_SQ` | It combines the `HNSW` method with `SQ` (Scalar Quantization) to reduce memory usage while maintaining search efficiency. |
-| `HNSW_PQ` | It uses `PQ` (Product Quantization) to enhance the `HNSW` method by compressing the vectors, resulting in a more memory-efficient structure with good performance. |
-| `HNSW_PRQ` | It combines the benefits of `HNSW_PQ` with a re-ranking mechanism to improve accuracy after an initial fast search. This method ensures both speed and high precision. |
-| `SCANN` | `SCANN` (Scalable Nearest Neighbor) is an advanced method developed by Google for efficient nearest neighbor search. It utilizes techniques like quantization and partitioning to provide extremely fast retrieval speeds, especially on very large datasets. |
+The following patterns are optimized:
+
+- `ORDER BY ai.distance(n.prop, queryVector) ASC LIMIT k` — nearest by cosine distance
+- `ORDER BY ai.cosine(n.prop, queryVector) DESC LIMIT k` — nearest by cosine similarity
+
+### Range Search
+
+Find all vectors within a similarity threshold, use a `WHERE` condition:
+
+```gql
+LET query = ai.embed('dystopian society and surveillance')
+MATCH (b:Book)
+WHERE ai.cosine(b.summaryEmbedding, query) > 0.5
+RETURN b.title, ai.cosine(b.summaryEmbedding, query) AS similarity
+ORDER BY similarity DESC
+```
+
+The following patterns are optimized:
+
+- `WHERE ai.distance(n.prop, queryVector) < threshold` — within cosine distance
+- `WHERE ai.cosine(n.prop, queryVector) > threshold` — above cosine similarity
+
+## Managing Vector Index
+
+### Adjusting Search Parameters
+
+Use `ai.setIndexOption()` to adjust the `efSearch` parameter at runtime. Higher values improve recall at the cost of search speed:
+
+```gql
+RETURN ai.setIndexOption('summary_embedding', 'efSearch', 200)
+```
+
+### Rebuilding an Index
+
+If an index is in `STALE` status (e.g., after a crash), rebuild it:
+
+```gql
+RETURN ai.rebuildIndex('summary_embedding')
+```

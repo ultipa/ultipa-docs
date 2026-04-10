@@ -2,23 +2,13 @@
 
 ## Overview
 
-The `REMOVE` statement allows you to remove properties and labels on nodes and edges. These nodes or edges must first be retrieved using the `MATCH` statement.
+The `REMOVE` statement allows you to remove properties and labels from nodes and edges. These nodes or edges must first be retrieved using the `MATCH` statement.
 
-The `REMOVE` statement only supports **open graphs**.
+**Note:** The unique identifier `_id` is immutable.
 
 ## Example Graph
 
-<div align=center drawio-diagram='29507' drawio-name='draw_0c6b39b01a314cd0bd3c493509c4e9ff.jpg'><img src="https://img.ultipa.cn/draw/draw_0c6b39b01a314cd0bd3c493509c4e9ff.jpg?v='1760090769245'"/></div>
-
-<div tab="code">
-
-<p tit="Create the graph"></p>
-
-```gql
-CREATE GRAPH myGraph ANY
-```
-
-<p tit="Insert data to the graph"></p>
+<div align=center><img src="images/remove-example.drawio.svg"/></div>
 
 ```gql
 INSERT (rowlock:User&Person&Player&Employee {_id: "U01", name: "rowlock"}),
@@ -32,29 +22,37 @@ INSERT (rowlock:User&Person&Player&Employee {_id: "U01", name: "rowlock"}),
        (brainy)-[:Joins {memberNo: 1}]->(c)
 ```
 
-</div>
+## Removing Individual Properties
+
+In a **closed graph**, removing a property sets its value to `null`. In an **open graph**, the property is deleted from the node or edge.
+
+Remove specified properties from nodes and edges:
+
+```gql
+MATCH (n:User {name: 'rowlock'})-[e:Follows]->(:User {name: 'Brainy'})
+REMOVE n.gender, e.createdOn
+RETURN n, e
+```
 
 ## Removing Labels
 
-To remove a label from a node:
+Remove one label from a node:
 
 ```gql
 MATCH (n:User {name: 'rowlock'})
-REMOVE n:Person
+REMOVE n:Player
 ```
 
-To remove two labels from a node:
+Remove multiple labels from a node:
 
 ```gql
 MATCH (n:User {name: 'rowlock'})
 REMOVE n:Player, n:Employee
 ```
 
-## Removing Properties
-
-To remove the specified properties:
+Remove a label from an edge:
 
 ```gql
-MATCH (n:User {name: 'rowlock'})-[e:Follows]->(:User {name: 'Brainy'})
-REMOVE n.gender, e.createdOn
+MATCH ()-[e:Follows]->()
+REMOVE e:Follows
 ```

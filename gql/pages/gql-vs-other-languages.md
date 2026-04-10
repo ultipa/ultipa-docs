@@ -11,11 +11,11 @@ This page compares GQL with other popular graph query languages to help you unde
 | Feature | GQL | Cypher |
 |---------|-----|--------|
 | Create nodes | `INSERT` | `CREATE` |
-| Directed edge | `()->()` | `()-->()` |
-| Undirected edge | `()-()` | `()-()` |
+| Directed edge | `->` (e.g., `()->()`, `()-[]->()`) | `-->` (e.g., `()-->()`, `()-[]->()`) |
 | Variable-length path | `-{1,5}` | `*1..5` |
 | Multi-label (AND) | `(:A&B)` | `(:A:B)` |
 | Label OR | `(:A\|B)` | Not supported |
+| Label negation | `(:!A)` | Not supported |
 | Any label | `(:%)` | Not supported |
 | Variable assignment | `LET x = ...` | `WITH ... AS x` |
 | List iteration | `FOR x IN list` | `UNWIND list AS x` |
@@ -53,7 +53,7 @@ ORDER BY totalSpent DESC
 **GQL variable-length paths:**
 
 ```gql
-MATCH (:Person {name: 'Alice'})-[:KNOWS]-{1,3}(b:Person)
+MATCH (:Person {name: 'Alice'})-[:KNOWS]->{1,3}(b:Person)
 RETURN b.name
 ```
 
@@ -84,7 +84,7 @@ Despite the similar names, **GQL** and **GraphQL** are fundamentally different:
 
 ```gql
 // Find friends of friends in GQL
-MATCH (:Person {name: 'Alice'})-[:KNOWS]-{2}(fof:Person)
+MATCH (:Person {name: 'Alice'})-[:KNOWS]->{2}(fof:Person)
 RETURN fof.name
 ```
 

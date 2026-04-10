@@ -2,11 +2,11 @@
 
 ## Datetime Value Functions
 
-A datetime value function returns a temporal instant value.
+A datetime value function creates a temporal instant or duration value. Refer to <a href="/docs/gql/values-and-types">Values and Types</a> for date and time string formats.
 
 ### date()
 
-Returns a value of type `DATE`.
+Creates a value of type `DATE` (`LOCAL DATE`).
 
 <table style="width: 100%;">
   <colgroup>
@@ -28,8 +28,8 @@ Returns a value of type `DATE`.
     </tr>
     <tr>
       <td><code>&lt;param&gt;</code></td>
-      <td><code>STRING</code> or <code>RECORD</code></td>
-      <td>Either a date string (<a href="#Datetime-String-Format">format</a>) or a record with the fields <code>year</code>, <code>month</code>, and <code>day</code></td>
+      <td><code>STRING</code>, <code>RECORD</code>, or 3 <code>INT</code>s</td>
+      <td>A date string, a record with <code>year</code>/<code>month</code>/<code>day</code> fields, or three integers (year, month, day)</td>
     </tr>
     <tr>
       <td><b>Return Type</b></td>
@@ -38,123 +38,24 @@ Returns a value of type `DATE`.
   </tbody>
 </table>
 
-When called without a parameter, `date()` returns the current session date (or the server date if no session timezone is set). It is equivalent to `CURRENT_DATE`.
-
 ```gql
+// returns the current local date, date() is equivalent to CURRENT_DATE
 RETURN date(), CURRENT_DATE
 ```
 
-Result: 
-
-| date() | CURRENT_DATE |
-| -- | -- |
-| 2025-08-21 | 2025-08-21 |
-
-The parameter should match one of the supported formats:
-
 ```gql
-FOR value IN [
-  date("1993-05-09"),
-  date("19930509"),
-  date({year: 1993, month: 5, day: 9}),
-  date({year: 1993, month: 5}),
-  date({year: 1993})
-]
-RETURN value  
+RETURN date("1993-05-09"),
+       date("1993-5-9"),
+       date("19930509"),
+       date("1993/05/09"),
+       date("1993/5/9"),
+       date({year: 1993, month: 5, day: 9}),
+       date(1993, 5, 9)
 ```
-
-Result: 
-
-| value |
-| -- |
-| 1993-05-09 |
-| 1993-05-09 |
-| 1993-05-09 |
-| 1993-05-01 |
-| 1993-01-01 |
-
-### local_datetime()
-
-Returns a value of type `LOCAL DATETIME`.
-
-<table style="width: 100%;">
-  <colgroup>
-    <col style="width:20%;">
-    <col style="width:15%;">
-    <col style="width:17%;">
-    <col>
-  </colgroup>
-  <tbody>
-    <tr>
-      <td><b>Syntax</b></td>
-      <td colspan="3"><code>local_datetime([&lt;param&gt;])</code></td>
-    </tr>
-    <tr>
-      <td rowspan="2"><b>Arguments</b></td>
-      <td><b>Name</b></td>
-      <td><b>Type</b></td>
-      <td><b>Description</b></td>
-    </tr>
-    <tr>
-      <td><code>&lt;param&gt;</code></td>
-      <td><code>STRING</code> or <code>RECORD</code></td>
-      <td>Either a datetime string (<a href="#Datetime-String-Format">format</a>) or a record with the fields <code>year</code>, <code>month</code>, <code>day</code>, <code>hour</code>, <code>minute</code>, <code>second</code>, and one of <code>millisecond</code> (3 digits), <code>microsecond</code> (6 digits), or <code>nanosecond</code> (9 digits)</td>
-    </tr>
-    <tr>
-      <td><b>Return Type</b></td>
-      <td colspan="3"><code>LOCAL DATETIME</code></td>
-    </tr>
-  </tbody>
-</table>
-
-When called without a parameter, `local_datetime()` returns the current session datetime (or the server datetime if no session timezone is set). It is equivalent to `LOCAL_TIMESTAMP`.
-
-```gql
-RETURN local_datetime(), LOCAL_TIMESTAMP
-```
-
-Result: 
-
-| local_datetime() | LOCAL_TIMESTAMP |
-| -- | -- |
-| 2025-08-21 15:20:30.625790824 | 2025-08-21 15:20:30.625790824 |
-
-The parameter should match one of the supported formats:
-
-```gql
-FOR value IN [
-  local_datetime("1993-05-09T03:02:11.70"),
-  local_datetime("1993-05-09 03:02:11.70"),
-  local_datetime("19930509T030211"),
-  local_datetime("19930509 030211"),
-  local_datetime({year: 1993, month: 5, day: 9, hour: 3, minute: 2, second: 11, millisecond: 70}),
-  local_datetime({year: 1993, month: 5, day: 9, hour: 3, minute: 2, second: 11, microsecond: 70}),
-  local_datetime({year: 1993, month: 5, day: 9, hour: 3, minute: 2, second: 11, nanosecond: 70}),
-  local_datetime({year: 1993, month: 5, day: 9, hour: 3, minute: 2, second: 11}),
-  local_datetime({year: 1993, month: 5, day: 9, hour: 3, minute: 2}),
-  local_datetime({year: 1993, month: 5, day: 9, hour: 3})
-]
-RETURN value  
-```
-
-Result: 
-
-| value |
-| -- |
-| 1993-05-09 03:02:11.7 |
-| 1993-05-09 03:02:11.7 |
-| 1993-05-09 03:02:11 |
-| 1993-05-09 03:02:11 |
-| 1993-05-09 03:02:11.07 |
-| 1993-05-09 03:02:11.00007 |
-| 1993-05-09 03:02:11.00000007 |
-| 1993-05-09 03:02:11 |
-| 1993-05-09 03:02:00 |
-| 1993-05-09 03:00:00 |
 
 ### local_time()
 
-Returns a value of type `LOCAL TIME`.
+Creates a value of type `LOCAL TIME`. `time()` is a synonym.
 
 <table style="width: 100%;">
   <colgroup>
@@ -177,7 +78,7 @@ Returns a value of type `LOCAL TIME`.
     <tr>
       <td><code>&lt;param&gt;</code></td>
       <td><code>STRING</code> or <code>RECORD</code></td>
-      <td>Either a time string (<a href="#Datetime-String-Format">format</a>) or a record with the fields <code>hour</code>, <code>minute</code>, <code>second</code>, and one of <code>millisecond</code> (3 digits), <code>microsecond</code> (6 digits), or <code>nanosecond</code> (9 digits)</td>
+      <td>A time string or a record with <code>hour</code>/<code>minute</code>/<code>second</code> fields and optionally <code>millisecond</code>, <code>microsecond</code>, or <code>nanosecond</code></td>
     </tr>
     <tr>
       <td><b>Return Type</b></td>
@@ -186,54 +87,196 @@ Returns a value of type `LOCAL TIME`.
   </tbody>
 </table>
 
-When called without a parameter, `local_time()` returns the current session time (or the server time if no session timezone is set).
-
 ```gql
-RETURN local_time()
+// returns the current local time, local_time() is equivalent to LOCAL_TIME
+RETURN local_time(), LOCAL_TIME
 ```
 
-Result: 
-
-| local_time() |
-| -- |
-| 15:20:30.625790824 |
-
-The parameter should match one of the supported formats:
-
 ```gql
-FOR value IN [
-  local_time("03:02:11.70"),
-  local_time("030211.70"),
-  local_time("03:02:11"),
-  local_time("030211"),
-  local_time({hour: 3, minute: 2, second: 11, millisecond: 70}),
-  local_time({hour: 3, minute: 2, second: 11, microsecond: 70}),
-  local_time({hour: 3, minute: 2, second: 11, nanosecond: 70}),
-  local_time({hour: 3, minute: 2, second: 11}),
-  local_time({hour: 3, minute: 2}),
-  local_time({hour: 3})
-]
-RETURN value  
+RETURN local_time("03:02:11.700000000"),
+       local_time("03:02:11"),
+       local_time("03:02"),
+       local_time("030211"),
+       local_time("030211.700000000"),
+       local_time({hour: 3, minute: 2, second: 11}),
+       local_time({hour: 3, minute: 2, second: 11, millisecond: 700}),
+       local_time({hour: 3, minute: 2, second: 11, microsecond: 700}),
+       local_time({hour: 3, minute: 2, second: 11, nanosecond: 700})
 ```
 
-Result: 
+### local_datetime()
 
-| value |
-| -- |
-| 03:02:11.7 |
-| 03:02:11.7 |
-| 03:02:11 |
-| 03:02:11 |
-| 03:02:11.07 |
-| 03:02:11.00007 |
-| 03:02:11.00000007 |
-| 03:02:11 |
-| 03:02:00 |
-| 03:00:00 |
+Creates a value of type `LOCAL DATETIME`.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>local_datetime([&lt;param&gt;])</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;param&gt;</code></td>
+      <td><code>STRING</code> or <code>RECORD</code></td>
+      <td>A datetime string or a record with <code>year</code>/<code>month</code>/<code>day</code>/<code>hour</code>/<code>minute</code>/<code>second</code> fields and optionally <code>millisecond</code>, <code>microsecond</code>, or <code>nanosecond</code></td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>LOCAL DATETIME</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+// returns the current local datetime, local_datetime() is equivalent to LOCAL_TIMESTAMP
+RETURN local_datetime(), LOCAL_TIMESTAMP
+```
+
+```gql
+RETURN local_datetime("1993-05-09T03:02:11.70"),
+       local_datetime("1993-05-09 03:02:11"),
+       local_datetime("1993/05/09 03:02:11"),
+       local_datetime("1993/5/9 03:02:11"),
+       local_datetime("19930509T030211"),
+       local_datetime("19930509 030211"),
+       local_datetime({year: 1993, month: 5, day: 9, hour: 3, minute: 2, second: 11}),
+       local_datetime({year: 1993, month: 5, day: 9, hour: 3, minute: 2, second: 11, millisecond: 700}),
+       local_datetime({year: 1993, month: 5, day: 9, hour: 3, minute: 2, second: 11, microsecond: 700}),
+       local_datetime({year: 1993, month: 5, day: 9, hour: 3, minute: 2, second: 11, nanosecond: 700})
+```
+
+### zoned_time()
+
+Creates a value of type `ZONED TIME`.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>zoned_time([&lt;param&gt; [, &lt;timezone&gt;]])</code></td>
+    </tr>
+    <tr>
+      <td rowspan="3"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>[&lt;param&gt;]</code></td>
+      <td><code>STRING</code>, <code>RECORD</code>, or <code>TIME</code></td>
+      <td>A time string with timezone, a record with <code>hour</code>/<code>minute</code>/<code>second</code>/<code>timezone</code> fields and optionally <code>millisecond</code>, <code>microsecond</code>, or <code>nanosecond</code></td>
+    </tr>
+    <tr>
+      <td><code>&lt;timezone&gt;</code></td>
+      <td><code>STRING</code></td>
+      <td>Target timezone offset (e.g., <code>"+05:30"</code>, <code>"Z"</code>) used to convert the first argument to a different timezone</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>ZONED TIME</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+// returns the current local zoned time, zoned_time() is equivalent to CURRENT_TIME
+RETURN zoned_time(), CURRENT_TIME
+```
+
+```gql
+RETURN zoned_time("12:20:02+08:00"),
+       zoned_time("12:20:02Z"),
+       zoned_time({hour: 12, minute: 20, second: 2, timezone: "+08:00"}),
+       zoned_time({hour: 12, minute: 20, second: 2, timezone: "+08:00", millisecond: 500}),
+       zoned_time({hour: 12, minute: 20, second: 2, timezone: "-06:00", microsecond: 700}),
+       zoned_time({hour: 12, minute: 20, second: 2, timezone: "Z", nanosecond: 700})
+```
+
+Convert an existing time to a different timezone:
+
+```gql
+RETURN zoned_time("12:20:02+08:00", "+05:30")
+```
+
+### zoned_datetime()
+
+Creates a value of type `ZONED DATETIME`.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>zoned_datetime(&lt;param&gt; [, &lt;timezone&gt;])</code></td>
+    </tr>
+    <tr>
+      <td rowspan="3"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;param&gt;</code></td>
+      <td><code>STRING</code>, <code>RECORD</code>, <code>TIMESTAMP</code>, or <code>ZONED DATETIME</code></td>
+      <td>A datetime string with timezone, a record with <code>year</code>/<code>month</code>/<code>day</code>/<code>hour</code>/<code>minute</code>/<code>second</code>/<code>timezone</code> fields and optionally <code>millisecond</code>, <code>microsecond</code>, or <code>nanosecond</code></td>
+    </tr>
+    <tr>
+      <td><code>&lt;timezone&gt;</code></td>
+      <td><code>STRING</code></td>
+      <td>Target timezone offset (e.g., <code>"+05:30"</code>, <code>"Z"</code>) used to convert the first argument to a different timezone</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>ZONED DATETIME</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+// returns the current local datetime, zoned_datetime() is equivalent to CURRENT_TIMESTAMP
+RETURN zoned_datetime(), CURRENT_TIMESTAMP
+```
+
+```gql
+RETURN zoned_datetime("2025-01-01T12:20:02+08:00"),
+       zoned_datetime("2025-01-01T12:20:02Z"),
+       zoned_datetime({year: 2025, month: 1, day: 1, hour: 12, minute: 20, second: 2, timezone: "+08:00"}),
+       zoned_datetime({year: 2025, month: 1, day: 1, hour: 12, minute: 20, second: 2, timezone: "+08:00", millisecond: 500}),
+       zoned_datetime({year: 2025, month: 1, day: 1, hour: 12, minute: 20, second: 2, timezone: "-06:00", microsecond: 700}),
+       zoned_datetime({year: 2025, month: 1, day: 1, hour: 12, minute: 20, second: 2, timezone: "Z", nanosecond: 700})
+```
+
+Convert an existing datetime to a different timezone:
+
+```gql
+RETURN zoned_datetime("2025-01-01T12:20:02+08:00", "+05:30")
+```
 
 ### now()
 
-Returns the current datetime in Coordinated Universal Time (UTC).
+Returns the current zoned datetime in the server's local timezone. It is equivalent to `CURRENT_TIMESTAMP`.
 
 <table style="width: 100%;">
   <colgroup>
@@ -247,36 +290,24 @@ Returns the current datetime in Coordinated Universal Time (UTC).
     </tr>
     <tr>
       <td><b>Return Type</b></td>
-      <td><code>DATETIME</code></td>
+      <td><code>ZONED DATETIME</code></td>
     </tr>
   </tbody>
 </table>
 
 ```gql
-RETURN now()
+RETURN now(), CURRENT_TIMESTAMP
 ```
 
-Result: 
+### duration()
 
-| now() |
-| -- |
-| 2025-08-21 09:20:30.625790824 |
-
-### zoned_datetime()
-
-Returns a value of type `ZONED DATETIME`.
+Creates a value of type `DURATION`.
 
 <table style="width: 100%;">
-  <colgroup>
-    <col style="width:20%;">
-    <col style="width:15%;">
-    <col style="width:17%;">
-    <col>
-  </colgroup>
   <tbody>
     <tr>
       <td><b>Syntax</b></td>
-      <td colspan="3"><code>zoned_datetime([&lt;param&gt;])</code></td>
+      <td colspan="3"><code>duration(&lt;durationStr&gt;)</code></td>
     </tr>
     <tr>
       <td rowspan="2"><b>Arguments</b></td>
@@ -285,144 +316,24 @@ Returns a value of type `ZONED DATETIME`.
       <td><b>Description</b></td>
     </tr>
     <tr>
-      <td><code>&lt;param&gt;</code></td>
-      <td><code>STRING</code> or <code>RECORD</code></td>
-      <td>Either a datetime string (<a href="#Datetime-String-Format">format</a>) or a record with the fields <code>year</code>, <code>month</code>, <code>day</code>, <code>hour</code>, <code>minute</code>, <code>second</code>, one of <code>millisecond</code> (3 digits), <code>microsecond</code> (6 digits), or <code>nanosecond</code> (9 digits), as well as <code>timezone</code></td>
+      <td><code>&lt;durationStr&gt;</code></td>
+      <td><code>STRING</code></td>
+      <td>An ISO 8601 duration string (e.g., <code>"P2Y5M"</code>, <code>"P3DT4H"</code>)</td>
     </tr>
     <tr>
       <td><b>Return Type</b></td>
-      <td colspan="3"><code>ZONED DATETIME</code></td>
+      <td colspan="3"><code>DURATION</code></td>
     </tr>
   </tbody>
 </table>
 
-When called without a parameter, `zoned_datetime()` returns the current session datetime (or the server datetime if no session timezone is set). It is equivalent to `CURRENT_TIMESTAMP`.
-
 ```gql
-RETURN zoned_datetime(), CURRENT_TIMESTAMP
+RETURN duration("P2Y5M"), duration("P3DT4H30M")
 ```
 
-Result: 
+## Other Datetime Functions
 
-| zoned_datetime() | CURRENT_TIMESTAMP |
-| -- | -- |
-| 2025-08-21 15:20:30.625790824-0600 | 2025-08-21 15:20:30.625790824-0600 |
-
-The parameter should match one of the supported formats:
-
-```gql
-FOR value IN [
-  zoned_datetime("1993-05-09T03:02:11.70-0600"),
-  zoned_datetime("1993-05-09 03:02:11.70-06:00"),
-  zoned_datetime("19930509T030211-06:00"),
-  zoned_datetime("19930509 030211-0600"),
-  zoned_datetime({year: 1993, month: 5, day: 9, hour: 3, minute: 2, second: 11, millisecond: 70, timezone: -0600}),
-  zoned_datetime({year: 1993, month: 5, day: 9, hour: 3, minute: 2, second: 11, microsecond: 70, timezone: -0600}),
-  zoned_datetime({year: 1993, month: 5, day: 9, hour: 3, minute: 2, second: 11, nanosecond: 70, timezone: -0600}),
-  zoned_datetime({year: 1993, month: 5, day: 9, hour: 3, minute: 2, second: 11, timezone: -0600}),
-  zoned_datetime({year: 1993, month: 5, day: 9, hour: 3, minute: 2, timezone: -0600}),
-  zoned_datetime({year: 1993, month: 5, day: 9, hour: 3, timezone: -0600})
-]
-RETURN value  
-```
-
-Result: 
-
-| value |
-| -- |
-| 1993-05-09 03:02:11.7-0600 |
-| 1993-05-09 03:02:11.7-0600 |
-| 1993-05-09 03:02:11-0600 |
-| 1993-05-09 03:02:11-0600 |
-| 1993-05-09 03:02:11.07-0600 |
-| 1993-05-09 03:02:11.00007-0600 |
-| 1993-05-09 03:02:11.00000007-0600 |
-| 1993-05-09 03:02:11-0600 |
-| 1993-05-09 03:02:00-0600 |
-| 1993-05-09 03:00:00-0600 |
-
-### zoned_time()
-
-Returns a value of type `ZONED TIME`.
-
-<table style="width: 100%;">
-  <colgroup>
-    <col style="width:20%;">
-    <col style="width:15%;">
-    <col style="width:17%;">
-    <col>
-  </colgroup>
-  <tbody>
-    <tr>
-      <td><b>Syntax</b></td>
-      <td colspan="3"><code>zoned_time([&lt;param&gt;])</code></td>
-    </tr>
-    <tr>
-      <td rowspan="2"><b>Arguments</b></td>
-      <td><b>Name</b></td>
-      <td><b>Type</b></td>
-      <td><b>Description</b></td>
-    </tr>
-    <tr>
-      <td><code>&lt;param&gt;</code></td>
-      <td><code>STRING</code> or <code>RECORD</code></td>
-      <td>Either a time string (<a href="#Datetime-String-Format">format</a>) or a record with the fields <code>hour</code>, <code>minute</code>, <code>second</code>, one of <code>millisecond</code> (3 digits), <code>microsecond</code> (6 digits), or <code>nanosecond</code> (9 digits), as well as <code>timezone</code></td>
-    </tr>
-    <tr>
-      <td><b>Return Type</b></td>
-      <td colspan="3"><code>ZONED TIME</code></td>
-    </tr>
-  </tbody>
-</table>
-
-When called without a parameter, `zoned_time()` returns the current session time (or the server time if no session timezone is set). It is equivalent to `CURRENT_TIME`.
-
-```gql
-RETURN zoned_time(), CURRENT_TIME
-```
-
-Result: 
-
-| zoned_time() | CURRENT_TIME |
-| -- | -- |
-| 15:20:30.625790824-0600 | 15:20:30.625790824-0600 |
-
-The parameter should match one of the supported formats:
-
-```gql
-FOR value IN [
-  zoned_time("03:02:11.70-06:00"),
-  zoned_time("030211.70-0600"),
-  zoned_time("03:02:11-06:00"),
-  zoned_time("030211-0600"),
-  zoned_time({hour: 3, minute: 2, second: 11, millisecond: 70, timezone: "-0600"}),
-  zoned_time({hour: 3, minute: 2, second: 11, microsecond: 70, timezone: "-0600"}),
-  zoned_time({hour: 3, minute: 2, second: 11, nanosecond: 70, timezone: "-0600"}),
-  zoned_time({hour: 3, minute: 2, second: 11, timezone: "-0600"}),
-  zoned_time({hour: 3, minute: 2, timezone: "-0600"}),
-  zoned_time({hour: 3, timezone: "-0600"})
-]
-RETURN value  
-```
-
-Result: 
-
-| value |
-| -- |
-| 03:02:11.7-0600 |
-| 03:02:11.7-0600 |
-| 03:02:11-0600 |
-| 03:02:11-0600 |
-| 03:02:11.07-0600 |
-| 03:02:11.00007-0600 |
-| 03:02:11.00000007-0600 |
-| 03:02:11-0600 |
-| 03:02:00-0600 |
-| 03:00:00-0600 |
-
-## Other Temporal Functions
-
-### dateAdd()
+### date_add()
 
 Adds a specified time interval to a given date.
 
@@ -436,7 +347,7 @@ Adds a specified time interval to a given date.
   <tbody>
     <tr>
       <td><b>Syntax</b></td>
-      <td colspan="3"><code>dateAdd(&lt;time&gt;, &lt;interval&gt;, &lt;unit&gt;)</code></td>
+      <td colspan="3"><code>date_add(&lt;time&gt;, &lt;interval&gt;, &lt;unit&gt;)</code></td>
     </tr>
     <tr>
       <td rowspan="4"><b>Arguments</b></td>
@@ -467,26 +378,44 @@ Adds a specified time interval to a given date.
 </table>
 
 ```gql
-RETURN dateAdd("1970-1-1", -1, "hour") as newTime
+RETURN date_add("1970-1-1", -1, "hour")
 ```
 
 Result: 
 
-| newTime |
-| -- |
-| 1969-12-31 23:00:00 |
+```json
+{
+  "_type": "localDatetime",
+  "year": 1969,
+  "month": 12,
+  "day": 31,
+  "hour": 23,
+  "minute": 0,
+  "second": 0,
+  "nanosecond": 0
+}
+```
 
 ```gql
-RETURN dateAdd("1970-1-1", 10, "year")
+RETURN date_add("1970-1-1", 10, "year")
 ```
 
 Result: 
 
-| newTime |
-| -- |
-| 1980-01-01 00:00:00 |
+```json
+{
+  "_type": "localDatetime",
+  "year": 1980,
+  "month": 1,
+  "day": 1,
+  "hour": 0,
+  "minute": 0,
+  "second": 0,
+  "nanosecond": 0
+}
+```
 
-### dateDiff()
+### date_diff()
 
 Computes the difference between two dates (`time1` - `time2`) and returns the result as a specified unit of time.
 
@@ -500,7 +429,7 @@ Computes the difference between two dates (`time1` - `time2`) and returns the re
   <tbody>
     <tr>
       <td><b>Syntax</b></td>
-      <td colspan="3"><code>dateAdd(&lt;time1&gt;, &lt;time2&gt;, &lt;unit&gt;)</code></td>
+      <td colspan="3"><code>date_diff(&lt;time1&gt;, &lt;time2&gt;, &lt;unit&gt;)</code></td>
     </tr>
     <tr>
       <td rowspan="4"><b>Arguments</b></td>
@@ -531,110 +460,14 @@ Computes the difference between two dates (`time1` - `time2`) and returns the re
 </table>
 
 ```gql
-RETURN dateDiff("1970-01-01 10:00:00", "1970-01-01 12:00:20", "minute") as diff
+RETURN date_diff("1970-01-01 10:00:00", "1970-01-01 12:00:20", "minute")
 ```
 
-Result: 
+Result: -120
 
-| diff |
-| -- |
-| -120 |
+### day_of_week()
 
-### dateFormat()
-
-Prints a given date in the specific format.
-
-<table style="width: 100%;">
-  <colgroup>
-    <col style="width:20%;">
-    <col style="width:21%;">
-    <col style="width:17%;">
-    <col>
-  </colgroup>
-  <tbody>
-    <tr>
-      <td><b>Syntax</b></td>
-      <td colspan="3"><code>dateFormat(&lt;time&gt;, &lt;formatCode&gt;)</code></td>
-    </tr>
-    <tr>
-      <td rowspan="3"><b>Arguments</b></td>
-      <td><b>Name</b></td>
-      <td><b>Type</b></td>
-      <td><b>Description</b></td>
-    </tr>
-    <tr>
-      <td><code>&lt;time&gt;</code></td>
-      <td>Temporal</td>
-      <td>The input time</td>
-    </tr>
-    <tr>
-      <td><code>&lt;formatCode&gt;</code></td>
-      <td><code>STRING</code></td>
-      <td>The format code</td>
-    </tr>
-    <tr>
-      <td><b>Return Type</b></td>
-      <td colspan="3"><code>STRING</code></td>
-    </tr>
-  </tbody>
-</table>
-
-<b>Format codes:</b>
-
-| <div table-width=8>Code</div> | <div table-width=58>Description</div> | Examples / Range |
-|-|-| - |
-| `%a` | Abbreviated weekday name in the system language  | (en_US) Sun, Mon |
-| `%A` | Full weekday name in the system language | (en_US) Sunday, Monday |
-| `%b` | Abbreviated month name in the system language | (en_US) Jan, Feb |
-| `%B` | Full month name in the system language | (en_US) January, February |
-| `%c` | Default date and time format in the system settings | Wed Jan 11 10:59:28 2023 |
-| `%C` | Century number (year/100) in 2 digits | 00, 01, ..., 99 |
-| `%d` | Day of the month (zero-padded) | 01, 02, ..., 31 |
-| `%D` | Equivalent to `%m/%d/%y` | 01/11/23 |
-| `%e` | Day of the month | 1, 2, ..., 31 |
-| `%Ez` | Time zone | +08:00 |
-| `%g` | Year without the century | 00, 01, ..., 99 |
-| `%G` | Year in 4 digits | 0000, 0001, ..., 9999 |
-| `%h` | Equivalent to `%b` | See `%b` |
-| `%H` | Hour using a 24-hour clock (zero-padded)  | 00, 01, ..., 23 |
-| `%I` | Hour using a 12-hour clock (zero-padded) | 01, 02, ..., 12 |
-| `%j` | Day of the year (zero-padded) | 001, 002, ..., 366 |
-| `%m` | Month of the year (zero-padded) | 01, 02, ..., 12 |
-| `%M` | Minute (zero-padded) | 00, 01, ..., 59 |
-| `%n` | Line break | |
-| `%p` | Either 'AM' or 'PM' according to the given time value | (en_US) AM, PM |
-| `%P` | Either 'am' or 'pm' according to the given time value | (en_US) am, pm   |
-| `%r` | Equivalent to `%I/%M/%S %p` | 01:49:23 AM |
-| `%R` | Equivalent to `%H:%M` | 13:49 |
-| `%S` | Second (zero-padded) | 00, 01, ..., 59 |
-| `%t` | Tab | |
-| `%T` | Equivalent to `%H:%M:%S` | 23:02:05 |
-| `%u` | Day number of the week, Monday being 1 (Sunday being 1 in a Sun Solaris system) | 1, 2, ..., 7 |
-| `%U` | Week number of the year (zero-padded), starting with the first Sunday as the first day of week 01 | 00, 01, ..., 53 |
-| `%V` | Week number of year (zero-padded), with Monday as the first day of the week, week 01 is the first week that has at least 4 days in the current year | 01, 02, ..., 53 |
-| `%W` | Week number of the year (zero-padded), starting with the first Monday as the first day of week 01 | 00, 01, ..., 53
-| `%w` | Day number of the week, Sunday being 0 | 0, 1, ..., 6 |
-| `%x` | Default date format in the system settings | 01/11/23 |
-| `%X` | Default time format in the system settings | 06:38:45 |
-| `%y` | Equivalent to `%g` | See `%g` |
-| `%Y` | Equivalent to `%G` | See `%G` |
-| `%z` | Offset from UTC in the format of `±HHMM[SS]` | +0000, -0400, +1030, ... |
-| `%Z` | Name of the time zone | GMT, UTC, IST, CST, ... |
-| `%%` | Character % | % |
-
-```gql
-RETURN dateFormat("2010/9/25 6:12:30","%A %e %B, %G") as newFormat
-```
-
-Result: 
-
-| newFormat |
-| -- |
-| Saturday 25 September, 2010 |
-
-### dayOfWeek()
-
-Returns a number (from `1` to `7`, where `1` = Sunday and `7` = Saturaday) representing the day of the week for a given date.
+Returns a number (from `0` to `6`, where `0` = Sunday and `6` = Saturday) representing the day of the week for a given date.
 
 <table style="width: 100%;">
   <colgroup>
@@ -646,7 +479,7 @@ Returns a number (from `1` to `7`, where `1` = Sunday and `7` = Saturaday) repre
   <tbody>
     <tr>
       <td><b>Syntax</b></td>
-      <td colspan="3"><code>dayOfWeek(&lt;time&gt;)</code></td>
+      <td colspan="3"><code>day_of_week(&lt;time&gt;)</code></td>
     </tr>
     <tr>
       <td rowspan="2"><b>Arguments</b></td>
@@ -656,44 +489,255 @@ Returns a number (from `1` to `7`, where `1` = Sunday and `7` = Saturaday) repre
     </tr>
     <tr>
       <td><code>&lt;time&gt;</code></td>
-      <td>Temporal</td>
-      <td>The input time</td>
+      <td><code>STRING</code> or Temporal</td>
+      <td>A date/time string or a temporal value (<code>DATE</code>, <code>LOCAL DATETIME</code>, <code>ZONED DATETIME</code>, <code>LOCAL TIME</code>, <code>TIMESTAMP</code>)</td>
     </tr>
     <tr>
       <td><b>Return Type</b></td>
-      <td colspan="3"><code>UINT</code></td>
+      <td colspan="3"><code>INT</code></td>
     </tr>
   </tbody>
 </table>
 
 ```gql
-RETURN dayOfWeek("2024-12-5")
+RETURN day_of_week("2024-12-5")
 ```
 
-Result: 
+Result: 4
 
-| dayOfWeek("2024-12-5") |
-| -- |
-| 5 |
+### year()
 
-## Datetime String Format
+Extracts the year from a date or datetime value.
 
-**Date string**
+<table style="width: 100%;">
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>year(&lt;temporal&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;temporal&gt;</code></td>
+      <td><code>STRING</code> or Temporal</td>
+      <td>A date/time string or a temporal value (<code>DATE</code>, <code>LOCAL DATETIME</code>, <code>ZONED DATETIME</code>, <code>LOCAL TIME</code>, <code>TIMESTAMP</code>)</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>INT</code></td>
+    </tr>
+  </tbody>
+</table>
 
-- Format: `yyyy-mm-dd` or `yyyymmdd`
-- Range: `-9999-12-31` to `9999-12-31`
+```gql
+RETURN year("2025-03-15"), year(date("2025-03-15"))
+```
 
-**Time string**
+### month()
 
-- Format: `hh:mm:ss[.fraction]` or `hhmmss[.fraction]`
-- Range: `00:00:00.000000000` to `23:59:59.999999999`
+Extracts the month from a date or datetime value.
 
-**Datetime string**
+<table style="width: 100%;">
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>month(&lt;temporal&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;temporal&gt;</code></td>
+      <td><code>STRING</code> or Temporal</td>
+      <td>A date/time string or a temporal value (<code>DATE</code>, <code>LOCAL DATETIME</code>, <code>ZONED DATETIME</code>, <code>LOCAL TIME</code>, <code>TIMESTAMP</code>)</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>INT</code></td>
+    </tr>
+  </tbody>
+</table>
 
-- Format: The date and time strings are joined by either a space or the letter `T`.
-- Range: `-9999-01-01 00:00:00.000000000` to `9999-12-31 23:59:59.999999999`
+```gql
+RETURN month("2025-03-15"), month(date("2025-03-15"))
+```
 
-**Timezone string**
+### day()
 
-- Format: Represented as a UTC offset in the form of `±hh:mm` or `±hhmm`, appended directly to the time value.
-- Range: `UTC-15:00` to `UTC+15:00`
+Extracts the day from a date or datetime value.
+
+<table style="width: 100%;">
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>day(&lt;temporal&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;temporal&gt;</code></td>
+      <td><code>STRING</code> or Temporal</td>
+      <td>A date/time string or a temporal value (<code>DATE</code>, <code>LOCAL DATETIME</code>, <code>ZONED DATETIME</code>, <code>LOCAL TIME</code>, <code>TIMESTAMP</code>)</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>INT</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN day("2025-03-15"), day(date("2025-03-15"))
+```
+
+### hour()
+
+Extracts the hour from a time or datetime value.
+
+<table style="width: 100%;">
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>hour(&lt;temporal&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;temporal&gt;</code></td>
+      <td><code>STRING</code> or Temporal</td>
+      <td>A date/time string or a temporal value (<code>DATE</code>, <code>LOCAL DATETIME</code>, <code>ZONED DATETIME</code>, <code>LOCAL TIME</code>, <code>TIMESTAMP</code>)</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>INT</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN hour("2025-03-15 14:30:45"), hour(local_datetime("2025-03-15 14:30:45"))
+```
+
+### minute()
+
+Extracts the minute from a time or datetime value.
+
+<table style="width: 100%;">
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>minute(&lt;temporal&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;temporal&gt;</code></td>
+      <td><code>STRING</code> or Temporal</td>
+      <td>A date/time string or a temporal value (<code>DATE</code>, <code>LOCAL DATETIME</code>, <code>ZONED DATETIME</code>, <code>LOCAL TIME</code>, <code>TIMESTAMP</code>)</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>INT</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN minute("2025-03-15 14:30:45"), minute(local_datetime("2025-03-15 14:30:45"))
+```
+
+### second()
+
+Extracts the second from a time or datetime value.
+
+<table style="width: 100%;">
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>second(&lt;temporal&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;temporal&gt;</code></td>
+      <td><code>STRING</code> or Temporal</td>
+      <td>A date/time string or a temporal value (<code>DATE</code>, <code>LOCAL DATETIME</code>, <code>ZONED DATETIME</code>, <code>LOCAL TIME</code>, <code>TIMESTAMP</code>)</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>INT</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN second("2025-03-15 14:30:45"), second(local_datetime("2025-03-15 14:30:45"))
+```
+
+### duration_between()
+
+Computes the duration between two temporal values.
+
+<table style="width: 100%;">
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>duration_between(&lt;temporal1&gt;, &lt;temporal2&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="3"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;temporal1&gt;</code></td>
+      <td><code>DATE</code>, <code>DATETIME</code>, <code>TIMESTAMP</code></td>
+      <td>Start temporal value</td>
+    </tr>
+    <tr>
+      <td><code>&lt;temporal2&gt;</code></td>
+      <td><code>DATE</code>, <code>DATETIME</code>, <code>TIMESTAMP</code></td>
+      <td>End temporal value</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>DURATION</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN duration_between(date("2025-01-01"), date("2025-03-15"))
+```
+
+Result:
+
+```json
+{
+  "seconds": 6307200, "nanoseconds": 0
+}
+```

@@ -8,7 +8,7 @@ Generates the execution plan for a query without running it. Returns a tree of e
 
 <p tit="Syntax"></p>
 
-```gql
+```
 EXPLAIN <query>
 ```
 
@@ -81,7 +81,7 @@ Runs the query and returns a profiling table that breaks down execution into pha
 
 <p tit="Syntax"></p>
 
-```gql
+```
 PROFILE <query>
 ```
 

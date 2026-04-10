@@ -2,13 +2,19 @@
 
 ## Example Graph
 
-The following examples run against this graph:
+<div align=center drawio-diagram='17191' drawio-name="draw_5fb3914b116b4a06ac12fbf6c9d30f68.jpg"><img src="https://img.ultipa.cn/draw/draw_5fb3914b116b4a06ac12fbf6c9d30f68.jpg?v='1733369467835'"/></div>
 
-<div align=center drawio-diagram='21358' drawio-name='draw_28424c8ce51340aaac7248ce592e57d5.jpg'><img src="https://img.ultipa.cn/draw/draw_28424c8ce51340aaac7248ce592e57d5.jpg?v='1740038097443'"/></div>
+```gql
+INSERT (p1:Paper {_id:'P1', title:'Efficient Graph Search', score:6, author:'Alex'}),
+       (p2:Paper {_id:'P2', title:'Optimizing Queries', score:9, author:'Alex'}),
+       (p3:Paper {_id:'P3', title:'Path Patterns', score:7, author:'Zack'}),
+       (p1)-[:Cites {weight:2}]->(p2),
+       (p2)-[:Cites {weight:1}]->(p3)
+```
 
 ## table()
 
-Constructs a table in the `RETURN` statement.
+Constructs a table in the `RETURN` statement. Each argument becomes a column in the output table. Column names default to the expression text or can be set using `AS`.
 
 <table style="width: 100%;">
   <colgroup>
@@ -20,7 +26,7 @@ Constructs a table in the `RETURN` statement.
   <tbody>
     <tr>
       <td><b>Syntax</b></td>
-      <td colspan="3"><code>table(&lt;column1&gt;, &lt;column2&gt;, ...)</code></td>
+      <td colspan="3"><code>table(&lt;column1&gt; [, &lt;column2&gt;, ...])</code></td>
     </tr>
     <tr>
       <td rowspan="2"><b>Arguments</b></td>
@@ -29,25 +35,25 @@ Constructs a table in the `RETURN` statement.
       <td><b>Description</b></td>
     </tr>
     <tr>
-      <td><code>&lt;column1&gt;</code>,<br><code>&lt;column2&gt;</code>,<br>...</td>
-      <td>Any type</td>
-      <td>Columns in the table</td>
+      <td><code>&lt;column&gt;</code></td>
+      <td>Any</td>
+      <td>One or more expressions as columns; use <code>AS</code> to set column names</td>
     </tr>
     <tr>
       <td><b>Return Type</b></td>
-      <td colspan="3"><code>RESULT_TYPE_TABLE</code></td>
+      <td colspan="3"><code>TABLE</code></td>
     </tr>
   </tbody>
 </table>
 
 ```gql
-MATCH (n)-[e]->()
-RETURN table(n, n.title, e, e.weight AS weight) 
+MATCH (n:Paper)-[e:Cites]->()
+RETURN table(n._id AS id, n.title, e.weight AS weight)
 ```
 
-Result: 
+Result:
 
-| n | <div table-width="30">n.title</div> | e | weight |
-| -- | -- | -- | -- |
-| <span style="color:#999;">UUID of node</span> | Optimizing Queries | <span style="color:#999;">UUID of edge</span> | 1 |
-| <span style="color:#999;">UUID of node</span> | Efficient Graph Search | <span style="color:#999;">UUID of edge</span> | 2 |
+| id | n.title | weight |
+| -- | -- | -- |
+| P1 | Efficient Graph Search | 2 |
+| P2 | Optimizing Queries | 1 |

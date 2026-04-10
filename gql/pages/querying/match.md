@@ -4,24 +4,20 @@
 
 The `MATCH` statement allows you to specify a <a target="_blank" href="/docs/gql/graph-pattern-matching">graph pattern</a> to search for in the graph. It is the fundamental statement for retrieving data from the graph database and binding them to variables for use in subsequent parts of the query. 
 
+<p tit="Syntax"></p>
+
+```
+<match statement> ::=
+  "MATCH" <graph pattern> 
+  [ "YIELD" <graph pattern yield item> [ { "," <graph pattern yield item> } ... ] ]
+
+<graph pattern yield item> ::= 
+  <node variable reference> | <edge variable reference> | <path variable reference>
+```
+
 ## Example Graph
 
 <div align=center drawio-diagram='16819' drawio-name="draw_424cccded4bd4528afeef4a4f514e0a8.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_424cccded4bd4528afeef4a4f514e0a8.jpg?v='1751440637006'"/></div>
-
-<div tab="code">
-
-<p tit="Create the graph"></p>
-
-```gql
-CREATE GRAPH myGraph { 
-  NODE User ({name string}),
-  NODE Club ({since uint32}),
-  EDGE Follows ()-[{createdOn date}]->(),
-  EDGE Joins ()-[{memberNo uint32}]->()
-}
-```
-
-<p tit="Insert data to the graph"></p>
 
 ```gql
 INSERT (rowlock:User {_id: 'U01', name: 'rowlock'}),
@@ -40,8 +36,6 @@ INSERT (rowlock:User {_id: 'U01', name: 'rowlock'}),
        (mochaeach)-[:Joins {memberNo: 9}]->(c02)
 ```
 
-</div>
-
 ## Matching All Nodes
 
 ```gql
@@ -49,17 +43,19 @@ MATCH (n)
 RETURN n
 ```
 
-Result: `n`
+Result:
 
-| \_id | \_uuid | schema | <div table-width="50">values</div> |
-| -- | -- | -- | -- |
-| U05 | <span style="color: #999;">Sys-gen</span> | User | {name: "lionbower"} |
-| U04 | <span style="color: #999;">Sys-gen</span> | User | {name: "mochaeach"} |
-| U03 | <span style="color: #999;">Sys-gen</span> | User | {name: "purplechalk"} |
-| U02 | <span style="color: #999;">Sys-gen</span> | User | {name: "Brainy"} |
-| U01 | <span style="color: #999;">Sys-gen</span> | User | {name: "rowlock"} |
-| C02 | <span style="color: #999;">Sys-gen</span> | Club | {since: 2005} |
-| C01 | <span style="color: #999;">Sys-gen</span> | Club | {since: 2005} |
+```json
+[
+  {"id": "U05", "labels": ["User"], "properties": {"name": "lionbower"}},
+  {"id": "U04", "labels": ["User"], "properties": {"name": "mochaeach"}},
+  {"id": "U03", "labels": ["User"], "properties": {"name": "purplechalk"}},
+  {"id": "U02", "labels": ["User"], "properties": {"name": "Brainy"}},
+  {"id": "U01", "labels": ["User"], "properties": {"name": "rowlock"}},
+  {"id": "C02", "labels": ["Club"], "properties": {"since": 2005}},
+  {"id": "C01", "labels": ["Club"], "properties": {"since": 2005}}
+]
+```
 
 ## Matching All Edges
 
@@ -68,17 +64,19 @@ MATCH ()-[e]->()
 RETURN e
 ```
 
-Result: `e`
+Result:
 
-| <div table-width="9">_uuid</div> | <div table-width="6">_from</div> | <div table-width="5">_to</div> | <div table-width="12">_from_uuid</div> | <div table-width="10">_to_uuid</div> | <div table-width="10">schema</div> | values |
-| -- | -- | -- | -- | -- | -- | -- |
-| <span style="color: #999;">Sys-gen</span> | U01 | U02 | <span style="color: #999;">UUID of U01</span> | <span style="color: #999;">UUID of U02</span> | Follows | {createdOn: "2024-01-05" } |
-| <span style="color: #999;">Sys-gen</span> | U02 | U03 | <span style="color: #999;">UUID of U02</span> | <span style="color: #999;">UUID of U03</span> | Follows | {createdOn: "2024-02-01"} |
-| <span style="color: #999;">Sys-gen</span> | U03 | U05 | <span style="color: #999;">UUID of U03</span> | <span style="color: #999;">UUID of U05</span> | Follows | {createdOn: "2024-05-03"} |
-| <span style="color: #999;">Sys-gen</span> | U04 | U02 | <span style="color: #999;">UUID of U04</span> | <span style="color: #999;">UUID of U02</span> | Follows | {createdOn: "2024-02-10"} |
-| <span style="color: #999;">Sys-gen</span> | U02 | C01 | <span style="color: #999;">UUID of U02</span> | <span style="color: #999;">UUID of C01</span> | Joins | {memberNo: 1} |
-| <span style="color: #999;">Sys-gen</span> | U05 | C01 | <span style="color: #999;">UUID of U05</span> | <span style="color: #999;">UUID of C01</span> | Joins | {memberNo: 2} |
-| <span style="color: #999;">Sys-gen</span> | U04 | C02 | <span style="color: #999;">UUID of U04</span> | <span style="color: #999;">UUID of C02</span> | Joins | {memberNo: 9} |
+```json
+[
+  {"id": "e:1", "label": "Follows", "fromNodeId": "U01", "toNodeId": "U02", "properties": {"createdOn": "2024-01-05"}},
+  {"id": "e:2", "label": "Follows", "fromNodeId": "U02", "toNodeId": "U03", "properties": {"createdOn": "2024-02-01"}},
+  {"id": "e:3", "label": "Follows", "fromNodeId": "U03", "toNodeId": "U05", "properties": {"createdOn": "2024-05-03"}},
+  {"id": "e:4", "label": "Follows", "fromNodeId": "U04", "toNodeId": "U02", "properties": {"createdOn": "2024-02-10"}},
+  {"id": "e:5", "label": "Joins", "fromNodeId": "U02", "toNodeId": "C01", "properties": {"memberNo": 1}},
+  {"id": "e:6", "label": "Joins", "fromNodeId": "U05", "toNodeId": "C01", "properties": {"memberNo": 2}},
+  {"id": "e:7", "label": "Joins", "fromNodeId": "U04", "toNodeId": "C02", "properties": {"memberNo": 9}}
+]
+```
 
 Notice that if you don't specifiy the edge direction,  either as outgoing or incoming, each edge in the graph will be returned twice, as two paths are considered distinct when their element sequences differ, i.e., `(n1)-[e]->(n2)` and `(n2)<-[e]-(n1)` are different paths.
 
@@ -89,56 +87,62 @@ MATCH ()-[e]-()
 RETURN e
 ```
 
-## Matching with Labels/Schema
+## Matching with Labels
 
-Both node pattern and edge pattern support the <a target="_blank" href="/docs/gql/node-and-edge-patterns#Label/Schema-Expression">label/schema expression</a> to specify schemas (in typed graphs) or labels (in open graphs).
+Both node pattern and edge pattern support the <a target="_blank" href="/docs/gql/node-and-edge-patterns#Label-Expression">label expression</a> to specify labels.
 
-To retrieve all `Club` nodes:
+Retrieve all `Club` nodes:
 
 ```gql
 MATCH (n:Club)
 RETURN n
 ```
 
-Result: `n`
+Result:
 
-| \_id | \_uuid | schema | <div table-width="50">values</div> |
-| -- | -- | -- | -- |
-| C02 | <span style="color: #999;">Sys-gen</span> | Club | {since: 2005} |
-| C01 | <span style="color: #999;">Sys-gen</span> | Club | {since: 2005} |
+```json
+[
+  {"id": "C02", "labels": ["Club"], "properties": {"since": 2005}},
+  {"id": "C01", "labels": ["Club"], "properties": {"since": 2005}}
+]
+```
 
-To retrieve all nodes connected to `Brainy` with `Follows` or `Joins` edges:
+Retrieve all outgoing nodes from `Brainy` with `Follows` or `Joins` edges:
 
 ```gql
-MATCH (:User {name: 'Brainy'})-[:Follows|Joins]-(n)
+MATCH (:User {name: 'Brainy'})-[:Follows|Joins]->(n)
 RETURN n
 ```
 
-Result: `n`
+Result:
 
-| \_id | \_uuid | schema | <div table-width="50">values</div> |
-| -- | -- | -- | -- |
-| U03 | <span style="color: #999;">Sys-gen</span> | User | {name: "purplechalk"} |
-| C01 | <span style="color: #999;">Sys-gen</span> | Club | {since: 2005} |
+```json
+[
+  {"id": "U03", "labels": ["User"], "properties": {"name": "purplechalk"}},
+  {"id": "C01", "labels": ["Club"], "properties": {"since": 2005}}
+]
+```
 
 ## Matching with Property Specification
 
 <a target="_blank" href="/docs/gql/node-and-edge-patterns#Property-Specification">Property specification</a> can be included in node and edge patterns to apply **joint equalities** to filter nodes and edges with key-value pairs.
 
-To retrieve `Club` nodes whose `_id` and `since` have specific values:    
+Retrieve `Club` nodes whose `_id` and `since` have specific values:    
 
 ```gql
 MATCH (n:Club {_id: 'C01', since: 2005})
 RETURN n
 ```
 
-Result: `n`
+Result:
 
-| \_id | \_uuid | schema | <div table-width="50">values</div> |
-| -- | -- | -- | -- |
-| C01 | <span style="color: #999;">Sys-gen</span> | Club | {since: 2005} |
+```json
+[
+  {"id": "C01", "labels": ["Club"], "properties": {"since": 2005}}
+]
+```
 
-To retrieve the name of the member of club `C01` whose `memberNo` is 1:
+Retrieve the name of the member of club `C01` whose `memberNo` is 1:
 
 ```gql
 MATCH (:Club {_id: 'C01'})<-[:Joins {memberNo: 1}]-(n)
@@ -155,23 +159,25 @@ Result: `n`
 
 You can use <a target="_blank" href="/docs/gql/node-and-edge-patterns#Abbreviated-Edge-Pattern">abbreviated edge patterns</a> when you do not need to filter edges or assign them to a variable. Even with the abbreviated form, you may still specify the direction of the edge when necessary.
 
-To retrieve nodes connected with `mochaeach` with any outgoing edges:
+Retrieve nodes connected with `mochaeach` with any outgoing edges:
 
 ```gql
 MATCH (:User {name: 'mochaeach'})->(n)
 RETURN n
 ```
 
-Result: `n`
+Result:
 
-| \_id | \_uuid | schema | <div table-width="50">values</div> |
-| -- | -- | -- | -- |
-| U02 | <span style="color: #999;">Sys-gen</span> | User | {name: "Brainy"} |
-| C02 | <span style="color: #999;">Sys-gen</span> | Club | {since: 2005} |
+```json
+[
+  {"id": "U02", "labels": ["User"], "properties": {"name": "Brainy"}},
+  {"id": "C02", "labels": ["Club"], "properties": {"since": 2005}}
+]
+```
 
 ## Matching Paths
 
-To retrieve users followed by `mochaeach`, and the clubs joined by those users:
+Retrieve users followed by `mochaeach`, and the clubs joined by those users:
 
 ```gql
 MATCH p = (:User {name: 'mochaeach'})-[:Follows]->(:User)-[:Joins]->(:Club)
@@ -188,7 +194,7 @@ The `WHERE` clause can be used within an element pattern (node or edge pattern),
 
 ### Element Pattern WHERE Clause
 
-To retrieve 1-step paths with outgoing `Follows` edges, where their `createdOn` values are greater than a specified date:  
+Retrieve 1-step paths with outgoing `Follows` edges, where their `createdOn` values are greater than a specified date:  
 
 ```gql
 MATCH p = ()-[e:Follows WHERE e.createdOn > '2024-04-01']->()
@@ -201,7 +207,7 @@ Result: `p`
 
 ### Parenthesized Path Pattern WHERE Clause
 
-To retrieve one- or two-step paths containing outgoing `Follows` edges, where their `createdOn` values are smaller than a specified value:
+Retrieve one- or two-step paths containing outgoing `Follows` edges, where their `createdOn` values are smaller than a specified value:
 
 ```gql
 MATCH p = (()-[e:Follows]->() WHERE e.createdOn < "2024-02-05"){1,2}
@@ -214,25 +220,27 @@ Result: `p`
 
 ### Graph Pattern WHERE Clause
 
-To retrieve members of club `C01` whose `memberNo` is greater than 1:
+Retrieve members of club `C01` whose `memberNo` is greater than 1:
 
 ```gql
-MATCH (c:Club)<-[e:Joins]->(n)
+MATCH (c:Club)<-[e:Joins]-(n)
 WHERE c._id = 'C01' AND e.memberNo > 1
 RETURN n
 ```
 
-Result: `n`
+Result:
 
-| \_id | \_uuid | schema | <div table-width="50">values</div> |
-| -- | -- | -- | -- |
-| U05 | <span style="color: #999;">Sys-gen</span> | User | {name: "lionbower"} |
+```json
+[
+  {"id": "U05", "labels": ["User"], "properties": {"name": "lionbower"}}
+]
+```
 
 ## Matching Quantified Paths
 
 A <a target="_blank" href="/docs/gql/quantified-paths">quantified path</a> is a variable-length path where the complete path or a part of it is repeated a specified number of times.
 
-To retrieve distinct nodes related to `lionbower` in 1 to 3 hops:
+Retrieve distinct nodes related to `lionbower` in 1 to 3 hops:
 
 ```gql
 MATCH (:User {name: 'lionbower'})-[]-{1,3}(n)
@@ -245,7 +253,7 @@ Result:
 | -- |
 | ["C01","U01","U02","U03","U04"] |
 
-To retrieve paths that begin with one- or two-step subpaths containing `Follows` edges, where their `createdOn` values are greater than a specified value, and these subpaths must connect to node `C01`:
+Retrieve paths that begin with one- or two-step subpaths containing `Follows` edges, where their `createdOn` values are greater than a specified value, and these subpaths must connect to node `C01`:
 
 ```gql
 MATCH p = (()-[e:Follows]->() WHERE e.createdOn > "2024-01-31"){1,2}()-({_id:"C01"})
@@ -260,7 +268,7 @@ Result: `p`
 
 A <a target="_blank" href="/docs/gql/shortest-paths">shortest paths</a> between two nodes are the paths that has the fewest edges.
 
-To retrieve all the shortest paths between `lionbower` and `purplechalk` within 5 hops:
+Retrieve all the shortest paths between `lionbower` and `purplechalk` within 5 hops:
 
 ```gql
 MATCH p = ALL SHORTEST (n1:User)-[]-{,5}(n2:User)
@@ -276,18 +284,20 @@ Result: `p`
 
 When a `MATCH` statement contains multiple path patterns, each pattern is matched independently against the graph to produce its own result set. These result sets are then combined by performing an **equi-join** on the shared node or edge variables.
 
-To retrieve users who joined club `C02` and also follow `Brainy`:
+Retrieve users who joined club `C02` and also follow `Brainy`:
 
 ```gql
 MATCH (u)-[:Joins]->(:Club {_id: 'C02'}), (u)-[:Follows]->(:User {name: 'Brainy'})
 RETURN u
 ```
 
-Result: `u`
+Result:
 
-| \_id | \_uuid | schema | <div table-width="50">values</div> |
-| -- | -- | -- | -- |
-| U04 | <span style="color: #999;">Sys-gen</span> | User | {name: "mochaeach"} |
+```json
+[
+  {"id": "U04", "labels": ["User"], "properties": {"name": "mochaeach"}}
+]
+```
 
 The above query is equivalent to the following using two `MATCH`s:
 
@@ -325,13 +335,15 @@ YIELD c
 RETURN *
 ```
 
-Result: `c`
+Result:
 
-| \_id | \_uuid | schema | <div table-width="50">values</div> |
-| -- | -- | -- | -- |
-| C01 | <span style="color: #999;">Sys-gen</span> | Club | {since: 2005} |
-| C02 | <span style="color: #999;">Sys-gen</span> | Club | {since: 2005} |
-| C01 | <span style="color: #999;">Sys-gen</span> | Club | {since: 2005} |
+```json
+[
+  {"c": {"id": "C01", "labels": ["Club"], "properties": {"since": 2005}}},
+  {"c": {"id": "C02", "labels": ["Club"], "properties": {"since": 2005}}},
+  {"c": {"id": "C01", "labels": ["Club"], "properties": {"since": 2005}}}
+]
+```
 
 This query returns `n1` and `e`, `n2` is not included:
 
@@ -341,23 +353,33 @@ MATCH (n2:Club)<-[e:Joins WHERE e.memberNo < 3]-() YIELD e
 RETURN *
 ```
 
-`n1`
+Result:
 
-| \_id | \_uuid | schema | <div table-width="50">values</div> |
-| -- | -- | -- | -- |
-| C01 | <span style="color: #999;">Sys-gen</span> | Club | {since: 2005} |
-| C01 | <span style="color: #999;">Sys-gen</span> | Club | {since: 2005} |
-| C02 | <span style="color: #999;">Sys-gen</span> | Club | {since: 2005} |
-| C02 | <span style="color: #999;">Sys-gen</span> | Club | {since: 2005} |
+<div tab="code">
 
-`e`
+<p tit="n1"></p>
 
-| <div table-width="9">_uuid</div> | <div table-width="6">_from</div> | <div table-width="5">_to</div> | <div table-width="14">_from_uuid</div> | <div table-width="14">_to_uuid</div> | <div table-width="10">schema</div> | values |
-| -- | -- | -- | -- | -- | -- | -- |
-| <span style="color: #999;">Sys-gen</span> | U02 | C01 | <span style="color: #999;">UUID of U02</span> | <span style="color: #999;">UUID of C01</span> | Joins | {memberNo: 1} |
-| <span style="color: #999;">Sys-gen</span> | U02 | C01 | <span style="color: #999;">UUID of U02</span> | <span style="color: #999;">UUID of C01</span> | Joins | {memberNo: 1} |
-| <span style="color: #999;">Sys-gen</span> | U05 | C01 | <span style="color: #999;">UUID of U05</span> | <span style="color: #999;">UUID of C01</span> | Joins | {memberNo: 2} |
-| <span style="color: #999;">Sys-gen</span> | U05 | C01 | <span style="color: #999;">UUID of U05</span> | <span style="color: #999;">UUID of C01</span> | Joins | {memberNo: 2} |
+```json
+[
+  {"id": "C02", "labels": ["Club"], "properties": {"since": 2005}},
+  {"id": "C02", "labels": ["Club"], "properties": {"since": 2005}},
+  {"id": "C01", "labels": ["Club"], "properties": {"since": 2005}},
+  {"id": "C01", "labels": ["Club"], "properties": {"since": 2005}}
+]
+```
+
+<p tit="e"></p>
+
+```json
+[
+  {"id": "e:5", "label": "Joins", "fromNodeId": "U02", "toNodeId": "C01", "properties": {"memberNo": 1}},
+  {"id": "e:6", "label": "Joins", "fromNodeId": "U05", "toNodeId": "C01", "properties": {"memberNo": 2}},
+  {"id": "e:5", "label": "Joins", "fromNodeId": "U02", "toNodeId": "C01", "properties": {"memberNo": 1}},
+  {"id": "e:6", "label": "Joins", "fromNodeId": "U05", "toNodeId": "C01", "properties": {"memberNo": 2}}
+]
+```
+
+</div>
 
 This query throws syntax error since `n2` is not selected in the `YIELD` clause, thus it cannot be accessed by the `RETURN` statement:
 

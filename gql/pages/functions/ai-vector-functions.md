@@ -1,314 +1,967 @@
 # AI & Vector Functions
 
-## Overview
+## Example Graph
 
-AI and vector functions enable semantic search, similarity comparison, and embedding generation in GQL. Vectors (embeddings) are arrays of numbers that represent the semantic meaning of data.
-
-## Vector Creation
-
-### AI.VECTOR()
-
-Creates a vector from an array of numbers.
-
-**Syntax:**
-
-```
-AI.VECTOR(list) -> vector
-```
-
-**Example:**
+<div align=center drawio-diagram='17191' drawio-name="draw_5fb3914b116b4a06ac12fbf6c9d30f68.jpg"><img src="https://img.ultipa.cn/draw/draw_5fb3914b116b4a06ac12fbf6c9d30f68.jpg?v='1733369467835'"/></div>
 
 ```gql
-LET v = AI.VECTOR([0.1, 0.2, 0.3, 0.4, 0.5])
-RETURN AI.DIMENSION(v) AS dimensions
+INSERT (p1:Paper {_id:'P1', title:'Efficient Graph Search', score:6, author:'Alex'}),
+       (p2:Paper {_id:'P2', title:'Optimizing Queries', score:9, author:'Alex'}),
+       (p3:Paper {_id:'P3', title:'Path Patterns', score:7, author:'Zack'}),
+       (p1)-[:Cites {weight:2}]->(p2),
+       (p2)-[:Cites {weight:1}]->(p3)
+```
+
+## AI Completion Functions
+
+AI completion functions use a large language model to generate or execute GQL queries from natural language. Using `ai.setapikey()` to configure both the embedding and completion provider at once, no extra setup is needed. To use a different provider for completion (e.g., Anthropic for completion, OpenAI for embeddings), use `ai.setapikey()` with `false` to set the key without activating, then `ai.setCompletionProvider()` to switch.
+
+### ai.gql()
+
+Converts a natural language question into a GQL query using the configured completion provider. The function automatically includes the current graph's schema (labels, properties, edge patterns) as context for the LLM.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>ai.gql(&lt;question&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;question&gt;</code></td>
+      <td><code>STRING</code></td>
+      <td>A natural language question about the graph data</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>STRING</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN ai.gql("Find all papers written by Alex")
 ```
 
 Result:
 
-| dimensions |
+| ai.gql |
 | -- |
-| 5 |
+| MATCH (p:Paper) WHERE p.author = 'Alex' RETURN p |
 
-### AI.EMBED()
+### ai.read()
 
-Generates an embedding vector from text using an AI provider.
+Converts a natural language question into a read-only GQL query, executes it, and returns the results. Only read operations are allowed, any generated query containing write operations (`INSERT`, `DELETE`, `SET`, etc.) is rejected.
 
-**Syntax:**
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>ai.read(&lt;question&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;question&gt;</code></td>
+      <td><code>STRING</code></td>
+      <td>A natural language question about the graph data</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>RECORD</code></td>
+    </tr>
+  </tbody>
+</table>
 
-```
-AI.EMBED(text, model?) -> vector
-```
+The returned record contains:
 
-**Example:**
+| Field | Type | Description |
+| -- | -- | -- |
+| `query` | `STRING` | The generated GQL query |
+| `results` | `LIST` | The query results |
+| `count` | `INT` | Number of result rows |
 
 ```gql
-LET embedding = AI.EMBED('Introduction to graph databases')
-RETURN AI.DIMENSION(embedding) AS dimensions
+RETURN ai.read("How many papers did Alex write?")
 ```
 
+Result:
+
+```json
+{
+  "query": "MATCH (p:Paper) WHERE p.author = 'Alex' RETURN COUNT(p) AS count",
+  "results": [
+    {
+      "count": 2
+    }
+  ],
+  "count": 1
+}
+```
+
+### ai.setCompletionProvider()
+
+Sets the active completion provider. The provider's API key must have been set first via `ai.setapikey()`.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>ai.setCompletionProvider(&lt;provider&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;provider&gt;</code></td>
+      <td><code>STRING</code></td>
+      <td>Provider name: <code>"openai"</code>, <code>"gemini"</code>, <code>"xai"</code>, or <code>"anthropic"</code></td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>BOOL</code></td>
+    </tr>
+  </tbody>
+</table>
+
 ```gql
-// Use specific embedding model
-LET embedding = AI.EMBED('text to embed', 'text-embedding-3-large')
-RETURN AI.DIMENSION(embedding) AS dimensions
+RETURN ai.setCompletionProvider("openai")
+```
+
+### ai.completionProvider()
+
+Returns the name of the current completion provider.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>ai.completionProvider()</code></td>
+    </tr>
+    <tr>
+      <td><b>Arguments</b></td>
+      <td colspan="3">None</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>STRING</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN ai.completionProvider()
+```
+
+## Vector Creation
+
+### ai.vector()
+
+Converts a list of numbers to a `VECTOR` type. Values are stored as 32-bit floats, so minor precision differences may occur (e.g., `0.1` becomes `0.10000000149011612`). This is useful when you need to explicitly create a `VECTOR` value for storing in a `VECTOR` property or passing to similarity functions.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>ai.vector(&lt;list&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;list&gt;</code></td>
+      <td><code>LIST</code></td>
+      <td>A list of numeric values</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>VECTOR</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN ai.vector([0.1, 0.2, 0.3])
+```
+
+Result:
+
+```json
+{
+  "values": [
+    0.10000000149011612,
+    0.20000000298023224,
+    0.30000001192092896
+  ]
+}
+```
+
+### ai.embed()
+
+Generates an embedding vector from text using the configured AI provider.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>ai.embed(&lt;text&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;text&gt;</code></td>
+      <td><code>STRING</code></td>
+      <td>The text to generate an embedding for</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>VECTOR</code></td>
+    </tr>
+  </tbody>
+</table>
+
+An AI provider must be configured with `ai.setapikey()` before using this function.
+
+```gql
+LET embedding = ai.embed("Introduction to graph databases")
+RETURN embedding, ai.dimension(embedding) AS dimensions
+```
+
+Result:
+
+```json
+{
+  "embedding": {
+    "values": [
+      -0.0258026123046875,
+      -0.0126800537109375,
+      …
+      0.0162200927734375,
+      -0.017486572265625
+    ]
+  },
+  "dimensions": 1536
+}
 ```
 
 ## Similarity Functions
 
-### AI.COSINE()
+### ai.cosine()
 
-Calculates cosine similarity between two vectors. Returns a value between -1 and 1, where 1 means identical direction.
+Computes cosine similarity between two vectors. Returns a value between -1 and 1, where 1 means identical direction.
 
-**Syntax:**
-
-```
-AI.COSINE(vector1, vector2) -> float
-```
-
-**Example:**
-
-```gql
-LET query = AI.EMBED('graph database tutorial')
-MATCH (d:Document)
-RETURN d.title, AI.COSINE(d.embedding, query) AS similarity
-ORDER BY similarity DESC
-LIMIT 5
-```
-
-### AI.EUCLIDEAN()
-
-Calculates Euclidean distance between two vectors. Lower values indicate more similarity.
-
-**Syntax:**
-
-```
-AI.EUCLIDEAN(vector1, vector2) -> float
-```
-
-**Example:**
-
-```gql
-MATCH (p1:Product {id: 'A'}), (p2:Product)
-WHERE p1 <> p2
-RETURN p2.name, AI.EUCLIDEAN(p1.embedding, p2.embedding) AS distance
-ORDER BY distance ASC
-LIMIT 5
-```
-
-### AI.MANHATTAN()
-
-Calculates Manhattan distance between two vectors.
-
-**Syntax:**
-
-```
-AI.MANHATTAN(vector1, vector2) -> float
-```
-
-### AI.DOT()
-
-Calculates dot product of two vectors. Best used with normalized vectors.
-
-**Syntax:**
-
-```
-AI.DOT(vector1, vector2) -> float
-```
-
-**Example:**
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>ai.cosine(&lt;vector1&gt;, &lt;vector2&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="3"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;vector1&gt;</code></td>
+      <td><code>VECTOR</code></td>
+      <td>The first vector</td>
+    </tr>
+    <tr>
+      <td><code>&lt;vector2&gt;</code></td>
+      <td><code>VECTOR</code></td>
+      <td>The second vector; must have the same dimension as <code>&lt;vector1&gt;</code></td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>FLOAT</code></td>
+    </tr>
+  </tbody>
+</table>
 
 ```gql
-MATCH (a:Article), (b:Article)
-WHERE a.id < b.id
-RETURN a.title, b.title, AI.DOT(a.embedding, b.embedding) AS similarity
-ORDER BY similarity DESC
-LIMIT 10
+LET v1 = ai.vector([1.0, 0.0, 0.0])
+LET v2 = ai.vector([1.0, 1.0, 0.0])
+RETURN ai.cosine(v1, v2)
 ```
 
-### AI.DISTANCE()
+Result: 0.7071067690849304
 
-General distance function with configurable metric.
+### ai.euclidean()
 
-**Syntax:**
+Computes Euclidean distance between two vectors. Lower values indicate more similarity.
 
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>ai.euclidean(&lt;vector1&gt;, &lt;vector2&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="3"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;vector1&gt;</code></td>
+      <td><code>VECTOR</code></td>
+      <td>The first vector</td>
+    </tr>
+    <tr>
+      <td><code>&lt;vector2&gt;</code></td>
+      <td><code>VECTOR</code></td>
+      <td>The second vector; must have the same dimension as <code>&lt;vector1&gt;</code></td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>FLOAT</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+LET v1 = ai.vector([1.0, 0.0])
+LET v2 = ai.vector([0.0, 1.0])
+RETURN ai.euclidean(v1, v2)
 ```
-AI.DISTANCE(vector1, vector2, metric?) -> float
+
+Result: 1.4142135381698608
+
+### ai.dot()
+
+Computes the dot product of two vectors.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>ai.dot(&lt;vector1&gt;, &lt;vector2&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="3"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;vector1&gt;</code></td>
+      <td><code>VECTOR</code></td>
+      <td>The first vector</td>
+    </tr>
+    <tr>
+      <td><code>&lt;vector2&gt;</code></td>
+      <td><code>VECTOR</code></td>
+      <td>The second vector; must have the same dimension as <code>&lt;vector1&gt;</code></td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>FLOAT</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+LET v1 = ai.vector([1.0, 2.0, 3.0])
+LET v2 = ai.vector([4.0, 5.0, 6.0])
+RETURN ai.dot(v1, v2)
 ```
+
+Result: 32
+
+### ai.distance()
+
+Computes the cosine distance between two vectors (1 - cosine similarity). Lower values indicate more similarity.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>ai.distance(&lt;vector1&gt;, &lt;vector2&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="3"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;vector1&gt;</code></td>
+      <td><code>VECTOR</code></td>
+      <td>The first vector</td>
+    </tr>
+    <tr>
+      <td><code>&lt;vector2&gt;</code></td>
+      <td><code>VECTOR</code></td>
+      <td>The second vector; must have the same dimension as <code>&lt;vector1&gt;</code></td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>FLOAT</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+LET v1 = ai.vector([1.0, 0.0, 0.0])
+LET v2 = ai.vector([1.0, 1.0, 0.0])
+RETURN ai.distance(v1, v2)
+```
+
+Result: 0.2928932309150696
 
 ## Vector Utilities
 
-### AI.DIMENSION()
+### ai.dimension()
 
 Returns the number of dimensions in a vector.
 
-**Syntax:**
-
-```
-AI.DIMENSION(vector) -> int
-```
-
-**Example:**
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>ai.dimension(&lt;vector&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;vector&gt;</code></td>
+      <td><code>VECTOR</code></td>
+      <td>A vector value</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>INT</code></td>
+    </tr>
+  </tbody>
+</table>
 
 ```gql
-LET v = AI.VECTOR([3.0, 4.0])
-RETURN AI.DIMENSION(v) AS dims
+LET v = ai.vector([3.0, 4.0])
+RETURN ai.dimension(v)
 ```
 
-Result:
+Result: 2
 
-| dims |
-| -- |
-| 2 |
+### ai.magnitude()
 
-### AI.MAGNITUDE()
+Returns the magnitude (L2 norm) of a vector.
 
-Returns the length (magnitude) of a vector.
-
-**Syntax:**
-
-```
-AI.MAGNITUDE(vector) -> float
-```
-
-**Example:**
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>ai.magnitude(&lt;vector&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;vector&gt;</code></td>
+      <td><code>VECTOR</code></td>
+      <td>A vector value</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>FLOAT</code></td>
+    </tr>
+  </tbody>
+</table>
 
 ```gql
-LET v = AI.VECTOR([3.0, 4.0])
-RETURN AI.MAGNITUDE(v) AS magnitude
+LET v = ai.vector([3.0, 4.0])
+RETURN ai.magnitude(v)
 ```
 
-Result:
+Result: 5
 
-| magnitude |
-| -- |
-| 5.0 |
-
-### AI.NORMALIZE()
+### ai.normalize()
 
 Normalizes a vector to a unit vector (magnitude of 1).
 
-**Syntax:**
-
-```
-AI.NORMALIZE(vector) -> vector
-```
-
-**Example:**
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>ai.normalize(&lt;vector&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;vector&gt;</code></td>
+      <td><code>VECTOR</code></td>
+      <td>A vector value</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>VECTOR</code></td>
+    </tr>
+  </tbody>
+</table>
 
 ```gql
-MATCH (d:Document)
-SET d.normalized_embedding = AI.NORMALIZE(d.embedding)
+LET v = ai.vector([3.0, 4.0])
+RETURN ai.normalize(v)
 ```
 
-### AI.TOLIST()
+Result:
+
+```json
+{
+  "values": [
+    0.6000000238418579,
+    0.800000011920929
+  ]
+}
+```
+
+### ai.toList()
 
 Converts a vector to a list of numbers.
 
-**Syntax:**
-
-```
-AI.TOLIST(vector) -> list
-```
-
-**Example:**
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>ai.toList(&lt;vector&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;vector&gt;</code></td>
+      <td><code>VECTOR</code></td>
+      <td>A vector value</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>LIST</code></td>
+    </tr>
+  </tbody>
+</table>
 
 ```gql
-MATCH (d:Document {id: 'DOC-1'})
-RETURN d.title, AI.TOLIST(d.embedding) AS embedding_array
+LET embedding = ai.embed("Introduction to graph databases")
+RETURN ai.toList(embedding)
 ```
+
+Result: [-0.0258026123046875, -0.0126800537109375, …, 0.0162200927734375, -0.017486572265625]
 
 ## Vector Arithmetic
 
-### AI.ADD()
+### ai.add()
 
 Adds two vectors element-wise.
 
-**Syntax:**
-
-```
-AI.ADD(vector1, vector2) -> vector
-```
-
-**Example:**
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>ai.add(&lt;vector1&gt;, &lt;vector2&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="3"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;vector1&gt;</code></td>
+      <td><code>VECTOR</code></td>
+      <td>The first vector</td>
+    </tr>
+    <tr>
+      <td><code>&lt;vector2&gt;</code></td>
+      <td><code>VECTOR</code></td>
+      <td>The second vector; must have the same dimension as <code>&lt;vector1&gt;</code></td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>VECTOR</code></td>
+    </tr>
+  </tbody>
+</table>
 
 ```gql
-MATCH (p:Product)
-LET combined = AI.ADD(p.text_embedding, p.image_embedding)
-SET p.combined_embedding = AI.NORMALIZE(combined)
+LET v1 = ai.vector([1.0, 2.0])
+LET v2 = ai.vector([3.0, 4.0])
+RETURN ai.toList(ai.add(v1, v2))
 ```
 
-### AI.SUBTRACT()
+Result: [4, 6]
 
-Subtracts the second vector from the first.
+### ai.subtract()
 
-**Syntax:**
+Subtracts the second vector from the first element-wise.
 
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>ai.subtract(&lt;vector1&gt;, &lt;vector2&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="3"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;vector1&gt;</code></td>
+      <td><code>VECTOR</code></td>
+      <td>The first vector</td>
+    </tr>
+    <tr>
+      <td><code>&lt;vector2&gt;</code></td>
+      <td><code>VECTOR</code></td>
+      <td>The second vector; must have the same dimension as <code>&lt;vector1&gt;</code></td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>VECTOR</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+LET v1 = ai.vector([5.0, 3.0])
+LET v2 = ai.vector([1.0, 2.0])
+RETURN ai.toList(ai.subtract(v1, v2))
 ```
-AI.SUBTRACT(vector1, vector2) -> vector
-```
 
-### AI.SCALE()
+Result: [4, 1]
+
+### ai.scale()
 
 Multiplies a vector by a scalar value.
 
-**Syntax:**
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>ai.scale(&lt;vector&gt;, &lt;scalar&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="3"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;vector&gt;</code></td>
+      <td><code>VECTOR</code></td>
+      <td>A vector value</td>
+    </tr>
+    <tr>
+      <td><code>&lt;scalar&gt;</code></td>
+      <td>Numeric</td>
+      <td>The scalar multiplier</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>VECTOR</code></td>
+    </tr>
+  </tbody>
+</table>
 
+```gql
+LET v = ai.vector([1.0, 2.0, 3.0])
+RETURN ai.toList(ai.scale(v, 2))
 ```
-AI.SCALE(vector, scalar) -> vector
-```
+
+Result: [2, 4, 6]
 
 ## Provider Configuration
 
-### AI.SETAPIKEY()
+### ai.setapikey()
 
-Sets the API key for an AI provider.
+Sets the API key for an AI provider. Optionally activates it as the current provider.
 
-**Syntax:**
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>ai.setapikey(&lt;provider&gt;, &lt;apiKey&gt; [, &lt;activate&gt;])</code></td>
+    </tr>
+    <tr>
+      <td rowspan="4"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;provider&gt;</code></td>
+      <td><code>STRING</code></td>
+      <td>Provider name: <code>"openai"</code>, <code>"gemini"</code>, <code>"xai"</code>, or <code>"anthropic"</code> (completion only)</td>
+    </tr>
+    <tr>
+      <td><code>&lt;apiKey&gt;</code></td>
+      <td><code>STRING</code></td>
+      <td>The API key</td>
+    </tr>
+    <tr>
+      <td><code>&lt;activate&gt;</code></td>
+      <td><code>BOOL</code></td>
+      <td>Optional. Whether to set this as the active provider (default: <code>true</code>)</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>BOOL</code></td>
+    </tr>
+  </tbody>
+</table>
 
-```
-CALL AI.SETAPIKEY(provider, apiKey)
-```
-
-**Example:**
+By default, calling `ai.setapikey()` both sets the key and activates the provider:
 
 ```gql
-CALL AI.SETAPIKEY('openai', $OPENAI_API_KEY)
+RETURN ai.setapikey("openai", "sk-...")
 ```
 
-### AI.PROVIDER()
-
-Returns the current AI provider.
-
-**Syntax:**
-
-```
-AI.PROVIDER() -> string
-```
-
-**Example:**
+Each provider stores one API key. Calling `ai.setapikey()` again for the same provider overwrites the previous key. To set keys for multiple providers without activating them, pass `false` as the third argument, then use `ai.setprovider()` to switch:
 
 ```gql
-RETURN AI.PROVIDER() AS current_provider
+RETURN ai.setapikey("gemini", "AQ.za...", false)
 ```
 
-### AI.EMBEDDIM()
+> `"anthropic"` supports completion only (`ai.gql()`, `ai.read()`), it has no embedding model. Use `ai.setapikey("anthropic", "sk-ant-...", false)` followed by `ai.setCompletionProvider("anthropic")` to configure it for completion.
 
-Returns the embedding dimensions for the current provider/model.
+### ai.setprovider()
 
-**Syntax:**
+Switches the active embedding provider. The provider's API key must have been set first via `ai.setapikey()`.
 
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>ai.setprovider(&lt;provider&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;provider&gt;</code></td>
+      <td><code>STRING</code></td>
+      <td>Provider name: <code>"openai"</code>, <code>"gemini"</code>, or <code>"xai"</code></td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>BOOL</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN ai.setprovider("openai")
 ```
-AI.EMBEDDIM(model?) -> int
+
+### ai.provider()
+
+Returns the name of the current AI provider.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>ai.provider()</code></td>
+    </tr>
+    <tr>
+      <td><b>Arguments</b></td>
+      <td colspan="3">None</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>STRING</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN ai.provider()
 ```
 
-## Embedding Models
+### ai.embeddim()
 
-Different models produce different dimension vectors:
+Returns the embedding dimension of the current provider.
 
-| Provider | Model | Dimensions | Best For |
-| -- | -- | -- | -- |
-| OpenAI | text-embedding-3-small | 1536 | General purpose |
-| OpenAI | text-embedding-3-large | 3072 | High accuracy |
-| Cohere | embed-english-v3.0 | 1024 | English text |
-| Ollama | nomic-embed-text | 768 | Local/private |
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>ai.embeddim()</code></td>
+    </tr>
+    <tr>
+      <td><b>Arguments</b></td>
+      <td colspan="3">None</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>INT</code></td>
+    </tr>
+  </tbody>
+</table>
 
-> All vectors in the same index must have the same dimensions. Choose your model carefully before creating embeddings.
+```gql
+RETURN ai.embeddim()
+```

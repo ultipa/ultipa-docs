@@ -2,112 +2,161 @@
 
 ## Overview
 
-The **closed graph** is constrained by its **graph type** (or schema), which imposes a strict framework that governs data insertion: nodes and edges with schemas or properties not defined cannot be added. While the graph type can be altered after a graph is created, its defined data model ensures consistent structure, guaranteeing high data integrity and consistency.
+The **closed graph** is constrained by its **graph type**, which imposes a strict framework that governs data insertion: each node or edge belongs to exactly one pre-defined **node type** or **edge type**.
 
 In a closed graph,
 
-- Each node or edge belongs to exactly one schema.
-- Each schema is associated with a set of properties; each property is defined with a specific <a target="_blank" href="/docs/gql/values-and-types#Property-Value-Types">value type</a>.
+- Each node has one or multiple labels, each edge has one label.
+- Nodes or edges of the same type have the same set of properties.
 
-For closed graphs, node and edge schemas, along with their properties, must be explicitly defined.  This definition can occur either during graph creation or later, and can be easily altered as necessary throughout the graph's lifecycle.
+While the graph type can be altered after a graph is created, its defined data model ensures consistent structure, guaranteeing high data integrity and consistency.
 
-## Creating Closed Graph
+## Node/Edge Type
 
-### Empty Graph Type
+### Syntax
 
-To create a graph `g1` with an empty graph type:
+<p tit="Syntax"></p>
 
-```gql
-CREATE GRAPH g1
+```
+<node type> ::=
+  "NODE" [ "TYPE" ] <node type name> "(" [ <additional labels> ] [ <property types> ] ")"
+
+<edge type> ::=
+  "EDGE" [ "TYPE" ] <edge type name> <source node type reference> 
+  "-[" [ <additional labels> ] [ <property types> ] "]->" <destination node type reference>
+
+<additional labels> ::=
+  < ":" | "IS" > <label name> [ { "&", <label name> } ... ]
+
+<property types> ::=
+  "{" <property type> [ { "," <property type> } ... ] "}"
+
+<property type> ::=
+  <property name> <property value type> 
 ```
 
-The graph `g1` is created as a closed graph, containing only the built-in `default` node schema and `default` edge schema.
+Each node or edge type has a unique type name, and is associated with a set of labels and property types. Each property type is defined with a property name and a <a target="_blank" href="/docs/gql/values-and-types#Property-Value-Types">property value type</a>.
 
-### Customized Graph Type
+### Labels
 
-To create a graph `g2` with a graph type specification, which defines:
+The node or edge type name automatically becomes a label. The **label set** of a node or edge type is the union of its type name and additional labels (optional).
 
-- Node schema `User` with properties `name` (`STRING` type) and `age` (`UINT32` type).
-- Node schema `Club` with a property `name` (`STRING` type).
-- Edge schema `Follows` with a property `createdOn` (`LOCAL DATETIME` type).
-- Edge schema `Joins` with no properties.
-  
+When no additional labels are specified, the type name is the only label:
+
 ```gql
-CREATE GRAPH g2 { 
+-- label set: [User]
+NODE User ({name STRING})
+```
+
+Add additional labels:
+
+```gql
+-- label set: [User, Employee]
+NODE User (:Employee {name STRING})
+```
+
+```gql
+-- label set: [User, Employee, Manager]
+NODE User (:Employee&Manager {name STRING})
+```
+
+### Edge Type Endpoints
+
+Edge types can specify source and destination node types, where `<source/destination node type reference>` is `()` or `(<labels>)`. The `<labels>` is matched against the label sets of node types.
+
+```gql
+-- The FOLLOWS edge connects any two nodes
+EDGE FOLLOWS ()-[{createdOn LOCAL DATETIME}]->()
+
+-- The JOINS edge connects source nodes whose label set is [User,Employee] to destination nodes whose label set is [Company]                  
+EDGE JOINS (:User&Employee)-[{title STRING}]->(:Company)
+```
+
+## Creating Closed Graphs
+
+### Inline Graph Type
+
+Create a closed graph `g2` with inline graph type specification, which defines:
+
+- Node type `User` with properties `name` (`STRING` type) and `age` (`UINT32` type)
+- Node type `Club` with a property `name` (`STRING` type)
+- Edge type `FOLLOWS` with a property `createdOn` (`LOCAL DATETIME` type)
+- Edge type `JOINS` with no properties
+
+```gql
+CREATE GRAPH g2 {
   NODE User ({name STRING, age UINT32}),
   NODE Club ({name STRING}),
-  EDGE Follows ()-[{createdOn LOCAL DATETIME}]->(),
-  EDGE Joins ()-[]->()
+  EDGE FOLLOWS ()-[{createdOn TIMESTAMP}]->(),
+  EDGE JOINS ()-[]->()
 }
 ```
 
 ### Defined Graph Type
 
-To create a graph `g3` based on the defined graph type named `gType` (<a href="#Managing-Graph-Types">How to manage graph types</a>), you have three equivalent GQL options to specify the graph type to be used:
+Create a closed graph `g3` based on the defined graph type named `gType` (<a href="#Managing-Graph-Types">How to manage graph types</a>), you have three equivalent GQL options to specify the graph type to be used:
 
 ```gql
 CREATE GRAPH g3 gType
 ```
 
 or
-  
+
 ```gql
 CREATE GRAPH g3 :: gType
 ```
 
-or 
+or
 
 ```gql
 CREATE GRAPH g3 TYPED gType
 ```
 
-The graph `g3` is created with all the schemas and properties defined within the graph type `gType`.
-
-### Graph Type of Another Graph
-
-To create a graph `g4` by copying the graph type of an existing graph `trans`:
-  
-```gql
-CREATE GRAPH g4 LIKE trans
-```
-
-The `LIKE` keyword specifies the graph whose graph type is to be copied. The graph `g4` is created with the same schemas and properties defined within the graph `trans`.
+The graph `g3` is created with all the types and properties defined within the graph type `gType`.
 
 ## Managing Graph Types
 
-The graph type defines structural rules for graphs by outlining the allowed node and edge schemas, and their associated properties. You can define and store graph types in the database, making them reusable when creating new graphs.
+The graph type defines structural rules for graphs by outlining the allowed node and edge types. You can define and store graph types in the database, making them reusable when creating new graphs.
 
 ### Showing Graph Types
 
-To show graph types defined in the database:
+Show graph types defined in the database:
 
 ```gql
-SHOW GRAPH TYPE
+SHOW GRAPH TYPES
 ```
 
 Each graph type provides the following essential metadata:
 
-| <div table-width="15">Field</div> | Description |
+| Field | Description |
 | -- | -- |
 | `name` | The unique name assigned to the graph type. |
-| `gql` | The GQL query used to create the graph type. |
+| `node_type_count` | Number of node types. |
+| `edge_type_count` | Number of edge types. |
+| `node_types` | Comma-separated list of node type names. |
+| `edge_types` | Comma-separated list of edge type names. |
+| `definition` | The type definitions. |
+| `bound_graphs` | Graphs that use this graph type. |
+| `comment` | The comment of the graph type. |
+| `created_at` | Creation time. |
+| `updated_at` | Last update time. |
 
-### Creating Graph Type
+### Creating Graph Types
 
-To create a graph type `gType`:
-  
+Create a graph type `gType`:
+
 ```gql
-CREATE GRAPH TYPE gType { 
+CREATE GRAPH TYPE gType {
   NODE User ({name STRING, age UINT32}),
   NODE Club ({name STRING}),
-  EDGE Follows ()-[{createdOn LOCAL DATETIME}]->(),
-  EDGE Joins ()-[]->()
+  EDGE FOLLOWS ()-[{createdOn TIMESTAMP}]->(),
+  EDGE JOINS ()-[]->()
 }
 ```
 
-### Dropping Graph Type
+### Dropping Graph Types
 
-To drop the graph type `gType`:
+Drop the graph type `gType`:
 
 ```gql
 DROP GRAPH TYPE gType
@@ -121,226 +170,143 @@ DROP GRAPH TYPE IF EXISTS gType
 
 This deletes the graph type `gType` only if a graph type with that name does exist. If `gType` does not exist, the statement is ignored without throwing an error.
 
-## Encrypting Properties
+## Showing Node/Edge Types
 
-When creating a closed graph or a graph type, you can configure any property to be encrypted using one of the supported encryption methods: `AES128`, `AES256`, `RSA` and `ECC`.
-
-To create a graph `g5`, encrypting the `name` property of the node schema `User`:
+Show node types defined in the current graph:
 
 ```gql
-CREATE GRAPH g5 { 
-  NODE User ({name STRING encrypt("AES128"), age UINT32}),
-  NODE Club ({name STRING}),
-  EDGE Follows ()-[{createdOn LOCAL DATETIME}]->(),
-  EDGE Joins ()-[]->()
-}
+SHOW NODE TYPES
 ```
 
-To create a graph type `gType_1`, encrypting the `name` property of the node schema `User`:
+Show edge types defined in the current graph:
 
 ```gql
-CREATE GRAPH TYPE gType_1 { 
-  NODE User ({name STRING encrypt("AES128"), age UINT32}),
-  NODE Club ({name STRING}),
-  EDGE Follows ()-[{createdOn LOCAL DATETIME}]->(),
-  EDGE Joins ()-[]->()
-}
+SHOW EDGE TYPES
 ```
 
-## Showing Schemas and Properties
-
-To show node schemas defined in the current graph:
-
-```gql
-SHOW NODE SCHEMA
-```
-
-To show edge schemas defined in the current graph:
-
-```gql
-SHOW EDGE SCHEMA
-```
-
-To show properties associated with the node schema `User` in the current graph:
-
-```gql
-SHOW NODE User PROPERTY
-```
-
-To show properties associated with the edge schema `Joins` in the current graph:
-
-```gql
-SHOW EDGE Joins PROPERTY
-```
-
-Each schema provides the following essential metadata:
+Each type provides the following metadata:
 
 | <div table-width="20">Field</div> | Description |
 | -- | -- |
-| `id` | The ID of the schema. |
-| `name` | The name assigned to the schema. |
-| `description` | The comment given to the schema. |
-| `status` | The state of the schema, which can only be `CREATED`. |
-| `properties` | The associated properties of the schema. |
+| `type` | `NODE` or `EDGE`. |
+| `name` | The name of the type. |
+| `properties` | The associated property definitions. |
 
-Each property provides the following essential metadata:
+## Showing Labels
 
-| <div table-width="20">Field</div> | Description |
+Show labels in the current graph:
+
+```gql
+SHOW LABELS
+```
+
+Show node labels in the current graph:
+
+```gql
+SHOW NODE LABELS
+```
+
+Show edge labels in the current graph:
+
+```gql
+SHOW EDGE LABELS
+```
+
+Each label provides the following essential metadata:
+
+| <div table-width="17">Field</div> | Description |
 | -- | -- |
-| `name` | The property name. |
-| `type` | The property value type. |
-| `lte` | Whether the property is loaded to the shards' memory for query acceleration. |
-| `read` | Whether the current database user can read the property. `1` for true, `0` for false. |
-| `write` | Whether the current database user can write the property. `1` for true, `0` for false. |
-| `schema` | The schema that the property is associated with. |
-| `description` | The comment given to the property. |
-| `encrypt` | The encryption method used for the property. |
+| `label` | The name of the label. |
+| `type` | The type of the label, `NODE` or `EDGE`. |
 
-## Adding Schemas and Properties
+## Altering Graph Types
 
-You can add new schemas and properties within a closed graph.
+You can alter the graph type of an existing closed graph.
 
-To add node schemas `User` and `Club` within the graph `g1`: 
+### Adding Node/Edge Types
+
+Add a node type `Book` in the graph `g2`:
 
 ```gql
-ALTER GRAPH g1 ADD NODE {
-  User ({username STRING, gender STRING}),
-  Club ({name STRING, score FLOAT})
-}
+ALTER GRAPH g2 ADD NODE Book ({name STRING, author STRING})
 ```
 
-To add an edge schema `Follows` within the graph `g1`: 
+Add an edge type `PURCHASED` in the graph `g2`:
 
 ```gql
-ALTER GRAPH g1 ADD EDGE {
-  Follows ()-[{createdOn DATE}]->()
-}
-```
- 
-To add a property `tags` to the node schema `User` within the current graph:
-
-```gql
-ALTER NODE user ADD PROPERTY {tags LIST<STRING>}
+ALTER GRAPH g2 ADD EDGE PURCHASED (:User)-[{createdOn TIMESTAMP}]->(:Book)
 ```
 
-To add properties `distance` and `weight` to the edge schema `links` within the current graph:
+### Adding Properties
+
+Add a property `gender` to the node type `User` in the current graph:
 
 ```gql
-ALTER EDGE links ADD PROPERTY {
-  distance FLOAT, 
-  weight DECIMAL(10,5)
-}
+ALTER NODE User ADD PROPERTY gender STRING
 ```
 
-You can add properties to all node or edge schemas. For example, to add a property `when` to all edge schemas within the current graph:
+Add a property `memberNo` to the edge type `JOINS` within the current graph:
 
 ```gql
-ALTER EDGE * ADD PROPERTY {when DATE}
+ALTER EDGE JOINS ADD PROPERTY memberNo INT32
 ```
 
-## Altering Schemas
+### Renaming Node/Edge Types
 
-You can alter the name and comment of a schema in the current graph.
-
-To rename the node schema `School` to `University` in the current graph:
+To rename the node type `User` to `People` in the current graph:
 
 ```gql
-ALTER NODE School RENAME TO University
+ALTER NODE User RENAME TO People
 ```
 
-To rename the edge schema `Follows` to `Follow` in the current graph:
+To rename the edge type `FOLLOWS` to `LINKS` in the current graph:
 
 ```gql
-ALTER EDGE Follows RENAME TO Follow
+ALTER EDGE FOLLOWS RENAME TO LINKS
 ```
 
-To update the comment of the node schema `User` in the current graph:
+### Renaming Properties
+
+To rename the property `name` to `title` for the node type `Book` in the current graph:
 
 ```gql
-ALTER NODE User COMMENT "Self-registration"
+ALTER NODE Book PROPERTY name RENAME TO title
 ```
 
-To update the comment of the edge schema `Follows` in the current graph:
+To rename the property `memberNo` to `memberNumber` for the edge type `JOINS` in the current graph:
 
 ```gql
-ALTER EDGE Follows COMMENT "From user to user"
+ALTER EDGE JOINS PROPERTY memberNo RENAME TO memberNumber
 ```
 
-You can perform both operations in a single statement:
+### Dropping Node/Edge Types
+
+A node or edge type can only be dropped when no nodes or edges of that type exist.
+
+Drop the node type `User` from the graph `g2`:
 
 ```gql
-ALTER NODE User RENAME TO User_s2 COMMENT "Self-registration"
+ALTER GRAPH g2 DROP NODE User
 ```
 
-## Altering Properties 
-
-You can alter the name and comment of a property in the current graph.
-
-To rename the property `name` to `username` for `User` nodes in the current graph:
+Drop the edge type `FOLLOWS` from the graph `g2`:
 
 ```gql
-ALTER NODE User name RENAME TO username
+ALTER GRAPH g2 DROP EDGE FOLLOWS
 ```
 
-To rename the property `createdOn` to `startDate` for `Follows` edges in the current graph:
+### Dropping Properties
+
+When a property is dropped, all related data - including the property values, associated indexes, and cached values - is permanently removed.
+
+Drop the property `name` from the node type `User` in the current graph:
 
 ```gql
-ALTER EDGE Follows createdOn RENAME TO startDate
+ALTER NODE User DROP PROPERTY name
 ```
 
-To update the comment for the `name` property of `User` nodes in the current graph:
+Drop the property `createdOn` from the edge type `FOLLOWS` in the current graph:
 
 ```gql
-ALTER NODE User name COMMENT "Contains 5 to 64 characters"
-```
-
-To update the comment for the `createdOn` property of `Follows` edges in the current graph:
-
-```gql
-ALTER EDGE Follows createdOn COMMENT "When the relationship is established"
-```
-
-You can perform both operations in a single statement:
-
-```gql
-ALTER EDGE Follows createdOn RENAME TO startDate COMMENT "When the relationship is established"
-```
-
-## Dropping Schemas and Properties
-
-You can delete schemas and properties from a graph. 
-
-- **Dropping a schema:** Deleting a node or edge schema also deletes all nodes or edges that belong to that schema. Note that this deletion of nodes automatically triggers the removal of all edges connected to them. The two built-in `default` schemas cannot be dropped.
-- **Dropping a property:** When a property is dropped, all related data - including the property values, associated indexes, and cached values - is permanently removed.
-
-The schema dropping operation runs as a job, you may run `SHOW JOB <id?>` afterward to verify its completion.
-
-To drop the node schema `User` from the graph `g1`:
-
-```gql
-ALTER GRAPH g1 DROP NODE User 
-```
-
-To drop edge schemas `Follows` and `StudyAt` from the graph `g1`:
-
-```gql
-ALTER GRAPH g1 DROP EDGE Follows, StudyAt 
-```
-
-To drop properties `name` and `age` from `User` nodes in the current graph:
-
-```gql
-ALTER NODE User DROP PROPERTY name, age
-```
-
-To drop the property `when` from `links` edges in the current graph:
-
-```gql
-ALTER EDGE links DROP PROPERTY when
-```
-
-To drop the property `location` from all nodes in the current graph:
-
-```gql
-ALTER NODE * DROP PROPERTY location
+ALTER EDGE FOLLOWS DROP PROPERTY createdOn
 ```

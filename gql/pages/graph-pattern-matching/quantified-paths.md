@@ -27,21 +27,6 @@ A quantifier is written as a postfix to either an edge pattern or a parenthesize
 
 <div align=center drawio-diagram='16778' drawio-name="draw_a99f62df2adf48359cd1f95077fee319.jpg"><img src="https://img.ultipa.cn/draw/draw_a99f62df2adf48359cd1f95077fee319.jpg?v='1726735600890'"/></div>
 
-<div tab="code">
-
-<p tit="Create the graph"></p>
-
-```gql
-CREATE GRAPH myGraph { 
-  NODE User ({name string}),
-  NODE Device (),
-  EDGE Owns ()-[{}]->(),
-  EDGE Flows ()-[{packets int32}]->()
-} SHARDS [1]
-```
-
-<p tit="Insert data to the graph"></p>
-
 ```gql
 INSERT (jack:User {_id: "U01", name: "Jack"}),
        (mike:User {_id: "U02", name: "Mike"}),
@@ -57,8 +42,6 @@ INSERT (jack:User {_id: "U01", name: "Jack"}),
        (c2)-[:Flows {packets: 12}]->(c4),
        (c3)-[:Flows {packets: 74}]->(c4)
 ```
-
-</div>
 
 ## Building Quantified Paths
 
@@ -96,7 +79,7 @@ Another example:
 ### Lowerbound and Upperbound
 
 ```gql
-MATCH p = ({name: 'Jack'})->()-[f:Flows WHERE f.packets > 15]->{1,3}()<-({name: 'Mike'})
+MATCH p = ({name: 'Jack'})->()-[f:Flows WHERE f.packets > 20]->{1,3}()<-({name: 'Mike'})
 RETURN p
 ```
 
@@ -149,7 +132,7 @@ Result: `p`
 ### Fixed Upperbound
 
 ```gql
-MATCH p = ({name: 'Jack'})->(()-[f:Flows WHERE f.packets > 15]->()){,2}<-({name: 'Mike'})
+MATCH p = ({name: 'Jack'})->(()-[f:Flows WHERE f.packets > 20]->()){,2}<-({name: 'Mike'})
 RETURN p
 ```
 
@@ -165,19 +148,6 @@ Element variables declared within the repeatable part of a quantified path are b
 
 <div align=center drawio-diagram='16773' drawio-name="draw_67664aeb31984c1488a3ddc177146d32.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_67664aeb31984c1488a3ddc177146d32.jpg?v='1751941057585'"/></div>
 
-<div tab="code">
-
-<p tit="Create the graph"></p>
-
-```gql
-CREATE GRAPH myGraph { 
-  NODE User ({name string, age uint32}),
-  EDGE Follows ()-[{score uint32}]->()
-} SHARDS [1]
-```
-
-<p tit="Insert data to the graph"></p>
-
 ```gql
 INSERT (rowlock:User {_id: "U1", name: "rowlock", age: 24}),
        (quasar92:User {_id: "U2", name: "Quasar92", age: 29}),
@@ -185,8 +155,6 @@ INSERT (rowlock:User {_id: "U1", name: "rowlock", age: 24}),
        (rowlock)-[:Follows {score: 2}]->(quasar92),
        (quasar92)-[:Follows {score: 3}]->(claire)
 ```
-
-</div>
 
 ### Referencing Outside the Quantified Segment
 
@@ -212,24 +180,26 @@ Result:
   <tbody>
     <tr>
       <td>
-<div align=center drawio-diagram='20505' drawio-name="draw_cd873c21fbb44cf381d01cd79b609bb1.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_cd873c21fbb44cf381d01cd79b609bb1.jpg?v='1751941071564'"/></div>
-      </td>
-      <td>[(:User {_id:"U2", name:"Quasar92", age:29})]</td>
-      <td>[(:User {_id:"U3", name:"claire", age:35})]</td>
-    <tr>
-    <tr>
-      <td>
 <div align=center drawio-diagram='20506' drawio-name="draw_0cb3bcc2da1840f08abb2d898b8376f3.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_0cb3bcc2da1840f08abb2d898b8376f3.jpg?v='1751941080877'"/></div>
       </td>
-      <td>[(:User {_id:"U1", name:"rowlock", age:24})]</td>
-      <td>[(:User {_id:"U2", name:"Quasar92", age:29})]</td>
+      <td><pre>[{"id": "U1", "labels": ["User"], "properties": {"name": "rowlock", "age": 24}}]</pre></td>
+      <td><pre>[{"id": "U2", "labels": ["User"], "properties": {"name": "Quasar92", "age": 29}}]</pre></td>
     </tr>
     <tr>
       <td>
 <div align=center drawio-diagram='20507' drawio-name="draw_62a7d15f52424dca9a78c12a0ffc1fed.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_62a7d15f52424dca9a78c12a0ffc1fed.jpg?v='1751941102387'"/></div>
       </td>
-      <td>[(:User {_id:"U1", name:"rowlock", age:24}), (:User {_id:"U2", name:"Quasar92", age:29})]</td>
-      <td>[(:User {_id:"U2", name:"Quasar92", age:29}), (:User {_id:"U3", name:"claire", age:35})]</td>
+      <td><pre>[{"id": "U1", "labels": ["User"], "properties": {"name": "rowlock", "age": 24}},
+ {"id": "U2", "labels": ["User"], "properties": {"name": "Quasar92", "age": 29}}]</pre></td>
+      <td><pre>[{"id": "U2", "labels": ["User"], "properties": {"name": "Quasar92", "age": 29}},
+ {"id": "U3", "labels": ["User"], "properties": {"name": "claire", "age": 35}}]</pre></td>
+    </tr>
+    <tr>
+      <td>
+<div align=center drawio-diagram='20505' drawio-name="draw_cd873c21fbb44cf381d01cd79b609bb1.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_cd873c21fbb44cf381d01cd79b609bb1.jpg?v='1751941071564'"/></div>
+      </td>
+      <td><pre>[{"id": "U2", "labels": ["User"], "properties": {"name": "Quasar92", "age": 29}}]</pre></td>
+      <td><pre>[{"id": "U3", "labels": ["User"], "properties": {"name": "claire", "age": 35}}]</pre></td>
     </tr>
   </tbody>
 </table>

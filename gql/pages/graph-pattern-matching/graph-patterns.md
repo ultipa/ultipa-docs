@@ -10,7 +10,7 @@ A graph pattern is composed of three parts:
 
 <p tit="Syntax"></p>
 
-```gql
+```
 <graph pattern> ::= 
   [ <match mode> ] <path pattern list> [ <where clause> ]
 
@@ -23,21 +23,6 @@ The **path pattern list** consists of one or multiple path patterns. Each path p
 ## Example Graph
 
 <div align=center drawio-diagram='16795' drawio-name="draw_775c08aea51f49a4a5bf3ca098da1e47.jpg"><img src="https://img.ultipa.cn/draw/draw_775c08aea51f49a4a5bf3ca098da1e47.jpg?v='1726762246845'"/></div>
-
-<div tab="code">
-
-<p tit="Create the graph"></p>
-
-```gql
-CREATE GRAPH myGraph { 
-  NODE User ({name string}),
-  NODE City ({name string}),
-  EDGE Follows ()-[]->(),
-  EDGE LivesIn ()-[]->()
-} SHARDS [1]
-```
-
-<p tit="Insert data to the graph"></p>
 
 ```gql
 INSERT (brainy:User {_id: "U01", name: "Brainy"}),
@@ -60,11 +45,9 @@ INSERT (brainy:User {_id: "U01", name: "Brainy"}),
        (purplechalk)-[:LivesIn]->(newyork)
 ```
 
-</div>
-
 ## Connected Paths
 
-To get common followers of `Brainy` and `mochaeach` who live in `New York`:
+Get common followers of `Brainy` and `mochaeach` who live in `New York`:
 
 ```gql
 MATCH ({name: 'Brainy'})<-[:Follows]-(u:User)-[:Follows]->({name: 'mochaeach'}), 
@@ -123,21 +106,6 @@ A graph pattern can specify a match mode that applies to all contained path patt
 
 <div align=center drawio-diagram='16878' drawio-name="draw_709f4d9805324c598dc65af9d0a25ff2.jpg"><img src="https://img.ultipa.cn/draw/draw_709f4d9805324c598dc65af9d0a25ff2.jpg?v='1726762893725'"/></div>
 
-<div tab="code">
-
-<p tit="Create the graph"></p>
-
-```gql
-CREATE GRAPH myGraph { 
-  NODE User ({name string}),
-  NODE City ({name string}),
-  EDGE Follows ()-[]->(),
-  EDGE LivesIn ()-[]->()
-} SHARDS [1]
-```
-
-<p tit="Insert data to the graph"></p>
-
 ```gql
 INSERT (quickfox:User {_id: "U01", name: "QuickFox"}),
        (brainy:User {_id: "U02", name: "Brainy"}),
@@ -150,8 +118,6 @@ INSERT (quickfox:User {_id: "U01", name: "QuickFox"}),
        (quickfox)-[:LivesIn]->(london),
        (rowlock)-[:LivesIn]->(london)
 ```
-
-</div>
 
 ### DIFFERENT EDGES
 

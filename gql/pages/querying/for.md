@@ -6,7 +6,7 @@ The `FOR` statement unnests a list into individual records and expands the inter
 
 <p tit="Syntax"></p>
 
-```gql
+```
 <for statement> ::= 
   "FOR" <binding variable> "IN" <list value expression> [ <ordinality or offset> ]
 
@@ -74,19 +74,6 @@ In this query, the `FOR` statement unnests the list contained in the `interests`
 
 <div align=center drawio-diagram='16856' drawio-name="draw_781de363a0914e1d85be994f8c4451bb.jpg"><img src="https://img.ultipa.cn/draw/draw_781de363a0914e1d85be994f8c4451bb.jpg?v='1726050412850'"/></div>
 
-<div tab="code">
-
-<p tit="Create the graph"></p>
-
-```gql
-CREATE GRAPH myGraph { 
-  NODE Card (),
-  EDGE Transfers ()-[{label string}]->()
-} PARTITION BY HASH(Crc32) SHARDS [1]
-```
-
-<p tit="Insert data to the graph"></p>
-  
 ```gql
 INSERT (c1:Card {_id: 'C1'}),
   	   (c2:Card {_id: 'C2'}),
@@ -101,9 +88,7 @@ INSERT (c1:Card {_id: 'C1'}),
        (c4)-[:Transfers {label: 'normal'}]->(c3)
 ```
 
-</div>
-
-To retrieve one shortest path between `C1` and `C3`, and return the `label` values on edges in the path:
+Retrieve one shortest path between `C1` and `C3`, and return the `label` values on edges in the path:
 
 ```gql
 MATCH SHORTEST 1 ({_id: "C1"})-[trans:Transfers]-{1,6}({_id: "C3"})
@@ -138,7 +123,7 @@ Result:
 
 ## WITH OFFSET
 
-To return the second element in a list:
+Return the second element in a list:
 
 ```gql
 FOR item in ["a", "b", "c", "d"] WITH OFFSET index // index starts from 0

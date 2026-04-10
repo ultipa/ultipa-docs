@@ -38,11 +38,7 @@ Computes the angle in radians whose cosine is a given number, the output radians
 RETURN degrees(acos(0.5)) AS degree
 ```
 
-Result: 
-
-| degree |
-| -- |
-| 60 |
+Result: 60
 
 ## asin()
 
@@ -82,11 +78,7 @@ Computes the angle in radians whose sine is a given number, the output radians w
 RETURN degrees(asin(0.5)) AS degree
 ```
 
-Result: 
-
-| degree |
-| -- |
-| 30 |
+Result: 30
 
 ## atan()
 
@@ -126,11 +118,7 @@ Computes the angle in radians whose tangent is a given number, the output radian
 RETURN degrees(atan(1)) AS degree
 ```
 
-Result: 
-
-| degree |
-| -- |
-| 45 |
+Result: 45
 
 ## cos()
 
@@ -170,11 +158,7 @@ Computes the cosine of an angle expressed in radian, the output will be in the r
 RETURN cos(radians(60))
 ```
 
-Result: 
-
-| cos(radians(60)) |
-| -- |
-| 0.5 |
+Result: 0.5
 
 ## cosh()
 
@@ -214,11 +198,7 @@ Computes the hyperbolic cosine of an angle expressed in radian, the output will 
 RETURN cosh(radians(60))
 ```
 
-Result: 
-
-| cosh(radians(60)) |
-| -- |
-| 1.60028685770239 |
+Result: 1.60028685770239
 
 ## cot()
 
@@ -258,11 +238,7 @@ Computes the cotangent of an angle expressed in radian, the output will be in th
 RETURN cot(radians(45))
 ```
 
-Result: 
-
-| cot(radians(45)) |
-| -- |
-| 1 |
+Result: 1
 
 ## degrees()
 
@@ -317,11 +293,7 @@ Converts an angle from radians to degrees:
 RETURN degrees(pi())
 ```
 
-Result: 
-
-| degrees(pi()) |
-| -- |
-| 180 |
+Result: 180
 
 ## radians()
 
@@ -376,11 +348,7 @@ Converts an angle from degrees to radians:
 RETURN radians(60)
 ```
 
-Result: 
-
-| radians(60) |
-| -- |
-| 1.0471975511966 |
+Result: 1.0471975511965976
 
 ## sin()
 
@@ -420,11 +388,7 @@ Computes the sine of an angle expressed in radian, the output will be in the ran
 RETURN sin(radians(30))
 ```
 
-Result: 
-
-| sin(radians(30)) |
-| -- |
-| 0.5 |
+Result: 0.5
 
 ## sinh()
 
@@ -464,11 +428,7 @@ Computes the hyperbolic sine of an angle expressed in radian, the output will be
 RETURN sinh(radians(30))
 ```
 
-Result: 
-
-| sinh(radians(30)) |
-| -- |
-| 0.54785347388804 |
+Result: 0.54785347388804
 
 ## tan()
 
@@ -508,11 +468,7 @@ Computes the tangent of an angle expressed in radian, the output will be in the 
 RETURN tan(radians(45))
 ```
 
-Result: 
-
-| tan(radians(45)) |
-| -- |
-| 1 |
+Result: 1
 
 ## tanh()
 
@@ -552,8 +508,4 @@ Computes the hyperbolic tangent of an angle expressed in radian, the output will
 RETURN tanh(radians(45))
 ```
 
-Result: 
-
-| tanh(radians(45)) |
-| -- |
-| 0.655794202632672 |
+Result: 0.655794202632672

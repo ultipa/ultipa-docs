@@ -9,24 +9,20 @@
 
 The `OPTIONAL` keyword can be applied to a single `MATCH` statement, or to a block of `MATCH` statements.
 
+<p tit="Syntax"></p>
+
+```
+<optional match statement> ::=
+    "OPTIONAL" <match statement> 
+  | "OPTIONAL" "(" <match statement block> ")"
+  | "OPTIONAL" "{" <match statement block> "}"
+
+<match statement block> ::= <match statement> ...
+```
+
 ## Example Graph
 
 <div align=center drawio-diagram='27445' drawio-name='draw_5897ed7455b84f7984b24665a71253c6.jpg'><img src="https://img.ultipa.cn/draw/draw_5897ed7455b84f7984b24665a71253c6.jpg?v='1754382908221'"/></div>
-
-<div tab="code">
-
-<p tit="Create the graph"></p>
-
-```gql
-CREATE GRAPH myGraph { 
-  NODE User ({name string}),
-  NODE Club ({since uint32}),
-  EDGE Follows ()-[{createdOn date}]->(),
-  EDGE Joins ()-[{memberNo uint32}]->()
-}
-```
-
-<p tit="Insert data to the graph"></p>
 
 ```gql
 INSERT (rowlock:User {_id: 'U01', name: 'rowlock'}),
@@ -44,8 +40,6 @@ INSERT (rowlock:User {_id: 'U01', name: 'rowlock'}),
        (lionbower)-[:Joins {memberNo: 2}]->(c01),
        (mochaeach)-[:Joins {memberNo: 9}]->(c02)
 ```
-
-</div>
 
 ## Checking Existence
 
@@ -127,7 +121,11 @@ OPTIONAL MATCH (u:User) WHERE u.name = "Masterpiece1989"
 RETURN CASE WHEN u IS NULL THEN "User not found" ELSE u END
 ```
 
-Result: User not found
+Result:
+
+| col_0 |
+| -- |
+| "User not found" |
 
 ## The Evaluation of WHERE
 
@@ -139,7 +137,7 @@ This query returns users who have no followers:
 MATCH (n:User)
 OPTIONAL MATCH p = (n)<-[:Follows]-()
 FILTER p IS NULL
-RETURN COLLECT_LIST(n.name) AS Names
+RETURN collect_list(n.name) AS Names
 ```
 
 Result:
@@ -154,7 +152,7 @@ You won’t get the expected results if replaces `FILTER` with `WHERE`, since th
 MATCH (n:User)
 OPTIONAL MATCH p = (n)<-[:Follows]-()
 WHERE p IS NULL
-RETURN COLLECT_LIST(n.name) AS Names
+RETURN collect_list(n.name) AS Names
 ```
 
 Result:
