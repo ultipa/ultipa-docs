@@ -219,8 +219,29 @@
       "title": "Predicates"
     },
     {
-      "file": "expressions.md",
-      "title": "Expressions"
+      "folder": "expressions",
+      "pages": [
+        {
+          "file": "case.md",
+          "title": "CASE"
+        },
+        {
+          "file": "nullif.md",
+          "title": "NULLIF"
+        },
+        {
+          "file": "coalesce.md",
+          "title": "COALESCE"
+        },
+        {
+          "file": "let-value-expression.md",
+          "title": "LET Value Expression"
+        },
+        {
+          "file": "value-query-expression.md",
+          "title": "Value Query Expression"
+        }
+      ]
     },
     {
       "folder": "query-acceleration",
