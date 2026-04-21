@@ -8,11 +8,11 @@ In mathematics, the Euclidean distance between two points in Euclidean space is 
 
 ### Euclidean Distance
 
-In 2-dimensional space, the formula to compute the Euclidean distance between points A(x<sub>1</sub>, y<sub>1</sub>) and B(x<sub>2</sub>, y<sub>2</sub>) is:
+In 2-dimensional space, the formula to compute the Euclidean distance between points <code>A(x<sub>1</sub>, y<sub>1</sub>)</code> and <code>B(x<sub>2</sub>, y<sub>2</sub>)</code> is:
 
 <center><img width=270 src="https://img.ultipa.cn/2022-08-09-15-15-45-d2.jpg"></center>
 
-In 3-dimensional space, the formula to compute the Euclidean distance between points A(x<sub>1</sub>, y<sub>1</sub>, z<sub>1</sub>) and B(x<sub>2</sub>, y<sub>2</sub>, z<sub>2</sub>) is:
+In 3-dimensional space, the formula to compute the Euclidean distance between points <code>A(x<sub>1</sub>, y<sub>1</sub>, z<sub>1</sub>)</code> and <code>B(x<sub>2</sub>, y<sub>2</sub>, z<sub>2</sub>)</code> is:
 
 <center><img width=360 src="https://img.ultipa.cn/2022-08-09-15-15-47-d3.jpg"></center>
 
@@ -20,17 +20,15 @@ Generalized to N-dimensional space, the formula to compute the Euclidean distanc
 
 <center><img width=210 src="https://img.ultipa.cn/2022-08-09-15-15-49-dn.jpg"></center>
 
-where <i>xi<sub>1</sub></i> represents the <i>i</i>-th dimensional coordinates of the first point, and <i>xi<sub>2</sub></i> represents the <i>i</i>-th dimensional coordinates of the second point.
+where <code>xi<sub>1</sub></code> represents the `i`-th dimensional coordinates of the first point, and <code>xi<sub>2</sub></code> represents the `i`-th dimensional coordinates of the second point.
 
 Euclidean distance ranges from 0 to +∞; smaller values indicate greater similarity between the two nodes.
 
 ### Normalized Euclidean Distance
 
-This algorithm returns the **normalized** Euclidean distance which scales the result into the range 0 to 1:
+This algorithm returns the **normalized** Euclidean distance using the formula `1 / (1 + d)`, which scales the result into the range (0, 1]:
 
-<center><img width=270 src="https://img.ultipa.cn/2022-08-09-15-23-53-dnorm.jpg"></center>
-
-Values closer to 1 indicate greater similarity.
+Values closer to 1 indicate greater similarity. For example, if the Euclidean distance between two nodes is 94.38, the normalized similarity is `1 / (1 + 94.38) ≈ 0.01049`.
 
 ## Considerations
 
@@ -179,10 +177,10 @@ Computes results and writes them back to node properties. The write configuratio
 
 | Column | Type | Description |
 | -- | -- | -- |
-| `task_id` | `STRING` | Task identifier |
-| `status` | `STRING` | Task status (`running`) |
-
-The write executes asynchronously in the background. Use `SHOW TASKS` with the `task_id` to check progress and results.
+| `task_id` | `STRING` | Task identifier for tracking via `SHOW TASKS` |
+| `nodesWritten` | `INT` | Number of nodes with properties written |
+| `computeTimeMs` | `INT` | Time spent computing the algorithm (milliseconds) |
+| `writeTimeMs` | `INT` | Time spent writing properties to storage (milliseconds) |
 
 ```gql
 CALL algo.similarity.write({
@@ -191,8 +189,7 @@ CALL algo.similarity.write({
   node_property: ["price", "weight", "width", "height"]
 }, {
   db: {
-    property: "euc_score"                    // String: writes similarity to one property
-    // property: {similarity: "euc_score"}   // Map: explicit column-to-property
+    property: "sim_score"
   }
-}) YIELD task_id, status
+}) YIELD task_id, nodesWritten, computeTimeMs, writeTimeMs
 ```

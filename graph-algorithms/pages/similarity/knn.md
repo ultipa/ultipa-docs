@@ -4,30 +4,24 @@
 
 KNN (K-Nearest Neighbors) finds the K most similar nodes for each node based on neighborhood structure. Useful for building similarity graphs and recommendation systems. For each node, the algorithm identifies its K closest neighbors by comparing neighborhood overlap using the specified similarity metric: jaccard, cosine, or overlap.
 
-## Concepts
-
-This algorithm compares nodes based on their **neighborhood structure** (not node properties). Each node is represented by its set of neighbors, and similarity is computed between these neighbor sets.
-
 Three metrics are supported:
 
 - **Jaccard**: Intersection over union of neighbor sets. See <a href="/docs/graph-analytics-algorithms/jaccard-similarity">Jaccard Similarity</a> for details.
-- **Cosine**: Cosine similarity between binary neighbor vectors (1 = neighbor present, 0 = absent). This is topology-based, not property-based.
 - **Overlap**: Intersection over the smaller neighbor set. See <a href="/docs/graph-analytics-algorithms/overlap-similarity">Overlap Similarity</a> for details.
-
-## Considerations
-
-- The algorithm treats all edges as undirected.
-- Self-loops are ignored when computing neighborhoods.
+- **Cosine**: Cosine similarity between node property vectors. See <a href="/docs/graph-analytics-algorithms/cosine-similarity">Cosine Similarity</a> for details.
 
 ## Example Graph
 
 <div align=center><img src="images/knn-example.drawio.svg"/></div>
 
 ```gql
-INSERT (Sue:user {_id: "Sue"}), (Dave:user {_id: "Dave"}),
-       (Ann:user {_id: "Ann"}), (Mark:user {_id: "Mark"}),
-       (May:user {_id: "May"}), (Jay:user {_id: "Jay"}),
-       (Billy:user {_id: "Billy"}),
+INSERT (Sue:user {_id: "Sue", age: 28, score: 85}),
+       (Dave:user {_id: "Dave", age: 35, score: 72}),
+       (Ann:user {_id: "Ann", age: 30, score: 90}),
+       (Mark:user {_id: "Mark", age: 32, score: 78}),
+       (May:user {_id: "May", age: 26, score: 88}),
+       (Jay:user {_id: "Jay", age: 29, score: 82}),
+       (Billy:user {_id: "Billy", age: 24, score: 65}),
        (Dave)-[:know]->(Sue), (Dave)-[:know]->(Ann),
        (Mark)-[:know]->(Dave), (May)-[:know]->(Mark),
        (May)-[:know]->(Jay), (Jay)-[:know]->(Ann),
@@ -39,7 +33,8 @@ INSERT (Sue:user {_id: "Sue"}), (Dave:user {_id: "Dave"}),
 | Name | Type | Default | Description |
 | -- | -- | -- | -- |
 | `k` | `INT` | `10` | Number of nearest neighbors to find per node. |
-| `metric` | `STRING` | `jaccard` | Similarity metric to use: `jaccard`, `cosine`, or `overlap`. |
+| `metric` | `STRING` | `jaccard` | Similarity metric to use: `jaccard`, `overlap`, or `cosine`. |
+| `node_property` | `LIST` | / | Numeric node properties to form vectors (required for `cosine` metric). |
 | `degreeCutoff` | `INT` | `0` | Minimum degree to include a node (0 = no cutoff). |
 
 ## Run Mode
@@ -85,12 +80,24 @@ Returns the same columns as run mode, streamed for memory efficiency.
 
 ```gql
 CALL algo.knn.stream({
-  k: 3,
+  k: 1,
   metric: "cosine",
-  degreeCutoff: 3
+  node_property: ["age", "score"]
 }) YIELD node1, node2, similarity, rank
 RETURN node1, node2, similarity, rank
 ```
+
+Result:
+
+| node1 | node2 | similarity | rank |
+| -- | -- | -- | -- |
+| May | Sue | 0.9995215341318416 | 1 |
+| Mark | Billy | 0.9993659036354446 | 1 |
+| Jay | Billy | 0.999905156811448 | 1 |
+| Sue | Ann | 0.9999937570038613 | 1 |
+| Dave | Mark | 0.9980061858262149 | 1 |
+| Billy | Jay | 0.999905156811448 | 1 |
+| Ann | Sue | 0.9999937570038613 | 1 |
 
 ## Stats Mode
 
@@ -107,7 +114,7 @@ RETURN node1, node2, similarity, rank
 ```gql
 CALL algo.knn.stats({
   k: 3,
-  metric: "jaccard"
+  metric: "overlap"
 }) YIELD nodeCount, pairCount, minSimilarity, maxSimilarity, avgSimilarity
 ```
 
@@ -115,7 +122,7 @@ Result:
 
 | nodeCount | pairCount | minSimilarity | maxSimilarity | avgSimilarity |
 | -- | -- | -- | -- | -- |
-| 7 | 19 | 0.16666666666666666 | 0.6666666666666666 | 0.3684210526315789 |
+| 7 | 19 | 0.3333333333333333 | 1 | 0.8596491228070174 |
 
 ## Write Mode
 
@@ -138,16 +145,15 @@ Computes results and writes them back to node properties. The write configuratio
 
 | Column | Type | Description |
 | -- | -- | -- |
-| `task_id` | `STRING` | Task identifier |
-| `status` | `STRING` | Task status (`running`) |
-
-The write executes asynchronously in the background. Use `SHOW TASKS` with the `task_id` to check progress and results.
+| `task_id` | `STRING` | Task identifier for tracking via `SHOW TASKS` |
+| `nodesWritten` | `INT` | Number of nodes with properties written |
+| `computeTimeMs` | `INT` | Time spent computing the algorithm (milliseconds) |
+| `writeTimeMs` | `INT` | Time spent writing properties to storage (milliseconds) |
 
 ```gql
 CALL algo.knn.write({k: 5, metric: "jaccard"}, {
   db: {
-    property: "sim_score"                                     // String: writes similarity to one property
-    // property: {similarity: "sim_score", rank: "sim_rank"}  // Map: explicit column-to-property
+    property: "sim_score"
   }
-}) YIELD task_id, status
+}) YIELD task_id, nodesWritten, computeTimeMs, writeTimeMs
 ```

@@ -12,15 +12,15 @@ Cosine similarity ranges from -1 to 1, where 1 indicates that the two vectors po
 
 <div align=center drawio-diagram='4963' drawio-name="draw_3f64dd50cd0a4e6695fae0cacda3892c.jpg"><img src="https://img.ultipa.cn/draw/draw_3f64dd50cd0a4e6695fae0cacda3892c.jpg?v='1681111944016'"/></div>
 
-In 2-dimensional space, the cosine similarity between vectors A(a<sub>1</sub>, a<sub>2</sub>) and B(b<sub>1</sub>, b<sub>2</sub>) is computed as:
+In 2-dimensional space, the cosine similarity between vectors <code>A = [a<sub>1</sub>, a<sub>2</sub>]</code> and <code>B = [b<sub>1</sub>, b<sub>2</sub>]</code> is computed as:
 
 <center><img width=350 src="https://img.ultipa.cn/2022-08-09-14-00-10-cos2.jpg"></center>
 
-In 3-dimensional space, the cosine similarity between vectors A(a<sub>1</sub>, a<sub>2</sub>, a<sub>3</sub>) and B(b<sub>1</sub>, b<sub>2</sub>, b<sub>3</sub>) is computed as:
+In 3-dimensional space, the cosine similarity between vectors <code>A = [a<sub>1</sub>, a<sub>2</sub>, a<sub>3</sub>]</code> and <code>B = [b<sub>1</sub>, b<sub>2</sub>, b<sub>3</sub>]</code> is computed as:
 
 <center><img width=480 src="https://img.ultipa.cn/2022-08-09-14-00-13-cos3.jpg"></center>
 
-The following diagram shows the relationship between vectors A and B in 2D and 3D spaces, as well as the angle θ between them:
+The following diagram shows the relationship between vectors `A` and `B` in 2D and 3D spaces, as well as the angle θ between them:
 
 <div align=center drawio-diagram='4946' drawio-name="draw_16853a553f024f75b352985ae55be8c9.jpg"><img src="https://img.ultipa.cn/draw/draw_16853a553f024f75b352985ae55be8c9.jpg?v='1680746413239'"/></div>
 
@@ -176,10 +176,10 @@ Computes results and writes them back to node properties. The write configuratio
 
 | Column | Type | Description |
 | -- | -- | -- |
-| `task_id` | `STRING` | Task identifier |
-| `status` | `STRING` | Task status (`running`) |
-
-The write executes asynchronously in the background. Use `SHOW TASKS` with the `task_id` to check progress and results.
+| `task_id` | `STRING` | Task identifier for tracking via `SHOW TASKS` |
+| `nodesWritten` | `INT` | Number of nodes with properties written |
+| `computeTimeMs` | `INT` | Time spent computing the algorithm (milliseconds) |
+| `writeTimeMs` | `INT` | Time spent writing properties to storage (milliseconds) |
 
 ```gql
 CALL algo.similarity.write({
@@ -188,8 +188,7 @@ CALL algo.similarity.write({
   node_property: ["price", "weight", "width", "height"]
 }, {
   db: {
-    property: "cos_score"                    // String: writes similarity to one property
-    // property: {similarity: "cos_score"}   // Map: explicit column-to-property
+    property: "sim_score"
   }
-}) YIELD task_id, status
+}) YIELD task_id, nodesWritten, computeTimeMs, writeTimeMs
 ```

@@ -10,11 +10,11 @@ Overlap similarity ranges from 0 to 1, where 1 indicates that one set is the sub
 
 ### Overlap Similarity
 
-Given two sets <i>A</i> and <i>B</i>, the overlap similarity between them is computed as:
+Given two sets `A` and `B`, the overlap similarity between them is computed as:
 
 <center><img width=230 src="https://img.ultipa.cn/2022-08-08-14-47-36-overlap.jpg"></center>
 
-In the following example, set A = {b,c,e,f,g}, set B = {a,d,b,g}, their intersection A⋂B = {b,g}, hence the overlap similarity between A and B is `2 / 4 = 0.5`.
+In the following example, set `A = {b,c,e,f,g}`, set `B = {a,d,b,g}`, their intersection `A⋂B = {b,g}`, hence the overlap similarity between `A` and `B` is `2 / 4 = 0.5`.
 
 <div align=center drawio-diagram='4943' drawio-name='draw_643f71d054c34c9d83cd682b0bd74402.jpg'><img src="https://img.ultipa.cn/draw/draw_643f71d054c34c9d83cd682b0bd74402.jpg?v='1680592080160'"/></div>
 
@@ -25,12 +25,12 @@ When applying Overlap Similarity to compare two nodes in a graph, each node is r
 
 <div align=center drawio-diagram='14722' drawio-name="draw_86e6115da2be4ebea513a350b03fee51.jpg"><img src="https://img.ultipa.cn/draw/draw_86e6115da2be4ebea513a350b03fee51.jpg?v='1705742284029'"/></div>
 
-In this graph, the 1-hop neighborhood set of nodes *u* and *v* is:
+In this graph, the 1-hop neighborhood set of nodes `u` and `v` is:
 
 - N<sub>u</sub> = {a,b,c,d,e}
 - N<sub>v</sub> = {d,e,f}
 
-Therefore, the overlap similarity between nodes *u* and *v* is `2 / 3 = 0.666667`.
+Therefore, the overlap similarity between nodes `u` and `v` is `2 / 3 = 0.666667`.
 
 ### Weighted Overlap Similarity
 
@@ -85,7 +85,7 @@ INSERT (userA:user {_id: "userA"}), (userB:user {_id: "userB"}),
 | `type` | `STRING` | `jaccard` | Type of similarity to compute: `overlap`. |
 | `ids` | `LIST` | / | First group of node `_id`s. If empty, all nodes are used. |
 | `ids2` | `LIST` | / | Second group of node `_id`s for pairing mode. If empty, selection mode is used. |
-| `edge_weight_property` | `LIST` | / | Numeric edge properties used as weights for weighted overlap. |
+| `weight` | `LIST` | / | Numeric edge properties used as weights for weighted overlap. |
 | `degreeCutoff` | `INT` | `0` | Minimum degree to include a node (0 = no cutoff). |
 | `order` | `STRING` | / | Sorts results by `similarity`: `asc` or `desc`. |
 | `limit` | `INT` | `-1` | Maximum total results returned (-1 = all). |
@@ -133,7 +133,7 @@ Overlap similarity in selection mode:
 CALL algo.similarity({
   type: "overlap",
   ids: ["userA"],
-  edge_weight_property: ["weight"],
+  weight: ["weight"],
   top_limit: 2
 }) YIELD node1, node2, similarity
 ```
@@ -211,16 +211,15 @@ Computes results and writes them back to node properties. The write configuratio
 
 | Column | Type | Description |
 | -- | -- | -- |
-| `task_id` | `STRING` | Task identifier |
-| `status` | `STRING` | Task status (`running`) |
-
-The write executes asynchronously in the background. Use `SHOW TASKS` with the `task_id` to check progress and results.
+| `task_id` | `STRING` | Task identifier for tracking via `SHOW TASKS` |
+| `nodesWritten` | `INT` | Number of nodes with properties written |
+| `computeTimeMs` | `INT` | Time spent computing the algorithm (milliseconds) |
+| `writeTimeMs` | `INT` | Time spent writing properties to storage (milliseconds) |
 
 ```gql
 CALL algo.similarity.write({type: "overlap", ids: ["userA", "userB"]}, {
   db: {
-    property: "sim_score"                    // String: writes similarity to one property
-    // property: {similarity: "sim_score"}   // Map: explicit column-to-property
+    property: "sim_score"
   }
-}) YIELD task_id, status
+}) YIELD task_id, nodesWritten, computeTimeMs, writeTimeMs
 ```
