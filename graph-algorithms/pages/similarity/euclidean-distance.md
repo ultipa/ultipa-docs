@@ -40,7 +40,6 @@ Values closer to 1 indicate greater similarity.
 
 <div align=center drawio-diagram='19795' drawio-name='draw_977329a8246f44c5b1792416e52b7f61.jpg'><img src="https://img.ultipa.cn/draw/draw_977329a8246f44c5b1792416e52b7f61.jpg?v='1733998496314'"/></div>
 
-
 ```gql
 INSERT (:product {_id: "product1", price: 50, weight: 160, width: 20, height: 152}),
        (:product {_id: "product2", price: 42, weight: 90, width: 30, height: 90}),

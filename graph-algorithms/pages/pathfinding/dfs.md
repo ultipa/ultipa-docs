@@ -30,7 +30,6 @@ Below is an example of traversing the graph using the DFS approach, starting fro
 
 Run the following statements on an empty graph to define its structure and insert data:
 
-
 ```gql
 INSERT (A:default {_id: "A"}),
        (B:default {_id: "B"}),
@@ -47,8 +46,6 @@ INSERT (A:default {_id: "A"}),
        (F)-[:default]->(C),
        (G)-[:default]->(D);
 ```
-
-
 
 ## Parameters
 
@@ -78,12 +75,9 @@ CALL algo.traverse.write("my_hdc_graph", {
 })
 ```
 
-
-
 Result:
 
 <p tit="File: visited_nodes"></p>
-
 ```
 nodes
 B,A,C,F,E,

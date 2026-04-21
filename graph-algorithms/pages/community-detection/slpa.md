@@ -46,7 +46,6 @@ A lower `threshold` allows more overlapping memberships; a higher threshold prod
 
 <div align=center><img src="images/slpa-example.drawio.svg"/></div>
 
-
 ```gql
 INSERT (A:user {_id: "A"}), (B:user {_id: "B"}),
        (C:user {_id: "C"}), (D:user {_id: "D"}),

@@ -28,7 +28,6 @@ The following example demonstrates BFS traversal starting from node <i>A</i>, as
 
 Run the following statements on an empty graph to define its structure and insert data:
 
-
 ```gql
 INSERT (A:default {_id: "A"}),
        (B:default {_id: "B"}),
@@ -45,8 +44,6 @@ INSERT (A:default {_id: "A"}),
        (F)-[:default]->(C),
        (G)-[:default]->(D);
 ```
-
-
 
 ## Parameters
 
@@ -76,12 +73,9 @@ CALL algo.traverse.write("my_hdc_graph", {
 })
 ```
 
-
-
 Result:
 
 <p tit="File: visited_nodes"></p>
-
 ```
 node,parent
 D,A

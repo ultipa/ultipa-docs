@@ -39,7 +39,6 @@ Ultipa's Random Walk algorithm implements the classical version of random walk. 
 
 Run the following statements on an empty graph to define its structure and insert data:
 
-
 ```gql
 ALTER EDGE default ADD PROPERTY {
   score float
@@ -69,8 +68,6 @@ INSERT (A:default {_id: "A"}),
        (I)-[:default {score: 3.1}]->(I),
        (J)-[:default {score: 2.6}]->(G);
 ```
-
-
 
 ## Parameters
 
@@ -107,7 +104,6 @@ CALL algo.random_walk.write("my_hdc_graph", {
 Result:
 
 <p tit="File: walks"></p>
-
 ```
 _ids
 J,G,H,G,F,D,
@@ -144,8 +140,6 @@ CALL algo.random_walk.run("my_hdc_graph", {
 }) YIELD walks
 RETURN walks
 ```
-
-
 
 Result:
 
@@ -185,8 +179,6 @@ CALL algo.random_walk.stream("my_hdc_graph", {
 }) YIELD walks
 RETURN walks
 ```
-
-
 
 Result:
 

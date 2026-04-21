@@ -40,7 +40,6 @@ This balance between exploration and exploitation helps avoid getting stuck in p
 
 <div align=center><img src="images/modularityopt-example.drawio.svg"/></div>
 
-
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
        (C:default {_id: "C"}), (D:default {_id: "D"}),

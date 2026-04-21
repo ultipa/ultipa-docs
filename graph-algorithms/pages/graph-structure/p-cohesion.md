@@ -35,7 +35,6 @@ Below are the minimal p-Cohesion subgraphs, in terms of node count, that include
 
 <div align='center' drawio-diagram='6236' drawio-name='draw_8154c0855e72495cb96b11dc28dd52c1.jpg'><img src="https://img.ultipa.cn/draw/draw_8154c0855e72495cb96b11dc28dd52c1.jpg?v='1687920551178'"/></div>
 
-
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
        (C:default {_id: "C"}), (D:default {_id: "D"}),

@@ -34,7 +34,6 @@ In comparison with WWW, some features have to be considered for citation network
 
 <div align=center drawio-diagram='19741' drawio-name='draw_6c32787d5acc41c6bff6286aa0316ee7.jpg'><img src="https://img.ultipa.cn/draw/draw_6c32787d5acc41c6bff6286aa0316ee7.jpg?v='1733821155263'"/></div>
 
-
 ```gql
 INSERT (book1:book {_id: "book1"}), (book2:book {_id: "book2"}),
        (book3:book {_id: "book3"}), (book4:book {_id: "book4"}),
@@ -50,7 +49,7 @@ INSERT (book1:book {_id: "book1"}), (book2:book {_id: "book2"}),
 | Name | Type | Default | Description |
 | -- | -- | -- | -- |
 | `damping` | `FLOAT` | `0.85` | Damping factor (0, 1). |
-| `loop_num` | `INT` | `20` | Maximum number of iterations. |
+| `maxIterations` | `INT` | `20` | Maximum number of iterations. |
 | `tolerance` | `FLOAT` | `0.0001` | Convergence tolerance. The algorithm terminates when score changes between iterations are less than this value. |
 | `limit` | `INT` | `-1` | Limits the number of results returned (-1 = all). |
 | `order` | `STRING` | / | Sorts the results by `score`: `asc` or `desc`. |
@@ -69,7 +68,7 @@ ArticleRank for all nodes:
 ```gql
 CALL algo.articlerank({
   damping: 0.8,
-  loop_num: 50,
+  maxIterations: 50,
   order: "desc"
 }) YIELD nodeId, score
 ```
@@ -147,16 +146,15 @@ Computes results and writes them back to node properties. The write configuratio
 
 | Column | Type | Description |
 | -- | -- | -- |
-| `task_id` | `STRING` | Task identifier |
-| `status` | `STRING` | Task status (`running`) |
-
-The write executes asynchronously in the background. Use `SHOW TASKS` with the `task_id` to check progress and results.
+| `task_id` | `STRING` | Task identifier for tracking via `SHOW TASKS` |
+| `nodesWritten` | `INT` | Number of nodes with properties written |
+| `computeTimeMs` | `INT` | Time spent computing the algorithm (milliseconds) |
+| `writeTimeMs` | `INT` | Time spent writing properties to storage (milliseconds) |
 
 ```gql
 CALL algo.articlerank.write({damping: 0.85}, {
   db: {
-    property: "ar_score"               // String: writes score to one property
-    // property: {score: "ar_score"}   // Map: explicit column-to-property
+    property: "ar_score"
   }
-}) YIELD task_id, status
+}) YIELD task_id, nodesWritten, computeTimeMs, writeTimeMs
 ```

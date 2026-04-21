@@ -27,7 +27,6 @@ The Max k-Cut problem is NP-hard, so the algorithm uses an approximation via loc
 
 <div align=center><img src="images/maxkcut-example.drawio.svg"/></div>
 
-
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
        (C:default {_id: "C"}), (D:default {_id: "D"}),

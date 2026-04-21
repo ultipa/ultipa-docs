@@ -32,7 +32,6 @@ In this example, N(D) ∩ N(E) = {B, F}, RA(D,E) = <math><mfrac><mn>1</mn><mi>|N
 
 Run the following statements on an empty graph to define its structure and insert data:
 
-
 ```gql
 INSERT (A:default {_id: "A"}),
        (B:default {_id: "B"}),
@@ -51,8 +50,6 @@ INSERT (A:default {_id: "A"}),
        (F)-[:default]->(D),
        (F)-[:default]->(G);
 ```
-
-
 
 ## Parameters
 
@@ -84,12 +81,9 @@ CALL algo.topological_link_prediction.write("my_hdc_graph", {
 })
 ```
 
-
-
 Result:
 
 <p tit="File: ra"></p>
-
 ```
 _id1,_id2,result
 C,A,0.25
@@ -109,8 +103,6 @@ CALL algo.topological_link_prediction.run("my_hdc_graph", {
 }) YIELD ra
 RETURN ra
 ```
-
-
 
 Result:
 
@@ -133,8 +125,6 @@ CALL algo.topological_link_prediction.stream("my_hdc_graph", {
 FILTER ra.result >= 0.3
 RETURN ra
 ```
-
-
 
 Result:
 

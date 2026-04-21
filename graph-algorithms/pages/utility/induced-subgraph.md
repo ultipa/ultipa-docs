@@ -24,7 +24,6 @@ As this example shows, when specifying node set `S = {A, B, I, K, L, M, N}`, the
 
 <div align=center><img src="images/inducedsubgraph-example.drawio.svg"/></div>
 
-
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
        (C:default {_id: "C"}), (D:default {_id: "D"}),
@@ -86,4 +85,5 @@ RETURN sourceId, targetId
 CALL algo.inducedsubgraph.stats({
   nodes: "A,C,D,G"
 }) YIELD nodeCount, edgeCount, density
+
 ```

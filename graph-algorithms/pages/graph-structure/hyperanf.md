@@ -100,7 +100,6 @@ Since `B(x,0) = {x}`, then `|N(x,t)| = |B(x,t)| - 1`. In this example, the avera
 
 <div align='center' drawio-diagram='6251' drawio-name='draw_6253a72674424056ba8f91bd227a7486.jpg'><img src="https://img.ultipa.cn/draw/draw_6253a72674424056ba8f91bd227a7486.jpg?v='1688032658578'"/></div>
 
-
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
        (C:default {_id: "C"}), (D:default {_id: "D"}),

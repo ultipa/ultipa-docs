@@ -26,7 +26,6 @@ The Pearson correlation coefficient ranges from -1 to 1:
 
 Run the following statements on an empty graph to define its structure and insert data:
 
-
 ```gql
 ALTER GRAPH CURRENT_GRAPH ADD NODE {
   product ({price int32, weight int32, width int32, height int32})
@@ -36,8 +35,6 @@ INSERT (:product {_id:"product1", price:50, weight:160, width:20, height:152}),
        (:product {_id:"product3", price:24, weight:50, width:55, height:70}),
        (:product {_id:"product4", price:38, weight:20, width:32, height:66});
 ```
-
-
 
 ## Parameters
 
@@ -150,12 +147,9 @@ CALL algo.similarity.write("my_hdc_graph", {
 })
 ```
 
-
-
 Result:
 
 <p tit="File: pearson"></p>
-
 ```
 _id1,_id2,similarity
 product1,product2,0.998785
@@ -176,8 +170,6 @@ CALL algo.similarity.run("my_hdc_graph", {
 }) YIELD p
 RETURN p
 ```
-
-
 
 Result:
 
@@ -202,8 +194,6 @@ CALL algo.similarity.stream("my_hdc_graph", {
 }) YIELD top
 RETURN top
 ```
-
-
 
 Result: 
 

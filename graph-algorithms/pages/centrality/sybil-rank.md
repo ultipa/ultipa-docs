@@ -14,7 +14,7 @@ SybilRank was proposed by Qiang Cao et al. in 2012, it is computationally effici
 
 SybilRank models an OSN as an undirected graph, where each node represents a user in the network, and each edge represents a mutual social relationship.
 
-In the <b>threat model</b> of SybilRank, all nodes are divided into two disjoint sets: non-Sybils <i><b>H</b></i>, and Sybils <i><b>S</b></i>. Denote the non-Sybil region <i><b>G<sub>H</sub></b></i> as the subgraph induced by the set <i>H</i>, which includes all non-Sybils and edges among them. Similarly, the Sybil region <i><b>G<sub>S</sub></b></i> is the subgraph induced by <i>S</i>. <i>G<sub>H</sub></i> and <i>G<sub>S</sub></i> are connected by <b><i>attack edges</i></b> between Sybils and non-Sybils.
+In the <b>threat model</b> of SybilRank, all nodes are divided into two disjoint sets: non-Sybils `H`, and Sybils `S`. Denote the non-Sybil region <code>G<sub>H</sub></code> as the subgraph induced by the set `H`, which includes all non-Sybils and edges among them. Similarly, the Sybil region <code>G<sub>S</sub></code> is the subgraph induced by `S`. <code>G<sub>H</sub></code> and <code>G<sub>S</sub></code> are connected by <b>attack edges</b> between Sybils and non-Sybils.
 
 Some nodes identified as non-Sybils are designated as <b>trust seeds</b> for the operation of SybilRank. Seeding trust on multiple nodes makes SybilRank robust to seed selection errors, as incorrectly designating a node that is Sybil or close to Sybils as a seed causes only a small fraction of the total trust to be initialized and propagated in the Sybil region.
 
@@ -22,44 +22,43 @@ Below is an example of the threat model with trust seeds:
 
 <div align=center drawio-diagram='4909' drawio-name="draw_b569d6200ff34944a42bb85312717f24.jpg"><img src="https://img.ultipa.cn/draw/draw_b569d6200ff34944a42bb85312717f24.jpg?v='1680502575577'"/></div>
 
-> An important assumption of SybilRank is that the number of attack edges is limited. Since SybilRank is designed for large scale attacks, where fake accounts are crafted and maintained at a low cost, and are thus unable to befriend many real users. It results in a sparse cut between <i>G<sub>H</sub></i> and <i>G<sub>S</sub></i>.
+> An important assumption of SybilRank is that the number of attack edges is limited. Since SybilRank is designed for large scale attacks, where fake accounts are crafted and maintained at a low cost, and are thus unable to befriend many real users. It results in a sparse cut between <code>G<sub>H</sub></code> and <code>G<sub>S</sub></code>.
 
 ### Early-Terminated Random Walk
 
-In an undirected graph, if a random walk's transition probability to a neighbor node is uniformly distributed, when the number of steps is sufficient, the probability of landing at each node would converge to be proportional to its degree. The number of steps that a random walk needs to reach the stationary distribution is called the graph's <i>mixing time</i>.
+In an undirected graph, if a random walk's transition probability to a neighbor node is uniformly distributed, when the number of steps is sufficient, the probability of landing at each node would converge to be proportional to its degree. The number of steps that a random walk needs to reach the stationary distribution is called the graph's <b>mixing time</b>.
 
-SybilRank relies on the observation that an <i>early-terminated random walk</i> starting from a non-Sybil node (trust seed) has higher landing probability to land at a non-Sybil node than a Sybil node, as the walk is unlikely to traverse one of the relatively few attack edges. That is to say, there is a significant difference between the mixing time of the non-Sybil region <i>G<sub>H</sub></i> and the entire graph.
+SybilRank relies on the observation that an <b>early-terminated random walk</b> starting from a non-Sybil node (trust seed) has higher landing probability to land at a non-Sybil node than a Sybil node, as the walk is unlikely to traverse one of the relatively few attack edges. That is to say, there is a significant difference between the mixing time of the non-Sybil region <code>G<sub>H</sub></code> and the entire graph.
 
-SybilRank refers to the landing probability of each node as the node's <i>trust</i>. <b>SybilRank ranks nodes according to their trust scores; nodes with low trust scores are ranked higher, indicating they are potential Sybil (fake) users.</b>
+SybilRank refers to the landing probability of each node as the node's <b>trust</b>. <b>SybilRank ranks nodes according to their trust scores; nodes with low trust scores are ranked higher, indicating they are potential Sybil (fake) users.</b>
 
 ### Trust Propagation via Power Iteration
 
 SybilRank uses the technique of <b>power iteration</b> to efficiently calculate the landing probability of random walks in large graphs. Power iteration involves successive matrix multiplications where each element of the matrix represents the random walk transition probability from one node to a neighbor node. Each iteration computes the landing probability distribution over all nodes as the random walk proceeds by one step.
 
-In an undirected graph <i>G = (V, E)</i>, initially a total trust <i>T<sub>G</sub></i> is evenly distributed among all trust seeds. During each power iteration, a node first evenly distributes its trust to its neighbors; it then collects trust distributed by its neighbors and updates its own trust accordingly. The trust of node <i>v</i> in the <i>i</i>-th iteration is:
+In an undirected graph <i>G = (V, E)</i>, initially a total trust <code>T<sub>G</sub></code> is evenly distributed among all trust seeds. During each power iteration, a node first evenly distributes its trust to its neighbors; it then collects trust distributed by its neighbors and updates its own trust accordingly. The trust of node `v` in the `i`-th iteration is:
 
 <center><img width=200 src="https://img.ultipa.cn/img/2023-04-03-15-47-59-sybilrank.jpg"></center>
 
-where node <i>u</i> belongs to the neighbor set of node <i>v</i>, <i>deg(u)</i> is the degree of node <i>u</i>. The total amount of trust <i>T<sub>G</sub></i> remains unchanged all the time.
+where node `u` belongs to the neighbor set of node `v`, `deg(u)` is the degree of node `u`. The total amount of trust <code>T<sub>G</sub></code> remains unchanged all the time.
 
 With sufficient power iterations, the trust of all nodes would converge to the stationary distribution:
 
 <center><img width=210 src="https://img.ultipa.cn/img/2023-04-03-15-54-17-sybilrank2.jpg"></center>
 
-However, SybilRank terminates the power iteration after a fixed number of steps, without waiting for full convergence, and it is suggested to be set as <code>log<sub>2</sub>(|V|)</code>. This number of iterations is sufficient to reach an approximately stationary distribution of trust over the fast-mixing non-Sybil region <i>G<sub>H</sub></i>, but limits the trust escaping to the Sybil region <i>G<sub>S</sub></i>, thus non-Sybils will be ranked higher than Sybils.
+However, SybilRank terminates the power iteration after a fixed number of steps, without waiting for full convergence, and it is suggested to be set as <code>log<sub>2</sub>(|V|)</code>. This number of iterations is sufficient to reach an approximately stationary distribution of trust over the fast-mixing non-Sybil region <code>G<sub>H</sub></code>, but limits the trust escaping to the Sybil region <code>G<sub>S</sub></code>, thus non-Sybils will be ranked higher than Sybils.
 
-> In practice, the mixing time of <i>G<sub>H</sub></i> is affected by many factors, so <code>log<sub>2</sub>(|V|)</code> is only a reference, but it must be less than the mixing time of the whole graph.
+> In practice, the mixing time of <code>G<sub>H</sub></code> is affected by many factors, so <code>log<sub>2</sub>(|V|)</code> is only a reference, but it must be less than the mixing time of the whole graph.
 
 ## Considerations
 
 - Each self-loop adds two degrees to its subject node.
 - The algorithm treats edges as undirected.
-- SybilRank's computational cost is <i>O(n log n)</i>. This is because each power iteration costs <i>O(n)</i>, and it iterates <i>O(log n)</i> times.
+- SybilRank's computational cost is <code>O(n log n)</code>. This is because each power iteration costs <code>O(n)</code>, and it iterates <code>O(log n)</code> times.
 
 ## Example Graph
 
 <div align=center drawio-diagram='19743' drawio-name='draw_0293d7806a1a4e718f1a3c5311f36df0.jpg'><img src="https://img.ultipa.cn/draw/draw_0293d7806a1a4e718f1a3c5311f36df0.jpg?v='1733823372452'"/></div>
-
 
 ```gql
 INSERT (H1:user {_id: "H1"}), (H2:user {_id: "H2"}),
@@ -194,16 +193,15 @@ Computes results and writes them back to node properties. The write configuratio
 
 | Column | Type | Description |
 | -- | -- | -- |
-| `task_id` | `STRING` | Task identifier |
-| `status` | `STRING` | Task status (`running`) |
-
-The write executes asynchronously in the background. Use `SHOW TASKS` with the `task_id` to check progress and results.
+| `task_id` | `STRING` | Task identifier for tracking via `SHOW TASKS` |
+| `nodesWritten` | `INT` | Number of nodes with properties written |
+| `computeTimeMs` | `INT` | Time spent computing the algorithm (milliseconds) |
+| `writeTimeMs` | `INT` | Time spent writing properties to storage (milliseconds) |
 
 ```gql
 CALL algo.sybilrank.write({trustedNodes: "H2,H3,H5"}, {
   db: {
-    property: "trust_score"                                   // String: writes trust to one property
-    // property: {trust: "trust_score", rank: "trust_rank"}   // Map: explicit column-to-property
+    property: "trust_score"
   }
-}) YIELD task_id, status
+}) YIELD task_id, nodesWritten, computeTimeMs, writeTimeMs
 ```

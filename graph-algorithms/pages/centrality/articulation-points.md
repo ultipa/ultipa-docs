@@ -4,8 +4,6 @@
 
 The Articulation Points algorithm finds **cut vertices** in a graph — nodes whose removal would disconnect the graph (or increase the number of connected components). Articulation points represent critical nodes and potential vulnerabilities in a network.
 
-The algorithm uses Tarjan's DFS-based approach.
-
 ## Concepts
 
 ### Articulation Point
@@ -26,8 +24,7 @@ Articulation point detection is important for:
 
 ## Example Graph
 
-<div align=center><img src="images/bridges-2.drawio.svg"/></div>
-
+<div align=center><img src="images/bridges-example.drawio.svg"/></div>
 
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
@@ -58,12 +55,8 @@ Result:
 
 | nodeId | isCutVertex |
 | -- | -- |
-| E | false |
 | D | true |
-| F | false |
-| A | false |
 | C | true |
-| B | false |
 
 ## Stream Mode
 
@@ -71,16 +64,14 @@ Returns the same columns as run mode, streamed for memory efficiency.
 
 ```gql
 CALL algo.articulationpoints.stream() YIELD nodeId, isCutVertex
-FILTER isCutVertex = true
-RETURN nodeId
+RETURN collect_list(nodeId)
 ```
 
 Result:
 
-| nodeId |
+| collect_list(nodeId) |
 | -- |
-| D |
-| C |
+| ["D", "C"]|
 
 ## Stats Mode
 
@@ -121,16 +112,15 @@ Computes results and writes them back to node properties. The write configuratio
 
 | Column | Type | Description |
 | -- | -- | -- |
-| `task_id` | `STRING` | Task identifier |
-| `status` | `STRING` | Task status (`running`) |
-
-The write executes asynchronously in the background. Use `SHOW TASKS` with the `task_id` to check progress and results.
+| `task_id` | `STRING` | Task identifier for tracking via `SHOW TASKS` |
+| `nodesWritten` | `INT` | Number of nodes with properties written |
+| `computeTimeMs` | `INT` | Time spent computing the algorithm (milliseconds) |
+| `writeTimeMs` | `INT` | Time spent writing properties to storage (milliseconds) |
 
 ```gql
 CALL algo.articulationpoints.write({}, {
   db: {
-    property: "is_cut"                     // String: writes isCutVertex to one property
-    // property: {isCutVertex: "is_cut"}   // Map: explicit column-to-property
+    property: "is_cut"
   }
-}) YIELD task_id, status
+}) YIELD task_id, nodesWritten, computeTimeMs, writeTimeMs
 ```

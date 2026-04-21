@@ -91,7 +91,6 @@ Since edge weights are included in both objective functions, they are also appli
 
 Run the following statements on an empty graph to define its structure and insert data:
 
-
 ```gql
 ALTER EDGE default ADD PROPERTY {
   score float
@@ -117,8 +116,6 @@ INSERT (A:default {_id: "A"}),
        (H)-[:default {score: 2.5}]->(G),
        (H)-[:default {score: 1}]->(I);
 ```
-
-
 
 ## Parameters
 
@@ -162,7 +159,6 @@ CALL algo.line.write("my_hdc_graph", {
 </div>
 
 <p tit="File: embeddings"></p>
-
 ```
 _id,embedding_result
 J,0.134156,0.147224,-0.127542,

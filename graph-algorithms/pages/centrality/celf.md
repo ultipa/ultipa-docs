@@ -50,7 +50,6 @@ The algorithm terminates when the seed set reaches the specified size.
 
 <div align=center drawio-diagram='19732' drawio-name="draw_8cca7f592c8f4b47987786ab0cb84b5e.jpg"><img src="https://img.ultipa.cn/draw/draw_8cca7f592c8f4b47987786ab0cb84b5e.jpg?v='1733803290117'"/></div>
 
-
 ```gql
 INSERT (A:account {_id: "A"}), (B:account {_id: "B"}),
        (C:account {_id: "C"}), (D:account {_id: "D"}),
@@ -171,16 +170,15 @@ Computes results and writes them back to node properties. The write configuratio
 
 | Column | Type | Description |
 | -- | -- | -- |
-| `task_id` | `STRING` | Task identifier |
-| `status` | `STRING` | Task status (`running`) |
-
-The write executes asynchronously in the background. Use `SHOW TASKS` with the `task_id` to check progress and results.
+| `task_id` | `STRING` | Task identifier for tracking via `SHOW TASKS` |
+| `nodesWritten` | `INT` | Number of nodes with properties written |
+| `computeTimeMs` | `INT` | Time spent computing the algorithm (milliseconds) |
+| `writeTimeMs` | `INT` | Time spent writing properties to storage (milliseconds) |
 
 ```gql
 CALL algo.celf.write({seedSetSize: 3, probability: 0.5}, {
   db: {
-    property: "celf_spread"                                   // String: writes spread to one property
-    // property: {spread: "celf_spread", rank: "celf_rank"}   // Map: explicit column-to-property
+    property: "celf_spread"
   }
-}) YIELD task_id, status
+}) YIELD task_id, nodesWritten, computeTimeMs, writeTimeMs
 ```

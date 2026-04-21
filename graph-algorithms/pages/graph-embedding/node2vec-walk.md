@@ -15,7 +15,6 @@ Diverging from the classic <a target="_blank" href="/docs/graph-analytics-algori
 
 Run the following statements on an empty graph to define its structure and insert data:
 
-
 ```gql
 ALTER EDGE default ADD PROPERTY {
   score float
@@ -45,8 +44,6 @@ INSERT (A:default {_id: "A"}),
        (I)-[:default {score: 3.1}]->(I),
        (J)-[:default {score: 2.6}]->(G);
 ```
-
-
 
 ## Parameters
 
@@ -81,12 +78,9 @@ CALL algo.random_walk_node2vec.write("my_hdc_graph", {
 })
 ```
 
-
-
 Result:
 
 <p tit="File: walk"></p>
-
 ```
 _ids
 J,G,F,D,C,E,
@@ -128,8 +122,6 @@ CALL algo.random_walk_node2vec.run("my_hdc_graph", {
 RETURN walks
 ```
 
-
-
 Result:
 
 | \_ids |
@@ -153,8 +145,6 @@ CALL algo.random_walk_node2vec.stream("my_hdc_graph", {
 }) YIELD walks
 RETURN walks
 ```
-
-
 
 Result:
 

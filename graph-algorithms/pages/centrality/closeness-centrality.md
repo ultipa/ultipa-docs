@@ -53,7 +53,6 @@ Calculate closeness centrality score of the red node in the incoming direction i
 
 <div align=center drawio-diagram='19733' drawio-name="draw_4dfe957f3d8d4077b12f6f80375f5f9b.jpg"><img src="https://img.ultipa.cn/draw/draw_4dfe957f3d8d4077b12f6f80375f5f9b.jpg?v='1735021461876'"/></div>
 
-
 ```gql
 INSERT (A:user {_id: "A"}), (B:user {_id: "B"}),
        (C:user {_id: "C"}), (D:user {_id: "D"}),

@@ -37,8 +37,6 @@ In the graph above:
 - Self-loops are ignored.
 
 ## Example Graph
-
-
 <div align=center><img src="images/cliquecounting-example.drawio.svg"/></div>
 
 ```gql

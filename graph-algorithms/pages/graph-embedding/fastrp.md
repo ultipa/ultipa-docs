@@ -81,7 +81,6 @@ The FastRP algorithm follows these steps:
 
 Run the following statements on an empty graph to define its structure and insert data:
 
-
 ```gql
 ALTER NODE default ADD PROPERTY {
   level uint32, maturity float, degree uint32
@@ -110,8 +109,6 @@ INSERT (A:default {_id: "A", level: 4, maturity: 0.8, degree: 12}),
        (H)-[:default {score: 2.5}]->(G),
        (H)-[:default {score: 1}]->(I);
 ```
-
-
 
 ## Parameters
 
@@ -151,7 +148,6 @@ CALL algo.fastRP.write("my_hdc_graph", {
 </div>
 
 <p tit="File: embeddings"></p>
-
 ```
 _id,embedding_result
 J,-1.12587,-1.20511,-1.12587,0.079247,0.079247,

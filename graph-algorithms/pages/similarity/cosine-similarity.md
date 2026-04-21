@@ -37,7 +37,6 @@ Generalized to N-dimensional space, cosine similarity is computed as:
 
 <div align=center drawio-diagram='19792' drawio-name='draw_bc765c50cae2418590031a17fdcb6fe4.jpg'><img src="https://img.ultipa.cn/draw/draw_bc765c50cae2418590031a17fdcb6fe4.jpg?v='1733988639804'"/></div>
 
-
 ```gql
 INSERT (:product {_id: "product1", price: 50, weight: 160, width: 20, height: 152}),
        (:product {_id: "product2", price: 42, weight: 90, width: 30, height: 90}),

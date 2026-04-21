@@ -42,7 +42,6 @@ Start Node Selection for MST Computation:
 
 Run the following statements on an empty graph to define its structure and insert data:
 
-
 ```gql
 ALTER GRAPH CURRENT_GRAPH ADD NODE {
   electricCenter (),
@@ -74,8 +73,6 @@ INSERT (A:electricCenter {_id: "A"}),
        (F)-[:connects {distance: 0.45}]->(G);
 ```
 
-
-
 ## Parameters
 
 Algorithm name: `algo(mst)`
@@ -103,12 +100,9 @@ CALL algo.mst.write("my_hdc_graph", {
 })
 ```
 
-
-
 Result:
 
 <p tit="File: paths"></p>
-
 ```
 A--[107]--H
 A--[108]--E

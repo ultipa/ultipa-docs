@@ -90,7 +90,6 @@ The node sequences generated from the random walks serve as input to the <a targ
 
 Run the following statements on an empty graph to define its structure and insert data:
 
-
 ```gql
 INSERT (A:default {_id: "A"}),
        (B:default {_id: "B"}),
@@ -113,8 +112,6 @@ INSERT (A:default {_id: "A"}),
        (H)-[:default]->(G),
        (H)-[:default]->(I);
 ```
-
-
 
 ## Parameters
 
@@ -196,8 +193,6 @@ CALL algo.struc2vec.write("my_hdc_graph", {
   }
 })
 ```
-
-
 
 ## Full Return
 

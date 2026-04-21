@@ -35,7 +35,6 @@ For example, in the diagram below, the blue node's label will change from `d` to
 
 <div align=center><img src="images/lpa-example.drawio.svg"/></div>
 
-
 ```gql
 INSERT (A:user {_id: "A"}), (B:user {_id: "B"}),
        (C:user {_id: "C"}), (D:user {_id: "D"}),

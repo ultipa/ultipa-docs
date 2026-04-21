@@ -28,7 +28,6 @@ In this example, N(D) ∩ N(E) = {B, F}, where <math><mfrac><mn>1</mn><mi>log|N(
 
 Run the following statements on an empty graph to define its structure and insert data:
 
-
 ```gql
 INSERT (A:default {_id: "A"}),
        (B:default {_id: "B"}),
@@ -47,8 +46,6 @@ INSERT (A:default {_id: "A"}),
        (F)-[:default]->(D),
        (F)-[:default]->(G);
 ```
-
-
 
 ## Parameters
 
@@ -79,12 +76,9 @@ CALL algo.topological_link_prediction.write("my_hdc_graph", {
 })
 ```
 
-
-
 Result:
 
 <p tit="File: aa"></p>
-
 ```
 _id1,_id2,result
 C,A,1.66096
@@ -104,8 +98,6 @@ CALL algo.topological_link_prediction.run("my_hdc_graph", {
 }) YIELD aa
 RETURN aa
 ```
-
-
 
 Result:
 
@@ -128,8 +120,6 @@ CALL algo.topological_link_prediction.stream("my_hdc_graph", {
 FILTER aa.result >= 2
 RETURN aa
 ```
-
-
 
 Result:
 

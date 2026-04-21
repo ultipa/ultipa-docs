@@ -26,7 +26,6 @@ In this example, CN(D,E) = |N(D) ∩ N(E)| = |{B, F}| = 2.
 
 Run the following statements on an empty graph to define its structure and insert data:
 
-
 ```gql
 INSERT (A:default {_id: "A"}),
        (B:default {_id: "B"}),
@@ -45,8 +44,6 @@ INSERT (A:default {_id: "A"}),
        (F)-[:default]->(D),
        (F)-[:default]->(G);
 ```
-
-
 
 ## Parameters
 
@@ -78,12 +75,9 @@ CALL algo.topological_link_prediction.write("my_hdc_graph", {
 })
 ```
 
-
-
 Result:
 
 <p tit="File: cn"></p>
-
 ```
 _id1,_id2,result
 C,A,1
@@ -103,8 +97,6 @@ CALL algo.topological_link_prediction.run("my_hdc_graph", {
 }) YIELD cn
 RETURN cn
 ```
-
-
 
 Result:
 
@@ -127,8 +119,6 @@ CALL algo.topological_link_prediction.stream("my_hdc_graph", {
 FILTER cn.result >= 2
 RETURN cn
 ```
-
-
 
 Result:
 

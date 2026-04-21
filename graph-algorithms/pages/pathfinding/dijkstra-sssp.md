@@ -64,7 +64,6 @@ Below is the basic implementation of the Dijkstra's Single-Source Shortest Path 
 
 Run the following statements on an empty graph to define its structure and insert data:
 
-
 ```gql
 ALTER EDGE default ADD PROPERTY {
   value int32
@@ -86,8 +85,6 @@ INSERT (A:default {_id: "A"}),
        (E)-[:default {value: 3}]->(G),
        (F)-[:default {value: 1}]->(E);
 ```
-
-
 
 ## Parameters
 
@@ -121,12 +118,9 @@ CALL algo.sssp.write("my_hdc_graph", {
 })
 ```
 
-
-
 Result:
 
 <p tit="File: costs"></p>
-
 ```
 _id,totalCost
 D,5
@@ -135,6 +129,7 @@ B,2
 E,5
 C,5
 G,8
+
 ```  
 
   
@@ -152,12 +147,9 @@ CALL algo.sssp.write("my_hdc_graph", {
 })
 ```
 
-
-
 Result:
 
 <p tit="File: costs"></p>
-
 ```
 totalCost,_ids
 8,A--[102]--F--[107]--E--[109]--G
@@ -183,8 +175,6 @@ CALL algo.sssp.run("my_hdc_graph", {
 RETURN r
 ```
 
-
-
 Result:
 
 | \_id | totalCost |
@@ -209,8 +199,6 @@ CALL algo.sssp.stream("my_hdc_graph", {
 }) YIELD r
 RETURN r
 ```
-
-
 
 Result:
 

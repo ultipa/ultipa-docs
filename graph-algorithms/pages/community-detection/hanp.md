@@ -39,7 +39,6 @@ Given the edge weights and label scores shown in the example below, if we set <i
 
 <div align=center><img src="images/lpa-example.drawio.svg"/></div>
 
-
 ```gql
 INSERT (A:user {_id: "A"}), (B:user {_id: "B"}),
        (C:user {_id: "C"}), (D:user {_id: "D"}),

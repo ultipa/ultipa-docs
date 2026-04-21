@@ -40,19 +40,18 @@ In fact, as `k` grows, <code>c<sup>(k)</sup></code> always converges to <code>x<
 
 ## Example Graph
 
-<div align=center><img src="images/eigenvector-example.drawio.svg"/></div>
-
+<div align=center drawio-diagram='19738' drawio-name='draw_2ed941b377eb4cbc9d841d65e013c117.jpg'><img src="https://img.ultipa.cn/draw/draw_2ed941b377eb4cbc9d841d65e013c117.jpg?v='1733817784894'"/></div>
 
 ```gql
 INSERT (web1:web {_id: "web1"}), (web2:web {_id: "web2"}),
        (web3:web {_id: "web3"}), (web4:web {_id: "web4"}),
        (web5:web {_id: "web5"}), (web6:web {_id: "web6"}),
        (web7:web {_id: "web7"}),
-       (web1)-[:link]->(web1), (web1)-[:link]->(web2),
-       (web2)-[:link]->(web3), (web3)-[:link]->(web1),
-       (web3)-[:link]->(web2), (web3)-[:link]->(web4),
-       (web3)-[:link]->(web5), (web5)-[:link]->(web3),
-       (web6)-[:link]->(web6)
+       (web1)-[:link {value: 2}]->(web1), (web1)-[:link {value: 1}]->(web2),
+       (web2)-[:link {value: 0.8}]->(web3), (web3)-[:link {value: 0.5}]->(web1),
+       (web3)-[:link {value: 1.1}]->(web2), (web3)-[:link {value: 1.2}]->(web4),
+       (web3)-[:link {value: 0.5}]->(web5), (web5)-[:link {value: 0.5}]->(web3),
+       (web6)-[:link {value: 2}]->(web6)
 ```
 
 ## Parameters
@@ -61,8 +60,9 @@ INSERT (web1:web {_id: "web1"}), (web2:web {_id: "web2"}),
 | -- | -- | -- | -- |
 | `ids` | `LIST` | / | `_id`s of nodes to compute (empty = all nodes). |
 | `direction` | `STRING` | `both` | Edge direction: `in`, `out`, or `both`. |
-| `iterations` | `INT` | `100` | Maximum number of iterations. |
+| `maxIterations` | `INT` | `100` | Maximum number of iterations. |
 | `tolerance` | `FLOAT` | `0.000001` | Convergence tolerance. The algorithm terminates when score changes between iterations are less than this value. |
+| `weight` | `STRING` or `LIST` | / | Numeric edge property for weighted adjacency. |
 | `limit` | `INT` | `-1` | Limits the number of results returned (-1 = all). |
 | `order` | `STRING` | / | Sorts the results by `score`: `asc` or `desc`. |
 
@@ -80,7 +80,7 @@ Eigenvector centrality for all nodes:
 
 ```gql
 CALL algo.eigenvector({
-  iterations: 50,
+  maxIterations: 50,
   tolerance: 0.000001,
   direction: "in",
   order: "desc"
@@ -105,9 +105,12 @@ Returns the same columns as run mode, streamed for memory efficiency.
 
 ```gql
 CALL algo.eigenvector.stream({
+  maxIterations: 300,
+  tolerance: 0.000001,
+  weight: ["value"],
+  direction: "in",
   order: "desc"
 }) YIELD nodeId, score
-FILTER score > 0.1
 RETURN nodeId, score
 ```
 
@@ -115,11 +118,13 @@ Result:
 
 | nodeId | score |
 | -- | -- |
-| web1 | 0.6195366525240715 |
-| web3 | 0.5673851158335844 |
-| web2 | 0.44938982043774917 |
-| web5 | 0.21482231703981047 |
-| web4 | 0.21482231703981047 |
+| web1 | 0.8354748144328726 |
+| web2 | 0.4975228759458507 |
+| web3 | 0.19890390105629813 |
+| web4 | 0.11263830879446735 |
+| web5 | 0.046932628664361396 |
+| web6 | 0.000016189148967104193 |
+| web7 | 0 |
 
 ## Stats Mode
 
@@ -163,16 +168,15 @@ Computes results and writes them back to node properties. The write configuratio
 
 | Column | Type | Description |
 | -- | -- | -- |
-| `task_id` | `STRING` | Task identifier |
-| `status` | `STRING` | Task status (`running`) |
-
-The write executes asynchronously in the background. Use `SHOW TASKS` with the `task_id` to check progress and results.
+| `task_id` | `STRING` | Task identifier for tracking via `SHOW TASKS` |
+| `nodesWritten` | `INT` | Number of nodes with properties written |
+| `computeTimeMs` | `INT` | Time spent computing the algorithm (milliseconds) |
+| `writeTimeMs` | `INT` | Time spent writing properties to storage (milliseconds) |
 
 ```gql
 CALL algo.eigenvector.write({}, {
   db: {
-    property: "ec_score"                                // String: writes score to one property
-    // property: {score: "ec_score", rank: "ec_rank"}   // Map: explicit column-to-property
+    property: "ec_score"
   }
-}) YIELD task_id, status
+}) YIELD task_id, nodesWritten, computeTimeMs, writeTimeMs
 ```

@@ -4,8 +4,6 @@
 
 The Bridges algorithm finds **bridge edges** in a graph — edges whose removal would disconnect the graph (or increase the number of connected components). Bridge edges represent critical connections and potential vulnerabilities in a network.
 
-The algorithm uses Tarjan's bridge-finding algorithm.
-
 ## Concepts
 
 ### Bridge Edge
@@ -14,7 +12,7 @@ A bridge (also called a cut edge) is an edge in an undirected graph whose remova
 
 <div align=center><img src="images/bridges-1.drawio.svg"/></div>
 
-For example, in this graph, the edge `B - C` is a bridge because removing it disconnects `C` from `A` and `B`. However, if there's also an edge `A - C`, then `B - C` is no longer a bridge since `C` can still reach `A` through the alternative path.
+In this graph, the edge `B - C` is a bridge because removing it disconnects `C` from `A` and `B`. However, if there's also an edge `A - C`, then `B - C` is no longer a bridge since `C` can still reach `A` through the alternative path.
 
 Bridge detection is important for:
 - **Network reliability**: Identifying single points of failure in infrastructure networks.
@@ -28,8 +26,7 @@ Bridge detection is important for:
 
 ## Example Graph
 
-<div align=center><img src="images/bridges-2.drawio.svg"/></div>
-
+<div align=center><img src="images/bridges-example.drawio.svg"/></div>
 
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),

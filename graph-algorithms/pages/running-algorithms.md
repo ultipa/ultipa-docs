@@ -37,7 +37,6 @@ ALTER GRAPH myGraph SET COMPUTE DISABLED
 Returns the full result set after computation completes.
 
 <p tit="Syntax"></p>
-
 ```
 CALL algo.<name>({
   <param>: <value>,
@@ -50,7 +49,6 @@ CALL algo.<name>({
 Streams results progressively as they are generated, optimizing memory usage. Returns the same columns as run mode.
 
 <p tit="Syntax"></p>
-
 ```
 CALL algo.<name>.stream({
   <param>: <value>,
@@ -64,7 +62,6 @@ RETURN <column1>, <column2>, ...
 Returns aggregate statistics (e.g., node count, min/max/avg scores) instead of per-node results.
 
 <p tit="Syntax"></p>
-
 ```
 CALL algo.<name>.stats({
   <param>: <value>,
@@ -77,7 +74,6 @@ CALL algo.<name>.stats({
 Computes results and writes them back to node properties asynchronously. Returns a `task_id` and `status` immediately. Use `SHOW TASKS` with the `task_id` to check progress and results.
 
 <p tit="Syntax"></p>
-
 ```
 CALL algo.<name>.write({
   <param>: <value>,

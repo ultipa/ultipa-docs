@@ -43,7 +43,6 @@ Compared to PageRank:
 
 <div align=center drawio-diagram='19735' drawio-name="draw_7b9329b5de7346e280b9fc31e203a8fa.jpg"><img src="https://img.ultipa.cn/draw/draw_7b9329b5de7346e280b9fc31e203a8fa.jpg?v='1733816740161'"/></div>
 
-
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
        (C:default {_id: "C"}), (D:default {_id: "D"}),
@@ -60,9 +59,9 @@ INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
 
 | Name | Type | Default | Description |
 | -- | -- | -- | -- |
-| `weight` | `STRING` | / | Edge property name to use as weight (empty = unweighted). |
+| `weight` | `STRING` or `LIST` | / | Edge property name(s) to use as weight (empty = unweighted). |
 | `damping` | `FLOAT` | `0.85` | Damping factor (0, 1). |
-| `iterations` | `INT` | `20` | Maximum number of iterations. |
+| `maxIterations` | `INT` | `20` | Maximum number of iterations. |
 | `tolerance` | `FLOAT` | `0.0001` | Convergence tolerance. The algorithm terminates when score changes between iterations are less than this value. |
 | `limit` | `INT` | `-1` | Limits the number of results returned (-1 = all). |
 | `order` | `STRING` | / | Sorts the results by `score`: `asc` or `desc`. |
@@ -83,7 +82,7 @@ TextRank for all nodes:
 CALL algo.textrank({
   weight: "weight",
   damping: 0.8,
-  iterations: 50,
+  maxIterations: 50,
   order: "desc"
 }) YIELD nodeId, score, rank
 ```
@@ -162,16 +161,15 @@ Computes results and writes them back to node properties. The write configuratio
 
 | Column | Type | Description |
 | -- | -- | -- |
-| `task_id` | `STRING` | Task identifier |
-| `status` | `STRING` | Task status (`running`) |
-
-The write executes asynchronously in the background. Use `SHOW TASKS` with the `task_id` to check progress and results.
+| `task_id` | `STRING` | Task identifier for tracking via `SHOW TASKS` |
+| `nodesWritten` | `INT` | Number of nodes with properties written |
+| `computeTimeMs` | `INT` | Time spent computing the algorithm (milliseconds) |
+| `writeTimeMs` | `INT` | Time spent writing properties to storage (milliseconds) |
 
 ```gql
 CALL algo.textrank.write({damping: 0.85}, {
   db: {
-    property: "tr_score"               // String: writes score to one property
-    // property: {score: "tr_score"}   // Map: explicit column-to-property
+    property: "tr_score"
   }
-}) YIELD task_id, status
+}) YIELD task_id, nodesWritten, computeTimeMs, writeTimeMs
 ```

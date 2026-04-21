@@ -91,7 +91,6 @@ Even within the same cluster, `E` and `F` have higher outlier scores because the
 
 ## Example Graph
 
-
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
        (C:default {_id: "C"}), (D:default {_id: "D"}),

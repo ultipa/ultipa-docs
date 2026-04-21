@@ -33,7 +33,6 @@ The **truss number** of a node is the maximum `k` for which the node belongs to 
 
 <div align=center><img src="images/ktruss-example.drawio.svg"/></div>
 
-
 ```gql
 INSERT (a:default {_id: "a"}), (b:default {_id: "b"}),
        (c:default {_id: "c"}), (d:default {_id: "d"}),
@@ -105,4 +104,5 @@ RETURN nodeId, trussNumber
 CALL algo.ktruss.stats({
   k: 4
 }) YIELD nodeCount, edgeCount, trussNodeCount
+
 ```

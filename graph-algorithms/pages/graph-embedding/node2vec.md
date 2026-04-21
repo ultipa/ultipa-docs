@@ -78,7 +78,6 @@ The node sequences generated from random walks serve as input to the <a target="
 
 Run the following statements on an empty graph to define its structure and insert data:
 
-
 ```gql
 ALTER EDGE default ADD PROPERTY {
   score float
@@ -108,8 +107,6 @@ INSERT (A:default {_id: "A"}),
        (I)-[:default {score: 3.1}]->(I),
        (J)-[:default {score: 2.6}]->(G);
 ```
-
-
 
 ## Parameters
 
@@ -166,7 +163,6 @@ CALL algo.node2vec.write("my_hdc_graph", {
 </div>
 
 <p tit="File: embeddings"></p>
-
 ```
 _id,embedding_result
 J,0.0800537,0.0883881,-0.0766052,-0.0655609,0.0273315,

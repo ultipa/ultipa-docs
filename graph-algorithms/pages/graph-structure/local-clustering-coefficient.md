@@ -24,7 +24,6 @@ In this example, the local clustering coefficient of the red node is `1/(5*4/2) 
 
 <div align=center drawio-diagram='19962' drawio-name='draw_84e585c225fa43b8a658a880991ae41a.jpg'><img src="https://img.ultipa.cn/draw/draw_84e585c225fa43b8a658a880991ae41a.jpg?v='1734924519621'"/></div>
 
-
 ```gql
 INSERT (Lee:default {_id: "Lee"}), (Choi:default {_id: "Choi"}),
        (Mia:default {_id: "Mia"}), (Fiona:default {_id: "Fiona"}),

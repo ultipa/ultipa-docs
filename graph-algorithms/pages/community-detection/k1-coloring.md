@@ -39,7 +39,6 @@ The algorithm uses an iterative parallel approach: in each iteration, colors are
 
 <div align=center drawio-diagram='20043' drawio-name='draw_f3d5090e0ba04447bdaaafb3a26063a8.jpg'><img src="https://img.ultipa.cn/draw/draw_f3d5090e0ba04447bdaaafb3a26063a8.jpg?v='1735636153998'"/></div>
 
-
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
        (C:default {_id: "C"}), (D:default {_id: "D"}),

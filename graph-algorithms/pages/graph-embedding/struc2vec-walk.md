@@ -10,7 +10,6 @@ The Struc2Vec Walk is a biased random walk and serves as a key component of the 
 
 Run the following statements on an empty graph to define its structure and insert data:
 
-
 ```gql
 INSERT (A:default {_id: "A"}),
        (B:default {_id: "B"}),
@@ -33,8 +32,6 @@ INSERT (A:default {_id: "A"}),
        (H)-[:default]->(G),
        (H)-[:default]->(I);
 ```
-
-
 
 ## Parameters
 
@@ -74,7 +71,6 @@ CALL algo.random_walk_struc2vec.write("my_hdc_graph", {
 Result:
 
 <p tit="File: walks"></p>
-
 ```
 _ids
 J,G,F,E,C,
@@ -129,8 +125,6 @@ CALL algo.random_walk_struc2vec.stream("my_hdc_graph", {
 }) YIELD walks
 RETURN walks
 ```
-
-
 
 Result:
 

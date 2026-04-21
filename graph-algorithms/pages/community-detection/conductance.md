@@ -30,7 +30,6 @@ A small conductance value is desirable in community detection because it indicat
 
 <div align=center drawio-diagram='20026' drawio-name="draw_6ad46828255f4bb2ab31c30b03f529d1.jpg"><img src="https://img.ultipa.cn/draw/draw_6ad46828255f4bb2ab31c30b03f529d1.jpg?v='1735635964911'"/></div>
 
-
 ```gql
 INSERT (A:default {_id: "A", community_id: 1}), (B:default {_id: "B", community_id: 1}),
        (C:default {_id: "C", community_id: 1}), (D:default {_id: "D", community_id: 2}),

@@ -48,7 +48,6 @@ The harmonic centrality of node <i>a</i> in the above graph is `(1 + 1/2 + 1/+âˆ
 
 <div align=center drawio-diagram='19734' drawio-name="draw_9505cf4d05b6463aac6c69057482c569.jpg"><img src="https://img.ultipa.cn/draw/draw_9505cf4d05b6463aac6c69057482c569.jpg?v='1735028023494'"/></div>
 
-
 ```gql
 INSERT (A:user {_id: "A"}), (B:user {_id: "B"}),
        (C:user {_id: "C"}), (D:user {_id: "D"}),

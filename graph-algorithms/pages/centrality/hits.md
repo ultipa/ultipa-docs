@@ -10,7 +10,7 @@ The HITS (Hyperlink-Induced Topic Search) algorithm was developed by L.M. Kleinb
 
 ### Authority and Hub
 
-In WWW, hyperlinks represent some latent human judgment: the creator of page <i>p</i>, by including a link to page <i>q</i>, has in some measure conferred authority on <i>q</i>. Instructively, a node with large in-degree is viewed as an <b>authority</b>.
+In WWW, hyperlinks represent some latent human judgment: the creator of page `p`, by including a link to page `q`, has in some measure conferred authority on `q`. Instructively, a node with large in-degree is viewed as an <b>authority</b>.
 
 If a node points to a considerable number of authoritative nodes, it is referred to as a <b>hub</b>.
 
@@ -22,9 +22,9 @@ Hubs and authorities exhibit a mutually reinforcing relationship: a good hub poi
 
 ### Compute Authorities and Hubs
 
-HITS algorithm operates on the whole graph iteratively to compute the <b>authority weight</b> (denoted as <i>x</i>) and <b>hub weight</b> (denoted as <i>y</i>) for each node through the link structure. Nodes with larger <i>x</i>-values and <i>y</i>-values are viewed as better authorities and hubs respectively.
+HITS algorithm operates on the whole graph iteratively to compute the <b>authority weight</b> (denoted as `x`) and <b>hub weight</b> (denoted as `y`) for each node through the link structure. Nodes with larger `x`-values and `y`-values are viewed as better authorities and hubs respectively.
 
-In a directed graph <i>G = (V, E)</i>, all nodes are initialized with <i>x = 1</i> and <i>y = 1</i>. In each iteration, for each node <i>p ∈ V</i>, update its <i>x</i> and <i>y</i> values as follows:
+In a directed graph <i>G = (V, E)</i>, all nodes are initialized with `x = 1` and `y = 1`. In each iteration, for each node `p ∈ V`, update its `x` and `y` values as follows:
 
 <center><img width="180" src="https://img.ultipa.cn/img/2023-02-01-18-01-37-xy.jpg" /></center>
 
@@ -32,7 +32,7 @@ Here is an example:
 
 <div align='center' drawio-diagram='4899' drawio-name='draw_43b88a2290b64a76ac72baf583da2007.jpg'><img src="https://img.ultipa.cn/draw/draw_43b88a2290b64a76ac72baf583da2007.jpg?v='1680058951390'"/></div>
 
-At the end of one iteration, normalize all <i>x</i> values and all <i>y</i> values to meet the invariant below:
+At the end of one iteration, normalize all `x` values and all `y` values to meet the invariant below:
 
 <center><img width="250" src="https://img.ultipa.cn/img/2023-03-29-11-11-42-norm.jpg" /></center>
 
@@ -46,7 +46,6 @@ The algorithm iterates until the changes in all <i>x</i> and <i>y</i> values con
 ## Example Graph
 
 <div align=center drawio-diagram='19742' drawio-name='draw_1afd6d26761942feba61b9b39ca0b412.jpg'><img src="https://img.ultipa.cn/draw/draw_1afd6d26761942feba61b9b39ca0b412.jpg?v='1733821758235'"/></div>
-
 
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
@@ -64,7 +63,7 @@ INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
 
 | Name | Type | Default | Description |
 | -- | -- | -- | -- |
-| `iterations` | `INT` | `20` | Maximum number of iterations. |
+| `maxIterations` | `INT` | `20` | Maximum number of iterations. |
 | `tolerance` | `FLOAT` | `0.000001` | Convergence tolerance. The algorithm terminates when changes in all authority and hub weights between iterations are less than this value. |
 | `limit` | `INT` | `-1` | Limits the number of results returned (-1 = all). |
 | `order` | `STRING` | / | Sorts the results by `authScore`: `asc` or `desc`. |
@@ -83,7 +82,7 @@ HITS for all nodes:
 
 ```gql
 CALL algo.hits({
-  iterations: 50,
+  maxIterations: 50,
   tolerance: 0.001,
   order: "desc"
 }) YIELD nodeId, hubScore, authScore
@@ -170,16 +169,15 @@ Computes results and writes them back to node properties. The write configuratio
 
 | Column | Type | Description |
 | -- | -- | -- |
-| `task_id` | `STRING` | Task identifier |
-| `status` | `STRING` | Task status (`running`) |
-
-The write executes asynchronously in the background. Use `SHOW TASKS` with the `task_id` to check progress and results.
+| `task_id` | `STRING` | Task identifier for tracking via `SHOW TASKS` |
+| `nodesWritten` | `INT` | Number of nodes with properties written |
+| `computeTimeMs` | `INT` | Time spent computing the algorithm (milliseconds) |
+| `writeTimeMs` | `INT` | Time spent writing properties to storage (milliseconds) |
 
 ```gql
 CALL algo.hits.write({}, {
   db: {
-    property: "auth"                                   // String: writes authScore to one property
-    // property: {hubScore: "hub", authScore: "auth"}   // Map: explicit column-to-property
+    property: {hubScore: "hub", authScore: "auth"}
   }
-}) YIELD task_id, status
+}) YIELD task_id, nodesWritten, computeTimeMs, writeTimeMs
 ```

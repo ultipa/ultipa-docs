@@ -44,7 +44,7 @@ To overcome these problems, a <b>damping factor</b>, whose value is between 0 an
 
 <center><img width=350 src="https://img.ultipa.cn/img/2023-03-23-11-39-14-pr2.jpg"></center>
 
-where `d` is the damping factor. For example, when `d` is 0.7, if a webpage receives 8 ranks in total from backlinks, then the rank of this webpage is updated to `0.7*8 + (1-0.7) = 5.9`.
+where `d` is the damping factor. For example, when `d` is 0.7, if a webpage receives 8 ranks in total from backlinks, then the rank of this webpage is updated to `0.7 * 8 + (1 - 0.7) = 5.9`.
 
 Damping factor can also be understood as the probability that a web surfer randomly jump to a webpage that is not one of the forward links of the current webpage.
 
@@ -56,7 +56,6 @@ Damping factor can also be understood as the probability that a web surfer rando
 ## Example Graph
 
 <div align=center drawio-diagram='20046' drawio-name='draw_aa8da8a8cc08406e8037b9474a0d4b9d.jpg'><img src="https://img.ultipa.cn/draw/draw_aa8da8a8cc08406e8037b9474a0d4b9d.jpg?v='1735808851353'"/></div>
-
 
 ```gql
 INSERT (A:account {_id: "A"}), (B:account {_id: "B"}),
@@ -84,8 +83,9 @@ INSERT (A:account {_id: "A"}), (B:account {_id: "B"}),
 | Name | Type | Default | Description |
 | -- | -- | -- | -- |
 | `damping` | `FLOAT` | `0.85` | Damping factor (0, 1). |
-| `loop_num` | `INT` | `20` | Maximum number of iterations. |
+| `maxIterations` | `INT` | `20` | Maximum number of iterations. |
 | `tolerance` | `FLOAT` | `0.0001` | Convergence tolerance. The algorithm terminates when score changes between iterations are less than this value. |
+| `weight` | `STRING` or `LIST` | / | Numeric edge property for weighted rank distribution. |
 | `limit` | `INT` | `-1` | Limits the number of results returned (-1 = all). |
 | `order` | `STRING` | / | Sorts the results by `score`: `asc` or `desc`. |
 
@@ -103,7 +103,7 @@ PageRank for all nodes:
 ```gql
 CALL algo.pagerank({
   damping: 0.8,
-  loop_num: 50,
+  maxIterations: 50,
   order: "desc"
 }) YIELD nodeId, score
 ```
@@ -190,16 +190,15 @@ Computes results and writes them back to node properties. The write configuratio
 
 | Column | Type | Description |
 | -- | -- | -- |
-| `task_id` | `STRING` | Task identifier |
-| `status` | `STRING` | Task status (`running`) |
-
-The write executes asynchronously in the background. Use `SHOW TASKS` with the `task_id` to check progress and results.
+| `task_id` | `STRING` | Task identifier for tracking via `SHOW TASKS` |
+| `nodesWritten` | `INT` | Number of nodes with properties written |
+| `computeTimeMs` | `INT` | Time spent computing the algorithm (milliseconds) |
+| `writeTimeMs` | `INT` | Time spent writing properties to storage (milliseconds) |
 
 ```gql
 CALL algo.pagerank.write({damping: 0.85}, {
   db: {
-    property: "pr_score"               // String: writes score to one property
-    // property: {score: "pr_score"}   // Map: explicit column-to-property
+    property: "pr_score"
   }
-}) YIELD task_id, status
+}) YIELD task_id, nodesWritten, computeTimeMs, writeTimeMs
 ```

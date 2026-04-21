@@ -18,7 +18,6 @@ Although the K-Hop All algorithm is optimized for high concurrency performance, 
 
 Run the following statements on an empty graph to define its structure and insert data:
 
-
 ```gql
 ALTER GRAPH CURRENT_GRAPH ADD NODE {
   card ({level int32, balance double})
@@ -46,8 +45,6 @@ INSERT (card1:card {_id: "card1", level: 1, balance: 258.5}),
        (card8)-[:transfer]->(card3);
 ```
 
-
-
 ## Parameters
 
 Algorithm name: `khop_all`
@@ -74,7 +71,6 @@ This algorithm can generate two files:
 | `filename_ids` | <ul><li>`_id`/`_uuid`: The source node.</li><li>`_id`/`_uuid`: A neighbor of the source node.</li></ul> |
 | `filename` | <ul><li>`_id`/`_uuid`: The source node.</li><li>`aggregate_opt`: The aggregation results.</li><li>`count`: The total number of neighbors of the source node.</li></ul> |
 
-
 ```gql
 CALL algo.khop_all.write("my_hdc_graph", {
   return_id_uuid: "id",
@@ -92,12 +88,9 @@ CALL algo.khop_all.write("my_hdc_graph", {
 })
 ```
 
-
-
 Results:
 
 <p tit="File: neighbors"></p>
-
 ```
 _id,_id
 card1,card3
@@ -107,7 +100,6 @@ card7,card4
 ```
 
 <p tit="File: aggregations"></p>
-
 ```
 _id,sum,mean,count
 card1,9,3174.1,3
@@ -117,7 +109,6 @@ card7,2,4768.8,1
 ## DB Writeback
 
 Writes the aggregation results (if any) and the `count` values to the specified node properties. The property type is `double`.
-
 
 ```gql
 CALL algo.khop_all.write("my_hdc_graph", {
@@ -131,8 +122,6 @@ CALL algo.khop_all.write("my_hdc_graph", {
   }
 })
 ```
-
-
 
 The aggregation results are written to new properties `sum`, `mean` and `mean1`; the `count` values are written to the new property `khop2`.
 
@@ -150,8 +139,6 @@ CALL algo.khop_all.run("my_hdc_graph", {
 }) YIELD r
 RETURN r
 ```
-
-
 
 Result:
 
@@ -174,8 +161,6 @@ CALL algo.khop_all.stream("my_hdc_graph", {
 }) YIELD results
 RETURN results
 ```
-
-
 
 Result: 
 

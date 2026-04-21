@@ -23,7 +23,6 @@ Three metrics are supported:
 
 <div align=center><img src="images/knn-example.drawio.svg"/></div>
 
-
 ```gql
 INSERT (Sue:user {_id: "Sue"}), (Dave:user {_id: "Dave"}),
        (Ann:user {_id: "Ann"}), (Mark:user {_id: "Mark"}),

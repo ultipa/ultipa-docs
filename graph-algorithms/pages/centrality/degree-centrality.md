@@ -31,7 +31,6 @@ In this weighted graph, the red node has weighted in-degree of `0.5 + 0.3 + 2 + 
 
 <div align=center drawio-diagram='19442' drawio-name='draw_cece848c2c7548dab62312fa5c57f0a3.jpg'><img src="https://img.ultipa.cn/draw/draw_cece848c2c7548dab62312fa5c57f0a3.jpg?v='1730948974639'"/></div>
 
-
 ```gql
 INSERT (Mike:user {_id: "Mike"}), (Cathy:user {_id: "Cathy"}),
        (Anna:user {_id: "Anna"}), (Joe:user {_id: "Joe"}),

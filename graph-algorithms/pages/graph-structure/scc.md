@@ -29,7 +29,6 @@ This example shows 3 strongly connected components and 2 weakly connected compon
 
 <div align=center drawio-diagram='19810' drawio-name="draw_5cf4c0fcf3f444b69bdfefe8c2fc1a68.jpg"><img src="https://img.ultipa.cn/draw/draw_5cf4c0fcf3f444b69bdfefe8c2fc1a68.jpg?v='1734329095581'"/></div>
 
-
 ```gql
 INSERT (Mike:member {_id: "Mike"}), (Cathy:member {_id: "Cathy"}),
        (Anna:member {_id: "Anna"}), (Joe:member {_id: "Joe"}),

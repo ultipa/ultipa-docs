@@ -41,7 +41,6 @@ In the following example, the nodes have only 1 possible topological sorting: `A
 
 <div align=center><img src="images/topologicalsort-example.drawio.svg"/></div>
 
-
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
        (C:default {_id: "C"}), (D:default {_id: "D"}),

@@ -57,7 +57,6 @@ Once this second phase is completed, the algorithm applies another pass on the a
 
 Run the following statements on an empty graph to define its structure and insert data:
 
-
 ```gql
 ALTER EDGE default ADD PROPERTY {
     weight float
@@ -92,8 +91,6 @@ INSERT (A:default {_id: "A"}),
        (K)-[:default {weight: 1.2}]->(M),
        (K)-[:default {weight: 2}]->(N);
 ```
-
-
 
 ## Parameters
 
@@ -134,8 +131,6 @@ CALL algo.louvain.write("my_hdc_graph", {
 })
 ```
 
-
-
 Result:
 
   
@@ -160,7 +155,6 @@ C,13
 ```
 
 <p tit="File: f2"></p>
-
 ```
 community_id,_ids
 13,D;A;E;C;
@@ -170,7 +164,6 @@ community_id,_ids
 ```
 
 <p tit="File: f3"></p>
-
 ```
 community_id,count
 13,4
@@ -199,10 +192,7 @@ CALL algo.louvain.write("my_hdc_graph", {
 })
 ```
 
-
-
 ## Stats Writeback
-
 
 ```gql
 CALL algo.louvain.write("my_hdc_graph", {
@@ -215,8 +205,6 @@ CALL algo.louvain.write("my_hdc_graph", {
 })
 ```
 
-
-
 Result:
 
 | community_count | modularity |
@@ -224,7 +212,6 @@ Result:
 | 4 | 0.464280 |
 
 ## Full Return
-
 
 ```gql
 CALL algo.louvain.run("my_hdc_graph", {
@@ -234,8 +221,6 @@ CALL algo.louvain.run("my_hdc_graph", {
 }) YIELD r
 RETURN r
 ```
-
-
 
 Result: 
 
@@ -290,8 +275,6 @@ CALL algo.louvain.stream("my_hdc_graph", {
 }) YIELD r
 RETURN r
 ```
-
-
 
 Result:
 
@@ -348,8 +331,6 @@ CALL algo.louvain.stats("my_hdc_graph", {
 }) YIELD s
 RETURN s
 ```
-
-
 
 Result:
 
