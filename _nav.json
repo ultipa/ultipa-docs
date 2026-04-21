@@ -14,10 +14,10 @@
       "description": "Manage procedures for complex graph logic and algorithms"
     },
     {
-      "id": "drivers",
-      "name": "Ultipa Drivers",
+      "id": "ai-functions",
+      "name": "AI Functions",
       "published": true,
-      "description": "SDKs for Java, Python, Go, and Node.js"
+      "description": "Vector search and AI-powered graph functions"
     },
     {
       "id": "graph-algorithms",
@@ -38,16 +38,16 @@
       "description": "Role-based access control and security"
     },
     {
-      "id": "ai-functions",
-      "name": "AI Functions",
-      "published": true,
-      "description": "Vector search and AI-powered graph functions"
-    },
-    {
       "id": "computing-engine",
       "name": "Computing Engine",
       "published": true,
       "description": "High-performance distributed computing engine"
+    },
+    {
+      "id": "drivers",
+      "name": "Ultipa Drivers",
+      "published": true,
+      "description": "SDKs for Java, Python, Go, and Node.js"
     }
   ]
 }
