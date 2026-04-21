@@ -1,10 +1,8 @@
-# Utilities & Configuration
+# Vector Utilities
 
-## Overview
+Inspect, transform, and perform arithmetic operations on vectors, and manage vector indexes.
 
-Vector utilities, arithmetic operations, and AI provider configuration for embedding generation and completion.
-
-## Vector Utilities
+## Inspection
 
 ### ai.dimension()
 

@@ -1,30 +1,21 @@
-# Vector Fundamentals
+# Vectors
 
-## Overview
-
-Understanding vectors and embeddings in graph databases.
+Create and manage vector embeddings for semantic search, recommendations, and AI-powered graph queries. Use `ai.setprovider()` to set the active embedding AI provider.
 
 ## What are Vectors?
 
 **Vectors** (or **embeddings**) are arrays of numbers that represent the semantic meaning of data. They enable:
 
-- **Semantic Search** - Find content by meaning, not just keywords
-- **Recommendations** - Suggest similar items based on features
-- **Clustering** - Group related items together
-- **RAG (Retrieval Augmented Generation)** - Enhance AI with your data
+- **Semantic Search:** Find content by meaning, not just keywords
+- **Recommendations:** Suggest similar items based on features
+- **Clustering:** Group related items together
+- **RAG (Retrieval Augmented Generation):** Enhance AI with your data
 
 **How they work:**
 
 - Text, images, or other data is converted to a vector
 - Similar items have vectors that are "close" in vector space
 - Distance/similarity measures find related items
-
-```gql
-// Example: Vector representation
-// "Introduction to Graph Databases" might become:
-// [0.12, -0.45, 0.78, 0.23, -0.89, 0.56, ...]
-// (typically 384 to 1536 dimensions)
-```
 
 ## Use Cases
 
@@ -169,7 +160,7 @@ Result:
 
 ### ai.embed_batch()
 
-Generates embedding vectors for multiple texts in a single batched call. Supports up to 2048 inputs, internally chunked for efficiency. Null or non-string elements produce null vectors at the same index.
+Generates embedding vectors for multiple texts in a single batched call. Supports up to 2048 inputs, internally chunked for efficiency. `Null` or non-string elements produce `null` vectors at the same index.
 
 <table style="width: 100%;">
   <colgroup>
@@ -201,9 +192,41 @@ Generates embedding vectors for multiple texts in a single batched call. Support
   </tbody>
 </table>
 
-An AI provider must be configured with `ai.setapikey()` before using this function.
-
 ```gql
 LET texts = ["graph databases", "machine learning", "data science"]
 RETURN ai.embed_batch(texts)
+```
+
+Result:
+
+```json
+[
+  {
+    "values": [
+      -0.000690460205078125,
+      0.034271240234375,
+      …
+      0.033294677734375,
+      -0.00782012939453125
+    ]
+  },
+  {
+    "values": [
+      -0.0121917724609375,
+      -0.0113372802734375,
+     …
+      -0.01312255859375,
+      -0.0019989013671875
+    ]
+  },
+  {
+    "values": [
+      0.0034503936767578125,
+      -0.010650634765625,
+      …      
+      0.00691986083984375,
+      0.02203369140625
+    ]
+  }
+]
 ```

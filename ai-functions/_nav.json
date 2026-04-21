@@ -18,12 +18,12 @@
       "title": "Vectors"
     },
     {
-      "file": "similarity-search.md",
-      "title": "Similarity & Search"
+      "file": "vector-similarity-search.md",
+      "title": "Vector Similarity Search"
     },
     {
-      "file": "utilities.md",
-      "title": "Utilities"
+      "file": "vector-utilities.md",
+      "title": "Vector Utilities"
     }
   ]
 }

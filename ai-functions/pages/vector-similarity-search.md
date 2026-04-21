@@ -1,6 +1,4 @@
-# Similarity & Search
-
-## Overview
+# Vector Similarity Search
 
 Compare vectors and perform semantic search to find related content.
 
@@ -194,91 +192,66 @@ RETURN ai.distance(v1, v2)
 
 Result: 0.2928932309150696
 
-## Vector Search
+## Vector Index Search
 
-For large datasets, use vector indexes for efficient approximate nearest neighbor (ANN) search.
+For large datasets, create a vector index for efficient approximate nearest neighbor (ANN) search. See <a href="/docs/gql/vector-index">Vector Index</a> for full syntax.
 
-Create vector index for fast search:
+Create a vector index:
 
 ```gql
-CREATE VECTOR INDEX doc_search
-FOR (d:Document)
-ON (d.embedding)
-OPTIONS {
+CREATE VECTOR INDEX doc_search ON NODE Document (embedding) OPTIONS {
   dimensions: 1536,
-  similarity: 'cosine'
+  metric: "cosine"
 }
 ```
 
-Efficient ANN search using index:
+### k-NN Search
+
+Find the k nearest neighbors using `ORDER BY ... LIMIT`. The optimizer automatically uses the vector index:
 
 ```gql
 LET query = ai.embed('how to model relationships in graphs')
-CALL db.index.vector.search('doc_search', query, 10)
-YIELD node, score
-RETURN node.title, score
+MATCH (d:Document)
+RETURN d.title, ai.cosine(d.embedding, query) AS similarity
+ORDER BY similarity DESC
+LIMIT 10
 ```
 
-| node.title | score |
-| -- | -- |
-| Graph Relationship Modeling | 0.96 |
-| Introduction to GQL | 0.89 |
-| Entity Relationship Design | 0.82 |
+### Range Search
 
-Vector search combined with graph traversal:
-
-```gql
-LET query = ai.embed('machine learning applications')
-CALL db.index.vector.search('doc_search', query, 5)
-YIELD node AS doc, score
-MATCH (doc)-[:AUTHORED_BY]->(author:Person)
-MATCH (author)-[:WORKS_AT]->(company:Company)
-RETURN doc.title, score, author.name, company.name
-```
-
-| doc.title | score | author.name | company.name |
-| -- | -- | -- | -- |
-| ML in Practice | 0.95 | Alice Chen | TechCorp |
-| Deep Learning Guide | 0.91 | Bob Smith | AI Labs |
-
-## Hybrid Search
-
-Combine vector similarity with traditional graph queries for best results.
-
-Vector search with property filters:
+Find all vectors above a similarity threshold:
 
 ```gql
 LET query = ai.embed('cloud computing tutorial')
 MATCH (d:Document)
-WHERE d.category = 'Technology'
-  AND d.published > date('2023-01-01')
-  AND ai.cosine(d.embedding, query) > 0.7
-RETURN d.title, d.published, ai.cosine(d.embedding, query) AS relevance
+WHERE ai.cosine(d.embedding, query) > 0.7
+RETURN d.title, ai.cosine(d.embedding, query) AS relevance
 ORDER BY relevance DESC
-LIMIT 10
 ```
 
-Combine graph relationships with similarity:
+### Hybrid Search
+
+Combine vector similarity with graph traversal and property filters:
 
 ```gql
-MATCH (doc:Document {id: 'DOC-123'})-[:AUTHORED_BY]->(author)
-MATCH (author)-[:AUTHORED_BY]-(other:Document)
-WHERE other <> doc
-RETURN other.title, ai.cosine(doc.embedding, other.embedding) AS similarity
+LET query = ai.embed('machine learning applications')
+MATCH (d:Document)
+WHERE ai.cosine(d.embedding, query) > 0.8
+  AND d.category = 'Technology'
+MATCH (d)-[:AUTHORED_BY]->(author:Person)
+RETURN d.title, ai.cosine(d.embedding, query) AS similarity, author.name
 ORDER BY similarity DESC
 LIMIT 5
 ```
 
-Retrieve context for RAG applications:
+### RAG Context Retrieval
+
+Retrieve context for Retrieval Augmented Generation:
 
 ```gql
-LET question = 'How do I create a graph index?'
-LET questionVector = ai.embed(question)
-CALL db.index.vector.search('doc_search', questionVector, 3)
-YIELD node, score
-RETURN COLLECT_LIST(node.content) AS context
+LET query = ai.embed('How do I create a graph index?')
+MATCH (d:Document)
+RETURN d.content, ai.cosine(d.embedding, query) AS score
+ORDER BY score DESC
+LIMIT 3
 ```
-
-| context |
-| -- |
-| [Creating indexes in GQL..., Index best practices..., Index types include...] |

@@ -1,181 +1,91 @@
 # AI Completion
 
-AI completion functions use a large language model to generate or execute GQL queries from natural language. Using `ai.setapikey()` to configure both the embedding and completion provider at once, no extra setup is needed. To use a different provider for completion (e.g., Anthropic for completion, OpenAI for embeddings), use `ai.setapikey()` with `false` to set the key without activating, then `ai.setCompletionProvider()` to switch.
+AI completion functions use a large language model to generate or execute GQL queries from natural language. Use `ai.setCompletionProvider()` to set the active completion AI provider.
 
-## ai.gql()
+## Example Graph
 
-Converts a natural language question into a GQL query using the configured completion provider. The function automatically includes the current graph's schema (labels, properties, edge patterns) as context for the LLM.
-
-<table style="width: 100%;">
-  <colgroup>
-    <col style="width:20%;">
-    <col style="width:15%;">
-    <col style="width:17%;">
-    <col>
-  </colgroup>
-  <tbody>
-    <tr>
-      <td><b>Syntax</b></td>
-      <td colspan="3"><code>ai.gql(&lt;question&gt;)</code></td>
-    </tr>
-    <tr>
-      <td rowspan="2"><b>Arguments</b></td>
-      <td><b>Name</b></td>
-      <td><b>Type</b></td>
-      <td><b>Description</b></td>
-    </tr>
-    <tr>
-      <td><code>&lt;question&gt;</code></td>
-      <td><code>STRING</code></td>
-      <td>A natural language question about the graph data</td>
-    </tr>
-    <tr>
-      <td><b>Return Type</b></td>
-      <td colspan="3"><code>STRING</code></td>
-    </tr>
-  </tbody>
-</table>
+<div align=center drawio-diagram='17191' drawio-name="draw_5fb3914b116b4a06ac12fbf6c9d30f68.jpg"><img src="https://img.ultipa.cn/draw/draw_5fb3914b116b4a06ac12fbf6c9d30f68.jpg?v='1733369467835'"/></div>
 
 ```gql
-RETURN ai.gql("Find all papers written by Alex")
+INSERT (p1:Paper {_id:'P1', title:'Efficient Graph Search', score:6, author:'Alex'}),
+       (p2:Paper {_id:'P2', title:'Optimizing Queries', score:9, author:'Alex'}),
+       (p3:Paper {_id:'P3', title:'Path Patterns', score:7, author:'Zack'}),
+       (p1)-[:Cites {weight:2}]->(p2),
+       (p2)-[:Cites {weight:1}]->(p3)
 ```
 
-Result:
+## Streaming Procedures
 
-| ai.gql |
-| -- |
-| MATCH (p:Paper) WHERE p.author = 'Alex' RETURN p |
+`ai.gql()` and `ai.read()` are streaming procedures, not scalar functions. They produce multiple rows of output (one per pipeline stage) as the NL-to-GQL pipeline executes. Because scalar functions used with `RETURN` must produce a single value, these are invoked with `CALL ... YIELD` instead.
 
-## ai.read()
+### ai.gql()
 
-Converts a natural language question into a read-only GQL query, executes it, and returns the results. Only read operations are allowed, any generated query containing write operations (`INSERT`, `DELETE`, `SET`, etc.) is rejected.
+Converts a natural language question into a GQL query using the configured completion provider via a streaming procedure. The pipeline automatically includes the current graph's schema (labels, properties, edge patterns) as context for the LLM. Streams one row per pipeline stage.
 
-<table style="width: 100%;">
-  <colgroup>
-    <col style="width:20%;">
-    <col style="width:15%;">
-    <col style="width:17%;">
-    <col>
-  </colgroup>
-  <tbody>
-    <tr>
-      <td><b>Syntax</b></td>
-      <td colspan="3"><code>ai.read(&lt;question&gt;)</code></td>
-    </tr>
-    <tr>
-      <td rowspan="2"><b>Arguments</b></td>
-      <td><b>Name</b></td>
-      <td><b>Type</b></td>
-      <td><b>Description</b></td>
-    </tr>
-    <tr>
-      <td><code>&lt;question&gt;</code></td>
-      <td><code>STRING</code></td>
-      <td>A natural language question about the graph data</td>
-    </tr>
-    <tr>
-      <td><b>Return Type</b></td>
-      <td colspan="3"><code>RECORD</code></td>
-    </tr>
-  </tbody>
-</table>
+```gql
+CALL ai.gql("Find all papers written by Alex")
+YIELD stage, detail, elapsed_ms, tokens_input, tokens_output, tokens_cached, data
+```
 
-The returned record contains:
+Result columns:
 
-| Field | Type | Description |
+| Column | Type | Description |
 | -- | -- | -- |
-| `query` | `STRING` | The generated GQL query |
-| `results` | `LIST` | The query results |
-| `count` | `INT` | Number of result rows |
-
-```gql
-RETURN ai.read("How many papers did Alex write?")
-```
+| `stage` | STRING | Pipeline stage: `start` (initiated), `routing` (intent classification), `grounding` (schema selection), `generation` (LLM query generation, may appear multiple times), `tool` (tool call e.g. `validate_gql`, `sample_query`), `validation` (final validation), `execution` (`ai.read` only — runs the query), `final` (complete, `data.gql` contains the query), `error` (failed). |
+| `detail` | STRING | Short human-readable summary. |
+| `elapsed_ms` | INT | Milliseconds since the call began. |
+| `tokens_input` | INT | Cumulative LLM input tokens. |
+| `tokens_output` | INT | Cumulative LLM output tokens. |
+| `tokens_cached` | INT | Cumulative cached-prefix input tokens (prompt caching). |
+| `data` | MAP | Stage-specific payload. The `final` stage contains the generated GQL in `data.gql`. |
 
 Result:
 
 ```json
-{
-  "query": "MATCH (p:Paper) WHERE p.author = 'Alex' RETURN COUNT(p) AS count",
-  "results": [
-    {
-      "count": 2
-    }
-  ],
-  "count": 1
-}
+[
+  {"stage": "start", "detail": "Find all papers written by Alex", "elapsed_ms": 0, "tokens_input": 0, "tokens_output": 0, "tokens_cached": 0, "data": {"require_read": false}},
+  {"stage": "routing", "detail": "MATCH intent — using LLM path", "elapsed_ms": 0, "tokens_input": 0, "tokens_output": 0, "tokens_cached": 0, "data": {}},
+  {"stage": "grounding", "detail": "2 labels, 1 patterns selected", "elapsed_ms": 1888, "tokens_input": 0, "tokens_output": 0, "tokens_cached": 0, "data": {"node_labels": ["Paper"], "edge_labels": ["Cites"], "pattern_count": 1}},
+  {"stage": "generation", "detail": "requested 1 tool call(s)", "elapsed_ms": 3308, "tokens_input": 2842, "tokens_output": 29, "tokens_cached": 1920, "data": {"step": 0, "tool_calls": 1}},
+  {"stage": "tool", "detail": "validate_gql → {\"valid\":true}", "elapsed_ms": 3308, "tokens_input": 2842, "tokens_output": 29, "tokens_cached": 1920, "data": {"name": "validate_gql", "args": "{\"query\":\"MATCH (p:Paper) WHERE p.author = 'Alex' RETURN p\"}", "result": "{\"class\":\"read\",\"valid\":true}"}},
+  {"stage": "generation", "detail": "MATCH (p:Paper) WHERE p.author = 'Alex' RETURN p", "elapsed_ms": 4130, "tokens_input": 5723, "tokens_output": 45, "tokens_cached": 4736, "data": {"step": 1, "has_text": true}},
+  {"stage": "generation", "detail": "final candidate: MATCH (p:Paper) WHERE p.author = 'Alex' RETURN p", "elapsed_ms": 4130, "tokens_input": 5723, "tokens_output": 45, "tokens_cached": 4736, "data": {"candidate": "MATCH (p:Paper) WHERE p.author = 'Alex' RETURN p", "steps": 2, "termination": "final"}},
+  {"stage": "validation", "detail": "passed", "elapsed_ms": 4130, "tokens_input": 5723, "tokens_output": 45, "tokens_cached": 4736, "data": {"passed": true, "class": "read"}},
+  {"stage": "final", "detail": "MATCH (p:Paper) WHERE p.author = 'Alex' RETURN p", "elapsed_ms": 4130, "tokens_input": 5723, "tokens_output": 45, "tokens_cached": 4736, "data": {"gql": "MATCH (p:Paper) WHERE p.author = 'Alex' RETURN p"}}
+]
 ```
 
-## ai.setCompletionProvider()
-
-Sets the active completion provider. The provider's API key must have been set first via `ai.setapikey()`.
-
-<table style="width: 100%;">
-  <colgroup>
-    <col style="width:20%;">
-    <col style="width:15%;">
-    <col style="width:17%;">
-    <col>
-  </colgroup>
-  <tbody>
-    <tr>
-      <td><b>Syntax</b></td>
-      <td colspan="3"><code>ai.setCompletionProvider(&lt;provider&gt;)</code></td>
-    </tr>
-    <tr>
-      <td rowspan="2"><b>Arguments</b></td>
-      <td><b>Name</b></td>
-      <td><b>Type</b></td>
-      <td><b>Description</b></td>
-    </tr>
-    <tr>
-      <td><code>&lt;provider&gt;</code></td>
-      <td><code>STRING</code></td>
-      <td>Provider name: <code>"openai"</code>, <code>"gemini"</code>, <code>"xai"</code>, or <code>"anthropic"</code></td>
-    </tr>
-    <tr>
-      <td><b>Return Type</b></td>
-      <td colspan="3"><code>BOOL</code></td>
-    </tr>
-  </tbody>
-</table>
+To output the generated query directly:
 
 ```gql
-RETURN ai.setCompletionProvider("openai")
+CALL ai.gql("Find all papers written by Alex")
+YIELD stage, data
+FILTER stage = "final"
+RETURN data.gql
 ```
 
-## ai.completionProvider()
+Result:
 
-Returns the name of the current completion provider.
+| data.gql |
+| -- |
+| "MATCH (p:Paper) WHERE p.author = 'Alex' RETURN p" |
 
-<table style="width: 100%;">
-  <colgroup>
-    <col style="width:20%;">
-    <col style="width:15%;">
-    <col style="width:17%;">
-    <col>
-  </colgroup>
-  <tbody>
-    <tr>
-      <td><b>Syntax</b></td>
-      <td colspan="3"><code>ai.completionProvider()</code></td>
-    </tr>
-    <tr>
-      <td><b>Arguments</b></td>
-      <td colspan="3">None</td>
-    </tr>
-    <tr>
-      <td><b>Return Type</b></td>
-      <td colspan="3"><code>STRING</code></td>
-    </tr>
-  </tbody>
-</table>
+### ai.read()
+
+Converts a natural language question into a read-only GQL query, executes it, and streams pipeline progress. Write/DDL queries are rejected. Returns the same columns as `CALL ai.gql()`, with an additional `execution` stage that runs the generated query.
 
 ```gql
-RETURN ai.completionProvider()
+CALL ai.read("How many papers did Alex write in total?")
+YIELD stage, detail, elapsed_ms, tokens_input, tokens_output, tokens_cached, data
 ```
 
-## ai.explain()
+Result columns same with `ai.gql()`.
+
+## Scalar Functions
+
+These functions return a single value and are used with `RETURN`.
+
+### ai.explain()
 
 Runs the NL-to-GQL pipeline and returns the generated query alongside a reasoning trace (schema used, tool calls, refinements). Does not execute the query.
 
@@ -204,20 +114,61 @@ Runs the NL-to-GQL pipeline and returns the generated query alongside a reasonin
     </tr>
     <tr>
       <td><b>Return Type</b></td>
-      <td colspan="3"><code>MAP</code></td>
+      <td colspan="3"><code>RECORD</code></td>
     </tr>
   </tbody>
 </table>
 
-The returned map contains `gql` (the generated query) and `trace` (pipeline details).
+The returned map contains:
+
+| Field | Type | Description |
+| -- | -- | -- |
+| `gql` | STRING | The generated GQL query. |
+| `trace` | MAP | Pipeline details including schema used, generation steps, tool calls, validation result, and token usage. |
 
 ```gql
-RETURN ai.explain("Find all papers written by Alex")
+RETURN ai.explain("Find ALL papers written by Alex")
 ```
 
-## ai.trace()
+Result:
 
-Returns the most recent NL-to-GQL pipeline trace recorded by `ai.gql()`, `ai.read()`, or `ai.explain()`. Returns `NULL` if no pipeline call has run in the current session.
+```json
+{
+  "gql": "MATCH (p:Paper) WHERE p.author = 'Alex' RETURN p",
+  "trace": {
+    "nl": "Find ALL papers written by Alex",
+    "total_duration_ms": 4753,
+    "termination": "success",
+    "schema": {
+      "label_count": 2,
+      "pattern_count": 1,
+      "node_labels": ["Paper"],
+      "edge_labels": ["Cites"]
+    },
+    "generation": {
+      "used_tool_use": true,
+      "termination": "final",
+      "steps": [
+        {"assistant_text": "", "duration_ms": 1517, "tool_calls": [{"name": "validate_gql", "args": "{\"query\":\"MATCH (p:Paper) WHERE p.author = 'Alex' RETURN p\"}", "result": "{\"class\":\"read\",\"valid\":true}"}]},
+        {"assistant_text": "MATCH (p:Paper) WHERE p.author = 'Alex' RETURN p", "duration_ms": 1837, "tool_calls": []}
+      ]
+    },
+    "validation": {"passed": true, "class": "read"},
+    "token_usage": {
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "input_tokens": 6325,
+      "output_tokens": 45,
+      "total_tokens": 6370,
+      "calls": 2
+    }
+  }
+}
+```
+
+### ai.trace()
+
+Returns the most recent NL-to-GQL pipeline trace recorded by `ai.gql()`, `ai.read()`, or `ai.explain()`. Returns `NULL` if no pipeline call has run in the current session. Useful for debugging when a generated query is incorrect — you can inspect which labels were selected, what tool calls were made, and where the pipeline went wrong.
 
 <table style="width: 100%;">
   <colgroup>
@@ -237,17 +188,95 @@ Returns the most recent NL-to-GQL pipeline trace recorded by `ai.gql()`, `ai.rea
     </tr>
     <tr>
       <td><b>Return Type</b></td>
-      <td colspan="3"><code>MAP</code></td>
+      <td colspan="3"><code>RECORD</code></td>
     </tr>
   </tbody>
 </table>
 
 ```gql
-RETURN ai.gql("Find papers by Alex")
 RETURN ai.trace()
 ```
 
-## ai.setAIConfig()
+```json
+{
+  "nl": "Find ALL papers written by Alex",
+  "total_duration_ms": 4753,
+  "termination": "success",
+  "schema": {
+    "label_count": 2,
+    "pattern_count": 1,
+    "node_labels": ["Paper"],
+    "edge_labels": ["Cites"]
+  },
+  "generation": {
+    "used_tool_use": true,
+    "termination": "final",
+    "steps": [
+      {"assistant_text": "", "duration_ms": 1517, "tool_calls": [{"name": "validate_gql", "args": "{\"query\":\"MATCH (p:Paper) WHERE p.author = 'Alex' RETURN p\"}", "result": "{\"class\":\"read\",\"valid\":true}"}]},
+      {"assistant_text": "MATCH (p:Paper) WHERE p.author = 'Alex' RETURN p", "duration_ms": 1837, "tool_calls": []}
+    ]
+  },
+  "validation": {"passed": true, "class": "read"},
+  "token_usage": {
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "input_tokens": 6325,
+    "output_tokens": 45,
+    "total_tokens": 6370,
+    "calls": 2
+  }
+}
+```
+
+## Pipeline Configuration
+
+### ai.aiConfig()
+
+Returns the current NL-to-GQL pipeline configuration.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>ai.aiConfig()</code></td>
+    </tr>
+    <tr>
+      <td><b>Arguments</b></td>
+      <td colspan="3">None</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>RECORD</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN ai.aiConfig()
+```
+
+Result:
+
+```json
+{
+  "max_steps": 4,
+  "max_refinements": 2,
+  "schema_top_k": 8,
+  "patterns_top_k": 8,
+  "examples_top_k": 3,
+  "query_memory_enabled": false,
+  "query_memory_size": 256,
+  "pipeline": "agentic"
+}
+```
+
+### ai.setAIConfig()
 
 Sets a configuration parameter for the NL-to-GQL pipeline.
 
@@ -255,7 +284,7 @@ Sets a configuration parameter for the NL-to-GQL pipeline.
   <colgroup>
     <col style="width:20%;">
     <col style="width:15%;">
-    <col style="width:17%;">
+    <col style="width:35%;">
     <col>
   </colgroup>
   <tbody>
@@ -290,80 +319,15 @@ Available configuration keys:
 
 | Key | Type | Description |
 | -- | -- | -- |
-| `max_steps` | INT | Maximum number of pipeline steps |
-| `max_refinements` | INT | Maximum query refinement attempts |
-| `schema_top_k` | INT | Number of top schema elements to include |
-| `patterns_top_k` | INT | Number of top edge patterns to include |
-| `examples_top_k` | INT | Number of similar query examples to include |
-| `query_memory_enabled` | BOOL | Enable query memory for learning from past queries |
-| `query_memory_size` | INT | Maximum number of queries to remember |
-| `pipeline` | STRING | Pipeline mode to use |
+| `max_steps` | `INT` | Maximum number of pipeline steps |
+| `max_refinements` | `INT` | Maximum query refinement attempts |
+| `schema_top_k` | `INT` | Number of top schema elements to include |
+| `patterns_top_k` | `INT` | Number of top edge patterns to include |
+| `examples_top_k` | `INT` | Number of similar query examples to include |
+| `query_memory_enabled` | `BOOL` | Enable query memory for learning from past queries |
+| `query_memory_size` | `INT` | Maximum number of queries to remember |
+| `pipeline` | `STRING` | Pipeline mode to use |
 
 ```gql
 RETURN ai.setAIConfig("max_refinements", 3)
 ```
-
-## ai.aiConfig()
-
-Returns the current NL-to-GQL pipeline configuration.
-
-<table style="width: 100%;">
-  <colgroup>
-    <col style="width:20%;">
-    <col style="width:15%;">
-    <col style="width:17%;">
-    <col>
-  </colgroup>
-  <tbody>
-    <tr>
-      <td><b>Syntax</b></td>
-      <td colspan="3"><code>ai.aiConfig()</code></td>
-    </tr>
-    <tr>
-      <td><b>Arguments</b></td>
-      <td colspan="3">None</td>
-    </tr>
-    <tr>
-      <td><b>Return Type</b></td>
-      <td colspan="3"><code>MAP</code></td>
-    </tr>
-  </tbody>
-</table>
-
-```gql
-RETURN ai.aiConfig()
-```
-
-## Streaming Procedures
-
-The streaming versions of `ai.gql` and `ai.read` provide real-time progress updates as the NL-to-GQL pipeline executes. Use `CALL` to invoke them.
-
-### CALL ai.gql()
-
-Converts natural language to a GQL query, streaming one row per pipeline stage.
-
-```gql
-CALL ai.gql({nl: "Find 10 people"})
-YIELD stage, detail, elapsed_ms, data
-```
-
-| Column | Type | Description |
-| -- | -- | -- |
-| `stage` | STRING | Pipeline stage: `start`, `grounding`, `examples`, `generation`, `tool`, `validation`, `refinement`, `execution`, `final`, `error` |
-| `detail` | STRING | Short human-readable summary |
-| `elapsed_ms` | INT | Milliseconds since the call began |
-| `tokens_input` | INT | Cumulative LLM input tokens |
-| `tokens_output` | INT | Cumulative LLM output tokens |
-| `tokens_cached` | INT | Cumulative cached-prefix input tokens |
-| `data` | MAP | Stage-specific payload (e.g., generated GQL on `final` stage) |
-
-### CALL ai.read()
-
-Converts natural language to a read-only GQL query, executes it, and streams pipeline progress. Write/DDL queries are rejected.
-
-```gql
-CALL ai.read({nl: "Who are Alice's friends?"})
-YIELD stage, detail, elapsed_ms, data
-```
-
-Returns the same columns as `CALL ai.gql()`.

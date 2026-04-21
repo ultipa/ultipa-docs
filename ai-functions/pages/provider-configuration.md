@@ -1,5 +1,7 @@
 # Provider Configuration
 
+Configure AI providers for embedding generation and completion. Use `SHOW AI PROVIDERS` to see all available providers and their current status.
+
 ## ai.setapikey()
 
 Sets the API key for an AI provider. Optionally activates it as the current provider.
@@ -25,7 +27,7 @@ Sets the API key for an AI provider. Optionally activates it as the current prov
     <tr>
       <td><code>&lt;provider&gt;</code></td>
       <td><code>STRING</code></td>
-      <td>Provider name: <code>"openai"</code>, <code>"gemini"</code>, <code>"xai"</code>, or <code>"anthropic"</code> (completion only)</td>
+      <td>Provider name (see <a href="/docs/ai-functions/overview#Supported-Providers">Supported Providers</a>)</td>
     </tr>
     <tr>
       <td><code>&lt;apiKey&gt;</code></td>
@@ -56,11 +58,11 @@ Each provider stores one API key. Calling `ai.setapikey()` again for the same pr
 RETURN ai.setapikey("gemini", "AQ.za...", false)
 ```
 
-> `"anthropic"` supports completion only (`ai.gql()`, `ai.read()`), it has no embedding model. Use `ai.setapikey("anthropic", "sk-ant-...", false)` followed by `ai.setCompletionProvider("anthropic")` to configure it for completion.
+## Embedding Provider
 
-## ai.setprovider()
+### ai.setprovider()
 
-Switches the active embedding provider. The provider's API key must have been set first via `ai.setapikey()`.
+Sets the active embedding provider. The provider's API key must have been set first via `ai.setapikey()`.
 
 <table style="width: 100%;">
   <colgroup>
@@ -83,7 +85,7 @@ Switches the active embedding provider. The provider's API key must have been se
     <tr>
       <td><code>&lt;provider&gt;</code></td>
       <td><code>STRING</code></td>
-      <td>Provider name: <code>"openai"</code>, <code>"gemini"</code>, or <code>"xai"</code></td>
+      <td>Embedding provider name (see <a href="/docs/ai-functions/overview#Supported-Providers">Supported Providers</a>)</td>
     </tr>
     <tr>
       <td><b>Return Type</b></td>
@@ -96,9 +98,9 @@ Switches the active embedding provider. The provider's API key must have been se
 RETURN ai.setprovider("openai")
 ```
 
-## ai.provider()
+### ai.provider()
 
-Returns the name of the current AI provider.
+Returns the name of the current embedding provider.
 
 <table style="width: 100%;">
   <colgroup>
@@ -127,9 +129,9 @@ Returns the name of the current AI provider.
 RETURN ai.provider()
 ```
 
-## ai.embeddim()
+### ai.embeddim()
 
-Returns the embedding dimension of the current provider.
+Returns the embedding dimension of the current provider. Returns `null` if no embedding provider is active or the provider doesn't support embedding.
 
 <table style="width: 100%;">
   <colgroup>
@@ -156,4 +158,75 @@ Returns the embedding dimension of the current provider.
 
 ```gql
 RETURN ai.embeddim()
+```
+
+## Completion Provider
+
+### ai.setCompletionProvider()
+
+Sets the active completion provider. The provider's API key must have been set first via `ai.setapikey()`.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>ai.setCompletionProvider(&lt;provider&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;provider&gt;</code></td>
+      <td><code>STRING</code></td>
+      <td>Provider name (see <a href="/docs/ai-functions/overview#Supported-Providers">Supported Providers</a>)</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>BOOL</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN ai.setCompletionProvider("anthropic")
+```
+
+### ai.completionProvider()
+
+Returns the name of the current completion provider.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>ai.completionProvider()</code></td>
+    </tr>
+    <tr>
+      <td><b>Arguments</b></td>
+      <td colspan="3">None</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>STRING</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN ai.completionProvider()
 ```
