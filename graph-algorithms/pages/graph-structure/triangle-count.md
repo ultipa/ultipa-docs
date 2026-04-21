@@ -40,7 +40,7 @@ INSERT (C1:default {_id: "C1"}), (C2:default {_id: "C2"}),
 | Name | Type | Default | Description |
 | -- | -- | -- | -- |
 | `limit` | `INT` | `-1` | Limits the number of results returned (-1 = all). |
-| `order` | `STRING` | / | Sorts the results by `triangles`: `asc` or `desc`. |
+| `order` | `STRING` | / | Sorts the results by `triangleCount`: `asc` or `desc`. |
 
 ## Run Mode
 
@@ -49,24 +49,24 @@ INSERT (C1:default {_id: "C1"}), (C2:default {_id: "C2"}),
 | Column | Type | Description |
 | -- | -- | -- |
 | `nodeId` | `STRING` | Node identifier (`_id`) |
-| `triangles` | `INT` | Number of triangles the node participates in |
+| `triangleCount` | `INT` | Number of triangles the node participates in |
 | `coefficient` | `FLOAT` | Local clustering coefficient |
 
 ```gql
 CALL algo.trianglecount({
   order: "desc"
-}) YIELD nodeId, triangles, coefficient
+}) YIELD nodeId, triangleCount, coefficient
 ```
 
 Result:
 
-| nodeId | triangles | coefficient |
+| nodeId | triangleCount | coefficient |
 | -- | -- | -- |
 | C2 | 2 | 0.6666666666666666 |
-| C3 | 1 | 0.16666666666666666 |
 | C1 | 2 | 0.6666666666666666 |
-| C6 | 0 | 0 |
+| C3 | 1 | 0.16666666666666666 |
 | C4 | 1 | 1 |
+| C6 | 0 | 0 |
 | C5 | 0 | 0 |
 
 ## Stream Mode
@@ -74,14 +74,14 @@ Result:
 Returns the same columns as run mode, streamed for memory efficiency.
 
 ```gql
-CALL algo.trianglecount.stream() YIELD nodeId, triangles
-FILTER triangles > 0
-RETURN nodeId, triangles
+CALL algo.trianglecount.stream() YIELD nodeId, triangleCount
+FILTER triangleCount > 0
+RETURN nodeId, triangleCount
 ```
 
 Result:
 
-| nodeId | triangles |
+| nodeId | triangleCount |
 | -- | -- |
 | C2 | 2 |
 | C3 | 1 |
@@ -116,29 +116,28 @@ Computes results and writes them back to node properties. The write configuratio
 
 | Name | Type | Description |
 | -- | -- | -- |
-| `db.property` | `STRING` or `MAP` | Node property to write results to. String: writes the `triangles` column in results to a property. Map: explicit column-to-property mapping (e.g., `{triangles: 'tri_count', coefficient: 'lcc'}`). |
+| `db.property` | `STRING` or `MAP` | Node property to write results to. String: writes the `triangleCount` column in results to a property. Map: explicit column-to-property mapping (e.g., `{triangleCount: 'tri_count', coefficient: 'lcc'}`). |
 
 **Writable columns:**
 
 | Column | Type | Description |
 | -- | -- | -- |
-| `triangles` | `INT` | Triangle count |
+| `triangleCount` | `INT` | Triangle count |
 | `coefficient` | `FLOAT` | Local clustering coefficient |
 
 **Returns:**
 
 | Column | Type | Description |
 | -- | -- | -- |
-| `task_id` | `STRING` | Task identifier |
-| `status` | `STRING` | Task status (`running`) |
-
-The write executes asynchronously in the background. Use `SHOW TASKS` with the `task_id` to check progress and results.
+| `task_id` | `STRING` | Task identifier for tracking via `SHOW TASKS` |
+| `nodesWritten` | `INT` | Number of nodes with properties written |
+| `computeTimeMs` | `INT` | Time spent computing the algorithm (milliseconds) |
+| `writeTimeMs` | `INT` | Time spent writing properties to storage (milliseconds) |
 
 ```gql
 CALL algo.trianglecount.write({}, {
   db: {
-    property: "tri_count"                                       // String: writes triangles to one property
-    // property: {triangles: "tri_count", coefficient: "lcc"}   // Map: explicit column-to-property
+    property: "tri_count"
   }
-}) YIELD task_id, status
+}) YIELD task_id, nodesWritten, computeTimeMs, writeTimeMs
 ```

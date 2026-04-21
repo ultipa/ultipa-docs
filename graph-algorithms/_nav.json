@@ -144,8 +144,8 @@
           "title": "Triangle Count"
         },
         {
-          "file": "clique-counting.md",
-          "title": "Clique Counting"
+          "file": "clique-count.md",
+          "title": "Clique Count"
         },
         {
           "file": "k-core.md",
@@ -158,6 +158,20 @@
         {
           "file": "p-cohesion.md",
           "title": "p-Cohesion"
+        },
+        {
+          "file": "induced-subgraph.md",
+          "title": "Induced Subgraph"
+        }
+      ]
+    },
+    {
+      "folder": "dag",
+      "name": "DAG",
+      "pages": [
+        {
+          "file": "topological-sort.md",
+          "title": "Topological Sort"
         }
       ]
     },
@@ -333,19 +347,6 @@
               "title": "Skip-gram Optimization"
             }
           ]
-        }
-      ]
-    },
-    {
-      "folder": "utility",
-      "pages": [
-        {
-          "file": "induced-subgraph.md",
-          "title": "Induced Subgraph"
-        },
-        {
-          "file": "topological-sort.md",
-          "title": "Topological Sort"
         }
       ]
     }

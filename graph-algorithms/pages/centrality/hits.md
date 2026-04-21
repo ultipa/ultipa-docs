@@ -24,7 +24,7 @@ Hubs and authorities exhibit a mutually reinforcing relationship: a good hub poi
 
 HITS algorithm operates on the whole graph iteratively to compute the <b>authority weight</b> (denoted as `x`) and <b>hub weight</b> (denoted as `y`) for each node through the link structure. Nodes with larger `x`-values and `y`-values are viewed as better authorities and hubs respectively.
 
-In a directed graph <i>G = (V, E)</i>, all nodes are initialized with `x = 1` and `y = 1`. In each iteration, for each node `p ∈ V`, update its `x` and `y` values as follows:
+In a directed graph `G = (V, E)`, all nodes are initialized with `x = 1` and `y = 1`. In each iteration, for each node `p ∈ V`, update its `x` and `y` values as follows:
 
 <center><img width="180" src="https://img.ultipa.cn/img/2023-02-01-18-01-37-xy.jpg" /></center>
 

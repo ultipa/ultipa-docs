@@ -28,6 +28,7 @@ The **truss number** of a node is the maximum `k` for which the node belongs to 
 
 - At least 3 nodes are contained in a truss (when `k ≥ 3`).
 - The algorithm treats all edges as undirected.
+- Multi-edges between the same pair of nodes are deduplicated and counted as a single connection. This ensures correct triangle counting — without deduplication, parallel edges would inflate triangle counts and cause edges to appear more supported than they actually are.
 
 ## Example Graph
 
@@ -44,7 +45,6 @@ INSERT (a:default {_id: "a"}), (b:default {_id: "b"}),
        (b)-[:default]->(a), (d)-[:default]->(a),
        (c)-[:default]->(a), (d)-[:default]->(c),
        (f)-[:default]->(a), (f)-[:default]->(d),
-       (d)-[:default]->(f), (f)-[:default]->(d),
        (d)-[:default]->(e), (e)-[:default]->(f),
        (f)-[:default]->(c), (c)-[:default]->(h),
        (i)-[:default]->(m), (i)-[:default]->(g),
@@ -78,17 +78,48 @@ CALL algo.ktruss({
 }) YIELD nodeId, trussNumber, inKTruss
 ```
 
+Result:
+
+| nodeId | trussNumber | inKTruss |
+| -- | -- | -- |
+| e | 3 | 0 |
+| d | 4 | 1 |
+| g | 4 | 1 |
+| f | 4 | 1 |
+| a | 4 | 1 |
+| c | 4 | 1 |
+| b | 2 | 0 |
+| m | 4 | 1 |
+| l | 4 | 1 |
+| i | 3 | 0 |
+| h | 2 | 0 |
+| k | 4 | 1 |
+| j | 2 | 0 |
+
 ## Stream Mode
 
 Returns the same columns as run mode, streamed for memory efficiency.
 
 ```gql
 CALL algo.ktruss.stream({
-  k: 5
+  k: 4
 }) YIELD nodeId, trussNumber, inKTruss
 FILTER inKTruss = 1
 RETURN nodeId, trussNumber
 ```
+
+Result:
+
+| nodeId | trussNumber |
+| -- | -- |
+| d | 4 |
+| g | 4 |
+| f | 4 |
+| a | 4 |
+| c | 4 |
+| m | 4 |
+| l | 4 |
+| k | 4 |
 
 ## Stats Mode
 
@@ -104,5 +135,10 @@ RETURN nodeId, trussNumber
 CALL algo.ktruss.stats({
   k: 4
 }) YIELD nodeCount, edgeCount, trussNodeCount
-
 ```
+
+Result:
+
+| nodeCount | edgeCount | trussNodeCount |
+| -- | -- | -- |
+| 13 | 15 | 8 |

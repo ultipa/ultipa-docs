@@ -36,7 +36,7 @@ SybilRank refers to the landing probability of each node as the node's <b>trust<
 
 SybilRank uses the technique of <b>power iteration</b> to efficiently calculate the landing probability of random walks in large graphs. Power iteration involves successive matrix multiplications where each element of the matrix represents the random walk transition probability from one node to a neighbor node. Each iteration computes the landing probability distribution over all nodes as the random walk proceeds by one step.
 
-In an undirected graph <i>G = (V, E)</i>, initially a total trust <code>T<sub>G</sub></code> is evenly distributed among all trust seeds. During each power iteration, a node first evenly distributes its trust to its neighbors; it then collects trust distributed by its neighbors and updates its own trust accordingly. The trust of node `v` in the `i`-th iteration is:
+In an undirected graph `G = (V, E)`, initially a total trust <code>T<sub>G</sub></code> is evenly distributed among all trust seeds. During each power iteration, a node first evenly distributes its trust to its neighbors; it then collects trust distributed by its neighbors and updates its own trust accordingly. The trust of node `v` in the `i`-th iteration is:
 
 <center><img width=200 src="https://img.ultipa.cn/img/2023-04-03-15-47-59-sybilrank.jpg"></center>
 

@@ -12,7 +12,7 @@ A <b>bipartite graph</b>, also known as a bigraph, is a graph in which the nodes
 
 <div align='center' drawio-diagram='6224' drawio-name='draw_09f0df44a94043b7967dcccf4ea2d334.jpg'><img src="https://img.ultipa.cn/draw/draw_09f0df44a94043b7967dcccf4ea2d334.jpg?v='1687849019862'"/></div>
 
-This example graph is bipartite. The nodes can be partitioned into sets <i>V<sub>1</sub> = {A, D, E}</i> and <i>V<sub>2</sub> = {B, C, F}</i>.
+This example graph is bipartite. The nodes can be partitioned into sets <code>>V<sub>1</sub> = {A, D, E}</code> and <code>V<sub>2</sub> = {B, C, F}</code>.
 
 ### Coloring Method
 
@@ -80,8 +80,8 @@ Result:
 
 | partition | nodes |
 | -- | -- |
-| 0 | [e, a, c] |
-| 1 | [d, f, b] |
+| 0 | ["e", "a", "c"] |
+| 1 | ["d", "f", "b"] |
 
 ## Stats Mode
 

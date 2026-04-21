@@ -20,7 +20,7 @@ In 3-dimensional space, the cosine similarity between vectors <code>A = [a<sub>1
 
 <center><img width=480 src="https://img.ultipa.cn/2022-08-09-14-00-13-cos3.jpg"></center>
 
-The following diagram shows the relationship between vectors `A` and `B` in 2D and 3D spaces, as well as the angle θ between them:
+The following diagram shows the relationship between vectors `A` and `B` in 2D and 3D spaces, as well as the angle `θ` between them:
 
 <div align=center drawio-diagram='4946' drawio-name="draw_16853a553f024f75b352985ae55be8c9.jpg"><img src="https://img.ultipa.cn/draw/draw_16853a553f024f75b352985ae55be8c9.jpg?v='1680746413239'"/></div>
 

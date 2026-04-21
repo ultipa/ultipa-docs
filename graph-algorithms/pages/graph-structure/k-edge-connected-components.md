@@ -12,7 +12,7 @@ Related material of the algorithm:
 
 ### Edge Connectivity
 
-The <b>edge connectivity</b> of a graph is a measure that quantifies the minimum number of edges that need to be removed in order to disconnect the graph or reduce its connectivity. Given a graph <i>G = (V, E)</i>, <i>G</i> is <b>k-edge connected</b> if it remains connected after the removal of any `k-1` or fewer edges from <i>G</i>.
+The <b>edge connectivity</b> of a graph is a measure that quantifies the minimum number of edges that need to be removed in order to disconnect the graph or reduce its connectivity. Given a graph `G = (V, E)`, `G` is <b>k-edge connected</b> if it remains connected after the removal of any `k-1` or fewer edges from `G`.
 
 The edge connectivity can also be interpreted as the maximum number of edge-disjoint paths between any two nodes in the graph. If the edge connectivity of a graph is `k`, it means that there are `k` edge-disjoint paths between any pair of nodes in the graph.
 
@@ -24,7 +24,7 @@ Below shows a 3-edge connected graph and the edge-disjoint paths between each no
 
 ### k-Edge Connected Components
 
-Instead of determining whether the entire graph <i>G</i> is k-edge connected, the algorithm finds the maximal subsets of nodes <i>V<sub>i</sub> ⊆ V</i>, where the subgraphs induced by <i>V<sub>i</sub></i> are k-edge connected.
+Instead of determining whether the entire graph `G` is k-edge connected, the algorithm finds the maximal subsets of nodes <code>V<sub>i</sub> ⊆ V</code>, where the subgraphs induced by <code>V<sub>i</sub></code> are k-edge connected.
 
 For example, in social networks, finding a group of people who are strongly connected is more important than computing the connectivity of the entire social network.
 
@@ -115,14 +115,14 @@ Result:
 
 | componentId | members |
 | -- | -- |
-| 0 | [E] |
-| 1 | [D] |
-| 2 | [G, F, I, H] |
-| 3 | [A] |
-| 4 | [C] |
-| 5 | [B] |
-| 6 | [M, L, K, J] |
-| 7 | [N] |
+| 0 | ["E"] |
+| 1 | ["D"] |
+| 2 | ["G", "F", "I", "H"] |
+| 3 | ["A"] |
+| 4 | ["C"] |
+| 5 | ["B"] |
+| 6 | ["M", "L", "K", "J"] |
+| 7 | ["N"] |
 
 ## Stats Mode
 
@@ -167,16 +167,15 @@ Computes results and writes them back to node properties. The write configuratio
 
 | Column | Type | Description |
 | -- | -- | -- |
-| `task_id` | `STRING` | Task identifier |
-| `status` | `STRING` | Task status (`running`) |
-
-The write executes asynchronously in the background. Use `SHOW TASKS` with the `task_id` to check progress and results.
+| `task_id` | `STRING` | Task identifier for tracking via `SHOW TASKS` |
+| `nodesWritten` | `INT` | Number of nodes with properties written |
+| `computeTimeMs` | `INT` | Time spent computing the algorithm (milliseconds) |
+| `writeTimeMs` | `INT` | Time spent writing properties to storage (milliseconds) |
 
 ```gql
 CALL algo.kedgeconnected.write({k: 3}, {
   db: {
-    property: "kecc_id"                     // String: writes componentId to one property
-    // property: {componentId: "kecc_id"}   // Map: explicit column-to-property
+    property: "kecc_id"
   }
-}) YIELD task_id, status
+}) YIELD task_id, nodesWritten, computeTimeMs, writeTimeMs
 ```

@@ -82,10 +82,10 @@ Result:
 
 | componentId | members | componentSize |
 | -- | -- | -- |
-| 0 | [Mike] | 1 |
-| 2 | [Bill, Alice, Anna, Bob, Joe] | 5 |
-| 3 | [Cathy] | 1 |
-| 1 | [Sam] | 1 |
+| 0 | ["Mike"] | 1 |
+| 2 | ["Bill", "Alice", "Anna", "Bob", "Joe"] | 5 |
+| 3 | ["Cathy"] | 1 |
+| 1 | ["Sam"] | 1 |
 
 ## Stats Mode
 
@@ -129,16 +129,15 @@ Computes results and writes them back to node properties. The write configuratio
 
 | Column | Type | Description |
 | -- | -- | -- |
-| `task_id` | `STRING` | Task identifier |
-| `status` | `STRING` | Task status (`running`) |
-
-The write executes asynchronously in the background. Use `SHOW TASKS` with the `task_id` to check progress and results.
+| `task_id` | `STRING` | Task identifier for tracking via `SHOW TASKS` |
+| `nodesWritten` | `INT` | Number of nodes with properties written |
+| `computeTimeMs` | `INT` | Time spent computing the algorithm (milliseconds) |
+| `writeTimeMs` | `INT` | Time spent writing properties to storage (milliseconds) |
 
 ```gql
 CALL algo.scc.write({}, {
   db: {
-    property: "scc_id"                     // String: writes componentId to one property
-    // property: {componentId: "scc_id"}   // Map: explicit column-to-property
+    property: "scc_id"
   }
-}) YIELD task_id, status
+}) YIELD task_id, nodesWritten, computeTimeMs, writeTimeMs
 ```

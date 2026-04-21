@@ -12,7 +12,7 @@ The algorithm was first published by E.F. Moore in 1959, but it was later redisc
 
 ### Shortest Path Faster Algorithm (SPFA)
 
-Given a graph <i>G = (V, E)</i> and a source node <i>s∈V</i>, array <i>d[]</i> is used to store the distances of the shortest paths from <i>s</i> to all nodes. Initialize all elements in <i>d[]</i> to infinity, except for <i>d[s] = 0</i>.
+Given a graph `G = (V, E)` and a source node <i>s∈V</i>, array <i>d[]</i> is used to store the distances of the shortest paths from <i>s</i> to all nodes. Initialize all elements in <i>d[]</i> to infinity, except for <i>d[s] = 0</i>.
 
 The basic idea of SPFA is the same as the <a target="_blank" href="https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm">Bellman–Ford algorithm</a> in that each node is used as a candidate to relax its adjacent nodes. However, SPFA improves efficiency by avoiding unnecessary iterations over all nodes. Instead, it maintains a first-in, first-out queue <i>Q</i> to store candidate nodes, and a node is added to the queue only when it has been relaxed. 
 

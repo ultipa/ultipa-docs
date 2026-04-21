@@ -56,9 +56,19 @@ INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
 
 ```gql
 CALL algo.inducedsubgraph({
-  nodes: "A,C,D,G"
+  nodes: ["A,C,D,G"]
 }) YIELD sourceId, targetId, edgeExists
 ```
+
+Result:
+
+| sourceId | targetId | edgeExists |
+| -- | -- | -- |
+| C | D | 1 |
+| C | A | 1 |
+| D | A | 1 |
+| D | A | 1 |
+| G | G | 1 |
 
 ## Stream Mode
 
@@ -70,6 +80,16 @@ CALL algo.inducedsubgraph.stream({
 }) YIELD sourceId, targetId
 RETURN sourceId, targetId
 ```
+
+Result:
+
+| sourceId | targetId |
+| -- | -- |
+| C | D |
+| C | A |
+| D | A |
+| D | A |
+| G | G |
 
 ## Stats Mode
 
@@ -85,5 +105,10 @@ RETURN sourceId, targetId
 CALL algo.inducedsubgraph.stats({
   nodes: "A,C,D,G"
 }) YIELD nodeCount, edgeCount, density
-
 ```
+
+Result:
+
+| nodeCount | edgeCount | density |
+| -- | -- | -- |
+| 4 | 5 | 0.4166666666666667 |

@@ -2,9 +2,9 @@
 
 ## Overview
 
-The Pearson correlation coefficient is the most common way of measuring the strength and direction of the linear relationship between two quantitative variables. In the graph, nodes are quantified by <i>N</i> numeric properties (features) of them.
+The Pearson correlation coefficient is the most common way of measuring the strength and direction of the linear relationship between two quantitative variables. In the graph, nodes are quantified by `N` numeric properties (features) of them.
 
-For two variables <code>X= (x<sub>1</sub>, x<sub>2</sub>, ..., x<sub>n</sub>)</code> and <code>Y = (y<sub>1</sub>, y<sub>2</sub>, ..., y<sub>n</sub>)</code> , Pearson correlation coefficient (`r`) is defined as the ratio of the covariance of them to the product of their standard deviations:
+For two variables <code>X = (x<sub>1</sub>, x<sub>2</sub>, ..., x<sub>n</sub>)</code> and <code>Y = (y<sub>1</sub>, y<sub>2</sub>, ..., y<sub>n</sub>)</code> , Pearson correlation coefficient (`r`) is defined as the ratio of the covariance of them to the product of their standard deviations:
 
 <center><img width=400 src="https://img.ultipa.cn/img/2023-05-30-10-05-44-pearson.jpg"></center>
 

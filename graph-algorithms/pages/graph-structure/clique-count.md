@@ -1,8 +1,8 @@
-# Clique Counting
+# Clique Count
 
 ## Overview
 
-The Clique Counting algorithm finds all maximal cliques in a graph using the <a href="https://en.wikipedia.org/wiki/Bron%E2%80%93Kerbosch_algorithm" target="_blank">Bron-Kerbosch algorithm</a>, and reports per-node clique participation. A clique is a subset of nodes where every pair is directly connected. A maximal clique is a clique that cannot be extended by adding any adjacent node.
+The Clique Count algorithm finds all maximal cliques in a graph using the <a href="https://en.wikipedia.org/wiki/Bron%E2%80%93Kerbosch_algorithm" target="_blank">Bron-Kerbosch algorithm</a>, and reports per-node clique participation. A clique is a subset of nodes where every pair is directly connected. A maximal clique is a clique that cannot be extended by adding any adjacent node.
 
 ## Concepts
 
@@ -14,11 +14,11 @@ A **clique** is a complete subgraph — a set of nodes where every pair is conne
 - A **3-clique** (triangle) is three mutually connected nodes.
 - A **k-clique** is a set of k nodes where all `k*(k-1)/2` possible edges exist.
 
-<div align=center><img src="images/cliquecounting-1.drawio.svg"/></div>
+<div align=center><img src="images/cliquecount-1.drawio.svg"/></div>
 
 For example, in the following graph, `{A, B, C}` form a 3-clique and `{B, C, D}` form another 3-clique. Together `{A, B, C, D}` do not form a 4-clique because there is no edge between `A` and `D`.
 
-<div align=center><img src="images/cliquecounting-2.drawio.svg"/></div>
+<div align=center><img src="images/cliquecount-2.drawio.svg"/></div>
 
 ### Maximal Clique
 
@@ -28,7 +28,7 @@ In the graph above:
 - `{A, B, C}` is a maximal clique
 - `{B, C, D}` is a maximal clique
 - `{B, C}` is a clique but **not** maximal
-- `{D, E}` is a maximal clique becuase `E` is only connected to `D`
+- `{D, E}` is a maximal clique because `E` is only connected to `D`
 
 ## Considerations
 
@@ -37,7 +37,7 @@ In the graph above:
 - Self-loops are ignored.
 
 ## Example Graph
-<div align=center><img src="images/cliquecounting-example.drawio.svg"/></div>
+<div align=center><img src="images/cliquecount-example.drawio.svg"/></div>
 
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
@@ -68,7 +68,7 @@ INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
 | `maxCliqueSize` | `INT` | Size of the largest clique containing this node |
 
 ```gql
-CALL algo.cliquecounting() YIELD nodeId, cliqueCount, maxCliqueSize
+CALL algo.cliquecount() YIELD nodeId, cliqueCount, maxCliqueSize
 ```
 
 Result:
@@ -88,7 +88,7 @@ Result:
 Returns the same columns as run mode, streamed for memory efficiency.
 
 ```gql
-CALL algo.cliquecounting.stream({
+CALL algo.cliquecount.stream({
     maxCliqueSize: 3
 }) YIELD nodeId, cliqueCount, maxCliqueSize
 RETURN nodeId, cliqueCount, maxCliqueSize
@@ -117,7 +117,7 @@ Result:
 | `maxCliqueSize` | `INT` | Size of the largest clique |
 
 ```gql
-CALL algo.cliquecounting.stats() YIELD nodeCount, totalCliques, maxCliqueSize
+CALL algo.cliquecount.stats() YIELD nodeCount, totalCliques, maxCliqueSize
 ```
 
 Result:

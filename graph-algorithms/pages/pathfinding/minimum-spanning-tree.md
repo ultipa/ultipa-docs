@@ -10,7 +10,7 @@ The MST has a wide range of applications, including network design, clustering, 
 
 ### Spanning Tree
 
-A spanning tree is a connected subgraph that includes all the nodes of a connected graph <i>G = (V, E)</i> (or of a connected component) and forms a tree (i.e., a graph with no circles). A graph may have multiple spanning trees, but each spanning tree must contain (|V| - 1) edges.
+A spanning tree is a connected subgraph that includes all the nodes of a connected graph `G = (V, E)` (or of a connected component) and forms a tree (i.e., a graph with no circles). A graph may have multiple spanning trees, but each spanning tree must contain (|V| - 1) edges.
 
 In the example below, the 11 nodes of the graph and the 10 edges highlighted in red form a spanning tree:
 

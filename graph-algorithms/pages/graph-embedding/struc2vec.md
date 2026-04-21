@@ -33,7 +33,7 @@ However, when the distance between such nodes exceeds the walk depth, methods li
 
 Intuitively, two nodes with the same degrees are considered structurally similar. If their neighbors also share the same degrees,  the structural similarity between the two nodes becomes even stronger.
 
-Consider an undirected, unweighted graph <i>G = (V, E)</i>, with diameter denoted as <i>k*</i>. Let <i>R<sub>k</sub>(u)</i> represent the set of nodes that are exactly <i>k</i> hops away from node <i>u</i>, where <i>k ∈ [0, k*]</i>. Let <i>s(S)</i> denote the ordered degree sequence of a node set <i>S ⊂ V</i>. Here is an example:
+Consider an undirected, unweighted graph `G = (V, E)`, with diameter denoted as <i>k*</i>. Let <i>R<sub>k</sub>(u)</i> represent the set of nodes that are exactly <i>k</i> hops away from node <i>u</i>, where <i>k ∈ [0, k*]</i>. Let <i>s(S)</i> denote the ordered degree sequence of a node set <i>S ⊂ V</i>. Here is an example:
 
 <div align=center drawio-diagram='3107' drawio-name="draw_88cfae112dee41fc92f1109b9d279048.jpg"><img src="https://img.ultipa.cn/draw/draw_88cfae112dee41fc92f1109b9d279048.jpg?v='1693276088404'"/></div>
 

@@ -10,7 +10,7 @@ The K-Hop All algorithm can be considered as the batch execution of the UQL <a t
 
 Although the K-Hop All algorithm is optimized for high concurrency performance, it may demand substantial computational resources when applied to large graphs (those with tens of millions of nodes or edges), or graphs with numerous supernodes. To optimize performance, it is advisable to avoid performing K-Hop All calculation that is excessively deep, considering the specific characteristics and size of the graph being analyzed.
 
-> In graph <i>G = (V, E)</i>, if <i>|V|/|E|=100</i>, querying the 5-hop neighbors of a node requires a theoretical computational complexity of 10<sup>5</sup> (equivalent to 10 billion computations), which would take approximately 100ms. Extrapolating from this, completing such a query in a graph with 10 million nodes would require 1 million seconds (equivalent to around 12 days). It's important to consider the computational demands and time requirements when working with graphs of this scale.
+> In graph `G = (V, E)`, if <i>|V|/|E|=100</i>, querying the 5-hop neighbors of a node requires a theoretical computational complexity of 10<sup>5</sup> (equivalent to 10 billion computations), which would take approximately 100ms. Extrapolating from this, completing such a query in a graph with 10 million nodes would require 1 million seconds (equivalent to around 12 days). It's important to consider the computational demands and time requirements when working with graphs of this scale.
 
 ## Example Graph
 
