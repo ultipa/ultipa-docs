@@ -39,7 +39,7 @@ In the following example, the nodes have only 1 possible topological sorting: `A
 
 ## Example Graph
 
-<div align=center><img src="images/topologicalsort-example.drawio.svg"/></div>
+<div align=center drawio-diagram='19966' drawio-name='draw_59f5a7a6c51d4f7c94944cfe471649a7.jpg'><img src="https://img.ultipa.cn/draw/draw_59f5a7a6c51d4f7c94944cfe471649a7.jpg?v='1734935445562'"/></div>
 
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
@@ -51,6 +51,13 @@ INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
        (E)-[:default]->(G), (F)-[:default]->(D),
        (F)-[:default]->(E), (H)-[:default]->(G)
 ```
+
+## Parameters
+
+| Name | Type | Default | Description |
+| -- | -- | -- | -- |
+| `limit` | `INT` | `-1` | Limits the number of results returned (-1 = all). |
+| `order` | `STRING` | / | Sorts the results by `order`: `asc` or `desc`. |
 
 ## Run Mode
 
@@ -66,6 +73,19 @@ INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
 CALL algo.topologicalsort() YIELD nodeId, order, level
 ```
 
+Result:
+
+| nodeId | order | level |
+| -- | -- | -- |
+| F | 0 | 0 |
+| A | 1 | 0 |
+| H | 2 | 0 |
+| E | 3 | 1 |
+| D | 4 | 1 |
+| C | 5 | 1 |
+| B | 6 | 1 |
+| G | 7 | 2 |
+
 ## Stream Mode
 
 Returns the same columns as run mode, streamed for memory efficiency.
@@ -75,6 +95,14 @@ CALL algo.topologicalsort.stream() YIELD nodeId, order, level
 FILTER level = 0
 RETURN nodeId
 ```
+
+Result:
+
+| nodeId |
+| -- |
+| F |
+| A |
+| H |
 
 ## Stats Mode
 
@@ -88,3 +116,9 @@ RETURN nodeId
 ```gql
 CALL algo.topologicalsort.stats() YIELD nodeCount, maxLevel
 ```
+
+Result:
+
+| nodeCount | maxLevel |
+| -- | -- |
+| 8 | 2 |
