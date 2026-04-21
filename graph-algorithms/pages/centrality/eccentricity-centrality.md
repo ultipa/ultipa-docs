@@ -24,7 +24,7 @@ Related concepts:
 
 The eccentricity centrality score of a node is the inverse of its eccentricity. The formula is:
 
-<div align=center><img width=180 src="images/bridges-1.drawio.svg"/></div>
+<div align=center><img width=180 src="images/eccentricity-formula.png"/></div>
 
 where `x` is the target node,  `y` is any node that connects with `x` along edges (`x` itself is excluded), `d(x,y)` is the shortest distance between `x` and `y`.
 
