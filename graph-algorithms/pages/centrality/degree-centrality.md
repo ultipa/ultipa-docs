@@ -31,7 +31,6 @@ In this weighted graph, the red node has weighted in-degree of `0.5 + 0.3 + 2 + 
 
 <div align=center drawio-diagram='19442' drawio-name='draw_cece848c2c7548dab62312fa5c57f0a3.jpg'><img src="https://img.ultipa.cn/draw/draw_cece848c2c7548dab62312fa5c57f0a3.jpg?v='1730948974639'"/></div>
 
-Run the following statements on an empty graph to insert data:
 
 ```gql
 INSERT (Mike:user {_id: "Mike"}), (Cathy:user {_id: "Cathy"}),
@@ -53,7 +52,7 @@ INSERT (Mike:user {_id: "Mike"}), (Cathy:user {_id: "Cathy"}),
 | `direction` | `STRING` | `both` | Edge direction: `in`, `out`, or `both`. |
 | `normalized` | `BOOL` | `false` | Whether to normalize scores. When `true`, uses `score_base` to determine the denominator. |
 | `score_base` | `STRING` | `max` | Normalization base, only effective when `normalized` is `true`. `max` divides by the max degree; `count` divides by node count - 1. |
-| `weight` | `STRING` or `LIST` | / | Edge property name(s) for weighted degree. Single string or list of strings. |
+| `weight` | `STRING` or `LIST` | / | Edge property name(s) for weighted degree. |
 | `limit` | `INT` | `-1` | Limits the number of results returned (-1 = all). |
 | `order` | `STRING` | / | Sorts the results by `score`: `asc` or `desc`. |
 

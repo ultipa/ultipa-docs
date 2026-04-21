@@ -50,7 +50,6 @@ The algorithm terminates when the seed set reaches the specified size.
 
 <div align=center drawio-diagram='19732' drawio-name="draw_8cca7f592c8f4b47987786ab0cb84b5e.jpg"><img src="https://img.ultipa.cn/draw/draw_8cca7f592c8f4b47987786ab0cb84b5e.jpg?v='1733803290117'"/></div>
 
-Run the following statements on an empty graph to insert data:
 
 ```gql
 INSERT (A:account {_id: "A"}), (B:account {_id: "B"}),

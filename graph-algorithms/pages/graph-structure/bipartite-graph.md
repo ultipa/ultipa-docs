@@ -31,7 +31,6 @@ In this example, both graph <i>A</i> and graph <i>B</i> are bipartite. Graph <i>
 
 <div align='center' drawio-diagram='2575' drawio-name="draw_b0aa1fe06ff644a586830c3b254cd1e0.jpg"><img src="https://img.ultipa.cn/draw/draw_b0aa1fe06ff644a586830c3b254cd1e0.jpg?v='1657173154014'"/></div>
 
-Run the following statements on an empty graph to insert data:
 
 ```gql
 INSERT (a:default {_id: "a"}), (b:default {_id: "b"}),

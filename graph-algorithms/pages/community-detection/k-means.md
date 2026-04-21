@@ -38,7 +38,6 @@ The iteration ends when the clustering results stabilize, or the maximum number 
 
 <div align=center drawio-diagram='20018' drawio-name='draw_b5e0d0a17d574401bf467d68df2533cc.jpg'><img src="https://img.ultipa.cn/draw/draw_b5e0d0a17d574401bf467d68df2533cc.jpg?v='1735266050819'"/></div>
 
-Run the following statements on an empty graph to insert data:
 
 ```gql
 INSERT (:default {_id: "A", f1: 6.2, f2: 49, f3: 361}),

@@ -30,7 +30,6 @@ where,
 
 <div align=center><img src="images/eigenvector-example.drawio.svg"/></div>
 
-Run the following statements on an empty graph to insert data:
 
 ```gql
 INSERT (web1:web {_id: "web1"}), (web2:web {_id: "web2"}),

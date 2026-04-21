@@ -60,7 +60,6 @@ Therefore, the Weighted Overlap Similarity between nodes *u* and *v* is `(0+0+0+
 
 <div align=center drawio-diagram='19790' drawio-name="draw_33a426f4ac1243ee949de102330bdfe3.jpg"><img src="https://img.ultipa.cn/draw/draw_33a426f4ac1243ee949de102330bdfe3.jpg?v='1734418999935'"/></div>
 
-Run the following statements on an empty graph to insert data:
 
 ```gql
 INSERT (userA:user {_id: "userA"}), (userB:user {_id: "userB"}),

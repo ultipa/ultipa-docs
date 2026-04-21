@@ -33,7 +33,6 @@ The algorithm computes coreness across all connected components independently.
 
 <div align=center drawio-diagram='19941' drawio-name='draw_25b52f2200af4fdcbd2cca6d5f48b049.jpg'><img src="https://img.ultipa.cn/draw/draw_25b52f2200af4fdcbd2cca6d5f48b049.jpg?v='1734600903174'"/></div>
 
-Run the following statements on an empty graph to insert data:
 
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),

@@ -38,7 +38,6 @@ In the graph above:
 
 ## Example Graph
 
-Run the following statements on an empty graph to insert data:
 
 <div align=center><img src="images/cliquecounting-example.drawio.svg"/></div>
 

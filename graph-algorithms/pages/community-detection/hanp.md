@@ -39,7 +39,6 @@ Given the edge weights and label scores shown in the example below, if we set <i
 
 <div align=center><img src="images/lpa-example.drawio.svg"/></div>
 
-Run the following statements on an empty graph to insert data:
 
 ```gql
 INSERT (A:user {_id: "A"}), (B:user {_id: "B"}),

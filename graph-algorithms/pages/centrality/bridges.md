@@ -30,7 +30,6 @@ Bridge detection is important for:
 
 <div align=center><img src="images/bridges-2.drawio.svg"/></div>
 
-Run the following statements on an empty graph to insert data:
 
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),

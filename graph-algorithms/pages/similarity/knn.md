@@ -23,7 +23,6 @@ Three metrics are supported:
 
 <div align=center><img src="images/knn-example.drawio.svg"/></div>
 
-Run the following statements on an empty graph to insert data:
 
 ```gql
 INSERT (Sue:user {_id: "Sue"}), (Dave:user {_id: "Dave"}),

@@ -43,7 +43,6 @@ Compared to PageRank:
 
 <div align=center drawio-diagram='19735' drawio-name="draw_7b9329b5de7346e280b9fc31e203a8fa.jpg"><img src="https://img.ultipa.cn/draw/draw_7b9329b5de7346e280b9fc31e203a8fa.jpg?v='1733816740161'"/></div>
 
-Run the following statements on an empty graph to insert data:
 
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),

@@ -40,7 +40,6 @@ This balance between exploration and exploitation helps avoid getting stuck in p
 
 <div align=center><img src="images/modularityopt-example.drawio.svg"/></div>
 
-Run the following statements on an empty graph to insert data:
 
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),

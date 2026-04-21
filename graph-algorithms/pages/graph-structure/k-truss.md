@@ -33,7 +33,6 @@ The **truss number** of a node is the maximum `k` for which the node belongs to 
 
 <div align=center><img src="images/ktruss-example.drawio.svg"/></div>
 
-Run the following statements on an empty graph to insert data:
 
 ```gql
 INSERT (a:default {_id: "a"}), (b:default {_id: "b"}),

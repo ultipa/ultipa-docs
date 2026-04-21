@@ -47,7 +47,6 @@ The algorithm iterates until the changes in all <i>x</i> and <i>y</i> values con
 
 <div align=center drawio-diagram='19742' drawio-name='draw_1afd6d26761942feba61b9b39ca0b412.jpg'><img src="https://img.ultipa.cn/draw/draw_1afd6d26761942feba61b9b39ca0b412.jpg?v='1733821758235'"/></div>
 
-Run the following statements on an empty graph to insert data:
 
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),

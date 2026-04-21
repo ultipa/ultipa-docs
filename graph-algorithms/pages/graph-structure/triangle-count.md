@@ -25,7 +25,6 @@ The algorithm counts the number of triangles each node participates in and also 
 
 <div align=center><img src="images/trianglecount-example.drawio.svg"/></div>
 
-Run the following statements on an empty graph to insert data:
 
 ```gql
 INSERT (C1:default {_id: "C1"}), (C2:default {_id: "C2"}),

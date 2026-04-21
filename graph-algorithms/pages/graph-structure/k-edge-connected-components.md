@@ -37,7 +37,6 @@ For example, in social networks, finding a group of people who are strongly conn
 
 <div align='center' drawio-diagram='6177' drawio-name="draw_350441442b224f7bad64fb8983024db2.jpg"><img src="https://img.ultipa.cn/draw/draw_350441442b224f7bad64fb8983024db2.jpg?v='1687145644126'"/></div>
 
-Run the following statements on an empty graph to insert data:
 
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),

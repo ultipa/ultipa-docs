@@ -57,7 +57,6 @@ Damping factor can also be understood as the probability that a web surfer rando
 
 <div align=center drawio-diagram='20046' drawio-name='draw_aa8da8a8cc08406e8037b9474a0d4b9d.jpg'><img src="https://img.ultipa.cn/draw/draw_aa8da8a8cc08406e8037b9474a0d4b9d.jpg?v='1735808851353'"/></div>
 
-Run the following statements on an empty graph to insert data:
 
 ```gql
 INSERT (A:account {_id: "A"}), (B:account {_id: "B"}),

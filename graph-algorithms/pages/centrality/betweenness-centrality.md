@@ -40,7 +40,6 @@ The betweenness centrality of node `A` is computed as: `(1/2 + 1 + 2/3 + 1/2 + 1
 
 <div align=center><img src="images/betweenness-example.drawio.svg"/></div>
 
-Run the following statements on an empty graph to insert data:
 
 ```gql
 INSERT (Sue:user {_id: "Sue"}), (Dave:user {_id: "Dave"}),

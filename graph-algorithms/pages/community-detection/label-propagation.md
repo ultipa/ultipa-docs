@@ -35,7 +35,6 @@ For example, in the diagram below, the blue node's label will change from `d` to
 
 <div align=center><img src="images/lpa-example.drawio.svg"/></div>
 
-Run the following statements on an empty graph to insert data:
 
 ```gql
 INSERT (A:user {_id: "A"}), (B:user {_id: "B"}),

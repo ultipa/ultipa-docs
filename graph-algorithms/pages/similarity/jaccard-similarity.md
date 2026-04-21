@@ -62,7 +62,6 @@ Therefore, the Weighted Jaccard Similarity between nodes *u* and *v* is `(0+0+0+
 
 <div align=center drawio-diagram='19789' drawio-name="draw_88628c848eaf439d9e0ef22c64b336f9.jpg"><img src="https://img.ultipa.cn/draw/draw_88628c848eaf439d9e0ef22c64b336f9.jpg?v='1734417643677'"/></div>
 
-Run the following statements on an empty graph to insert data:
 
 ```gql
 INSERT (userA:user {_id: "userA"}), (userB:user {_id: "userB"}),

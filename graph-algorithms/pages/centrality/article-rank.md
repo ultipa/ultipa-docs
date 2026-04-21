@@ -34,7 +34,6 @@ In comparison with WWW, some features have to be considered for citation network
 
 <div align=center drawio-diagram='19741' drawio-name='draw_6c32787d5acc41c6bff6286aa0316ee7.jpg'><img src="https://img.ultipa.cn/draw/draw_6c32787d5acc41c6bff6286aa0316ee7.jpg?v='1733821155263'"/></div>
 
-Run the following statements on an empty graph to insert data:
 
 ```gql
 INSERT (book1:book {_id: "book1"}), (book2:book {_id: "book2"}),

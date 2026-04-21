@@ -60,7 +60,6 @@ However, SybilRank terminates the power iteration after a fixed number of steps,
 
 <div align=center drawio-diagram='19743' drawio-name='draw_0293d7806a1a4e718f1a3c5311f36df0.jpg'><img src="https://img.ultipa.cn/draw/draw_0293d7806a1a4e718f1a3c5311f36df0.jpg?v='1733823372452'"/></div>
 
-Run the following statements on an empty graph to insert data:
 
 ```gql
 INSERT (H1:user {_id: "H1"}), (H2:user {_id: "H2"}),

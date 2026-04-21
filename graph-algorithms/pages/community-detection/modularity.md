@@ -57,7 +57,6 @@ Nodes in this graph are assigned into 3 communities, take community C<sub>1</sub
 
 <div align=center><img src="images/modularity-example.drawio.svg"/></div>
 
-Run the following statements on an empty graph to insert data:
 
 ```gql
 INSERT (A:default {_id: "A", comm_id: 0}), (B:default {_id: "B", comm_id: 0}),

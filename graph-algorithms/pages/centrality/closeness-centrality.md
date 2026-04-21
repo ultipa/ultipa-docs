@@ -53,7 +53,6 @@ Calculate closeness centrality score of the red node in the incoming direction i
 
 <div align=center drawio-diagram='19733' drawio-name="draw_4dfe957f3d8d4077b12f6f80375f5f9b.jpg"><img src="https://img.ultipa.cn/draw/draw_4dfe957f3d8d4077b12f6f80375f5f9b.jpg?v='1735021461876'"/></div>
 
-Run the following statements on an empty graph to insert data:
 
 ```gql
 INSERT (A:user {_id: "A"}), (B:user {_id: "B"}),
@@ -73,7 +72,7 @@ INSERT (A:user {_id: "A"}), (B:user {_id: "B"}),
 | -- | -- | -- | -- |
 | `ids` | `LIST` | / | `_id`s of nodes to compute (empty = all nodes). |
 | `direction` | `STRING` | `both` | Edge direction: `in`, `out`, or `both`. |
-| `weight` | `STRING` or `LIST` | / | Numeric edge property for weighted shortest paths (empty = unweighted BFS, set = Dijkstra). |
+| `weight` | `STRING` or `LIST` | / | Numeric edge property for weighted shortest paths. |
 | `normalized` | `BOOL` | `false` | Normalize scores using Wasserman-Faust formula for disconnected graphs. |
 | `samplingSize` | `INT` | `-1` | Number of source nodes to sample (-1 = all). |
 | `limit` | `INT` | `-1` | Limits the number of results returned (-1 = all). |
@@ -110,42 +109,21 @@ Result:
 | F | 0.3684210526315789 | 7 |
 | H | 0.3684210526315789 | 8 |
 
-Closeness for specific nodes:
+Weighted closeness centrality:
 
 ```gql
 CALL algo.closeness({
-  ids: ["A", "B"]
+  ids: ["A", "B"],
+  weight: ["strength"]
 }) YIELD nodeId, score, rank
 ```
 
 Result:
 
-| nodeId | score | rank |
+|	nodeId | score | rank |
 | -- | -- | -- |
-| B | 0.6363636363636364 | 1 |
-| A | 0.5833333333333334 | 2 |
-
-Out-direction closeness:
-
-```gql
-CALL algo.closeness({
-  direction: "out",
-  order: "desc"
-}) YIELD nodeId, score, rank
-```
-
-Result:
-
-| nodeId | score | rank |
-| -- | -- | -- |
-| A | 0.75 | 1 |
-| C | 0.6 | 2 |
-| D | 0.5 | 3 |
-| B | 0.5 | 4 |
-| G | 0.4 | 5 |
-| F | 0.3333333333333333 | 6 |
-| H | 0.3333333333333333 | 7 |
-| E | 0 | 8 |
+|	B	| 0.3181818181818182 | 1 |
+|	A	| 0.2916666666666667 | 2 |
 
 ## Stream Mode
 

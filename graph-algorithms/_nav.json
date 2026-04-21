@@ -29,8 +29,8 @@
           "title": "Harmonic Centrality"
         },
         {
-          "file": "eccentricity.md",
-          "title": "Eccentricity"
+          "file": "eccentricity-centrality.md",
+          "title": "Eccentricity Centrality"
         },
         {
           "file": "betweenness-centrality.md",

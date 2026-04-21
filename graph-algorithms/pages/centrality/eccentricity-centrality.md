@@ -40,9 +40,7 @@ Regarding closeness centrality, the green node has score `8/(1+1+1+1+2+3+4+3) = 
 
 ## Example Graph
 
-<div align=center><img src="images/eccentricity-example.drawio.svg"/></div>
-
-Run the following statements on an empty graph to insert data:
+<div align=center drawio-diagram='19736' drawio-name="draw_ff2b86ae207948b19e5f0c913137d31a.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_ff2b86ae207948b19e5f0c913137d31a.jpg?v='1751449980368'"/></div>
 
 ```gql
 INSERT (A:user {_id: "A"}), (B:user {_id: "B"}),
@@ -50,11 +48,11 @@ INSERT (A:user {_id: "A"}), (B:user {_id: "B"}),
        (E:user {_id: "E"}), (F:user {_id: "F"}),
        (G:user {_id: "G"}), (H:user {_id: "H"}),
        (I:user {_id: "I"}), (J:user {_id: "J"}),
-       (A)-[:vote]->(B), (A)-[:vote]->(C),
-       (A)-[:vote]->(D), (E)-[:vote]->(A),
-       (E)-[:vote]->(F), (F)-[:vote]->(G),
-       (F)-[:vote]->(I), (G)-[:vote]->(H),
-       (H)-[:vote]->(I)
+       (A)-[:vote {weight: 1}]->(B), (A)-[:vote {weight: 2}]->(C),
+       (A)-[:vote {weight: 3}]->(D), (E)-[:vote {weight: 2}]->(A),
+       (E)-[:vote {weight: 1}]->(F), (F)-[:vote {weight: 4}]->(G),
+       (F)-[:vote {weight: 1}]->(I), (G)-[:vote {weight: 2}]->(H),
+       (H)-[:vote {weight: 1}]->(I)
 ```
 
 ## Parameters
@@ -63,6 +61,7 @@ INSERT (A:user {_id: "A"}), (B:user {_id: "B"}),
 | -- | -- | -- | -- |
 | `ids` | `LIST` | / | `_id`s of nodes to compute (empty = all nodes). |
 | `direction` | `STRING` | `both` | Edge direction: `in`, `out`, or `both`. |
+| `weight` | `STRING` or `LIST` | / | Numeric edge property for weighted shortest paths. |
 | `limit` | `INT` | `-1` | Limits the number of results returned (-1 = all). |
 | `order` | `STRING` | / | Sorts the results by `eccentricity`: `asc` or `desc`. |
 
@@ -73,9 +72,10 @@ INSERT (A:user {_id: "A"}), (B:user {_id: "B"}),
 | Column | Type | Description |
 | -- | -- | -- |
 | `nodeId` | `STRING` | Node identifier (`_id`) |
-| `eccentricity` | `INT` | Eccentricity (max shortest-path distance from this node) |
-| `centrality` | `FLOAT` | Graph centrality (0 if disconnected) |
-| `isCenter` | `INT` | 1 if this node is a center node (min eccentricity), 0 otherwise |
+| `eccentricity` | `FLOAT` | Eccentricity (max shortest-path distance from this node) |
+| `centrality` | `FLOAT` | Centrality (1/eccentricity, 0 if disconnected) |
+| `isCenter` | `INT` | 1 if this node is a center node (min eccentricity in its component), 0 otherwise |
+| `componentId` | `INT` | Connected component ID (0-based) |
 
 Eccentricity centrality for all nodes:
 
@@ -100,11 +100,12 @@ Result:
 | H | 5 | 0.2 | 0 |
 | J | 0 | 0 | 0 |
 
-Eccentricity centrality for specific nodes:
+Weighted eccentricity centrality:
 
 ```gql
 CALL algo.eccentricity({
-  ids: ["A", "B"]
+  ids: ["A", "B"],
+  weight: ["weight"]
 }) YIELD nodeId, eccentricity, centrality, isCenter
 ```
 
@@ -112,8 +113,8 @@ Result:
 
 | nodeId | eccentricity | centrality | isCenter |
 | -- | -- | -- | -- |
-| A | 4 | 0.25 | 0 |
-| B | 5 | 0.2 | 0 |
+| A	| 7	| 0.14285714285714285	| 0 |
+|	B	|8 | 0.125 | 0 |
 
 ## Stream Mode
 
@@ -141,12 +142,13 @@ Result:
 | Column | Type | Description |
 | -- | -- | -- |
 | `nodeCount` | `INT` | Total number of nodes |
-| `radius` | `INT` | Radius (minimum eccentricity) |
-| `diameter` | `INT` | Diameter (maximum eccentricity) |
+| `radius` | `FLOAT` | Radius (minimum eccentricity across all components) |
+| `diameter` | `FLOAT` | Diameter (maximum eccentricity across all components) |
 | `centerCount` | `INT` | Number of center nodes |
+| `componentCount` | `INT` | Number of connected components |
 
 ```gql
-CALL algo.eccentricity.stats() YIELD nodeCount, radius, diameter, centerCount
+CALL algo.eccentricity.stats() YIELD nodeCount, radius, diameter, centerCount, componentCount
 ```
 
 Result:
@@ -177,16 +179,15 @@ Computes results and writes them back to node properties. The write configuratio
 
 | Column | Type | Description |
 | -- | -- | -- |
-| `task_id` | `STRING` | Task identifier |
-| `status` | `STRING` | Task status (`running`) |
-
-The write executes asynchronously in the background. Use `SHOW TASKS` with the `task_id` to check progress and results.
+| `task_id` | `STRING` | Task identifier for tracking via `SHOW TASKS` |
+| `nodesWritten` | `INT` | Number of nodes with properties written |
+| `computeTimeMs` | `INT` | Time spent computing the algorithm (milliseconds) |
+| `writeTimeMs` | `INT` | Time spent writing properties to storage (milliseconds) |
 
 ```gql
 CALL algo.eccentricity.write({}, {
   db: {
-    property: "gc_score"                                                     // String: writes centrality to one property
-    // property: {centrality: "gc_score", eccentricity: "gc_eccentricity"}   // Map: explicit column-to-property
+    property: "gc_score"
   }
-}) YIELD task_id, status
+}) YIELD task_id, nodesWritten, computeTimeMs, writeTimeMs
 ```
