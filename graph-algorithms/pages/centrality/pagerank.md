@@ -14,7 +14,7 @@ With the development of technology and the emergence of enormous correlation dat
 
 In WWW, hypertexts contained in webpages create links between webpages. Every webpage (node) can have some <b>forward links</b> (via out-edges) and <b>backlinks</b> (via in-edges). In the following graph, A and B are backlinks of C, D is a forward link of C.
 
-<div align='center' drawio-diagram='1401' drawio-name="draw_d6f0d10ef4474654a770555b6336ae8f.jpg"><img src="https://img.ultipa.cn/draw/draw_d6f0d10ef4474654a770555b6336ae8f.jpg?v='1678960967643'"/></div>
+<center><img src="images/pagerank-1.jpg"/></center>
 
 Webpages vary greatly in terms of the number of backlinks they have. Naturally, webpages that are more important, authoritative or of high quality are likely to receive more or more important backlinks.
 
@@ -24,13 +24,13 @@ PageRank can be described as this: a page has high rank if the sum of the ranks 
 
 The ranks (scores) of all pages are computed in a recursive way by starting with equals ranks and iterating the computation until it converges. In each iteration, a page gives out its rank to all its forward links evenly to contribute to the ranks of the pages it points to; meanwhile every page receives ranks from its backlinks, so the rank of page `u` after one iteration is:
 
-<center><img width=250 src="https://img.ultipa.cn/img/2023-03-16-17-56-34-PR.jpg"></center>
+<center><img width=250 src="images/pagerank-2.jpg"></center>
 
 where <code>B<sub>u</sub></code> is the backlink set of `u`.
 
 Below shows a steady state of a set of pages:
 
-<div align='center' drawio-diagram='4852' drawio-name='draw_e63020fcb3904d3b9c87b348c49df620.jpg'><img src="https://img.ultipa.cn/draw/draw_e63020fcb3904d3b9c87b348c49df620.jpg?v='1678961307271'"/></div>
+<center><img src="images/pagerank-3.jpg"/></center>
 
 ### Damping Factor
 
@@ -42,7 +42,7 @@ Consider the following kinds of webpages:
 
 To overcome these problems, a <b>damping factor</b>, whose value is between 0 and 1, is introduced. It gives each webpage a base rank while weakening the ranks passed from backlinks. The rank of page <i>u</i> after one iteration becomes:
 
-<center><img width=350 src="https://img.ultipa.cn/img/2023-03-23-11-39-14-pr2.jpg"></center>
+<center><img width=350 src="images/pagerank-4.jpg"></center>
 
 where `d` is the damping factor. For example, when `d` is 0.7, if a webpage receives 8 ranks in total from backlinks, then the rank of this webpage is updated to `0.7 * 8 + (1 - 0.7) = 5.9`.
 
@@ -55,7 +55,7 @@ Damping factor can also be understood as the probability that a web surfer rando
 
 ## Example Graph
 
-<div align=center drawio-diagram='20046' drawio-name='draw_aa8da8a8cc08406e8037b9474a0d4b9d.jpg'><img src="https://img.ultipa.cn/draw/draw_aa8da8a8cc08406e8037b9474a0d4b9d.jpg?v='1735808851353'"/></div>
+<center><img src="images/pagerank-example.jpg"/></center>
 
 ```gql
 INSERT (A:account {_id: "A"}), (B:account {_id: "B"}),

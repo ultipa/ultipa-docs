@@ -14,11 +14,11 @@ A **clique** is a complete subgraph — a set of nodes where every pair is conne
 - A **3-clique** (triangle) is three mutually connected nodes.
 - A **k-clique** is a set of k nodes where all `k*(k-1)/2` possible edges exist.
 
-<div align=center><img src="images/cliquecount-1.drawio.svg"/></div>
+<center><img src="images/cliquecount-1.drawio.svg"/></center>
 
 For example, in the following graph, `{A, B, C}` form a 3-clique and `{B, C, D}` form another 3-clique. Together `{A, B, C, D}` do not form a 4-clique because there is no edge between `A` and `D`.
 
-<div align=center><img src="images/cliquecount-2.drawio.svg"/></div>
+<center><img src="images/cliquecount-2.drawio.svg"/></center>
 
 ### Maximal Clique
 
@@ -37,7 +37,8 @@ In the graph above:
 - Self-loops are ignored.
 
 ## Example Graph
-<div align=center><img src="images/cliquecount-example.drawio.svg"/></div>
+
+<center><img src="images/cliquecount-example.drawio.svg"/></center>
 
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),

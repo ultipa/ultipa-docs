@@ -10,7 +10,7 @@ The Degree Centrality finds important nodes in the network, it measures the numb
 
 The number of incoming edges a node has is called its <b>in-degree</b>; accordingly, the number of outgoing edges is called <b>out-degree</b>. If ignores edge direction, it is <b>degree</b>.
 
-<div align=center drawio-diagram='1443' drawio-name="draw_c79beb875cd64cdfa0e3cb4647110abb.jpg"><img src="https://img.ultipa.cn/draw/draw_c79beb875cd64cdfa0e3cb4647110abb.jpg?v='1642759847524'"/></div>
+<center><img src="images/degree-1.jpg"/></center>
 
 In this graph, the red node has in-degree of 4 and out-degree of 3, and its degree is 7. A directed self-loop is regarded as both an incoming and an outgoing edge.
 
@@ -18,7 +18,7 @@ In this graph, the red node has in-degree of 4 and out-degree of 3, and its degr
 
 In many applications, each edge of a graph has an associated numeric value, called <b>weight</b>. In weighted graph, <b>weighted degree</b> of a node is the sum of weights of all its neighbor edges. Unweighted degree is equivalent to when all edge weights are 1.
 
-<div align=center drawio-diagram='1444' drawio-name='draw_bd6ced106a164be3865f9a21d578ede7.jpg'><img src="https://img.ultipa.cn/draw/draw_bd6ced106a164be3865f9a21d578ede7.jpg?v='1642759974332'"/></div>
+<center><img src="images/degree-2.jpg"/></center>
 
 In this weighted graph, the red node has weighted in-degree of `0.5 + 0.3 + 2 + 1 = 3.8` and weighted out-degree of `1 + 0.2 + 2 = 3.2`, and its weighted degree is `3.2 + 3.8 = 7`.
 
@@ -29,7 +29,7 @@ In this weighted graph, the red node has weighted in-degree of `0.5 + 0.3 + 2 + 
 
 ## Example Graph
 
-<div align=center drawio-diagram='19442' drawio-name='draw_cece848c2c7548dab62312fa5c57f0a3.jpg'><img src="https://img.ultipa.cn/draw/draw_cece848c2c7548dab62312fa5c57f0a3.jpg?v='1730948974639'"/></div>
+<center><img src="images/degree-example.jpg"/></center>
 
 ```gql
 INSERT (Mike:user {_id: "Mike"}), (Cathy:user {_id: "Cathy"}),

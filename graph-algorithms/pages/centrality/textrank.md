@@ -15,13 +15,13 @@ To apply the TextRank algorithm, the text must first be represented as a graph. 
 - **Nodes:** Text units that best fit the task, such as words, collocations, or sentences, are added as nodes in the graph.
 - **Edges:** Relationships between text units, such as semantic similarity, co-occurrence, or contextual overlap, are used to connect nodes with edges.
 
-<center><img width=500 src="https://img.ultipa.cn/img/2024-07-29-10-26-14-keyword-extraction.jpg"><br><span style="color:#999;">Sample graph build for keyphrase extraction: nodes are selected lexical units from the text, and edges are established based on co-occurrence within a defined window of words (Source: <a href="https://web.eecs.umich.edu/~mihalcea/papers/mihalcea.emnlp04.pdf" target="_blank">Original paper</a>)</span></center>
+<center><img width=500 src="images/textrank-1.jpg"><br><span style="color:#999;">Sample graph build for keyphrase extraction (Source: Original paper)</span></center>
 
 ### TextRank Model
 
 TextRank computes the ranks of all text units recursively using a "recommendation" mechanism, similar to the <a target="_blank" href="/docs/graph-analytics-algorithms/pagerank">PageRank</a> algorithm. It incorporates edge weights through a modified formula:
 
-<center><img width=380 src="https://img.ultipa.cn/img/2024-07-26-10-51-41-TextRank-formula.png"></center>
+<center><img width=380 src="images/textrank-2.png"></center>
 
 where,
 - `Out(v)` is the set of nodes that node `v` points to;
@@ -41,7 +41,7 @@ Compared to PageRank:
 
 ## Example Graph
 
-<div align=center drawio-diagram='19735' drawio-name="draw_7b9329b5de7346e280b9fc31e203a8fa.jpg"><img src="https://img.ultipa.cn/draw/draw_7b9329b5de7346e280b9fc31e203a8fa.jpg?v='1733816740161'"/></div>
+<center><img src="images/textrank-example.jpg"/></center>
 
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),

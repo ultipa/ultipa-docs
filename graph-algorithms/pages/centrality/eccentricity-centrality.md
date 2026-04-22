@@ -24,11 +24,11 @@ Related concepts:
 
 The eccentricity centrality score of a node is the inverse of its eccentricity. The formula is:
 
-<div align=center><img width=180 src="images/eccentricity-formula.png"/></div>
+<center><img width=180 src="images/eccentricity-2.png"/></center>
 
 where `x` is the target node,  `y` is any node that connects with `x` along edges (`x` itself is excluded), `d(x,y)` is the shortest distance between `x` and `y`.
 
-<div align=center drawio-diagram='1454' drawio-name="draw_26771c0b3279432fb74d7ceb6502c9c5.jpg"><img src="https://img.ultipa.cn/draw/draw_26771c0b3279432fb74d7ceb6502c9c5.jpg?v='1643192998970'"/></div>
+<center><img src="images/eccentricity-1.jpg"/></center>
 
 In this graph, the green and red numbers next to each node represent the shortest distances from that node to the green and red nodes, respectively. Eccentricity centrality scores of the green and red nodes are `1/4 = 0.25` and `1/3 = 0.3333` respectively.
 
@@ -40,7 +40,7 @@ Regarding closeness centrality, the green node has score `8/(1+1+1+1+2+3+4+3) = 
 
 ## Example Graph
 
-<div align=center drawio-diagram='19736' drawio-name="draw_ff2b86ae207948b19e5f0c913137d31a.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_ff2b86ae207948b19e5f0c913137d31a.jpg?v='1751449980368'"/></div>
+<center><img src="images/eccentricity-example.jpg"/></center>
 
 ```gql
 INSERT (A:user {_id: "A"}), (B:user {_id: "B"}),

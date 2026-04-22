@@ -10,15 +10,15 @@ The Bipartite algorithm determines whether a given graph is a bipartite graph an
 
 A <b>bipartite graph</b>, also known as a bigraph, is a graph in which the nodes can be divided into two disjoint sets such that every edge connects a node from one set to a node in the other. In other words, no edge connects nodes within the same set.
 
-<div align='center' drawio-diagram='6224' drawio-name='draw_09f0df44a94043b7967dcccf4ea2d334.jpg'><img src="https://img.ultipa.cn/draw/draw_09f0df44a94043b7967dcccf4ea2d334.jpg?v='1687849019862'"/></div>
+<center><img src="images/bipartite-1.jpg"/></center>
 
-This example graph is bipartite. The nodes can be partitioned into sets <code>>V<sub>1</sub> = {A, D, E}</code> and <code>V<sub>2</sub> = {B, C, F}</code>.
+This example graph is bipartite. The nodes can be partitioned into sets <code>V<sub>1</sub> = {A, D, E}</code> and <code>V<sub>2</sub> = {B, C, F}</code>.
 
 ### Coloring Method
 
 To determine if a graph is bipartite, one common approach is to perform a graph traversal and assign each visited node to one of two different sets. This process is often referred to as "coloring" the nodes. During traversal, if an edge is found that connects two nodes within the same set, the graph is not bipartite. Conversely, if all edges connect nodes from different sets, the graph is bipartite.
 
-<div align='center' drawio-diagram='6225' drawio-name="draw_e29ad8de09194018a02043ce327e0c7a.jpg"><img src="https://img.ultipa.cn/draw/draw_e29ad8de09194018a02043ce327e0c7a.jpg?v='1687852215405'"/></div>
+<center><img src="images/bipartite-2.jpg"/></center>
 
 In this example, both graph <i>A</i> and graph <i>B</i> are bipartite. Graph <i>C</i> is not bipartite as it contains an odd cycle. An <b>odd cycle</b> is a cycle that has an odd number of nodes. Bipartite graphs cannot contain odd cycles, as it is impossible to color all nodes in an odd cycle using only two colors while satisfying the bipartite condition.
 
@@ -29,7 +29,7 @@ In this example, both graph <i>A</i> and graph <i>B</i> are bipartite. Graph <i>
 
 ## Example Graph
 
-<div align='center' drawio-diagram='2575' drawio-name="draw_b0aa1fe06ff644a586830c3b254cd1e0.jpg"><img src="https://img.ultipa.cn/draw/draw_b0aa1fe06ff644a586830c3b254cd1e0.jpg?v='1657173154014'"/></div>
+<center><img src="images/bipartite-example.jpg"/></center>
 
 ```gql
 INSERT (a:default {_id: "a"}), (b:default {_id: "b"}),

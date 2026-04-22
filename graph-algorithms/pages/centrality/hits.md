@@ -16,7 +16,7 @@ If a node points to a considerable number of authoritative nodes, it is referred
 
 As illustrated in the graph below, red nodes represent good authorities, while green nodes represent good hubs.
 
-<div align="center" drawio-diagram='3907' drawio-name='draw_2ed110856aed4603a573d6aeaa79610b.jpg'><img src="https://img.ultipa.cn/draw/draw_2ed110856aed4603a573d6aeaa79610b.jpg?v='1672217278797'"/></div>
+<center><img src="images/hits-1.jpg"/></center>
 
 Hubs and authorities exhibit a mutually reinforcing relationship: a good hub points to many good authorities; a good authority is pointed to by many good hubs.
 
@@ -26,15 +26,15 @@ HITS algorithm operates on the whole graph iteratively to compute the <b>authori
 
 In a directed graph `G = (V, E)`, all nodes are initialized with `x = 1` and `y = 1`. In each iteration, for each node `p ∈ V`, update its `x` and `y` values as follows:
 
-<center><img width="180" src="https://img.ultipa.cn/img/2023-02-01-18-01-37-xy.jpg" /></center>
+<center><img width="180" src="images/hits-2.jpg" /></center>
 
 Here is an example:
 
-<div align='center' drawio-diagram='4899' drawio-name='draw_43b88a2290b64a76ac72baf583da2007.jpg'><img src="https://img.ultipa.cn/draw/draw_43b88a2290b64a76ac72baf583da2007.jpg?v='1680058951390'"/></div>
+<center><img src="images/hits-3.jpg"/></center>
 
 At the end of one iteration, normalize all `x` values and all `y` values to meet the invariant below:
 
-<center><img width="250" src="https://img.ultipa.cn/img/2023-03-29-11-11-42-norm.jpg" /></center>
+<center><img width="250" src="images/hits-4.jpg" /></center>
 
 The algorithm iterates until the changes in all <i>x</i> and <i>y</i> values converge within a specific tolerance, or until the maximum number of iterations is reached. In the experiments of the original author, the convergence is quite rapid, 20 iterations are normally sufficient.
 
@@ -45,7 +45,7 @@ The algorithm iterates until the changes in all <i>x</i> and <i>y</i> values con
 
 ## Example Graph
 
-<div align=center drawio-diagram='19742' drawio-name='draw_1afd6d26761942feba61b9b39ca0b412.jpg'><img src="https://img.ultipa.cn/draw/draw_1afd6d26761942feba61b9b39ca0b412.jpg?v='1733821758235'"/></div>
+<center><img src="images/hits-example.jpg"/></center>
 
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),

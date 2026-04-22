@@ -10,7 +10,7 @@ The Induced Subgraph algorithm extracts the subgraph formed by a given set of no
 
 An induced subgraph includes only the nodes from the given set and all edges that have both endpoints in that set.
 
-<div align='center' drawio-diagram='6063' drawio-name="draw_2044bf57a80e4696a943ed9e77ce416c.jpg"><img src="https://img.ultipa.cn/draw/draw_2044bf57a80e4696a943ed9e77ce416c.jpg?v='1685497373767'"/></div>
+<center><img src="images/inducedsubgraph-1.jpg"/></center>
 
 As this example shows, when specifying node set `S = {A, B, I, K, L, M, N}`, the induced subgraph is the graph whose node set is `S` and whose edge set contains all edges that have both endpoints in `S`.
 
@@ -22,7 +22,7 @@ As this example shows, when specifying node set `S = {A, B, I, K, L, M, N}`, the
 
 ## Example Graph
 
-<div align=center><img src="images/inducedsubgraph-example.drawio.svg"/></div>
+<center><img src="images/inducedsubgraph-example.drawio.svg"/></center>
 
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),

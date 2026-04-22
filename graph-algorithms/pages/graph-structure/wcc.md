@@ -17,7 +17,7 @@ A connected component is a maximal subset of nodes in a graph where all nodes in
 - A **weakly connected component (WCC)** is a subset of nodes where a path exists between any pair of nodes when edge directions are ignored.
 - A **strongly connected component (SCC)** is a subset of nodes in a directed graph where there is a directed path between every pair of nodes in both directions. See <a href="/docs/graph-algorithms/scc">SCC</a> for details.
 
-<div align=center drawio-diagram='6017' drawio-name='draw_2f5f2e1e0d644c729e5b3cd09344fcb5.jpg'><img src="https://img.ultipa.cn/draw/draw_2f5f2e1e0d644c729e5b3cd09344fcb5.jpg?v='1684744743791'"/></div>
+<center><img src="images/wcc-scc-1.jpg"/></center>
 
 This example shows the 3 strongly connected components and 2 weakly connected components of a graph.
 
@@ -28,7 +28,7 @@ This example shows the 3 strongly connected components and 2 weakly connected co
 
 ## Example Graph
 
-<div align=center drawio-diagram='19810' drawio-name="draw_5cf4c0fcf3f444b69bdfefe8c2fc1a68.jpg"><img src="https://img.ultipa.cn/draw/draw_5cf4c0fcf3f444b69bdfefe8c2fc1a68.jpg?v='1734329095581'"/></div>
+<center><img src="images/wcc-scc-example.jpg"/></center>
 
 ```gql
 INSERT (Mike:member {_id: "Mike"}), (Cathy:member {_id: "Cathy"}),

@@ -18,11 +18,11 @@ Closeness centrality was originally defined by Alex Bavelas in 1950:
 
 The shortest distance of two nodes is the number of edges contained in the shortest path between them. The shortest path is determined using the BFS principle, if node A is regarded as the start node and node B is one of the K-hop neighbors of node A, then K is the shortest distance between A and B.
 
-<div align=center drawio-diagram='1451' drawio-name="draw_c40a965f5b194538bcccd9b73d07e6d8.jpg"><img src="https://img.ultipa.cn/draw/draw_c40a965f5b194538bcccd9b73d07e6d8.jpg?v='1645510498262'"/></div>
+<center><img src="images/closeness-1.jpg"/></center>
 
 Examine the shortest distance between the red and green nodes in the above graph. Since the graph is undirected, no matter which node (red or green) to start, the other node is the 2-hop neighbor. Thus, the shortest distance between them is 2.
 
-<div align='center' drawio-diagram='4736' drawio-name='draw_606d8502031a460aacb3f68929cf7dce.jpg'><img src="https://img.ultipa.cn/draw/draw_606d8502031a460aacb3f68929cf7dce.jpg?v='1677468316183'"/></div>
+<center><img src="images/closeness-2.jpg"/></center>
 
 Examine the shortest distance between the red and green nodes after converting the undirected graph to directed graph, the edge direction should be considered now. The outgoing shortest distance from the red node to the green node is 4, and the incoming shortest distance from the green node to the red node is 3.
 
@@ -30,17 +30,17 @@ When edge weights are considered, the shortest distance between two nodes is the
 
 Examine the shortest distance between the red and green nodes after assigning weights to edges. To minimize the total weight, a path with more edges is chosen, resulting in a total weight of 5.
 
-<div align=center drawio-diagram='19980' drawio-name='draw_91b86ecdfb9043ed9c921fa73a43707e.jpg'><img src="https://img.ultipa.cn/draw/draw_91b86ecdfb9043ed9c921fa73a43707e.jpg?v='1735033396179'"/></div>
+<center><img src="images/closeness-3.jpg"/></center>
 
 ### Closeness Centrality
 
 Closeness centrality score of a node defined by this algorithm is the inverse of the arithmetic mean of the shortest distances from the node to all other reachable nodes. The formula is:
 
-<div align=center><img width=150 src="https://img.ultipa.cn/img/2023-03-07-13-54-04-cc.jpg"></div>
+<center><img width=150 src="images/closeness-4.jpg"></center>
 
 where `x` is the target node,  `y` is any node that connects with `x` along edges (`x` itself is excluded), `k-1` is the number of `y`, `d(x,y)` is the shortest distance between `x` and `y`.
 
-<div align=center drawio-diagram='1453' drawio-name="draw_6b97cd73f2834a2f9c623a26f6c65b5c.jpg"><img src="https://img.ultipa.cn/draw/draw_6b97cd73f2834a2f9c623a26f6c65b5c.jpg?v='1643165984784'"/></div>
+<center><img src="images/closeness-5.jpg"/></center>
 
 Calculate closeness centrality score of the red node in the incoming direction in the graph above. Only the blue, yellow and purple nodes can reach the red node in this direction, so the score is `3 / (2 + 1 + 2) = 0.6`. Since the green and grey nodes cannot reach the red node in the incoming direction, they are not included in the calculation.
 
@@ -51,7 +51,7 @@ Calculate closeness centrality score of the red node in the incoming direction i
 
 ## Example Graph
 
-<div align=center drawio-diagram='19733' drawio-name="draw_4dfe957f3d8d4077b12f6f80375f5f9b.jpg"><img src="https://img.ultipa.cn/draw/draw_4dfe957f3d8d4077b12f6f80375f5f9b.jpg?v='1735021461876'"/></div>
+<center><img src="images/closeness-example.jpg"/></center>
 
 ```gql
 INSERT (A:user {_id: "A"}), (B:user {_id: "B"}),

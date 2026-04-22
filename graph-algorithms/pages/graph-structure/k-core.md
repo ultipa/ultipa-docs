@@ -16,7 +16,7 @@ The k-core of a graph is the largest subgraph where every node has at least degr
 
 Below is the pruning process to get the 3-core of the graph. In the first round, nodes `{a, d, f}` with degree less than 3 are removed, which then affects the removal of node `b` in the second round. After the second round, all remaining nodes have a degree of at least 3. Therefore, the pruning process ends, and the 3-core of this graph is induced by nodes `{c, e, g, h}`.
 
-<div drawio-diagram='6170' drawio-name='draw_945f428bf6ac4959a1f7ff5b1890f8df.jpg'><img src="https://img.ultipa.cn/draw/draw_945f428bf6ac4959a1f7ff5b1890f8df.jpg?v='1686816943849'"/></div>
+<center><img src="images/kcore-1.jpg"/></center>
 
 ### Coreness
 
@@ -31,7 +31,7 @@ The algorithm computes coreness across all connected components independently.
 
 ## Example Graph
 
-<div align=center drawio-diagram='19941' drawio-name='draw_25b52f2200af4fdcbd2cca6d5f48b049.jpg'><img src="https://img.ultipa.cn/draw/draw_25b52f2200af4fdcbd2cca6d5f48b049.jpg?v='1734600903174'"/></div>
+<center><img src="images/kcore-example.jpg"/></center>
 
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),

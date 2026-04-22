@@ -16,7 +16,7 @@ A **strongly connected component (SCC)** is a maximal subset of nodes in a direc
 
 Unlike <a href="/docs/graph-algorithms/wcc">WCC</a> which ignores edge direction, SCC respects it — two nodes are in the same SCC only if they can reach each other following directed edges.
 
-<div align=center drawio-diagram='6017' drawio-name='draw_2f5f2e1e0d644c729e5b3cd09344fcb5.jpg'><img src="https://img.ultipa.cn/draw/draw_2f5f2e1e0d644c729e5b3cd09344fcb5.jpg?v='1684744743791'"/></div>
+<center><img src="images/wcc-scc-1.jpg"/></center>
 
 This example shows 3 strongly connected components and 2 weakly connected components. The number of SCCs is always ≥ the number of WCCs, since SCCs impose stricter connectivity conditions.
 
@@ -27,7 +27,7 @@ This example shows 3 strongly connected components and 2 weakly connected compon
 
 ## Example Graph
 
-<div align=center drawio-diagram='19810' drawio-name="draw_5cf4c0fcf3f444b69bdfefe8c2fc1a68.jpg"><img src="https://img.ultipa.cn/draw/draw_5cf4c0fcf3f444b69bdfefe8c2fc1a68.jpg?v='1734329095581'"/></div>
+<center><img src="images/wcc-scc-example.jpg"/></center>
 
 ```gql
 INSERT (Mike:member {_id: "Mike"}), (Cathy:member {_id: "Cathy"}),

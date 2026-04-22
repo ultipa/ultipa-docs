@@ -16,7 +16,7 @@ References:
 
 The Katz centrality is an extension of the <a target="_blank" href="/docs/graph-analytics-algorithms/eigenvector-centrality">eigenvector centrality</a>. In the `k`-th round of influence propagation in eigenvector centrality, the centrality vector is simply updated as <code>c<sup>(k)</sup> = Ac<sup>(k-1)</sup></code>, where `A` is the adjacency matrix. Katz centrality modifies this computation by introducing two additional parameters, leading to the following update formula (which should be rescaled afterward):
 
-<center><img width="260" src="https://img.ultipa.cn/img/2025-03-04-15-35-16-katz.jpg"></center>
+<center><img width="260" src="images/katz-1.jpg"></center>
 
 where,
 
@@ -24,11 +24,11 @@ where,
 - `β` (beta) is a **baseline centrality** constant that ensures each node has a nonzero centrality score, even when it receives no influence. The common choice for `β` is 1.
 - `1` is an n × 1 column vector of ones, where n is the number of nodes in the graph.
 
-<div align=center drawio-diagram='21606' drawio-name="draw_bf6d495919d24ecbb7ec9be125d30e70.jpg"><img src="https://img.ultipa.cn/draw/draw_bf6d495919d24ecbb7ec9be125d30e70.jpg?v='1741074327474'"/></div>
+<center><img src="images/katz-2.jpg"/></center>
 
 ## Example Graph
 
-<div align=center drawio-diagram='19738' drawio-name='draw_2ed941b377eb4cbc9d841d65e013c117.jpg'><img src="https://img.ultipa.cn/draw/draw_2ed941b377eb4cbc9d841d65e013c117.jpg?v='1733817784894'"/></div>
+<center><img src="images/eigenvector-katz-example.jpg"/></center>
 
 ```gql
 INSERT (web1:web {_id: "web1"}), (web2:web {_id: "web2"}),

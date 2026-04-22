@@ -18,7 +18,7 @@ Formally, a k-truss is a maximal subgraph in which every edge is supported by at
 
 In the graph below, the 3-Truss and 4-Truss are highlighted in red. The graph does not contain any truss with `k` equal to or greater than 5.
 
-<div align='center' drawio-diagram='6150' drawio-name="draw_89d92df096414bd69a3e1ed22f6a58a2.jpg"><img src="https://img.ultipa.cn/draw/draw_89d92df096414bd69a3e1ed22f6a58a2.jpg?v='1686712760996'"/></div>
+<center><img src="images/ktruss-1.jpg"/></center>
 
 ### Truss Number
 
@@ -32,7 +32,7 @@ The **truss number** of a node is the maximum `k` for which the node belongs to 
 
 ## Example Graph
 
-<div align=center><img src="images/ktruss-example.drawio.svg"/></div>
+<center><img src="images/ktruss-example.drawio.svg"/></center>
 
 ```gql
 INSERT (a:default {_id: "a"}), (b:default {_id: "b"}),

@@ -20,7 +20,7 @@ Some nodes identified as non-Sybils are designated as <b>trust seeds</b> for the
 
 Below is an example of the threat model with trust seeds:
 
-<div align=center drawio-diagram='4909' drawio-name="draw_b569d6200ff34944a42bb85312717f24.jpg"><img src="https://img.ultipa.cn/draw/draw_b569d6200ff34944a42bb85312717f24.jpg?v='1680502575577'"/></div>
+<center><img src="images/sybilrank-1.jpg"/></center>
 
 > An important assumption of SybilRank is that the number of attack edges is limited. Since SybilRank is designed for large scale attacks, where fake accounts are crafted and maintained at a low cost, and are thus unable to befriend many real users. It results in a sparse cut between <code>G<sub>H</sub></code> and <code>G<sub>S</sub></code>.
 
@@ -38,13 +38,13 @@ SybilRank uses the technique of <b>power iteration</b> to efficiently calculate 
 
 In an undirected graph `G = (V, E)`, initially a total trust <code>T<sub>G</sub></code> is evenly distributed among all trust seeds. During each power iteration, a node first evenly distributes its trust to its neighbors; it then collects trust distributed by its neighbors and updates its own trust accordingly. The trust of node `v` in the `i`-th iteration is:
 
-<center><img width=200 src="https://img.ultipa.cn/img/2023-04-03-15-47-59-sybilrank.jpg"></center>
+<center><img width=200 src="images/sybilrank-2.jpg"></center>
 
 where node `u` belongs to the neighbor set of node `v`, `deg(u)` is the degree of node `u`. The total amount of trust <code>T<sub>G</sub></code> remains unchanged all the time.
 
 With sufficient power iterations, the trust of all nodes would converge to the stationary distribution:
 
-<center><img width=210 src="https://img.ultipa.cn/img/2023-04-03-15-54-17-sybilrank2.jpg"></center>
+<center><img width=210 src="images/sybilrank-3.jpg"></center>
 
 However, SybilRank terminates the power iteration after a fixed number of steps, without waiting for full convergence, and it is suggested to be set as <code>log<sub>2</sub>(|V|)</code>. This number of iterations is sufficient to reach an approximately stationary distribution of trust over the fast-mixing non-Sybil region <code>G<sub>H</sub></code>, but limits the trust escaping to the Sybil region <code>G<sub>S</sub></code>, thus non-Sybils will be ranked higher than Sybils.
 
@@ -58,7 +58,7 @@ However, SybilRank terminates the power iteration after a fixed number of steps,
 
 ## Example Graph
 
-<div align=center drawio-diagram='19743' drawio-name='draw_0293d7806a1a4e718f1a3c5311f36df0.jpg'><img src="https://img.ultipa.cn/draw/draw_0293d7806a1a4e718f1a3c5311f36df0.jpg?v='1733823372452'"/></div>
+<center><img src="images/sybilrank-example.jpg"/></center>
 
 ```gql
 INSERT (H1:user {_id: "H1"}), (H2:user {_id: "H2"}),

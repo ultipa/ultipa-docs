@@ -19,11 +19,11 @@ The p-Cohesion model offers two key advantages over other cohesive subgraph mode
 
 The example graph below illustrates this. Suppose `p = 0.6`. A grey label next to each node shows the minimum number of internal neighbors required for the node to remain in a p-Cohesion.
 
-<div align='center' drawio-diagram='6166' drawio-name="draw_ffcc9719bb274bcfbf8e12a701061851.jpg"><img src="https://img.ultipa.cn/draw/draw_ffcc9719bb274bcfbf8e12a701061851.jpg?v='1686797368509'"/></div>
+<center><img src="images/pcohesion-1.jpg"/></center>
 
 Below are the minimal p-Cohesion subgraphs, in terms of node count, that include node `a` and node `j`, respectively.
 
-<div align='center' drawio-diagram='6168' drawio-name="draw_78908f02c70f425bacaa4146c8f0687d.jpg"><img src="https://img.ultipa.cn/draw/draw_78908f02c70f425bacaa4146c8f0687d.jpg?v='1687921148878'"/></div>
+<center><img src="images/pcohesion-2.jpg"/></center>
 
 ### Cohesion Value
 
@@ -37,7 +37,7 @@ This algorithm computes the **cohesion value** of a node, which is the maximum `
 
 ## Example Graph
 
-<div align='center' drawio-diagram='6236' drawio-name='draw_8154c0855e72495cb96b11dc28dd52c1.jpg'><img src="https://img.ultipa.cn/draw/draw_8154c0855e72495cb96b11dc28dd52c1.jpg?v='1687920551178'"/></div>
+<center><img src="images/pcohesion-example.jpg"/></center>
 
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),

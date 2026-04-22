@@ -21,7 +21,7 @@ The shortest paths between two nodes are the paths that contain the fewest edges
 
 The betweenness centrality of a node `x` is computed by:
 
-<div align=center><img width=170 src="https://img.ultipa.cn/img/2025-04-30-12-19-59-bc.jpg"></div>
+<center><img width=170 src="images/betweenness-1.jpg"></center>
 
 where,
 
@@ -32,13 +32,13 @@ where,
 
 The final value is normalized by the factor `(k – 1)(k – 2)`, where `k` is the total number of nodes in the graph. This normalization ensures the result lies within a fixed range, making it comparable across graphs of different sizes.
 
-<center><img src="https://img.ultipa.cn/img/2025-04-30-14-13-19-bc.jpg"></center>
+<center><img src="images/betweenness-2.jpg"></center>
 
 The betweenness centrality of node `A` is computed as: `(1/2 + 1 + 2/3 + 1/2 + 1 + 2/3) / (4 * 3) = 0.3611111111`.
 
 ## Example Graph
 
-<div align=center drawio-diagram='19737' drawio-name="draw_53c335c0f34b425c98e738b0ae1b1129.jpg"><img src="https://img.ultipa.cn/draw/draw_53c335c0f34b425c98e738b0ae1b1129.jpg?v='1740626013932'"/></div>
+<center><img src="images/betweenness-example.jpg"/></center>
 
 ```gql
 INSERT (Sue:user {_id: "Sue"}), (Dave:user {_id: "Dave"}),

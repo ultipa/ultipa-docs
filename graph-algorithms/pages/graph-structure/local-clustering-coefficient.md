@@ -12,17 +12,17 @@ The local clustering coefficient provides insights into the cohesion of a node's
 
 Mathematically, the local clustering coefficient of a node in an undirected graph is calculated as the ratio of the number of connected neighbor pairs to the total number of possible neighbor pairs:
 
-<center><img width=400 src="https://img.ultipa.cn/img/2023-07-18-16-59-16-coef.jpg"></center>
+<center><img width=400 src="images/lcc-1.jpg"></center>
 
 where `n` is the number of nodes contained in the 1-hop neighborhood of node `v` (denoted as <code>N(v)</code>), `i` and `j` are any two distinct nodes within <code>N(v)</code>, `δ(i,j)` is equal to 1 if `i` and `j` are connected, and 0 otherwise.
 
-<div align=center drawio-diagram='6367' drawio-name='draw_cadeb0a4ab4648b7b3b7b8f2c05e12c0.jpg'><img src="https://img.ultipa.cn/draw/draw_cadeb0a4ab4648b7b3b7b8f2c05e12c0.jpg?v='1689671244074'"/></div>
+<center><img src="images/lcc-2.jpg"/></center>
 
 In this example, the local clustering coefficient of the red node is `1/(5*4/2) = 0.1`.
 
 ## Example Graph
 
-<div align=center drawio-diagram='19962' drawio-name='draw_84e585c225fa43b8a658a880991ae41a.jpg'><img src="https://img.ultipa.cn/draw/draw_84e585c225fa43b8a658a880991ae41a.jpg?v='1734924519621'"/></div>
+<center><img src="images/lcc-example.jpg"/></center>
 
 ```gql
 INSERT (Lee:default {_id: "Lee"}), (Choi:default {_id: "Choi"}),

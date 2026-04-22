@@ -12,15 +12,15 @@ Eigenvector centrality scores range from 0 to 1; nodes with higher scores are mo
 
 The influence of a node is computed in a recursive way. Consider the graph below, and assume that nodes receive influence through incoming edges. In the adjacency matrix `A`, element <code>A<sub>ij</sub></code> reflects the number of incoming edges of node `i`. Initially, each node is randomly assigned a centrality value — all set to 1 as an example —represented by the vector <code>c<sup>(0)</sup></code>.
 
-<div align=center drawio-diagram='21603' drawio-name='draw_0d5e31e7737d4bb6bf28675c0f5663fc.jpg'><img src="https://img.ultipa.cn/draw/draw_0d5e31e7737d4bb6bf28675c0f5663fc.jpg?v='1741071873707'"/></div>
+<center><img src="images/eigenvector-1.jpg"/></center>
 
 In each round of influence propagation, a node's centrality is updated as the sum of centralities of all its incoming neighbors. In the first round, this operation is equivalent to multiplying the vector <code>c<sup>(0)</sup></code> by the matrix `A`, i.e., <code>c<sup>(1)</sup> = Ac<sup>(0)</sup></code>. Afterward, the L2-normalization is applied to rescale the vector <code>c<sup>(1)</sup></code>:
 
-<div align=center drawio-diagram='21604' drawio-name='draw_23738a8ded4b4356a1afa0b769b1a2d6.jpg'><img src="https://img.ultipa.cn/draw/draw_23738a8ded4b4356a1afa0b769b1a2d6.jpg?v='1741071942869'"/></div>
+<center><img src="images/eigenvector-2.jpg"/></center>
 
 After `k` rounds, <code>c<sup>(k)</sup></code> is computed by <code>c<sup>(k)</sup> = Ac<sup>(k-1)</sup></code>. As `k` grows, <code>c<sup>(k)</sup></code> stabilizes. In this example, stabilization is reached after approximately 20 rounds. The elements in <code>c<sup>(k)</sup></code> represent the centrality of the corresponding nodes.
 
-<div align=center drawio-diagram='21605' drawio-name='draw_7270dddbdf974ea8b14f7557e8a999be.jpg'><img src="https://img.ultipa.cn/draw/draw_7270dddbdf974ea8b14f7557e8a999be.jpg?v='1741072067963'"/></div>
+<center><img src="images/eigenvector-3.jpg"/></center>
 
 The algorithm continues until the sum of changes of all elements in <code>c<sup>(k)</sup></code> converges to within some tolerance, or the maximum iteration rounds is met.
 
@@ -30,7 +30,7 @@ Given that `A` is an n x n square matrix, `λ` is a constant, and `x` is a non-z
 
 The above adjacency matrix `A` has four eigenvalues <code>λ<sub>1</sub></code>, <code>λ<sub>2</sub></code>, <code>λ<sub>3</sub></code> and <code>λ<sub>4</sub></code> that correspond to eigenvectors <code>x<sub>1</sub></code>, <code>x<sub>2</sub></code>, <code>x<sub>3</sub></code> and <code>x<sub>4</sub></code>, respectively. <code>x<sub>1</sub></code> is the eigenvector of the eigenvalue <code>λ<sub>1</sub></code> which has the largtest absolute value. <code>λ<sub>1</sub></code> is the **dominant eigenvalue**, and <code>x<sub>1</sub></code> the **dominant eigenvector**.
 
-<div align='center' drawio-diagram='4811' drawio-name="draw_d8ddda94a4a44baba2ad54f2b363ee5a.jpg"><img src="https://img.ultipa.cn/draw/draw_d8ddda94a4a44baba2ad54f2b363ee5a.jpg?v='1678937639519'"/></div>
+<center><img src="images/eigenvector-4.jpg"/></center>
 
 In fact, as `k` grows, <code>c<sup>(k)</sup></code> always converges to <code>x<sub>1</sub></code>, regardless of how <code>c<sup>(0)</sup></code> is initialized. This phenomenon is explained by the <a target="_blank" href="https://en.wikipedia.org/wiki/Perron%E2%80%93Frobenius_theorem">Perron–Frobenius theorem</a>. Therefore, computing the eigenvector centrality of nodes in a graph is equivalent to finding the dominant eigenvector of the adjacency matrix `A`.
 
@@ -40,7 +40,7 @@ In fact, as `k` grows, <code>c<sup>(k)</sup></code> always converges to <code>x<
 
 ## Example Graph
 
-<div align=center drawio-diagram='19738' drawio-name='draw_2ed941b377eb4cbc9d841d65e013c117.jpg'><img src="https://img.ultipa.cn/draw/draw_2ed941b377eb4cbc9d841d65e013c117.jpg?v='1733817784894'"/></div>
+<center><img src="images/eigenvector-katz-example.jpg"/></center>
 
 ```gql
 INSERT (web1:web {_id: "web1"}), (web2:web {_id: "web2"}),

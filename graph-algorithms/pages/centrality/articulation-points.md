@@ -24,7 +24,7 @@ Articulation point detection is important for:
 
 ## Example Graph
 
-<div align=center><img src="images/bridges-example.drawio.svg"/></div>
+<center><img src="images/bridges-articulationpoints-example.drawio.svg"/></center>
 
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),

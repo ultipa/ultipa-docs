@@ -14,7 +14,7 @@ Related material of the algorithm:
 
 The <b>average graph distance</b> is a metric used to measure the average number of steps or edges required to traverse between any two nodes in a graph. It quantifies the overall connectivity or closeness of the nodes in the graph.
 
-<div align='center' drawio-diagram='6237' drawio-name="draw_61eb25160e0e47b1925b40c3eec6b35c.jpg"><img src="https://img.ultipa.cn/draw/draw_61eb25160e0e47b1925b40c3eec6b35c.jpg?v='1688011148835'"/></div>
+<center><img src="images/hyperanf-1.jpg"/></center>
 
 As described above, the average graph distance is typically calculated by performing graph traversals to find the shortest path between every pair of nodes, summing these distances, and dividing by the total number of node pairs to get the average.
 
@@ -28,15 +28,15 @@ ANF algorithms aim to estimate the neighborhood function (NF):
 - The <b>individual neighborhood function</b> (INF) of a node `x` in a graph, denoted as `N(x,t)`, returns the number of nodes that can be reached from `x` with `t` or fewer steps.
 - In an undirected graph `G = (V, E)`, the relationship between NF and INF is:
 
-<center><img width="160" src="https://img.ultipa.cn/img/2023-06-28-17-51-55-NF.jpg"/></center>
+<center><img width="160" src="images/hyperanf-2.jpg"/></center>
 
 The NF can help to reveal some features of graphs, including the average graph distance:
 
-<center><img width="360" src="https://img.ultipa.cn/img/2023-06-29-18-06-37-avg-dis.jpg"/></center>
+<center><img width="360" src="images/hyperanf-3.jpg"/></center>
 
 The calculation of the above example graph is shown below:
 
-<div align='center' drawio-diagram='6245' drawio-name="draw_88d9b2f6feed4f549b17f7ad44ea18de.jpg"><img src="https://img.ultipa.cn/draw/draw_88d9b2f6feed4f549b17f7ad44ea18de.jpg?v='1688026415395'"/></div>
+<center><img src="images/hyperanf-4.jpg"/></center>
 
 However, it is very expensive to compute the NF exactly on large graphs. By approximating the neighborhood function, ANF algorithms can estimate the average graph distance without traversing the entire graph.
 
@@ -52,7 +52,7 @@ First, each element `x` in the set is mapped into a fixed-size binary sequence b
 
 Then, update the registers. For each element `x` in the set:
 
-<div align='center' drawio-diagram='6276' drawio-name="draw_b3d5ebdfa7cb4bfea9026b8fd4b6b30b.jpg"><img src="https://img.ultipa.cn/draw/draw_b3d5ebdfa7cb4bfea9026b8fd4b6b30b.jpg?v='1688393426711'"/></div>
+<center><img src="images/hyperanf-5.jpg"/></center>
 
 - Calculate the index `i` of the register by the integer value of the leftmost `b` bits of `h(x)`, i.e., <code>h<sub>b</sub>(x)</code>. In the example, <code>i = h<sub>b</sub>(x) = 010 = 0\*2<sup>2</sup> + 1\*2<sup>1</sup> + 0\*2<sup>0</sup> = 2</code>.
 - Let <code>h<sup>b</sup>(x)</code> be the sequence of remaining bits of `h(x)`, and <code>ρ(h<sup>b</sup>(x))</code> be the position of the leftmost 1 of <code>h<sup>b</sup>(x)</code>. In the example, <code>ρ(h<sup>b</sup>(x)) = ρ(0001110101...) = 4</code>.
@@ -60,11 +60,11 @@ Then, update the registers. For each element `x` in the set:
 
 After reading all elements, the cardinality is calculated by the HyperLogLog counter as:
 
-<center><img width='310' src="https://img.ultipa.cn/img/2024-06-07-12-00-08-cardinality.png"></center>
+<center><img width="310" src="images/hyperanf-6.png"/></center>
 
 It is actually a normalized version of the harmonic mean of the <code>2<sup>M[i]</sup></code>, where <code>α<sub>m</sub></code> is a constant calculated by `m` as:
 
-<center><img width=270 src="https://img.ultipa.cn/2022-02-18-11-24-09-hyperANF-alfa.png"></center>
+<center><img width=270 src="images/hyperanf-7.png"></center>
 
 ### HyperANF
 
@@ -72,11 +72,11 @@ HyperANF is one popular ANF algorithm, it is a breakthrough improvement in terms
 
 The algorithm is based on the observation that `B(x,t)`, the set of reachable nodes from node `x` with distance `t` or less, satisfies
 
-<center><img width="210" src="https://img.ultipa.cn/img/2023-06-28-17-18-39-Nset.jpg"/></center>
+<center><img width="210" src="images/hyperanf-8.jpg"/></center>
 
 In the example graph below, node `a` has 3 adjacent edges `(a,b)`, `(a,c)` and `(a,d)`, so `B(a,3) = B(b,2) ∪ B(c,2) ∪ B(d,2)`.
 
-<div align='center' drawio-diagram='6249' drawio-name="draw_c0b9c2469fbe49b2a3dd24e1ce3c82bd.jpg"><img src="https://img.ultipa.cn/draw/draw_c0b9c2469fbe49b2a3dd24e1ce3c82bd.jpg?v='1687944672547'"/></div>
+<center><img src="images/hyperanf-9.jpg"/></center>
 
 Instead of keeping track of `B(x,t)`, the HyperANF algorithm employs HyperLogLog counters to simplify the computation process, as illustrated by the example graph above:
 
@@ -86,7 +86,7 @@ Instead of keeping track of `B(x,t)`, the HyperANF algorithm employs HyperLogLog
 - The values of all counters remain unchanged after 6 iterations because the diameter of the graph is 6.
 - `|B(x,t)|` is computed in each iteration by the cardinality equation with the constant <code>α<sub>m</sub> = 0.53243</code>.
 
-<center><img src="https://img.ultipa.cn/img/2023-07-03-16-58-42-it.jpg"></center>
+<center><img src="images/hyperanf-10.jpg"></center>
 
 Since `B(x,0) = {x}`, then `|N(x,t)| = |B(x,t)| - 1`. In this example, the average graph distance computed by the algorithm is 3.2041. The exact average graph distance of this example is 3.
 
@@ -98,7 +98,7 @@ Since `B(x,0) = {x}`, then `|N(x,t)| = |B(x,t)| - 1`. In this example, the avera
 
 ## Example Graph
 
-<div align='center' drawio-diagram='6251' drawio-name='draw_6253a72674424056ba8f91bd227a7486.jpg'><img src="https://img.ultipa.cn/draw/draw_6253a72674424056ba8f91bd227a7486.jpg?v='1688032658578'"/></div>
+<center><img src="images/hyperanf-example.jpg"/></center>
 
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),

@@ -20,7 +20,7 @@ The shortest distance between two nodes is defined as the number of edges in the
 
 The harmonic mean is the reciprocal of the arithmetic mean of the reciprocals of the variables. The formula for calculating the arithmetic mean `A` and the harmonic mean `H` is as follows:
 
-<center><img width="300" src="https://img.ultipa.cn/2022-08-08-11-08-40-mean.jpg"></center>
+<center><img width="300" src="images/harmonic-1.jpg"></center>
 
 A classic application of harmonic mean is to calculate the average speed when traveling back and forth at different speeds. Suppose there is a round trip, the forward and backward speeds are 30 km/h and 10 km/h respectively. What is the average speed for the entire trip?
 
@@ -32,11 +32,11 @@ Assuming the one-way distance is 1, the average speed that takes travel time int
 
 Harmonic centrality score of a node defined by this algorithm is the inverse of the harmonic mean of the shortest distances from the node to all other nodes. The formula is:
 
-<div align=center><img width=160 src="https://img.ultipa.cn/img/2023-03-07-14-09-45-hc.jpg"></div>
+<center><img width=160 src="images/harmonic-2.jpg"></center>
 
 where `x` is the target node,  `y` is any node in the graph other than `x`, `k-1` is the number of `y`, `d(x,y)` is the shortest distance between `x` and `y`, `d(x,y) = +∞` when `x` and `y` are not reachable to each other, in this case `1/d(x,y) = 0`.
 
-<div align='center' drawio-diagram='2849' drawio-name='draw_f26abcc1ee494ff5a8f1c4286f20f31a.jpg'><img src="https://img.ultipa.cn/draw/draw_f26abcc1ee494ff5a8f1c4286f20f31a.jpg?v='1659930545560'"/></div>
+<center><img src="images/harmonic-3.jpg"/></center>
 
 The harmonic centrality of node <i>a</i> in the above graph is `(1 + 1/2 + 1/+∞ + 1/+∞) / 4 = 0.375`, and the harmonic centrality of node <i>d</i> is `(1/+∞ + 1/+∞ + 1/+∞ + 1) / 4 = 0.25`.
 
@@ -46,7 +46,7 @@ The harmonic centrality of node <i>a</i> in the above graph is `(1 + 1/2 + 1/+�
 
 ## Example Graph
 
-<div align=center drawio-diagram='19734' drawio-name="draw_9505cf4d05b6463aac6c69057482c569.jpg"><img src="https://img.ultipa.cn/draw/draw_9505cf4d05b6463aac6c69057482c569.jpg?v='1735028023494'"/></div>
+<center><img src="images/harmonic-example.jpg"/></center>
 
 ```gql
 INSERT (A:user {_id: "A"}), (B:user {_id: "B"}),

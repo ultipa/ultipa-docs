@@ -28,7 +28,7 @@ The spread of a given seed set is measured by the number of <i>active</i> nodes 
 
 The spread function `IC()` is called <b>submodular</b> as the <b>marginal gain</b> of a single node `v` is diminishing as the seed set `S` grows:
 
-<center><img width="450" src="https://img.ultipa.cn/img/2023-03-14-11-41-37-submodular.jpg"></center>
+<center><img width="450" src="images/celf-1.jpg"></center>
 
 where the seed set <i>|S<sub>k+1</sub>| > |S<sub>k</sub>|</i>, `S ∪ {v}` means to add node `v` into the seed set.
 
@@ -48,7 +48,7 @@ The algorithm terminates when the seed set reaches the specified size.
 
 ## Example Graph
 
-<div align=center drawio-diagram='19732' drawio-name="draw_8cca7f592c8f4b47987786ab0cb84b5e.jpg"><img src="https://img.ultipa.cn/draw/draw_8cca7f592c8f4b47987786ab0cb84b5e.jpg?v='1733803290117'"/></div>
+<center><img src="images/celf-example.jpg"/></center>
 
 ```gql
 INSERT (A:account {_id: "A"}), (B:account {_id: "B"}),

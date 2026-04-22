@@ -18,7 +18,7 @@ The edge connectivity can also be interpreted as the maximum number of edge-disj
 
 Below shows a 3-edge connected graph and the edge-disjoint paths between each node pair.
 
-<div align='center' drawio-diagram='6176' drawio-name="draw_516ca76c533f42d59c83973efe95125e.jpg"><img src="https://img.ultipa.cn/draw/draw_516ca76c533f42d59c83973efe95125e.jpg?v='1687142427889'"/></div>
+<center><img src="images/kedgeconnected-1.jpg"/></center>
 
 > <b>Edge-disjoint</b> paths are paths that do not have any edge in common.
 
@@ -35,7 +35,7 @@ For example, in social networks, finding a group of people who are strongly conn
 
 ## Example Graph
 
-<div align='center' drawio-diagram='6177' drawio-name="draw_350441442b224f7bad64fb8983024db2.jpg"><img src="https://img.ultipa.cn/draw/draw_350441442b224f7bad64fb8983024db2.jpg?v='1687145644126'"/></div>
+<center><img src="images/kedgeconnected-example.jpg"/></center>
 
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),

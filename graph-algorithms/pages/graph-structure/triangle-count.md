@@ -12,7 +12,7 @@ In social networks, triangles indicate cohesive communities. In financial or tra
 
 A triangle is formed by three nodes that are all connected to each other. The graph below contains 2 triangles: `{a, b, c}` and `{b, c, d}`.
 
-<div align=center><img src="images/trianglecount-1.drawio.svg"/></div>
+<center><img src="images/trianglecount-1.drawio.svg"/></center>
 
 The algorithm counts the number of triangles each node participates in and also computes the local clustering coefficient as a byproduct.
 
@@ -23,7 +23,7 @@ The algorithm counts the number of triangles each node participates in and also 
 
 ## Example Graph
 
-<div align=center><img src="images/trianglecount-example.drawio.svg"/></div>
+<center><img src="images/trianglecount-example.drawio.svg"/></center>
 
 ```gql
 INSERT (C1:default {_id: "C1"}), (C2:default {_id: "C2"}),

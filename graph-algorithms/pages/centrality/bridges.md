@@ -10,7 +10,7 @@ The Bridges algorithm finds **bridge edges** in a graph — edges whose removal 
 
 A bridge (also called a cut edge) is an edge in an undirected graph whose removal increases the number of connected components. In other words, removing a bridge edge splits a connected part of the graph into two separate parts.
 
-<div align=center><img src="images/bridges-1.drawio.svg"/></div>
+<center><img src="images/bridges-1.drawio.svg"/></center>
 
 In this graph, the edge `B - C` is a bridge because removing it disconnects `C` from `A` and `B`. However, if there's also an edge `A - C`, then `B - C` is no longer a bridge since `C` can still reach `A` through the alternative path.
 
@@ -26,7 +26,7 @@ Bridge detection is important for:
 
 ## Example Graph
 
-<div align=center><img src="images/bridges-example.drawio.svg"/></div>
+<center><img src="images/bridges-articulationpoints-example.drawio.svg"/></center>
 
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),

@@ -16,7 +16,7 @@ However, not all articles are equally important. Hence, this approach based on <
 
 ArticleRank retains the basic PageRank methodology while making some modifications. When an article passes its rank among its forward links, it does not divide the rank equally by the out-degree of that article, but by the sum of the out-degree of that article and the average out-degree of all articles. The rank of article `u` after one iteration is:
 
-<center><img width=450 src="https://img.ultipa.cn/img/2023-03-23-17-47-45-ar.jpg"></center>
+<center><img width=450 src="images/articlerank-1.jpg"></center>
 
 where <code>B<sub>u</sub></code> is the backlink set of `u`, `d` is the damping factor. This change in the denominator reduces the bias that makes articles with few out-links seem to contribute more to their forward links.
 
@@ -32,7 +32,7 @@ In comparison with WWW, some features have to be considered for citation network
 
 ## Example Graph
 
-<div align=center drawio-diagram='19741' drawio-name='draw_6c32787d5acc41c6bff6286aa0316ee7.jpg'><img src="https://img.ultipa.cn/draw/draw_6c32787d5acc41c6bff6286aa0316ee7.jpg?v='1733821155263'"/></div>
+<center><img src="images/articlerank-example.jpg"/></center>
 
 ```gql
 INSERT (book1:book {_id: "book1"}), (book2:book {_id: "book2"}),
