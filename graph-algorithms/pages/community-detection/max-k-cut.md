@@ -12,7 +12,7 @@ Unlike community detection algorithms that maximize intra-group connectivity, Ma
 
 Given a graph and an integer `k`, the **maximum k-cut** problem seeks to partition the nodes into `k` disjoint sets such that the total number of edges crossing between sets is maximized. When `k = 2`, this is the classic **maximum cut** problem.
 
-<div align=center><img src="images/maxkcut-1.drawio.svg"/></div>
+<center><img src="images/maxkcut-1.drawio.svg"/></center>
 
 In this example with `k = 2`, the optimal cut places nodes `{A, D}` in one partition and `{B, C, E}` in the other, cutting 5 of the 6 edges.
 
@@ -25,7 +25,7 @@ The Max k-Cut problem is NP-hard, so the algorithm uses an approximation via loc
 
 ## Example Graph
 
-<div align=center><img src="images/maxkcut-example.drawio.svg"/></div>
+<center><img src="images/maxkcut-example.drawio.svg"/></center>
 
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),

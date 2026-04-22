@@ -23,7 +23,7 @@ For each node `i`, the algorithm considers all its neighbors `j` and calculates 
 
 Node `i` is reassigned to the community that yields the maximum `ΔQ`, provided that this gain exceeds a predefined positive threshold. If no such gain is found, `i` remains in its original community. 
 
-<div align=center><img src="images/louvain-1.jpg"/></div>
+<center><img src="images/louvain-1.jpg"/></center>
 
 Take the graph above as an example, where nodes belonging to the same community are denoted with the same color. Now, consider node `d`. The modularity gains from moving it into the community `{a,b}`, `{c}`, and `{e,f}` are:
 
@@ -39,7 +39,7 @@ This process is applied sequentially to all nodes and repeated until no further 
 
 In the second phase, each community is aggregated into a single node. Each of these aggregated nodes has a self-loop whose weight equals the total weight of intra-community edges. The weight of the edge between any two aggregated nodes corresponds to the sum of the weights of all edges between nodes in the respective original communities.
 
-<div align=center><img src="images/louvain-2.jpg"/></div>
+<center><img src="images/louvain-2.jpg"/></center>
 
 Community aggregation reduces the number of nodes and edges in the graph without altering local or global edge weights. After this compression, nodes within a community are treated as a single unit, allowing modularity optimization to continue at a higher level. This results in a hierarchical (iterative), multi-level community structure.
 
@@ -53,7 +53,7 @@ Once this second phase is completed, the algorithm applies another pass on the a
 
 ## Example Graph
 
-<div align=center><img src="images/louvain-example.jpg"/></div>
+<center><img src="images/louvain-example.jpg"/></center>
 
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),

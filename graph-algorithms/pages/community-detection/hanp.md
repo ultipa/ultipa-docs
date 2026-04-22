@@ -28,7 +28,7 @@ where,
 
 Given the edge weights and label scores shown in the example below, if we set `m = 2` and `δ = 0.2`, the blue node will update its label from `d` to `a`. The score of label `a` in the blue node will be attenuated to 0.6.
 
-<div align=center><img src="images/hanp-2.jpg"/></div>
+<center><img src="images/hanp-2.jpg"/></center>
 
 ## Considerations
 
@@ -37,7 +37,7 @@ Given the edge weights and label scores shown in the example below, if we set `m
 
 ## Example Graph
 
-<div align=center><img src="images/lpa-hanp-slpa-example.drawio.svg"/></div>
+<center><img src="images/lpa-hanp-slpa-example.drawio.svg"/></center>
 
 ```gql
 INSERT (A:user {_id: "A"}), (B:user {_id: "B"}),

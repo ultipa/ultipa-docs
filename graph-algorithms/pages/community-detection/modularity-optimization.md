@@ -38,7 +38,7 @@ This balance between exploration and exploitation helps avoid getting stuck in p
 
 ## Example Graph
 
-<div align=center><img src="images/modularityopt-example.jpg"/></div>
+<center><img src="images/modularityopt-example.jpg"/></center>
 
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),

@@ -16,7 +16,7 @@ Since then, the algorithm has been widely applied across various domains, includ
 
 The centroid, or geometric center, of an object in an N-dimensional space is the average position of all its points across each of the N coordinate directions.
 
-<div align=center><img src="images/kmeans-1.jpg"/></div>
+<center><img src="images/kmeans-1.jpg"/></center>
 
 In the context of clustering algorithms such as k-Means, a centroid refers to the geometric center of a cluster. When node features are defined using multiple node properties, the centroid summarizes those features by averaging them across all nodes in the cluster. To find the centroid of a cluster, the algorithm calculates the mean feature value of each feature dimension from the nodes assigned to that cluster.
 
@@ -36,7 +36,7 @@ The iteration ends when the clustering results stabilize, or the maximum number 
 
 ## Example Graph
 
-<div align=center><img src="images/kmeans-example.jpg"/></div>
+<center><img src="images/kmeans-example.jpg"/></center>
 
 ```gql
 INSERT (:default {_id: "A", f1: 6.2, f2: 49, f3: 361}),

@@ -22,7 +22,7 @@ The graph coloring problem is NP-hard to solve optimally, but near-optimal solut
 
 At the beginning of the greedy algorithm, each node `v` in the graph is initialized as uncolored. The algorithm processes each node `v` as below:
 
-<div align=center><img src="images/k1coloring-1.jpg"/></div>
+<center><img src="images/k1coloring-1.jpg"/></center>
 
 - For every adjacent node `w` of `v`, mark the color of `w` as forbidden for `v`.
 - Assign the smallest available color to `v` that is different from all its forbidden colors.
@@ -37,7 +37,7 @@ The algorithm uses an iterative parallel approach: in each iteration, colors are
 
 ## Example Graph
 
-<div align=center><img src="images/k1coloring-example.jpg"/></div>
+<center><img src="images/k1coloring-example.jpg"/></center>
 
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),

@@ -12,7 +12,7 @@ It is typically used after running a community detection algorithm (such as <a h
 
 In many networks, nodes tend to naturally form groups or communities, characterized by dense connections within a community and relatively sparse connections between communities.
 
-<div align=center><img src="images/modularity-1.jpg"/></div>
+<center><img src="images/modularity-1.jpg"/></center>
 
 Consider an equivalent network `G'` to `G`, where `G'` remains the same community partition and the same number of edges as in `G`, but the edges are placed randomly. If `G` has a strong community structure, the ratio of intra-community edges to the total number of edges in `G` should be higher than the expected ratio in `G'`. A greater disparity between the actual ratio and expected ratios indicates a more prominent community structure in `G`. This concept forms the basis of <b>modularity</b>. The modularity is one of the widely used methods to evaluate the quality of a community partition. The Louvain algorithm is designed to find partitions that maximize modularity.
 
@@ -41,7 +41,7 @@ where,
 - <code><math><mmultiscripts><mi>∑</mi><mi>tot</mi><mi>c</mi></mmultiscripts></math></code> is the sum of weights of edges incident to nodes in community `C`, i.e, the <b>total-community weight</b>;
 - `m` has the same meaning as above, and <code>2m = ∑<sub>c</sub><math><mmultiscripts><mi>∑</mi><mi>tot</mi><mi>c</mi></mmultiscripts></math></code>.
 
-<div align=center><img src="images/modularity-4.jpg"/></div>
+<center><img src="images/modularity-4.jpg"/></center>
 
 Nodes in this graph are assigned into 3 communities, take community <code>C<sub>1</sub></code> as example:
 
@@ -55,7 +55,7 @@ Nodes in this graph are assigned into 3 communities, take community <code>C<sub>
 
 ## Example Graph
 
-<div align=center><img src="images/modularity-example.drawio.svg"/></div>
+<center><img src="images/modularity-example.drawio.svg"/></center>
 
 ```gql
 INSERT (A:default {_id: "A", comm_id: 0}), (B:default {_id: "B", comm_id: 0}),

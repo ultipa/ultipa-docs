@@ -18,17 +18,17 @@ For a community `C` and its complement `C'`, the conductance of `C` is defined a
 
 In the example below, the community `C` is connected to the rest of the graph with three edges, i.e., `cut(C, C') = 3`. The conductance of `C` is then `cond(C) = 3/min(19, 17) = 3/17 = 0.176471`.
 
-<div align=center><img src="images/conductance-2.jpg"/></div>
+<center><img src="images/conductance-2.jpg"/></center>
 
 If we adjust the cut to include one more node in `C`, the conductance becomes `cond(C) = 3/min(21, 15) = 3/15 = 0.2`.
 
-<div align=center><img src="images/conductance-3.jpg"/></div>
+<center><img src="images/conductance-3.jpg"/></center>
 
 A small conductance value is desirable in community detection because it indicates a dense community with relatively few edges connecting to the outside. Conversely, a large conductance value means the community is loosely connected internally and has many edges reaching nodes outside the community.
 
 ## Example Graph
 
-<div align=center><img src="images/conductance-example.jpg"/></div>
+<center><img src="images/conductance-example.jpg"/></center>
 
 ```gql
 INSERT (A:default {_id: "A", community_id: 1}), (B:default {_id: "B", community_id: 1}),

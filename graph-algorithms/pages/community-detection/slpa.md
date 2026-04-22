@@ -26,7 +26,7 @@ The algorithm works through an iterative process where nodes exchange labels:
    - The listener selects the most frequently received label and adds it to its memory. If there is a tie, one is chosen randomly.
 3. **Post-processing**: After all iterations, each node's memory contains a history of labels. A label is kept as a community membership only if its frequency in memory meets the `threshold`.
 
-<div align=center><img src="images/slpa-1.drawio.svg"/></div>
+<center><img src="images/slpa-1.drawio.svg"/></center>
 
 For example, in this graph:
 
@@ -44,7 +44,7 @@ A lower `threshold` allows more overlapping memberships; a higher threshold prod
 
 ## Example Graph
 
-<div align=center><img src="images/lpa-hanp-slpa-example.drawio.svg"/></div>
+<center><img src="images/lpa-hanp-slpa-example.drawio.svg"/></center>
 
 ```gql
 INSERT (A:user {_id: "A"}), (B:user {_id: "B"}),

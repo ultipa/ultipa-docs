@@ -14,7 +14,7 @@ Unlike algorithms like k-Means that partition all nodes into clusters, HDBSCAN f
 
 In the HDBSCAN algorithm, **distance** between two nodes is the shortest-path length (hop count) between them. The **core distance** of a node answers the question: "How far does a node need to reach to find **at least** k nearby neighbors?"
 
-<div align=center><img src="images/hdbscan-1.drawio.svg"/></div>
+<center><img src="images/hdbscan-1.drawio.svg"/></center>
 
 For example, to find at least 3 neighbors:
 
@@ -26,7 +26,7 @@ A node in a dense region has a small core distance, while a node in a sparse reg
 
 The **mutual reachability distance** between two nodes `A` and `B` is:
 
-<div align=center><img width="400" src="images/hdbscan-2.png"/></div>
+<center><img width="400" src="images/hdbscan-2.png"/></center>
 
 This smooths out density differences — connections between dense and sparse regions are penalized, which helps prevent sparse nodes from being pulled into dense clusters.
 
@@ -63,7 +63,7 @@ Nodes in denser regions (smaller core distance) get lower outlier scores. Nodes 
 
 ## Example Graph
 
-<div align=center><img src="images/hdbscan-example.drawio.svg"/></div>
+<center><img src="images/hdbscan-example.drawio.svg"/></center>
 
 ```gql
 INSERT (A:user {_id: "A"}), (B:user {_id: "B"}),

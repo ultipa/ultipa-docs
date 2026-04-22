@@ -22,7 +22,7 @@ At each propagation iteration, a node updates its label to the one held by the l
 
 For example, in the diagram below, the blue node's label will change from `d` to `c`.
 
-<div align=center><img src="images/lpa-1.jpg"/></div>
+<center><img src="images/lpa-1.jpg"/></center>
 
 ## Considerations
 
@@ -33,7 +33,7 @@ For example, in the diagram below, the blue node's label will change from `d` to
 
 ## Example Graph
 
-<div align=center><img src="images/lpa-hanp-slpa-example.drawio.svg"/></div>
+<center><img src="images/lpa-hanp-slpa-example.drawio.svg"/></center>
 
 ```gql
 INSERT (A:user {_id: "A"}), (B:user {_id: "B"}),

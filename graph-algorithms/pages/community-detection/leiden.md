@@ -51,7 +51,7 @@ where,
 - <code><math><mmultiscripts><mi>∑</mi><mi>tot</mi><mi>c</mi></mmultiscripts></math></code> is the sum of `k` of all nodes in `C`.
 - `m` is the sum of all edge weights in the graph.
 
-<div align=center><img src="images/leiden-5.jpg"/></div>
+<center><img src="images/leiden-5.jpg"/></center>
 
 Take community <code>C<sub>1</sub></code> in the graph above as an example, where 
 
@@ -81,7 +81,7 @@ Randomness in the selection of a community allows the partition space to be expl
 
 The aggregate graph is constructed based on the <code>P<sub>refined</sub></code> obtained from the previous phase. This aggregation process is the same as in <a target="_blank" href="/docs/graph-analytics-algorithms/louvain">Louvain</a>. Note that each node is a single community in the aggregate graph in Louvain. However, the aggregate graph in Leiden is partitioned based on `P`, so multiple nodes may belong to the same community.
 
-<div align=center><img src="images/leiden-6.jpg"/></div>
+<center><img src="images/leiden-6.jpg"/></center>
 <center><code>P</code> is denoted by color blocks, <code>P<sub>refined</sub></code> is denoted by node colors</center><br>
 
 Once this third phase is completed, another pass is applied to the aggregate graph. These passes are iterated until no further changes occur in the node communities, and the modularity reaches its maximum.
@@ -93,7 +93,7 @@ Once this third phase is completed, another pass is applied to the aggregate gra
 
 ## Example Graph
 
-<div align=center><img src="images/leiden-example.jpg"/></div>
+<center><img src="images/leiden-example.jpg"/></center>
 
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
