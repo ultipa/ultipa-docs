@@ -117,7 +117,7 @@ INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
 
 | Name | Type | Default | Description |
 | -- | -- | -- | -- |
-| `maxLevels` | `INT` | `10` | Maximum number of optimization passes. Each pass consists of 3 phases. |
+| `maxIterations` | `INT` | `10` | Maximum number of optimization passes. Each pass consists of 3 phases. |
 | `resolution` | `FLOAT` | `1.0` | Resolution parameter `γ`. Values > 1 favor smaller, tighter communities; values < 1 favor larger communities. |
 | `theta` | `FLOAT` | `0.01` | Controls randomness during refinement phase. Set to `0` to disable randomness and always select the maximum modularity gain. |
 | `weight` | `STRING` | / | Numeric edge property to use as weight. If unset, all edges have unit weight. |
@@ -132,7 +132,7 @@ INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
 | -- | -- | -- |
 | `nodeId` | `STRING` | Node identifier (`_id`) |
 | `community` | `INT` | Community identifier |
-| `level` | `INT` | Number of optimization passes completed before convergence |
+| `iteration` | `INT` | Number of optimization passes completed before convergence |
 | `modularity` | `FLOAT` | Final modularity score |
 
 ```gql
@@ -186,7 +186,7 @@ Computes results and writes them back to node properties. The write configuratio
 | Column | Type | Description |
 | -- | -- | -- |
 | `community` | `INT` | Community identifier |
-| `level` | `INT` | Number of optimization passes completed before convergence |
+| `iteration` | `INT` | Number of optimization passes completed before convergence |
 | `modularity` | `FLOAT` | Final modularity score |
 
 **Returns:**

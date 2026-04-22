@@ -77,7 +77,7 @@ INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
 
 | Name | Type | Default | Description |
 | -- | -- | -- | -- |
-| `maxLevels` | `INT` | `10` | Maximum number of optimization passes. Each pass consists of 2 phases. |
+| `maxIterations` | `INT` | `10` | Maximum number of optimization passes. Each pass consists of 2 phases. |
 | `phase1MaxIterations` | `INT` | `5` | Maximum iterations per Phase 1 optimization pass. |
 | `minImprovement` | `FLOAT` | `0.0001` | Minimum modularity improvement to continue optimization. |
 | `weight` | `STRING` | / | Numeric edge property to use as weight. If unset, all edges have unit weight. |
@@ -92,7 +92,7 @@ INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
 | -- | -- | -- |
 | `nodeId` | `STRING` | Node identifier (`_id`) |
 | `community` | `INT` | Community identifier |
-| `level` | `INT` | Number of optimization passes completed before convergence |
+| `iteration` | `INT` | Number of optimization passes completed before convergence |
 | `modularity` | `FLOAT` | Final modularity score |
 
 ```gql
@@ -148,7 +148,7 @@ Computes results and writes them back to node properties. The write configuratio
 | Column | Type | Description |
 | -- | -- | -- |
 | `community` | `INT` | Community identifier |
-| `level` | `INT` | Number of optimization passes completed before convergence |
+| `iteration` | `INT` | Number of optimization passes completed before convergence |
 | `modularity` | `FLOAT` | Final modularity score |
 
 **Returns:**

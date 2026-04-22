@@ -66,7 +66,7 @@ INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
 | -- | -- | -- | -- |
 | `source` | `STRING` | / | **Required.** Source node `_id`. |
 | `target` | `STRING` | / | **Required.** Target node `_id`. |
-| `weightProperty` | `STRING` | / | Numeric edge property to use as weight. If unset, all edges have unit weight. |
+| `weight` | `STRING` | / | Numeric edge property to use as weight. If unset, all edges have unit weight. |
 | `direction` | `STRING` | `out` | Edge direction: `in`, `out`, or `both`. |
 
 ## Run Mode
@@ -84,7 +84,7 @@ INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
 CALL algo.shortestpath({
   source: "A",
   target: "G",
-  weightProperty: "value"
+  weight: "value"
 }) YIELD nodeId, cost, index, path
 ```
 
@@ -105,7 +105,7 @@ Returns the same columns as run mode, streamed for memory efficiency.
 CALL algo.shortestpath.stream({
   source: "A",
   target: "G",
-  weightProperty: "value"
+  weight: "value"
 }) YIELD nodeId, cost
 RETURN nodeId, cost
 ```

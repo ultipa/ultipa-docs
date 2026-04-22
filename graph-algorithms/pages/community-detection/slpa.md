@@ -74,7 +74,7 @@ INSERT (A:user {_id: "A"}), (B:user {_id: "B"}),
 | Name | Type | Default | Description |
 | -- | -- | -- | -- |
 | `iterations` | `INT` | `20` | Number of propagation iterations. |
-| `threshold` | `FLOAT` | `0.1` | Label frequency threshold for community membership (0 < threshold ≤ 1). A label is kept only if its proportion in a node's memory is ≥ `threshold`. |
+| `threshold` | `FLOAT` | `0.1` | Label frequency threshold for community membership (0 < `threshold` ≤ 1). A label is kept only if its proportion in a node's memory is ≥ `threshold`. |
 | `limit` | `INT` | `-1` | Limits the number of results returned (-1 = all). |
 | `order` | `STRING` | / | Sorts the results by `communities`: `asc` or `desc`. |
 
@@ -90,9 +90,29 @@ INSERT (A:user {_id: "A"}), (B:user {_id: "B"}),
 ```gql
 CALL algo.slpa({
   iterations: 20,
-  threshold: 0.1
+  threshold: 0.5
 }) YIELD nodeId, communities
 ```
+
+Result:
+
+| nodeId | communities |
+| -- | -- |
+| A | [4] |
+| B | [4] |
+| C | [4] |
+| D | [4] |
+| E | [4] |
+| F | [3] |
+| G | [2] |
+| H | [3] |
+| I | [3] |
+| J | [3] |
+| K | [7] |
+| L | [8] |
+| M | [8] |
+| N | [7] |
+| O | [8] |
 
 ## Stream Mode
 
@@ -100,11 +120,31 @@ Returns the same columns as run mode, streamed for memory efficiency.
 
 ```gql
 CALL algo.slpa.stream({
-  iterations: 20,
-  threshold: 0.1
+  iterations: 30,
+  threshold: 0.7
 }) YIELD nodeId, communities
 RETURN nodeId, communities
 ```
+
+Result:
+
+| nodeId | communities |
+| -- | -- |
+| A | [4] |
+| B | [4] |
+| C | [4] |
+| D | [4] |
+| E | [4] |
+| F | [3] |
+| G | [2] |
+| H | [2] |
+| I | [3] |
+| J | [3] |
+| K | [13] |
+| L | [13] |
+| M | [13] |
+| N | [13] |
+| O | [13] |
 
 ## Stats Mode
 
@@ -116,8 +156,16 @@ RETURN nodeId, communities
 | `communityCount` | `INT` | Number of unique communities detected |
 
 ```gql
-CALL algo.slpa.stats() YIELD nodeCount, communityCount
+CALL algo.slpa.stats({
+  threshold: 0.5
+}) YIELD nodeCount, communityCount
 ```
+
+Result:
+
+| nodeCount | communityCount |
+| -- | -- |
+| 15 | 4 |
 
 ## Write Mode
 

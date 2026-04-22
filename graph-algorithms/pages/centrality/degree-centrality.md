@@ -49,8 +49,8 @@ INSERT (Mike:user {_id: "Mike"}), (Cathy:user {_id: "Cathy"}),
 | -- | -- | -- | -- |
 | `ids` | `LIST` | / | `_id`s of nodes to compute (empty = all nodes). |
 | `direction` | `STRING` | `both` | Edge direction: `in`, `out`, or `both`. |
-| `normalized` | `BOOL` | `false` | Whether to normalize scores. When `true`, uses `score_base` to determine the denominator. |
-| `score_base` | `STRING` | `max` | Normalization base, only effective when `normalized` is `true`. `max` divides by the max degree; `count` divides by node count - 1. |
+| `normalized` | `BOOL` | `false` | Whether to normalize scores. When `true`, uses `scoreBase` to determine the denominator. |
+| `scoreBase` | `STRING` | `max` | Normalization base, only effective when `normalized` is `true`. `max` divides by the max degree; `count` divides by node count - 1. |
 | `weight` | `STRING` or `LIST` | / | Edge property name(s) for weighted degree. |
 | `limit` | `INT` | `-1` | Limits the number of results returned (-1 = all). |
 | `order` | `STRING` | / | Sorts the results by `score`: `asc` or `desc`. |
