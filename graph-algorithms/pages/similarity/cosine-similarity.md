@@ -10,23 +10,23 @@ Cosine similarity ranges from -1 to 1, where 1 indicates that the two vectors po
 
 ### Cosine Similarity
 
-<div align=center drawio-diagram='4963' drawio-name="draw_3f64dd50cd0a4e6695fae0cacda3892c.jpg"><img src="https://img.ultipa.cn/draw/draw_3f64dd50cd0a4e6695fae0cacda3892c.jpg?v='1681111944016'"/></div>
+<center><img src="images/cosine-1.jpg"/></center>
 
 In 2-dimensional space, the cosine similarity between vectors <code>A = [a<sub>1</sub>, a<sub>2</sub>]</code> and <code>B = [b<sub>1</sub>, b<sub>2</sub>]</code> is computed as:
 
-<center><img width=350 src="https://img.ultipa.cn/2022-08-09-14-00-10-cos2.jpg"></center>
+<center><img width=350 src="images/cosine-2.jpg"></center>
 
 In 3-dimensional space, the cosine similarity between vectors <code>A = [a<sub>1</sub>, a<sub>2</sub>, a<sub>3</sub>]</code> and <code>B = [b<sub>1</sub>, b<sub>2</sub>, b<sub>3</sub>]</code> is computed as:
 
-<center><img width=480 src="https://img.ultipa.cn/2022-08-09-14-00-13-cos3.jpg"></center>
+<center><img width=480 src="images/cosine-3.jpg"></center>
 
 The following diagram shows the relationship between vectors `A` and `B` in 2D and 3D spaces, as well as the angle `θ` between them:
 
-<div align=center drawio-diagram='4946' drawio-name="draw_16853a553f024f75b352985ae55be8c9.jpg"><img src="https://img.ultipa.cn/draw/draw_16853a553f024f75b352985ae55be8c9.jpg?v='1680746413239'"/></div>
+<center><img src="images/cosine-4.jpg"/></center>
 
 Generalized to N-dimensional space, cosine similarity is computed as:
 
-<center><img width=420 src="https://img.ultipa.cn/2022-03-16-15-04-04-cosineS.png"></center>
+<center><img width=420 src="images/cosine-5.png"></center>
 
 ## Considerations
 
@@ -35,7 +35,7 @@ Generalized to N-dimensional space, cosine similarity is computed as:
 
 ## Example Graph
 
-<div align=center drawio-diagram='19792' drawio-name='draw_bc765c50cae2418590031a17fdcb6fe4.jpg'><img src="https://img.ultipa.cn/draw/draw_bc765c50cae2418590031a17fdcb6fe4.jpg?v='1733988639804'"/></div>
+<center><img src="images/cosine-pearson-euclidean-example.jpg"/></center>
 
 ```gql
 INSERT (:product {_id: "product1", price: 50, weight: 160, width: 20, height: 152}),

@@ -6,7 +6,7 @@ The Pearson correlation coefficient is the most common way of measuring the stre
 
 For two variables <code>X = (x<sub>1</sub>, x<sub>2</sub>, ..., x<sub>n</sub>)</code> and <code>Y = (y<sub>1</sub>, y<sub>2</sub>, ..., y<sub>n</sub>)</code> , Pearson correlation coefficient (`r`) is defined as the ratio of the covariance of them to the product of their standard deviations:
 
-<center><img width=400 src="https://img.ultipa.cn/img/2023-05-30-10-05-44-pearson.jpg"></center>
+<center><img width=400 src="images/pearson-1.jpg"></center>
 
 The Pearson correlation coefficient ranges from -1 to 1:
 
@@ -22,7 +22,7 @@ The Pearson correlation coefficient ranges from -1 to 1:
 
 ## Example Graph
 
-<div align=center drawio-diagram='19793' drawio-name='draw_98317bd8658e4657868a30973dd5ab0a.jpg'><img src="https://img.ultipa.cn/draw/draw_98317bd8658e4657868a30973dd5ab0a.jpg?v='1733994356512'"/></div>
+<center><img src="images/cosine-pearson-euclidean-example.jpg"/></center>
 
 ```gql
 INSERT (:product {_id:"product1", price:50, weight:160, width:20, height:152}),

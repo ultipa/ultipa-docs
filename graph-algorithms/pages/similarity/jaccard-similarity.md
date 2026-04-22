@@ -12,18 +12,18 @@ Jaccard similarity ranges from 0 to 1, where 1 indicates that two sets are ident
 
 Given two sets `A` and `B`, the Jaccard similarity between them is computed as:
 
-<center><img width=300 src="https://img.ultipa.cn/2022-01-21-10-44-09-jaccardS-new.png"></center>
+<center><img width=300 src="images/jaccard-1.png"></center>
 
 In the following example, set `A = {b,c,e,f,g}`, set `B = {a,d,b,g}`, their intersection `A⋂B = {b,g}`, their union `A⋃B = {a,b,c,d,e,f,g}`, hence the Jaccard similarity between `A` and `B` is `2 / 7 = 0.285714`.
 
-<div align=center drawio-diagram='4943' drawio-name='draw_643f71d054c34c9d83cd682b0bd74402.jpg'><img src="https://img.ultipa.cn/draw/draw_643f71d054c34c9d83cd682b0bd74402.jpg?v='1680592080160'"/></div>
+<center><img src="images/jaccard-2.jpg"/></center>
 
 When applying Jaccard Similarity to compare two nodes in a graph, we use the 1-hop neighborhood set to represent each target node. The 1-hop neighborhood set:
 
 - contains no repeated nodes;
 - excludes the two target nodes.
 
-<div align=center drawio-diagram='14722' drawio-name="draw_86e6115da2be4ebea513a350b03fee51.jpg"><img src="https://img.ultipa.cn/draw/draw_86e6115da2be4ebea513a350b03fee51.jpg?v='1705742284029'"/></div>
+<center><img src="images/jaccard-3.jpg"/></center>
 
 In this graph, the 1-hop neighborhood set of nodes `u` and `v` is:
 
@@ -38,9 +38,9 @@ The Weighted Jaccard Similarity is an extension of the classic Jaccard Similarit
 
 The formula for Weighted Jaccard Similarity is given by:
 
-<center><img width=320 src="https://img.ultipa.cn/img/2024-01-20-17-46-10-weighted-jaccard.jpg"></center>
+<center><img width=320 src="images/jaccard-4.jpg"></center>
 
-<div align=center drawio-diagram='14724' drawio-name="draw_a59802aecd0449ddab9758f8e705ac49.jpg"><img src="https://img.ultipa.cn/draw/draw_a59802aecd0449ddab9758f8e705ac49.jpg?v='1705740462299'"/></div>
+<center><img src="images/jaccard-5.jpg"/></center>
 
 In this weighted graph, the union of the 1-hop neighborhood sets N<sub>u</sub> and N<sub>v</sub> is {a,b,c,d,e,f}. For each element in the union set, assign a value equal to the sum of the edge weights between the target node and the corresponding node; assign 0 if no edge exists between them:
 
@@ -60,7 +60,7 @@ Therefore, the Weighted Jaccard Similarity between nodes *u* and *v* is `(0+0+0+
 
 ## Example Graph
 
-<div align=center drawio-diagram='19789' drawio-name="draw_88628c848eaf439d9e0ef22c64b336f9.jpg"><img src="https://img.ultipa.cn/draw/draw_88628c848eaf439d9e0ef22c64b336f9.jpg?v='1734417643677'"/></div>
+<center><img src="images/jaccard-overlap-example.jpg"/></center>
 
 ```gql
 INSERT (userA:user {_id: "userA"}), (userB:user {_id: "userB"}),

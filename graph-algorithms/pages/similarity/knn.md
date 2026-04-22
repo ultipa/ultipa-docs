@@ -12,7 +12,7 @@ Three metrics are supported:
 
 ## Example Graph
 
-<div align=center><img src="images/knn-example.drawio.svg"/></div>
+<center><img src="images/knn-example.drawio.svg"/></center>
 
 ```gql
 INSERT (Sue:user {_id: "Sue", age: 28, score: 85}),

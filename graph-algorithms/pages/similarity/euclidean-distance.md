@@ -10,15 +10,15 @@ In mathematics, the Euclidean distance between two points in Euclidean space is 
 
 In 2-dimensional space, the formula to compute the Euclidean distance between points <code>A(x<sub>1</sub>, y<sub>1</sub>)</code> and <code>B(x<sub>2</sub>, y<sub>2</sub>)</code> is:
 
-<center><img width=270 src="https://img.ultipa.cn/2022-08-09-15-15-45-d2.jpg"></center>
+<center><img width=270 src="images/euclidean-1.jpg"></center>
 
 In 3-dimensional space, the formula to compute the Euclidean distance between points <code>A(x<sub>1</sub>, y<sub>1</sub>, z<sub>1</sub>)</code> and <code>B(x<sub>2</sub>, y<sub>2</sub>, z<sub>2</sub>)</code> is:
 
-<center><img width=360 src="https://img.ultipa.cn/2022-08-09-15-15-47-d3.jpg"></center>
+<center><img width=360 src="images/euclidean-2.jpg"></center>
 
 Generalized to N-dimensional space, the formula to compute the Euclidean distance is:
 
-<center><img width=210 src="https://img.ultipa.cn/2022-08-09-15-15-49-dn.jpg"></center>
+<center><img width=210 src="images/euclidean-3.jpg"></center>
 
 where <code>xi<sub>1</sub></code> represents the `i`-th dimensional coordinates of the first point, and <code>xi<sub>2</sub></code> represents the `i`-th dimensional coordinates of the second point.
 
@@ -36,7 +36,7 @@ Values closer to 1 indicate greater similarity. For example, if the Euclidean di
 
 ## Example Graph
 
-<div align=center drawio-diagram='19795' drawio-name='draw_977329a8246f44c5b1792416e52b7f61.jpg'><img src="https://img.ultipa.cn/draw/draw_977329a8246f44c5b1792416e52b7f61.jpg?v='1733998496314'"/></div>
+<center><img src="images/cosine-pearson-euclidean-example.jpg"/></center>
 
 ```gql
 INSERT (:product {_id: "product1", price: 50, weight: 160, width: 20, height: 152}),
