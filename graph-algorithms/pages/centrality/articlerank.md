@@ -2,7 +2,7 @@
 
 ## Overview
 
-ArticleRank has been derived from <a target="_blank" href="/docs/graph-analytics-algorithms/pagerank">PageRank</a> to measure the influence of journal articles.
+ArticleRank has been derived from <a target="_blank" href="/docs/graph-algorithms/pagerank">PageRank</a> to measure the influence of journal articles.
 
 - J. Li, P. Willett, <a target="_blank" href="https://www.emerald.com/insight/content/doi/10.1108/00012530911005544/full/html">ArticleRank: a PageRank-based Alternative to Numbers of Citations for Analysing Citation Networks</a> (2009)
 
@@ -12,7 +12,7 @@ ArticleRank has been derived from <a target="_blank" href="/docs/graph-analytics
 
 Like links between webpages, citations between articles (e.g., books or reports) indicate authority and quality. It is generally assumed that the more citations an article receives, the greater its perceived impact within its research domain.
 
-However, not all articles are equally important. Hence, this approach based on <a target="_blank" href="/docs/graph-analytics-algorithms/pagerank">PageRank</a> was proposed to rank articles.
+However, not all articles are equally important. Hence, this approach based on <a target="_blank" href="/docs/graph-algorithms/pagerank">PageRank</a> was proposed to rank articles.
 
 ArticleRank retains the basic PageRank methodology while making some modifications. When an article passes its rank among its forward links, it does not divide the rank equally by the out-degree of that article, but by the sum of the out-degree of that article and the average out-degree of all articles. The rank of article `u` after one iteration is:
 

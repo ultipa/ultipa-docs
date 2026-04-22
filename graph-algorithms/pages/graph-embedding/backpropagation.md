@@ -5,7 +5,7 @@ Backpropagation (BP), short for Error Backward Propagation, is a fundamental alg
 The BP algorithm encompasses two main stages:
 
 - <b>Forward Propagation:</b> Input data is fed into the input layer of the neural network or model. It then moves forward through one or more hidden layers before generating an output at the output layer.
-- <b>Backpropagation:</b> The generated output is compared with the actual or expected value. Subsequently, the error is conveyed from the output layer through the hidden layers and back to the input layer. During this process, the weights of the model are adjusted using the <a target="_blank" href="/docs/graph-analytics-algorithms/gradient-descent">gradient descent</a> technique.
+- <b>Backpropagation:</b> The generated output is compared with the actual or expected value. Subsequently, the error is conveyed from the output layer through the hidden layers and back to the input layer. During this process, the weights of the model are adjusted using the <a target="_blank" href="/docs/graph-algorithms/gradient-descent">gradient descent</a> technique.
 
 The iterative adjustment of weights forms the core of the training process of a neural network. We will illustrate this with a concrete example.
 
@@ -96,7 +96,7 @@ where <math><mi>m</mi></math> is the number of samples. Calculate the error of t
 
 A smaller value of the loss function corresponds to higher model accuracy. The fundamental goal of model training is to minimize the value as much as possible.
 
-By treating the inputs and outputs as constants and the weights as variables within the loss function, the goal becomes finding the weights that minimize the loss. This is precisely where the <a target="_blank" href="/docs/graph-analytics-algorithms/gradient-descent">gradient descent</a> technique comes into play.
+By treating the inputs and outputs as constants and the weights as variables within the loss function, the goal becomes finding the weights that minimize the loss. This is precisely where the <a target="_blank" href="/docs/graph-algorithms/gradient-descent">gradient descent</a> technique comes into play.
 
 In this example, batch gradient descent (BGD) is used, meaning all training samples are involved in the gradient calculation. The learning rate is set to <math><mi>η</mi><mo>=</mo><mn>0.5</mn></math>.
 
@@ -104,7 +104,7 @@ In this example, batch gradient descent (BGD) is used, meaning all training samp
 
 Adjust the weights <math><msub><mi>w</mi><mn>1</mn></msub></math> and <math><msub><mi>w</mi><mn>2</mn></msub></math> respectively.
 
-Calculate the partial derivative of <math><mi>E</mi></math> with respect to <math><msub><mi>w</mi><mn>1</mn></msub></math> with the <a target="_blank" href="/docs/graph-analytics-algorithms/gradient-descent#Chain-Rule">chain rule</a>:
+Calculate the partial derivative of <math><mi>E</mi></math> with respect to <math><msub><mi>w</mi><mn>1</mn></msub></math> with the <a target="_blank" href="/docs/graph-algorithms/gradient-descent#Chain-Rule">chain rule</a>:
 
 <center><img width="180" src="https://img.ultipa.cn/2022-09-27-15-21-41-back1.jpg"></center>
 
@@ -219,7 +219,7 @@ The weight <math><msub><mi>w</mi><mn>2</mn></msub></math> can be updated in a si
 
 Adjust the weights <math><msub><mi>v</mi><mn>11</mn></msub></math> ~ <math><msub><mi>v</mi><mn>32</mn></msub></math> respectively.
 
-Calculate the partial derivative of <math><mi>E</mi></math> with respect to <math><msub><mi>v</mi><mn>11</mn></msub></math> with the <a target="_blank" href="/docs/graph-analytics-algorithms/gradient-descent#Chain-Rule">chain rule</a>:
+Calculate the partial derivative of <math><mi>E</mi></math> with respect to <math><msub><mi>v</mi><mn>11</mn></msub></math> with the <a target="_blank" href="/docs/graph-algorithms/gradient-descent#Chain-Rule">chain rule</a>:
 
 <center><img width="230" src="https://img.ultipa.cn/2022-09-27-15-55-13-back3.jpg"></center>
 

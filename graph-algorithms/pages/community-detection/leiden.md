@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Leiden algorithm is a community detection method designed to optimize modularity while addressing some of the limitations of the widely used <a target="_blank" href="/docs/graph-analytics-algorithms/louvain">Louvain</a> algorithm. Unlike Louvain, which may produce poorly connected or even disconnected communities, Leiden guarantees well-connected communities. Additionally, the Leiden algorithm is faster. It is named after the city of Leiden, where it was developed.
+The Leiden algorithm is a community detection method designed to optimize modularity while addressing some of the limitations of the widely used <a target="_blank" href="/docs/graph-algorithms/louvain">Louvain</a> algorithm. Unlike Louvain, which may produce poorly connected or even disconnected communities, Leiden guarantees well-connected communities. Additionally, the Leiden algorithm is faster. It is named after the city of Leiden, where it was developed.
 
 References:
 
@@ -28,7 +28,7 @@ When the Leiden algorithm starts, each node is placed in its own community. The 
 
 #### Phase 1: Fast Modularity Optimization
 
-In the first phase of <a target="_blank" href="/docs/graph-analytics-algorithms/louvain">Louvain</a>, the algorithm repeatedly visits all nodes in the graph until no further node movements can increase the modularity. The Leiden algorithm improves efficiency by only visiting all nodes once initially, and afterwards, only revisiting nodes whose neighborhoods have changed. 
+In the first phase of <a target="_blank" href="/docs/graph-algorithms/louvain">Louvain</a>, the algorithm repeatedly visits all nodes in the graph until no further node movements can increase the modularity. The Leiden algorithm improves efficiency by only visiting all nodes once initially, and afterwards, only revisiting nodes whose neighborhoods have changed. 
 
 To achieve this, the Leiden algorithm maintains a queue, initializes it with all nodes in the graph in a random order, then repeats the following steps until the queue is empty:
 
@@ -79,7 +79,7 @@ Randomness in the selection of a community allows the partition space to be expl
 
 #### Phase 3: Community Aggregation
 
-The aggregate graph is constructed based on the <code>P<sub>refined</sub></code> obtained from the previous phase. This aggregation process is the same as in <a target="_blank" href="/docs/graph-analytics-algorithms/louvain">Louvain</a>. Note that each node is a single community in the aggregate graph in Louvain. However, the aggregate graph in Leiden is partitioned based on `P`, so multiple nodes may belong to the same community.
+The aggregate graph is constructed based on the <code>P<sub>refined</sub></code> obtained from the previous phase. This aggregation process is the same as in <a target="_blank" href="/docs/graph-algorithms/louvain">Louvain</a>. Note that each node is a single community in the aggregate graph in Louvain. However, the aggregate graph in Leiden is partitioned based on `P`, so multiple nodes may belong to the same community.
 
 <center><img src="images/leiden-6.jpg"/></center>
 <center><code>P</code> is denoted by color blocks, <code>P<sub>refined</sub></code> is denoted by node colors</center><br>

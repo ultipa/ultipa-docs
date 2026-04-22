@@ -2,7 +2,7 @@
 
 ## Overview
 
-Diverging from the classic <a target="_blank" href="/docs/graph-analytics-algorithms/random-walk">random walk</a>, the Node2Vec Walk introduces a biased strategy that allows the exploration of node neighborhoods in both BFS and DFS manners. For more information, please refer to the <a target="_blank" href="/docs/graph-analytics-algorithms/node2vec">Node2Vec</a> algorithm.
+Diverging from the classic <a target="_blank" href="/docs/graph-algorithms/random-walk">random walk</a>, the Node2Vec Walk introduces a biased strategy that allows the exploration of node neighborhoods in both BFS and DFS manners. For more information, please refer to the <a target="_blank" href="/docs/graph-algorithms/node2vec">Node2Vec</a> algorithm.
 
 ## Considerations
 

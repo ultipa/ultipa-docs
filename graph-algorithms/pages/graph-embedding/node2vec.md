@@ -2,7 +2,7 @@
 
 ## Overview
 
-Node2Vec is a semi-supervised algorithm designed for feature learning of nodes in graphs, while efficiently preserving their neighborhood structure. It introduces a flexible search strategy that enables exploration of node neighborhoods using both BFS and DFS approaches. Additionally, it extends the <a target="_blank" href="/docs/graph-analytics-algorithms/skip-gram">Skip-gram</a> model to graphs for training node embeddings. Node2Vec was proposed by A. Grover and J. Leskovec at Stanford University in 2016.
+Node2Vec is a semi-supervised algorithm designed for feature learning of nodes in graphs, while efficiently preserving their neighborhood structure. It introduces a flexible search strategy that enables exploration of node neighborhoods using both BFS and DFS approaches. Additionally, it extends the <a target="_blank" href="/docs/graph-algorithms/skip-gram">Skip-gram</a> model to graphs for training node embeddings. Node2Vec was proposed by A. Grover and J. Leskovec at Stanford University in 2016.
 
 - A. Grover, J. Leskovec, <a target="_blank" href="https://arxiv.org/pdf/1607.00653.pdf">node2vec: Scalable Feature Learning for Networks</a> (2016)
 
@@ -66,7 +66,7 @@ Through the two parameters, Node2Vec enables control over the trade-off between 
 
 #### 2. Node Embeddings
 
-The node sequences generated from random walks serve as input to the <a target="_blank" href="/docs/graph-analytics-algorithms/skip-gram">Skip-gram</a> model. <a target="_blank" href="/docs/graph-analytics-algorithms/gradient-descent">SGD</a> is used to optimize the model's parameters based on the prediction errors, and the model is <a target="_blank" href="/docs/graph-analytics-algorithms/skip-gram-optimization">optimized</a> by techniques such as negative sampling and subsampling. 
+The node sequences generated from random walks serve as input to the <a target="_blank" href="/docs/graph-algorithms/skip-gram">Skip-gram</a> model. <a target="_blank" href="/docs/graph-algorithms/gradient-descent">SGD</a> is used to optimize the model's parameters based on the prediction errors, and the model is <a target="_blank" href="/docs/graph-algorithms/skip-gram-optimization">optimized</a> by techniques such as negative sampling and subsampling. 
 
 ## Considerations
 

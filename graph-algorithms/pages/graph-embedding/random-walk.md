@@ -25,7 +25,7 @@ Here is an example of performing multiple random walks, each consisting of 100 s
 
 In a graph, a random walk is a process that forms a path by starting at a node and sequentially moving to neighboring nodes. This process is controlled by the walk depth, which determines how many nodes will be visited.
 
-Ultipa's Random Walk algorithm implements the classical version of random walk. By default, all edges are assigned equal weights (set to 1), resulting in equal traversal probabilities. When edge weights are specified, the likelihood of traversing an edge becomes proportional to its weight. It's important to note that various variations of random walk exist, such as <a target="_blank" href="/docs/graph-analytics-algorithms/node2vec-walk">Node2Vec Walk</a> and <a target="_blank" href="/docs/graph-analytics-algorithms/struc2vec-walk">Struc2Vec Walk</a>.
+Ultipa's Random Walk algorithm implements the classical version of random walk. By default, all edges are assigned equal weights (set to 1), resulting in equal traversal probabilities. When edge weights are specified, the likelihood of traversing an edge becomes proportional to its weight. It's important to note that various variations of random walk exist, such as <a target="_blank" href="/docs/graph-algorithms/node2vec-walk">Node2Vec Walk</a> and <a target="_blank" href="/docs/graph-algorithms/struc2vec-walk">Struc2Vec Walk</a>.
 
 ## Considerations
 

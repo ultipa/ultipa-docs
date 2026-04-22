@@ -6,9 +6,9 @@ KNN (K-Nearest Neighbors) finds the K most similar nodes for each node based on 
 
 Three metrics are supported:
 
-- **Jaccard**: Intersection over union of neighbor sets. See <a href="/docs/graph-analytics-algorithms/jaccard-similarity">Jaccard Similarity</a> for details.
-- **Overlap**: Intersection over the smaller neighbor set. See <a href="/docs/graph-analytics-algorithms/overlap-similarity">Overlap Similarity</a> for details.
-- **Cosine**: Cosine similarity between node property vectors. See <a href="/docs/graph-analytics-algorithms/cosine-similarity">Cosine Similarity</a> for details.
+- **Jaccard**: Intersection over union of neighbor sets. See <a href="/docs/graph-algorithms/jaccard-similarity">Jaccard Similarity</a> for details.
+- **Overlap**: Intersection over the smaller neighbor set. See <a href="/docs/graph-algorithms/overlap-similarity">Overlap Similarity</a> for details.
+- **Cosine**: Cosine similarity between node property vectors. See <a href="/docs/graph-algorithms/cosine-similarity">Cosine Similarity</a> for details.
 
 ## Example Graph
 

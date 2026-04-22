@@ -13,7 +13,7 @@ Random Projection</a> (2019)
 
 The authors of FastRP observe that most network embedding methods follow a common two-step pattern: (1) construct a node similarity matrix or implicitly sample node pairs from it, and (2) apply dimension reduction techniques to obtain embeddings. 
 
-Regarding the dimension reduction, many popular algorithms, like <a target="_blank" href="/docs/graph-analytics-algorithms/node2vec">Node2Vec</a>, rely on time-consuming methods such as <a target="_blank" href="/docs/graph-analytics-algorithms/skip-gram">Skip-gram</a>. The authors argue that the effectiveness of these methods should be attributed to the quality of the similarity matrix, rather than the dimension reduction method employed.
+Regarding the dimension reduction, many popular algorithms, like <a target="_blank" href="/docs/graph-algorithms/node2vec">Node2Vec</a>, rely on time-consuming methods such as <a target="_blank" href="/docs/graph-algorithms/skip-gram">Skip-gram</a>. The authors argue that the effectiveness of these methods should be attributed to the quality of the similarity matrix, rather than the dimension reduction method employed.
 
 Based on this insight, FastRP utilizes very sparse random projection, a scalable, optimization-free method for dimension reduction.
 

@@ -4,7 +4,7 @@
 
 Closeness centrality of a node is measured by the average shortest distance from the node to all other reachable nodes. The closer a node is to all other nodes, the more central the node is. This algorithm is widely used in applications such as discovering key social nodes and finding best locations for functional places.
 
-> Closeness Centrality algorithm is best to be applied in connected graph. For disconnected graph, its variant, the <a target="_blank" href="/docs/graph-analytics-algorithms/harmonic-centrality">Harmonic Centrality</a>, is recommended.
+> Closeness Centrality algorithm is best to be applied in connected graph. For disconnected graph, its variant, the <a target="_blank" href="/docs/graph-algorithms/harmonic-centrality">Harmonic Centrality</a>, is recommended.
 
 Closeness centrality scores range from 0 to 1; nodes with higher scores have shorter distances to all other nodes.
 

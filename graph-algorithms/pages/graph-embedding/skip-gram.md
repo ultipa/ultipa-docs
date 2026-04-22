@@ -1,6 +1,6 @@
 # Skip-gram
 
-The Skip-gram (SG) model is a widely used method for generating word embeddings in natural language processing (NLP). Its underlying principles have also been used in graph embedding algorithms such as  <a target="_blank" href="/docs/graph-analytics-algorithms/node2vec">Node2Vec</a> and <a target="_blank" href="/docs/graph-analytics-algorithms/struc2vec">Struc2Vec</a> to produce node embeddings.
+The Skip-gram (SG) model is a widely used method for generating word embeddings in natural language processing (NLP). Its underlying principles have also been used in graph embedding algorithms such as  <a target="_blank" href="/docs/graph-algorithms/node2vec">Node2Vec</a> and <a target="_blank" href="/docs/graph-algorithms/struc2vec">Struc2Vec</a> to produce node embeddings.
 
 ## Background
 
@@ -14,7 +14,7 @@ In the realm of graph embedding, the introduction of <i>DeepWalk</i> in 2014 mar
 
 - B. Perozzi, R. Al-Rfou, S. Skiena, <a target="_blank" href="https://arxiv.org/pdf/1403.6652.pdf">DeepWalk: Online Learning of Social Representations</a> (2014)
 
-Subsequent graph embedding methods such as <a target="_blank" href="/docs/graph-analytics-algorithms/node2vec">Node2Vec</a> and <a target="_blank" href="/docs/graph-analytics-algorithms/struc2vec">Struc2Vec</a> have enhanced the DeepWalk approach, while still relying on the Skip-gram framework.
+Subsequent graph embedding methods such as <a target="_blank" href="/docs/graph-algorithms/node2vec">Node2Vec</a> and <a target="_blank" href="/docs/graph-algorithms/struc2vec">Struc2Vec</a> have enhanced the DeepWalk approach, while still relying on the Skip-gram framework.
 
 To better understand the Skip-gram model, we will illustrate it in its original context within natural language processing.
 
@@ -76,7 +76,7 @@ The architecture of the Skip-gram model is illustrated above, where:
 - <math><msub><mi>W</mi><mrow><mi>V</mi><mo>×</mo><mi>N</mi></mrow></msub></math> is the weight matrix mapping from the input layer to the hidden layer, where <math><mi>N</mi></math> is the embedding dimension.
 - <math><msub><mi>h</mi><mrow><mi>N</mi><mo>×</mo><mn>1</mn></mrow></msub></math> is the hidden layer vector.
 - <math><msub><mrow><mi>W</mi><mo>&#x2032;</mo></mrow><mrow><mi>N</mi><mo>×</mo><mi>V</mi></mrow></msub></math> is the weight matrix from the hidden layer to the output layer. Note that <math><mi>W</mi><mo>&#x2032;</mo></math> is not the transpose of <math><mi>W</mi></math>—they are distinct matrices.
-- <math><msub><mi>u</mi><mrow><mi>V</mi><mo>×</mo><mn>1</mn></mrow></msub></math> is the vector before applying the <a target="_blank" href="/docs/graph-analytics-algorithms/backpropagation#Activation-Function">activation function</a> <i>Softmax</i>.
+- <math><msub><mi>u</mi><mrow><mi>V</mi><mo>×</mo><mn>1</mn></mrow></msub></math> is the vector before applying the <a target="_blank" href="/docs/graph-algorithms/backpropagation#Activation-Function">activation function</a> <i>Softmax</i>.
 - <math><msub><mi>y</mi><mi>c</mi></msub></math> (<math><mi>c</mi><mo>=</mo><mn>1</mn><mi>,&nbsp;</mi><mn>2</mn><mi>,&nbsp;</mi><mi>...</mi><mi>,&nbsp;</mi><mi>C</mi></math>) are the final output vectors (also referred to as <i>panels</i>). <math><mi>C</mi></math> panels correspond to the <math><mi>C</mi></math> context words predicted from the target word. 
 
 <b>Softmax</b>: The Softmax function serves as an activation function that transforms a vector of real numbers into a probability distribution vector. In the resulting vector, all elements sum to <math><mn>1</mn></math>. The formula for Softmax is as follows:
@@ -129,7 +129,7 @@ The <math><mn>C</mn></math> words with the highest predicted probabilities are s
 
 ## Backpropagation
 
-<a target="_blank" href="/docs/graph-analytics-algorithms/gradient-descent">SGD</a> is used to <a target="_blank" href="/docs/graph-analytics-algorithms/backpropagation">backpropagate</a> the errors and adjust the weights in both <math><mi>W</mi></math> and <math><mi>W</mi><mo>&#x2032;</mo></math>.
+<a target="_blank" href="/docs/graph-algorithms/gradient-descent">SGD</a> is used to <a target="_blank" href="/docs/graph-algorithms/backpropagation">backpropagate</a> the errors and adjust the weights in both <math><mi>W</mi></math> and <math><mi>W</mi><mo>&#x2032;</mo></math>.
 
 ### Loss Function
 
@@ -175,7 +175,7 @@ Calculate the partial derivative of <math><mi>E</mi></math> with respect to <mat
 
 <center><img width="650" src="https://img.ultipa.cn/img/2023-08-22-17-56-47-pd1.jpg"></center>
 
-Adjust <math><msubsup><mi>w</mi><mrow><mi>i</mi><mi>j</mi></mrow><mo>&#x2032;</mo></msubsup></math> according to the <a target="_blank" href="/docs/graph-analytics-algorithms/gradient-descent#Basic-Form">learning rate</a> <math><mi>η</mi></math>:
+Adjust <math><msubsup><mi>w</mi><mrow><mi>i</mi><mi>j</mi></mrow><mo>&#x2032;</mo></msubsup></math> according to the <a target="_blank" href="/docs/graph-algorithms/gradient-descent#Basic-Form">learning rate</a> <math><mi>η</mi></math>:
 
 <center><img width="235" src="https://img.ultipa.cn/img/2023-08-22-17-58-47-new1.jpg"></center>
 
@@ -245,7 +245,7 @@ Calculate the partial derivative of <math><mi>E</mi></math> with respect to <mat
 
 <center><img width="400" src="https://img.ultipa.cn/img/2023-08-23-10-08-08-pd2.jpg"></center>
 
-Adjust <math><msub><mi>w</mi><mrow><mi>k</mi><mi>i</mi></mrow></msub></math> according to the <a target="_blank" href="/docs/graph-analytics-algorithms/gradient-descent#Basic-Form">learning rate</a> <math><mi>η</mi></math>:
+Adjust <math><msub><mi>w</mi><mrow><mi>k</mi><mi>i</mi></mrow></msub></math> according to the <a target="_blank" href="/docs/graph-algorithms/gradient-descent#Basic-Form">learning rate</a> <math><mi>η</mi></math>:
 
 <center><img width="300" src="https://img.ultipa.cn/img/2023-08-23-10-09-55-new2.jpg"></center>
 
@@ -365,4 +365,4 @@ In our example, <math><mi>k</mi><mo>=</mo><mn>2</mn></math>, hence, <math><msub>
 
 ## Optimization
 
-We have explored the fundamentals of the Skip-gram model. However, incorporating optimizations is essential to keep the model's computational complexity practical for real-world applications. Click <a target="_blank" href="/docs/graph-analytics-algorithms/skip-gram-optimization">here</a> to continue reading.
+We have explored the fundamentals of the Skip-gram model. However, incorporating optimizations is essential to keep the model's computational complexity practical for real-world applications. Click <a target="_blank" href="/docs/graph-algorithms/skip-gram-optimization">here</a> to continue reading.

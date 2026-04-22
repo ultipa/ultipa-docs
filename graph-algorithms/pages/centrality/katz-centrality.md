@@ -14,7 +14,7 @@ References:
 
 ### Katz Centrality
 
-The Katz centrality is an extension of the <a target="_blank" href="/docs/graph-analytics-algorithms/eigenvector-centrality">eigenvector centrality</a>. In the `k`-th round of influence propagation in eigenvector centrality, the centrality vector is simply updated as <code>c<sup>(k)</sup> = Ac<sup>(k-1)</sup></code>, where `A` is the adjacency matrix. Katz centrality modifies this computation by introducing two additional parameters, leading to the following update formula (which should be rescaled afterward):
+The Katz centrality is an extension of the <a target="_blank" href="/docs/graph-algorithms/eigenvector-centrality">eigenvector centrality</a>. In the `k`-th round of influence propagation in eigenvector centrality, the centrality vector is simply updated as <code>c<sup>(k)</sup> = Ac<sup>(k-1)</sup></code>, where `A` is the adjacency matrix. Katz centrality modifies this computation by introducing two additional parameters, leading to the following update formula (which should be rescaled afterward):
 
 <center><img width="260" src="images/katz-1.jpg"></center>
 

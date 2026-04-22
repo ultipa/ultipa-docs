@@ -6,7 +6,7 @@ Struc2Vec, short for "structure to vector", is an algorithm that generates node 
 
 - L. Ribeiro, P. Saverese, D. Figueiredo, <a target="_blank" href="https://arxiv.org/pdf/1704.03165v3.pdf">struc2vec: Learning Node Representations from Structural Identity</a> (2017)
 
-While <a target="_blank" href="/docs/graph-analytics-algorithms/node2vec">Node2Vec</a> captures a certain degree of structural similarity among nodes, it is limited by the depth of random walks used during the generation process.Struc2Vec, on the other hand, overcomes this limitation by explicitly preserving structural roles, ensuring that nodes with similar topological characteristics are positioned closely in the embedding space.
+While <a target="_blank" href="/docs/graph-algorithms/node2vec">Node2Vec</a> captures a certain degree of structural similarity among nodes, it is limited by the depth of random walks used during the generation process.Struc2Vec, on the other hand, overcomes this limitation by explicitly preserving structural roles, ensuring that nodes with similar topological characteristics are positioned closely in the embedding space.
 
 The choice between Node2Vec and Struc2Vec depends on the nature of downstream tasks:
 
@@ -77,7 +77,7 @@ The random walks have a fixed and relatively short depth (number of steps), and 
 
 #### 4. Train the model
 
-The node sequences generated from the random walks serve as input to the <a target="_blank" href="/docs/graph-analytics-algorithms/skip-gram">Skip-gram</a> model. <a target="_blank" href="/docs/graph-analytics-algorithms/gradient-descent">SGD</a> is used to optimize the model's parameters based on the prediction error, with <a target="_blank" href="/docs/graph-analytics-algorithms/skip-gram-optimization">optimization</a> techniques such as negative sampling and subsampling applied to enhance efficiency.
+The node sequences generated from the random walks serve as input to the <a target="_blank" href="/docs/graph-algorithms/skip-gram">Skip-gram</a> model. <a target="_blank" href="/docs/graph-algorithms/gradient-descent">SGD</a> is used to optimize the model's parameters based on the prediction error, with <a target="_blank" href="/docs/graph-algorithms/skip-gram-optimization">optimization</a> techniques such as negative sampling and subsampling applied to enhance efficiency.
 
 ## Considerations
 

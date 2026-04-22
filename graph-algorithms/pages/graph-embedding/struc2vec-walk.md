@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Struc2Vec Walk is a biased random walk and serves as a key component of the Struc2Vec framework. Unlike traditional random walks, it operates on a constructed multi-layer weighted graph instead of the original graph. For more details, please refer to the <a target="_blank" href="/docs/graph-analytics-algorithms/struc2vec">Struc2Vec</a> algorithm.
+The Struc2Vec Walk is a biased random walk and serves as a key component of the Struc2Vec framework. Unlike traditional random walks, it operates on a constructed multi-layer weighted graph instead of the original graph. For more details, please refer to the <a target="_blank" href="/docs/graph-algorithms/struc2vec">Struc2Vec</a> algorithm.
 
 ## Example Graph
 

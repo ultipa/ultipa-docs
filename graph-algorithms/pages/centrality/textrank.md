@@ -2,7 +2,7 @@
 
 ## Overview
 
-TextRank, derived from <a target="_blank" href="/docs/graph-analytics-algorithms/pagerank">PageRank</a>, is a graph-based ranking model for text processing. It can be used for various natural language processing tasks, including keyword extraction, keyphrase extraction, and text summarization.
+TextRank, derived from <a target="_blank" href="/docs/graph-algorithms/pagerank">PageRank</a>, is a graph-based ranking model for text processing. It can be used for various natural language processing tasks, including keyword extraction, keyphrase extraction, and text summarization.
 
 - R. Mihalcea, P. Tarau, <a href="https://web.eecs.umich.edu/~mihalcea/papers/mihalcea.emnlp04.pdf" target="_blank">TextRank: Bringing Order Into Texts</a> (2004)
 
@@ -19,7 +19,7 @@ To apply the TextRank algorithm, the text must first be represented as a graph. 
 
 ### TextRank Model
 
-TextRank computes the ranks of all text units recursively using a "recommendation" mechanism, similar to the <a target="_blank" href="/docs/graph-analytics-algorithms/pagerank">PageRank</a> algorithm. It incorporates edge weights through a modified formula:
+TextRank computes the ranks of all text units recursively using a "recommendation" mechanism, similar to the <a target="_blank" href="/docs/graph-algorithms/pagerank">PageRank</a> algorithm. It incorporates edge weights through a modified formula:
 
 <center><img width=380 src="images/textrank-2.png"></center>
 

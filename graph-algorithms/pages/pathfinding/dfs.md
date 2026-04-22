@@ -4,21 +4,21 @@
 
 Graph traversal is a search technique used to systematically visit and explore all the nodes in a graph. Its primary goal is to reveal and examine the structure and connections of the graph. There are two common strategies for graph traversal:
 
-- <a target="_blank" href="/docs/graph-analytics-algorithms/bfs">Breadth-First Search (BFS)</a>
+- <a target="_blank" href="/docs/graph-algorithms/bfs">Breadth-First Search (BFS)</a>
 - Depth-First Search (DFS)
 
-The Depth-First Search (DFS) algorithm is based on the principle of backtracking and proceeds as follows:
+The DFS algorithm is based on the principle of backtracking and proceeds as follows:
 
-1. Create a <i>stack</i> (last-in, first-out) to keep track of visited nodes.
+1. Create a stack (last-in, first-out) to keep track of visited nodes.
 2. Start from a selected node, push it into the stack, and mark it as visited.
 3. Push any unvisited neighbor of the node on the top of the stack into the stack, and mark it as visited. If multiple unvisited neighbors exist, select one arbitrarily or according to a predefined order.
 4. Repeat step 3 until there are no more unvisited neighbors to push into the stack. 
 5. When there are no new nodes to visit, backtrack to the previous node (the one from which the current node was explored) by popping the top node from the stack.
 6. Repeat steps 3, 4 and 5 until the stack is empty.
 
-Below is an example of traversing the graph using the DFS approach, starting from node <i>A</i> and assuming to visit neighbors in alphabetical order (A~Z):
+Below is an example of traversing the graph using the DFS approach, starting from node `A` and assuming to visit neighbors in alphabetical order (A~Z):
 
-<div align=center drawio-diagram='6527' drawio-name="draw_9649268c928a4549953d069be862a609.jpg"><img src="https://img.ultipa.cn/draw/draw_9649268c928a4549953d069be862a609.jpg?v='1691377192398'"/></div>
+<center><img src="images/dfs-1.jpg"/></center>
 
 ## Considerations
 
@@ -26,59 +26,95 @@ Below is an example of traversing the graph using the DFS approach, starting fro
 
 ## Example Graph
 
-<div align=center drawio-diagram='20005' drawio-name='draw_e160cf27e5c64f57a5fbd4faa56ce10d.jpg'><img src="https://img.ultipa.cn/draw/draw_e160cf27e5c64f57a5fbd4faa56ce10d.jpg?v='1735109792822'"/></div>
-
-Run the following statements on an empty graph to define its structure and insert data:
+<center><img src="images/bfs-dfs-example.jpg"/></center>
 
 ```gql
-INSERT (A:default {_id: "A"}),
-       (B:default {_id: "B"}),
-       (C:default {_id: "C"}),
-       (D:default {_id: "D"}),
-       (E:default {_id: "E"}),
-       (F:default {_id: "F"}),
+INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
+       (C:default {_id: "C"}), (D:default {_id: "D"}),
+       (E:default {_id: "E"}), (F:default {_id: "F"}),
        (G:default {_id: "G"}),
-       (A)-[:default]->(B),
-       (A)-[:default]->(D),
-       (B)-[:default]->(E),
-       (C)-[:default]->(A),
-       (E)-[:default]->(F),
-       (F)-[:default]->(C),
-       (G)-[:default]->(D);
+       (A)-[:default]->(B), (A)-[:default]->(D),
+       (B)-[:default]->(E), (C)-[:default]->(A),
+       (E)-[:default]->(F), (F)-[:default]->(C),
+       (G)-[:default]->(D)
 ```
 
 ## Parameters
 
-Algorithm name: `traverse`
+| Name | Type | Default | Description |
+| -- | -- | -- | -- |
+| `startNode` | `STRING` | / | **Required.** Starting node `_id`. |
+| `maxDepth` | `INT` | `-1` | Maximum depth to traverse (-1 = unlimited). |
+| `direction` | `STRING` | `out` | Edge direction: `in`, `out`, or `both`. |
 
-| <div table-width="18">Name</div> | <div table-width="9">Type</div> | <div table-width="8">Spec</div> | <div table-width="8">Default</div> | <div table-width="9">Optional</div> | Description |
-| -- | -- | -- |-- | -- | -- |
-| `ids` | `_id` | / | / | No | Specifies the node to start traversal by its `_id`. |
-| `uuids` | `_uuid` | / | / | No | Specifies the node to start traversal by its `_uuid`. |
-| `direction` | String | `in`, `out` | / | Yes | Specifies to traverse through only incoming edges (`in`) or outgoing edges (`out`). |
-| `traverse_type` | String | `dfs` | `bfs` | No | To traverse the graph in the DFS fashion, keep it as `dfs`. |
-| `return_id_uuid` | String | `uuid`, `id`, `both` | `uuid` | Yes | Includes `_uuid`, `_id`, or both to represent nodes in the results. |
+## Run Mode
 
-## File Writeback
+**Returns:**
 
-  
-```gql  
-CALL algo.traverse.write("my_hdc_graph", {
-  return_id_uuid: "id",
-  ids: ['B'],
-  direction: 'in',
-  traverse_type: 'dfs'
-}, {
-  file: {
-    filename: "visited_nodes"
-  }
-})
+| Column | Type | Description |
+| -- | -- | -- |
+| `nodeId` | `STRING` | Node identifier (`_id`) |
+| `depth` | `INT` | Depth from start node |
+| `parent` | `STRING` | Parent node in DFS tree |
+| `discoveryOrder` | `INT` | Order in which the node was first visited |
+| `finishOrder` | `INT` | Order in which the node was fully explored |
+
+```gql
+CALL algo.dfs({
+  startNode: "B",
+  direction: "in"
+}) YIELD nodeId, depth, parent, discoveryOrder, finishOrder
 ```
 
 Result:
 
-<p tit="File: visited_nodes"></p>
+| nodeId | depth | parent | discoveryOrder | finishOrder |
+| -- | -- | -- | -- | -- |
+| B | 0 | | 0 | 9 |
+| A | 1 | B | 1 | 8 |
+| C | 2 | A | 2 | 7 |
+| F | 3 | C | 3 | 6 |
+| E | 4 | F | 4 | 5 |
+
+## Stream Mode
+
+Returns the same columns as run mode, streamed for memory efficiency.
+
+```gql
+CALL algo.dfs.stream({
+  startNode: "A",
+  maxDepth: 3
+}) YIELD nodeId, depth
+RETURN nodeId, depth
 ```
-nodes
-B,A,C,F,E,
+
+Result:
+
+| nodeId | depth |
+| -- | -- |
+| A | 0 |
+| D | 1 |
+| B | 1 |
+| E | 2 |
+| F | 3 |
+
+## Stats Mode
+
+**Returns:**
+
+| Column | Type | Description |
+| -- | -- | -- |
+| `nodeCount` | `INT` | Total number of nodes visited |
+| `maxDepth` | `INT` | Maximum depth reached from start node |
+
+```gql
+CALL algo.dfs.stats({
+  startNode: "A"
+}) YIELD nodeCount, maxDepth
 ```
+
+Result:
+
+| nodeCount | maxDepth |
+| -- | -- |
+| 6 | 4 |

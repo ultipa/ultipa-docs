@@ -10,7 +10,7 @@ The Articulation Points algorithm finds **cut vertices** in a graph — nodes wh
 
 An articulation point (also called a cut vertex) is a node in an undirected graph whose removal, along with all its incident edges, increases the number of connected components. Removing an articulation point splits a connected part of the graph into two or more separate parts.
 
-Articulation point detection is closely related to <a target="_blank" href="/docs/graph-analytics-algorithms/bridges">bridge detection</a>. A bridge edge always connects to at least one articulation point (unless the bridge connects two leaf nodes). However, an articulation point does not necessarily have a bridge edge.
+Articulation point detection is closely related to <a target="_blank" href="/docs/graph-algorithms/bridges">bridge detection</a>. A bridge edge always connects to at least one articulation point (unless the bridge connects two leaf nodes). However, an articulation point does not necessarily have a bridge edge.
 
 Articulation point detection is important for:
 - **Network reliability**: Identifying single points of failure in infrastructure or communication networks.

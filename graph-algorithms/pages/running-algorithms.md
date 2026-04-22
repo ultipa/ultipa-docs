@@ -4,7 +4,7 @@ All built-in graph algorithms are invoked via the `CALL algo.<name>()` syntax an
 
 ## Compute Engine
 
-Algorithms can run with or without the compute engine enabled. For large graphs, it is strongly recommended to enable the compute engine first for significantly better performance:
+Most algorithms can run with or without the compute engine enabled. For large graphs, it is strongly recommended to enable the compute engine first for significantly better performance:
 
 ```gql
 ALTER GRAPH myGraph SET COMPUTE ENABLED

@@ -6,10 +6,10 @@ Computes the similarity between two given numeric vectors. Unlike other similari
 
 Four metrics are supported:
 
-- **Cosine**: Cosine of the angle between two vectors. See <a href="/docs/graph-analytics-algorithms/cosine-similarity">Cosine Similarity</a> for details.
-- **Pearson**: Linear correlation between two vectors. See <a href="/docs/graph-analytics-algorithms/pearson-correlation-coefficient">Pearson Correlation Coefficient</a> for details.
-- **Euclidean**: Normalized Euclidean distance between two vectors. See <a href="/docs/graph-analytics-algorithms/euclidean-distance">Euclidean Distance</a> for details.
-- **Jaccard**: Ratio of positions where both vectors are non-zero to positions where at least one is non-zero. See <a href="/docs/graph-analytics-algorithms/jaccard-similarity">Jaccard Similarity</a> for details.
+- **Cosine**: Cosine of the angle between two vectors. See <a href="/docs/graph-algorithms/cosine-similarity">Cosine Similarity</a> for details.
+- **Pearson**: Linear correlation between two vectors. See <a href="/docs/graph-algorithms/pearson-correlation-coefficient">Pearson Correlation Coefficient</a> for details.
+- **Euclidean**: Normalized Euclidean distance between two vectors. See <a href="/docs/graph-algorithms/euclidean-distance">Euclidean Distance</a> for details.
+- **Jaccard**: Ratio of positions where both vectors are non-zero to positions where at least one is non-zero. See <a href="/docs/graph-algorithms/jaccard-similarity">Jaccard Similarity</a> for details.
 
 ## Parameters
 

@@ -179,22 +179,6 @@
       "folder": "pathfinding",
       "pages": [
         {
-          "file": "dijkstra-sssp.md",
-          "title": "Dijkstra's Single-Source Shortest Path"
-        },
-        {
-          "file": "delta-stepping-sssp.md",
-          "title": "Delta-Stepping Single-Source Shortest Path"
-        },
-        {
-          "file": "spfa.md",
-          "title": "Shortest Path Faster Algorithm (SPFA)"
-        },
-        {
-          "file": "minimum-spanning-tree.md",
-          "title": "Minimum Spanning Tree"
-        },
-        {
           "file": "bfs.md",
           "title": "Breadth-First Search (BFS)"
         },
@@ -203,8 +187,36 @@
           "title": "Depth-First Search (DFS)"
         },
         {
-          "file": "k-hop-all.md",
-          "title": "K-Hop All"
+          "file": "dijkstra-shortest-path.md",
+          "title": "Dijkstra's Shortest Path"
+        },
+        {
+          "file": "yens.md",
+          "title": "Yen's K-Shortest Paths"
+        },
+        {
+          "file": "shortest-bfs.md",
+          "title": "Shortest Path (BFS)"
+        },
+        {
+          "file": "delta-stepping-sssp.md",
+          "title": "Delta-Stepping SSSP"
+        },
+        {
+          "file": "spfa.md",
+          "title": "Shortest Path Faster Algorithm (SPFA)"
+        },
+        {
+          "file": "mst.md",
+          "title": "Minimum Spanning Tree (MST)"
+        },
+        {
+          "file": "khop-fast.md",
+          "title": "K-Hop Fast"
+        },
+        {
+          "file": "random-walk.md",
+          "title": "Random Walk"
         }
       ]
     },
@@ -293,10 +305,6 @@
         {
           "folder": "algorithms",
           "pages": [
-            {
-              "file": "random-walk.md",
-              "title": "Random Walk"
-            },
             {
               "file": "node2vec-walk.md",
               "title": "Node2Vec Walk"
