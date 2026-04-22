@@ -16,11 +16,11 @@ Since then, the algorithm has been widely applied across various domains, includ
 
 The centroid, or geometric center, of an object in an N-dimensional space is the average position of all its points across each of the N coordinate directions.
 
-<div align='center'drawio-diagram='2608' drawio-name="draw_366c58b621b74ca4a72dc460710e6d8b.jpg"><img src="https://img.ultipa.cn/draw/draw_366c58b621b74ca4a72dc460710e6d8b.jpg?v='1685586649322'"/></div>
+<div align=center><img src="images/kmeans-1.jpg"/></div>
 
 In the context of clustering algorithms such as k-Means, a centroid refers to the geometric center of a cluster. When node features are defined using multiple node properties, the centroid summarizes those features by averaging them across all nodes in the cluster. To find the centroid of a cluster, the algorithm calculates the mean feature value of each feature dimension from the nodes assigned to that cluster.
 
-The algorithm starts by selecting <i>k</i> initial centroids by random sampling.
+The algorithm starts by selecting `k` initial centroids by random sampling.
 
 ### Clustering Iterations
 
@@ -30,13 +30,13 @@ The iteration ends when the clustering results stabilize, or the maximum number 
 
 ## Considerations
 
-- The success of the k-Means algorithm depends on appropriately choosing the value of <i>k</i>.
+- The success of the k-Means algorithm depends on appropriately choosing the value of `k`.
 - If two or more identical centroids exist, only one of them will take effect, while the other equivalent centroids will form empty clusters.
 - Results may vary between runs due to random initial centroid selection.
 
 ## Example Graph
 
-<div align=center drawio-diagram='20018' drawio-name='draw_b5e0d0a17d574401bf467d68df2533cc.jpg'><img src="https://img.ultipa.cn/draw/draw_b5e0d0a17d574401bf467d68df2533cc.jpg?v='1735266050819'"/></div>
+<div align=center><img src="images/kmeans-example.jpg"/></div>
 
 ```gql
 INSERT (:default {_id: "A", f1: 6.2, f2: 49, f3: 361}),
@@ -113,9 +113,9 @@ Result:
 
 | cluster | members |
 | -- | -- |
-| 0 | [E, D, G, A, C, B, H, K] |
-| 1 | [F] |
-| 2 | [I, J] |
+| 0 | ["E", "D", "G", "A", "C", "B", "H", "K"] |
+| 1 | ["F"] |
+| 2 | ["I", "J"] |
 
 ## Stats Mode
 
@@ -163,16 +163,15 @@ Computes results and writes them back to node properties. The write configuratio
 
 | Column | Type | Description |
 | -- | -- | -- |
-| `task_id` | `STRING` | Task identifier |
-| `status` | `STRING` | Task status (`running`) |
-
-The write executes asynchronously in the background. Use `SHOW TASKS` with the `task_id` to check progress and results.
+| `task_id` | `STRING` | Task identifier for tracking via `SHOW TASKS` |
+| `nodesWritten` | `INT` | Number of nodes with properties written |
+| `computeTimeMs` | `INT` | Time spent computing the algorithm (milliseconds) |
+| `writeTimeMs` | `INT` | Time spent writing properties to storage (milliseconds) |
 
 ```gql
 CALL algo.kmeans.write({k: 3, propertyKeys: ["f1", "f2", "f3"]}, {
   db: {
-    property: "km_cluster"                                      // String: writes cluster to one property
-    // property: {cluster: "km_cluster", distance: "km_dist"}   // Map: explicit column-to-property
+    property: "km_cluster"
   }
-}) YIELD task_id, status
+}) YIELD task_id, nodesWritten, computeTimeMs, writeTimeMs
 ```

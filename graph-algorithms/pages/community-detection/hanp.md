@@ -10,25 +10,25 @@ The HANP (Hop Attenuation & Node Preference) algorithm extends the traditional <
 
 ### Hop Attenuation
 
-HANP associates each label with a <b>score</b> which decreases as it propagates from its origin. Initially, all labels are assigned a score of 1. Each time a node adopts a new label from its neighborhood, the score of that label is attenuated by subtracting a <b>hop attenuation</b> factor <i>δ</i> (0 < <i>δ</i> ≤ 1).
+HANP associates each label with a <b>score</b> which decreases as it propagates from its origin. Initially, all labels are assigned a score of 1. Each time a node adopts a new label from its neighborhood, the score of that label is attenuated by subtracting a <b>hop attenuation</b> factor `δ` (0 < `δ` ≤ 1).
 
 The hop attenuation mechanism helps limit the spread of labels to nearby nodes and prevents any single label from dominating the entire network.
 
 ### Node Preference
 
-In the calculation of the new maximal label, HANP incorporates <b>node preference</b> based on node degree. When node <i>j ∈ N<sub>i</sub></i> propagates its label <i>L</i> to node <i>i</i>, the weight of label <i>L</i> is calculated by:
+In the calculation of the new maximal label, HANP incorporates <b>node preference</b> based on node degree. When node <code>j ∈ N<sub>i</sub></code> propagates its label `L` to node `i`, the weight of label `L` is calculated by:
 
-<center><img width=250 src="https://img.ultipa.cn/img/2023-05-29-11-47-33-hanp1.jpg"></center>
+<center><img width=250 src="images/hanp-1.jpg"></center>
 
 where,
 
-- <i>s<sub>j</sub>(L)</i> is the score of label <i>L</i> in <i>j</i>.
-- <i>deg<sub>j</sub></i> is the degree of <i>j</i>. When <i>m</i> > 0, more preference is given to nodes with high degree; <i>m</i> < 0, more preference is given to nodes with low degree; <i>m</i> = 0, no node preference is applied.
-- <i>w<sub>ij</sub></i> is the sum of edge weights between <i>i</i> and <i>j</i>.
+- <code>s<sub>j</sub>(L)</code> is the score of label `L` in `j`.
+- <code>deg<sub>j</sub></code> is the degree of `j`. When `m > 0`, more preference is given to nodes with high degree; `m < 0`, more preference is given to nodes with low degree; `m = 0`, no node preference is applied.
+- <code>w<sub>ij</sub></code> is the sum of edge weights between `i` and `j`.
 
-Given the edge weights and label scores shown in the example below, if we set <i>m</i> = 2 and <i>δ</i> = 0.2, the blue node will update its label from `d` to `a`. The score of label `a` in the blue node will be attenuated to 0.6.
+Given the edge weights and label scores shown in the example below, if we set `m = 2` and `δ = 0.2`, the blue node will update its label from `d` to `a`. The score of label `a` in the blue node will be attenuated to 0.6.
 
-<div align='center' drawio-diagram='6049' drawio-name="draw_611cb47526b74a4db1b4c70a7040e6da.jpg"><img src="https://img.ultipa.cn/draw/draw_611cb47526b74a4db1b4c70a7040e6da.jpg?v='1685333790738'"/></div>
+<div align=center><img src="images/hanp-2.jpg"/></div>
 
 ## Considerations
 
@@ -37,7 +37,7 @@ Given the edge weights and label scores shown in the example below, if we set <i
 
 ## Example Graph
 
-<div align=center><img src="images/lpa-example.drawio.svg"/></div>
+<div align=center><img src="images/lpa-hanp-slpa-example.drawio.svg"/></div>
 
 ```gql
 INSERT (A:user {_id: "A"}), (B:user {_id: "B"}),
@@ -89,26 +89,6 @@ CALL algo.hanp({
 }) YIELD nodeId, community
 ```
 
-Result:
-
-| nodeId | community |
-| -- | -- |
-| E | 0 |
-| D | 0 |
-| G | 1 |
-| F | 2 |
-| A | 0 |
-| C | 0 |
-| B | 0 |
-| M | 2 |
-| L | 0 |
-| O | 0 |
-| N | 2 |
-| I | 1 |
-| H | 2 |
-| K | 0 |
-| J | 1 |
-
 ## Stream Mode
 
 Returns the same columns as run mode, streamed for memory efficiency.
@@ -122,14 +102,6 @@ CALL algo.hanp.stream({
 RETURN community, COLLECT(nodeId) AS members
 GROUP BY community
 ```
-
-Result:
-
-| community | members |
-| -- | -- |
-| 0 | [E, D, A, C, B, L, O, K] |
-| 1 | [G, I, J] |
-| 2 | [F, M, N, H] |
 
 ## Stats Mode
 
@@ -147,12 +119,6 @@ CALL algo.hanp.stats({
   delta: 0.2
 }) YIELD nodeCount, communityCount, largestCommunitySize, smallestCommunitySize
 ```
-
-Result:
-
-| nodeCount | communityCount | largestCommunitySize | smallestCommunitySize |
-| -- | -- | -- | -- |
-| 15 | 3 | 8 | 3 |
 
 ## Write Mode
 
@@ -174,16 +140,15 @@ Computes results and writes them back to node properties. The write configuratio
 
 | Column | Type | Description |
 | -- | -- | -- |
-| `task_id` | `STRING` | Task identifier |
-| `status` | `STRING` | Task status (`running`) |
-
-The write executes asynchronously in the background. Use `SHOW TASKS` with the `task_id` to check progress and results.
+| `task_id` | `STRING` | Task identifier for tracking via `SHOW TASKS` |
+| `nodesWritten` | `INT` | Number of nodes with properties written |
+| `computeTimeMs` | `INT` | Time spent computing the algorithm (milliseconds) |
+| `writeTimeMs` | `INT` | Time spent writing properties to storage (milliseconds) |
 
 ```gql
 CALL algo.hanp.write({delta: 0.2}, {
   db: {
-    property: "comm_id"                   // String: writes community to one property
-    // property: {community: "comm_id"}   // Map: explicit column-to-property
+    property: "comm_id"
   }
-}) YIELD task_id, status
+}) YIELD task_id, nodesWritten, computeTimeMs, writeTimeMs
 ```

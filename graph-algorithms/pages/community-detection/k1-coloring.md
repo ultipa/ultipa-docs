@@ -22,7 +22,7 @@ The graph coloring problem is NP-hard to solve optimally, but near-optimal solut
 
 At the beginning of the greedy algorithm, each node `v` in the graph is initialized as uncolored. The algorithm processes each node `v` as below:
 
-<div align=center drawio-diagram='20039' drawio-name='draw_995b203c523049b6b7db1f7689f97744.jpg'><img src="https://img.ultipa.cn/draw/draw_995b203c523049b6b7db1f7689f97744.jpg?v='1735629065995'"/></div>
+<div align=center><img src="images/k1coloring-1.jpg"/></div>
 
 - For every adjacent node `w` of `v`, mark the color of `w` as forbidden for `v`.
 - Assign the smallest available color to `v` that is different from all its forbidden colors.
@@ -37,7 +37,7 @@ The algorithm uses an iterative parallel approach: in each iteration, colors are
 
 ## Example Graph
 
-<div align=center drawio-diagram='20043' drawio-name='draw_f3d5090e0ba04447bdaaafb3a26063a8.jpg'><img src="https://img.ultipa.cn/draw/draw_f3d5090e0ba04447bdaaafb3a26063a8.jpg?v='1735636153998'"/></div>
+<div align=center><img src="images/k1coloring-example.jpg"/></div>
 
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
@@ -56,6 +56,7 @@ INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
 | Name | Type | Default | Description |
 | -- | -- | -- | -- |
 | `maxIterations` | `INT` | `10` | Maximum number of conflict resolution iterations. |
+| `minCommunitySize` | `INT` | `0` | Minimum color group size to include in results (0 = include all). |
 | `limit` | `INT` | `-1` | Limits the number of results returned (-1 = all). |
 | `order` | `STRING` | / | Sorts the results by `color`: `asc` or `desc`. |
 
@@ -72,19 +73,6 @@ INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
 ```gql
 CALL algo.k1coloring() YIELD nodeId, color, colorCount
 ```
-
-Result:
-
-| nodeId | color | colorCount |
-| -- | -- | -- |
-| E | 1 | 4 |
-| D | 2 | 4 |
-| G | 1 | 4 |
-| F | 0 | 4 |
-| A | 3 | 4 |
-| C | 0 | 4 |
-| B | 0 | 4 |
-| H | 0 | 4 |
 
 ## Stream Mode
 
@@ -129,16 +117,15 @@ Computes results and writes them back to node properties. The write configuratio
 
 | Column | Type | Description |
 | -- | -- | -- |
-| `task_id` | `STRING` | Task identifier |
-| `status` | `STRING` | Task status (`running`) |
-
-The write executes asynchronously in the background. Use `SHOW TASKS` with the `task_id` to check progress and results.
+| `task_id` | `STRING` | Task identifier for tracking via `SHOW TASKS` |
+| `nodesWritten` | `INT` | Number of nodes with properties written |
+| `computeTimeMs` | `INT` | Time spent computing the algorithm (milliseconds) |
+| `writeTimeMs` | `INT` | Time spent writing properties to storage (milliseconds) |
 
 ```gql
 CALL algo.k1coloring.write({}, {
   db: {
-    property: "node_color"                    // String: writes color to one property
-    // property: {color: "node_color"}   // Map: explicit column-to-property
+    property: "node_color"
   }
-}) YIELD task_id, status
+}) YIELD task_id, nodesWritten, computeTimeMs, writeTimeMs
 ```

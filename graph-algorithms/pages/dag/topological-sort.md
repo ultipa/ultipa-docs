@@ -14,7 +14,7 @@ A **directed acyclic graph (DAG)** is a directed graph with no directed cycles. 
 
 As shown here, the first and second graphs are DAGs, while the third graph contains a directed cycle (`B→C→D→B`) and therefore does not qualify as a DAG.
 
-<div align=center drawio-diagram='6220' drawio-name="draw_3799bff640704bfe8c6e77082d686039.jpg"><img src="https://img.ultipa.cn/draw/draw_3799bff640704bfe8c6e77082d686039.jpg?v='1694508666156'"/></div>
+<div align=center><img src="images/topologicalsort-1.jpg"/></div>
 
 A directed graph is a DAG if and only if it can be topologically sorted.
 
@@ -30,7 +30,7 @@ A DAG has a unique topological sorting if and only if it has a directed path con
 
 In the following example, the nodes have only 1 possible topological sorting: `A, B, D, C, E, F`.
 
-<div align=center drawio-diagram='6729' drawio-name="draw_cb16d5b2e3b34c83a1226e5cd28cb6b5.jpg"><img src="https://img.ultipa.cn/draw/draw_cb16d5b2e3b34c83a1226e5cd28cb6b5.jpg?v='1694510516466'"/></div>
+<div align=center><img src="images/topologicalsort-2.jpg"/></div>
 
 ## Considerations
 
@@ -39,7 +39,7 @@ In the following example, the nodes have only 1 possible topological sorting: `A
 
 ## Example Graph
 
-<div align=center drawio-diagram='19966' drawio-name='draw_59f5a7a6c51d4f7c94944cfe471649a7.jpg'><img src="https://img.ultipa.cn/draw/draw_59f5a7a6c51d4f7c94944cfe471649a7.jpg?v='1734935445562'"/></div>
+<div align=center><img src="images/topologicalsort-example.jpg"/></div>
 
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),

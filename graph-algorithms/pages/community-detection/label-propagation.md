@@ -22,7 +22,7 @@ At each propagation iteration, a node updates its label to the one held by the l
 
 For example, in the diagram below, the blue node's label will change from `d` to `c`.
 
-<div align='center' drawio-diagram='6032' drawio-name="draw_d7f7a10b38974c9ea9559b8b3c22294b.jpg"><img src="https://img.ultipa.cn/draw/draw_d7f7a10b38974c9ea9559b8b3c22294b.jpg?v='1684995025103'"/></div>
+<div align=center><img src="images/lpa-1.jpg"/></div>
 
 ## Considerations
 
@@ -33,7 +33,7 @@ For example, in the diagram below, the blue node's label will change from `d` to
 
 ## Example Graph
 
-<div align=center><img src="images/lpa-example.drawio.svg"/></div>
+<div align=center><img src="images/lpa-hanp-slpa-example.drawio.svg"/></div>
 
 ```gql
 INSERT (A:user {_id: "A"}), (B:user {_id: "B"}),
@@ -63,7 +63,7 @@ INSERT (A:user {_id: "A"}), (B:user {_id: "B"}),
 | Name | Type | Default | Description |
 | -- | -- | -- | -- |
 | `maxIterations` | `INT` | `100` | Maximum number of propagation iterations. |
-| `seed` | `INT` | `0` | Random seed. `0` uses a time-based seed (non-deterministic). Any non-zero value produces reproducible results. |
+| `seed` | `INT` | `-1` | Random seed. `-1` uses a time-based seed (non-deterministic). Any other value produces reproducible results. |
 | `limit` | `INT` | `-1` | Limits the number of results returned (-1 = all). |
 | `order` | `STRING` | / | Sorts the results by `community`: `asc` or `desc`. |
 
@@ -115,9 +115,9 @@ Result:
 
 | community | members | size |
 | -- | -- | -- |
-| 0 | [E, D, A, C, B] | 5 |
-| 1 | [G, F, I, H, J] | 5 |
-| 2 | [M, L, O, N, K] | 5 |
+| 0 | ["E", "D", "A", "C", "B"] | 5 |
+| 1 | ["G", "F", "I", "H", "J"] | 5 |
+| 2 | ["M", "L", "O", "N", "K"] | 5 |
 
 ## Stats Mode
 
@@ -160,16 +160,15 @@ Computes results and writes them back to node properties. The write configuratio
 
 | Column | Type | Description |
 | -- | -- | -- |
-| `task_id` | `STRING` | Task identifier |
-| `status` | `STRING` | Task status (`running`) |
-
-The write executes asynchronously in the background. Use `SHOW TASKS` with the `task_id` to check progress and results.
+| `task_id` | `STRING` | Task identifier for tracking via `SHOW TASKS` |
+| `nodesWritten` | `INT` | Number of nodes with properties written |
+| `computeTimeMs` | `INT` | Time spent computing the algorithm (milliseconds) |
+| `writeTimeMs` | `INT` | Time spent writing properties to storage (milliseconds) |
 
 ```gql
 CALL algo.lpa.write({}, {
   db: {
-    property: "comm_id"                   // String: writes community to one property
-    // property: {community: "comm_id"}   // Map: explicit column-to-property
+    property: "comm_id"
   }
-}) YIELD task_id, status
+}) YIELD task_id, nodesWritten, computeTimeMs, writeTimeMs
 ```

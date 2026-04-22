@@ -23,7 +23,7 @@ For each node `i`, the algorithm considers all its neighbors `j` and calculates 
 
 Node `i` is reassigned to the community that yields the maximum `ΔQ`, provided that this gain exceeds a predefined positive threshold. If no such gain is found, `i` remains in its original community. 
 
-<div align=center drawio-diagram='6403' drawio-name="draw_f14c5c57dd3b40a8a46c4c046c32bdb9.jpg"><img src="https://img.ultipa.cn/draw/draw_f14c5c57dd3b40a8a46c4c046c32bdb9.jpg?v='1690363130608'"/></div>
+<div align=center><img src="images/louvain-1.jpg"/></div>
 
 Take the graph above as an example, where nodes belonging to the same community are denoted with the same color. Now, consider node `d`. The modularity gains from moving it into the community `{a,b}`, `{c}`, and `{e,f}` are:
 
@@ -39,7 +39,7 @@ This process is applied sequentially to all nodes and repeated until no further 
 
 In the second phase, each community is aggregated into a single node. Each of these aggregated nodes has a self-loop whose weight equals the total weight of intra-community edges. The weight of the edge between any two aggregated nodes corresponds to the sum of the weights of all edges between nodes in the respective original communities.
 
-<div align=center drawio-diagram='6398' drawio-name="draw_0634eed944f244749b84757c76f13d57.jpg"><img src="https://img.ultipa.cn/draw/draw_0634eed944f244749b84757c76f13d57.jpg?v='1691655640565'"/></div>
+<div align=center><img src="images/louvain-2.jpg"/></div>
 
 Community aggregation reduces the number of nodes and edges in the graph without altering local or global edge weights. After this compression, nodes within a community are treated as a single unit, allowing modularity optimization to continue at a higher level. This results in a hierarchical (iterative), multi-level community structure.
 
@@ -53,7 +53,7 @@ Once this second phase is completed, the algorithm applies another pass on the a
 
 ## Example Graph
 
-<div align=center drawio-diagram='20030' drawio-name='draw_60a63ca3c6df4dac9f7ffe19ee2519f3.jpg'><img src="https://img.ultipa.cn/draw/draw_60a63ca3c6df4dac9f7ffe19ee2519f3.jpg?v='1735530968114'"/></div>
+<div align=center><img src="images/louvain-example.jpg"/></div>
 
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
@@ -77,7 +77,7 @@ INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
 
 | Name | Type | Default | Description |
 | -- | -- | -- | -- |
-| `maxLevels` | `INT` | `10` | Maximum hierarchy levels for multi-level optimization. |
+| `maxLevels` | `INT` | `10` | Maximum number of optimization passes. Each pass consists of 2 phases. |
 | `phase1MaxIterations` | `INT` | `5` | Maximum iterations per Phase 1 optimization pass. |
 | `minImprovement` | `FLOAT` | `0.0001` | Minimum modularity improvement to continue optimization. |
 | `weight` | `STRING` | / | Numeric edge property to use as weight. If unset, all edges have unit weight. |
@@ -92,7 +92,7 @@ INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
 | -- | -- | -- |
 | `nodeId` | `STRING` | Node identifier (`_id`) |
 | `community` | `INT` | Community identifier |
-| `level` | `INT` | Hierarchy level |
+| `level` | `INT` | Number of optimization passes completed before convergence |
 | `modularity` | `FLOAT` | Final modularity score |
 
 ```gql
@@ -148,7 +148,7 @@ Computes results and writes them back to node properties. The write configuratio
 | Column | Type | Description |
 | -- | -- | -- |
 | `community` | `INT` | Community identifier |
-| `level` | `INT` | Hierarchy level |
+| `level` | `INT` | Number of optimization passes completed before convergence |
 | `modularity` | `FLOAT` | Final modularity score |
 
 **Returns:**

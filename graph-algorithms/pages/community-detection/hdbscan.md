@@ -26,7 +26,7 @@ A node in a dense region has a small core distance, while a node in a sparse reg
 
 The **mutual reachability distance** between two nodes `A` and `B` is:
 
-<div align=center><img width="250" src="images/hdbscan-2.png"/></div>
+<div align=center><img width="400" src="images/hdbscan-2.png"/></div>
 
 This smooths out density differences — connections between dense and sparse regions are penalized, which helps prevent sparse nodes from being pulled into dense clusters.
 
@@ -40,69 +40,52 @@ The mutual reachability distance between `A` and `B` is smaller than each of the
 
 ### Hierarchical Clustering and Cluster Extraction
 
-**Step 1: Build a <a href="/docs/graph-algorithms/minimum-spanning-tree">minimum spanning tree (MST)</a>** using mutual reachability distances as edge weights.
+1. **Build a <a href="/docs/graph-algorithms/minimum-spanning-tree">minimum spanning tree (MST)</a>** using mutual reachability distances as edge weights.
 
-<div align=center><img width="250" src="images/hdbscan-3.drawio.svg"/></div>
+2. **Build the condensed cluster hierarchy.** Process MST edges from lightest to heaviest, merging nodes at each step. Each merge is tracked at a **density level** `λ = 1 / weight`. A cluster is "born" when a merged component first reaches `minClusterSize`, and "dies" when it merges into a larger component at a lower density level.
 
-**Step 2: Build and condense the cluster hierarchy.** Sort MST edges from longest to shortest and remove them one at a time. Each removal splits a component. If a split produces a child smaller than `minClusterSize`, those nodes "fall out" of the parent rather than forming a new cluster.
-
-| Edge removed | Weight | Split | Result |
-| -- | -- | -- | -- |
-| `D-E` | 3 | `{A,B,C,D,F,G}` and `{E}` | `{E}` size < 3, falls out of parent |
-| `A-F` | 3 | `{A,B,C,D,G}` and `{F}` | `{F}` size < 3, falls out of parent |
-| `C-D` | 2 | `{A,B,G}` and `{D}` | `{D}` size < 3, falls out of parent |
-| `B-G` | 2 | `{A,B}` and `{G}` | Both size < 3, cluster dissolves |
-
-This produces a hierarchy of candidate clusters: the full group `{A,B,C,D,E,F,G}` (exists from the start until weight 3) and the sub-cluster `{A,B,C,D,G}` (exists from weight 3 to weight 2).
-
-**Step 3: Extract the most stable clusters.** The algorithm compares the **stability** of each cluster — how long it persists before splitting. A parent cluster is selected if its own stability exceeds the combined stability of its children.
-
-In this example:
-- `{A,B,C,D,E,F,G}` persists from the maximum distance down to weight 3 (wide range)
-- `{A,B,C,D,G}` persists only from weight 3 to weight 2 (narrow range)
-
-The parent cluster has higher stability, so the algorithm keeps all 7 nodes in **one cluster** — no node is labeled as noise.
+3. **Extract the most stable clusters.** The **stability** of a cluster measures how long it persists across density levels. A cluster with higher stability represents a more persistent, meaningful grouping. When a parent cluster's stability exceeds the combined stability of its children, the parent is selected; otherwise the children are kept. Nodes not belonging to any selected cluster are labeled as **noise** (cluster = -1).
 
 ### Outlier Detection
 
-Each node receives an **outlier score** between 0 and 1, computed from its core distance on the original graph:
+Each node receives an **outlier score** between 0 and 1:
 
-- Noise nodes: outlier score = `1.0`
-- Clustered nodes: outlier score = `coreDist / (coreDist + 1)`
+- **Noise nodes**: outlier score = `1.0`
+- **Clustered nodes**: outlier score = `coreDist / (coreDist + 1)`
 
-Nodes in denser regions (smaller core distance) get lower outlier scores. In this example, all nodes are in one cluster, but their outlier scores still differ:
-
-| Node | Cluster | Core distance | Outlier score |
-| -- | -- | -- | -- |
-| `B` | 0 | 1 | 1/(1+1) = 0.5 |
-| `C` | 0 | 1 | 1/(1+1) = 0.5 |
-| `A` | 0 | 2 | 2/(2+1) ≈ 0.667 |
-| `D` | 0 | 2 | 2/(2+1) ≈ 0.667 |
-| `G` | 0 | 2 | 2/(2+1) ≈ 0.667 |
-| `E` | 0 | 3 | 3/(3+1) = 0.75 |
-| `F` | 0 | 3 | 3/(3+1) = 0.75 |
-
-Even within the same cluster, `E` and `F` have higher outlier scores because they are in sparser regions of the graph.
+Nodes in denser regions (smaller core distance) get lower outlier scores. Nodes in sparser regions get higher scores, even if they belong to a cluster.
 
 ## Considerations
 
 - The algorithm treats edges as undirected for distance computation.
+- By default, distance is measured by shortest-path hop count on the graph structure. When `nodeProperty` is set, the algorithm uses Euclidean distance between numeric vectors stored in that property instead.
 - The minimum cluster size (`minClusterSize`) and the number of neighbors (`minSamples`) used to compute core distance both significantly affect results — smaller values produce more, smaller clusters; larger values produce fewer, denser clusters.
 
 ## Example Graph
 
+<div align=center><img src="images/hdbscan-example.drawio.svg"/></div>
+
 ```gql
-INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
-       (C:default {_id: "C"}), (D:default {_id: "D"}),
-       (E:default {_id: "E"}), (F:default {_id: "F"}),
-       (G:default {_id: "G"}), (H:default {_id: "H"}),
-       (I:default {_id: "I"}), (J:default {_id: "J"}),
-       (A)-[:default]->(B), (A)-[:default]->(C),
-       (B)-[:default]->(C), (B)-[:default]->(D),
-       (C)-[:default]->(D), (D)-[:default]->(E),
-       (E)-[:default]->(F), (F)-[:default]->(G),
-       (G)-[:default]->(H), (H)-[:default]->(I),
-       (I)-[:default]->(J), (J)-[:default]->(H)
+INSERT (A:user {_id: "A"}), (B:user {_id: "B"}),
+       (C:user {_id: "C"}), (D:user {_id: "D"}),
+       (E:user {_id: "E"}), (F:user {_id: "F"}),
+       (G:user {_id: "G"}), (H:user {_id: "H"}),
+       (I:user {_id: "I"}), (J:user {_id: "J"}),
+       (K:user {_id: "K"}), (L:user {_id: "L"}),
+       (M:user {_id: "M"}), (N:user {_id: "N"}),
+       (O:user {_id: "O"}),
+       (A)-[:connect]->(B), (A)-[:connect]->(C),
+       (A)-[:connect]->(F), (A)-[:connect]->(K),
+       (B)-[:connect]->(C), (C)-[:connect]->(D),
+       (D)-[:connect]->(A), (D)-[:connect]->(E),
+       (E)-[:connect]->(A), (F)-[:connect]->(G),
+       (F)-[:connect]->(J), (G)-[:connect]->(H),
+       (H)-[:connect]->(F), (I)-[:connect]->(F),
+       (I)-[:connect]->(H), (J)-[:connect]->(I),
+       (K)-[:connect]->(F), (K)-[:connect]->(N),
+       (L)-[:connect]->(M), (L)-[:connect]->(N),
+       (M)-[:connect]->(K), (M)-[:connect]->(N),
+       (O)-[:connect]->(N)
 ```
 
 ## Parameters
@@ -111,6 +94,7 @@ INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
 | -- | -- | -- | -- |
 | `minClusterSize` | `INT` | `5` | Minimum number of nodes to form a cluster. |
 | `minSamples` | `INT` | `5` | Minimum samples used to compute core distance. |
+| `nodeProperty` | `STRING` | / | Node property containing a numeric vector for attribute-based distance. If unset, uses graph structure distance (shortest-path hop count). |
 | `limit` | `INT` | `-1` | Limits the number of results returned (-1 = all). |
 | `order` | `STRING` | / | Sorts the results by `cluster`: `asc` or `desc`. |
 
@@ -183,16 +167,15 @@ Computes results and writes them back to node properties. The write configuratio
 
 | Column | Type | Description |
 | -- | -- | -- |
-| `task_id` | `STRING` | Task identifier |
-| `status` | `STRING` | Task status (`running`) |
-
-The write executes asynchronously in the background. Use `SHOW TASKS` with the `task_id` to check progress and results.
+| `task_id` | `STRING` | Task identifier for tracking via `SHOW TASKS` |
+| `nodesWritten` | `INT` | Number of nodes with properties written |
+| `computeTimeMs` | `INT` | Time spent computing the algorithm (milliseconds) |
+| `writeTimeMs` | `INT` | Time spent writing properties to storage (milliseconds) |
 
 ```gql
 CALL algo.hdbscan.write({minClusterSize: 3, minSamples: 2}, {
   db: {
-    property: "hdb_cluster"                                              // String: writes cluster to one property
-    // property: {cluster: "hdb_cluster", outlierScore: "hdb_outlier"}   // Map: explicit column-to-property
+    property: "hdb_cluster"
   }
-}) YIELD task_id, status
+}) YIELD task_id, nodesWritten, computeTimeMs, writeTimeMs
 ```

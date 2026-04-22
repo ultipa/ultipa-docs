@@ -44,7 +44,7 @@ A lower `threshold` allows more overlapping memberships; a higher threshold prod
 
 ## Example Graph
 
-<div align=center><img src="images/slpa-example.drawio.svg"/></div>
+<div align=center><img src="images/lpa-hanp-slpa-example.drawio.svg"/></div>
 
 ```gql
 INSERT (A:user {_id: "A"}), (B:user {_id: "B"}),
@@ -139,16 +139,15 @@ Computes results and writes them back to node properties. The write configuratio
 
 | Column | Type | Description |
 | -- | -- | -- |
-| `task_id` | `STRING` | Task identifier |
-| `status` | `STRING` | Task status (`running`) |
-
-The write executes asynchronously in the background. Use `SHOW TASKS` with the `task_id` to check progress and results.
+| `task_id` | `STRING` | Task identifier for tracking via `SHOW TASKS` |
+| `nodesWritten` | `INT` | Number of nodes with properties written |
+| `computeTimeMs` | `INT` | Time spent computing the algorithm (milliseconds) |
+| `writeTimeMs` | `INT` | Time spent writing properties to storage (milliseconds) |
 
 ```gql
 CALL algo.slpa.write({iterations: 20, threshold: 0.1}, {
   db: {
-    property: "comm_list"                          // String: writes communities to one property
-    // property: {communities: "comm_list"}         // Map: explicit column-to-property
+    property: "comm_list"
   }
-}) YIELD task_id, status
+}) YIELD task_id, nodesWritten, computeTimeMs, writeTimeMs
 ```

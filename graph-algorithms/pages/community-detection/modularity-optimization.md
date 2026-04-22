@@ -10,7 +10,7 @@ For larger graphs where speed is prioritized, consider using <a href="/docs/grap
 
 ### Modularity
 
-<a href="/docs/graph-algorithms/modularity">Modularity**</a> is a measure of community partition quality that compares the density of edges within communities to what would be expected in a random graph.
+<a href="/docs/graph-algorithms/modularity">Modularity</a> is a measure of community partition quality that compares the density of edges within communities to what would be expected in a random graph.
 
 ### Simulated Annealing
 
@@ -38,18 +38,24 @@ This balance between exploration and exploitation helps avoid getting stuck in p
 
 ## Example Graph
 
-<div align=center><img src="images/modularityopt-example.drawio.svg"/></div>
+<div align=center><img src="images/modularityopt-example.jpg"/></div>
 
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
        (C:default {_id: "C"}), (D:default {_id: "D"}),
        (E:default {_id: "E"}), (F:default {_id: "F"}),
        (G:default {_id: "G"}), (H:default {_id: "H"}),
-       (A)-[:default]->(B), (A)-[:default]->(C),
-       (B)-[:default]->(C), (A)-[:default]->(D),
-       (D)-[:default]->(E), (D)-[:default]->(F),
-       (E)-[:default]->(F), (G)-[:default]->(D),
-       (G)-[:default]->(H)
+       (I:default {_id: "I"}), (J:default {_id: "J"}),
+       (K:default {_id: "K"}), (L:default {_id: "L"}),
+       (M:default {_id: "M"}), (N:default {_id: "N"}),
+       (A)-[:default {weight: 1}]->(B), (A)-[:default {weight: 1.7}]->(C),
+       (A)-[:default {weight: 0.6}]->(D), (A)-[:default {weight: 1}]->(E),
+       (B)-[:default {weight: 3}]->(G), (F)-[:default {weight: 1.6}]->(A),
+       (F)-[:default {weight: 0.3}]->(H), (F)-[:default {weight: 2}]->(J),
+       (F)-[:default {weight: 0.5}]->(K), (G)-[:default {weight: 2}]->(F),
+       (I)-[:default {weight: 1}]->(F), (K)-[:default {weight: 0.3}]->(A),
+       (K)-[:default {weight: 0.8}]->(L), (K)-[:default {weight: 1.2}]->(M),
+       (K)-[:default {weight: 2}]->(N)
 ```
 
 ## Parameters
@@ -121,16 +127,15 @@ Computes results and writes them back to node properties. The write configuratio
 
 | Column | Type | Description |
 | -- | -- | -- |
-| `task_id` | `STRING` | Task identifier |
-| `status` | `STRING` | Task status (`running`) |
-
-The write executes asynchronously in the background. Use `SHOW TASKS` with the `task_id` to check progress and results.
+| `task_id` | `STRING` | Task identifier for tracking via `SHOW TASKS` |
+| `nodesWritten` | `INT` | Number of nodes with properties written |
+| `computeTimeMs` | `INT` | Time spent computing the algorithm (milliseconds) |
+| `writeTimeMs` | `INT` | Time spent writing properties to storage (milliseconds) |
 
 ```gql
 CALL algo.modularityopt.write({}, {
   db: {
-    property: "mod_comm"                        // String: writes community to one property
-    // property: {community: "mod_comm"}        // Map: explicit column-to-property
+    property: "mod_comm"
   }
-}) YIELD task_id, status
+}) YIELD task_id, nodesWritten, computeTimeMs, writeTimeMs
 ```
