@@ -39,7 +39,7 @@ In the following example, the nodes have only 1 possible topological sorting: `A
 
 ## Example Graph
 
-<center><img src="images/topologicalsort-example.jpg"/></center>
+<center><img src="images/topologicalsort-example.drawio.svg"/></center>
 
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),

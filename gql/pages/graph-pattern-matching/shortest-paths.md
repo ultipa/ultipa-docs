@@ -15,14 +15,16 @@ The shortest path selectors are typically used with variable-length <a target="_
 
 ## Note on Shortest Path Algorithms
 
-Ultipa’s graph algorithm library includes the following shortest path algorithms:
+Ultipa’s graph algorithm library includes many shortest path algorithms:
 
-- <a target="_blank" href="/docs/graph-analytics-algorithms/dijkstra-sssp">Dijkstra SSSP</a>
-- <a target="_blank" href="/docs/graph-analytics-algorithms/delta-stepping-sssp">Delta-Stepping SSSP</a>
-- <a target="_blank" href="/docs/graph-analytics-algorithms/spfa">SPFA</a>
-- <a target="_blank" href="/docs/graph-analytics-algorithms/mst">Minimum Spanning Tree</a>
+- <a target="_blank" href="/docs/graph-algorithms/dijkstra-shortest-path">Dijkstra's Shortest Path</a>
+- <a target="_blank" href="/docs/graph-algorithms/astar">A* Shortest Path</a>
+- <a target="_blank" href="/docs/graph-algorithms/yens">Yen's K-Shortest Paths</a>
+- <a target="_blank" href="/docs/graph-algorithms/shortest-bfs">Shortest Path (BFS)</a>
+- <a target="_blank" href="/docs/graph-algorithms/delta-stepping-sssp">Delta-Stepping SSSP</a>
+- <a target="_blank" href="/docs/graph-algorithms/spfa">Shortest Path Faster Algorithm (SPFA)</a>
 
-These algorithms are recommended for computing **weighted shortest paths** (i.e., cheapest paths) or when calculating shortest paths over the full graph or a subgraph that has been loaded into an HDC server.
+These algorithms are recommended for computing **weighted shortest paths** (i.e., cheapest paths) or when searching for shortest paths on large graphs.
 
 ## Example Graph
 

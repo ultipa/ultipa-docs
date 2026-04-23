@@ -33,7 +33,7 @@ This implementation constructs the MST by:
 
 ## Example Graph
 
-<center><img src="images/mst-example.drawio.svg"/></center>
+<center><img src="images/mst-kspanningtree-steiner-example.drawio.svg"/></center>
 
 ```gql
 INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),

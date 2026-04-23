@@ -191,6 +191,10 @@
           "title": "Dijkstra's Shortest Path"
         },
         {
+          "file": "astar.md",
+          "title": "A* Shortest Path"
+        },
+        {
           "file": "yens.md",
           "title": "Yen's K-Shortest Paths"
         },
@@ -207,12 +211,40 @@
           "title": "Shortest Path Faster Algorithm (SPFA)"
         },
         {
+          "file": "apsp.md",
+          "title": "All-Pairs Shortest Path (APSP)"
+        },
+        {
           "file": "mst.md",
           "title": "Minimum Spanning Tree (MST)"
         },
         {
+          "file": "kspanningtree.md",
+          "title": "K-Spanning Tree"
+        },
+        {
+          "file": "steiner.md",
+          "title": "Steiner Tree"
+        },
+        {
+          "file": "pcst.md",
+          "title": "Prize-Collecting Steiner Tree (PCST)"
+        },
+        {
+          "file": "mincostflow.md",
+          "title": "Minimum Cost Flow"
+        },
+        {
+          "file": "maxflow.md",
+          "title": "Maximum Flow"
+        },
+        {
           "file": "khop-fast.md",
           "title": "K-Hop Fast"
+        },
+        {
+          "file": "longest-path-dag.md",
+          "title": "Longest Path (DAG)"
         },
         {
           "file": "random-walk.md",
