@@ -342,10 +342,6 @@
           "folder": "algorithms",
           "pages": [
             {
-              "file": "node2vec-walk.md",
-              "title": "Node2Vec Walk"
-            },
-            {
               "file": "node2vec.md",
               "title": "Node2Vec"
             },
