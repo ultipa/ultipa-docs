@@ -19,8 +19,4 @@ Ultipa GQLDB Drivers provide developers with the following libraries to integrat
       <img style="width:80px; margin:0; padding: 20px;" src="https://img.ultipa.cn/img/2025-01-13-15-33-01-nodejs.png">
       <h3 style="margin:0; font-weight:600; padding-right:20px;">Node.js</h3>
   </a>
-    <a href="/docs/drivers/csharp-quick-start" style="display:flex; background:#fafafd; border:1px solid #ebeef0; min-width:280px; flex:1 1 45%; box-sizing:border-box; border-radius: 8px; margin-bottom:2%; align-items:center; text-decoration:none;">
-      <img style="width:80px; margin:0; padding: 20px;" src="https://img.ultipa.cn/img/2025-01-13-15-40-52-c-sharp.png">
-      <h3 style="margin:0; font-weight:600; padding-right:20px;">C#</h3>
-  </a>
 </div>
