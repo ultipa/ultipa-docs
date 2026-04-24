@@ -233,6 +233,64 @@
           "title": "Error Handling"
         }
       ]
+    },
+    {
+      "folder": "csharp",
+      "name": "C#",
+      "pages": [
+        {
+          "file": "csharp-quick-start.md",
+          "title": "Quick Start"
+        },
+        {
+          "file": "csharp-configuration.md",
+          "title": "Configuration"
+        },
+        {
+          "file": "csharp-connection-and-session.md",
+          "title": "Connection and Session"
+        },
+        {
+          "file": "csharp-executing-queries.md",
+          "title": "Executing Queries"
+        },
+        {
+          "file": "csharp-graph-management.md",
+          "title": "Graph Management"
+        },
+        {
+          "file": "csharp-transactions.md",
+          "title": "Transactions"
+        },
+        {
+          "file": "csharp-data-operations.md",
+          "title": "Data Operations"
+        },
+        {
+          "file": "csharp-bulk-import.md",
+          "title": "Bulk Import"
+        },
+        {
+          "file": "csharp-data-export.md",
+          "title": "Data Export"
+        },
+        {
+          "file": "csharp-health-and-admin.md",
+          "title": "Health and Administration"
+        },
+        {
+          "file": "csharp-response-processing.md",
+          "title": "Response Processing"
+        },
+        {
+          "file": "csharp-data-types.md",
+          "title": "Data Types"
+        },
+        {
+          "file": "csharp-error-handling.md",
+          "title": "Error Handling"
+        }
+      ]
     }
   ]
 }
