@@ -253,7 +253,7 @@
       ]
     },
     {
-      "folder": "topological-link-prediction",
+      "folder": "link-prediction",
       "pages": [
         {
           "file": "adamic-adar.md",
@@ -274,6 +274,10 @@
         {
           "file": "total-neighbors.md",
           "title": "Total Neighbors"
+        },
+        {
+          "file": "same-community.md",
+          "title": "Same Community"
         }
       ]
     },
