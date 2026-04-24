@@ -6,16 +6,32 @@ The GQLDB Java driver provides methods for inserting and deleting nodes and edge
 
 | Method | Description |
 |--------|-------------|
-| `insertNodes()` | Insert multiple nodes into a graph |
-| `insertEdges()` | Insert multiple edges into a graph |
-| `deleteNodes()` | Delete nodes from a graph |
-| `deleteEdges()` | Delete edges from a graph |
+| `insertNodes(nodes)` | Insert nodes via GQL INSERT statement |
+| `insertNodes(nodes, InsertConfig)` | Insert nodes with per-call configuration |
+| `insertNodesBatchAuto(graphName, nodes)` | Insert nodes via gRPC (high-throughput) |
+| `insertEdges(edges)` | Insert edges via GQL INSERT statement |
+| `insertEdges(edges, InsertConfig)` | Insert edges with per-call configuration |
+| `insertEdgesBatchAuto(graphName, edges)` | Insert edges via gRPC (high-throughput) |
+| `deleteNodes(graphName, nodeIds)` | Delete nodes by ID |
+| `deleteNodes(graphName, labels, where)` | Delete nodes by label and condition |
+| `deleteEdges(graphName, edgeIds)` | Delete edges by ID |
+| `deleteEdges(graphName, label, where)` | Delete edges by label and condition |
 
-## Inserting Nodes
+### insertNodes vs insertNodesBatchAuto
 
-### insertNodes()
+| | `insertNodes` | `insertNodesBatchAuto` |
+|---|---|---|
+| Method | GQL `INSERT` statement | gRPC `InsertNodes` RPC |
+| Bulk session | Not required | Required (`startBulkImport`) |
+| Performance | Good for small batches | High-throughput for large imports |
+| Custom node ID | Not supported | Supported (`NodeData.id`) |
+| Use case | Simple inserts, scripts | ETL, data migration, bulk loading |
 
-Insert one or more nodes into a graph:
+## Inserting Nodes (gRPC Batch)
+
+### insertNodesBatchAuto()
+
+Insert one or more nodes into a graph via gRPC for high-throughput:
 
 ```java
 import com.gqldb.*;
@@ -104,11 +120,11 @@ public void insertWithBulkImport(GqldbClient client) {
 }
 ```
 
-## Inserting Edges
+## Inserting Edges (gRPC Batch)
 
-### insertEdges()
+### insertEdgesBatchAuto()
 
-Insert one or more edges into a graph:
+Insert one or more edges into a graph via gRPC for high-throughput:
 
 ```java
 import com.gqldb.*;
@@ -169,6 +185,72 @@ InsertEdgesResult result = client.insertEdges("myGraph", edges, true);
 System.out.println("Inserted: " + result.getEdgeCount());
 System.out.println("Skipped: " + result.getSkippedCount());
 ```
+
+## GQL-based Insert (Convenience)
+
+### insertNodes() / insertEdges()
+
+These convenience methods generate and execute GQL `INSERT` statements. They don't require a bulk import session and use the session's current graph:
+
+```java
+import com.gqldb.*;
+import java.util.*;
+
+// Simple insert using session graph
+client.useGraph("myGraph");
+
+List<NodeData> nodes = Arrays.asList(
+    new NodeData(Arrays.asList("Person"), Map.of("name", "Alice", "age", 30)),
+    new NodeData(Arrays.asList("Person"), Map.of("name", "Bob", "age", 25))
+);
+client.insertNodes(nodes);
+
+List<EdgeData> edges = Arrays.asList(
+    new EdgeData("Knows", "id1", "id2", Map.of("since", 2024))
+);
+client.insertEdges(edges);
+```
+
+## Per-call Configuration (InsertConfig)
+
+`insertNodes()` and `insertEdges()` accept an optional `InsertConfig` for per-call graph routing and insert mode, without changing session state:
+
+```java
+import com.gqldb.*;
+import com.gqldb.types.InsertType;
+
+// Target a specific graph without useGraph()
+InsertConfig cfg = new InsertConfig();
+cfg.setGraphName("myGraph");
+cfg.setInsertType(InsertType.OVERWRITE);  // NORMAL (default) or OVERWRITE
+cfg.setTimeout(60);                       // Optional per-call timeout (seconds)
+
+client.insertNodes(nodes, cfg);
+client.insertEdges(edges, cfg);
+```
+
+### InsertConfig Options
+
+`InsertConfig` extends `QueryConfig` with one additional field:
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `graphName` | `String` | `null` | Target graph (uses session default if null) |
+| `insertType` | `InsertType` | `NORMAL` | `NORMAL` or `OVERWRITE` |
+| `timeout` | `int` | `0` | Per-call timeout in seconds (0 = use client default) |
+
+All other convenience methods also accept `QueryConfig` for per-call graph routing:
+
+```java
+QueryConfig qc = new QueryConfig();
+qc.setGraphName("graphA");
+
+client.showNodeLabels(qc);
+client.createNodeLabel("User", props, qc);
+client.gql("MATCH (n) RETURN n", qc);
+```
+
+Passing a per-call config is thread-safe: multiple threads can target different graphs via their own config objects without interfering.
 
 ## Deleting Nodes
 
@@ -272,7 +354,7 @@ import java.util.*;
 public class DataOperationsExample {
     public static void main(String[] args) {
         GqldbConfig config = GqldbConfig.builder()
-            .hosts("localhost:60061")
+            .hosts("localhost:9000")
             .build();
 
         try (GqldbClient client = new GqldbClient(config)) {

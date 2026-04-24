@@ -13,14 +13,27 @@ The GQLDB Java driver provides methods for monitoring server health, managing ca
 
 | Method | Description |
 |--------|-------------|
-| `warmupParser()` | Pre-allocate parser instances |
-| `getCacheStats()` | Get cache statistics |
-| `clearCache()` | Clear specified caches |
-| `getStatistics()` | Get database statistics |
-| `invalidatePermissionCache()` | Invalidate RBAC permission cache |
+| `warmupParser(count)` | Pre-allocate parser instances |
+| `getCacheStats(cacheType)` | Get cache statistics |
+| `clearCache(cacheType)` | Clear specified caches |
+| `getStatistics(graphName)` | Get database statistics |
+| `invalidatePermissionCache(username)` | Invalidate RBAC permission cache |
 | `compact()` | Trigger storage compaction |
 | `getSystemMetrics()` | Get system-level metrics (CPU, memory, disk) |
-| `waitForComputeTopology()` | Wait until the compute topology is ready |
+| `waitForComputeTopology(graphName, timeout)` | Wait until the compute topology is ready |
+
+## Task and Process Methods
+
+| Method | Description |
+|--------|-------------|
+| `showTasks()` | List running/completed algorithm tasks |
+| `stopTask(taskId)` | Stop a running task |
+| `deleteTask(taskId)` | Delete a task |
+| `showAlgos()` | List available algorithms |
+| `top()` | List running queries |
+| `kill(queryId)` | Terminate a running query |
+| `stats()` | Get graph statistics (node/edge counts by label) |
+| `test()` | Connectivity test (ping) |
 
 ## Health Checks
 
@@ -231,6 +244,138 @@ public void invalidatePermissions(GqldbClient client) {
 
 Use this after changing user permissions to ensure changes take effect immediately.
 
+## Database Compaction
+
+### compact()
+
+Trigger database compaction:
+
+```java
+AdminService.CompactResult result = client.compact();
+System.out.println("Compaction: " + (result.isSuccess() ? "succeeded" : "failed") +
+    " - " + result.getMessage());
+```
+
+## System Metrics
+
+### getSystemMetrics()
+
+Get system-level metrics including CPU, memory, disk, and network:
+
+```java
+AdminService.SystemMetrics metrics = client.getSystemMetrics();
+
+if (metrics.getCpu() != null) {
+    System.out.println("CPU - Process: " + metrics.getCpu().getProcessPercent() +
+        "%, System: " + metrics.getCpu().getSystemPercent() + "%");
+}
+
+if (metrics.getMemory() != null) {
+    System.out.println("Memory - Used: " + metrics.getMemory().getSystemUsedPercent() + "%");
+}
+
+if (metrics.getStorage() != null) {
+    System.out.println("Storage - DB size: " + metrics.getStorage().getDbSizeBytes() + " bytes");
+}
+```
+
+## Compute Topology
+
+### waitForComputeTopology()
+
+Wait for the compute engine to be ready:
+
+```java
+AdminService.ComputeTopologyResult result = client.waitForComputeTopology(
+    "myGraph", Duration.ofSeconds(60)
+);
+System.out.println("Compute topology: " + (result.isReady() ? "ready" : "not ready") +
+    " - " + result.getMessage());
+```
+
+## Task Management
+
+### showTasks()
+
+List running and completed algorithm tasks:
+
+```java
+client.useGraph("myGraph");
+
+List<TaskInfo> tasks = client.showTasks();
+for (TaskInfo task : tasks) {
+    System.out.println(task.getTaskId() + ": " + task.getStatus() +
+        " (" + task.getProgress() + ")");
+}
+
+// With QueryConfig
+List<TaskInfo> tasks2 = client.showTasks(new QueryConfig());
+```
+
+### stopTask() / deleteTask()
+
+```java
+client.stopTask("task-123");
+System.out.println("Task stopped");
+
+client.deleteTask("task-123");
+System.out.println("Task deleted");
+```
+
+### showAlgos()
+
+List available algorithms:
+
+```java
+List<AlgoInfo> algos = client.showAlgos();
+for (AlgoInfo algo : algos) {
+    System.out.println(algo.getName() + ": " + algo.getDescription());
+}
+```
+
+## Process Monitoring
+
+### top()
+
+List currently running queries:
+
+```java
+List<ProcessInfo> processes = client.top();
+for (ProcessInfo proc : processes) {
+    System.out.println("Query " + proc.getQueryId() + ": " +
+        proc.getQueryText() + " (" + proc.getDurationMs() + "ms)");
+}
+```
+
+### kill()
+
+Terminate a running query:
+
+```java
+client.kill("query-456");
+System.out.println("Query terminated");
+```
+
+### stats()
+
+Get graph statistics with node/edge counts by label:
+
+```java
+GraphStats graphStats = client.stats();
+System.out.println("Nodes: " + graphStats.getNodeCount());
+System.out.println("Edges: " + graphStats.getEdgeCount());
+System.out.println("Label counts: " + graphStats.getLabelCounts());
+```
+
+### test()
+
+Test connectivity (returns latency in nanoseconds):
+
+```java
+long latencyNs = client.test();
+System.out.println("Latency: " + (latencyNs / 1_000_000.0) + "ms");
+```
+
 ## Complete Example
 
 ```java
@@ -242,7 +387,7 @@ import com.gqldb.services.AdminService;
 public class HealthAdminExample {
     public static void main(String[] args) {
         GqldbConfig config = GqldbConfig.builder()
-            .hosts("localhost:60061")
+            .hosts("localhost:9000")
             .build();
 
         try (GqldbClient client = new GqldbClient(config)) {

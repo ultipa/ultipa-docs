@@ -364,7 +364,7 @@ import java.util.*;
 public class ResponseProcessingExample {
     public static void main(String[] args) {
         GqldbConfig config = GqldbConfig.builder()
-            .hosts("localhost:60061")
+            .hosts("localhost:9000")
             .defaultGraph("socialNetwork")
             .build();
 

@@ -278,7 +278,7 @@ import com.gqldb.*;
 public class ErrorHandlingExample {
     public static void main(String[] args) {
         GqldbConfig config = GqldbConfig.builder()
-            .hosts("localhost:60061")
+            .hosts("localhost:9000")
             .timeout(30)
             .build();
 

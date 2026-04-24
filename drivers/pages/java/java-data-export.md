@@ -244,7 +244,7 @@ import java.nio.charset.StandardCharsets;
 public class DataExportExample {
     public static void main(String[] args) {
         GqldbConfig config = GqldbConfig.builder()
-            .hosts("localhost:60061")
+            .hosts("localhost:9000")
             .build();
 
         try (GqldbClient client = new GqldbClient(config)) {

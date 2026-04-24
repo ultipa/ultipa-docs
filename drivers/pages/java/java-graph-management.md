@@ -2,6 +2,22 @@
 
 The GQLDB Java driver provides methods to create, delete, list, and manage graphs in the database.
 
+## Graph Methods
+
+| Method | Description |
+|--------|-------------|
+| `createGraph(name, graphType, description)` | Create a new graph |
+| `dropGraph(name, ifExists)` | Delete a graph |
+| `useGraph(name)` | Set the current graph for the session |
+| `listGraphs()` | List all available graphs |
+| `getGraphInfo(name)` | Get information about a specific graph |
+| `createOpenGraph(name)` | Create a schema-less graph |
+| `createClosedGraph(name)` | Create a schema-enforced graph |
+| `createGraphIfNotExist(name, graphType, description)` | Create graph only if it doesn't exist |
+| `hasGraph(name)` | Check if a graph exists |
+| `alterGraph(oldName, newName)` | Rename a graph |
+| `truncate(graphName)` | Remove all data from a graph |
+
 ## Graph Types
 
 GQLDB supports three graph types defined in the `GraphType` enum:
@@ -146,6 +162,74 @@ public void getGraphInfoExample(GqldbClient client) {
 }
 ```
 
+## Convenience Methods
+
+### createOpenGraph() / createClosedGraph()
+
+Shorthand methods for creating graphs with a specific type:
+
+```java
+// Create an open (schema-less) graph
+client.createOpenGraph("flexGraph");
+
+// Create a closed (schema-enforced) graph
+client.createClosedGraph("strictGraph");
+
+// With QueryConfig for targeting a specific graph context
+client.createOpenGraph("flexGraph", new QueryConfig());
+```
+
+### createGraphIfNotExist()
+
+Create a graph only if it doesn't already exist:
+
+```java
+// Returns true if created, false if already existed
+boolean created = client.createGraphIfNotExist("myGraph", GraphType.OPEN, "My graph");
+
+if (created) {
+    System.out.println("Graph created");
+} else {
+    System.out.println("Graph already exists");
+}
+```
+
+### hasGraph()
+
+Check whether a graph exists:
+
+```java
+if (client.hasGraph("myGraph")) {
+    System.out.println("Graph exists");
+} else {
+    System.out.println("Graph does not exist");
+}
+```
+
+### alterGraph()
+
+Rename a graph:
+
+```java
+client.alterGraph("oldName", "newName");
+System.out.println("Graph renamed");
+
+// With QueryConfig
+client.alterGraph("oldName", "newName", new QueryConfig());
+```
+
+### truncate()
+
+Remove all data from a graph while keeping the graph itself:
+
+```java
+client.truncate("myGraph");
+System.out.println("All data removed from graph");
+
+// With QueryConfig
+client.truncate("myGraph", new QueryConfig());
+```
+
 ## Exception Handling
 
 ```java
@@ -189,7 +273,7 @@ import java.util.List;
 public class GraphManagementExample {
     public static void main(String[] args) {
         GqldbConfig config = GqldbConfig.builder()
-            .hosts("localhost:60061")
+            .hosts("localhost:9000")
             .build();
 
         try (GqldbClient client = new GqldbClient(config)) {

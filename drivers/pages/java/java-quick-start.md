@@ -35,7 +35,7 @@ public class QuickStart {
     public static void main(String[] args) {
         // Create configuration
         GqldbConfig config = GqldbConfig.builder()
-            .hosts("localhost:60061")
+            .hosts("localhost:9000")
             .defaultGraph("myGraph")
             .build();
 
@@ -64,7 +64,7 @@ import com.gqldb.*;
 public class QueryExample {
     public static void main(String[] args) {
         GqldbConfig config = GqldbConfig.builder()
-            .hosts("localhost:60061")
+            .hosts("localhost:9000")
             .defaultGraph("myGraph")
             .build();
 
@@ -97,7 +97,7 @@ import com.gqldb.types.GraphType;
 public class CreateGraphExample {
     public static void main(String[] args) {
         GqldbConfig config = GqldbConfig.builder()
-            .hosts("localhost:60061")
+            .hosts("localhost:9000")
             .build();
 
         try (GqldbClient client = new GqldbClient(config)) {
@@ -125,7 +125,7 @@ import java.util.*;
 public class InsertDataExample {
     public static void main(String[] args) {
         GqldbConfig config = GqldbConfig.builder()
-            .hosts("localhost:60061")
+            .hosts("localhost:9000")
             .defaultGraph("myGraph")
             .build();
 
@@ -167,7 +167,7 @@ import com.gqldb.*;
 public class ProcessResultsExample {
     public static void main(String[] args) {
         GqldbConfig config = GqldbConfig.builder()
-            .hosts("localhost:60061")
+            .hosts("localhost:9000")
             .defaultGraph("myGraph")
             .build();
 
@@ -203,7 +203,7 @@ import com.gqldb.*;
 public class TransactionExample {
     public static void main(String[] args) {
         GqldbConfig config = GqldbConfig.builder()
-            .hosts("localhost:60061")
+            .hosts("localhost:9000")
             .build();
 
         try (GqldbClient client = new GqldbClient(config)) {

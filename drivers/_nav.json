@@ -29,6 +29,10 @@
           "title": "Graph Management"
         },
         {
+          "file": "java-schema-management.md",
+          "title": "Schema Management"
+        },
+        {
           "file": "java-transactions.md",
           "title": "Transactions"
         },
