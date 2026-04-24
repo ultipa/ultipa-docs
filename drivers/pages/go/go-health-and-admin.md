@@ -20,6 +20,21 @@ The GQLDB Go driver provides methods for monitoring server health, managing cach
 | `GetStatistics(ctx, graphName)` | Get database statistics |
 | `InvalidatePermissionCache(ctx, username)` | Invalidate RBAC permission cache |
 | `WaitForComputeTopology(ctx, graphName, timeout)` | Wait for compute engine readiness |
+| `Compact(ctx)` | Trigger storage compaction |
+| `GetSystemMetrics(ctx)` | Get system-level metrics (CPU, memory, disk) |
+
+## Task and Process Methods
+
+| Method | Description |
+|--------|-------------|
+| `ShowTasks(ctx, config)` | List running/completed algorithm tasks |
+| `StopTask(ctx, taskID, config)` | Stop a running task |
+| `DeleteTask(ctx, taskID, config)` | Delete a task |
+| `ShowAlgos(ctx, config)` | List available algorithms |
+| `Top(ctx, config)` | List running queries |
+| `Kill(ctx, queryID, config)` | Terminate a running query |
+| `Stats(ctx, config)` | Get graph statistics (node/edge counts by label) |
+| `Test(ctx)` | Connectivity test (ping) |
 
 ## Health Checks
 
@@ -314,6 +329,78 @@ if result.Ready {
 }
 ```
 
+## Task Management
+
+### ShowTasks()
+
+List running and completed algorithm tasks:
+
+```go
+client.UseGraph(ctx, "myGraph")
+
+tasks, err := client.ShowTasks(ctx, nil)
+for _, t := range tasks {
+    fmt.Printf("%s: %s (%s)\n", t.TaskID, t.Status, t.Progress)
+}
+```
+
+### StopTask() / DeleteTask()
+
+```go
+client.StopTask(ctx, "task-123", nil)
+client.DeleteTask(ctx, "task-123", nil)
+```
+
+### ShowAlgos()
+
+List available algorithms:
+
+```go
+algos, err := client.ShowAlgos(ctx, nil)
+for _, a := range algos {
+    fmt.Printf("%s: %s\n", a.Name, a.Description)
+}
+```
+
+## Process Monitoring
+
+### Top()
+
+List currently running queries:
+
+```go
+procs, err := client.Top(ctx, nil)
+for _, p := range procs {
+    fmt.Printf("Query %s: %s (%dms)\n", p.QueryID, p.QueryText, p.DurationMs)
+}
+```
+
+### Kill()
+
+Terminate a running query:
+
+```go
+_, err := client.Kill(ctx, "query-456", nil)
+```
+
+### Stats()
+
+Get graph statistics with node/edge counts by label:
+
+```go
+stats, err := client.Stats(ctx, nil)
+fmt.Printf("Nodes: %d, Edges: %d\n", stats.NodeCount, stats.EdgeCount)
+```
+
+### Test()
+
+Test connectivity (returns latency in nanoseconds):
+
+```go
+latencyNs, err := client.Test(ctx)
+fmt.Printf("Latency: %.2fms\n", float64(latencyNs)/1e6)
+```
+
 ## Complete Example
 
 ```go
@@ -330,7 +417,7 @@ import (
 
 func main() {
     config := gqldb.NewConfigBuilder().
-        Hosts("localhost:60061").
+        Hosts("localhost:9000").
         Timeout(30 * time.Second).
         Build()
 

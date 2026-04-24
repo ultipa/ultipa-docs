@@ -145,6 +145,52 @@ async function getGraphInfoExample(client: GqldbClient) {
 }
 ```
 
+## Convenience Methods
+
+### createOpenGraph() / createClosedGraph()
+
+Shorthand methods for creating graphs with a specific type:
+
+```typescript
+await client.createOpenGraph('flexGraph');
+await client.createClosedGraph('strictGraph');
+```
+
+### createGraphIfNotExist()
+
+Create a graph only if it doesn't already exist:
+
+```typescript
+// Returns true if created, false if already existed
+const created = await client.createGraphIfNotExist('myGraph', GraphType.OPEN, 'My graph');
+```
+
+### hasGraph()
+
+Check whether a graph exists:
+
+```typescript
+if (await client.hasGraph('myGraph')) {
+  console.log('Graph exists');
+}
+```
+
+### alterGraph()
+
+Rename a graph:
+
+```typescript
+await client.alterGraph('oldName', 'newName');
+```
+
+### truncate()
+
+Remove all data from a graph while keeping the graph itself:
+
+```typescript
+await client.truncate('myGraph');
+```
+
 ## Error Handling
 
 ```typescript
@@ -196,7 +242,7 @@ import { GqldbClient, createConfig, GraphType } from '@ultipa-graph/ultipa-drive
 
 async function main() {
   const client = new GqldbClient(createConfig({
-    hosts: ['localhost:60061']
+    hosts: ['localhost:9000']
   }));
 
   try {

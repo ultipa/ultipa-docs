@@ -10,7 +10,7 @@ Create a `GqldbClient` instance with a configuration object:
 import { GqldbClient, createConfig } from '@ultipa-graph/ultipa-driver';
 
 const config = createConfig({
-  hosts: ['localhost:60061'],
+  hosts: ['localhost:9000'],
   defaultGraph: 'myGraph'
 });
 
@@ -30,7 +30,7 @@ import { GqldbClient, createConfig, Session } from '@ultipa-graph/ultipa-driver'
 
 async function connect() {
   const client = new GqldbClient(createConfig({
-    hosts: ['localhost:60061']
+    hosts: ['localhost:9000']
   }));
 
   try {
@@ -169,7 +169,7 @@ Always close the client when done to release resources:
 ```typescript
 async function main() {
   const client = new GqldbClient(createConfig({
-    hosts: ['localhost:60061']
+    hosts: ['localhost:9000']
   }));
 
   try {
@@ -208,7 +208,7 @@ import { GqldbClient, createConfig, HealthStatus } from '@ultipa-graph/ultipa-dr
 async function main() {
   // Create client with configuration
   const client = new GqldbClient(createConfig({
-    hosts: ['localhost:60061'],
+    hosts: ['localhost:9000'],
     timeout: 30000,
     defaultGraph: 'myGraph'
   }));

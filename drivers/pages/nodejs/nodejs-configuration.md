@@ -8,7 +8,7 @@ The `GqldbConfig` interface supports the following options:
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `hosts` | `string[]` | `['localhost:60061']` | Server hosts in `host:port` format |
+| `hosts` | `string[]` | `['localhost:9000']` | Server hosts in `host:port` format |
 | `username` | `string` | - | Username for authentication |
 | `password` | `string` | - | Password for authentication |
 | `defaultGraph` | `string` | - | Default graph to use for queries |
@@ -29,7 +29,7 @@ import { createConfig, GqldbClient } from '@ultipa-graph/ultipa-driver';
 
 // Minimal configuration
 const config = createConfig({
-  hosts: ['localhost:60061']
+  hosts: ['localhost:9000']
 });
 
 // Full configuration
@@ -133,7 +133,7 @@ You can load configuration from environment variables:
 import { createConfig, GqldbClient } from '@ultipa-graph/ultipa-driver';
 
 const config = createConfig({
-  hosts: process.env.GQLDB_HOSTS?.split(',') || ['localhost:60061'],
+  hosts: process.env.GQLDB_HOSTS?.split(',') || ['localhost:9000'],
   username: process.env.GQLDB_USERNAME,
   password: process.env.GQLDB_PASSWORD,
   defaultGraph: process.env.GQLDB_DEFAULT_GRAPH,
@@ -157,7 +157,7 @@ import { createConfig, validateConfig } from '@ultipa-graph/ultipa-driver';
 
 // Manual validation
 const config = {
-  hosts: ['localhost:60061']
+  hosts: ['localhost:9000']
 };
 
 try {
@@ -177,7 +177,7 @@ import { DEFAULT_CONFIG } from '@ultipa-graph/ultipa-driver';
 
 console.log(DEFAULT_CONFIG);
 // {
-//   hosts: ['localhost:60061'],
+//   hosts: ['localhost:9000'],
 //   timeout: 30000,
 //   maxRecvSize: 67108864,  // 64MB
 //   poolSize: 10,

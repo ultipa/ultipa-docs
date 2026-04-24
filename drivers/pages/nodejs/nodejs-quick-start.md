@@ -22,7 +22,7 @@ import { GqldbClient, createConfig } from '@ultipa-graph/ultipa-driver';
 async function main() {
   // Create configuration
   const config = createConfig({
-    hosts: ['localhost:60061'],
+    hosts: ['localhost:9000'],
     defaultGraph: 'myGraph'
   });
 
@@ -56,7 +56,7 @@ import { GqldbClient, createConfig } from '@ultipa-graph/ultipa-driver';
 
 async function main() {
   const config = createConfig({
-    hosts: ['localhost:60061'],
+    hosts: ['localhost:9000'],
     defaultGraph: 'myGraph'
   });
 
@@ -93,7 +93,7 @@ import { GqldbClient, createConfig, GraphType } from '@ultipa-graph/ultipa-drive
 
 async function main() {
   const config = createConfig({
-    hosts: ['localhost:60061']
+    hosts: ['localhost:9000']
   });
 
   const client = new GqldbClient(config);
@@ -125,7 +125,7 @@ import { GqldbClient, createConfig } from '@ultipa-graph/ultipa-driver';
 
 async function main() {
   const config = createConfig({
-    hosts: ['localhost:60061'],
+    hosts: ['localhost:9000'],
     defaultGraph: 'myGraph'
   });
 
@@ -164,7 +164,7 @@ import { GqldbClient, createConfig } from '@ultipa-graph/ultipa-driver';
 
 async function main() {
   const config = createConfig({
-    hosts: ['localhost:60061'],
+    hosts: ['localhost:9000'],
     defaultGraph: 'myGraph'
   });
 
@@ -203,7 +203,7 @@ import { GqldbClient, createConfig } from '@ultipa-graph/ultipa-driver';
 
 async function main() {
   const config = createConfig({
-    hosts: ['localhost:60061']
+    hosts: ['localhost:9000']
   });
 
   const client = new GqldbClient(config);

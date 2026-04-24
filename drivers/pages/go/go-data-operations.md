@@ -6,14 +6,26 @@ The GQLDB Go driver provides methods for inserting, updating, and deleting nodes
 
 | Method | Description |
 |--------|-------------|
-| `InsertNodes(ctx, graphName, nodes, config)` | Insert multiple nodes |
-| `InsertEdges(ctx, graphName, edges, config)` | Insert multiple edges |
+| `InsertNodes(ctx, nodes, config)` | Insert nodes via GQL INSERT statement |
+| `InsertNodesBatchAuto(ctx, graphName, nodes, config)` | Insert nodes via gRPC (high-throughput) |
+| `InsertEdges(ctx, edges, config)` | Insert edges via GQL INSERT statement |
+| `InsertEdgesBatchAuto(ctx, graphName, edges, config)` | Insert edges via gRPC (high-throughput) |
 | `DeleteNodes(ctx, graphName, nodeIDs, labels, where)` | Delete nodes |
 | `DeleteEdges(ctx, graphName, edgeIDs, label, where)` | Delete edges |
 
-## Inserting Nodes
+### InsertNodes vs InsertNodesBatchAuto
 
-### InsertNodes()
+| | `InsertNodes` | `InsertNodesBatchAuto` |
+|---|---|---|
+| Method | GQL `INSERT` statement | gRPC `InsertNodes` RPC |
+| Bulk session | Not required | Required (`StartBulkImport`) |
+| Performance | Good for small batches | High-throughput for large imports |
+| Custom node ID | Not supported | Supported (`NodeData.ID`) |
+| Use case | Simple inserts, scripts | ETL, data migration, bulk loading |
+
+## Inserting Nodes (gRPC Batch)
+
+### InsertNodesBatchAuto()
 
 Insert multiple nodes into a graph:
 
@@ -152,6 +164,50 @@ config := &gqldb.InsertEdgesConfig{
 }
 
 result, err := client.InsertEdges(ctx, "myGraph", edges, config)
+```
+
+## GQL-based Insert (Convenience)
+
+### InsertNodes() / InsertEdges()
+
+These convenience methods generate and execute GQL `INSERT` statements. They don't require a bulk import session and use the session's current graph:
+
+```go
+client.UseGraph(ctx, "myGraph")
+
+nodes := []gqldb.NodeData{
+    {Labels: []string{"Person"}, Properties: map[string]interface{}{"name": "Alice", "age": 30}},
+    {Labels: []string{"Person"}, Properties: map[string]interface{}{"name": "Bob", "age": 25}},
+}
+_, err := client.InsertNodes(ctx, nodes, nil)
+
+edges := []gqldb.EdgeData{
+    {Label: "Knows", FromNodeID: "id1", ToNodeID: "id2", Properties: map[string]interface{}{"since": 2024}},
+}
+_, err = client.InsertEdges(ctx, edges, nil)
+```
+
+## Per-call Configuration (InsertConfig)
+
+`InsertNodes()` and `InsertEdges()` accept an optional `InsertConfig` for per-call graph routing and insert mode:
+
+```go
+cfg := &gqldb.InsertConfig{
+    GraphName:  "myGraph",
+    InsertType: gqldb.InsertTypeOverwrite,  // InsertTypeNormal (default) or InsertTypeOverwrite
+    Timeout:    60,                         // optional per-call timeout (seconds)
+}
+client.InsertNodes(ctx, nodes, cfg)
+client.InsertEdges(ctx, edges, cfg)
+```
+
+All other convenience methods accept `*QueryConfig` the same way:
+
+```go
+qc := &gqldb.QueryConfig{GraphName: "graphA"}
+client.ShowNodeLabels(ctx, qc)
+client.CreateNodeLabel(ctx, "User", props, qc)
+client.Gql(ctx, "MATCH (n) RETURN n", &gqldb.QueryConfig{GraphName: "graphC", Timeout: 10})
 ```
 
 ## Deleting Nodes
@@ -295,7 +351,7 @@ import (
 
 func main() {
     config := gqldb.NewConfigBuilder().
-        Hosts("localhost:60061").
+        Hosts("localhost:9000").
         Timeout(30 * time.Second).
         Build()
 

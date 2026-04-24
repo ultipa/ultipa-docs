@@ -6,14 +6,26 @@ The GQLDB Node.js driver provides methods for inserting and deleting nodes and e
 
 | Method | Description |
 |--------|-------------|
-| `insertNodes()` | Insert multiple nodes into a graph |
-| `insertEdges()` | Insert multiple edges into a graph |
-| `deleteNodes()` | Delete nodes from a graph |
-| `deleteEdges()` | Delete edges from a graph |
+| `insertNodes(nodes, config)` | Insert nodes via GQL INSERT statement |
+| `insertNodesBatchAuto(graphName, nodes, config)` | Insert nodes via gRPC (high-throughput) |
+| `insertEdges(edges, config)` | Insert edges via GQL INSERT statement |
+| `insertEdgesBatchAuto(graphName, edges, config)` | Insert edges via gRPC (high-throughput) |
+| `deleteNodes(graphName, nodeIds, labels, where)` | Delete nodes |
+| `deleteEdges(graphName, edgeIds, label, where)` | Delete edges |
 
-## Inserting Nodes
+### insertNodes vs insertNodesBatchAuto
 
-### insertNodes()
+| | `insertNodes` | `insertNodesBatchAuto` |
+|---|---|---|
+| Method | GQL `INSERT` statement | gRPC `InsertNodes` RPC |
+| Bulk session | Not required | Required (`startBulkImport`) |
+| Performance | Good for small batches | High-throughput for large imports |
+| Custom node ID | Not supported | Supported (`NodeData.id`) |
+| Use case | Simple inserts, scripts | ETL, data migration, bulk loading |
+
+## Inserting Nodes (gRPC Batch)
+
+### insertNodesBatchAuto()
 
 Insert one or more nodes into a graph:
 
@@ -217,6 +229,54 @@ async function insertEdgesWithOptions(client: GqldbClient) {
 }
 ```
 
+## GQL-based Insert (Convenience)
+
+### insertNodes() / insertEdges()
+
+These convenience methods generate and execute GQL `INSERT` statements. They don't require a bulk import session and use the session's current graph:
+
+```typescript
+await client.useGraph('myGraph');
+
+const nodes = [
+  { labels: ['Person'], properties: { name: 'Alice', age: 30 } },
+  { labels: ['Person'], properties: { name: 'Bob', age: 25 } },
+];
+await client.insertNodes(nodes);
+
+const edges = [
+  { label: 'Knows', fromNodeId: 'id1', toNodeId: 'id2', properties: { since: 2024 } },
+];
+await client.insertEdges(edges);
+```
+
+## Per-call Configuration (InsertConfig)
+
+`insertNodes()` and `insertEdges()` accept an optional `InsertConfig` for per-call graph routing and insert mode:
+
+```typescript
+import { InsertConfig, InsertType } from '@ultipa-graph/ultipa-driver';
+
+// Target a specific graph without useGraph()
+const cfg: InsertConfig = {
+  graphName: 'myGraph',
+  insertType: InsertType.OVERWRITE,  // NORMAL (default) or OVERWRITE
+  timeout: 60,                       // optional per-call timeout (seconds)
+};
+await client.insertNodes(nodes, cfg);
+await client.insertEdges(edges, cfg);
+```
+
+All other convenience methods accept `QueryConfig` the same way:
+
+```typescript
+import { QueryConfig } from '@ultipa-graph/ultipa-driver';
+
+await client.showNodeLabels({ graphName: 'graphA' });
+await client.createNodeLabel('User', props, { graphName: 'graphB' });
+await client.gql('MATCH (n) RETURN n', { graphName: 'graphC', timeout: 10 });
+```
+
 ## Deleting Nodes
 
 ### deleteNodes()
@@ -340,7 +400,7 @@ import { GqldbClient, createConfig, NodeData, EdgeData } from '@ultipa-graph/ult
 
 async function main() {
   const client = new GqldbClient(createConfig({
-    hosts: ['localhost:60061']
+    hosts: ['localhost:9000']
   }));
 
   try {

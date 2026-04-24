@@ -14,7 +14,7 @@ import (
 )
 
 config := &gqldb.Config{
-    Hosts:        []string{"localhost:60061"},
+    Hosts:        []string{"localhost:9000"},
     Username:     "admin",
     Password:     "password",
     DefaultGraph: "myGraph",
@@ -26,7 +26,7 @@ config := &gqldb.Config{
 
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
-| `Hosts` | `[]string` | `["localhost:60061"]` | Server addresses in "host:port" format |
+| `Hosts` | `[]string` | `["localhost:9000"]` | Server addresses in "host:port" format |
 | `Username` | `string` | `""` | Username for authentication |
 | `Password` | `string` | `""` | Password for authentication |
 | `DefaultGraph` | `string` | `""` | Default graph to use after login |
@@ -44,7 +44,7 @@ The `ConfigBuilder` provides a fluent interface for creating configurations:
 
 ```go
 config := gqldb.NewConfigBuilder().
-    Hosts("localhost:60061", "192.168.1.101:9000").
+    Hosts("localhost:9000", "192.168.1.101:9000").
     Username("admin").
     Password("password").
     DefaultGraph("myGraph").
@@ -81,7 +81,7 @@ Use `DefaultConfig()` to get a configuration with default values:
 
 ```go
 config := gqldb.DefaultConfig()
-config.Hosts = []string{"localhost:60061"}
+config.Hosts = []string{"localhost:9000"}
 ```
 
 ## TLS Configuration
@@ -100,7 +100,7 @@ tlsConfig := &tls.Config{
 }
 
 config := &gqldb.Config{
-    Hosts:     []string{"localhost:60061"},
+    Hosts:     []string{"localhost:9000"},
     TLSConfig: tlsConfig,
 }
 ```
@@ -135,7 +135,7 @@ tlsConfig := &tls.Config{
 }
 
 config := gqldb.NewConfigBuilder().
-    Hosts("localhost:60061").
+    Hosts("localhost:9000").
     TLS(tlsConfig).
     Build()
 ```
@@ -149,7 +149,7 @@ tlsConfig := &tls.Config{
 }
 
 config := &gqldb.Config{
-    Hosts:     []string{"localhost:60061"},
+    Hosts:     []string{"localhost:9000"},
     TLSConfig: tlsConfig,
 }
 ```
@@ -161,7 +161,7 @@ Configure multiple hosts for high availability:
 ```go
 config := &gqldb.Config{
     Hosts: []string{
-        "localhost:60061",
+        "localhost:9000",
         "192.168.1.101:9000",
         "192.168.1.102:9000",
     },
@@ -237,7 +237,7 @@ func createProductionConfig() *gqldb.Config {
 
 func createDevelopmentConfig() *gqldb.Config {
     return &gqldb.Config{
-        Hosts:    []string{"localhost:60061"},
+        Hosts:    []string{"localhost:9000"},
         Timeout:  30 * time.Second,
         PoolSize: 5,
     }

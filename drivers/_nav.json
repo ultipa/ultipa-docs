@@ -151,6 +151,10 @@
           "title": "Graph Management"
         },
         {
+          "file": "go-schema-management.md",
+          "title": "Schema Management"
+        },
+        {
           "file": "go-transactions.md",
           "title": "Transactions"
         },
@@ -207,6 +211,10 @@
         {
           "file": "nodejs-graph-management.md",
           "title": "Graph Management"
+        },
+        {
+          "file": "nodejs-schema-management.md",
+          "title": "Schema Management"
         },
         {
           "file": "nodejs-transactions.md",

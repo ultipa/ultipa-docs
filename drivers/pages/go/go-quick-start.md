@@ -29,7 +29,7 @@ import (
 func main() {
     // Create configuration
     config := &gqldb.Config{
-        Hosts:   []string{"localhost:60061"},
+        Hosts:   []string{"localhost:9000"},
         Timeout: 30 * time.Second,
     }
 
@@ -121,7 +121,7 @@ func main() {
     }
 
     config := &gqldb.Config{
-        Hosts:     []string{"localhost:60061"},
+        Hosts:     []string{"localhost:9000"},
         TLSConfig: tlsConfig,
     }
 
@@ -148,7 +148,7 @@ import (
 
 func main() {
     config := gqldb.NewConfigBuilder().
-        Hosts("localhost:60061", "192.168.1.101:9000").
+        Hosts("localhost:9000", "192.168.1.101:9000").
         Timeout(60 * time.Second).
         DefaultGraph("myGraph").
         PoolSize(20).
@@ -181,7 +181,7 @@ import (
 
 func main() {
     config := gqldb.NewConfigBuilder().
-        Hosts("localhost:60061").
+        Hosts("localhost:9000").
         Timeout(30 * time.Second).
         DefaultGraph("socialNetwork").
         Build()

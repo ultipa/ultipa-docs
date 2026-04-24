@@ -304,7 +304,7 @@ import (
 
 func main() {
     config := gqldb.NewConfigBuilder().
-        Hosts("localhost:60061").
+        Hosts("localhost:9000").
         Timeout(30 * time.Second).
         Build()
 

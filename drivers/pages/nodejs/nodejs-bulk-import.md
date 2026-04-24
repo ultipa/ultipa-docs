@@ -288,7 +288,7 @@ import { GqldbClient, createConfig, NodeData, EdgeData } from '@ultipa-graph/ult
 
 async function main() {
   const client = new GqldbClient(createConfig({
-    hosts: ['localhost:60061']
+    hosts: ['localhost:9000']
   }));
 
   try {

@@ -22,6 +22,19 @@ The GQLDB Node.js driver provides methods for monitoring server health, managing
 | `waitForComputeTopology()` | Wait for compute engine topology to be ready |
 | `invalidatePermissionCache()` | Invalidate RBAC permission cache |
 
+## Task and Process Methods
+
+| Method | Description |
+|--------|-------------|
+| `showTasks(config)` | List running/completed algorithm tasks |
+| `stopTask(taskId, config)` | Stop a running task |
+| `deleteTask(taskId, config)` | Delete a task |
+| `showAlgos(config)` | List available algorithms |
+| `top(config)` | List running queries |
+| `kill(queryId, config)` | Terminate a running query |
+| `stats(config)` | Get graph statistics (node/edge counts by label) |
+| `test()` | Connectivity test (ping) |
+
 ## Health Checks
 
 ### healthCheck()
@@ -274,6 +287,78 @@ async function safeHealthCheck(client: GqldbClient) {
 }
 ```
 
+## Task Management
+
+### showTasks()
+
+List running and completed algorithm tasks:
+
+```typescript
+await client.useGraph('myGraph');
+
+const tasks = await client.showTasks();
+for (const t of tasks) {
+  console.log(`${t.taskId}: ${t.status} (${t.progress})`);
+}
+```
+
+### stopTask() / deleteTask()
+
+```typescript
+await client.stopTask('task-123');
+await client.deleteTask('task-123');
+```
+
+### showAlgos()
+
+List available algorithms:
+
+```typescript
+const algos = await client.showAlgos();
+for (const a of algos) {
+  console.log(`${a.name}: ${a.description}`);
+}
+```
+
+## Process Monitoring
+
+### top()
+
+List currently running queries:
+
+```typescript
+const procs = await client.top();
+for (const p of procs) {
+  console.log(`Query ${p.queryId}: ${p.queryText} (${p.durationMs}ms)`);
+}
+```
+
+### kill()
+
+Terminate a running query:
+
+```typescript
+await client.kill('query-456');
+```
+
+### stats()
+
+Get graph statistics with node/edge counts by label:
+
+```typescript
+const stats = await client.stats();
+console.log(`Nodes: ${stats.nodeCount}, Edges: ${stats.edgeCount}`);
+```
+
+### test()
+
+Test connectivity (returns latency in nanoseconds):
+
+```typescript
+const latencyNs = await client.test();
+console.log(`Latency: ${latencyNs / 1_000_000}ms`);
+```
+
 ## Complete Example
 
 ```typescript
@@ -281,7 +366,7 @@ import { GqldbClient, createConfig, HealthStatus, CacheType } from '@ultipa-grap
 
 async function main() {
   const client = new GqldbClient(createConfig({
-    hosts: ['localhost:60061']
+    hosts: ['localhost:9000']
   }));
 
   try {

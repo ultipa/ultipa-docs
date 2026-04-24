@@ -11,6 +11,12 @@ The GQLDB Go driver provides methods for creating, managing, and querying graph 
 | `UseGraph(ctx, name)` | Set the current graph for the session |
 | `ListGraphs(ctx)` | List all available graphs |
 | `GetGraphInfo(ctx, name)` | Get information about a specific graph |
+| `CreateOpenGraph(ctx, name)` | Create a schema-less graph |
+| `CreateClosedGraph(ctx, name)` | Create a schema-enforced graph |
+| `CreateGraphIfNotExist(ctx, name, graphType, description)` | Create graph only if it doesn't exist |
+| `HasGraph(ctx, name)` | Check if a graph exists |
+| `AlterGraph(ctx, oldName, newName)` | Rename a graph |
+| `Truncate(ctx, graphName)` | Remove all data from a graph |
 
 ## Creating Graphs
 
@@ -155,6 +161,57 @@ fmt.Printf("Edges: %d\n", info.EdgeCount)
 fmt.Printf("Description: %s\n", info.Description)
 ```
 
+## Convenience Methods
+
+### CreateOpenGraph() / CreateClosedGraph()
+
+Shorthand methods for creating graphs with a specific type:
+
+```go
+client.CreateOpenGraph(ctx, "flexGraph")
+client.CreateClosedGraph(ctx, "strictGraph")
+```
+
+### CreateGraphIfNotExist()
+
+Create a graph only if it doesn't already exist:
+
+```go
+// Returns true if created, false if already existed
+created, err := client.CreateGraphIfNotExist(ctx, "myGraph", gqldb.GraphTypeOpen, "My graph")
+if err != nil {
+    log.Fatal(err)
+}
+```
+
+### HasGraph()
+
+Check whether a graph exists:
+
+```go
+exists, err := client.HasGraph(ctx, "myGraph")
+if err != nil {
+    log.Fatal(err)
+}
+fmt.Println("Exists:", exists)
+```
+
+### AlterGraph()
+
+Rename a graph:
+
+```go
+_, err := client.AlterGraph(ctx, "oldName", "newName")
+```
+
+### Truncate()
+
+Remove all data from a graph while keeping the graph itself:
+
+```go
+_, err := client.Truncate(ctx, "myGraph")
+```
+
 ## Error Handling
 
 ```go
@@ -263,7 +320,7 @@ import (
 
 func main() {
     config := gqldb.NewConfigBuilder().
-        Hosts("localhost:60061").
+        Hosts("localhost:9000").
         Timeout(30 * time.Second).
         Build()
 
