@@ -339,29 +339,28 @@
       "folder": "graph-embedding",
       "pages": [
         {
-          "folder": "algorithms",
-          "pages": [
-            {
-              "file": "node2vec.md",
-              "title": "Node2Vec"
-            },
-            {
-              "file": "struc2vec-walk.md",
-              "title": "Struc2Vec Walk"
-            },
-            {
-              "file": "struc2vec.md",
-              "title": "Struc2Vec"
-            },
-            {
-              "file": "line.md",
-              "title": "LINE"
-            },
-            {
-              "file": "fastrp.md",
-              "title": "Fast Random Projection"
-            }
-          ]
+          "file": "node2vec.md",
+          "title": "Node2Vec"
+        },
+        {
+          "file": "struc2vec.md",
+          "title": "Struc2Vec"
+        },
+        {
+          "file": "line.md",
+          "title": "LINE"
+        },
+        {
+          "file": "fastrp.md",
+          "title": "FastRP"
+        },
+        {
+          "file": "graphsage.md",
+          "title": "GraphSAGE"
+        },
+        {
+          "file": "hashgnn.md",
+          "title": "HashGNN"
         },
         {
           "folder": "background-knowledge",
