@@ -25,7 +25,7 @@ from gqldb import GqldbClient, GqldbConfig
 
 # Create configuration
 config = GqldbConfig(
-    hosts=["localhost:60061"],
+    hosts=["localhost:9000"],
     timeout=30
 )
 
@@ -72,7 +72,7 @@ ssl_ctx = create_ssl_context(
 )
 
 config = GqldbConfig(
-    hosts=["localhost:60061"],
+    hosts=["localhost:9000"],
     ssl_context=ssl_ctx
 )
 
@@ -87,7 +87,7 @@ with GqldbClient(config) as client:
 from gqldb.config import ConfigBuilder
 
 config = (ConfigBuilder()
-    .hosts("localhost:60061", "192.168.1.101:9000")
+    .hosts("localhost:9000", "192.168.1.101:9000")
     .timeout(60)
     .default_graph("myGraph")
     .pool_size(20)
@@ -107,7 +107,7 @@ from gqldb.errors import GqldbError, GraphNotFoundError
 
 def main():
     config = GqldbConfig(
-        hosts=["localhost:60061"],
+        hosts=["localhost:9000"],
         timeout=30,
         default_graph="socialNetwork"
     )

@@ -20,7 +20,7 @@ Execute a GQL query and return the results:
 ```python
 from gqldb import GqldbClient, GqldbConfig
 
-config = GqldbConfig(hosts=["localhost:60061"])
+config = GqldbConfig(hosts=["localhost:9000"])
 
 with GqldbClient(config) as client:
     client.login("admin", "password")
@@ -271,7 +271,7 @@ from gqldb.errors import GqldbError
 
 def main():
     config = GqldbConfig(
-        hosts=["localhost:60061"],
+        hosts=["localhost:9000"],
         timeout=30
     )
 

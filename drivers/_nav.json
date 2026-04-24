@@ -90,6 +90,10 @@
           "title": "Graph Management"
         },
         {
+          "file": "python-schema-management.md",
+          "title": "Schema Management"
+        },
+        {
           "file": "python-transactions.md",
           "title": "Transactions"
         },

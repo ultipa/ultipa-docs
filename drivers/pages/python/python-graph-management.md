@@ -11,6 +11,12 @@ The GQLDB Python driver provides methods for creating, managing, and querying gr
 | `use_graph(name)` | Set the current graph for the session |
 | `list_graphs()` | List all available graphs |
 | `get_graph_info(name)` | Get information about a specific graph |
+| `create_open_graph(name)` | Create a schema-less graph |
+| `create_closed_graph(name)` | Create a schema-enforced graph |
+| `create_graph_if_not_exist(name, graph_type, description)` | Create graph only if it doesn't exist |
+| `has_graph(name)` | Check if a graph exists |
+| `alter_graph(old_name, new_name)` | Rename a graph |
+| `truncate(graph_name)` | Remove all data from a graph |
 
 ## Creating Graphs
 
@@ -22,7 +28,7 @@ Create a new graph:
 from gqldb import GqldbClient, GqldbConfig
 from gqldb.types import GraphType
 
-config = GqldbConfig(hosts=["localhost:60061"])
+config = GqldbConfig(hosts=["localhost:9000"])
 
 with GqldbClient(config) as client:
     client.login("admin", "password")
@@ -131,6 +137,51 @@ except GraphNotFoundError:
     print("Graph not found")
 ```
 
+## Convenience Methods
+
+### create_open_graph() / create_closed_graph()
+
+Shorthand methods for creating graphs with a specific type:
+
+```python
+client.create_open_graph("flexGraph")
+client.create_closed_graph("strictGraph")
+```
+
+### create_graph_if_not_exist()
+
+Create a graph only if it doesn't already exist:
+
+```python
+created = client.create_graph_if_not_exist("myGraph", GraphType.OPEN, "My graph")
+# True = created, False = already existed
+```
+
+### has_graph()
+
+Check whether a graph exists:
+
+```python
+if client.has_graph("myGraph"):
+    print("Graph exists")
+```
+
+### alter_graph()
+
+Rename a graph:
+
+```python
+client.alter_graph("oldName", "newName")
+```
+
+### truncate()
+
+Remove all data from a graph while keeping the graph itself:
+
+```python
+client.truncate("myGraph")
+```
+
 ## Error Handling
 
 ```python
@@ -194,7 +245,7 @@ client.use_graph("myGraph")
 from gqldb import GqldbClient, GqldbConfig
 from gqldb.client import QueryConfig
 
-config = GqldbConfig(hosts=["localhost:60061"])
+config = GqldbConfig(hosts=["localhost:9000"])
 
 with GqldbClient(config) as client:
     client.login("admin", "password")
@@ -228,7 +279,7 @@ from gqldb.errors import GqldbError, GraphNotFoundError, GraphExistsError
 
 def main():
     config = GqldbConfig(
-        hosts=["localhost:60061"],
+        hosts=["localhost:9000"],
         timeout=30
     )
 

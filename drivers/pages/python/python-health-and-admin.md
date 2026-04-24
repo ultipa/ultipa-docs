@@ -21,6 +21,20 @@ The GQLDB Python driver provides methods for monitoring server health, managing 
 | `invalidate_permission_cache(username)` | Invalidate RBAC permission cache |
 | `compact(graph_name)` | Trigger compaction for a graph |
 | `get_system_metrics()` | Get system-level metrics |
+| `wait_for_compute_topology(graph_name, timeout)` | Wait for compute engine ready |
+
+## Task and Process Methods
+
+| Method | Description |
+|--------|-------------|
+| `show_tasks()` | List running/completed algorithm tasks |
+| `stop_task(task_id)` | Stop a running task |
+| `delete_task(task_id)` | Delete a task |
+| `show_algos()` | List available algorithms |
+| `top()` | List running queries |
+| `kill(query_id)` | Terminate a running query |
+| `stats()` | Get graph statistics (node/edge counts by label) |
+| `test()` | Connectivity test (ping) |
 
 ## Health Checks
 
@@ -32,7 +46,7 @@ Check the current health status of the server:
 from gqldb import GqldbClient, GqldbConfig
 from gqldb.types import HealthStatus
 
-config = GqldbConfig(hosts=["localhost:60061"])
+config = GqldbConfig(hosts=["localhost:9000"])
 
 with GqldbClient(config) as client:
     client.login("admin", "password")
@@ -239,6 +253,106 @@ print("Permission cache invalidated for johndoe")
 
 Use this after changing user permissions to ensure changes take effect immediately.
 
+## System Metrics
+
+### get_system_metrics()
+
+Get system-level metrics including CPU, memory, disk, and network:
+
+```python
+metrics = client.get_system_metrics()
+
+if metrics.cpu:
+    print(f"CPU - Process: {metrics.cpu.process_percent}%, System: {metrics.cpu.system_percent}%")
+
+if metrics.memory:
+    print(f"Memory - Used: {metrics.memory.system_used_percent}%")
+
+if metrics.storage:
+    print(f"Storage - DB size: {metrics.storage.db_size_bytes} bytes")
+```
+
+## Compute Topology
+
+### wait_for_compute_topology()
+
+Wait for the compute engine to be ready:
+
+```python
+ready, message = client.wait_for_compute_topology("myGraph", timeout=60)
+print(f"Compute topology: {'ready' if ready else 'not ready'} - {message}")
+```
+
+## Task Management
+
+### show_tasks()
+
+List running and completed algorithm tasks:
+
+```python
+client.use_graph("myGraph")
+
+tasks = client.show_tasks()
+for t in tasks:
+    print(f"{t.task_id}: {t.status} ({t.progress})")
+```
+
+### stop_task() / delete_task()
+
+```python
+client.stop_task(task_id)
+client.delete_task(task_id)
+```
+
+### show_algos()
+
+List available algorithms:
+
+```python
+algos = client.show_algos()
+for a in algos:
+    print(f"{a.name}: {a.description}")
+```
+
+## Process Monitoring
+
+### top()
+
+List currently running queries:
+
+```python
+procs = client.top()
+for p in procs:
+    print(f"Query {p.query_id}: {p.query_text} ({p.duration_ms}ms)")
+```
+
+### kill()
+
+Terminate a running query:
+
+```python
+client.kill(query_id)
+```
+
+### stats()
+
+Get graph statistics with node/edge counts by label:
+
+```python
+stats = client.stats()
+print(f"Nodes: {stats.node_count}, Edges: {stats.edge_count}")
+print(f"Label counts: {stats.label_counts}")
+```
+
+### test()
+
+Test connectivity (returns latency in nanoseconds):
+
+```python
+latency_ns = client.test()
+print(f"Latency: {latency_ns / 1_000_000:.2f}ms")
+```
+
 ## Complete Example
 
 ```python
@@ -249,7 +363,7 @@ import time
 
 def main():
     config = GqldbConfig(
-        hosts=["localhost:60061"],
+        hosts=["localhost:9000"],
         timeout=30
     )
 

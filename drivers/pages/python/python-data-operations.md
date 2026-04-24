@@ -6,14 +6,26 @@ The GQLDB Python driver provides methods for inserting, updating, and deleting n
 
 | Method | Description |
 |--------|-------------|
-| `insert_nodes(graph_name, nodes, options)` | Insert multiple nodes |
-| `insert_edges(graph_name, edges, options)` | Insert multiple edges |
+| `insert_nodes(nodes, config)` | Insert nodes via GQL INSERT statement |
+| `insert_nodes_batch_auto(graph_name, nodes, options)` | Insert nodes via gRPC (high-throughput) |
+| `insert_edges(edges, config)` | Insert edges via GQL INSERT statement |
+| `insert_edges_batch_auto(graph_name, edges, options)` | Insert edges via gRPC (high-throughput) |
 | `delete_nodes(graph_name, node_ids, labels, where)` | Delete nodes |
 | `delete_edges(graph_name, edge_ids, label, where)` | Delete edges |
 
-## Inserting Nodes
+### insert_nodes vs insert_nodes_batch_auto
 
-### insert_nodes()
+| | `insert_nodes` | `insert_nodes_batch_auto` |
+|---|---|---|
+| Method | GQL `INSERT` statement | gRPC `InsertNodes` RPC |
+| Bulk session | Not required | Required (`start_bulk_import`) |
+| Performance | Good for small batches | High-throughput for large imports |
+| Custom node ID | Not supported | Supported (`NodeData.id`) |
+| Use case | Simple inserts, scripts | ETL, data migration, bulk loading |
+
+## Inserting Nodes (gRPC Batch)
+
+### insert_nodes_batch_auto()
 
 Insert multiple nodes into a graph:
 
@@ -21,7 +33,7 @@ Insert multiple nodes into a graph:
 from gqldb import GqldbClient, GqldbConfig
 from gqldb.types import NodeData
 
-config = GqldbConfig(hosts=["localhost:60061"])
+config = GqldbConfig(hosts=["localhost:9000"])
 
 with GqldbClient(config) as client:
     client.login("admin", "password")
@@ -137,6 +149,57 @@ options = BulkCreateEdgesOptions(
 
 result = client.insert_edges("myGraph", edges, options)
 ```
+
+## GQL-based Insert (Convenience)
+
+### insert_nodes() / insert_edges()
+
+These convenience methods generate and execute GQL `INSERT` statements. They don't require a bulk import session and use the session's current graph:
+
+```python
+client.use_graph("myGraph")
+
+nodes = [
+    NodeData(labels=["Person"], properties={"name": "Alice", "age": 30}),
+    NodeData(labels=["Person"], properties={"name": "Bob", "age": 25}),
+]
+client.insert_nodes(nodes)
+
+edges = [
+    EdgeData(label="Knows", from_node_id="id1", to_node_id="id2", properties={"since": 2024}),
+]
+client.insert_edges(edges)
+```
+
+## Per-call Configuration (InsertConfig)
+
+`insert_nodes()` and `insert_edges()` accept an optional `InsertConfig` for per-call graph routing and insert mode, without changing session state:
+
+```python
+from gqldb.client import InsertConfig
+from gqldb.types.convenience import InsertType
+
+# Target a specific graph without use_graph()
+cfg = InsertConfig(
+    graph_name="myGraph",
+    insert_type=InsertType.OVERWRITE,   # NORMAL (default) or OVERWRITE
+    timeout=60,                         # optional per-call timeout (seconds)
+)
+client.insert_nodes(nodes, cfg)
+client.insert_edges(edges, cfg)
+```
+
+All other convenience methods accept `QueryConfig` the same way:
+
+```python
+from gqldb.client import QueryConfig
+
+client.create_node_label("User", props, config=QueryConfig(graph_name="graphA"))
+client.show_node_labels(config=QueryConfig(graph_name="graphB"))
+client.gql("MATCH (n) RETURN n", config=QueryConfig(graph_name="graphC", timeout=10))
+```
+
+Passing a per-call config is thread-safe: multiple threads can target different graphs via their own config objects without interfering.
 
 ## Deleting Nodes
 
@@ -293,7 +356,7 @@ from gqldb.errors import GqldbError
 
 def main():
     config = GqldbConfig(
-        hosts=["localhost:60061"],
+        hosts=["localhost:9000"],
         timeout=30
     )
 
