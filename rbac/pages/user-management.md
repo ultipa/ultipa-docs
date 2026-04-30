@@ -2,81 +2,61 @@
 
 ## Overview
 
-Create and manage database users. Usernames must be 1-64 characters, alphanumeric with underscores and dashes. Passwords must be 6-128 characters.
-
-## User Statements
-
-| Statement | Description |
-| -- | -- |
-| `CREATE USER` | Create a new user |
-| `ALTER USER SET PASSWORD` | Change user password |
-| `ALTER USER SET STATUS` | Activate or deactivate user |
-| `ALTER USER RENAME TO` | Rename a user |
-| `DROP USER` | Delete a user |
-| `SHOW USERS` | List all users |
-| `SHOW USER` | Show specific user details |
-
-## Creating Users
-
-```gql
-CREATE USER 'analyst' WITH PASSWORD 'secure_password_123'
-```
-
-## Altering Users
-
-**Change password:**
-
-```gql
-ALTER USER 'analyst' SET PASSWORD 'new_password_456'
-```
-
-**Deactivate a user:**
-
-```gql
-ALTER USER 'analyst' SET STATUS INACTIVE
-```
-
-**Reactivate a user:**
-
-```gql
-ALTER USER 'analyst' SET STATUS ACTIVE
-```
-
-**Rename a user:**
-
-```gql
-ALTER USER 'analyst' RENAME TO 'senior_analyst'
-```
-
-## Dropping Users
-
-```gql
-DROP USER 'analyst'
-```
-
-Use `IF EXISTS` to avoid errors:
-
-```gql
-DROP USER IF EXISTS 'analyst'
-```
+Create and manage database users.
 
 ## Showing Users
 
-**List all users:**
+List all users:
 
 ```gql
 SHOW USERS
 ```
 
-Result:
+Result columns:
 
-| username | status | created_at |
-| -- | -- | -- |
-| admin | ACTIVE | 2024-01-01T00:00:00 |
-| analyst | ACTIVE | 2024-01-15T10:30:00 |
+| Column | Description |
+| -- | -- |
+| `username` | User name |
+| `status` | Always `ACTIVE` for users created through DCL. |
+| `roles` | List of role names assigned to the user |
+| `created_at` | Timestamp when the user was created |
 
-**Show specific user:**
+Show a specific user:
 
 ```gql
-SHOW USER analyst
+SHOW USER alice
+```
+
+## Creating Users
+
+User names are unquoted identifiers, they must start with a letter or underscore, and may contain letters, digits, and underscores after the first character. Passwords are string literals (enclosed in single quotes, double quotes, or backticks) and must be 6 to 128 characters.
+
+```gql
+CREATE USER alice PASSWORD 'secure_password_123'
+```
+
+The optional `WITH` keyword is also accepted:
+
+```gql
+CREATE USER alice WITH PASSWORD 'secure_password_123'
+```
+
+## Altering Users
+
+Change a user's password:
+
+```gql
+ALTER USER alice SET PASSWORD 'new_password_456'
+```
+
+## Dropping Users
+
+```gql
+DROP USER alice
+```
+
+Use `IF EXISTS` to avoid errors if the user does not exist:
+
+```gql
+DROP USER IF EXISTS alice
 ```

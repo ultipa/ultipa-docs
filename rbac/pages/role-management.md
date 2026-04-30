@@ -2,85 +2,74 @@
 
 ## Overview
 
-Create roles to group permissions. Roles make it easy to manage access for groups of users.
+Create roles to group permissions, then assign roles to users. Roles make it easy to manage access for groups of users with similar responsibilities.
 
 **Built-in System Roles:**
 
-| Role | Description |
-| -- | -- |
-| `admin` | Full database access |
-| `reader` | Read-only access |
-| `writer` | Read and write access |
-| `schema_admin` | Schema management |
+| Role | Description | Inherits |
+| -- | -- | -- |
+| `admin` | Full superuser access to all operations | — |
+| `reader` | Read-only access to all data | — |
+| `writer` | Read and write access to all data | `reader` |
+| `data_admin` | Full data access (read, insert, update, delete, merge) | `writer` |
+| `analyst` | Read data + execute procedures and algorithms | `reader` |
+| `schema_admin` | Schema administration (all DDL) | — |
+| `backup_admin` | Backup and restore operations | — |
+| `procedure_admin` | Stored procedure lifecycle management | — |
+| `ops_admin` | Operations (task/query management, statistics) | — |
+| `security_admin` | User, role, and grant management | — |
 
-## Role Statements
-
-| Statement | Description |
-| -- | -- |
-| `CREATE ROLE` | Create a new role |
-| `ALTER ROLE RENAME TO` | Rename a role |
-| `ALTER ROLE SET DESCRIPTION` | Update role description |
-| `DROP ROLE` | Delete a role |
-| `SHOW ROLES` | List all roles |
-| `SHOW ROLE` | Show specific role details |
-
-## Creating Roles
-
-```gql
-CREATE ROLE 'data_reader'
-```
-
-**With description:**
-
-```gql
-CREATE ROLE 'schema_manager' DESCRIPTION 'Can modify database schema'
-```
-
-## Altering Roles
-
-**Rename a role:**
-
-```gql
-ALTER ROLE 'data_reader' RENAME TO 'analytics_reader'
-```
-
-**Update description:**
-
-```gql
-ALTER ROLE 'data_reader' SET DESCRIPTION 'Read-only access for analytics'
-```
-
-## Dropping Roles
-
-```gql
-DROP ROLE 'data_reader'
-```
-
-Use `IF EXISTS` to avoid errors:
-
-```gql
-DROP ROLE IF EXISTS 'data_reader'
-```
+System roles cannot be deleted.
 
 ## Showing Roles
 
-**List all roles:**
+List all roles:
 
 ```gql
 SHOW ROLES
 ```
 
-Result:
-
-| name | description |
-| -- | -- |
-| admin | Full database access |
-| reader | Read-only access |
-| writer | Read and write access |
-| schema_admin | Schema management |
-
-**Show specific role:**
+Show a specific role:
 
 ```gql
 SHOW ROLE admin
+```
+
+Result columns:
+
+| Column | Description |
+| -- | -- |
+| `name` | Role name |
+| `description` | Role description (empty for user-created roles) |
+| `is_system` | `true` for built-in roles that cannot be deleted, `false` otherwise |
+| `permissions` | Operations currently granted to the role |
+| `created_at` | Timestamp when the role was created |
+
+
+## Creating Roles
+
+Role names are unquoted identifiers — they must start with a letter or underscore, and may contain letters, digits, and underscores after the first character.
+
+```gql
+CREATE ROLE data_reader
+```
+
+## Altering Roles
+
+Rename a role:
+
+```gql
+ALTER ROLE data_reader RENAME TO analytics_reader
+```
+
+## Dropping Roles
+
+```gql
+DROP ROLE data_reader
+```
+
+Use `IF EXISTS` to avoid errors if the role does not exist:
+
+```gql
+DROP ROLE IF EXISTS data_reader
 ```
