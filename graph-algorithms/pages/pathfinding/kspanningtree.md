@@ -45,7 +45,7 @@ INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
 | Name | Type | Default | Description |
 | -- | -- | -- | -- |
 | `k` | `INT` | `2` | Number of connected components to produce. |
-| `weightProperty` | `STRING` | / | Edge property to use as weight. If unset, all edges have unit weight. |
+| `weight` | `STRING` | / | Edge property to use as weight. If unset, all edges have unit weight. |
 
 ## Run Mode
 
@@ -61,7 +61,7 @@ INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
 ```gql
 CALL algo.kspanningtree({
   k: 3,
-  weightProperty: "distance"
+  weight: "distance"
 }) YIELD sourceId, targetId, weight, component
 ```
 
@@ -84,7 +84,7 @@ Returns the same columns as run mode, streamed for memory efficiency.
 ```gql
 CALL algo.kspanningtree.stream({
   k: 2,
-  weightProperty: "distance"
+  weight: "distance"
 }) YIELD sourceId, targetId, weight, component
 RETURN list_union(collect_list(sourceId), collect_list(targetId)) AS nodes, component
 GROUP BY component
@@ -110,7 +110,7 @@ Result:
 ```gql
 CALL algo.kspanningtree.stats({
   k: 3,
-  weightProperty: "distance"
+  weight: "distance"
 }) YIELD edgeCount, componentCount, totalWeight
 ```
 

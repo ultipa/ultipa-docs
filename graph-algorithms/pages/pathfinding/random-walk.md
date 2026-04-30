@@ -24,13 +24,13 @@ Here is an example of performing multiple random walks, each consisting of 100 s
 
 In a graph, a random walk is a process that forms a path by starting at a node and sequentially moving to neighboring nodes. This process is controlled by the walk depth, which determines how many nodes will be visited.
 
-Ultipa's Random Walk algorithm implements the classical version of random walk. By default, all edges are assigned equal weights (set to 1), resulting in equal traversal probabilities. When edge weights are specified, the likelihood of traversing an edge becomes proportional to its weight.
+Ultipa's Random Walk algorithm implements the classical uniform random walk: at each step, the next node is picked uniformly at random from the current node's outgoing neighbors.
 
 ## Considerations
 
+- The algorithm follows outgoing edges only.
 - Self-loops can also be traversed during a random walk.
-- A random walk cannot start from an isolated node, as there are no adjacent edges to follow. 
-- The Random Walk algorithm treats all edges as undirected, ignoring their original direction.
+- A walk terminates early if it reaches a node with no outgoing neighbors, so the resulting `nodeSequence` may be shorter than `walkLength`.
 
 ## Example Graph
 
@@ -57,10 +57,8 @@ INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
 | Name | Type | Default | Description |
 | -- | -- | -- | -- |
 | `startNode` | `STRING` | / | **Required.** Starting node `_id`. |
-| `walkLength` | `INT` | `80` | Number of steps per walk. |
+| `walkLength` | `INT` | `80` | Number of nodes in each walk (including the start node). |
 | `walksPerNode` | `INT` | `10` | Number of walks to generate. |
-| `returnFactor` | `FLOAT` | `1.0` | Return parameter `p`. Lower values increase the likelihood of backtracking to the previous node. |
-| `inOutFactor` | `FLOAT` | `1.0` | In-out parameter `q`. Lower values favor DFS-like exploration; higher values favor BFS-like exploration. |
 
 ## Run Mode
 
@@ -79,6 +77,13 @@ CALL algo.randomwalk({
 }) YIELD walkId, nodeSequence
 ```
 
+Result:
+
+| walkId | nodeSequence |
+| -- | -- |
+| 0 | ["A", "C", "D", "C", "D", "C"] |
+| 1 | ["A", "C", "D", "F", "G", "J"] |
+
 ## Stream Mode
 
 Returns the same columns as run mode, streamed for memory efficiency.
@@ -91,6 +96,13 @@ CALL algo.randomwalk.stream({
 }) YIELD walkId, nodeSequence
 RETURN walkId, nodeSequence
 ```
+
+Result:
+
+| walkId | nodeSequence |
+| -- | -- |
+| 0 | ["A", "C", "D", "C", "D", "C"] |
+| 1 | ["A", "C", "D", "F", "G", "J"] |
 
 ## Stats Mode
 
@@ -108,3 +120,9 @@ CALL algo.randomwalk.stats({
   walksPerNode: 2
 }) YIELD walkCount, avgWalkLength
 ```
+
+Result:
+
+| walkCount | avgWalkLength |
+| -- | -- |
+| 2 | 6 |

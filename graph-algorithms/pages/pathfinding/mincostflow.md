@@ -83,8 +83,8 @@ INSERT (S:default {_id: "S"}), (A:default {_id: "A"}),
 
 | Name | Type | Default | Description |
 | -- | -- | -- | -- |
-| `sourceNode` | `STRING` | / | **Required.** Source node `_id`. |
-| `sinkNode` | `STRING` | / | **Required.** Sink node `_id`. |
+| `source` | `STRING` | / | **Required.** Source node `_id`. |
+| `sink` | `STRING` | / | **Required.** Sink node `_id`. |
 | `capacityProperty` | `STRING` | / | Edge property to use as capacity. If unset, all edges have unit capacity. |
 | `costProperty` | `STRING` | / | Edge property to use as cost per unit of flow. If unset, all edges have unit cost. |
 
@@ -103,8 +103,8 @@ INSERT (S:default {_id: "S"}), (A:default {_id: "A"}),
 
 ```gql
 CALL algo.mincostflow({
-  sourceNode: "S",
-  sinkNode: "T",
+  source: "S",
+  sink: "T",
   capacityProperty: "cap",
   costProperty: "cost"
 }) YIELD maxFlow, minCost, sourceId, targetId, flow, cost
@@ -130,8 +130,8 @@ Returns the same columns as run mode, streamed for memory efficiency.
 
 ```gql
 CALL algo.mincostflow.stream({
-  sourceNode: "S",
-  sinkNode: "T",
+  source: "S",
+  sink: "T",
   capacityProperty: "cap",
   costProperty: "cost"
 }) YIELD sourceId, targetId, maxFlow, minCost
@@ -156,8 +156,8 @@ Result:
 
 ```gql
 CALL algo.mincostflow.stats({
-  sourceNode: "S",
-  sinkNode: "T",
+  source: "S",
+  sink: "T",
   capacityProperty: "cap",
   costProperty: "cost"
 }) YIELD maxFlow, minCost

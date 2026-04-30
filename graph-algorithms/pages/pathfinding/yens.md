@@ -49,9 +49,11 @@ INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
 
 | Name | Type | Default | Description |
 | -- | -- | -- | -- |
-| `startNode` | `STRING` | / | **Required.** Source node `_id`. |
-| `endNode` | `STRING` | / | **Required.** Target node `_id`. |
+| `source` | `STRING` | / | **Required.** Source node `_id`. |
+| `target` | `STRING` | / | **Required.** Target node `_id`. |
 | `k` | `INT` | `3` | Number of shortest paths to find. |
+| `direction` | `STRING` | `out` | Edge direction: `out`, `in`, or `both`. |
+| `weight` | `STRING` | / | Edge property to use as weight. If unset, all edges have unit weight. |
 
 ## Run Mode
 
@@ -65,11 +67,20 @@ INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
 
 ```gql
 CALL algo.yens({
-  startNode: "A",
-  endNode: "G",
-  k: 3
+  source: "A",
+  target: "G",
+  k: 3,
+  weight: "value"
 }) YIELD path, cost, rank
 ```
+
+Result:
+
+| path | cost | rank |
+| -- | -- | -- |
+| ["A", "F", "E", "G"] | 8 | 1 |
+| ["A", "B", "D", "E", "G"] | 10 | 2 |
+| ["A", "B", "D", "F", "E", "G"] | 11 | 3 |
 
 ## Stream Mode
 
@@ -77,9 +88,10 @@ Returns the same columns as run mode, streamed for memory efficiency.
 
 ```gql
 CALL algo.yens.stream({
-  startNode: "A",
-  endNode: "G",
-  k: 3
+  source: "A",
+  target: "G",
+  k: 3,
+  weight: "value"
 }) YIELD path, cost, rank
 RETURN path, cost, rank
 ```
@@ -96,8 +108,15 @@ RETURN path, cost, rank
 
 ```gql
 CALL algo.yens.stats({
-  startNode: "A",
-  endNode: "G",
-  k: 3
+  source: "A",
+  target: "G",
+  k: 3,
+  weight: "value"
 }) YIELD pathsFound, minCost, maxCost
 ```
+
+Result:
+
+| pathsFound | minCost | maxCost |
+| -- | -- | -- |
+| 3 | 8 | 11 |

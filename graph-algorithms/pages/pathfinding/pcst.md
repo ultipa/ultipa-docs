@@ -54,8 +54,8 @@ INSERT (A:default {_id: "A", prize: 10}), (B:default {_id: "B", prize: 5}),
 
 | Name | Type | Default | Description |
 | -- | -- | -- | -- |
-| `prizeProperty` | `STRING` | / | Node property to use as prize value. If unset, all nodes have zero prize. |
-| `weightProperty` | `STRING` | / | Edge property to use as cost. If unset, all edges have unit cost. |
+| `price` | `STRING` | / | Node property to use as prize value. If unset, all nodes have zero prize. |
+| `weight` | `STRING` | / | Edge property to use as cost. If unset, all edges have unit cost. |
 | `lambda` | `FLOAT` | `1.0` | Trade-off parameter. Higher values penalize edge costs more, producing smaller trees. |
 
 ## Run Mode
@@ -71,8 +71,8 @@ INSERT (A:default {_id: "A", prize: 10}), (B:default {_id: "B", prize: 5}),
 
 ```gql
 CALL algo.pcst({
-  prizeProperty: "prize",
-  weightProperty: "distance",
+  price: "prize",
+  weight: "distance",
   lambda: 1
 }) YIELD nodeId, inTree, totalCost, totalPrize
 ```
@@ -83,8 +83,8 @@ Returns the same columns as run mode, streamed for memory efficiency.
 
 ```gql
 CALL algo.pcst.stream({
-  prizeProperty: "prize",
-  weightProperty: "distance",
+  price: "prize",
+  weight: "distance",
   lambda: 1
 }) YIELD nodeId, inTree
 FILTER inTree = true
@@ -104,8 +104,8 @@ RETURN nodeId
 
 ```gql
 CALL algo.pcst.stats({
-  prizeProperty: "prize",
-  weightProperty: "distance",
+  price: "prize",
+  weight: "distance",
   lambda: 1
 }) YIELD nodeCount, nodesInTree, totalCost, totalPrize
 ```

@@ -12,10 +12,6 @@ For a graph with `N` nodes, there are up to `N×(N-1)` directed pairs or `N×(N-
 
 This implementation runs parallel BFS from every node to compute all pairwise distances. It is best suited for small to medium graphs due to the `O(V²+VE)` computational cost.
 
-## Considerations
-
-- The algorithm computes unweighted shortest paths.
-
 ## Example Graph
 
 <center><img src="images/shortest-example.drawio.svg"/></center>
@@ -25,16 +21,19 @@ INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
        (C:default {_id: "C"}), (D:default {_id: "D"}),
        (E:default {_id: "E"}), (F:default {_id: "F"}),
        (G:default {_id: "G"}),
-       (A)-[:default]->(B), (A)-[:default]->(F),
-       (B)-[:default]->(C), (B)-[:default]->(D),
-       (B)-[:default]->(F), (D)-[:default]->(E),
-       (D)-[:default]->(F), (E)-[:default]->(G),
-       (F)-[:default]->(E)
+       (A)-[:default {value: 2}]->(B), (A)-[:default {value: 4}]->(F),
+       (B)-[:default {value: 3}]->(C), (B)-[:default {value: 3}]->(D),
+       (B)-[:default {value: 6}]->(F), (D)-[:default {value: 2}]->(E),
+       (D)-[:default {value: 2}]->(F), (E)-[:default {value: 3}]->(G),
+       (F)-[:default {value: 1}]->(E)
 ```
 
 ## Parameters
 
-This algorithm accepts no parameters.
+| Name | Type | Default | Description |
+| -- | -- | -- | -- |
+| `direction` | `STRING` | `out` | Edge direction for traversal: `out`, `in`, or `both`. |
+| `weight` | `STRING` | / | Edge property to use as weight. If unset, all edges have unit weight. |
 
 ## Run Mode
 
@@ -44,21 +43,54 @@ This algorithm accepts no parameters.
 | -- | -- | -- |
 | `source` | `STRING` | Source node identifier (`_id`) |
 | `target` | `STRING` | Target node identifier (`_id`) |
-| `distance` | `INT` | Shortest path distance (hop count) |
+| `distance` | `FLOAT` | Shortest path distance |
 
 ```gql
-CALL algo.apsp() YIELD source, target, distance
+CALL algo.apsp({weight: "value"}) YIELD source, target, distance
 ```
+
+Result:
+
+| source | target | distance |
+| -- | -- | -- |
+| A | B | 2 |
+| A | F | 4 |
+| A | C | 5 |
+| A | D | 5 |
+| A | E | 5 |
+| A | G | 8 |
+| B | C | 3 |
+| B | D | 3 |
+| B | F | 5 |
+| B | E | 5 |
+| B | G | 8 |
+| D | E | 2 |
+| D | F | 2 |
+| D | G | 5 |
+| E | G | 3 |
+| F | E | 1 |
+| F | G | 4 |
 
 ## Stream Mode
 
 Returns the same columns as run mode, streamed for memory efficiency.
 
 ```gql
-CALL algo.apsp.stream() YIELD source, target, distance
+CALL algo.apsp.stream({weight: "value"}) YIELD source, target, distance
 FILTER source = "A"
 RETURN source, target, distance
 ```
+
+Result:
+
+| source | target | distance |
+| -- | -- | -- |
+| A | E | 5 |
+| A | D | 5 |
+| A | G | 8 |
+| A | F | 4 |
+| A | C | 5 |
+| A | B | 2 |
 
 ## Stats Mode
 
@@ -67,8 +99,14 @@ RETURN source, target, distance
 | Column | Type | Description |
 | -- | -- | -- |
 | `pairCount` | `INT` | Total number of reachable source-target pairs |
-| `maxDistance` | `INT` | Maximum shortest path distance across all pairs |
+| `maxDistance` | `FLOAT` | Maximum shortest path distance across all pairs |
 
 ```gql
-CALL algo.apsp.stats() YIELD pairCount, maxDistance
+CALL algo.apsp.stats({weight: "value"}) YIELD pairCount, maxDistance
 ```
+
+Result:
+
+| pairCount | maxDistance |
+| -- | -- |
+| 17 | 8 |

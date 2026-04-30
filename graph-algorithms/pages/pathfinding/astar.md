@@ -11,7 +11,7 @@ The A* (A-star) algorithm finds the shortest path between a source node and a ta
 A* extends Dijkstra's algorithm by adding a **degree-based heuristic estimate**. At each step, instead of expanding the node with the smallest known distance `dist(n)`, A* expands the node with the smallest `f(n) = dist(n) + h(n)`, where:
 
 - `dist(n)` is the actual distance from the source to node `n`
-- `h(n)` is the heuristic estimate of remaining cost from node `n` to the target based on node `n`'s degree: `h(n) = 1 / (1 + degree(n))`
+- `h(n)` is the heuristic estimate of remaining cost from node `n` to the target based on node `n`'s degree: `h(n) = 1 / (1 + degree(n))`. The degree used matches the traversal direction — out-degree, in-degree, or total degree — so the heuristic is consistent with the edges A* is allowed to follow.
 
 Nodes with higher degree get lower heuristic values, making them appear more promising — the intuition being that well-connected nodes are more likely to lead toward the target. The heuristic allows A* to explore fewer nodes than Dijkstra while still finding the optimal path.
 
@@ -102,8 +102,9 @@ INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
 
 | Name | Type | Default | Description |
 | -- | -- | -- | -- |
-| `startNode` | `STRING` | / | **Required.** Source node `_id`. |
-| `endNode` | `STRING` | / | **Required.** Target node `_id`. |
+| `source` | `STRING` | / | **Required.** Source node `_id`. |
+| `target` | `STRING` | / | **Required.** Target node `_id`. |
+| `direction` | `STRING` | `out` | Edge direction for traversal and the degree used in the heuristic: `out`, `in`, or `both`. |
 | `weight` | `STRING` | / | Edge property to use as weight. If unset, all edges have unit weight. |
 
 ## Run Mode
@@ -118,11 +119,20 @@ INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
 
 ```gql
 CALL algo.astar({
-  startNode: "A",
-  endNode: "G",
+  source: "A",
+  target: "G",
   weight: "value"
 }) YIELD nodeId, distance, path
 ```
+
+Result:
+
+| nodeId | distance | path |
+| -- | -- | -- |
+| A | 0 | ["A", "F", "E", "G"] |
+| F | 4 | ["A", "F", "E", "G"] |
+| E | 5 | ["A", "F", "E", "G"] |
+| G | 8 | ["A", "F", "E", "G"] |
 
 ## Stream Mode
 
@@ -130,12 +140,20 @@ Returns the same columns as run mode, streamed for memory efficiency.
 
 ```gql
 CALL algo.astar.stream({
-  startNode: "A",
-  endNode: "G",
+  source: "A",
+  target: "D",
   weight: "value"
 }) YIELD nodeId, distance
 RETURN nodeId, distance
 ```
+
+Result:
+
+| nodeId | distance |
+| -- | -- |
+| A | 0 |
+| B | 2 |
+| D | 5 |
 
 ## Stats Mode
 
@@ -148,8 +166,13 @@ RETURN nodeId, distance
 
 ```gql
 CALL algo.astar.stats({
-  startNode: "A",
-  endNode: "G",
-  weight: "value"
+  source: "A",
+  target: "G"
 }) YIELD nodeCount, totalDistance
 ```
+
+Result:
+
+| nodeCount | totalDistance |
+| -- | -- |
+| 4 | 3 |

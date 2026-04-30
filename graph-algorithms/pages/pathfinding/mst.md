@@ -51,7 +51,9 @@ INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
 
 ## Parameters
 
-This algorithm accepts no parameters.
+| Name | Type | Default | Description |
+| -- | -- | -- | -- |
+| `weight` | `STRING` | / | Edge property to use as weight. If unset, all edges have unit weight. |
 
 ## Run Mode
 
@@ -65,7 +67,8 @@ This algorithm accepts no parameters.
 | `totalWeight` | `FLOAT` | Total weight of the MST |
 
 ```gql
-CALL algo.mst() YIELD sourceId, targetId, weight, totalWeight
+CALL algo.mst({weight: "distance"}) 
+YIELD sourceId, targetId, weight, totalWeight
 ```
 
 ## Stream Mode
@@ -73,7 +76,8 @@ CALL algo.mst() YIELD sourceId, targetId, weight, totalWeight
 Returns the same columns as run mode, streamed for memory efficiency.
 
 ```gql
-CALL algo.mst.stream() YIELD sourceId, targetId, weight
+CALL algo.mst.stream({weight: "distance"}) 
+YIELD sourceId, targetId, weight
 RETURN sourceId, targetId, weight
 ```
 
@@ -87,5 +91,5 @@ RETURN sourceId, targetId, weight
 | `totalWeight` | `FLOAT` | Total weight of the MST |
 
 ```gql
-CALL algo.mst.stats() YIELD edgeCount, totalWeight
+CALL algo.mst.stats({weight: "distance"}) YIELD edgeCount, totalWeight
 ```

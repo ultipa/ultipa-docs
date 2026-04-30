@@ -92,9 +92,9 @@ INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
 
 | Name | Type | Default | Description |
 | -- | -- | -- | -- |
-| `startNode` | `STRING` | / | **Required.** Source node `_id`. |
-| `delta` | `FLOAT` | `3.0` | Bucket width for relaxation phases. |
-| `direction` | `STRING` | `out` | Edge direction: `in`, `out`, or `both`. |
+| `source` | `STRING` | / | **Required.** Source node `_id`. |
+| `delta` | `FLOAT` | `3.0` | Bucket width for distance update phases. |
+| `weight` | `STRING` | / | Edge property to use as weight. If unset, all edges have unit weight. |
 
 ## Run Mode
 
@@ -107,9 +107,22 @@ INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
 
 ```gql
 CALL algo.deltastepping({
-  startNode: "A"
+  source: "A",
+  weight: "value"
 }) YIELD nodeId, distance
 ```
+
+Result:
+
+| nodeId | distance |
+| -- | -- |
+| E | 5 |
+| D | 5 |
+| G | 8 |
+| F | 4 |
+| A | 0 |
+| C | 5 |
+| B | 2 |
 
 ## Stream Mode
 
@@ -117,10 +130,23 @@ Returns the same columns as run mode, streamed for memory efficiency.
 
 ```gql
 CALL algo.deltastepping.stream({
-  startNode: "A"
+  source: "A",
+  weight: "value"
 }) YIELD nodeId, distance
 RETURN nodeId, distance
 ```
+
+Result:
+
+| nodeId | distance |
+| -- | -- |
+| E | 5 |
+| D | 5 |
+| G | 8 |
+| F | 4 |
+| A | 0 |
+| C | 5 |
+| B | 2 |
 
 ## Stats Mode
 
@@ -133,6 +159,13 @@ RETURN nodeId, distance
 
 ```gql
 CALL algo.deltastepping.stats({
-  startNode: "A"
+  source: "A",
+  weight: "value"
 }) YIELD nodesReached, maxDistance
 ```
+
+Result:
+
+| nodesReached | maxDistance |
+| -- | -- |
+| 7 | 8 |

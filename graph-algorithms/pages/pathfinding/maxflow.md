@@ -82,8 +82,8 @@ INSERT (S:default {_id: "S"}), (A:default {_id: "A"}),
 
 | Name | Type | Default | Description |
 | -- | -- | -- | -- |
-| `sourceNode` | `STRING` | / | **Required.** Source node `_id`. |
-| `sinkNode` | `STRING` | / | **Required.** Sink node `_id`. |
+| `source` | `STRING` | / | **Required.** Source node `_id`. |
+| `sink` | `STRING` | / | **Required.** Sink node `_id`. |
 | `capacityProperty` | `STRING` | / | Edge property to use as capacity. If unset, all edges have unit capacity. |
 
 ## Run Mode
@@ -100,8 +100,8 @@ INSERT (S:default {_id: "S"}), (A:default {_id: "A"}),
 
 ```gql
 CALL algo.maxflow({
-  sourceNode: "S",
-  sinkNode: "T",
+  source: "S",
+  sink: "T",
   capacityProperty: "cap"
 }) YIELD maxFlow, sourceId, targetId, flow, capacity
 ```
@@ -126,8 +126,8 @@ Returns the same columns as run mode, streamed for memory efficiency.
 
 ```gql
 CALL algo.maxflow.stream({
-  sourceNode: "S",
-  sinkNode: "T",
+  source: "S",
+  sink: "T",
   capacityProperty: "cap"
 }) YIELD sourceId, targetId, flow
 FILTER sourceId = "S" AND targetId = "T"
@@ -151,8 +151,8 @@ Result:
 
 ```gql
 CALL algo.maxflow.stats({
-  sourceNode: "S",
-  sinkNode: "T",
+  source: "S",
+  sink: "T",
   capacityProperty: "cap"
 }) YIELD maxFlow, edgeCount
 ```

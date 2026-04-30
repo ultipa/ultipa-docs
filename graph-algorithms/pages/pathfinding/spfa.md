@@ -52,8 +52,9 @@ INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
 
 | Name | Type | Default | Description |
 | -- | -- | -- | -- |
-| `sourceNode` | `STRING` | / | **Required.** Source node `_id`. |
+| `source` | `STRING` | / | **Required.** Source node `_id`. |
 | `direction` | `STRING` | `out` | Edge direction: `in`, `out`, or `both`. |
+| `weight` | `STRING` | / | Edge property to use as weight. If unset, all edges have unit weight. |
 
 ## Run Mode
 
@@ -67,9 +68,22 @@ INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
 
 ```gql
 CALL algo.spfa({
-  sourceNode: "A"
+  source: "A",
+  weight: "value"
 }) YIELD nodeId, distance, predecessor
 ```
+
+Result:
+
+| nodeId | distance | predecessor |
+| -- | -- | -- |
+| E | 5 | F |
+| D | 5 | B |
+| G | 8 | E |
+| F | 4 | A |
+| A | 0 |  |
+| C | 5 | B |
+| B | 2 | A |
 
 ## Stream Mode
 
@@ -77,7 +91,8 @@ Returns the same columns as run mode, streamed for memory efficiency.
 
 ```gql
 CALL algo.spfa.stream({
-  sourceNode: "A"
+  source: "A",
+  weight: "value"
 }) YIELD nodeId, distance
 RETURN nodeId, distance
 ```
@@ -94,6 +109,13 @@ RETURN nodeId, distance
 
 ```gql
 CALL algo.spfa.stats({
-  sourceNode: "A"
+  source: "A",
+  weight: "value"
 }) YIELD nodeCount, maxDistance, hasNegativeCycle
 ```
+
+Result:
+
+| nodeCount | maxDistance | hasNegativeCycle |
+| -- | -- | -- |
+| 7 | 8 | 0 |

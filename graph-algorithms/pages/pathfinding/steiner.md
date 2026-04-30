@@ -48,9 +48,9 @@ INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
 
 | Name | Type | Default | Description |
 | -- | -- | -- | -- |
-| `rootNode` | `STRING` | / | **Required.** Root node `_id`. |
-| `terminalNodes` | `LIST` | / | **Required.** List of terminal node `_id`s that must be connected. |
-| `weightProperty` | `STRING` | / | Edge property to use as weight. If unset, all edges have unit weight. |
+| `root` | `STRING` | / | **Required.** Root node `_id`. |
+| `terminals` | `LIST` | / | **Required.** List of terminal node `_id`s that must be connected. |
+| `weight` | `STRING` | / | Edge property to use as weight. If unset, all edges have unit weight. |
 
 ## Run Mode
 
@@ -64,9 +64,9 @@ INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
 
 ```gql
 CALL algo.steiner({
-  rootNode: "A",
-  terminalNodes: ["C", "F"],
-  weightProperty: "distance"
+  root: "A",
+  terminals: ["C", "F"],
+  weight: "distance"
 }) YIELD sourceId, targetId, weight
 ```
 
@@ -85,9 +85,9 @@ Returns the same columns as run mode, streamed for memory efficiency.
 
 ```gql
 CALL algo.steiner.stream({
-  rootNode: "A",
-  terminalNodes: ["C", "F", "E"],
-  weightProperty: "distance"
+  root: "A",
+  terminals: ["C", "F", "E"],
+  weight: "distance"
 }) YIELD sourceId, targetId, weight
 RETURN sourceId, targetId, weight
 ```
@@ -114,9 +114,9 @@ Terminal `E` is already on the path `A→E→F`, so adding it doesn't introduce 
 
 ```gql
 CALL algo.steiner.stats({
-  rootNode: "A",
-  terminalNodes: ["C", "F", "E"],
-  weightProperty: "distance"
+  root: "A",
+  terminals: ["C", "F", "E"],
+  weight: "distance"
 }) YIELD edgeCount, totalWeight
 ```
 

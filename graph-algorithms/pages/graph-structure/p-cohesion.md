@@ -10,7 +10,7 @@ The p-Cohesion algorithm computes a per-node cohesion value that measures how we
 
 ### p-Cohesion
 
-One natural measure of the **cohesion** of a group is the relative frequency of ties among its members compared to non-members. Let cohesion be a constant `p` ∈ (0,1). A <b>p-Cohesion</b> is a connected subgraph in which every node has, at least, a proportion `p` of its neighbors within the subgraph. In other words, each node has at most, a proportion `(1 − p)` of its neighbors outside the subgraph.
+One natural measure of the **cohesion** of a group is the relative frequency of ties among its members compared to non-members. Let cohesion be a constant `p` ∈ (0,1). A **p-Cohesion** is a connected subgraph in which every node has, at least, a proportion `p` of its neighbors within the subgraph. In other words, each node has at most, a proportion `(1 − p)` of its neighbors outside the subgraph.
 
 The p-Cohesion model offers two key advantages over other cohesive subgraph models:
 
@@ -27,9 +27,14 @@ Below are the minimal p-Cohesion subgraphs, in terms of node count, that include
 
 ### Cohesion Value
 
-This algorithm computes the **cohesion value** of a node, which is the maximum `p` for which the node belongs to a p-cohesive subgraph. A higher cohesion value indicates the node is embedded in a more tightly connected neighborhood.
+Finding the maximum `p` for which a node belongs to a p-cohesive subgraph is computationally hard, so this algorithm uses a tractable proxy based on <a href="/docs/graph-algorithms/k-core">k-Core</a> decomposition:
 
-> Note that p-cohesion is inherently a group property: whether a set of nodes is p-cohesive depends on which nodes form the group together. The per-node cohesion value produced by this algorithm is a useful ranking metric, but does not indicate which specific group the node is cohesive with.
+1. Compute each node's **coreness**: the largest `k` such that the node belongs to a k-core (a subgraph where every member has at least `k` neighbors inside).
+2. Normalize by the node's total degree: `cohesion(v) = coreness(v) / degree(v)`.
+
+The resulting value lies in `[0, 1]` and reflects the proportion of `v`'s neighbors that remain with `v` in the deepest k-core containing it. A higher value indicates the node is embedded in a more tightly connected neighborhood.
+
+> The cohesion value is a per-node ranking metric — it does not name the specific subgraph the node belongs to, and it differs from the literal maximum `p` of the ratio-based p-Cohesion definition above (it's a lower bound on that quantity). For most analytical use cases the ranking it produces is what matters.
 
 ## Considerations
 
@@ -71,7 +76,7 @@ INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
 | Column | Type | Description |
 | -- | -- | -- |
 | `nodeId` | `STRING` | Node identifier (`_id`) |
-| `cohesion` | `FLOAT` | Minimal p-cohesion value for this node |
+| `cohesion` | `FLOAT` | Maximal p-cohesion value for this node |
 
 ```gql
 CALL algo.pcohesion({
@@ -79,14 +84,42 @@ CALL algo.pcohesion({
 }) YIELD nodeId, cohesion
 ```
 
+Result:
+
+| nodeId | cohesion |
+| -- | -- |
+| E | 1 |
+| G | 1 |
+| F | 0.75 |
+| A | 1 |
+| B | 0.75 |
+| I | 1 |
+| H | 1 |
+| K | 1 |
+| J | 1 |
+
 ## Stream Mode
 
 Returns the same columns as run mode, streamed for memory efficiency.
 
 ```gql
-CALL algo.pcohesion.stream() YIELD nodeId, cohesion
+CALL algo.pcohesion.stream({
+  p: 0.8
+}) YIELD nodeId, cohesion
 RETURN nodeId, cohesion
 ```
+
+Result:
+
+| nodeId | cohesion |
+| -- | -- |
+| E | 1 |
+| G | 1 |
+| A | 1 |
+| I | 1 |
+| H | 1 |
+| K | 1 |
+| J | 1 |
 
 ## Stats Mode
 
@@ -100,7 +133,9 @@ RETURN nodeId, cohesion
 | `avgCohesion` | `FLOAT` | Average cohesion value |
 
 ```gql
-CALL algo.pcohesion.stats() YIELD nodeCount, minCohesion, maxCohesion, avgCohesion
+CALL algo.pcohesion.stats({
+  p: 0.8
+}) YIELD nodeCount, minCohesion, maxCohesion, avgCohesion
 ```
 
 ## Write Mode
@@ -117,7 +152,7 @@ Computes results and writes them back to node properties. The write configuratio
 
 | Column | Type | Description |
 | -- | -- | -- |
-| `cohesion` | `FLOAT` | Minimal p-cohesion value |
+| `cohesion` | `FLOAT` | Maximal p-cohesion value |
 
 **Returns:**
 
