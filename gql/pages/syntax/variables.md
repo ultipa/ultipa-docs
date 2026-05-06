@@ -44,3 +44,15 @@ RETURN e
 ```
 
 Unreferenced variables do not cause syntax errors but can lead to inefficiencies and reduced readability. It is best to avoid declaring variables you do not intend to use.
+
+## Query Parameters
+
+A query parameter is a placeholder of the form `$name` that is bound to a value supplied by the driver at execution time, rather than written as a literal in the query text. Parameters can be referenced anywhere a value expression is allowed.
+
+```gql
+MATCH (p:Person)
+WHERE p.age > $minAge AND p.city = $city
+RETURN p.name
+```
+
+Parameter values are not declared inside the query; they are passed in through the driver's parameter map. Using parameters instead of string-concatenated literals avoids injection risks, keeps the query text reusable across different inputs, and lets the planner reuse cached plans.
