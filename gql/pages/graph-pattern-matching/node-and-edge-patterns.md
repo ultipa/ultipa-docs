@@ -229,6 +229,24 @@ Match nodes without a label:
 (n:!%)
 ```
 
+Parentheses can be used to group sub-expressions and override operator precedence. 
+
+Match nodes that either have both `Person` and `Employee` labels, or have the `Manager` label:
+
+<p tit="Node Pattern"></p>
+
+```gql
+(n:(Person&Employee)|Manager)
+```
+
+Match `Person` nodes that also have either the `Active` or `VIP` label:
+
+<p tit="Node Pattern"></p>
+
+```gql
+(n:Person&(Active|VIP))
+```
+
 ### Property Specification
 
 Property specification encloses property key-value pairs in a pair of curly braces `{}` inside a node or full edge pattern. This applies **joint equalities** to filter nodes or edges based on the values of their properties.
