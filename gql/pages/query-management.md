@@ -1,6 +1,6 @@
 # Query Management
 
-GQL queries are executed as real-time operations. Results are returned to the client once execution is complete and are not stored on the server. The system tracks all running queries and provides commands to list and cancel them.
+Most GQL queries are executed as real-time operations: results are returned to the client once execution is complete and are not stored on the server. Some operations — such as algorithm write modes, imports, and exports — run as background tasks instead, returning a `task_id` and persisting their results on the server. The system tracks both, providing commands to list and cancel running queries and to monitor, stop, or delete tasks.
 
 ## Showing Queries
 
@@ -35,42 +35,6 @@ KILL QUERY 'q1'
 ```
 
 Use `SHOW QUERIES` to find the `query_id` of the query you want to cancel.
-
-## Explaining Queries
-
-Shows the execution plan for a query without running it. Returns a `QUERY PLAN` column with the estimated cost, rows, and operations.
-
-```gql
-EXPLAIN MATCH (n)-[]->(m) RETURN n, m
-```
-
-Result:
-
-| QUERY PLAN |
-| -- |
-| Execution Plan:<br>&nbsp;&nbsp;Estimated Cost: 7<br>&nbsp;&nbsp;Estimated Rows: 7<br><br>Operations:<br>&nbsp;&nbsp;1. MATCH (1 patterns) [cost: 1000]<br>&nbsp;&nbsp;2. RETURN (2 items) [cost: 100] |
-
-Output format can be specified with `EXPLAIN (FORMAT <format>)`:
-
-```gql
--- Tree format with hierarchical visualization
-EXPLAIN (FORMAT TREE) MATCH (n)-[]->(m) RETURN n, m
-
--- JSON format with structured plan data
-EXPLAIN (FORMAT JSON) MATCH (n)-[]->(m) RETURN n, m
-```
-
-`EXPLAIN ANALYZE` executes the query and returns actual execution metrics alongside the plan:
-
-```gql
-EXPLAIN ANALYZE MATCH (n)-[]->(m) RETURN n, m
-```
-
-`EXPLAIN OPTIMIZER` shows which optimizer rules were applied to the query:
-
-```gql
-EXPLAIN OPTIMIZER MATCH (n)-[]->(m) RETURN n, m
-```
 
 ## Background Tasks
 

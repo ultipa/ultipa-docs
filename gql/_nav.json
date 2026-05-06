@@ -281,6 +281,10 @@
       "title": "Query Management"
     },
     {
+      "file": "execution-plan.md",
+      "title": "Execution Plan"
+    },
+    {
       "file": "backup-and-restore.md",
       "title": "Backup and Restore"
     },
