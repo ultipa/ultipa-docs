@@ -4,7 +4,7 @@
 
 Shortest paths between two nodes are those with the fewest number of edges. You can select shortest paths from each **partition** of the match results using the following path selectors. A "partition" refers to a group of paths that share the same start and end nodes.
 
-| <div table-width="25">Path Selector</div> | Description |
+| Path Selector | Description |
 | -- | -- |
 | `ALL SHORTEST` | Selects all shortest paths from each partition. |
 | `ANY SHORTEST` | Selects any one shortest path from each partition. |
@@ -12,6 +12,8 @@ Shortest paths between two nodes are those with the fewest number of edges. You 
 | `SHORTEST k GROUP` | Groups the paths in each partition by length, sorts the groups in ascending order, and selects all paths from the first `k` groups in each partition. |
 
 The shortest path selectors are typically used with variable-length <a target="_blank" href="/docs/gql/quantified-paths">quantified paths</a>. When a shortest path selector is used, the path mode defaults to `TRAIL` where repeated edges are not allowed.
+
+To minimize a weighted sum of edge costs rather than hop count, see <a target="_blank" href="/docs/gql/cheapest-paths">Cheapest Paths</a>.
 
 ## Note on Shortest Path Algorithms
 

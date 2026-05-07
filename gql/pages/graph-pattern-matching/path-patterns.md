@@ -179,6 +179,19 @@ A path selector is used to select a limited number of paths from **each partitio
     <tr>
       <td><code>SHORTEST k GROUP</code></td>
     </tr>
+    <tr>
+      <td><code>ALL CHEAPEST</code></td>
+      <td rowspan="4">See <a target="_blank" href="/docs/gql/cheapest-paths">Cheapest Paths</a>.</td>
+    </tr>
+    <tr>
+      <td><code>ANY CHEAPEST</code></td>
+    </tr>
+    <tr>
+      <td><code>CHEAPEST</code></td>
+    </tr>
+    <tr>
+      <td><code>CHEAPEST k</code></td>
+    </tr>
   </tbody>
 </table>
 

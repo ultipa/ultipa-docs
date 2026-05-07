@@ -37,6 +37,10 @@
           "title": "Shortest Paths"
         },
         {
+          "file": "cheapest-paths.md",
+          "title": "Cheapest Paths"
+        },
+        {
           "file": "graph-patterns.md",
           "title": "Graph Patterns"
         }
