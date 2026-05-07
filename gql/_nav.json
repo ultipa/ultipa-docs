@@ -72,7 +72,7 @@
       ]
     },
     {
-      "folder": "data-modification",
+      "folder": "data-manipulation",
       "pages": [
         {
           "file": "unique-identifiers.md",
@@ -87,6 +87,14 @@
           "title": "INSERT OVERWRITE"
         },
         {
+          "file": "upsert.md",
+          "title": "UPSERT"
+        },
+        {
+          "file": "merge.md",
+          "title": "MERGE"
+        },
+        {
           "file": "set.md",
           "title": "SET"
         },
@@ -97,6 +105,10 @@
         {
           "file": "delete.md",
           "title": "DELETE"
+        },
+        {
+          "file": "foreach.md",
+          "title": "FOREACH"
         }
       ]
     },

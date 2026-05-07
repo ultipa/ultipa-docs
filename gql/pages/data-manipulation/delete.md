@@ -10,6 +10,8 @@ An edge cannot exist when any of its endpoints is removed from the graph. Theref
 
 Without `DETACH`, the deletion of node `B` will fail, which can be useful as a security measure to prevent unintended deletions.
 
+The keyword `NODETACH` makes the non-cascading behavior explicit: `NODETACH DELETE` is equivalent to plain `DELETE`.
+
 ## Example Graph
 
 <div align=center drawio-diagram='16780' drawio-name="draw_6b12dbc2db4f47d9ba29a1ebedd2a588.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_6b12dbc2db4f47d9ba29a1ebedd2a588.jpg?v='1737864364502'"/></div>

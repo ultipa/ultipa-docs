@@ -6,6 +6,8 @@ The `INSERT OVERWRITE` statement allows you to overwrite existing nodes in the g
 
 The overwrite operation works by deleting the existing node with the same `_id` first, then inserting the new node. This means all properties and labels of the existing node are replaced with the new definition.
 
+To merge new properties into an existing entity instead of replacing it, use <a target="_blank" href="/docs/gql/upsert">`UPSERT`</a>.
+
 ## Overwriting Nodes
 
 An existing node will be overwritten if `_id` is included in the property specification and a node with that `_id` exists in the graph:
