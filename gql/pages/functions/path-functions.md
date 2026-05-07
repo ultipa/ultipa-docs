@@ -14,7 +14,7 @@ INSERT (p1:Paper {_id:'P1', title:'Efficient Graph Search', score:6, author:'Ale
 
 ## path_length()
 
-Returns the number of edges in a path.
+Returns the number of edges in a path. `length()` is a synonym.
 
 <table style="width: 100%;">
   <colgroup>

@@ -41,6 +41,10 @@
           "title": "Cheapest Paths"
         },
         {
+          "file": "khop-traversal.md",
+          "title": "K-Hop Traversal"
+        },
+        {
           "file": "graph-patterns.md",
           "title": "Graph Patterns"
         }

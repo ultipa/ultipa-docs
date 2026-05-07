@@ -103,6 +103,8 @@ Path modes control how paths are traversed and whether nodes or edges can be rev
 | `SIMPLE` | No repeated nodes allowed in the paths unless it forms a cycle by starting and ending at the same node. |
 | `WALK` | Non-restrictive. |
 
+In addition to the four path modes above, Ultipa supports the `KHOP` mode for K-hop neighbor search, which returns distinct destination nodes within a hop range rather than materializing every distinct path. See <a target="_blank" href="/docs/gql/khop-traversal">K-Hop Traversal</a>.
+
 The following queries find 1- to 3-step outgoing paths from `C1` using different path modes:
 
 <div tab="code">
