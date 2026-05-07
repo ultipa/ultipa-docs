@@ -22,17 +22,20 @@ While the graph type can be altered after a graph is created, its defined data m
   "NODE" [ "TYPE" ] <node type name> "(" [ <additional labels> ] [ <property types> ] ")"
 
 <edge type> ::=
-  "EDGE" [ "TYPE" ] <edge type name> <source node type reference> 
+  "EDGE" [ "TYPE" ] <edge type name> <source node type reference>
   "-[" [ <additional labels> ] [ <property types> ] "]->" <destination node type reference>
 
+<source/destination node type reference> ::=
+  "(" [ ":" <label name> [ { "&" <label name> } ... ] ] ")"
+
 <additional labels> ::=
-  < ":" | "IS" > <label name> [ { "&", <label name> } ... ]
+  ":" <label name> [ { "&" <label name> } ... ]
 
 <property types> ::=
   "{" <property type> [ { "," <property type> } ... ] "}"
 
 <property type> ::=
-  <property name> <property value type> 
+  <property name> <property value type> <constraint name>
 ```
 
 Each node or edge type has a unique type name, and is associated with a set of labels and property types. Each property type is defined with a property name and a <a target="_blank" href="/docs/gql/values-and-types#Property-Value-Types">property value type</a>.
@@ -92,83 +95,27 @@ CREATE GRAPH g2 {
 }
 ```
 
-### Defined Graph Type
+### Named Graph Type
 
-Create a closed graph `g3` based on the defined graph type named `gType` (<a href="#Managing-Graph-Types">How to manage graph types</a>), you have three equivalent GQL options to specify the graph type to be used:
+Create a closed graph `g3` using a pre-defined graph type named `gType`, you have four equivalent GQL options to specify the graph type to be used:
 
 ```gql
+-- Bare reference
 CREATE GRAPH g3 gType
-```
 
-or
-
-```gql
+-- `::` separator
 CREATE GRAPH g3 :: gType
-```
 
-or
-
-```gql
+-- `TYPED` keyword
 CREATE GRAPH g3 TYPED gType
+
+-- `TYPED BY` keyword
+CREATE GRAPH g3 TYPED BY gType
 ```
 
 The graph `g3` is created with all the types and properties defined within the graph type `gType`.
 
-## Managing Graph Types
-
-The graph type defines structural rules for graphs by outlining the allowed node and edge types. You can define and store graph types in the database, making them reusable when creating new graphs.
-
-### Showing Graph Types
-
-Show graph types defined in the database:
-
-```gql
-SHOW GRAPH TYPES
-```
-
-Each graph type provides the following essential metadata:
-
-| Field | Description |
-| -- | -- |
-| `name` | The unique name assigned to the graph type. |
-| `node_type_count` | Number of node types. |
-| `edge_type_count` | Number of edge types. |
-| `node_types` | Comma-separated list of node type names. |
-| `edge_types` | Comma-separated list of edge type names. |
-| `definition` | The type definitions. |
-| `bound_graphs` | Graphs that use this graph type. |
-| `comment` | The comment of the graph type. |
-| `created_at` | Creation time. |
-| `updated_at` | Last update time. |
-
-### Creating Graph Types
-
-Create a graph type `gType`:
-
-```gql
-CREATE GRAPH TYPE gType {
-  NODE User ({name STRING, age UINT32}),
-  NODE Club ({name STRING}),
-  EDGE FOLLOWS ()-[{createdOn TIMESTAMP}]->(),
-  EDGE JOINS ()-[]->()
-}
-```
-
-### Dropping Graph Types
-
-Drop the graph type `gType`:
-
-```gql
-DROP GRAPH TYPE gType
-```
-
-The `IF EXISTS` clause is used to prevent errors when attempting to delete a graph type that does not exist. It allows the statement to be safely executed.
-
-```gql
-DROP GRAPH TYPE IF EXISTS gType
-```
-
-This deletes the graph type `gType` only if a graph type with that name does exist. If `gType` does not exist, the statement is ignored without throwing an error.
+<a target="_blank" href="/docs/gql/graph-type">Learn more about graph types →</a>
 
 ## Showing Node/Edge Types
 

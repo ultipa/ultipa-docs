@@ -44,6 +44,16 @@ A **closed graph** requires that any node or edge to be inserted must conform to
 
 <a target="_blank" href="/docs/gql/closed-graph">Learn more about closed graphs →</a>
 
+### Ontology Graph
+
+Ontology support enables RDF/OWL-style class hierarchies and the `@prefix:name` label syntax. Create an ontology-enabled graph with `WITH ONTOLOGY`:
+
+```gql
+CREATE GRAPH myOntologyGraph WITH ONTOLOGY
+```
+
+For details on ontology features, see <a target="_blank" href="/docs/ontology/">Ontology</a>.
+
 ### Using IF NOT EXISTS
 
 You can use the `IF NOT EXISTS` clause to prevent errors when attempting to create a graph that already exists. It allows the statement to be safely executed.
@@ -60,6 +70,12 @@ Most GQL queries operate on a specific graph. Use the `USE` statement to set the
 
 ```gql
 USE myGraph
+```
+
+Or, 
+
+```gql
+USE GRAPH myGraph
 ```
 
 All subsequent queries in the session will run against `myGraph` until another `USE` is issued.
@@ -149,52 +165,3 @@ To truncate all `Follows` edges in `myGraph`:
 ```gql
 TRUNCATE EDGE Follows ON myGraph
 ```
-
-## Naming Conventions
-
-### Graph
-
-Graph names must be unique. Each graph name must:
-
-- Contain 1 to 64 characters.
-- Begin with a letter.
-- Allowed characters: letters (A-Z, a-z), numbers (0-9) and underscores (<code>_</code>).
-
-### Graph Type
-
-Graph type names must be unique. Each graph type name must:
-
-- Contain 1 to 64 characters.
-- Begin with a letter.
-- Allowed characters: letters (A-Z, a-z), numbers (0-9) and underscores (<code>_</code>).
-
-### Node/Edge Type
-
-In a closed graph, each node type or edge type name must:
-
-- Contain 2 to 127 characters.
-- Cannot start with an underscore (`_`) or a tilde (`~`).
-- Cannot contain backticks (<code>`</code>).
-- Cannot use system property names or <a target="_blank" href="/docs/gql/reserved-words">reserved words</a>.
-
-Node type names must be unique, and edge type names must be unique. However, a node type and an edge type may share the same name.
-
-### Label
-
-Each label must:
-
-- Contain 2 to 127 characters.
-- Cannot start with an underscore (`_`) or a tilde (`~`).
-- Cannot contain backticks (<code>`</code>).
-- Cannot use system property names or <a target="_blank" href="/docs/gql/reserved-words">reserved words</a>.
-
-### Property
-
-Each property name must:
-
-- Contain 2 to 127 characters.
-- Cannot start with an underscore (`_`) or a tilde (<code>~</code>).
-- Cannot contain backticks (<code>`</code>).
-- Cannot use system property names or <a target="_blank" href="/docs/gql/reserved-words">reserved words</a>.
-
-In a closed graph, property names must be unique within a node type or an edge type.

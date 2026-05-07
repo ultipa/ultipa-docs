@@ -66,8 +66,20 @@
           "title": "Closed Graph"
         },
         {
+          "file": "graph-type.md",
+          "title": "Graph Type"
+        },
+        {
           "file": "constraints.md",
           "title": "Constraints"
+        },
+        {
+          "file": "projections.md",
+          "title": "Projections"
+        },
+        {
+          "file": "storage-maintenance.md",
+          "title": "Storage Maintenance"
         }
       ]
     },
@@ -326,6 +338,10 @@
         {
           "file": "reserved-words.md",
           "title": "Reserved Words"
+        },
+        {
+          "file": "naming-conventions.md",
+          "title": "Naming Conventions"
         },
         {
           "file": "syntactic-notation.md",

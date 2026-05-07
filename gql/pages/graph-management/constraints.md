@@ -2,12 +2,17 @@
 
 ## Overview
 
-**Constraints** enforce additional rules on the node and edge properties in the graph. Any attempt to insert or update data that violates these rules will result in an error.
+**Constraints** enforce additional rules on the node and edge properties in the graph. Any attempt to insert or update data that violates these rules will result in an error. Constraints are only enforced in **closed graphs**.
 
-Ultipa supports the following constraints in **closed graphs**:
+Ultipa supports the following constraint types:
 
-- <a href="#NOT-NULL">NOT NULL</a>: Ensures that a property never contains `null` values.
-- <a href="#UNIQUE">UNIQUE</a>: Ensures that a property contains no duplicate values.
+| Constraint Type | Description | Composite of Properties | 
+| -- | -- | -- |
+| `NOT NULL` | Ensures that a property never contains `null` values. | Not supported |
+| `UNIQUE` | Ensures that a property contains no duplicate values. | Supported |
+| `KEY` | Combines `NOT NULL` and `UNIQUE`, marking a property as the identifying key of a node type. Available on **node types only**. | Supported |
+
+When a constraint type supports a composite of properties, a row violates the constraint only when **all** listed properties match an existing row.
 
 ## Showing Constraints
 
@@ -31,101 +36,116 @@ SHOW EDGE CONSTRAINTS
 
 Each constraint provides the following metadata:
 
-| <div table-width="20">Field</div> | Description |
+| Field | Description |
 | -- | -- |
 | `entity_type` | `NODE` or `EDGE`. |
 | `type` | The node or edge type where the constraint applies. |
-| `property` | The property where the constraint applies. |
-| `constraint_type` | Constraint type (`NOT NULL`, `UNIQUE`). |
+| `property` | The property where the constraint applies. For composite constraints, properties are comma-separated. |
+| `constraint_type` | Constraint type. |
+| `constraint_name` | The user-supplied name of the constraint. |
 
 ## Creating Constraints
 
-You can define constraints when **creating a closed graph**, **creating a graph type**, or **within an existing closed graph**.
+Creating a constraint on a non-empty graph scans existing data to verify compliance, and may take time on large graphs. The creation fails if any existing row violates the constraint.
 
-Note that creating a constraint in a large graph may take time, as the system must scan all existing data to ensure compliance. The creation will fail if any existing data violates the constraint.
+Constraints can be created two ways:
 
-### NOT NULL
+### CREATE CONSTRAINT
 
-The `NOT NULL` constraint ensures that a property never contains `null` values.
+<p tit="Syntax"></p>
 
-Create a `NOT NULL` constraint on the property `name` of node type `User`:
+```
+<create constraint statement> ::=
+  "CREATE" < "CONSTRAINT" [ "IF NOT EXISTS" ] | "OR REPLACE CONSTRAINT" > <constraint name> 
+  "FOR" <constraint element pattern> "REQUIRE" <constraint requirement>
 
-```gql
-ALTER NODE User ADD CONSTRAINT NOT NULL ON name
+<constraint element pattern> ::=
+    "(" <element variable declaration> <label set> ")"
+  | "()-[" <element variable declaration> <label set> "]->()"
+
+<label set> ::= < ":" | "IS" > <label name> [ { "&" <label name> }... ]
+
+<constraint requirement> ::= <key value specification> "IS" <constraint type>
+
+<key value specification> ::=
+    <key value component>
+  | "(" <key value component> [ { "," <key value component> }... ] ")"
+
+<key value component> ::= <element variable> "." <property name>
 ```
 
-Create a `NOT NULL` constraint on the property `createdOn` of edge type `KNOWS`:
+Create a `NOT NULL` constraint named `nn_user_name` on the property `name` of `User` nodes:
 
 ```gql
-ALTER EDGE KNOWS ADD CONSTRAINT NOT NULL ON createdOn
+CREATE CONSTRAINT nn_user_name FOR (n:User) REQUIRE n.name IS NOT NULL
 ```
 
-The `NOT NULL` constraint can only be successfully created when no `null` values exist in the specified property.
+Create a composite `UNIQUE` constraint named `uq_user_name` on properties `firstName` and `lastName` of `User` nodes:
 
-You can apply the `NOT NULL` constraint to any property when creating a closed graph:
+```gql
+CREATE CONSTRAINT uq_user_name FOR (n:User) REQUIRE (n.firstName, n.lastName) IS UNIQUE
+```
+
+Create a `UNQIUE` constraint named `nn_knows_eid` on the property `eid` of `KNOWS` edges:
+
+```gql
+CREATE CONSTRAINT nn_knows_eid FOR ()-[e:KNOWS]->() REQUIRE e.eid IS UNIQUE 
+```
+
+Create a `KEY` constraint named `user_key` on the property `uid` of `User` nodes:
+
+```gql
+CREATE CONSTRAINT user_key FOR (n:User) REQUIRE n.uid IS KEY
+```
+
+You can use the `IF NOT EXISTS` clause to prevent errors when attempting to create a constraint that already exists. It allows the statement to be safely executed.
+
+```gql
+CREATE CONSTRAINT IF NOT EXISTS nn_knows_eid FOR ()-[e:KNOWS]->() REQUIRE e.eid IS UNIQUE 
+```
+
+You can use `OR REPLACE` to drop an existing constraint with the same name and create a new one in its place:
+
+```gql
+CREATE OR REPLACE CONSTRAINT nn_knows_eid FOR ()-[e:KNOWS]->() REQUIRE e.eid IS UNIQUE 
+```
+
+### Inline in CREATE GRAPH or CREATE GRAPH TYPE
+
+Inline declaration attaches constraint type keywords directly to a property in a node or edge type definition, alongside its data type. The constraint takes effect as soon as the graph or graph type is created.
+
+Inline declarations are limited to **single-property** constraints. For composite constraint, use the `CREATE CONSTRAINT` statement instead.
+
+Inline form in `CREATE GRAPH`:
 
 ```gql
 CREATE GRAPH myGraph {
-  NODE User ({name STRING NOT NULL, age UINT32}),
+  NODE User ({name STRING NOT NULL UNIQUE, age UINT32}),
   EDGE KNOWS ()-[{createdOn TIMESTAMP NOT NULL, eid STRING}]->()
 }
 ```
 
-You can also apply the `NOT NULL` constraint to any property when creating a graph type:
+Inline form in `CREATE GRAPH TYPE`:
 
 ```gql
 CREATE GRAPH TYPE gType {
-  NODE User ({name STRING NOT NULL, age UINT32}),
+  NODE User ({name STRING NOT NULL UNIQUE, age UINT32}),
   EDGE KNOWS ()-[{createdOn TIMESTAMP NOT NULL, eid STRING}]->()
 }
 ```
 
-### UNIQUE
-
-The `UNIQUE` constraint ensures that a property contains no duplicate values.
-
-Create a `UNIQUE` constraint on the property `name` of node type `User`:
-
-```gql
-ALTER NODE User ADD CONSTRAINT UNIQUE ON name
-```
-
-Create a `UNIQUE` constraint on the property `eid` of edge type `KNOWS`:
-
-```gql
-ALTER EDGE KNOWS ADD CONSTRAINT UNIQUE ON eid
-```
-
-The `UNIQUE` constraint can only be successfully created when no duplicate values exist in the specified property.
-
-You can apply the `UNIQUE` constraint to any property when creating a closed graph:
-
-```gql
-CREATE GRAPH myGraph {
-  NODE User ({name STRING UNIQUE, age UINT32}),
-  EDGE KNOWS ()-[{createdOn TIMESTAMP, eid STRING UNIQUE}]->()
-}
-```
-
-You can also apply the `UNIQUE` constraint to any property when creating a graph type:
-
-```gql
-CREATE GRAPH TYPE gType {
-  NODE User ({name STRING UNIQUE, age UINT32}),
-  EDGE KNOWS ()-[{createdOn TIMESTAMP, eid STRING UNIQUE}]->()
-}
-```
+When applied to the same property, constraint type keywords can be written in either order. For example, `NOT NULL UNIQUE` and `UNIQUE NOT NULL` are equivalent.
 
 ## Dropping Constraints
 
-Drop the `NOT NULL` constraint on the `name` property of node type `User` from the current graph:
+Drop a constraint by its name:
 
 ```gql
-ALTER NODE User DROP CONSTRAINT NOT NULL ON name
+DROP CONSTRAINT nn_user_name
 ```
 
-Drop the `UNIQUE` constraint on the `eid` property of edge type `KNOWS` from the current graph:
+The `IF EXISTS` clause is used to prevent errors when attempting to delete a constraint that does not exist. It allows the statement to be safely executed.
 
 ```gql
-ALTER EDGE KNOWS DROP CONSTRAINT UNIQUE ON eid
+DROP CONSTRAINT IF EXISTS nn_user_name
 ```
