@@ -2,33 +2,34 @@
 
 All built-in graph algorithms are invoked via the `CALL algo.<name>()` syntax and support up to four execution modes: **run**, **stream**, **stats**, and **write**.
 
-## Compute Engine
+## Computing Engine
 
-Most algorithms can run with or without the compute engine enabled. For large graphs, it is strongly recommended to enable the compute engine first for significantly better performance:
+Most algorithms can run with or without the computing engine enabled. For large graphs, it is strongly recommended to enable the compute engine first for significantly better performance:
 
 ```gql
 ALTER GRAPH myGraph SET COMPUTE ENABLED
 ```
 
-With the compute engine enabled, algorithms use an in-memory CSR/CSC topology for O(1) neighbor lookups. Without it, algorithms fall back to a storage-based path which is much slower on large graphs.
+With the compute engine enabled, algorithms use an in-memory topology for O(1) neighbor lookups. Without it, algorithms fall back to a storage-based path which is much slower on large graphs.
 
-Check the compute engine status:
+<a target="_blank" href="/docs/computing-engine">Learn more about computing engine →</a>
 
-```gql
-SHOW GRAPH myGraph COMPUTE STATUS
-```
+## Running on a Projection
 
-View the compute engine configuration:
+Algorithms can be scoped to a projection — a named, materialized subset of the graph — by appending `ON <projectionName>` to the `CALL`. The algorithm runs against the projection's cached topology instead of the full graph.
 
 ```gql
-SHOW GRAPH myGraph COMPUTE CONFIG
+-- Define the subgraph once
+CREATE PROJECTION social_graph WITH NODE :User EDGE :Follows
+
+-- Run an algorithm on it
+CALL algo.pagerank() ON social_graph YIELD node, score
+RETURN node, score ORDER BY score DESC LIMIT 10
 ```
 
-Disable the compute engine:
+The same `ON <projectionName>` clause works with the `.stream`, `.stats`, and `.write` execution modes shown below.
 
-```gql
-ALTER GRAPH myGraph SET COMPUTE DISABLED
-```
+<a target="_blank" href="/docs/gql/projections">Learn more about projections →</a>
 
 ## Execution Modes
 
