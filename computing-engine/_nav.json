@@ -2,12 +2,16 @@
   "name": "Computing Engine",
   "navigation": [
     {
-      "file": "overview.md",
-      "title": "Overview"
+      "file": "introduction.md",
+      "title": "Introduction"
     },
     {
       "file": "configuration.md",
       "title": "Configuration"
+    },
+    {
+      "file": "monitoring.md",
+      "title": "Monitoring"
     },
     {
       "file": "memory-management.md",

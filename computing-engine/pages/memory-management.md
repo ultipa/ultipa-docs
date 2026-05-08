@@ -1,31 +1,16 @@
 # Memory Management
 
-## Overview
-
 Understanding and managing computing engine memory usage is essential for optimal performance. This page covers memory budget allocation, estimation, partial caching strategies, and troubleshooting.
 
 ## Memory Budget Allocation
 
 The computing engine divides its memory budget into three components:
 
-**Topology Budget (60% default)**
-
-- CSR matrix for outgoing edges
-- CSC matrix for incoming edges
-- Label-indexed adjacency structures
-- Node/edge ID mappings
-
-**Property Budget (30% default)**
-
-- Columnar storage for cached properties
-- Per-label property arrays
-- String interning for text properties
-
-**Working Budget (10% default)**
-
-- Temporary allocations during queries
-- Algorithm working memory
-- Build/rebuild operations
+| Component | Default share | What it holds |
+| -- | -- | -- |
+| Topology budget | 60% | The graph structure: outgoing- and incoming-edge indexes, per-label adjacency, node and edge ID mappings. |
+| Property budget | 30% | Cached property values: per-label property arrays, string interning for text properties. |
+| Working budget | 10% | Temporary memory used during query execution, algorithm runs, and cache build/rebuild operations. |
 
 These percentages are defaults that work well for most workloads. The system automatically manages allocation within your configured limit.
 
@@ -33,19 +18,11 @@ These percentages are defaults that work well for most workloads. The system aut
 
 Use these estimates to plan your memory allocation:
 
-**Topology Memory Formula:**
+**Topology Memory:**
 
-```
-Memory = 2 * (N + 1) * 8 + 4 * E * 8 bytes
-```
+Follow the formula `Memory = 2 * (N + 1) * 8 + 4 * E * 8 bytes`, where `N` = number of nodes, `E` = number of edges.
 
-Where N = number of nodes, E = number of edges
-
-This accounts for:
-
-- CSR row pointers: (N+1) * 8 bytes
-- CSR column indices + edge data: 2 * E * 8 bytes
-- CSC (mirror of CSR): same as above
+The two-times factor on both terms reflects the fact that the engine maintains two parallel indexes — one for outgoing edges and one for incoming edges — so traversal in either direction is equally fast. Roughly, plan for **~16 bytes per node** (one index slot in each direction) and **~32 bytes per edge** (each edge appears in both indexes).
 
 **Property Memory:**
 
@@ -56,13 +33,13 @@ This accounts for:
 
 **Reference Table:**
 
-| Graph Size | Nodes | Edges | Topology | Properties (5) | Total |
+| Graph Size | Nodes | Edges | Topology | Properties (5)<sup>*</sup> | Total |
 | -- | -- | -- | -- | -- | -- |
 | Small | 1M | 10M | ~344 MB | ~80 MB | ~424 MB |
 | Medium | 10M | 100M | ~3.4 GB | ~800 MB | ~4.2 GB |
 | Large | 100M | 1B | ~34 GB | ~8 GB | ~42 GB |
 
-*Properties column assumes 5 integer/float properties per node*
+<sup>*</sup> The Properties column assumes 5 integer/float properties per node.*
 
 Calculate memory for a social network:
 
@@ -120,8 +97,7 @@ ALTER GRAPH massiveGraph SET COMPUTE MEMORY_LIMIT 16GB
 
 -- Queries will use cache when possible
 -- Falls back to disk for uncached nodes
-MATCH (popular:User WHERE popular.followers > 10000)
-      -[:FOLLOWS]->{1,3}(audience)
+MATCH (popular:User WHERE popular.followers > 10000)-[:FOLLOWS]->{1,3}(audience)
 RETURN popular.name, count(audience)
 ```
 
@@ -131,10 +107,10 @@ Monitor computing engine memory to optimize your configuration:
 
 **Key Metrics:**
 
-- **Topology memory used** - Actual bytes used by CSR/CSC
-- **Property memory used** - Bytes used by cached properties
-- **Cache coverage** - Percentage of graph cached
-- **Cache hit rate** - Percentage of lookups served from cache
+- **Topology memory used**: Bytes used by the cached graph structure
+- **Property memory used**: Bytes used by cached properties
+- **Cache coverage**: Percentage of graph cached
+- **Cache hit rate**: Percentage of lookups served from cache
 
 **Tuning Tips:**
 
