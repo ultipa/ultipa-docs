@@ -135,9 +135,30 @@ DROP PROJECTION IF EXISTS social_graph
 
 ## Querying on a Projection
 
-`MATCH` targets a projection with the `ON` clause. The query runs against the projected subset rather than the full graph:
+Use `[OPTIONAL] MATCH ... ON <projection>` statement to route execution through a projection's cache instead of the full graph:
+
+Pattern matching on a projection:
 
 ```gql
-MATCH p = (:User)-[:Follows]->(:User) ON social_graph
-RETURN p
+MATCH (a:User)-[:Follows]->(b:User) ON social_graph
+RETURN a.name, b.name
 ```
+
+Optional match on a projection:
+
+```gql
+OPTIONAL MATCH (a:User)-[:Follows]->(b:User)
+         WHERE a.age > 30
+         ON social_graph
+RETURN a.name, b.name
+```
+
+## Running Algorithms on a Projection
+
+Algorithm call on a projection:
+
+```gql
+CALL algo.degree() ON social_graph YIELD nodeId, score
+```
+
+The inline `CALL { … }` subquery form does **not** accept `ON`.
