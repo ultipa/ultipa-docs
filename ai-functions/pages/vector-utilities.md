@@ -321,7 +321,7 @@ Result: [2, 4, 6]
 
 ## Vector Index Management
 
-### ai.rebuildIndex()
+### ai.rebuild_index()
 
 Rebuilds an HNSW vector index from the underlying data. Use this to recover a `STALE` index (e.g., after a crash) or to apply new `m`/`efConstruction` parameters.
 
@@ -335,7 +335,7 @@ Rebuilds an HNSW vector index from the underlying data. Use this to recover a `S
   <tbody>
     <tr>
       <td><b>Syntax</b></td>
-      <td colspan="3"><code>ai.rebuildIndex(&lt;indexName&gt;)</code></td>
+      <td colspan="3"><code>ai.rebuild_index(&lt;indexName&gt;)</code></td>
     </tr>
     <tr>
       <td rowspan="2"><b>Arguments</b></td>
@@ -356,10 +356,10 @@ Rebuilds an HNSW vector index from the underlying data. Use this to recover a `S
 </table>
 
 ```gql
-RETURN ai.rebuildIndex('summary_embedding')
+RETURN ai.rebuild_index('summary_embedding')
 ```
 
-### ai.setIndexOption()
+### ai.set_index_option()
 
 Updates a runtime-mutable vector index option. Currently only `efSearch` can be changed at runtime; changing `m` or `efConstruction` requires a rebuild.
 
@@ -373,7 +373,7 @@ Updates a runtime-mutable vector index option. Currently only `efSearch` can be 
   <tbody>
     <tr>
       <td><b>Syntax</b></td>
-      <td colspan="3"><code>ai.setIndexOption(&lt;indexName&gt;, &lt;key&gt;, &lt;value&gt;)</code></td>
+      <td colspan="3"><code>ai.set_index_option(&lt;indexName&gt;, &lt;key&gt;, &lt;value&gt;)</code></td>
     </tr>
     <tr>
       <td rowspan="4"><b>Arguments</b></td>
@@ -404,5 +404,5 @@ Updates a runtime-mutable vector index option. Currently only `efSearch` can be 
 </table>
 
 ```gql
-RETURN ai.setIndexOption('summary_embedding', 'efSearch', 200)
+RETURN ai.set_index_option('summary_embedding', 'efSearch', 200)
 ```

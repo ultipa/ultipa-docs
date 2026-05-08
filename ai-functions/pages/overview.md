@@ -87,5 +87,5 @@ Some providers support both embedding and completion, while others support only 
 | `ai.add()` | Adds two vectors element-wise. |
 | `ai.subtract()` | Subtracts two vectors element-wise. |
 | `ai.scale()` | Multiplies a vector by a scalar. |
-| `ai.rebuildIndex()` | Rebuilds an HNSW vector index. |
-| `ai.setIndexOption()` | Updates a runtime vector index option. |
+| `ai.rebuild_index()` | Rebuilds an HNSW vector index. |
+| `ai.set_index_option()` | Updates a runtime vector index option. |
