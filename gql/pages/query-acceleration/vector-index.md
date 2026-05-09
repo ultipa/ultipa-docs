@@ -85,7 +85,7 @@ The result includes the following fields:
 | `ef_search` | HNSW search parameter. |
 | `quantized` | Whether product quantization is enabled. |
 | `memory_bytes` | Memory usage of the index in bytes. |
-| `status` | Index status: `READY`, `BUILDING`, `REBUILDING`, or `STALE`. |
+| `status` | Index status: `READY` (serving queries), `BUILDING` (initial bulk build in progress), `REBUILDING` (`REBUILD VECTOR INDEX` is running; queries see an empty index until done), or `STALE` (loaded from disk but the on-disk manifest didn't match — usually caused by a crash mid-save; the index serves no results until rebuilt). |
 
 ## Creating Vector Index
 
@@ -113,6 +113,8 @@ You can create a vector index using the `CREATE VECTOR INDEX` statement for a ve
 | `m` | `INT` | `16` | HNSW parameter: Maximum number of connections per node. Higher values improve recall but increase memory and build time. |
 | `efConstruction` | `INT` | `200` | HNSW parameter: Size of dynamic candidate list during index construction. Higher values improve quality but increase build time. |
 
+> `efSearch` is not a create-time option. It is set after the index is built — see <a href="#Adjusting-Search-Parameters">Adjusting Search Parameters</a>.
+
 Create a vector index named `summary_embedding` for the `VECTOR`-type property `summaryEmbedding` of `Book` nodes:
 
 ```gql
@@ -121,6 +123,18 @@ CREATE VECTOR INDEX summary_embedding ON NODE Book (summaryEmbedding) OPTIONS {
   metric: "cosine"
 }
 ```
+
+### Automatic Sync on Mutations
+
+After the index is created, normal data mutations on indexed nodes are reflected in the index automatically — no manual rebuild is needed for incremental writes:
+
+You only need to run `REBUILD VECTOR INDEX` (or `ai.rebuild_index()`) after a crash recovery (when the index status is `STALE`), or after changing `m`/`efConstruction`.
+
+### Dimension Validation
+
+`INSERT` and `SET` on an indexed vector property reject vectors whose length doesn't match the index's `dimensions`.
+
+The mutation does not take effect — the rejection is atomic. Validation only runs against the indexed labels; non-indexed labels accept any vector length.
 
 ## Dropping Vector Index
 
@@ -178,16 +192,34 @@ The following patterns are optimized:
 
 ### Adjusting Search Parameters
 
-Use `ai.setIndexOption()` to adjust the `efSearch` parameter at runtime. Higher values improve recall at the cost of search speed:
+`efSearch` controls the size of the dynamic candidate list during search. Higher values explore more neighbors, improving recall at the cost of latency. The default is `100`. It is the only runtime-mutable index option, and it is not accepted at `CREATE VECTOR INDEX` time — set it after the index is built using either of the two equivalent forms below.
+
+Function-call form:
 
 ```gql
-RETURN ai.setIndexOption('summary_embedding', 'efSearch', 200)
+RETURN ai.set_index_option('summary_embedding', 'efSearch', 200)
 ```
+
+Statement form:
+
+```gql
+ALTER VECTOR INDEX summary_embedding SET efSearch = 200
+```
+
+To change `m` or `efConstruction`, drop and recreate the index with the new options, or edit the index configuration and run `ai.rebuild_index()`.
 
 ### Rebuilding an Index
 
-If an index is in `STALE` status (e.g., after a crash), rebuild it:
+If an index is in `STALE` status (e.g., after a crash), rebuild it. Two equivalent forms:
+
+Function-call form:
 
 ```gql
-RETURN ai.rebuildIndex('summary_embedding')
+RETURN ai.rebuild_index('summary_embedding')
+```
+
+Statement form:
+
+```gql
+REBUILD VECTOR INDEX summary_embedding
 ```

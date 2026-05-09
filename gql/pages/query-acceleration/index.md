@@ -47,22 +47,22 @@ You can create an index using the `CREATE INDEX` statement. The index is built a
 
 ```
 <create index statement> ::=
-  "CREATE INDEX" <index name> "ON" < "NODE" | "EDGE" > <label>
+  "CREATE INDEX" [ <index name> ] "ON" < "NODE" | "EDGE" > <label name>
   "(" <property name> [ "(" <length> ")" ] ")"
 ```
 
 **Details**
 
-- The `<index name>` must be unique among nodes and among edges, but a node index and an edge index may share the same name.
+- The `<index name>` is optional. If omitted, the system assigns a generated name.
 - For `STRING` or `TEXT` properties, you can optionally specify `<length>` to limit the number of characters indexed per value. If omitted, the full string is indexed. See <a href="#String-Length-Limitation">String Length Limitation</a>.
 
-Create single index `cBalance` for the `balance` property of `card` nodes:
+Create an index named `cBalance` for the `balance` property of `card` nodes:
 
 ```gql
 CREATE INDEX cBalance ON NODE card (balance)
 ```
 
-Create single index `name` for the `STRING`-type property `name` of `card` nodes, limiting the indexed length to `10` characters:
+Create an index for the `STRING`-type property `name` of `card` nodes, limiting the indexed length to `10` characters:
 
 ```gql
 CREATE INDEX name ON NODE card (name(10))
