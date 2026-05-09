@@ -14,10 +14,10 @@
       "description": "Manage procedures for complex graph logic and algorithms"
     },
     {
-      "id": "ai-functions",
-      "name": "AI Functions",
+      "id": "ai-and-vectors",
+      "name": "AI & Vectors",
       "published": true,
-      "description": "Vector search and AI-powered graph functions"
+      "description": "Vector search and AI-powered graph functions and procedures"
     },
     {
       "id": "graph-algorithms",

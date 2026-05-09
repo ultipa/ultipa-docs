@@ -245,10 +245,6 @@
           "title": "Table Functions"
         },
         {
-          "file": "ai-vector-functions.md",
-          "title": "AI & Vector Functions"
-        },
-        {
           "file": "database-functions.md",
           "title": "Database Functions"
         }

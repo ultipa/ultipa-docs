@@ -741,3 +741,53 @@ Result:
   "seconds": 6307200, "nanoseconds": 0
 }
 ```
+
+### dateformat()
+
+Formats a temporal value as a string using a Go-style layout pattern.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:17%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>dateformat(&lt;temporal&gt;, &lt;format&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="3"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;temporal&gt;</code></td>
+      <td>Temporal</td>
+      <td>A datetime value or a parsable string</td>
+    </tr>
+    <tr>
+      <td><code>&lt;format&gt;</code></td>
+      <td><code>STRING</code></td>
+      <td>The Go reference layout pattern (e.g., <code>"2006-01-02"</code>, <code>"2006-01-02 15:04:05"</code>)</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>STRING</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN dateformat(date("2025-03-15"), "2006-1-2") AS value1,
+       dateformat(local_datetime("2025-03-15T14:30:45"), "2006-01-02 15:04:05") AS value2
+```
+
+Result:
+
+| value1 | value2 |
+| -- | -- |
+| "2025-3-15" | "2025-03-15 14:30:45" |

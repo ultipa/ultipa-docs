@@ -221,9 +221,9 @@ Result:
 ]
 ```
 
-## pnodeIds()
+## node_ids()
 
-Collects the `_id` values of nodes in a path into a list.
+Collects the `_id` values of nodes in a path into a list. `pnodeIds()` is a synonym.
 
 <table style="width: 100%;">
   <colgroup>
@@ -235,7 +235,7 @@ Collects the `_id` values of nodes in a path into a list.
   <tbody>
     <tr>
       <td><b>Syntax</b></td>
-      <td colspan="3"><code>pnodeIds(&lt;pathAlias&gt;)</code></td>
+      <td colspan="3"><code>node_ids(&lt;pathAlias&gt;)</code></td>
     </tr>
     <tr>
       <td rowspan="2"><b>Arguments</b></td>
@@ -257,7 +257,7 @@ Collects the `_id` values of nodes in a path into a list.
 
 ```gql
 MATCH p = ({_id: "P1"})-[]->{1,2}()
-RETURN pnodeIds(p)
+RETURN node_ids(p)
 ```
 
 Result:
@@ -267,9 +267,9 @@ Result:
 | ["P1","P2"] |
 | ["P1","P2","P3"] |
 
-## pedgeUuids()
+## edge_ids()
 
-Collects the `_id` values of edges in a path into a list.
+Collects the `_id` values of edges in a path into a list. `pedgeUuids()` is a synonym.
 
 <table style="width: 100%;">
   <colgroup>
@@ -281,7 +281,7 @@ Collects the `_id` values of edges in a path into a list.
   <tbody>
     <tr>
       <td><b>Syntax</b></td>
-      <td colspan="3"><code>pedgeUuids(&lt;pathAlias&gt;)</code></td>
+      <td colspan="3"><code>edge_ids(&lt;pathAlias&gt;)</code></td>
     </tr>
     <tr>
       <td rowspan="2"><b>Arguments</b></td>
@@ -303,7 +303,7 @@ Collects the `_id` values of edges in a path into a list.
 
 ```gql
 MATCH p = ({_id: "P1"})-[]->{1,2}()
-RETURN pedgeUuids(p)
+RETURN edge_ids(p)
 ```
 
 Result:
@@ -312,3 +312,52 @@ Result:
 | -- |
 | ["e:1"] |
 | ["e:1","e:2"] |
+
+## ids()
+
+Generic ID accessor that works on a path, a single node/edge, or a list of nodes/edges. Returns:
+
+- For a path: a flat list of `_id` values, with nodes and edges interleaved in path order.
+- For a single node or edge: the element's `_id` as a string.
+- For a list of nodes/edges: a list of their `_id` values (preserving null slots).
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col>
+    <col>
+    <col style="width:40%;">
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>ids(&lt;expr&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;expr&gt;</code></td>
+      <td><code>PATH</code>, <code>NODE</code>, <code>EDGE</code>, or <code>LIST&lt;NODE&#124;EDGE&gt;</code></td>
+      <td>The input expression</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>STRING</code> or <code>LIST&lt;STRING&gt;</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+MATCH p = ({_id: "P1"})-[]->()
+RETURN ids(p)
+```
+
+Result:
+
+| ids(p) |
+| -- |
+| ["P1","e:1","P2"] |

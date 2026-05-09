@@ -42,7 +42,7 @@ Result: 12
 
 ## byte_length()
 
-Returns the number of bytes in a string. `octet_length()` is a synonym to `byte_length()`.
+Returns the number of bytes in a string. `octet_length()` is a synonym.
 
 <table style="width: 100%;">
   <tbody>
@@ -69,14 +69,14 @@ Returns the number of bytes in a string. `octet_length()` is a synonym to `byte_
 </table>
 
 ```gql
-RETURN byte_length("hello"), byte_length("你好")
+RETURN byte_length("hello"), byte_length("héllo"), byte_length("你好")
 ```
 
 Result:
 
-| byte_length("hello") | byte_length("你好") |
-| -- | -- |
-| 5 | 6 |
+| byte_length("hello") | byte_length("héllo") | byte_length("你好") |
+| -- | -- | -- |
+| 5 | 6 | 6 |
 
 ## lower()
 
@@ -250,7 +250,7 @@ Result: "Graph"
 
 ## substring()
 
-Returns a substring of a given length from the given string, beginning with a 0-based index start. `substr()` is a synonym to `substring()`.
+Returns a substring of a given length from the given string, beginning with a 0-based index start. `substr()` is a synonym.
 
 <table style="width: 100%;">
   <colgroup>
@@ -373,6 +373,141 @@ RETURN trim(TRAILING FROM "  Graph DB   ") AS newString
 ```
 
 Result: "  Graph DB"
+
+## trim_sc_both()
+
+Removes all the occurrences of a specified single character from both ends of a given string. Errors if `<char>` is not exactly one character (the `_sc_` suffix stands for "specified character").
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:14%;">
+    <col style="width:18%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>trim_sc_both(&lt;str&gt;, &lt;char&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="3"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;str&gt;</code></td>
+      <td><code>STRING</code></td>
+      <td>The original string</td>
+    </tr>
+    <tr>
+      <td><code>&lt;char&gt;</code></td>
+      <td><code>STRING</code></td>
+      <td>A single character to strip</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>STRING</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN trim_sc_both("xxhellox", "x")
+```
+
+Result: "hello"
+
+## trim_sc_leading()
+
+Removes all the occurrences of a specified single character from the leading (left) end of a given string. Errors if `<char>` is not exactly one character.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:14%;">
+    <col style="width:18%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>trim_sc_leading(&lt;str&gt;, &lt;char&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="3"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;str&gt;</code></td>
+      <td><code>STRING</code></td>
+      <td>The original string</td>
+    </tr>
+    <tr>
+      <td><code>&lt;char&gt;</code></td>
+      <td><code>STRING</code></td>
+      <td>A single character to strip</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>STRING</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN trim_sc_leading("xxhello", "x")
+```
+
+Result: "hello"
+
+## trim_sc_trailing()
+
+Removes all the occurrences of a specified single character from the trailing (right) end of a given string. Errors if `<char>` is not exactly one character.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:14%;">
+    <col style="width:18%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>trim_sc_trailing(&lt;str&gt;, &lt;char&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="3"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;str&gt;</code></td>
+      <td><code>STRING</code></td>
+      <td>The original string</td>
+    </tr>
+    <tr>
+      <td><code>&lt;char&gt;</code></td>
+      <td><code>STRING</code></td>
+      <td>A single character to strip</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>STRING</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN trim_sc_trailing("hellox", "x")
+```
+
+Result: "hello"
 
 ## ltrim()
 
@@ -744,6 +879,40 @@ RETURN ends_with("Graph Database", "Database")
 ```
 
 Result: true
+
+## reverse()
+
+Reverses a string. Also works on lists.
+
+<table style="width: 100%;">
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>reverse(&lt;str&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;str&gt;</code></td>
+      <td><code>STRING</code></td>
+      <td>The input string</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>STRING</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN reverse("hello")
+```
+
+Result: "olleh"
 
 ## normalize()
 

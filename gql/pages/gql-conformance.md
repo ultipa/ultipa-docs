@@ -309,7 +309,7 @@ Beyond the GQL standard, Ultipa provides additional features:
 | Triggers | `BEFORE INSERT` and `BEFORE UPDATE` triggers with callable body expressions |
 | Full-text index | Full-text indexing with BM25 scoring, CJK support, and query operators (AND, OR, NOT, phrase, proximity, wildcard) |
 | Vector index | HNSW-based vector index with cosine, euclidean, and dot product metrics |
-| AI functions | `ai.embed()`, `ai.cosine()`, `ai.distance()`, `ai.gql()`, `ai.read()`, provider configuration |
+| AI functions and procedures | `ai.embed()`, `ai.cosine()`, `ai.distance()`, vector index ops, provider configuration; `CALL ai.gql(...)` and `CALL ai.read(...)` streaming NL→GQL procedures |
 | Stored procedures | `CREATE PROCEDURE`, `CALL`, with algorithm and query types |
 | Graph projections | Named in-memory subgraph projections |
 | RBAC | Role-based access control with `GRANT`, `REVOKE`, users and roles |

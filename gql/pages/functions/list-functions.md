@@ -166,6 +166,40 @@ Result:
 | -- |
 | 4 |
 
+## reverse()
+
+Returns a list with elements in reversed order.
+
+<table style="width: 100%;">
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>reverse(&lt;list&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;list&gt;</code></td>
+      <td><code>LIST</code></td>
+      <td>The input list</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>LIST</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN reverse([1, 2, 3])
+```
+
+Result: [3, 2, 1]
+
 ## append()
 
 Adds an element to the end of a list and returns the new list.

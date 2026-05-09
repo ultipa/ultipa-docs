@@ -6,7 +6,7 @@ This section contains a summary of all functions supported in GQL.
 
 | Function | Description |
 | -- | -- |
-| <a href="/docs/gql/element-functions#id-element_id">id() / element_id()</a> | Gets the unique identifier `_id` of a graph element. |
+| <a href="/docs/gql/element-functions#id">id()</a> | Gets the unique identifier `_id` of a graph element. |
 | <a href="/docs/gql/element-functions#labels">labels()</a> | Gets the labels of a graph element. |
 | <a href="/docs/gql/element-functions#type">type()</a> | Gets the label of an edge. |
 | <a href="/docs/gql/element-functions#keys">keys()</a> | Returns the property names of a node, edge, or the key names of a record. |
@@ -22,8 +22,9 @@ This section contains a summary of all functions supported in GQL.
 | <a href="/docs/gql/path-functions#elements">elements()</a> | Returns the nodes and edges of a path as a list. |
 | <a href="/docs/gql/path-functions#pnodes">pnodes()</a> | Returns the nodes of a path as a list. |
 | <a href="/docs/gql/path-functions#pedges">pedges()</a> | Returns the edges of a path as a list. |
-| <a href="/docs/gql/path-functions#pnodeIds">pnodeIds()</a> | Collects the `_id` values of nodes in a path into a list. |
-| <a href="/docs/gql/path-functions#pedgeUuids">pedgeUuids()</a> | Collects the `_id` values of edges in a path into a list. |
+| <a href="/docs/gql/path-functions#node_ids">node_ids()</a> | Collects the `_id` values of nodes in a path into a list. |
+| <a href="/docs/gql/path-functions#edge_ids">edge_ids()</a> | Collects the `_id` values of edges in a path into a list. |
+| <a href="/docs/gql/path-functions#ids">ids()</a> | Generic `_id` accessor for a path, node/edge, or list of nodes/edges. |
 
 ## Aggregate Functions
 
@@ -37,8 +38,10 @@ This section contains a summary of all functions supported in GQL.
 | <a href="/docs/gql/aggregate-functions#sum">sum()</a> | Computes the sum of a set of numeric values. |
 | <a href="/docs/gql/aggregate-functions#percentile_cont">percentile_cont()</a> | Computes the continuous percentile value over a set of numeric values. |
 | <a href="/docs/gql/aggregate-functions#percentile_disc">percentile_disc()</a> | Computes the discrete percentile value over a set of numeric values. |
+| <a href="/docs/gql/aggregate-functions#stddev_samp">stddev_samp()</a> | Computes the sample standard deviation of a set of numeric values。 |
 | <a href="/docs/gql/aggregate-functions#stddev_pop">stddev_pop()</a> | Computes the population standard deviation of a set of numeric values. |
-| <a href="/docs/gql/aggregate-functions#stddev_samp">stddev_samp()</a> | Computes the sample standard deviation of a set of numeric values. |
+| <a href="/docs/gql/aggregate-functions#var_samp">var_samp()</a> | Computes the sample variance of a set of numeric values. |
+| <a href="/docs/gql/aggregate-functions#var_pop">var_pop()</a> | Computes the population variance of a set of numeric values. |
 
 ## Mathematical Functions
 
@@ -66,6 +69,7 @@ This section contains a summary of all functions supported in GQL.
 | <a href="/docs/gql/trigonometric-functions#acos">acos()</a> | Computes the angle in radians whose cosine is a given number. |
 | <a href="/docs/gql/trigonometric-functions#asin">asin()</a> | Computes the angle in radians whose sine is a given number. |
 | <a href="/docs/gql/trigonometric-functions#atan">atan()</a> | Computes the angle in radians whose tangent is a given number. |
+| <a href="/docs/gql/trigonometric-functions#atan2">atan2()</a> | Computes the angle in radians from the positive x-axis to the point (x, y). |
 | <a href="/docs/gql/trigonometric-functions#cos">cos()</a> | Computes the cosine of an angle expressed in radian. |
 | <a href="/docs/gql/trigonometric-functions#cosh">cosh()</a> | Computes the hyperbolic cosine of an angle expressed in radian. |
 | <a href="/docs/gql/trigonometric-functions#cot">cot()</a> | Computes the cotangent of an angle expressed in radian. |
@@ -88,9 +92,13 @@ This section contains a summary of all functions supported in GQL.
 | <a href="/docs/gql/string-functions#right">right()</a> | Returns the specified number of rightmost characters. |
 | <a href="/docs/gql/string-functions#substring">substring()</a> | Returns a substring from the given string. |
 | <a href="/docs/gql/string-functions#trim">trim()</a> | Removes characters from either end of a string. |
+| <a href="/docs/gql/string-functions#trim_sc_both">trim_sc_both()</a> | Removes a specified single character from both ends of a string. |
+| <a href="/docs/gql/string-functions#trim_sc_leading">trim_sc_leading()</a> | Removes a specified single character from the leading end of a string. |
+| <a href="/docs/gql/string-functions#trim_sc_trailing">trim_sc_trailing()</a> | Removes a specified single character from the trailing end of a string. |
 | <a href="/docs/gql/string-functions#ltrim">ltrim()</a> | Removes characters from the beginning of a string. |
 | <a href="/docs/gql/string-functions#rtrim">rtrim()</a> | Removes characters from the end of a string. |
 | <a href="/docs/gql/string-functions#btrim">btrim()</a> | Removes characters from both ends of a string. |
+| <a href="/docs/gql/string-functions#reverse">reverse()</a> | Reverses a string. |
 | <a href="/docs/gql/string-functions#replace">replace()</a> | Replaces all occurrences of a substring with another string. |
 | <a href="/docs/gql/string-functions#split">split()</a> | Splits a string by a delimiter into a list. |
 | <a href="/docs/gql/string-functions#contains">contains()</a> | Returns `true` if a string contains the specified substring. |
@@ -109,6 +117,7 @@ This section contains a summary of all functions supported in GQL.
 | <a href="/docs/gql/list-functions#head">head()</a> | Returns the first element in a list. |
 | <a href="/docs/gql/list-functions#last">last()</a> | Returns the last element of a list. |
 | <a href="/docs/gql/list-functions#tail">tail()</a> | Returns all elements except the first. |
+| <a href="/docs/gql/list-functions#reverse">reverse()</a> | Returns a list with elements in reversed order. |
 | <a href="/docs/gql/list-functions#size">size()</a> | Returns the number of elements in a list. |
 | <a href="/docs/gql/list-functions#append">append()</a> | Adds an element to the end of a list. |
 | <a href="/docs/gql/list-functions#range">range()</a> | Generates a list of integers. |
@@ -142,6 +151,7 @@ This section contains a summary of all functions supported in GQL.
 | <a href="/docs/gql/datetime-functions#minute">minute()</a> | Extracts the minute. |
 | <a href="/docs/gql/datetime-functions#second">second()</a> | Extracts the second. |
 | <a href="/docs/gql/datetime-functions#duration_between">duration_between()</a> | Computes the duration between two temporal values. |
+| <a href="/docs/gql/datetime-functions#dateformat">dateformat()</a> | Formats a temporal value as a string. |
 
 ## Spatial Functions
 
@@ -185,32 +195,6 @@ This section contains a summary of all functions supported in GQL.
 | -- | -- |
 | <a href="/docs/gql/table-functions#table">table()</a> | Constructs a table. |
 
-## AI & Vector Functions
-
-| <div table-width="20">Function</div> | Description |
-| -- | -- |
-| <a href="/docs/gql/ai-vector-functions#aigql">ai.gql()</a> | Converts natural language to a GQL query. |
-| <a href="/docs/gql/ai-vector-functions#airead">ai.read()</a> | Converts natural language to a GQL query, executes it, and returns results. |
-| <a href="/docs/gql/ai-vector-functions#aivector">ai.vector()</a> | Creates a vector from a list of numbers. |
-| <a href="/docs/gql/ai-vector-functions#aiembed">ai.embed()</a> | Generates an embedding vector from text. |
-| <a href="/docs/gql/ai-vector-functions#aicosine">ai.cosine()</a> | Computes cosine similarity between two vectors. |
-| <a href="/docs/gql/ai-vector-functions#aieuclidean">ai.euclidean()</a> | Computes Euclidean distance between two vectors. |
-| <a href="/docs/gql/ai-vector-functions#aidot">ai.dot()</a> | Computes dot product of two vectors. |
-| <a href="/docs/gql/ai-vector-functions#aidistance">ai.distance()</a> | Computes cosine distance between two vectors. |
-| <a href="/docs/gql/ai-vector-functions#aidimension">ai.dimension()</a> | Returns the number of dimensions in a vector. |
-| <a href="/docs/gql/ai-vector-functions#aimagnitude">ai.magnitude()</a> | Returns the magnitude of a vector. |
-| <a href="/docs/gql/ai-vector-functions#ainormalize">ai.normalize()</a> | Normalizes a vector to a unit vector. |
-| <a href="/docs/gql/ai-vector-functions#aitoList">ai.toList()</a> | Converts a vector to a list of numbers. |
-| <a href="/docs/gql/ai-vector-functions#aiadd">ai.add()</a> | Adds two vectors element-wise. |
-| <a href="/docs/gql/ai-vector-functions#aisubtract">ai.subtract()</a> | Subtracts the second vector from the first. |
-| <a href="/docs/gql/ai-vector-functions#aiscale">ai.scale()</a> | Multiplies a vector by a scalar value. |
-| <a href="/docs/gql/ai-vector-functions#aisetapikey">ai.setapikey()</a> | Sets the API key for an AI provider. |
-| <a href="/docs/gql/ai-vector-functions#aisetprovider">ai.setprovider()</a> | Sets the active embedding provider. |
-| <a href="/docs/gql/ai-vector-functions#aiprovider">ai.provider()</a> | Returns the current AI provider. |
-| <a href="/docs/gql/ai-vector-functions#aiembeddim">ai.embeddim()</a> | Returns the embedding dimension of the current provider. |
-| <a href="/docs/gql/ai-vector-functions#aisetCompletionProvider">ai.setCompletionProvider()</a> | Sets the active completion provider. |
-| <a href="/docs/gql/ai-vector-functions#aicompletionProvider">ai.completionProvider()</a> | Returns the current completion provider. |
-
 ## Database Functions
 
 | <div table-width="20">Function</div> | Description |
@@ -227,3 +211,7 @@ This section contains a summary of all functions supported in GQL.
 | <a href="/docs/gql/backup-and-restore#dbbackup">db.backup()</a> | Creates a backup of the current graph. |
 | <a href="/docs/gql/backup-and-restore#dbrestore">db.restore()</a> | Restores a graph from a backup file. |
 | <a href="/docs/gql/backup-and-restore#dbbackups">db.backups()</a> | Lists backup files found in a directory. |
+
+## AI & Vector Functions
+
+AI and vector functions (vector creation, embeddings, similarity, vector index ops, NL→GQL pipeline) are documented in <a href="/docs/ai-and-vectors">AI &amp; Vectors</a>.

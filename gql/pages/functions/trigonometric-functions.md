@@ -120,6 +120,51 @@ RETURN degrees(atan(1)) AS degree
 
 Result: 45
 
+## atan2()
+
+Computes the angle in radians from the positive x-axis to the point `(x, y)`, the output radians will be in the range `(-𝜋, 𝜋]`. Unlike `atan(y/x)`, `atan2(y, x)` uses the signs of both arguments to determine the correct quadrant.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col>
+    <col>
+    <col style="width:45%;">
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>atan2(&lt;y&gt;, &lt;x&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="3"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;y&gt;</code></td>
+      <td>Numeric</td>
+      <td>The y-coordinate</td>
+    </tr>
+    <tr>
+      <td><code>&lt;x&gt;</code></td>
+      <td>Numeric</td>
+      <td>The x-coordinate</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>DOUBLE</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN degrees(atan2(1, 1)) AS degree
+```
+
+Result: 45
+
 ## cos()
 
 Computes the cosine of an angle expressed in radian, the output will be in the range [-1, 1]. If you has an angle in degree, you can convert it to radians using the `radians()` function.

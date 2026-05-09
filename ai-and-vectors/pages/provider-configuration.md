@@ -27,7 +27,7 @@ Sets the API key for an AI provider. Optionally activates it as the current prov
     <tr>
       <td><code>&lt;provider&gt;</code></td>
       <td><code>STRING</code></td>
-      <td>Provider name (see <a href="/docs/ai-functions/overview#Supported-Providers">Supported Providers</a>)</td>
+      <td>Provider name (see <a href="/docs/ai-and-vectors/overview#Supported-Providers">Supported Providers</a>)</td>
     </tr>
     <tr>
       <td><code>&lt;apiKey&gt;</code></td>
@@ -85,7 +85,7 @@ Sets the active embedding provider. The provider's API key must have been set fi
     <tr>
       <td><code>&lt;provider&gt;</code></td>
       <td><code>STRING</code></td>
-      <td>Embedding provider name (see <a href="/docs/ai-functions/overview#Supported-Providers">Supported Providers</a>)</td>
+      <td>Embedding provider name (see <a href="/docs/ai-and-vectors/overview#Supported-Providers">Supported Providers</a>)</td>
     </tr>
     <tr>
       <td><b>Return Type</b></td>
@@ -187,7 +187,7 @@ Sets the active completion provider. The provider's API key must have been set f
     <tr>
       <td><code>&lt;provider&gt;</code></td>
       <td><code>STRING</code></td>
-      <td>Provider name (see <a href="/docs/ai-functions/overview#Supported-Providers">Supported Providers</a>)</td>
+      <td>Provider name (see <a href="/docs/ai-and-vectors/overview#Supported-Providers">Supported Providers</a>)</td>
     </tr>
     <tr>
       <td><b>Return Type</b></td>

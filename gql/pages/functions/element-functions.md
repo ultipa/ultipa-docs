@@ -12,15 +12,15 @@ INSERT (p1:Paper {_id:'P1', title:'Efficient Graph Search', score:6, author:'Ale
        (p2)-[:Cites {weight:1}]->(p3)
 ```
 
-## id() / element_id()
+## id()
 
-Gets the unique identifier `_id` of a graph element.
+Gets the unique identifier `_id` of a graph element. `element_id()` is a synonym.
 
 <table style="width: 100%;">
   <tbody>
     <tr>
       <td><b>Syntax</b></td>
-      <td colspan="3"><code>element_id(&lt;elemVar&gt;)</code> or <code>id(&lt;elemVar&gt;)</code></td>
+      <td colspan="3"><code>id(&lt;elemVar&gt;)</code> or <code>id(&lt;elemVar&gt;)</code></td>
     </tr>
     <tr>
       <td rowspan="2"><b>Arguments</b></td>
@@ -42,7 +42,7 @@ Gets the unique identifier `_id` of a graph element.
 
 ```gql
 MATCH (n)-[e]->()
-RETURN element_id(n), id(e)
+RETURN id(n), id(e)
 ```
 
 Result:

@@ -425,6 +425,103 @@ RETURN percentile_disc(item, 0.5)
 
 Result: 6
 
+## stddev_samp()
+
+Computes the sample standard deviation of a set of numeric values. `stddev()` is a synonym.
+
+<div style="text-align: center;">
+  <math>
+    <mrow>
+      <mi>stddev_samp(</mi>
+      <msub>
+        <mi>x</mi>
+        <mi>1</mi>
+      </msub>
+      <mi>, ...,&nbsp;</mi>
+      <msub>
+        <mi>x</mi>
+        <mi>n</mi>
+      </msub>
+      <mi>)</mi>
+      <mo>=</mo>
+      <msqrt>
+        <mfrac>
+          <mn>1</mn>
+          <mrow>
+            <mi>n</mi>
+            <mo>&#x2212;</mo>
+            <mn>1</mn>
+          </mrow>
+        </mfrac>
+        <msubsup>
+          <mo>∑</mo>
+          <msub>
+            <mi>i</mi>
+            <mo>=</mo>
+            <mn>1</mn>
+          </msub>
+          <mn>n</mn>
+        </msubsup>
+        <mrow>
+          <msup>
+            <mrow>
+              <mo>(</mo>
+              <msub>
+                <mi>x</mi>
+                <mi>i</mi>
+              </msub>
+              <mo>&#x2212;</mo>
+              <mover>
+                <mi>x</mi>
+                <mo>&#x2014;</mo>
+              </mover>
+              <mo>)</mo>
+            </mrow>
+            <mn>2</mn>
+          </msup>
+        </mrow>
+      </msqrt>
+    </mrow>
+  </math>
+</div><br>
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col>
+    <col>
+    <col style="width:30%;">
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>stddev_samp(&lt;values&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;values&gt;</code></td>
+      <td>Numeric</td>
+      <td>The target values</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>DOUBLE</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+MATCH (n)
+RETURN stddev_samp(n.score)
+```
+
+Result: 1.5275252316519468
+
 ## stddev_pop()
 
 Computes the population standard deviation of a set of numeric values.
@@ -520,65 +617,9 @@ RETURN stddev_pop(n.score)
 
 Result: 1.247219128924647
 
-## stddev_samp()
+## var_samp()
 
-Computes the sample standard deviation of a set of numeric values.
-
-<div style="text-align: center;">
-  <math>
-    <mrow>
-      <mi>stddev_samp(</mi>
-      <msub>
-        <mi>x</mi>
-        <mi>1</mi>
-      </msub>
-      <mi>, ...,&nbsp;</mi>
-      <msub>
-        <mi>x</mi>
-        <mi>n</mi>
-      </msub>
-      <mi>)</mi>
-      <mo>=</mo>
-      <msqrt>
-        <mfrac>
-          <mn>1</mn>
-          <mrow>
-            <mi>n</mi>
-            <mo>&#x2212;</mo>
-            <mn>1</mn>
-          </mrow>
-        </mfrac>
-        <msubsup>
-          <mo>∑</mo>
-          <msub>
-            <mi>i</mi>
-            <mo>=</mo>
-            <mn>1</mn>
-          </msub>
-          <mn>n</mn>
-        </msubsup>
-        <mrow>
-          <msup>
-            <mrow>
-              <mo>(</mo>
-              <msub>
-                <mi>x</mi>
-                <mi>i</mi>
-              </msub>
-              <mo>&#x2212;</mo>
-              <mover>
-                <mi>x</mi>
-                <mo>&#x2014;</mo>
-              </mover>
-              <mo>)</mo>
-            </mrow>
-            <mn>2</mn>
-          </msup>
-        </mrow>
-      </msqrt>
-    </mrow>
-  </math>
-</div><br>
+Computes the sample variance of a set of numeric values (the square of `stddev_samp()`). `variance()` is a synonym.
 
 <table style="width: 100%;">
   <colgroup>
@@ -590,7 +631,7 @@ Computes the sample standard deviation of a set of numeric values.
   <tbody>
     <tr>
       <td><b>Syntax</b></td>
-      <td colspan="3"><code>stddev_samp(&lt;values&gt;)</code></td>
+      <td colspan="3"><code>variance(&lt;values&gt;)</code> or <code>var_samp(&lt;values&gt;)</code></td>
     </tr>
     <tr>
       <td rowspan="2"><b>Arguments</b></td>
@@ -612,7 +653,48 @@ Computes the sample standard deviation of a set of numeric values.
 
 ```gql
 MATCH (n)
-RETURN stddev_samp(n.score)
+RETURN variance(n.score)
 ```
 
-Result: 1.5275252316519468
+Result: 2.3333333333333335
+
+## var_pop()
+
+Computes the population variance of a set of numeric values (the square of `stddev_pop()`).
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col>
+    <col>
+    <col style="width:30%;">
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>var_pop(&lt;values&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;values&gt;</code></td>
+      <td>Numeric</td>
+      <td>The target values</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>DOUBLE</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+MATCH (n)
+RETURN var_pop(n.score)
+```
+
+Result: 1.5555555555555556

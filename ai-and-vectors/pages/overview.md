@@ -1,6 +1,6 @@
-# AI Functions
+# AI & Vectors
 
-Ultipa GQLDB provides built-in AI functions for working with vectors, embeddings, similarity search, and natural language query generation. All AI functions use the `ai.` prefix.
+Ultipa GQLDB provides built-in AI features for working with vectors, embeddings, similarity search, and natural language query generation. The vector and embedding utilities are scalar functions, while the natural-language pipeline (`ai.gql`, `ai.read`) is exposed as streaming procedures. All names use the `ai.` prefix.
 
 ## Supported Providers
 
@@ -35,7 +35,7 @@ AI functions rely on two types of AI providers:
 
 Some providers support both embedding and completion, while others support only one. You can configure different providers for each role (e.g., OpenAI for embeddings, Anthropic for completion).
 
-## Function Summary
+## Feature Summary
 
 ### Provider Configuration
 

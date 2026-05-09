@@ -23,7 +23,7 @@ INSERT (p1:Paper {_id:'P1', title:'Efficient Graph Search', score:6, author:'Ale
 Converts a natural language question into a GQL query using the configured completion provider via a streaming procedure. The pipeline automatically includes the current graph's schema (labels, properties, edge patterns) as context for the LLM. Streams one row per pipeline stage.
 
 ```gql
-CALL ai.gql("Find all papers written by Alex")
+CALL ai.gql({nl: "Find all papers written by Alex"})
 YIELD stage, detail, elapsed_ms, tokens_input, tokens_output, tokens_cached, data
 ```
 
@@ -58,7 +58,7 @@ Result:
 To output the generated query directly:
 
 ```gql
-CALL ai.gql("Find all papers written by Alex")
+CALL ai.gql({nl: "Find all papers written by Alex"})
 YIELD stage, data
 FILTER stage = "final"
 RETURN data.gql
@@ -75,7 +75,7 @@ Result:
 Converts a natural language question into a read-only GQL query, executes it, and streams pipeline progress. Write/DDL queries are rejected. Returns the same columns as `CALL ai.gql()`, with an additional `execution` stage that runs the generated query.
 
 ```gql
-CALL ai.read("How many papers did Alex write in total?")
+CALL ai.read({nl: "How many papers did Alex write in total?"})
 YIELD stage, detail, elapsed_ms, tokens_input, tokens_output, tokens_cached, data
 ```
 
