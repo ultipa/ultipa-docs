@@ -2,8 +2,8 @@
   "name": "Ontology",
   "navigation": [
     {
-      "file": "overview.md",
-      "title": "Overview"
+      "file": "introduction.md",
+      "title": "Introduction"
     },
     {
       "file": "class-definitions.md",
