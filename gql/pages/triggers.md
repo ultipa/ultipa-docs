@@ -1,6 +1,6 @@
 # Triggers
 
-A trigger automatically executes predefined operations in response to specific data events on nodes or edges. Triggers run **before** an **insert** or **update** operation, allowing you to enforce business rules, maintain data integrity, or perform auxiliary operations without manual intervention.
+A trigger automatically executes predefined operations in response to specific data events. Triggers run **before** an **insert** or **update** operation, allowing you to enforce business rules, maintain data integrity, or perform auxiliary operations without manual intervention.
 
 ## Showing Triggers
 
@@ -13,7 +13,7 @@ SHOW TRIGGERS
 Filter by node label:
 
 ```gql
-SHOW TRIGGERS ON NODE "Student"
+SHOW TRIGGERS ON NODE Student
 ```
 
 Filter by edge label:
@@ -30,6 +30,7 @@ Returns a table with the following columns:
 | `entity_type` | The entity type: `NODE` or `EDGE`. |
 | `label` | The label the trigger is associated with. |
 | `event` | The trigger event: `BEFORE_INSERT` or `BEFORE_UPDATE`. |
+| `enabled` | Whether the trigger is currently active. |
 | `comment` | The optional description of the trigger. |
 
 ## Creating Triggers
@@ -38,13 +39,12 @@ Returns a table with the following columns:
 
 ```
 <create trigger statement> ::=
-  "CREATE TRIGGER" [ "IF NOT EXISTS" ] <trigger name> "ON" < "NODE" | "EDGE" > <label name> [ "COMMENT" <description> ]
+  "CREATE TRIGGER" <trigger name> "ON" < "NODE" | "EDGE" > <label name> [ "COMMENT" <comment> ]
   "BEFORE" < "INSERT" | "UPDATE" >
   "CALL" <callable body string>
 ```
 
-- `<trigger name>` must be unique within the graph.
-- `<callable body string>` defines the trigger logic.
+> `BEFORE INSERT` only fires for nodes. Edge inserts do not invoke triggers in the current implementation.
 
 ### Callable Body
 

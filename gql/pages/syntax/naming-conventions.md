@@ -1,6 +1,6 @@
 # Naming Conventions
 
-Names in Ultipa GQL for graphs, graph types, node/edge types, labels, properties, constraints, indexes, and variables share the same basic rules.
+Names in Ultipa GQL for graphs, graph types, node/edge types, labels, properties, constraints, indexes, triggers, and variables share the same basic rules.
 
 ## Identifier Rules
 
@@ -22,12 +22,13 @@ Beyond the base rules, each kind of object has its own length limit and uniquene
 | Property | — | Unique within each node type or edge type (in closed graphs) |
 | Constraint | — | Unique within the graph |
 | Index | — | Unique within the graph |
+| Trigger | — | Unique within the graph |
 
 ## Backtick Escaping
 
 Backticks help the parser accept a name that conflicts with a reserved word, but a separate validation step still applies for most identifiers. The result depends on the kind of name:
 
-- **Constraint and index names**: backticks fully unlock non-standard characters like hyphens or spaces (e.g., <code>\`pk-user\`</code>, <code>\`unique email idx\`</code>). These names skip the post-parse identifier check.
+- **Constraint, index, and trigger names**: backticks fully unlock non-standard characters like hyphens or spaces (e.g., <code>\`pk-user\`</code>, <code>\`unique email idx\`</code>). These names skip the post-parse identifier check.
 - **Node/edge type, label, and property names**: backticks let you write a reserved word (e.g., <code>\`match\`</code>), but the post-parse validator still requires the name body to be `A-Z`, `a-z`, `0-9`, or `_`. Hyphens, spaces, and non-ASCII characters are rejected even inside backticks.
 - **Graph names and graph type names**: backticks are not supported at all. <code>CREATE GRAPH \`match\`</code> produces a syntax error. Choose a name that is a valid bare identifier and not a reserved word.
 
