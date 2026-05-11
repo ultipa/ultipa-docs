@@ -274,8 +274,8 @@
           "title": "Value Query Expression"
         },
         {
-          "file": "list-comprehension.md",
-          "title": "List Comprehension"
+          "file": "list-expressions.md",
+          "title": "List Expressions"
         }
       ]
     },

@@ -291,6 +291,22 @@ LET rec = RECORD{length: 20, width: 59, height: 10}
 RETURN rec.length * rec.width * rec.height     // 11800
 ```
 
+### Record Merge
+
+The `+` operator merges two records into a single record containing all fields. When the same field appears in both, the right-hand side wins.
+
+```gql
+LET base = {a: 1, b: 2}
+LET extra = {c: 3}
+RETURN base + extra
+```
+
+Result:
+
+| base + extra |
+| -- |
+| {a: 1, b: 2, c: 3} |
+
 ## Deduplication
 
 The `DISTINCT` ensures that only unique values are included.

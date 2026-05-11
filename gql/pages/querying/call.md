@@ -157,7 +157,7 @@ A **named procedure** refers to a predefined procedure, such as an algorithm, th
 <p tit="Syntax"></p>
 
 ```
-<call named procedure> ::= "CALL" <procedure reference> [ <yield clause> ]
+<call named procedure> ::= [ "OPTIONAL" ] "CALL" <procedure reference> [ <yield clause> ]
 
 <yield clause> ::= "YIELD" <yield item> [ { "," <yield item> }... ]
 
@@ -167,6 +167,7 @@ A **named procedure** refers to a predefined procedure, such as an algorithm, th
 **Details**
 
 - The `YIELD` clause can be used to output variables to the outer query.
+- Prefix with `OPTIONAL` to keep rows from the outer query even when the procedure produces no results (the yielded columns are bound to `NULL` for those rows).
 
 ### Running an Algorithm
 
@@ -179,3 +180,13 @@ CALL algo.degree({
 ```
 
 To learn more about available algorithms, refer to the <a target="_blank" href="/docs/graph-algorithms">Graph Algorithms</a> documentation.
+
+### OPTIONAL CALL
+
+`OPTIONAL CALL <namedProcedure>(...)` mirrors the inline `OPTIONAL CALL { ... }` form: the outer rows are preserved even when the named procedure yields nothing, and the yielded columns become `NULL` for those rows.
+
+```gql
+OPTIONAL CALL algo.degree({
+  ids: ["A", "B"]
+}) YIELD degree
+```

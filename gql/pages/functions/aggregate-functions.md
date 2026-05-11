@@ -24,9 +24,9 @@ INSERT (p1:Paper {_id:'P1', title:'Efficient Graph Search', score:6, author:'Ale
        (p2)-[:Cites {weight:1}]->(p3)
 ```
 
-## collect_list()
+## collect()
 
-Collects a set of values into a list. `collect()` is an alias for `collect_list()`.
+Collects a set of values into a list. `collect_list()` is a synonym.
 
 <table style="width: 100%;">
   <colgroup>
@@ -38,7 +38,7 @@ Collects a set of values into a list. `collect()` is an alias for `collect_list(
   <tbody>
     <tr>
       <td><b>Syntax</b></td>
-      <td colspan="3"><code>collect_list(&lt;values&gt;)</code></td>
+      <td colspan="3"><code>collect(&lt;values&gt;)</code></td>
     </tr>
     <tr>
       <td rowspan="2"><b>Arguments</b></td>
@@ -60,14 +60,59 @@ Collects a set of values into a list. `collect()` is an alias for `collect_list(
 
 ```gql
 MATCH (n)
-RETURN collect_list(n.title)
+RETURN collect(n.title)
 ```
 
 Result:
 
-| collect_list(n.title) |
+| collect(n.title) |
 | -- |
 | ["Optimizing Queries","Efficient Graph Search","Path Patterns"] |
+
+## collect_distinct()
+
+Collects a set of values into a list, removing duplicates. Equivalent to `collect(DISTINCT <values>)`.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col>
+    <col>
+    <col style="width:30%;">
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>collect_distinct(&lt;values&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;values&gt;</code></td>
+      <td>Any</td>
+      <td>The target values</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>LIST</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+MATCH (n:Paper)
+RETURN collect_distinct(n.author)
+```
+
+Result:
+
+| collect_distinct(n.publisher) |
+| -- |
+| ["Zack","Alex"] |
 
 ## count()
 

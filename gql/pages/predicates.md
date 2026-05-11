@@ -11,6 +11,7 @@ A predicate specifies a condition that can be evaluated to give a boolean value 
 | <a href="#Null-Predicates">Null Predicates</a> | `IS NULL`, `IS NOT NULL` |
 | <a href="#Labeled-Predicates">Labeled Predicates</a> | `IS LABELED`, `IS NOT LABELED`, `:` |
 | <a href="#Value-Type-Predicates">Value Type Predicates</a> | `IS TYPED`, `IS NOT TYPED` |
+| <a href="#Directed-Predicate">Directed Predicate</a> | `IS DIRECTED`, `IS NOT DIRECTED` |
 
 ## Comparison Predicates
 
@@ -194,3 +195,18 @@ RETURN "hello" IS TYPED STRING,
        [1,2] IS TYPED LIST,
        "hello" IS NOT TYPED INT
 ```
+
+## Directed Predicate
+
+Determines whether an edge is directed. GQL supports the following directed predicates:
+
+- `IS DIRECTED`
+- `IS NOT DIRECTED`
+
+```gql
+MATCH ()-[r]->()
+WHERE r IS DIRECTED
+RETURN r
+```
+
+> All edges in GQLDB are stored as directed (with a source and target). `IS DIRECTED` always evaluates to `true` for an edge value, and `IS NOT DIRECTED` always to `false`. The predicates are kept for GQL-standard conformance; undirectedness in GQLDB lives at the pattern level (e.g. `-[r]-` matches an edge in either direction) and in algorithm semantics, not on the stored edge itself.

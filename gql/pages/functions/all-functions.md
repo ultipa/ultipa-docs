@@ -58,7 +58,8 @@ SHOW FUNCTIONS FORMAT OPENAI
 
 | Function | Description |
 | -- | -- |
-| <a href="/docs/gql/aggregate-functions#collect_list">collect_list()</a> | Collects a set of values into a list. |
+| <a href="/docs/gql/aggregate-functions#collect">collect()</a> | Collects a set of values into a list. |
+| <a href="/docs/gql/aggregate-functions#collect_distinct">collect_distinct()</a> | Collects a set of values into a list, removing duplicates. |
 | <a href="/docs/gql/aggregate-functions#count">count()</a> | Returns the number of rows in the input. |
 | <a href="/docs/gql/aggregate-functions#max">max()</a> | Returns the maximum value in a set of values. |
 | <a href="/docs/gql/aggregate-functions#min">min()</a> | Returns the minimum value in a set of values. |
