@@ -2,6 +2,34 @@
 
 This section contains a summary of all functions supported in GQL.
 
+## Showing Functions
+
+To list the functions registered in your running engine, run:
+
+```gql
+SHOW FUNCTIONS
+```
+
+Use the `LIKE` clause to filter by name pattern:
+
+```gql
+SHOW FUNCTIONS LIKE 'date%'
+```
+
+Use the `FORMAT` clause to render each function's signature in a tool-calling schema, designed to be passed to an LLM as a list of callable tools. The output is a single row containing one JSON blob. All three formats are JSON Schema-based; only the wrapper shape differs.
+
+| Format | Output shape |
+| -- | -- |
+| `MCP` | MCP tool-list JSON: array of `{name, description, inputSchema}`, ready to plug into a Model Context Protocol server |
+| `JSON_SCHEMA` | Alias for `MCP` |
+| `OPENAI` | OpenAI function-calling JSON: array of `{type: "function", function: {name, description, parameters}}`, the shape OpenAI's chat-completions API expects under `tools` |
+
+```gql
+SHOW FUNCTIONS FORMAT MCP
+SHOW FUNCTIONS FORMAT JSON_SCHEMA
+SHOW FUNCTIONS FORMAT OPENAI
+```
+
 ## Element Functions
 
 | Function | Description |
