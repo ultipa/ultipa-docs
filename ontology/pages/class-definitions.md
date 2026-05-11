@@ -20,8 +20,6 @@ How it compares to what you already know:
 | Multi-typing | Yes | Yes |
 | Schema role | Optional/free-form | Defines what properties are valid |
 
-Mental model: an LPG label is just a sticker on a node. An ontology class is a sticker that **also** says what it's a kind of, what it can't be, and what edges/properties make sense on it, and the database uses all of that during query and validation.
-
 ## Example Graph
 
 The examples below use the `@ex:` and `@foaf:` prefixes. `LOAD ALL PREFIX` registers `foaf` (and the 13 other built-ins), but `ex` is not built-in and must be loaded explicitly. Run this before working through the examples:
@@ -47,6 +45,7 @@ Define multiple classes back-to-back:
 CREATE CLASS @ex:City
 CREATE CLASS @ex:River
 CREATE CLASS @ex:Mountain
+CREATE CLASS @ex:Location
 ```
 
 ## Creating Class Hierarchy

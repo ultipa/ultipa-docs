@@ -2,18 +2,13 @@
 
 ## Overview
 
-Use ontology class and property labels in INSERT, MATCH, and REMOVE operations to leverage semantic capabilities.
+Use ontology class and property labels in `INSERT`, `MATCH`, and `REMOVE` operations to leverage semantic capabilities.
 
-## Ontology Labels on Nodes
+## Ontology Labels
 
-Use the `@prefix:ClassName` syntax to assign ontology class labels to nodes:
+### Ontology Labels on Nodes
 
-**Syntax:** `:@prefix:ClassName` in INSERT or MATCH patterns.
-
-| Syntax | Description |
-| -- | -- |
-| `:@prefix:ClassName` | Assign an ontology class to a node |
-| `:@prefix:Class1&@prefix:Class2` | Assign multiple ontology classes using & |
+Use the `@prefix:class` syntax to assign ontology class labels to nodes.
 
 Insert node with ontology class label:
 
@@ -21,28 +16,15 @@ Insert node with ontology class label:
 INSERT (:@foaf:Person {name: 'Alice', age: 30})
 ```
 
-Insert node with multiple ontology labels:
+Insert node with multiple ontology labels using `&`:
 
 ```gql
 INSERT (:@foaf:Person&@foaf:Agent {name: 'Bob'})
 ```
 
-Create a path with ontology labels:
+### Ontology Labels on Edges
 
-```gql
-INSERT (:@ex:Person {name: 'Alice'})-[:@ex:knows]->(:@ex:Person {name: 'Bob'})
-```
-
-## Ontology Labels on Edges
-
-Edges can also have ontology labels using the `@prefix:propertyName` syntax. This enables domain/range validation and property characteristics like SYMMETRIC and TRANSITIVE.
-
-**Syntax:** `[:@prefix:propertyName]` in edge patterns.
-
-| Syntax | Description |
-| -- | -- |
-| `[:@prefix:propertyName]` | Assign an ontology object property to an edge |
-| `[@<http://full-iri>]` | Use full IRI for edge type |
+Edges have ontology labels using the `@prefix:objectProperty` syntax.
 
 Insert edge with ontology label:
 
@@ -59,40 +41,51 @@ MATCH (a)-[r:@ex:knows]->(b)
 RETURN a.name, b.name
 ```
 
-Edge with full IRI syntax:
+### Full IRI Form
+
+Anywhere the prefixed form `@prefix:name` is accepted, the full-IRI form `@<http://full-iri>` works as a drop-in replacement. The two are equivalent; the parser resolves both to the same IRI internally. The full form is useful when no prefix is loaded for the namespace, or when copy-pasting IRIs from an external ontology.
+
+Node patterns:
 
 ```gql
-MATCH (a)-[@<http://example.org/knows>]->(b)
-RETURN a.name, b.name
+// These two are equivalent
+INSERT (:@ex:Person {name: 'Alice'})
+INSERT (:@<http://example.org/Person> {name: 'Alice'})
+
+MATCH (n@ex:Person) RETURN n.name
+MATCH (n@<http://example.org/Person>) RETURN n.name
 ```
+
+Edge patterns:
+
+```gql
+MATCH (a)-[:@<http://example.org/knows>]->(b) RETURN a.name, b.name
+```
+
+DDL:
+
+```gql
+CREATE CLASS @<http://example.org/Person>
+
+CREATE OBJECT PROPERTY @<http://example.org/knows>
+  DOMAIN @<http://example.org/Person>
+  RANGE @<http://example.org/Person>
+```
+
+The IRI inside the angle brackets is a `IRI_LITERAL` token. It must be a valid IRI with no embedded whitespace or unescaped `>` characters.
 
 ## Matching by Ontology Label
 
-Use `@prefix:name` (without colon before @) to match nodes by their ontology class label:
-
-**Important:** This matches the actual label assigned to the node.
+Match nodes or edges by their ontology label using `@prefix:name`. Inside the pattern, the label can follow the variable directly or be preceded by `:` — both forms are accepted and equivalent, for both node and edge patterns.
 
 | Syntax | Description |
 | -- | -- |
-| `MATCH (n@prefix:ClassName)` | Match nodes by ontology class label |
-| `MATCH (n) WHERE n@prefix:ClassName` | Filter by ontology label in WHERE clause |
+| `MATCH (n@prefix:class)` | Match nodes by ontology class label (no colon) |
+| `MATCH (n:@prefix:class)` | Same as above, with leading colon |
+| `MATCH (n) WHERE n@prefix:class` | Filter by ontology label in `WHERE` clause (no colon) |
+| `MATCH (n) WHERE n:@prefix:class` | Same as above, with leading colon |
 
 Match nodes by ontology class:
-
-```gql
-MATCH (n@foaf:Person)
-RETURN n.name
-```
-
-Subclass inference - Employee extends Person:
-
-```gql
-// Querying Person also returns Employee nodes
-MATCH (n@ex:Person)
-RETURN n.name, n.role
-```
-
-Match with both label and properties:
 
 ```gql
 MATCH (n@ex:Person)
@@ -100,24 +93,24 @@ WHERE n.age > 25
 RETURN n.name, n.age
 ```
 
-## IRI Matching (@= Syntax)
+## IRI Matching
 
 The `@=` syntax matches nodes by their `_iri` property value, NOT by their label. This is useful for finding specific individuals in semantic web data.
 
-**Key Distinction:**
-- `@prefix:name` - matches by **label** (ontology class)
-- `@=prefix:name` - matches by **_iri property** value
+The two forms below are just different ways to write the same target IRI. The prefixed form is expanded by the parser into the full IRI before comparison.
 
-| Syntax | Description |
+| Syntax | How the target IRI is formed |
 | -- | -- |
-| `@=prefix:localName` | Match node where _iri equals the expanded IRI |
-| `@=<http://full-iri>` | Match node where _iri equals the full IRI |
+| `@=prefix:localName` | Parser expands `prefix` via the prefix table, concatenates `localName` (e.g., `ex:alice` → `http://example.org/alice`) |
+| `@=<http://full-iri>` | The literal IRI written directly in angle brackets, no prefix lookup |
 
-Insert nodes with _iri property:
+The `_iri` is a regular property that you must set explicitly at `INSERT` time. The engine does not auto-populate it from the node's class or any other source. A node inserted without `_iri` (e.g., `INSERT (:@ex:Person {name: 'Alice'})`) will never match an `@=` query. The engine maintains a dedicated property index on `_iri` for fast `@=` lookup, but the value itself is yours to assign.
+
+Insert nodes with `_iri` property:
 
 ```gql
-INSERT (:Person {name: 'Alice', _iri: 'http://example.org/alice'})
-INSERT (:Person {name: 'Bob', _iri: 'http://example.org/bob'})
+INSERT (:@ex:Person {name: 'Alice', _iri: 'http://example.org/alice'}),
+       (:@ex:Person {name: 'Bob', _iri: 'http://example.org/bob'})
 ```
 
 Match by IRI using prefix:
@@ -126,6 +119,8 @@ Match by IRI using prefix:
 MATCH (n@=ex:alice)
 RETURN n.name
 ```
+
+Result: 
 
 | n.name |
 | -- |
@@ -137,6 +132,8 @@ Match by full IRI:
 MATCH (n@=<http://example.org/bob>)
 RETURN n.name
 ```
+
+Result: 
 
 | n.name |
 | -- |
@@ -158,9 +155,7 @@ MATCH (n@=ex:alice) RETURN n.name  // Returns Alice
 
 ## Removing Ontology Labels
 
-Use the `REMOVE` clause to remove ontology labels from nodes. The node itself remains; only the label is removed.
-
-**Syntax:** `REMOVE variable@prefix:ClassName`
+Use the `REMOVE` statement to remove ontology labels from nodes. The node itself remains; only the label is removed.
 
 Remove ontology label from a node:
 
@@ -193,8 +188,8 @@ You can combine regular labels, ontology labels, and IRI matching using `&` (con
 
 | Syntax | Description |
 | -- | -- |
-| `:Label&@prefix:Class` | Match nodes with both labels (AND) |
-| `:Label\|@prefix:Class` | Match nodes with either label (OR) |
+| `:label&@prefix:class` | Match nodes with both labels (AND) |
+| `:label\|@prefix:class` | Match nodes with either label (OR) |
 
 Combine regular label with IRI match:
 

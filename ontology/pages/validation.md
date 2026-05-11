@@ -10,14 +10,15 @@ Control how strictly ontology rules are enforced with three modes:
 
 | Mode | Behavior |
 | -- | -- |
-| **STRICT** | Violations cause errors and block operations |
-| **WARNING** | Violations are logged but operations proceed |
-| **OFF** | No validation (useful for bulk imports) |
+| `STRICT` | Violations cause errors and block operations |
+| `WARNING` (default) | Violations are logged but operations proceed |
+| `OFF` | No validation (useful for bulk imports) |
 
-| Command | Description |
-| -- | -- |
-| `SET ONTOLOGY ENFORCEMENT STRICT \| WARNING \| OFF` | Set the enforcement mode |
-| `SHOW ONTOLOGY ENFORCEMENT` | View current enforcement mode |
+Check current enforcement mode:
+
+```gql
+SHOW ONTOLOGY ENFORCEMENT
+```
 
 Enable strict enforcement:
 
@@ -37,73 +38,34 @@ Disable enforcement:
 SET ONTOLOGY ENFORCEMENT OFF
 ```
 
-Check current enforcement mode:
+### Strict Mode
+
+In `STRICT` mode, any ontology constraint violation will cause an error and block the operation. Use this in production to ensure data quality.
 
 ```gql
-SHOW ONTOLOGY ENFORCEMENT
-```
-
-| enforcement_mode |
-| -- |
-| STRICT |
-
-## Strict Mode
-
-In STRICT mode, any ontology constraint violation will cause an error and block the operation. Use this in production to ensure data quality.
-
-Setup domain/range constraints:
-
-```gql
+// Setup domain/range constraints
 CREATE OBJECT PROPERTY @ex:worksFor DOMAIN @ex:Person RANGE @ex:Organization
 
 SET ONTOLOGY ENFORCEMENT STRICT
 
 // This succeeds: Person -> Organization
 INSERT (:@ex:Person {name: 'Alice'})-[:@ex:worksFor]->(:@ex:Organization {name: 'Acme'})
-```
 
-Invalid data is rejected:
-
-```gql
-// This fails in STRICT mode: Organization -> Organization violates DOMAIN
-INSERT (:@ex:Organization {name: 'Org1'})-[:@ex:worksFor]->(:@ex:Organization {name: 'Org2'})
+// This fails: Organization -> Organization violates DOMAIN
 // Error: Domain constraint violation - source must be @ex:Person
+INSERT (:@ex:Organization {name: 'Org1'})-[:@ex:worksFor]->(:@ex:Organization {name: 'Org2'})
 ```
 
-Disjoint class violation:
+### Warning Mode
 
-```gql
-CREATE CLASS @ex:Cat
-CREATE CLASS @ex:Dog DISJOINT WITH @ex:Cat
-
-INSERT (:@ex:Cat&@ex:Dog {name: 'Mystery'})
-// Error: Disjoint class violation - cannot be both Cat and Dog
-```
-
-Functional property violation:
-
-```gql
-CREATE OBJECT PROPERTY @ex:hasBirthPlace FUNCTIONAL
-
-// First birthPlace assignment succeeds
-INSERT (:@ex:Person {name: 'Alice'})-[:@ex:hasBirthPlace]->(:@ex:Location {name: 'Paris'})
-
-// Second birthPlace fails - functional constraint violation
-MATCH (a@ex:Person) WHERE a.name = 'Alice'
-INSERT (a)-[:@ex:hasBirthPlace]->(:@ex:Location {name: 'London'})
-// Error: Functional property violation - Alice already has a birthPlace
-```
-
-## Warning Mode
-
-In WARNING mode, constraint violations are logged but operations proceed. Use this during migration or development to identify issues without blocking work.
+In `WARNING` mode, constraint violations are logged but operations proceed. Use this during migration or development to identify issues without blocking work.
 
 ```gql
 SET ONTOLOGY ENFORCEMENT WARNING
 
 // This succeeds but logs a warning
-INSERT (:@ex:Organization {name: 'Org1'})-[:@ex:worksFor]->(:@ex:Organization {name: 'Org2'})
 // Warning logged: Domain constraint violation - source should be @ex:Person
+INSERT (:@ex:Organization {name: 'Org1'})-[:@ex:worksFor]->(:@ex:Organization {name: 'Org2'})
 ```
 
 View warnings after operations:
@@ -111,6 +73,8 @@ View warnings after operations:
 ```gql
 SHOW ONTOLOGY WARNINGS
 ```
+
+Result:
 
 | timestamp | type | message |
 | -- | -- | -- |
@@ -137,20 +101,82 @@ SET ONTOLOGY ENFORCEMENT WARNING
 VALIDATE ONTOLOGY
 ```
 
-## VALIDATE Command
+## Validating Ontology
 
-Run validation to check existing data against ontology constraints.
+`VALIDATE ONTOLOGY` returns a one-row snapshot of the current ontology and the count of accumulated warnings. It does **not** rescan data — to find individual violations, look at `SHOW ONTOLOGY WARNINGS` (populated as INSERTs run under `WARNING` mode).
 
 ```gql
 VALIDATE ONTOLOGY
 ```
 
-Validation returns any constraint violations found:
+Example output:
 
-| type | element | constraint | message |
-| -- | -- | -- | -- |
-| DOMAIN_MISMATCH | edge:456 | worksFor | Source must be Person |
-| RANGE_MISMATCH | edge:789 | worksFor | Target must be Organization |
+| status | ontologies | classes | properties | warnings |
+| -- | -- | -- | -- | -- |
+| OK | 1 | 18 | 8 | 0 |
+
+Returned columns:
+
+| Column | Description |
+| -- | -- |
+| `status` | `OK` when the warnings count is zero, `WARNINGS` otherwise. |
+| `ontologies` | Number of registered ontologies (one per `LOAD ONTOLOGY` import plus an optional `local` one for inline `CREATE` definitions). |
+| `classes` | Total class count across all ontologies. |
+| `properties` | Total object + data property count across all ontologies. |
+| `warnings` | Number of warnings currently in the warning store. Cleared by `CLEAR ONTOLOGY WARNINGS`. |
+
+Worked example — set up a constraint, plant a violation under `WARNING`, then check the report:
+
+```gql
+CREATE OBJECT PROPERTY @ex:employs DOMAIN @ex:Organization RANGE @ex:Person
+
+SET ONTOLOGY ENFORCEMENT WARNING
+
+// DOMAIN_MISMATCH: source should be @ex:Organization, not @ex:Person
+INSERT (:@ex:Person {name: 'Alice'})-[:@ex:employs]->(:@ex:Person {name: 'Bob'})
+
+VALIDATE ONTOLOGY
+```
+
+The report increments `warnings` and flips `status` to `WARNINGS`, while the per-row details are available via `SHOW ONTOLOGY WARNINGS`.
+
+`VALIDATE ONTOLOGY` also accepts an optional mode that updates the current enforcement before running:
+
+```gql
+VALIDATE ONTOLOGY STRICT
+VALIDATE ONTOLOGY WARNING
+```
+
+### Validation Types
+
+The ontology validator checks for the following types of constraint violations. The same types appear in `SHOW ONTOLOGY WARNINGS` and in `VALIDATE ONTOLOGY` output.
+
+| Type | Description |
+| -- | -- |
+| `CLASS_NOT_FOUND` | Node has an ontology label for an undefined class |
+| `DOMAIN_MISMATCH` | Edge source doesn't match the property's `DOMAIN` |
+| `RANGE_MISMATCH` | Edge target doesn't match the property's `RANGE` |
+| `DISJOINT_VIOLATION` | Node has labels from two `DISJOINT WITH` classes |
+| `FUNCTIONAL_VIOLATION` | Multiple outgoing edges for a `FUNCTIONAL` (or `CARDINALITY {0,1}`) property |
+| `TYPE_MISMATCH` | Data property value doesn't match the declared XSD type |
+
+Domain violation example:
+
+```gql
+CREATE OBJECT PROPERTY @ex:employs DOMAIN @ex:Organization RANGE @ex:Person
+
+// Wrong: Person cannot employ (domain is Organization)
+// DOMAIN_MISMATCH: source must be @ex:Organization
+INSERT (:@ex:Person {name: 'Alice'})-[:@ex:employs]->(:@ex:Person {name: 'Bob'})
+```
+
+Range violation example:
+
+```gql
+// Wrong: Organization cannot be employed (range is Person)
+// RANGE_MISMATCH: target must be @ex:Person
+INSERT (:@ex:Organization {name: 'Acme'})-[:@ex:employs]->(:@ex:Organization {name: 'Other'})
+```
 
 ## Viewing Warnings
 
@@ -165,33 +191,32 @@ SHOW ONTOLOGY WARNINGS
 | 2024-03-15T10:30:00 | DOMAIN_MISMATCH | edge:123 | worksFor: source should be Person |
 | 2024-03-15T10:35:00 | CLASS_NOT_FOUND | node:456 | Unknown class: @ex:Unknown |
 
-## Validation Types
-
-The ontology validator checks for several types of constraint violations:
-
-| Type | Description |
-| -- | -- |
-| **CLASS_NOT_FOUND** | Node has ontology label for undefined class |
-| **DOMAIN_MISMATCH** | Edge source doesn't match property domain |
-| **RANGE_MISMATCH** | Edge target doesn't match property range |
-| **DISJOINT_VIOLATION** | Node has labels from disjoint classes |
-| **FUNCTIONAL_VIOLATION** | Multiple edges for functional property |
-| **TYPE_MISMATCH** | Data property value doesn't match XSD type |
-
-Domain violation example:
+Reset the accumulated warnings log:
 
 ```gql
-CREATE OBJECT PROPERTY @ex:employs DOMAIN @ex:Organization RANGE @ex:Person
-
-// Wrong: Person cannot employ (domain is Organization)
-INSERT (:@ex:Person {name: 'Alice'})-[:@ex:employs]->(:@ex:Person {name: 'Bob'})
-// DOMAIN_MISMATCH: source must be @ex:Organization
+CLEAR ONTOLOGY WARNINGS
 ```
 
-Range violation example:
+## Transitive Inference Depth
+
+`TRANSITIVE` object properties expand inference chains across edges. Use `SET ONTOLOGY TRANSITIVE_DEPTH` to cap how many hops the engine will traverse — useful in deep graphs where unbounded expansion is too expensive.
 
 ```gql
-// Wrong: Organization cannot be employed (range is Person)
-INSERT (:@ex:Organization {name: 'Acme'})-[:@ex:employs]->(:@ex:Organization {name: 'Other'})
-// RANGE_MISMATCH: target must be @ex:Person
+// Limit transitive expansion to 5 hops
+SET ONTOLOGY TRANSITIVE_DEPTH 5
 ```
+
+The depth is the **maximum length of the real-edge chain** that produces an inferred edge. With `5`, source-to-target chains of 1–5 real edges yield an inferred edge; chains of 6 or more do not.
+
+For a chain `A → B → C → D → E → F → G` (each `→` a real `TRANSITIVE` edge):
+
+| Source | Inferred edge to | Real-chain length | Created? |
+| -- | -- | -- | -- |
+| A | B | 1 | ✓ (also the real edge) |
+| A | C | 2 | ✓ |
+| A | D | 3 | ✓ |
+| A | E | 4 | ✓ |
+| A | F | 5 | ✓ |
+| A | G | 6 | ✗ |
+
+The value must be a positive integer (`>= 1`); `0` or negative values are rejected. The default when never set is `10`. There is no "unlimited" sentinel — to allow deeper chains, set a larger explicit value.
