@@ -4,17 +4,13 @@ Three `SHOW COMPUTE` statements report runtime state and configured settings. Al
 
 ## SHOW COMPUTE STATUS
 
-Reports the live runtime state of the computing engine. Returns a `(property, value)` row set.
+Reports the live runtime state of the computing engine of the current graph:
 
 ```gql
--- Current graph
 SHOW COMPUTE STATUS
-
--- Specific graph
-SHOW GRAPH myGraph COMPUTE STATUS
 ```
 
-Rows returned:
+Returns a `(property, value)` row set:
 
 | Property | Type | Notes |
 | -- | -- | -- |
@@ -39,14 +35,10 @@ Rows returned:
 
 ## SHOW COMPUTE CONFIG
 
-Reports the **persisted** configuration (not live state). Useful for verifying a setup before enabling, or after a restart.
+Reports the **persisted** configuration (not live state) of the current graph. Useful for verifying a setup before enabling, or after a restart.
 
 ```gql
--- Current graph
 SHOW COMPUTE CONFIG
-
--- Specific graph
-SHOW GRAPH myGraph COMPUTE CONFIG
 ```
 
 Rows returned:
