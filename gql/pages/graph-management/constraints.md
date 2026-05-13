@@ -16,22 +16,21 @@ When a constraint type supports a composite of properties, a row violates the co
 
 ## Showing Constraints
 
-Show all constraints in the current graph:
+Show constraints in the current graph:
 
 ```gql
 SHOW CONSTRAINTS
-```
-
-Show node constraints in the current graph:
-
-```gql
 SHOW NODE CONSTRAINTS
+SHOW EDGE CONSTRAINTS
 ```
 
-Show edge constraints in the current graph:
+To inspect a single constraint:
 
 ```gql
-SHOW EDGE CONSTRAINTS
+DESCRIBE CONSTRAINT myConstraint
+
+-- DESC is a shorthand for DESCRIBE
+DESC CONSTRAINT myConstraint
 ```
 
 Each constraint provides the following metadata:

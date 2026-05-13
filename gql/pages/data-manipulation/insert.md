@@ -35,7 +35,7 @@ For an **open graph**, you can directly insert nodes and edges, and the labels a
 - **Labels**: You may assign zero, one, or multiple labels to a node or edge.
 - **Properties**: Each node or edge has its own set of properties. Any property name is accepted — there is no schema validation. The property value type is inferred from the literal value at insertion time (e.g., `30` is stored as `INT`, `"hello"` as `STRING`, `[1,2]` as `LIST`). Unlike closed graphs where types are explicitly defined (e.g., `UINT32` vs `INT64`), open graphs have no fine-grained type control.
 
-<a target="_blank" href="/docs/gql/open-graph">Learn more about open graphs →</a>
+<a target="_blank" href="/docs/gql/open-graphs">Learn more about open graphs →</a>
 
 ### Closed Graph
 
@@ -44,7 +44,7 @@ For a **closed graph**, any node or edge inserted must conform to its defined no
 - **Labels**: The insert label set must exactly match the full label set of a defined type. For example, if node type `User` has labels `[User, Employee]`, you must insert with `:User&Employee`.
 - **Properties**: Only properties defined in the type are allowed. Each property has an explicitly defined value type (e.g., `STRING`, `UINT32`, `FLOAT`), and inserted values are validated against these types. Properties not provided in the insert default to `null`, unless a `NOT NULL` constraint is defined. Inserting an undefined property name results in an error.
 
-<a target="_blank" href="/docs/gql/closed-graph">Learn more about closed graphs →</a>
+<a target="_blank" href="/docs/gql/closed-graphs">Learn more about closed graphs →</a>
 
 ## Inserting Nodes
   

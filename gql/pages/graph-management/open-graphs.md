@@ -1,4 +1,4 @@
-# Open Graph
+# Open Graphs
 
 ## Overview
 
@@ -25,31 +25,28 @@ The optional `ANY` keyword can be used to explicitly indicate an open graph:
 CREATE GRAPH g1 ANY
 ```
 
-A graph created without a graph type specification is an open graph by default.
-
 ## Showing Labels
 
 Show labels in the current graph:
 
 ```gql
 SHOW LABELS
-```
-
-Show node labels in the current graph:
-
-```gql
 SHOW NODE LABELS
+SHOW EDGE LABELS
 ```
 
-Show edge labels in the current graph:
+To inspect a single label:
 
 ```gql
-SHOW EDGE LABELS
+DESCRIBE LABEL myLabel
+
+-- DESC is a shorthand for DESCRIBE
+DESC LABEL myLabel
 ```
 
 Each label provides the following essential metadata:
 
-| <div table-width="17">Field</div> | Description |
+| Field | Description |
 | -- | -- |
 | `label` | The name of the label. |
 | `type` | The type of the label, `NODE` or `EDGE`. |

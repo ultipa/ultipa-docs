@@ -54,20 +54,20 @@
       "folder": "graph-management",
       "pages": [
         {
-          "file": "graph.md",
+          "file": "graphs.md",
           "title": "Overview"
         },
         {
-          "file": "open-graph.md",
-          "title": "Open Graph"
+          "file": "open-graphs.md",
+          "title": "Open Graphs"
         },
         {
-          "file": "closed-graph.md",
-          "title": "Closed Graph"
+          "file": "closed-graphs.md",
+          "title": "Closed Graphs"
         },
         {
-          "file": "graph-type.md",
-          "title": "Graph Type"
+          "file": "graph-types.md",
+          "title": "Graph Types"
         },
         {
           "file": "constraints.md",
