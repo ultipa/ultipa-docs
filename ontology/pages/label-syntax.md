@@ -76,14 +76,14 @@ The IRI inside the angle brackets is a `IRI_LITERAL` token. It must be a valid I
 
 ## Matching by Ontology Label
 
-Match nodes or edges by their ontology label using `@prefix:name`. Inside the pattern, the label can follow the variable directly or be preceded by `:` — both forms are accepted and equivalent, for both node and edge patterns.
+Match nodes by their ontology label using `@prefix:name` directly after the variable inside the pattern. In a `WHERE` clause, use `IS LABELED`.
 
 | Syntax | Description |
 | -- | -- |
-| `MATCH (n@prefix:class)` | Match nodes by ontology class label (no colon) |
-| `MATCH (n:@prefix:class)` | Same as above, with leading colon |
-| `MATCH (n) WHERE n@prefix:class` | Filter by ontology label in `WHERE` clause (no colon) |
-| `MATCH (n) WHERE n:@prefix:class` | Same as above, with leading colon |
+| `MATCH (n@prefix:class)` | Match nodes by ontology class label inside the pattern |
+| `MATCH (n) WHERE n IS LABELED @prefix:class` | Filter by ontology label in a `WHERE` clause |
+
+> The forms `(n:@prefix:class)`, `WHERE n@prefix:class`, and `WHERE n:@prefix:class` are not supported.
 
 Match nodes by ontology class:
 
@@ -91,6 +91,14 @@ Match nodes by ontology class:
 MATCH (n@ex:Person)
 WHERE n.age > 25
 RETURN n.name, n.age
+```
+
+Filter in a `WHERE` clause:
+
+```gql
+MATCH (n)
+WHERE n IS LABELED @ex:Person
+RETURN n.name
 ```
 
 ## IRI Matching

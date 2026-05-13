@@ -147,7 +147,7 @@ Example:
 
 ```gql
 // Error: FUNCTIONAL violation — Alice has two hasBirthPlace edges
-INSERT (a:@ex:Person {name: 'Alice'}),
+INSERT (a@ex:Person {name: 'Alice'}),
        (a)-[:@ex:hasBirthPlace]->(:@ex:Location {name: 'Boston'}),
        (a)-[:@ex:hasBirthPlace]->(:@ex:Location {name: 'Chicago'})
 ```
@@ -283,7 +283,9 @@ CREATE DATA PROPERTY @ex:age DOMAIN @ex:Person RANGE xsd:integer
 ```
 
 ```gql
-INSERT (p:@ex:Person {name: 'Alice', age: 30})
+INSERT (:@ex:Person {name: 'Alice', age: 30})
+
+MATCH (p@ex:Person)
 RETURN p.name, p.age
 ```
 
