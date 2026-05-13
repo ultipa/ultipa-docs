@@ -66,6 +66,18 @@ Ultipa supports two main types of graphs: **Open Graph** and **Closed Graph**. T
 
 <a target="_blank" href="/docs/gql/closed-graphs">Learn more about closed graphs →</a>
 
+### Graphs with Edge ID Support
+
+By default, edges receive a system-generated `_id` and custom values cannot be assigned. The optional `EDGE_ID` feature lets edges carry a user-facing `_id`. Enable it at creation with `WITH EDGE_ID`:
+
+```gql
+CREATE GRAPH myGraph WITH EDGE_ID
+```
+
+`EDGE_ID` can also be toggled on an existing graph.
+
+<a target="_blank" href="/docs/gql/graphs-with-edge-id">Learn more about graphs with edge ID support →</a>
+
 ### Ontology Graphs
 
 Ontology support enables RDF/OWL-style class hierarchies and the `@prefix:name` label syntax. Create an ontology-enabled graph with `WITH ONTOLOGY`:

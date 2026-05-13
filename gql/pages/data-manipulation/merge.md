@@ -33,7 +33,7 @@ RETURN p
 
 If no such node exists, a `Person` node named `Alice` is created. If one exists, it is bound to `p` and returned without modification.
 
-## ON CREATE SET
+### ON CREATE SET
 
 Set additional properties only when the node is newly created:
 
@@ -45,7 +45,7 @@ RETURN p
 
 A new `Person` carries `email`, `name`, and `createdAt`. An existing `Person` is returned unchanged.
 
-## ON MATCH SET
+### ON MATCH SET
 
 Set properties only when the pattern matched an existing entity:
 
@@ -57,7 +57,7 @@ RETURN p
 
 A new `Person` carries `email` only. An existing `Person` is added with `lastSeen`.
 
-## Combining ON CREATE SET and ON MATCH SET
+### Combining ON CREATE SET and ON MATCH SET
 
 Differentiate the two paths in a single statement:
 
@@ -83,6 +83,8 @@ RETURN r
 ```
 
 If a `Knows` edge already runs from `Alice` to `Bob`, its `interactions` counter is incremented; otherwise a new edge is created with `since = 2024`.
+
+> **Edge `_id` in `MERGE`**: `MERGE` matches edges by pattern (label, endpoints, properties), not by `_id`, so it works on both `EDGE_ID`-enabled and disabled graphs. However, if you supply `_id` inside the edge property map (e.g., `MERGE (a)-[r:Knows {_id: 'tx-123'}]->(b)`), the graph must have `EDGE_ID` enabled, otherwise the `_id` write is rejected. See <a target="_blank" href="/docs/gql/graphs-with-edge-id">Graphs with Edge ID</a>.
 
 ## Merging Whole Patterns
 

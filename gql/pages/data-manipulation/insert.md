@@ -28,7 +28,7 @@ The `INSERT` statement allows you to add new nodes and edges into the graph usin
 
 Ultipa supports both closed graphs and open graphs. Their data insertion syntax is similar, but with important differences in requirements.
 
-### Open Graph
+### Open Graphs
 
 For an **open graph**, you can directly insert nodes and edges, and the labels and properties are created on the fly.
 
@@ -37,7 +37,7 @@ For an **open graph**, you can directly insert nodes and edges, and the labels a
 
 <a target="_blank" href="/docs/gql/open-graphs">Learn more about open graphs →</a>
 
-### Closed Graph
+### Closed Graphs
 
 For a **closed graph**, any node or edge inserted must conform to its defined node or edge type:
 
@@ -62,6 +62,7 @@ INSERT (n1:User&Employee {_id: "U2", name: "Quasar92"}),
        (n3:Club)
 RETURN n1, n2, n3
 ```
+> **Node `_id` on insert**: You can assign a custom `_id` on nodes at insert time. Nodes receive system-generated `_id` if custom values are not provided during insertion.
 
 ## Inserting Edges
 
@@ -79,6 +80,8 @@ Insert a `Joins` edge from an existing `User` node to a new `Club` node:
 MATCH (user:User {name: 'Quasar92'})
 INSERT (user)-[:Joins]->(:Club {_id: "C2"})
 ```
+
+> **Edge `_id` on insert**: By default, edges receive a system-generated `_id` and supplying `_id` in the edge property specification is rejected. To assign a custom `_id` (or have the system auto-generate a UUID v4) on edges at insert time, the graph must be created with `WITH EDGE_ID` or toggled via `ALTER GRAPH ... SET EDGE_ID ENABLED`. See <a target="_blank" href="/docs/gql/graphs-with-edge-id">Graphs with Edge ID</a>.
 
 ## Inserting Paths
 
