@@ -52,43 +52,34 @@ All subsequent queries in the session will run against `myGraph` until another `
 
 ## Creating Graphs
 
-Ultipa supports two main types of graphs: **Open Graph** and **Closed Graph**. This design offers both flexibility and control, supporting workflows ranging from agile exploration to production-grade applications demanding strict data integrity requirements.
+Ultipa supports two kinds of graphs: **Open Graph** and **Closed Graph**. This design offers both flexibility and control, supporting workflows ranging from agile exploration to production-grade applications demanding strict data integrity requirements.
 
-### Open Graphs
+<p tit="Syntax"></p>
 
-**Open graphs** are schema-free, requiring no explicit schema definitions before data insertion. You can directly insert nodes and edges, and their labels and properties are created on the fly. This offers maximum flexibility for early-stage data exploration.
+```
+<create graph statement> ::= 
+  "CREATE GRAPH" [ "IF NOT EXISTS" ] <graph name> [ <graph kind> ]
 
-<a target="_blank" href="/docs/gql/open-graphs">Learn more about open graphs →</a>
+<graph kind> ::= <open graph> | <closed graph>
 
-### Closed Graphs
+<open graph> ::= 
+  [ "ANY" ] [ "WITH" < "EDGE_ID" | "ONTOLOGY" | "EDGE_ID, ONTOLOGY" > ]
 
-**Closed graphs** require that any node or edge to be inserted must conform to a defined node or edge type. This ensures consistent structure, guaranteeing high data integrity and consistency.
-
-<a target="_blank" href="/docs/gql/closed-graphs">Learn more about closed graphs →</a>
-
-### Graphs with Edge ID Support
-
-By default, edges receive a system-generated `_id` and custom values cannot be assigned. The optional `EDGE_ID` feature lets edges carry a user-facing `_id`. Enable it at creation with `WITH EDGE_ID`:
-
-```gql
-CREATE GRAPH myGraph WITH EDGE_ID
+<closed graph> ::= <graph type specification> [ "WITH EDGE_ID" ]
 ```
 
-`EDGE_ID` can also be toggled on an existing graph.
+**Details**
 
-<a target="_blank" href="/docs/gql/graphs-with-edge-id">Learn more about graphs with edge ID support →</a>
+- If `<graph kind>` is omitted, the graph is an open graph by default.
+- `WITH EDGE_ID` enables custom edge `_id` on the graph.
+- `WITH ONTOLOGY` makes an open graph an ontology graph.
 
-### Ontology Graphs
+Learn more:
 
-Ontology support enables RDF/OWL-style class hierarchies and the `@prefix:name` label syntax. Create an ontology-enabled graph with `WITH ONTOLOGY`:
-
-```gql
-CREATE GRAPH myOntologyGraph WITH ONTOLOGY
-```
-
-For details on ontology features, see <a target="_blank" href="/docs/ontology/">Ontology</a>.
-
-### Using IF NOT EXISTS
+- <a target="_blank" href="/docs/gql/open-graphs">Open graphs</a>
+- <a target="_blank" href="/docs/gql/closed-graphs">Closed graphs</a>
+- <a target="_blank" href="/docs/gql/graphs-with-edge-id">Graphs with Edge ID</a>
+- <a target="_blank" href="/docs/ontology/">Ontology</a>
 
 You can use the `IF NOT EXISTS` clause to prevent errors when attempting to create a graph that already exists. It allows the statement to be safely executed.
 
@@ -99,6 +90,13 @@ CREATE GRAPH IF NOT EXISTS myGraph
 This creates the graph `myGraph` only if a graph with that name does not exist. If `myGraph` already exists, the statement is ignored without throwing an error.
 
 ## Cloning Graphs
+
+<p tit="Syntax"></p>
+
+```
+<clone graph statement> ::= 
+  "CREATE GRAPH" [ "IF NOT EXISTS" ] <graph name> "AS COPY OF" <original graph name>
+```
 
 A new graph can be created from an existing one, cloning both data and schema (if it's a closed graph):
 

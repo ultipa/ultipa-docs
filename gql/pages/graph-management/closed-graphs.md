@@ -3,43 +3,16 @@
 ## Overview
 
 A **closed graph** is constrained by its **graph type**, which is a list of node types and edge types. It imposes a strict framework that governs data insertion: each node or edge belongs to exactly one **node type** or **edge type**. The graph type ensures consistent structure and guarantees high data integrity and consistency.
- 
-In a closed graph,
 
-- Each node belongs to one node type with one or multiple labels, each edge belongs to one edge type with exactly one label.
-- Nodes or edges of the same type share the same set of properties.
+### Node Types
 
-## Creating Closed Graphs
+A node type is the schema definition that nodes of a closed graph must conform to. Each node type is identified by a unique node type name and consists of a label set and a set of property types. **Each node belongs to one node type.**
 
 <p tit="Syntax"></p>
 
 ```
-<create closed graph statement> ::=
-  "CREATE GRAPH" [ "IF NOT EXISTS" ] 
-  { <inline graph type> | <named graph type> | <inferred graph type> }
-```
-
-You have three ways to create a closed graph:
-
-### Inline Graph Type
-
-Define the node and edge types directly in the `CREATE GRAPH` statement. The graph type lives on the graph itself, with no separate named definition.
-
-<p tit="Syntax"></p>
-
-```
-<inline graph type> ::= "{" [ <element type> [ { "," <element type> }... ] ] "}"
-
-<element type> = <node type> | <edge type>
-
 <node type> ::=
   "NODE" [ "TYPE" ] <node type name> "(" [ <additional labels> ] [ <property types> ] ")"
-
-<edge type> ::=
-  "EDGE" [ "TYPE" ] <edge type name> <source node type>
-  "-[" [ <additional labels> ] [ <property types> ] "]->" <destination node type>
-
-<source/destination node type> ::= "(" [ ":" <label name> [ { "&" <label name> } ... ] ] ")"
 
 <additional labels> ::= ":" <label name> [ { "&" <label name> } ... ]
 
@@ -48,10 +21,121 @@ Define the node and edge types directly in the `CREATE GRAPH` statement. The gra
 <property type> ::= <property name> <property value type> [ <constraint type> ]
 ```
 
-Create a closed graph `g2` with inline graph type specification:
+The node type name automatically becomes a label. The **label set** of a node type is the union of its type name and optional additional labels. When no additional labels are specified, the type name is the only label.
+
+<p tit="Node Type"></p>
 
 ```gql
-CREATE GRAPH g2 {
+-- No additional labels specified, node type name is the only label
+-- Label set is :User
+NODE User ({name STRING})
+
+-- One additional label specified
+-- Label set is :User&Employee
+NODE User (:Employee {name STRING})
+
+-- Multiple additional labels specified
+-- Label set is :User&Employee&Manager
+NODE User (:Employee&Manager {name STRING})
+```
+
+A **property type** is the schema-level declaration of a single property belonging to a node type or edge type. It has three parts:
+
+- **Property name:** A unique identifier of the property within the type (e.g. `name`, `age`, `createdOn`).
+- **Property value type:** An explicit value type that all values of this property must conform to (e.g. `STRING`, `INT32`, `LOCAL DATETIME`). See <a target="_blank" href="/docs/gql/values-and-types#Property-Value-Types">Property Value Types</a>.
+- **Constraint type:** Optional, additional validation rule on the property (e.g. `NOT NULL`). See <a target="_blank" href="/docs/gql/constraints">Constraints</a>.
+
+```gql
+-- 'name' must be a non-null string; 'age' must be an integer; no other properties are allowed
+NODE User ({name STRING NOT NULL, age INTEGER})
+```
+
+### Edge Types
+
+An edge type is the schema definition that edges of a closed graph must conform to. Each edge type is identified by a unique edge type name and consists of one label and a set of property types. **Each edge belongs to one edge type.**
+
+<p tit="Syntax"></p>
+
+```
+<edge type> ::= 
+  "EDGE" [ "TYPE" ] <edge type name> { <edge type pattern> | <edge type phrase> }
+
+<edge type pattern> ::=
+  <source node label set> "-[" [ <property types> ] "]->" <destination node label set>
+
+<edge type phrase> ::=
+  [ <property types> ] "CONNECTING" "(" <source node type name> < "->" | "TO" > <destination node type name> ")"
+
+<property types> ::= "{" <property type> [ { "," <property type> } ... ] "}"
+
+<property type> ::= <property name> <property value type> [ <constraint type> ]
+```
+
+Unlike a node type, an edge type does not support additional labels — the edge type name is its only label. The property types follow the same rules as on <a href="#Node-Types">node types</a>.
+
+An edge type can also constrain its endpoints. The **pattern form** matches source and destination by label sets, while the **phrase form** references node-type names.
+
+Pattern form examples (endpoints are node-type label sets defined in the same graph type):
+
+<p tit="Edge Type"></p>
+
+```gql
+-- Connects any node to any node, no properties
+EDGE FOLLOWS ()-[]->()
+
+-- Connects any node to any node, with property 'since' of type DATE
+EDGE LIKES ()-[{since DATE}]->()
+
+-- Both source and destination label sets are :User
+EDGE FOLLOWS (:User)-[{since DATE}]->(:User)
+
+-- Source label set is :User&Employee, destination labet set is :Company
+EDGE WORKS_AT (:User&Employee)-[{title STRING}]->(:Company)
+```
+
+Phrase form examples (endpoints are node-type names defined in the same graph type):
+
+<p tit="Edge Type"></p>
+
+```gql
+-- Source and destination are both node type User
+EDGE FOLLOWS CONNECTING (User -> User)
+
+-- TO is an alias for ->
+EDGE JOINS CONNECTING (User TO Club)
+
+-- Properties precede the CONNECTING clause
+EDGE WORKS_AT {title STRING} CONNECTING (Employee -> Company)
+```
+
+## Creating Closed Graphs
+
+You have three ways to specify the graph type when creating a closed graph:
+
+<p tit="Syntax"></p>
+
+```
+<graph type specification> ::= 
+  <inline graph type> | <named graph type> | <inferred graph type>
+```
+
+### Inline Graph Type
+
+Define the node and edge types directly in the `CREATE GRAPH` statement.
+
+<p tit="Syntax"></p>
+
+```
+<inline graph type> ::= 
+  "{" [ <element type> [ { "," <element type> }... ] ] "}"
+
+<element type> = <node type> | <edge type>
+```
+
+Create a closed graph `g1` with inline graph type specification:
+
+```gql
+CREATE GRAPH g1 {
   NODE User ({name STRING, age UINT32}),
   NODE Club ({name STRING}),
   EDGE FOLLOWS ()-[{createdOn TIMESTAMP}]->(),
@@ -59,42 +143,16 @@ CREATE GRAPH g2 {
 }
 ```
 
-#### Label Set
-
-The node or edge type name automatically becomes a label. The **label set** of a node or edge type is the union of its type name and optional additional labels.
-
-When no additional labels are specified, the type name is the only label:
+You can also constrain edge type endpoints:
 
 ```gql
--- label set: [User]
-NODE User ({name STRING})
+CREATE GRAPH g2 {
+  NODE User (:Player {name STRING, age UINT32}),
+  NODE Club ({name STRING}),
+  EDGE FOLLOWS (:User&Player)-[{createdOn TIMESTAMP}]->(:User&Player),
+  EDGE JOINS (:User&Player)-[]->(:Club)
+}
 ```
-
-Add additional labels:
-
-```gql
--- label set: [User, Employee]
-NODE User (:Employee {name STRING})
-
--- label set: [User, Employee, Manager]
-NODE User (:Employee&Manager {name STRING})
-```
-
-#### Source and Destination Node Types
-
-Edge types can specify source and destination node types, where `<source/destination node type>` is `()` or `(<labels>)`. The `<labels>` is matched against the label sets of node types.
-
-```gql
--- The FOLLOWS edge connects any two nodes
-EDGE FOLLOWS ()-[{createdOn LOCAL DATETIME}]->()
-
--- The JOINS edge connects source nodes whose label set is [User,Employee] to destination nodes whose label set is [Company]
-EDGE JOINS (:User&Employee)-[{title STRING}]->(:Company)
-```
-
-#### Property Value Types
-
-Each node or edge type is associated with a set property types. Each property type is defined with a <a target="_blank" href="/docs/gql/values-and-types#Property-Value-Types">property value type</a>.
 
 ### Named Graph Type
 

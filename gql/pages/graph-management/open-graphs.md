@@ -2,7 +2,7 @@
 
 ## Overview
 
-The **open graph** is schema-free, requiring no explicit schema definitions before data insertion. You can directly insert nodes and edges into the graph, and their labels and properties are created on the fly. This offers maximum flexibility for early-stage data exploration.
+An **open graphs** is schema-free, requiring no explicit schema definitions before data insertion. You can directly insert nodes and edges, and their labels and properties are created on the fly. This offers maximum flexibility for early-stage data exploration.
 
 In an open graph,
 

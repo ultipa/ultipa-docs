@@ -315,6 +315,16 @@ List all defined properties:
 
 ```gql
 SHOW PROPERTIES
+
+-- SHOW PROPERTY is a singular alias
+SHOW PROPERTY
+```
+
+Filter by ontology prefix:
+
+```gql
+SHOW PROPERTIES FROM foaf
+SHOW PROPERTY FROM ex
 ```
 
 Returned columns:
