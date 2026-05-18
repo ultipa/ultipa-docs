@@ -8,37 +8,35 @@ Use ontology class and property labels in `INSERT`, `MATCH`, and `REMOVE` operat
 
 ### Ontology Labels on Nodes
 
-Use the `@prefix:class` syntax to assign ontology class labels to nodes.
+Use the `@prefix:class` syntax to assign ontology class labels to nodes. The leading colon before `@` is optional, both `(:@prefix:class)` and `(@prefix:class)` parse equivalently, with or without a variable.
 
-Insert node with ontology class label:
+Insert node with ontology class label (with or without the leading colon):
 
 ```gql
+INSERT (@foaf:Person {name: 'Alice', age: 30})
+
+-- Equivalent
 INSERT (:@foaf:Person {name: 'Alice', age: 30})
-```
 
-Insert node with multiple ontology labels using `&`:
-
-```gql
-INSERT (:@foaf:Person&@foaf:Agent {name: 'Bob'})
+-- Multiple ontology labels using &
+INSERT (@foaf:Person&@foaf:Agent {name: 'Bob'})
 ```
 
 ### Ontology Labels on Edges
 
-Edges have ontology labels using the `@prefix:objectProperty` syntax.
+Edges use the `@prefix:objectProperty` syntax. The same optional-colon rule applies as on nodes: `-[@prefix:objectProperty]->` and `-[:@prefix:objectProperty]->` parse equivalently, with or without an edge variable.
 
-Insert edge with ontology label:
+Insert edge with ontology label (with or without the leading colon):
 
 ```gql
 MATCH (a@ex:Person), (b@ex:Person)
 WHERE a.name = 'Alice' AND b.name = 'Bob'
+INSERT (a)-[@ex:knows]->(b)
+
+-- Equivalent
+MATCH (a@ex:Person), (b@ex:Person)
+WHERE a.name = 'Alice' AND b.name = 'Bob'
 INSERT (a)-[:@ex:knows]->(b)
-```
-
-Match edges by ontology property:
-
-```gql
-MATCH (a)-[r:@ex:knows]->(b)
-RETURN a.name, b.name
 ```
 
 ### Full IRI Form
@@ -48,10 +46,7 @@ Anywhere the prefixed form `@prefix:name` is accepted, the full-IRI form `@<http
 Node patterns:
 
 ```gql
-// These two are equivalent
-INSERT (:@ex:Person {name: 'Alice'})
-INSERT (:@<http://example.org/Person> {name: 'Alice'})
-
+-- These two are equivalent
 MATCH (n@ex:Person) RETURN n.name
 MATCH (n@<http://example.org/Person>) RETURN n.name
 ```
@@ -59,7 +54,9 @@ MATCH (n@<http://example.org/Person>) RETURN n.name
 Edge patterns:
 
 ```gql
-MATCH (a)-[:@<http://example.org/knows>]->(b) RETURN a.name, b.name
+-- These two are equivalent
+MATCH (a)-[@ex:knows]->(b) RETURN a.name, b.name
+MATCH (a)-[@<http://example.org/knows>]->(b) RETURN a.name, b.name
 ```
 
 DDL:
@@ -76,16 +73,18 @@ The IRI inside the angle brackets is a `IRI_LITERAL` token. It must be a valid I
 
 ## Matching by Ontology Label
 
-Match nodes by their ontology label using `@prefix:name` directly after the variable inside the pattern. In a `WHERE` clause, use `IS LABELED`.
+Match nodes by their ontology label by writing `@prefix:name` inside the pattern (with or without a leading colon), or filter in a `WHERE` clause using `IS LABELED` or the short colon form `n:@prefix:name`.
 
 | Syntax | Description |
 | -- | -- |
-| `MATCH (n@prefix:class)` | Match nodes by ontology class label inside the pattern |
+| `MATCH (n@prefix:class)` | Match nodes by ontology class inside the pattern |
+| `MATCH (n:@prefix:class)` | Same as above, with a leading colon |
 | `MATCH (n) WHERE n IS LABELED @prefix:class` | Filter by ontology label in a `WHERE` clause |
+| `MATCH (n) WHERE n:@prefix:class` | Short colon form for the same filter |
 
-> The forms `(n:@prefix:class)`, `WHERE n@prefix:class`, and `WHERE n:@prefix:class` are not supported.
+> The form `WHERE n@prefix:class` (no colon after the variable in a `WHERE` clause) is **not** supported.
 
-Match nodes by ontology class:
+Match nodes by ontology class inside the pattern:
 
 ```gql
 MATCH (n@ex:Person)
@@ -93,11 +92,19 @@ WHERE n.age > 25
 RETURN n.name, n.age
 ```
 
-Filter in a `WHERE` clause:
+Filter in a `WHERE` clause with `IS LABELED`:
 
 ```gql
 MATCH (n)
 WHERE n IS LABELED @ex:Person
+RETURN n.name
+```
+
+Or with the short colon form:
+
+```gql
+MATCH (n)
+WHERE n:@ex:Person
 RETURN n.name
 ```
 
@@ -150,15 +157,15 @@ Result:
 Label match vs IRI match:
 
 ```gql
-// Given: (:@ex:Person {name: 'Alice', _iri: 'http://example.org/alice'})
+-- Given: (:@ex:Person {name: 'Alice', _iri: 'http://example.org/alice'})
 
-// This matches by LABEL (ontology class)
+-- This matches by LABEL (ontology class)
 MATCH (n@ex:Person) RETURN n.name  // Returns Alice
 
-// This matches by _iri PROPERTY
+-- This matches by _iri PROPERTY
 MATCH (n@=ex:alice) RETURN n.name  // Returns Alice
 
-// These are DIFFERENT - one checks label, one checks _iri property
+-- These are DIFFERENT: one checks label, one checks _iri property
 ```
 
 ## Removing Ontology Labels
@@ -176,7 +183,7 @@ REMOVE n@foaf:Person
 Verify label was removed:
 
 ```gql
-// This now returns empty - Alice no longer has the label
+-- This now returns empty; Alice no longer has the label
 MATCH (n@foaf:Person)
 WHERE n.name = 'Alice'
 RETURN n

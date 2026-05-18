@@ -21,7 +21,7 @@ How it compares to plain LPG edges/properties:
 
 Mental model: an LPG edge is just a typed wire between two nodes, and an LPG property is a free-form key/value. An ontology object property is a wire that **also** says where it's allowed to start and end and how it behaves under inference; an ontology data property is an attribute that **also** says which classes it belongs to and what type its value must be — and the database uses those declarations during query and validation.
 
-## Object Properties
+## Creating Object Properties
 
 Object properties define **edge types**.
 
@@ -59,17 +59,13 @@ With no `DOMAIN` or `RANGE`, the engine performs no endpoint validation: `@ex:li
 > The classes named in `DOMAIN` and `RANGE` do not need to exist when the property is created, they are stored as IRIs and only checked at insert/match time. Only the **prefix** must be loaded.
 
 ```gql
-// Person knows Person
+-- Person knows Person
 CREATE OBJECT PROPERTY @ex:knows DOMAIN @ex:Person RANGE @ex:Person
-```
 
-```gql
-// Person works for Organization
+-- Person works for Organization
 CREATE OBJECT PROPERTY @ex:worksFor DOMAIN @ex:Person RANGE @foaf:Organization
-```
 
-```gql
-// Only the source is constrained, RANGE can be anything
+-- Only the source is constrained, RANGE can be anything
 CREATE OBJECT PROPERTY @ex:owns DOMAIN @ex:Person
 ```
 
@@ -90,47 +86,50 @@ Properties can have special characteristics that affect behavior. The DDL keywor
 Insert one direction; the reverse is inferred.
 
 ```gql
-// knows is symmetric: if A knows B, B knows A
+-- knows is symmetric: if A knows B, B knows A
 CREATE OBJECT PROPERTY @ex:knows DOMAIN @ex:Person RANGE @ex:Person SYMMETRIC
+
+-- Insert Lee -> Julia
+INSERT (:@ex:Person {name: 'Lee'})-[:@ex:knows]->(:@ex:Person {name: 'Julia'})
+
+-- Match knows relationships
+MATCH (a)-[:@ex:knows]->(b) RETURN a.name, b.name  // (Lee, Julia) and (Julia, Lee)
 ```
-
-Example:
-
-```gql
-INSERT (:@ex:Person {name: 'Alice'})-[:@ex:knows]->(:@ex:Person {name: 'Bob'})
-MATCH (a)-[:@ex:knows]->(b) RETURN a.name, b.name
-```
-
-Result: 
-
-| a.name | b.name |
-| -- | -- |
-| Alice | Bob |
-| Bob | Alice |
 
 #### TRANSITIVE
 
 Insert a chain; the end-to-end edge is inferred.
 
 ```gql
-// ancestorOf is transitive: if A ancestor of B, B ancestor of C, then A ancestor of C
-CREATE OBJECT PROPERTY @ex:ancestorOf DOMAIN @ex:Person RANGE @ex:Person TRANSITIVE
+-- ancestorOf is transitive: if A ancestor of B, B ancestor of C, then A ancestor of C
+CREATE OBJECT PROPERTY @ex:ancestorOf DOMAIN @ex:Person RANGE @ex:Person TRANSITIVE 
+
+-- Insert D->C->B->A
+INSERT (:@ex:Person {name: 'D'})-[:@ex:ancestorOf]->(:@ex:Person {name: 'C'})-[:@ex:ancestorOf]->(:@ex:Person {name: 'B'})-[:@ex:ancestorOf]->(:@ex:Person {name: 'A'})
+
+-- Match C->A
+MATCH p = (:@ex:Person {name: 'C'})-[:@ex:ancestorOf]->(:@ex:Person {name: 'A'}) 
+RETURN p  // C->A
+
+-- Match D->A
+MATCH p = (:@ex:Person {name: 'D'})-[:@ex:ancestorOf]->(:@ex:Person {name: 'A'}) 
+RETURN p  // D->A
 ```
 
-Example:
+Transitive inference is bounded by a per-graph **maximum expansion depth**; chains longer than the limit are not inferred.
+
+- **Default**: `10` hops. With the default, K→...→A over 10 intermediate `@ex:ancestorOf` edges still infers K→A, but a 11-hop chain (L→A) does not.
+- **Configurable** with `SET ONTOLOGY TRANSITIVE DEPTH <N>`. The value must be a positive integer (`1, 2, 3, …`) or the sentinel `-1` for unbounded expansion. Any other value is rejected.
 
 ```gql
-INSERT (:@ex:Person {name: 'Alice'})-[:@ex:ancestorOf]->(:@ex:Person {name: 'Bob'})-[:@ex:ancestorOf]->(:@ex:Person {name: 'Carol'})
-MATCH (x)-[:@ex:ancestorOf]->(y) RETURN x.name, y.name
+-- Limit transitive expansion to 25 levels
+SET ONTOLOGY TRANSITIVE DEPTH 25
+
+-- Remove the limit (full transitive closure)
+SET ONTOLOGY TRANSITIVE DEPTH -1
 ```
 
-Result:
-
-| x.name | y.name |
-| -- | -- |
-| Alice | Bob |
-| Bob | Carol |
-| Alice | Carol |
+Cycles are detected at traversal time, so a closed loop in the chain does not cause infinite expansion regardless of the configured depth.
 
 #### FUNCTIONAL
 
@@ -139,49 +138,38 @@ Each source node may have at most one outgoing edge of this property. Under `STR
 ```gql
 SET ONTOLOGY ENFORCEMENT STRICT
 
-// hasBirthPlace is functional: a person has only one birthplace
+-- hasBirthPlace is functional: a person has only one birthplace
 CREATE OBJECT PROPERTY @ex:hasBirthPlace DOMAIN @ex:Person RANGE @ex:Location FUNCTIONAL
-```
 
-Example:
+-- Insert Jeff -> Boston
+INSERT (@ex:Person {name: 'Jeff'})-[:@ex:hasBirthPlace]->(@ex:Location {name: 'Boston'})
 
-```gql
-// Error: FUNCTIONAL violation — Alice has two hasBirthPlace edges
-INSERT (a@ex:Person {name: 'Alice'}),
-       (a)-[:@ex:hasBirthPlace]->(:@ex:Location {name: 'Boston'}),
-       (a)-[:@ex:hasBirthPlace]->(:@ex:Location {name: 'Chicago'})
+-- Insert Jeff -> Boston 
+-- FUNCTIONAL violation error: Jeff cannot have two hasBirthPlace edges
+MATCH (jeff@ex:Person {name: 'Jeff'})
+INSERT (jeff)-[:@ex:hasBirthPlace]->(@ex:Location {name: 'Chicago'})
 ```
 
 ### Inverse Properties
 
-Define inverse relationships. When you create one edge, the inverse is automatically inferred:
+Define inverse relationships. When you create one edge, the inverse is automatically inferred.
 
 ```gql
-// worksFor and employs are inverses
-CREATE OBJECT PROPERTY @ex:worksFor DOMAIN @ex:Person RANGE @foaf:Organization
-CREATE OBJECT PROPERTY @ex:employs DOMAIN @foaf:Organization RANGE @ex:Person INVERSE OF @ex:worksFor
+-- worksFor and employs are inverses
+CREATE OBJECT PROPERTY @ex:worksFor DOMAIN @ex:Person RANGE @ex:Organization
+CREATE OBJECT PROPERTY @ex:employs DOMAIN @ex:Organization RANGE @ex:Person INVERSE OF @ex:worksFor
+
+-- Insert Emily worksFor Acme Inc
+INSERT (@ex:Person {name: 'Emily'})-[@ex:worksFor]->(@ex:Organization {name: 'Acme Inc'})
+
+-- Query the inverse with employs edge
+MATCH p = (org)-[@ex:employs]->(person)
+RETURN p  // Acme Inc -> Emily
 ```
-
-Example:
-
-```gql
-// Insert worksFor edge
-INSERT (:@ex:Person {name: 'Alice'})-[:@ex:worksFor]->(:@foaf:Organization {name: 'Acme'})
-
-// Query employs (inverse) - returns the same relationship
-MATCH (org)-[:@ex:employs]->(person)
-RETURN org.name, person.name
-```
-
-Result:
-
-| org.name | person.name |
-| -- | -- |
-| Acme | Alice |
 
 ### Cardinality Constraints
 
-Use `CARDINALITY {min, max}` to limit how many outgoing edges of a property a source node may have. `*` denotes "unbounded". Cardinality is enforced for **object properties** at insert time.
+Use `CARDINALITY {min, max}` to limit how many outgoing edges of a property a source node may have. `*` denotes "unbounded". Cardinality is enforced for object properties at insert time.
 
 ```gql
 // Exactly one: every country has exactly one capital
@@ -217,7 +205,7 @@ CREATE OBJECT PROPERTY @ex:hasSpouse
   FUNCTIONAL
 ```
 
-## Data Properties
+## Creating Data Properties
 
 Data properties define attributes with XSD types. Both `DOMAIN` and `RANGE` are optional, and `RANGE` takes the XSD type.
 
@@ -238,26 +226,44 @@ Data properties define attributes with XSD types. Both `DOMAIN` and `RANGE` are 
 ```
 
 ```gql
-// String property
+-- String properties
 CREATE DATA PROPERTY @foaf:name DOMAIN @foaf:Agent RANGE xsd:string
-```
 
-```gql
-// Numeric properties
+-- Numeric properties
 CREATE DATA PROPERTY @foaf:age DOMAIN @foaf:Person RANGE xsd:integer
 CREATE DATA PROPERTY @ex:salary DOMAIN @ex:Employee RANGE xsd:decimal
-```
 
-```gql
-// Date/time properties
+-- Datetime properties
 CREATE DATA PROPERTY @ex:birthDate DOMAIN @ex:Person RANGE xsd:date
 CREATE DATA PROPERTY @ex:createdAt DOMAIN @ex:Document RANGE xsd:dateTime
-```
 
-```gql
-// Boolean property
+-- Boolean properties
 CREATE DATA PROPERTY @ex:isActive DOMAIN @ex:Account RANGE xsd:boolean
 ```
+
+Data properties accept the same `CARDINALITY {min, max}` clause as object properties:
+
+```gql
+-- Required, single-valued: every Person must have exactly one name
+CREATE DATA PROPERTY @ex:fullName
+  DOMAIN @ex:Person
+  RANGE xsd:string
+  CARDINALITY {1,1}
+
+-- Multi-valued: a Person may carry up to 3 email addresses
+CREATE DATA PROPERTY @ex:email
+  DOMAIN @ex:Person
+  RANGE xsd:string
+  CARDINALITY {0,3}
+
+-- Unbounded: zero or more tags
+CREATE DATA PROPERTY @ex:tag
+  DOMAIN @ex:Document
+  RANGE xsd:string
+  CARDINALITY {0,*}
+```
+
+At insert time the engine rejects values that violate the bounds: too few (when `min > 0`) or more than `max` values for the same property on a single node.
 
 ### Supported XSD Types
 
@@ -279,52 +285,43 @@ CREATE DATA PROPERTY @ex:isActive DOMAIN @ex:Account RANGE xsd:boolean
 A data property is used as a key in the node's property map, using its **local name** (not the prefixed form). The value is validated against the property's `RANGE`.
 
 ```gql
-CREATE DATA PROPERTY @ex:age DOMAIN @ex:Person RANGE xsd:integer
+-- Every Person must have exactly one integer-valued age
+CREATE DATA PROPERTY @ex:age 
+  DOMAIN @ex:Person RANGE xsd:integer 
+  CARDINALITY {1,1}
+
+-- Insert Person with integer-valued age
+INSERT (@ex:Person {name: 'Alice', age: 30})
+
+-- Insert Person with string-valued age
+-- Type validation error (or warning, depending on enforcement mode)
+INSERT (@ex:Person {name: 'Bob', age: 'thirty'})
+
+-- Insert Person without age
+-- Cardinality validation error (or warning, depending on enforcement mode)
+INSERT (@ex:Person {name: 'Sam'})
 ```
 
-```gql
-INSERT (:@ex:Person {name: 'Alice', age: 30})
-
-MATCH (p@ex:Person)
-RETURN p.name, p.age
-```
-
-Result:
-
-| p.name | p.age |
-| -- | -- |
-| Alice | 30 |
-
-A value that doesn't match `RANGE` raises a `TYPE_MISMATCH` validation error (or warning, depending on enforcement mode):
-
-```gql
-// Error: TYPE_MISMATCH — age expects xsd:integer
-INSERT (:@ex:Person {name: 'Bob', age: 'thirty'})
-```
-
-Attributes whose local name doesn't match any declared data property are stored as plain LPG properties without ontology validation:
-
-```gql
-// nickname is not a declared data property — stored as plain LPG property, no type check
-INSERT (:@ex:Person {name: 'Carol', nickname: 'C'})
-```
+Attributes whose local name doesn't match any declared data property are stored as plain LPG properties without ontology validation.
 
 ## Showing Properties
 
-List all defined properties:
+Show all defined properties (both object and data):
 
 ```gql
 SHOW PROPERTIES
 
 -- SHOW PROPERTY is a singular alias
 SHOW PROPERTY
-```
 
-Filter by ontology prefix:
+-- List only one kind
+SHOW OBJECT PROPERTIES
+SHOW DATA PROPERTIES
 
-```gql
+-- Filter by ontology prefix with `FROM`:
 SHOW PROPERTIES FROM foaf
-SHOW PROPERTY FROM ex
+SHOW OBJECT PROPERTIES FROM ex
+SHOW DATA PROPERTIES FROM foaf
 ```
 
 Returned columns:
@@ -336,7 +333,7 @@ Returned columns:
 | `type` | `ObjectProperty` for an object property, `DatatypeProperty` for a data property. |
 | `domain` | The full IRI of the class declared in `DOMAIN`. Empty when no `DOMAIN` was specified. |
 | `range` | For an object property, the full IRI of the class in `RANGE`. For a data property, the XSD-type IRI (e.g., `http://www.w3.org/2001/XMLSchema#integer`). Empty when no `RANGE` was specified. |
-| `characteristics` | `Symmetric`, `Transitive`, or `Functional` when set. Empty otherwise. **`INVERSE OF` and `CARDINALITY {min,max}` are stored but not surfaced here** — inspect the underlying ontology metadata to see those. |
+| `characteristics` | Comma-separated list of property characteristics. For object properties: any subset of `Symmetric`, `Transitive`, `Functional`, `InverseFunctional`, `Reflexive`, `Irreflexive`, `Asymmetric` (the last four only appear when imported from an external OWL ontology). For data properties: only `Functional` is reported. Empty when no characteristic is set. **`INVERSE OF` and `CARDINALITY {min,max}` are stored but not surfaced here** — inspect the underlying ontology metadata to see those. |
 
 Example output:
 

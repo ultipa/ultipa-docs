@@ -61,6 +61,14 @@ Or load all built-in standard prefixes (foaf, rdf, rdfs, owl, xsd, etc.) in one 
 LOAD ALL PREFIX
 ```
 
+To bulk-load every prefix declared in an RDF document at a URL or file path:
+
+```gql
+LOAD PREFIX ALL FROM 'http://xmlns.com/foaf/spec/index.rdf'
+LOAD PREFIX ALL FROM <http://xmlns.com/foaf/spec/index.rdf>
+LOAD PREFIX ALL FROM 'file:///srv/onto/foaf.ttl'
+```
+
 View loaded prefixes:
 
 ```gql

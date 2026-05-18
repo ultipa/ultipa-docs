@@ -14,27 +14,17 @@ Control how strictly ontology rules are enforced with three modes:
 | `WARNING` (default) | Violations are logged but operations proceed |
 | `OFF` | No validation (useful for bulk imports) |
 
-Check current enforcement mode:
-
 ```gql
+-- Check current enforcement mode
 SHOW ONTOLOGY ENFORCEMENT
-```
 
-Enable strict enforcement:
-
-```gql
+-- Enable strict enforcement
 SET ONTOLOGY ENFORCEMENT STRICT
-```
 
-Enable warning mode:
-
-```gql
+-- Enable warning mode
 SET ONTOLOGY ENFORCEMENT WARNING
-```
 
-Disable enforcement:
-
-```gql
+-- Disable enforcement
 SET ONTOLOGY ENFORCEMENT OFF
 ```
 
@@ -43,17 +33,16 @@ SET ONTOLOGY ENFORCEMENT OFF
 In `STRICT` mode, any ontology constraint violation will cause an error and block the operation. Use this in production to ensure data quality.
 
 ```gql
-// Setup domain/range constraints
+-- Setup domain/range constraints
 CREATE OBJECT PROPERTY @ex:worksFor DOMAIN @ex:Person RANGE @ex:Organization
 
 SET ONTOLOGY ENFORCEMENT STRICT
 
-// This succeeds: Person -> Organization
-INSERT (:@ex:Person {name: 'Alice'})-[:@ex:worksFor]->(:@ex:Organization {name: 'Acme'})
+-- This succeeds: Person -> Organization
+INSERT (@ex:Person {name: 'Alice'})-[@ex:worksFor]->(@ex:Organization {name: 'Acme'})
 
-// This fails: Organization -> Organization violates DOMAIN
-// Error: Domain constraint violation - source must be @ex:Person
-INSERT (:@ex:Organization {name: 'Org1'})-[:@ex:worksFor]->(:@ex:Organization {name: 'Org2'})
+-- This fails: Organization -> Organization violates DOMAIN
+INSERT (@ex:Organization {name: 'Org1'})-[@ex:worksFor]->(@ex:Organization {name: 'Org2'})
 ```
 
 ### Warning Mode
@@ -63,9 +52,9 @@ In `WARNING` mode, constraint violations are logged but operations proceed. Use 
 ```gql
 SET ONTOLOGY ENFORCEMENT WARNING
 
-// This succeeds but logs a warning
-// Warning logged: Domain constraint violation - source should be @ex:Person
-INSERT (:@ex:Organization {name: 'Org1'})-[:@ex:worksFor]->(:@ex:Organization {name: 'Org2'})
+-- This succeeds but logs a warning
+-- Warning logged: Domain constraint violation - source should be @ex:Person
+INSERT (@ex:Organization {name: 'Org1'})-[@ex:worksFor]->(@ex:Organization {name: 'Org2'})
 ```
 
 View warnings after operations:
@@ -76,28 +65,28 @@ SHOW ONTOLOGY WARNINGS
 
 Result:
 
-| timestamp | type | message |
+| type | message | timestamp |
 | -- | -- | -- |
-| 2024-03-15T10:30:00 | DOMAIN_MISMATCH | worksFor: source should be Person, got Organization |
+| DOMAIN_MISMATCH | Source node does not match domain constraint for @ex:worksFor (expected: [http://example.org/Person]) | 1779101828 |
 
 ## Bulk Import Workflow
 
 For large data imports, disable enforcement during import and validate afterward for better performance.
 
 ```gql
-// Disable enforcement for bulk import
+-- Disable enforcement for bulk import
 SET ONTOLOGY ENFORCEMENT OFF
 
-// Perform bulk import operations
-INSERT (:@ex:Person {name: 'Alice'})
-INSERT (:@ex:Person {name: 'Bob'})
-INSERT (:@ex:Organization {name: 'Acme'})
-// ... thousands more inserts ...
+-- Perform bulk import operations
+INSERT (@ex:Person {name: 'Alice'})
+INSERT (@ex:Person {name: 'Bob'})
+INSERT (@ex:Organization {name: 'Acme'})
+// thousands more inserts ...
 
-// Re-enable enforcement
+-- Re-enable enforcement
 SET ONTOLOGY ENFORCEMENT WARNING
 
-// Validate the imported data
+-- Validate the imported data
 VALIDATE ONTOLOGY
 ```
 
@@ -132,8 +121,8 @@ CREATE OBJECT PROPERTY @ex:employs DOMAIN @ex:Organization RANGE @ex:Person
 
 SET ONTOLOGY ENFORCEMENT WARNING
 
-// DOMAIN_MISMATCH: source should be @ex:Organization, not @ex:Person
-INSERT (:@ex:Person {name: 'Alice'})-[:@ex:employs]->(:@ex:Person {name: 'Bob'})
+-- DOMAIN_MISMATCH: source should be @ex:Organization, not @ex:Person
+INSERT (@ex:Person {name: 'Alice'})-[@ex:employs]->(@ex:Person {name: 'Bob'})
 
 VALIDATE ONTOLOGY
 ```
@@ -165,17 +154,17 @@ Domain violation example:
 ```gql
 CREATE OBJECT PROPERTY @ex:employs DOMAIN @ex:Organization RANGE @ex:Person
 
-// Wrong: Person cannot employ (domain is Organization)
-// DOMAIN_MISMATCH: source must be @ex:Organization
-INSERT (:@ex:Person {name: 'Alice'})-[:@ex:employs]->(:@ex:Person {name: 'Bob'})
+-- Wrong: Person cannot employ (domain is Organization)
+-- DOMAIN_MISMATCH: source must be @ex:Organization
+INSERT (@ex:Person {name: 'Alice'})-[@ex:employs]->(@ex:Person {name: 'Bob'})
 ```
 
 Range violation example:
 
 ```gql
-// Wrong: Organization cannot be employed (range is Person)
-// RANGE_MISMATCH: target must be @ex:Person
-INSERT (:@ex:Organization {name: 'Acme'})-[:@ex:employs]->(:@ex:Organization {name: 'Other'})
+-- Wrong: Organization cannot be employed (range is Person)
+-- RANGE_MISMATCH: target must be @ex:Person
+INSERT (@ex:Organization {name: 'Acme'})-[@ex:employs]->(@ex:Organization {name: 'Other'})
 ```
 
 ## Viewing Warnings
@@ -186,10 +175,12 @@ When using WARNING mode, violations are stored in a warnings log that you can qu
 SHOW ONTOLOGY WARNINGS
 ```
 
-| timestamp | type | element | message |
-| -- | -- | -- | -- |
-| 2024-03-15T10:30:00 | DOMAIN_MISMATCH | edge:123 | worksFor: source should be Person |
-| 2024-03-15T10:35:00 | CLASS_NOT_FOUND | node:456 | Unknown class: @ex:Unknown |
+Example output:
+
+| type | message | timestamp |
+| -- | -- | -- |
+| TYPE_MISMATCH	| Property age expects http://www.w3.org/2001/XMLSchema#integer, got types.StringValue | 1779101357 |
+| CARDINALITY_VIOLATION	| Property fullName requires at least 1 value(s), got 0	| 1779101357 |
 
 Reset the accumulated warnings log:
 
@@ -199,11 +190,10 @@ CLEAR ONTOLOGY WARNINGS
 
 ## Transitive Inference Depth
 
-`TRANSITIVE` object properties expand inference chains across edges. Use `SET ONTOLOGY TRANSITIVE_DEPTH` to cap how many hops the engine will traverse — useful in deep graphs where unbounded expansion is too expensive.
+`TRANSITIVE` object properties expand inference chains across edges. Use `SET ONTOLOGY TRANSITIVE DEPTH` to cap how many hops the engine will traverse — useful in deep graphs where unbounded expansion is too expensive.
 
 ```gql
-// Limit transitive expansion to 5 hops
-SET ONTOLOGY TRANSITIVE_DEPTH 5
+SET ONTOLOGY TRANSITIVE DEPTH 5
 ```
 
 The depth is the **maximum length of the real-edge chain** that produces an inferred edge. With `5`, source-to-target chains of 1–5 real edges yield an inferred edge; chains of 6 or more do not.

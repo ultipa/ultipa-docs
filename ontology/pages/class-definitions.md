@@ -48,69 +48,81 @@ CREATE CLASS @ex:Mountain
 CREATE CLASS @ex:Location
 ```
 
-## Creating Class Hierarchy
-
 ### SUBCLASS OF
 
-Use `SUBCLASS OF` to declare inheritance. Here `@foaf:Person` and `@foaf:Organization` both have `@foaf:Agent` as their superclass:
+Use `SUBCLASS OF` to declare inheritance. 
 
 ```gql
-CREATE CLASS @foaf:Agent
-CREATE CLASS @foaf:Person SUBCLASS OF @foaf:Agent
-CREATE CLASS @foaf:Organization SUBCLASS OF @foaf:Agent
+-- @foaf:Agent has @foaf:Person as its superclass
+CREATE CLASS @foaf:Person
+CREATE CLASS @foaf:Agent SUBCLASS OF @foaf:Person
+
+-- Insert an agent
+INSERT (@foaf:Agent {name: 'Alice'})
+
+-- Query for @foaf:Person
+MATCH (n@foaf:Person) RETURN n.name  // Alice
 ```
 
-Hierarchies can chain. Here `@ex:Manager` is a subclass of `@ex:Employee`, which is a subclass of `@ex:Person`:
+Hierarchies can chain:
 
 ```gql
+-- @ex:Manager is a subclass of @ex:Employee, which is a subclass of @ex:Person
 CREATE CLASS @ex:Person
 CREATE CLASS @ex:Employee SUBCLASS OF @ex:Person
 CREATE CLASS @ex:Manager SUBCLASS OF @ex:Employee
+
+-- Insert a manager
+INSERT (@ex:Manager {name: 'Bob'})
+
+-- Query for @ex:Employee
+MATCH (n@ex:Employee) RETURN n.name  // Bob
+
+-- Query for @ex:Person
+MATCH (n@ex:Person) RETURN n.name    // Bob
 ```
 
-### Subclass Inference
+A class can have multiple direct superclasses (OWL multi-parent inheritance). List the parents after `SUBCLASS OF`, separated by commas. A node of the subclass is automatically inferred to belong to every ancestor class, and a query for any parent returns it.
 
-Continuing from the chain above (`@ex:Employee SUBCLASS OF @ex:Person`), insert an Employee:
+Two parallel roles combined into one class:
 
 ```gql
-INSERT (:@ex:Employee {name: 'Alice', role: 'Engineer'})
+-- @ex:TeachingAssistant is a subclass of both @ex:Student and @ex:Staff
+CREATE CLASS @ex:Student
+CREATE CLASS @ex:Staff
+CREATE CLASS @ex:TeachingAssistant SUBCLASS OF @ex:Student, @ex:Staff
+
+-- Insert a TeachingAssistant
+INSERT (@ex:TeachingAssistant {name: 'Amy'})
+
+-- Query for @ex:Student
+MATCH (n@ex:Student) RETURN n.name  // Amy
+
+-- Query for @ex:Staff
+MATCH (n@ex:Staff) RETURN n.name    // Amy
 ```
-
-Query for `@ex:Person` — `Alice` is returned, because `Employee` is a subclass of `Person`:
-
-```gql
-MATCH (n@ex:Person)
-RETURN n.name, n.role
-```
-
-Result:
-
-| n.name | n.role |
-| -- | -- |
-| Alice | Engineer |
-
-Querying for `@ex:Employee` directly returns the same row:
-
-```gql
-MATCH (n@ex:Employee)
-RETURN n.name, n.role
-```
-
-Result:
-
-| n.name | n.role |
-| -- | -- |
-| Alice | Engineer |
-
-## Disjoining Classes
 
 ### DISJOINT WITH
 
 Declare two classes mutually exclusive — no node may carry both labels:
 
 ```gql
+-- @ex:Cat and @ex:Dog are disjoint 
 CREATE CLASS @ex:Cat
 CREATE CLASS @ex:Dog DISJOINT WITH @ex:Cat
+```
+
+By default, ontology violations are logged as warnings but the operation proceeds (mode `WARNING`). Switch to `STRICT` to make violations fail with an error:
+
+```gql
+SET ONTOLOGY ENFORCEMENT STRICT
+```
+
+Now the following insert fails — a node cannot be both `@ex:Cat` and `@ex:Dog`:
+
+```gql
+// Error: DISJOINT WITH violation
+INSERT (@ex:Cat&@ex:Dog {name: 'Mystery'})
 ```
 
 `DISJOINT WITH` accepts a comma-separated list, so a class can be declared disjoint from several others at once:
@@ -128,23 +140,6 @@ CREATE CLASS @ex:Contractor
 CREATE CLASS @ex:Intern SUBCLASS OF @ex:Person DISJOINT WITH @ex:Contractor
 ```
 
-### Disjoint Classes
-
-By default, ontology violations are logged as warnings but the operation proceeds (mode `WARNING`). Switch to `STRICT` to make violations fail with an error:
-
-```gql
-SET ONTOLOGY ENFORCEMENT STRICT
-```
-
-Now the following insert fails — a node cannot be both `@ex:Cat` and `@ex:Dog`:
-
-```gql
-// Error: DISJOINT WITH violation
-INSERT (:@ex:Cat&@ex:Dog {name: 'Mystery'})
-```
-
-See <a href="/docs/ontology/validation">Validation & Enforcement</a> for the full mode comparison.
-
 ## Showing Classes
 
 List all defined classes:
@@ -159,17 +154,42 @@ Returned columns:
 | -- | -- |
 | `class` | The full IRI of the class — the prefix value concatenated with the local name (e.g., `http://example.org/Person` for `@ex:Person`). |
 | `localName` | The part after the colon in `@prefix:LocalName` (e.g., `Person`). |
-| `superClasses` | The full IRI of the direct parent declared via `SUBCLASS OF`. Empty when the class has no parent. |
-| `label` | Human-readable label for the class. Defaults to the local name when none was set by the source ontology. |
+| `superClasses` | The full IRI(s) of the direct parent(s) declared via `SUBCLASS OF`, comma-separated when there is more than one. Empty when the class has no parent. |
+| `label` | Human-readable label for the class. Falls back to the qualified `@prefix:LocalName` form when no `rdfs:label` was attached (for example, when the class is hand-created with bare `CREATE CLASS @ex:Manager`). |
 
 Example output:
 
 | class | localName | superClasses | label |
 | -- | -- | -- | -- |
-| http://example.org/Person | Person | | Person |
-| http://example.org/Employee | Employee | http://example.org/Person | Employee |
-| http://example.org/Cat | Cat | | Cat |
-| http://example.org/Dog | Dog | | Dog |
+| http://example.org/Person | Person | | @ex:Person |
+| http://example.org/Employee | Employee | http://example.org/Person | @ex:Employee |
+| http://example.org/Manager | Manager | http://example.org/Employee, http://example.org/Leader | @ex:Manager |
+| http://example.org/Cat | Cat | | @ex:Cat |
+
+Filter the output to a single prefix:
+
+```gql
+SHOW CLASSES FROM ex
+```
+
+Drill down into one class with `SHOW CLASS @prefix:Name` — a richer view that adds subclasses, disjoint classes, the properties that name this class as their domain, and a live instance count:
+
+```gql
+SHOW CLASS @ex:Person
+```
+
+Returned columns:
+
+| Column | Description |
+| -- | -- |
+| `class` | The full IRI of the class. |
+| `localName` | The local name (the part after the colon). |
+| `prefix` | The prefix associated with the class's IRI namespace. |
+| `superClasses` | Comma-separated full IRIs of every direct parent. |
+| `subclasses` | Comma-separated full IRIs of every direct subclass. |
+| `disjointWith` | Comma-separated full IRIs of classes declared mutually exclusive via `DISJOINT WITH`. |
+| `domainOf` | Comma-separated full IRIs of object and data properties whose `DOMAIN` includes this class. |
+| `instanceCount` | The number of nodes currently carrying this class label (taken from statistics). |
 
 ## Dropping Classes
 
