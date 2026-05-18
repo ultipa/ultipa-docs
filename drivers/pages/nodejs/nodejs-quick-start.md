@@ -10,7 +10,7 @@ Install the package using npm:
 npm install @ultipa-graph/ultipa-driver
 ```
 
-> Check <a href="https://www.npmjs.com/package/@ultipa-graph/ultipa-driver" target="_blank">npm</a> for the latest version. To install a specific version: `npm install @ultipa-graph/ultipa-driver@6.0.6`
+> Find the latest version on <a href="https://www.npmjs.com/package/@ultipa-graph/ultipa-driver" target="_blank">npm</a>. To pin a specific version: `npm install @ultipa-graph/ultipa-driver@6.x.x` (replace `6.x.x` with the desired release).
 
 ## Connect to Database
 

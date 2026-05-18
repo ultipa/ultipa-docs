@@ -166,21 +166,65 @@ enum CacheType {
 }
 ```
 
+## InsertType Enum
+
+Controls the GQL keyword emitted by `insertNodes(nodes, …)` / `insertEdges(edges, …)`. Note: Node.js uses PascalCase enum values, unlike the other SDKs.
+
+```typescript
+import { InsertType } from '@ultipa-graph/ultipa-driver';
+
+enum InsertType {
+  Normal = 0,       // INSERT — errors on duplicate _id
+  Overwrite = 1,    // INSERT OVERWRITE — replaces entity wholesale on duplicate _id
+  Upsert = 2,       // UPSERT — merges new properties into existing entity on duplicate _id
+}
+```
+
+`Overwrite` drops properties not present in the write. `Upsert` preserves them and only overwrites the ones present in the write. They are not interchangeable.
+
+## InsertConfig
+
+Per-call configuration for the GQL-path insert convenience methods. Extends [`QueryConfig`](nodejs-executing-queries.md):
+
+```typescript
+import { InsertConfig, InsertType } from '@ultipa-graph/ultipa-driver';
+
+interface InsertConfig extends QueryConfig {
+  insertType?: InsertType;            // defaults to InsertType.Normal when omitted
+  // inherits from QueryConfig:
+  //   graphName?: string;
+  //   parameters?: Record<string, any>;
+  //   transactionId?: number;
+  //   timeout?: number;
+  //   readOnly?: boolean;
+  //   maxPathResults?: number;
+}
+```
+
 ## Type Interfaces
 
 ### Node Types
 
 ```typescript
-// Data for inserting nodes
+// Data for inserting nodes (input to insertNodes)
 interface NodeData {
-  id?: string;                        // Optional node ID
+  id?: string;                        // Optional custom _id (auto-generated when empty)
   labels: string[];
   properties: Record<string, any>;
 }
 
-// Node from query results
+// Node from query results (returned in Response rows)
 interface Node {
   id: string;
+  labels: string[];
+  properties: Record<string, any>;
+}
+
+// Internal/wire-level node representation (gqldb 6.1.147+ carries uuid)
+interface GqldbNode {
+  id: string;                         // user-facing identifier
+  uuid: string;                       // system numeric handle, decimal-formatted;
+                                      // '' on pre-6.1.147 servers
   labels: string[];
   properties: Record<string, any>;
 }
@@ -189,8 +233,9 @@ interface Node {
 ### Edge Types
 
 ```typescript
-// Data for inserting edges
+// Data for inserting edges (input to insertEdges)
 interface EdgeData {
+  id?: string;                        // Optional custom _id (requires WITH EDGE_ID graph)
   label: string;
   fromNodeId: string;
   toNodeId: string;
@@ -206,6 +251,15 @@ interface Edge {
   properties: Record<string, any>;
 }
 
+// Internal/wire-level edge representation
+interface GqldbEdge {
+  id: string;
+  uuid: string;                       // '' on pre-6.1.147 servers
+  label: string;
+  fromNodeId: string;
+  toNodeId: string;
+  properties: Record<string, any>;
+}
 ```
 
 ### Path Type
@@ -280,18 +334,43 @@ interface Attr {
 
 ## Geospatial Types
 
+`Point` and `Point3D` are classes (not plain interfaces) with read-only getter aliases. Plain object literals are still accepted as `Point` / `Point3D` values, but constructing via the class gives you the alias getters.
+
 ```typescript
-interface Point {
-  latitude: number;
-  longitude: number;
+class Point {
+  constructor(
+    public readonly latitude: number,
+    public readonly longitude: number,
+  );
+  get x(): number;                    // alias for longitude
+  get y(): number;                    // alias for latitude
 }
 
-interface Point3D {
-  x: number;
-  y: number;
-  z: number;
+class Point3D {
+  constructor(
+    public readonly x: number,
+    public readonly y: number,
+    public readonly z: number,
+  );
+  get longitude(): number;            // alias for x
+  get latitude(): number;             // alias for y
+  get height(): number;               // alias for z
 }
 ```
+
+`Point` validates against WGS-84 bounds server-side (longitude ∈ [-180, 180], latitude ∈ [-90, 90]). `Point3D` is Cartesian — the server does **not** enforce geographic bounds on Point3D, even when accessed through the lon/lat aliases.
+
+## Vector Type
+
+```typescript
+class Vector implements Iterable<number> {
+  constructor(public readonly values: number[]);
+  get length(): number;               // dimension count
+  [Symbol.iterator](): IterableIterator<number>;
+}
+```
+
+`vec.length` returns the dimension; `for (const v of vec)` walks the float components. Plain object literals `{ values: [...] }` still pass `isVector()`; construct via the class to get the iterator / length getter.
 
 ## TypedValue
 

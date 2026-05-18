@@ -162,48 +162,111 @@ class CacheType(IntEnum):
     PLAN = 2
 ```
 
+## InsertType Enum
+
+Controls the GQL keyword emitted by `insert_nodes(nodes, …)` / `insert_edges(edges, …)`:
+
+```python
+from gqldb import InsertType
+
+class InsertType(IntEnum):
+    NORMAL = 0      # INSERT — errors on duplicate _id
+    OVERWRITE = 1   # INSERT OVERWRITE — replaces entity wholesale on duplicate _id
+    UPSERT = 2      # UPSERT — merges new properties into existing entity on duplicate _id
+```
+
+`OVERWRITE` drops properties not present in the write. `UPSERT` preserves them and only overwrites the ones present in the write. They are not interchangeable.
+
+## InsertConfig
+
+Per-call configuration for the GQL-path insert convenience methods. Extends [`QueryConfig`](python-executing-queries.md):
+
+```python
+from gqldb import InsertConfig, InsertType
+
+@dataclass
+class InsertConfig(QueryConfig):
+    insert_type: InsertType = InsertType.NORMAL    # NORMAL / OVERWRITE / UPSERT
+    # inherits from QueryConfig:
+    #   graph_name: str = ""
+    #   parameters: Dict[str, Any] = {}
+    #   transaction_id: int = 0
+    #   timeout: int = 0
+    #   read_only: bool = False
+    #   max_path_results: int = 0
+```
+
 ## Type Classes
 
 ### Node Types
 
 ```python
-from gqldb.types import NodeData, GqldbNode
+from gqldb import NodeData, Node
+from gqldb.types import GqldbNode
 
-# Data for inserting nodes
+# Data for inserting nodes (input to insert_nodes)
 @dataclass
 class NodeData:
-    labels: List[str]
-    properties: Dict[str, Any]
+    id: str = ""                     # optional custom _id (auto-generated when empty)
+    labels: List[str] = field(default_factory=list)
+    properties: Dict[str, Any] = field(default_factory=dict)
 
-# Internal node representation
+# Node from query results (returned by Response.as_nodes() / row.as_node())
+@dataclass
+class Node:
+    id: str = ""                     # user-facing identifier
+    uuid: str = ""                   # system numeric handle (uint64 as decimal string);
+                                     # empty when talking to pre-6.1.147 servers
+    labels: List[str] = field(default_factory=list)
+    properties: Dict[str, Any] = field(default_factory=dict)
+
+    def to_dict(self) -> dict: ...
+
+# Internal/wire-level node representation
 @dataclass
 class GqldbNode:
-    id: str
-    labels: List[str]
-    properties: Dict[str, Any]
+    id: str = ""
+    uuid: str = ""
+    labels: List[str] = field(default_factory=list)
+    properties: Dict[str, Any] = field(default_factory=dict)
 ```
 
 ### Edge Types
 
 ```python
-from gqldb.types import EdgeData, GqldbEdge
+from gqldb import EdgeData, Edge
+from gqldb.types import GqldbEdge
 
-# Data for inserting edges
+# Data for inserting edges (input to insert_edges)
 @dataclass
 class EdgeData:
-    label: str
-    from_node_id: str
-    to_node_id: str
-    properties: Dict[str, Any]
+    id: str = ""                     # optional custom _id (requires WITH EDGE_ID graph)
+    label: str = ""
+    from_node_id: str = ""
+    to_node_id: str = ""
+    properties: Dict[str, Any] = field(default_factory=dict)
 
-# Internal edge representation
+# Edge from query results
+@dataclass
+class Edge:
+    id: str = ""                     # user-facing identifier
+    uuid: str = ""                   # system numeric handle; empty pre-6.1.147
+    label: str = ""
+    from_node_id: str = ""
+    to_node_id: str = ""
+    properties: Dict[str, Any] = field(default_factory=dict)
+
+    def to_dict(self) -> dict: ...
+
+# Internal/wire-level edge representation
 @dataclass
 class GqldbEdge:
-    id: str
-    label: str
-    from_node_id: str
-    to_node_id: str
-    properties: Dict[str, Any]
+    id: str = ""
+    uuid: str = ""
+    label: str = ""
+    from_node_id: str = ""
+    to_node_id: str = ""
+    properties: Dict[str, Any] = field(default_factory=dict)
 ```
 
 ### Path Type
@@ -227,12 +290,26 @@ class Point:
     latitude: float
     longitude: float
 
+    @property
+    def x(self) -> float: ...        # alias for longitude
+    @property
+    def y(self) -> float: ...        # alias for latitude
+
 @dataclass
 class Point3D:
     x: float
     y: float
     z: float
+
+    @property
+    def longitude(self) -> float: ...    # alias for x
+    @property
+    def latitude(self) -> float: ...     # alias for y
+    @property
+    def height(self) -> float: ...       # alias for z
 ```
+
+The `Point` server validates WGS-84 bounds (longitude ∈ [-180, 180], latitude ∈ [-90, 90]). `Point3D` is Cartesian — the server does **not** enforce geographic bounds on Point3D, even when accessed through the lon/lat aliases.
 
 ### Duration Types
 
@@ -256,8 +333,13 @@ from gqldb.types import Vector
 
 @dataclass
 class Vector:
-    values: List[float]
+    values: List[float] = field(default_factory=list)
+
+    def __len__(self) -> int: ...    # vector dimension
+    def __iter__(self): ...          # iterate over float components
 ```
+
+`len(vector)` returns the dimension; iteration yields the float components in order. These mirror the server-side `size(VECTOR)` / `ai.vector_dim(VECTOR)` functions, so you don't have to round-trip a GQL query just to read a vector's dimension.
 
 ## TypedValue
 

@@ -139,6 +139,39 @@ public enum CacheType {
 }
 ```
 
+## Insert Type Enum
+
+Controls the GQL keyword emitted by `insertNodes(nodes, …)` / `insertEdges(edges, …)`:
+
+```java
+import com.gqldb.types.InsertType;
+
+public enum InsertType {
+    NORMAL,       // INSERT — errors on duplicate _id
+    OVERWRITE,    // INSERT OVERWRITE — replaces entity wholesale on duplicate _id
+    UPSERT        // UPSERT — merges new properties into existing entity on duplicate _id
+}
+```
+
+`OVERWRITE` drops properties not present in the write. `UPSERT` preserves them and only overwrites the ones present in the write. They are not interchangeable.
+
+## InsertConfig
+
+Per-call configuration for the GQL-path insert convenience methods. Extends [`QueryConfig`](java-executing-queries.md):
+
+```java
+import com.gqldb.InsertConfig;
+import com.gqldb.types.InsertType;
+
+public class InsertConfig extends QueryConfig {
+    public InsertConfig();
+    InsertType getInsertType();              // default NORMAL
+    void setInsertType(InsertType type);     // null → NORMAL
+}
+```
+
+Inherits `graphName`, `timeout`, `transactionId`, etc. from `QueryConfig`.
+
 ## Type Classes
 
 ### Node Types
@@ -147,10 +180,17 @@ public enum CacheType {
 // Data for inserting nodes
 public class NodeData {
     public NodeData(List<String> labels, Map<String, Object> properties);
+    public NodeData(String id, List<String> labels, Map<String, Object> properties);
     static NodeData create(String label);
     static NodeData create(String label, Map<String, Object> properties);
     static NodeData create(List<String> labels, Map<String, Object> properties);
+    static NodeData createWithId(String id, String label);
+    static NodeData createWithId(String id, String label,
+                                 Map<String, Object> properties);
+    static NodeData createWithId(String id, List<String> labels,
+                                 Map<String, Object> properties);
     NodeData withProperty(String key, Object value);
+    String getId();                          // empty string when unset
     List<String> getLabels();
     Map<String, Object> getProperties();
 }
@@ -158,8 +198,10 @@ public class NodeData {
 // Node from query results
 public class Node {
     String getId();
+    String getUuid();                        // internal numeric id (stringified)
     List<String> getLabels();
     Map<String, Object> getProperties();
+    Object getProperty(String name);         // single-property accessor
 }
 
 // Internal node representation
@@ -175,8 +217,20 @@ public class GqldbNode {
 ```java
 // Data for inserting edges
 public class EdgeData {
-    public EdgeData(String label, String fromNodeId,
-                    String toNodeId, Map<String, Object> properties);
+    public EdgeData(String label, String fromNodeId, String toNodeId,
+                    Map<String, Object> properties);
+    public EdgeData(String id, String label, String fromNodeId, String toNodeId,
+                    Map<String, Object> properties);
+    static EdgeData create(String label, String fromNodeId, String toNodeId);
+    static EdgeData create(String label, String fromNodeId, String toNodeId,
+                           Map<String, Object> properties);
+    static EdgeData createWithId(String id, String label,
+                                 String fromNodeId, String toNodeId);
+    static EdgeData createWithId(String id, String label,
+                                 String fromNodeId, String toNodeId,
+                                 Map<String, Object> properties);
+    EdgeData withProperty(String key, Object value);
+    String getId();                          // empty string when unset
     String getLabel();
     String getFromNodeId();
     String getToNodeId();
@@ -186,10 +240,12 @@ public class EdgeData {
 // Edge from query results
 public class Edge {
     String getId();
+    String getUuid();                        // internal numeric id (stringified)
     String getLabel();
     String getFromNodeId();
     String getToNodeId();
     Map<String, Object> getProperties();
+    Object getProperty(String name);         // single-property accessor
 }
 ```
 
@@ -214,6 +270,8 @@ public class Point {
     public Point(double latitude, double longitude);
     double getLatitude();
     double getLongitude();
+    double getX();              // alias for getLongitude()
+    double getY();              // alias for getLatitude()
 }
 
 public class Point3D {
@@ -221,6 +279,9 @@ public class Point3D {
     double getX();
     double getY();
     double getZ();
+    double getLongitude();      // alias for getX()
+    double getLatitude();       // alias for getY()
+    double getHeight();         // alias for getZ()
 }
 ```
 
@@ -241,10 +302,13 @@ public class DayToSecond {
 ### Vector Type
 
 ```java
-public class Vector {
+public class Vector implements Iterable<Float> {
     public Vector(float[] values);
     float[] getValues();
-    int getDimension();
+    int getDimensions();
+    int size();                  // alias for getDimensions()
+    float get(int index);
+    Iterator<Float> iterator();  // from Iterable<Float>
 }
 ```
 

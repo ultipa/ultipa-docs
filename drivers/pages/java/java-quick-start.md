@@ -10,17 +10,17 @@ Add the dependency to your Maven `pom.xml`:
 <dependency>
     <groupId>com.ultipa</groupId>
     <artifactId>ultipa-gqldb-driver</artifactId>
-    <version>6.0.6</version>
+    <version>6.x.x</version>
 </dependency>
 ```
 
 Or for Gradle, add to `build.gradle`:
 
 ```groovy
-implementation 'com.ultipa:ultipa-gqldb-driver:6.0.6'
+implementation 'com.ultipa:ultipa-gqldb-driver:6.x.x'
 ```
 
-> Replace `6.0.6` with a specific version. Check <a href="https://mvnrepository.com/artifact/com.ultipa/ultipa-gqldb-driver" target="_blank">Maven Central</a> for the latest version.
+> Replace `6.x.x` with the latest version from <a href="https://mvnrepository.com/artifact/com.ultipa/ultipa-gqldb-driver" target="_blank">Maven Central</a>.
 
 ## Connect to Database
 

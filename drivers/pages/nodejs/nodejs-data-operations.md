@@ -4,24 +4,39 @@ The GQLDB Node.js driver provides methods for inserting and deleting nodes and e
 
 ## Data Operation Methods
 
+`insertNodes` and `insertEdges` are **overloaded** — TypeScript has overload signatures and the runtime dispatches by `typeof arg1`:
+
+| Call shape | Backed by | Returns |
+|---|---|---|
+| `insertNodes(graphName, nodes, config?)` | gRPC `InsertNodes` RPC (high-throughput) | `Promise<InsertNodesResult>` |
+| `insertNodes(nodes, config?)` | GQL `INSERT` statement (convenience) | `Promise<Response>` |
+
+`insertNodesBatchAuto` / `insertEdgesBatchAuto` are alternate names for the gRPC path and continue to work (not deprecated).
+
 | Method | Description |
 |--------|-------------|
-| `insertNodes(nodes, config)` | Insert nodes via GQL INSERT statement |
-| `insertNodesBatchAuto(graphName, nodes, config)` | Insert nodes via gRPC (high-throughput) |
-| `insertEdges(edges, config)` | Insert edges via GQL INSERT statement |
-| `insertEdgesBatchAuto(graphName, edges, config)` | Insert edges via gRPC (high-throughput) |
+| `insertNodes(graphName, nodes, config?)` | Insert nodes via gRPC (high-throughput) |
+| `insertNodes(nodes, config?)` | Insert nodes via GQL INSERT statement |
+| `insertNodesBatchAuto(graphName, nodes, config?)` | Alias for `insertNodes(graphName, …)` |
+| `insertEdges(graphName, edges, config?)` | Insert edges via gRPC (high-throughput) |
+| `insertEdges(edges, config?)` | Insert edges via GQL INSERT statement |
+| `insertEdgesBatchAuto(graphName, edges, config?)` | Alias for `insertEdges(graphName, …)` |
 | `deleteNodes(graphName, nodeIds, labels, where)` | Delete nodes |
 | `deleteEdges(graphName, edgeIds, label, where)` | Delete edges |
 
-### insertNodes vs insertNodesBatchAuto
+### Choosing a path
 
-| | `insertNodes` | `insertNodesBatchAuto` |
+| | gRPC path (`insertNodes(graphName, …)`) | GQL path (`insertNodes(nodes, …)`) |
 |---|---|---|
-| Method | GQL `INSERT` statement | gRPC `InsertNodes` RPC |
-| Bulk session | Not required | Required (`startBulkImport`) |
-| Performance | Good for small batches | High-throughput for large imports |
-| Custom node ID | Not supported | Supported (`NodeData.id`) |
-| Use case | Simple inserts, scripts | ETL, data migration, bulk loading |
+| Backed by | gRPC `InsertNodes` RPC | GQL `INSERT` statement |
+| Bulk session | Required for high throughput (`startBulkImport`) | Not required |
+| Performance | High-throughput for large imports | Good for small batches |
+| Custom node `_id` | Supported (`NodeData.id`) | Supported (`NodeData.id` → `_id`) |
+| Custom edge `_id` | Supported (`EdgeData.id`) | Supported (`EdgeData.id` → `_id`) |
+| Insert modes | Normal, Overwrite | Normal, Overwrite, Upsert |
+| Use case | ETL, data migration, bulk loading | Scripts, small batches, Upsert |
+
+> **Custom edge `_id` requires `WITH EDGE_ID` on the target graph.** This is a server-side prerequisite — the graph must have been created with `CREATE GRAPH <name> WITH EDGE_ID` for user-supplied edge `_id`s to be honored on either path. Without it, the server auto-generates edge `_id`s and any value passed via `EdgeData.id` is ignored.
 
 ## Inserting Nodes (gRPC Batch)
 
@@ -74,11 +89,13 @@ async function insertNodesExample(client: GqldbClient) {
 
 ```typescript
 interface NodeData {
-  id?: string;                       // Optional node identifier
+  id?: string;                       // Optional custom node _id (auto-generated when empty)
   labels: string[];                  // One or more labels
   properties: Record<string, any>;   // Node properties
 }
 ```
+
+A non-empty `id` is written as `_id` on the inserted node (both gRPC and GQL paths).
 
 ### InsertNodesResult Interface
 
@@ -188,12 +205,15 @@ async function insertEdgesExample(client: GqldbClient) {
 
 ```typescript
 interface EdgeData {
+  id?: string;                       // Optional custom edge _id (requires WITH EDGE_ID graph)
   label: string;                     // Edge label/type
   fromNodeId: string;                // Source node ID
   toNodeId: string;                  // Target node ID
   properties: Record<string, any>;   // Edge properties
 }
 ```
+
+A non-empty `id` is written as `_id` on the inserted edge (both gRPC and GQL paths). The target graph must have been created with `WITH EDGE_ID` for the server to honor user-supplied edge `_id`s.
 
 ### InsertEdgesResult Interface
 
@@ -241,18 +261,24 @@ await client.useGraph('myGraph');
 const nodes = [
   { labels: ['Person'], properties: { name: 'Alice', age: 30 } },
   { labels: ['Person'], properties: { name: 'Bob', age: 25 } },
+  // Custom _id via the id field
+  { id: 'p3', labels: ['Person'], properties: { name: 'Charlie' } },
 ];
 await client.insertNodes(nodes);
 
 const edges = [
   { label: 'Knows', fromNodeId: 'id1', toNodeId: 'id2', properties: { since: 2024 } },
+  // Custom _id (requires graph created WITH EDGE_ID)
+  { id: 'tx-001', label: 'Knows', fromNodeId: 'id1', toNodeId: 'id3', properties: { since: 2025 } },
 ];
 await client.insertEdges(edges);
 ```
 
+> GQL `INSERT` only supports a single label per node; if `NodeData.labels` has multiple entries, only the first is used in the GQL path. Use the gRPC path for multi-label nodes.
+
 ## Per-call Configuration (InsertConfig)
 
-`insertNodes()` and `insertEdges()` accept an optional `InsertConfig` for per-call graph routing and insert mode:
+The GQL-path `insertNodes(nodes, …)` / `insertEdges(edges, …)` accept an optional `InsertConfig` for per-call graph routing and insert mode:
 
 ```typescript
 import { InsertConfig, InsertType } from '@ultipa-graph/ultipa-driver';
@@ -260,12 +286,22 @@ import { InsertConfig, InsertType } from '@ultipa-graph/ultipa-driver';
 // Target a specific graph without useGraph()
 const cfg: InsertConfig = {
   graphName: 'myGraph',
-  insertType: InsertType.OVERWRITE,  // NORMAL (default) or OVERWRITE
+  insertType: InsertType.Overwrite,  // Normal (default), Overwrite, or Upsert
   timeout: 60,                       // optional per-call timeout (seconds)
 };
 await client.insertNodes(nodes, cfg);
 await client.insertEdges(edges, cfg);
 ```
+
+### InsertType semantics
+
+| Value | Emitted GQL | On duplicate `_id` |
+|---|---|---|
+| `InsertType.Normal` (default) | `INSERT` | Error |
+| `InsertType.Overwrite` | `INSERT OVERWRITE` | Replaces the entity wholesale — properties not in the write are **lost** |
+| `InsertType.Upsert` | `UPSERT` | Merges properties — properties not in the write are **preserved** |
+
+`Overwrite` and `Upsert` are different semantics on existing rows; they are not interchangeable.
 
 All other convenience methods accept `QueryConfig` the same way:
 

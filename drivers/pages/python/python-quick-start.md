@@ -1,6 +1,6 @@
 # Quick Start
 
-This guide helps you get started with the GQLDB Python driver. It requires **Python 3.9 or higher**.
+This guide helps you get started with the GQLDB Python driver. It requires **Python 3.10 or higher**.
 
 ## Installation
 
@@ -10,7 +10,7 @@ Install the GQLDB Python driver using pip:
 pip install ultipa
 ```
 
-> Check <a href="https://pypi.org/project/ultipa/" target="_blank">PyPI</a> for the latest version. To install a specific version: `pip install ultipa==6.0.6`
+> Find the latest version on <a href="https://pypi.org/project/ultipa/" target="_blank">PyPI</a>. To pin a specific version: `pip install ultipa==6.x.x` (replace `6.x.x` with the desired release).
 
 For development with additional tools:
 

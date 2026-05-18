@@ -51,7 +51,7 @@ public class BulkImportSession {
 
 ## Inserting Data During Bulk Import
 
-Use the session ID with `insertNodes()` and `insertEdges()`:
+Use the session ID with `insertNodes()` and `insertEdges()`. The four-arg form `insertNodes(graphName, nodes, overwrite, sessionId)` routes through the gRPC bulk-import RPC; `insertNodesBatchAuto(...)` is the same call under another name. (The `insertNodes(nodes, …)` two-arg form is the GQL-emitter path — see [Data Operations](java-data-operations.md) — and does **not** participate in a bulk session.)
 
 ```java
 public void bulkInsertExample(GqldbClient client) {

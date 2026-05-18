@@ -158,21 +158,71 @@ const (
 )
 ```
 
+## InsertType Constants
+
+Controls the GQL keyword emitted by `InsertNodesGql` / `InsertEdgesGql`, and the duplicate-`_id` semantic for `InsertNodes` / `InsertEdges` (via `InsertNodesConfig.Mode` / `InsertEdgesConfig.Mode`):
+
+```go
+type InsertType int
+
+const (
+    InsertTypeNormal    InsertType = 0  // INSERT — errors on duplicate _id
+    InsertTypeOverwrite InsertType = 1  // INSERT OVERWRITE — replaces entity wholesale
+    InsertTypeUpsert    InsertType = 2  // UPSERT — merges new properties into existing entity
+)
+```
+
+`InsertTypeOverwrite` drops properties not present in the write. `InsertTypeUpsert` preserves them and only overwrites the ones present in the write. They are not interchangeable.
+
+## InsertConfig
+
+Per-call configuration for the GQL-emitter convenience helpers (`InsertNodesGql` / `InsertEdgesGql`). Embeds `QueryConfig`:
+
+```go
+type InsertConfig struct {
+    QueryConfig                     // embedded — GraphName, Timeout, TransactionID, etc.
+    InsertType InsertType           // defaults to InsertTypeNormal (zero value)
+}
+```
+
+Pass `nil` to use the session graph and `InsertTypeNormal`.
+
+## InsertNodesConfig / InsertEdgesConfig
+
+Configuration for the gRPC bulk-import functions (`InsertNodes` / `InsertEdges`):
+
+```go
+type InsertNodesConfig struct {
+    Mode                InsertType   // Normal / Overwrite / Upsert
+    BulkImportSessionID string       // Optional: bulk import session ID for auto-checkpoint
+}
+
+type InsertEdgesConfig struct {
+    SkipInvalidNodes    bool         // Skip edges where source/target node doesn't exist
+    Mode                InsertType   // Normal / Overwrite / Upsert
+    BulkImportSessionID string       // Optional: bulk import session ID for auto-checkpoint
+}
+```
+
+Edge `InsertTypeOverwrite` and `InsertTypeUpsert` require `WITH EDGE_ID` on the target graph.
+
 ## Type Structs
 
 ### Node Types
 
 ```go
-// Data for inserting nodes
+// Data for inserting nodes (input to InsertNodes / InsertNodesGql)
 type NodeData struct {
-    ID         string
+    ID         string                  // Optional custom _id (auto-generated when empty)
     Labels     []string
     Properties map[string]interface{}
 }
 
 // Node from query results
 type Node struct {
-    ID         string
+    ID         string                  // user-facing identifier
+    UUID       string                  // system numeric handle, decimal-formatted;
+                                       // empty on pre-6.1.147 servers
     Labels     []string
     Properties map[string]interface{}
 }
@@ -181,8 +231,9 @@ type Node struct {
 ### Edge Types
 
 ```go
-// Data for inserting edges
+// Data for inserting edges (input to InsertEdges / InsertEdgesGql)
 type EdgeData struct {
+    ID         string                  // Optional custom _id; requires WITH EDGE_ID graph
     Label      string
     FromNodeID string
     ToNodeID   string
@@ -192,6 +243,7 @@ type EdgeData struct {
 // Edge from query results
 type Edge struct {
     ID         string
+    UUID       string                  // system numeric handle; empty on pre-6.1.147 servers
     Label      string
     FromNodeID string
     ToNodeID   string
@@ -216,12 +268,21 @@ type Point struct {
     Longitude float64
 }
 
+func (p Point) X() float64           // alias for Longitude
+func (p Point) Y() float64           // alias for Latitude
+
 type Point3D struct {
     X float64
     Y float64
     Z float64
 }
+
+func (p Point3D) Longitude() float64  // alias for X
+func (p Point3D) Latitude() float64   // alias for Y
+func (p Point3D) Height() float64     // alias for Z
 ```
+
+`Point` validates against WGS-84 bounds server-side (longitude ∈ [-180, 180], latitude ∈ [-90, 90]). `Point3D` is Cartesian — the server does **not** enforce geographic bounds on Point3D, even when accessed through the lon/lat aliases.
 
 ### Duration Types
 
@@ -231,7 +292,8 @@ type YearToMonth struct {
 }
 
 type DayToSecond struct {
-    Nanos int64
+    Seconds     int64    // signed — negative durations (e.g. -PT1H) round-trip correctly
+    Nanoseconds uint32
 }
 ```
 
@@ -242,10 +304,10 @@ type Vector struct {
     Values []float32
 }
 
-func (v Vector) Dimension() int {
-    return len(v.Values)
-}
+func (v Vector) Len() int            // dimension count
 ```
+
+`v.Len()` returns the number of dimensions — mirrors the Python driver's `len(vec)` ergonomic and the server-side `size(VECTOR)` / `ai.vector_dim(VECTOR)` functions.
 
 ## TypedValue
 

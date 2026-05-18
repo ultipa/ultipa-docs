@@ -4,24 +4,39 @@ The GQLDB Python driver provides methods for inserting, updating, and deleting n
 
 ## Data Methods
 
+`insert_nodes` and `insert_edges` are **dual-shape** — Python dispatches on the type of the first argument at runtime:
+
+| Call shape | Backed by | Returns |
+|---|---|---|
+| `insert_nodes(graph_name, nodes, …)` | gRPC `InsertNodes` RPC (high-throughput) | `InsertNodesResult` |
+| `insert_nodes(nodes, config=None)` | GQL `INSERT` statement (convenience) | `Response` |
+
+`insert_nodes_batch_auto` / `insert_edges_batch_auto` are alternate names for the gRPC path and continue to work (not deprecated).
+
 | Method | Description |
 |--------|-------------|
-| `insert_nodes(nodes, config)` | Insert nodes via GQL INSERT statement |
-| `insert_nodes_batch_auto(graph_name, nodes, options)` | Insert nodes via gRPC (high-throughput) |
-| `insert_edges(edges, config)` | Insert edges via GQL INSERT statement |
-| `insert_edges_batch_auto(graph_name, edges, options)` | Insert edges via gRPC (high-throughput) |
+| `insert_nodes(graph_name, nodes, …)` | Insert nodes via gRPC (high-throughput) |
+| `insert_nodes(nodes, config=None)` | Insert nodes via GQL INSERT statement |
+| `insert_nodes_batch_auto(graph_name, nodes, …)` | Alias for `insert_nodes(graph_name, …)` |
+| `insert_edges(graph_name, edges, …)` | Insert edges via gRPC (high-throughput) |
+| `insert_edges(edges, config=None)` | Insert edges via GQL INSERT statement |
+| `insert_edges_batch_auto(graph_name, edges, …)` | Alias for `insert_edges(graph_name, …)` |
 | `delete_nodes(graph_name, node_ids, labels, where)` | Delete nodes |
 | `delete_edges(graph_name, edge_ids, label, where)` | Delete edges |
 
-### insert_nodes vs insert_nodes_batch_auto
+### Choosing a path
 
-| | `insert_nodes` | `insert_nodes_batch_auto` |
+| | gRPC path (`insert_nodes(graph_name, …)`) | GQL path (`insert_nodes(nodes, …)`) |
 |---|---|---|
-| Method | GQL `INSERT` statement | gRPC `InsertNodes` RPC |
-| Bulk session | Not required | Required (`start_bulk_import`) |
-| Performance | Good for small batches | High-throughput for large imports |
-| Custom node ID | Not supported | Supported (`NodeData.id`) |
-| Use case | Simple inserts, scripts | ETL, data migration, bulk loading |
+| Backed by | gRPC `InsertNodes` RPC | GQL `INSERT` statement |
+| Bulk session | Required for high throughput (`start_bulk_import`) | Not required |
+| Performance | High-throughput for large imports | Good for small batches |
+| Custom node `_id` | Supported (`NodeData.id`) | Supported (`NodeData.id` → `_id`) |
+| Custom edge `_id` | Supported (`EdgeData.id`) | Supported (`EdgeData.id` → `_id`) |
+| Insert modes | NORMAL, OVERWRITE | NORMAL, OVERWRITE, UPSERT |
+| Use case | ETL, data migration, bulk loading | Scripts, small batches, UPSERT |
+
+> **Custom edge `_id` requires `WITH EDGE_ID` on the target graph.** This is a server-side prerequisite — the graph must have been created with `CREATE GRAPH <name> WITH EDGE_ID` for user-supplied edge `_id`s to be honored on either path. Without it, the server auto-generates edge `_id`s and any value passed via `EdgeData.id` is ignored.
 
 ## Inserting Nodes (gRPC Batch)
 
@@ -30,8 +45,7 @@ The GQLDB Python driver provides methods for inserting, updating, and deleting n
 Insert multiple nodes into a graph:
 
 ```python
-from gqldb import GqldbClient, GqldbConfig
-from gqldb.types import NodeData
+from gqldb import GqldbClient, GqldbConfig, NodeData
 
 config = GqldbConfig(hosts=["localhost:9000"])
 
@@ -66,14 +80,17 @@ with GqldbClient(config) as client:
 ### NodeData Class
 
 ```python
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List, Dict, Any
 
 @dataclass
 class NodeData:
-    labels: List[str]                 # Node labels
-    properties: Dict[str, Any]        # Node properties
+    id: str = ""                      # Optional custom node _id (auto-generated when empty)
+    labels: List[str] = field(default_factory=list)
+    properties: Dict[str, Any] = field(default_factory=dict)
 ```
+
+A non-empty `id` is written as `_id` on the inserted node (both gRPC and GQL paths).
 
 ### Insert Options
 
@@ -94,7 +111,7 @@ result = client.insert_nodes("myGraph", nodes, options)
 Insert multiple edges into a graph:
 
 ```python
-from gqldb.types import EdgeData
+from gqldb import EdgeData
 
 edges = [
     EdgeData(
@@ -127,16 +144,19 @@ print(f"Skipped: {result.skipped_count}")
 ### EdgeData Class
 
 ```python
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Dict, Any
 
 @dataclass
 class EdgeData:
-    label: str                     # Edge label (type)
-    from_node_id: str              # Source node ID
-    to_node_id: str                # Target node ID
-    properties: Dict[str, Any]     # Edge properties
+    id: str = ""                   # Optional custom edge _id (requires WITH EDGE_ID graph)
+    label: str = ""                # Edge label (type)
+    from_node_id: str = ""         # Source node ID
+    to_node_id: str = ""           # Target node ID
+    properties: Dict[str, Any] = field(default_factory=dict)
 ```
+
+A non-empty `id` is written as `_id` on the inserted edge (both gRPC and GQL paths). The target graph must have been created with `WITH EDGE_ID` for the server to honor user-supplied edge `_id`s.
 
 ### Edge Insert Options
 
@@ -162,37 +182,52 @@ client.use_graph("myGraph")
 nodes = [
     NodeData(labels=["Person"], properties={"name": "Alice", "age": 30}),
     NodeData(labels=["Person"], properties={"name": "Bob", "age": 25}),
+    # Custom _id via the id field
+    NodeData(id="p3", labels=["Person"], properties={"name": "Charlie"}),
 ]
 client.insert_nodes(nodes)
 
 edges = [
     EdgeData(label="Knows", from_node_id="id1", to_node_id="id2", properties={"since": 2024}),
+    # Custom _id (requires graph created WITH EDGE_ID)
+    EdgeData(id="tx-001", label="Knows", from_node_id="id1", to_node_id="id3", properties={"since": 2025}),
 ]
 client.insert_edges(edges)
 ```
 
+> GQL `INSERT` only supports a single label per node; if `NodeData.labels` has multiple entries, only the first is used in the GQL path. Use the gRPC path for multi-label nodes.
+
 ## Per-call Configuration (InsertConfig)
 
-`insert_nodes()` and `insert_edges()` accept an optional `InsertConfig` for per-call graph routing and insert mode, without changing session state:
+The GQL-path `insert_nodes(nodes, …)` / `insert_edges(edges, …)` accept an optional `InsertConfig` for per-call graph routing and insert mode, without changing session state:
 
 ```python
-from gqldb.client import InsertConfig
-from gqldb.types.convenience import InsertType
+from gqldb import InsertConfig, InsertType
 
 # Target a specific graph without use_graph()
 cfg = InsertConfig(
     graph_name="myGraph",
-    insert_type=InsertType.OVERWRITE,   # NORMAL (default) or OVERWRITE
+    insert_type=InsertType.OVERWRITE,   # NORMAL (default), OVERWRITE, or UPSERT
     timeout=60,                         # optional per-call timeout (seconds)
 )
 client.insert_nodes(nodes, cfg)
 client.insert_edges(edges, cfg)
 ```
 
+### InsertType semantics
+
+| Value | Emitted GQL | On duplicate `_id` |
+|---|---|---|
+| `NORMAL` (default) | `INSERT` | Error |
+| `OVERWRITE` | `INSERT OVERWRITE` | Replaces the entity wholesale — properties not in the write are **lost** |
+| `UPSERT` | `UPSERT` | Merges properties — properties not in the write are **preserved** |
+
+`OVERWRITE` and `UPSERT` are different semantics on existing rows; they are not interchangeable.
+
 All other convenience methods accept `QueryConfig` the same way:
 
 ```python
-from gqldb.client import QueryConfig
+from gqldb import QueryConfig
 
 client.create_node_label("User", props, config=QueryConfig(graph_name="graphA"))
 client.show_node_labels(config=QueryConfig(graph_name="graphB"))
@@ -350,8 +385,8 @@ except GqldbError as e:
 ## Complete Example
 
 ```python
-from gqldb import GqldbClient, GqldbConfig
-from gqldb.types import NodeData, EdgeData, BulkCreateNodesOptions, BulkCreateEdgesOptions
+from gqldb import GqldbClient, GqldbConfig, NodeData, EdgeData
+from gqldb.types import BulkCreateNodesOptions, BulkCreateEdgesOptions
 from gqldb.errors import GqldbError
 
 def main():

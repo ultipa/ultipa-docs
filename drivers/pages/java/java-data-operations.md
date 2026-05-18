@@ -4,28 +4,41 @@ The GQLDB Java driver provides methods for inserting and deleting nodes and edge
 
 ## Data Operation Methods
 
+`insertNodes` and `insertEdges` are **overloaded** — Java's compile-time method overloading picks the path from the argument types:
+
+| Call shape | Backed by | Returns |
+|---|---|---|
+| `insertNodes(graphName, nodes, …)` | gRPC `InsertNodes` RPC (high-throughput) | `InsertNodesResult` |
+| `insertNodes(nodes, config?)` | GQL `INSERT` statement (convenience) | `Response` |
+
+`insertNodesBatchAuto` / `insertEdgesBatchAuto` are alternate names for the gRPC path and continue to work (not deprecated).
+
 | Method | Description |
 |--------|-------------|
-| `insertNodes(nodes)` | Insert nodes via GQL INSERT statement |
-| `insertNodes(nodes, InsertConfig)` | Insert nodes with per-call configuration |
-| `insertNodesBatchAuto(graphName, nodes)` | Insert nodes via gRPC (high-throughput) |
-| `insertEdges(edges)` | Insert edges via GQL INSERT statement |
-| `insertEdges(edges, InsertConfig)` | Insert edges with per-call configuration |
-| `insertEdgesBatchAuto(graphName, edges)` | Insert edges via gRPC (high-throughput) |
+| `insertNodes(graphName, nodes, …)` | Insert nodes via gRPC (high-throughput) |
+| `insertNodes(nodes, InsertConfig?)` | Insert nodes via GQL INSERT statement |
+| `insertNodesBatchAuto(graphName, nodes, …)` | Alias for `insertNodes(graphName, …)` |
+| `insertEdges(graphName, edges, …)` | Insert edges via gRPC (high-throughput) |
+| `insertEdges(edges, InsertConfig?)` | Insert edges via GQL INSERT statement |
+| `insertEdgesBatchAuto(graphName, edges, …)` | Alias for `insertEdges(graphName, …)` |
 | `deleteNodes(graphName, nodeIds)` | Delete nodes by ID |
 | `deleteNodes(graphName, labels, where)` | Delete nodes by label and condition |
 | `deleteEdges(graphName, edgeIds)` | Delete edges by ID |
 | `deleteEdges(graphName, label, where)` | Delete edges by label and condition |
 
-### insertNodes vs insertNodesBatchAuto
+### Choosing a path
 
-| | `insertNodes` | `insertNodesBatchAuto` |
+| | gRPC path (`insertNodes(graphName, …)`) | GQL path (`insertNodes(nodes, …)`) |
 |---|---|---|
-| Method | GQL `INSERT` statement | gRPC `InsertNodes` RPC |
-| Bulk session | Not required | Required (`startBulkImport`) |
-| Performance | Good for small batches | High-throughput for large imports |
-| Custom node ID | Not supported | Supported (`NodeData.id`) |
-| Use case | Simple inserts, scripts | ETL, data migration, bulk loading |
+| Backed by | gRPC `InsertNodes` RPC | GQL `INSERT` statement |
+| Bulk session | Required for high throughput (`startBulkImport`) | Not required |
+| Performance | High-throughput for large imports | Good for small batches |
+| Custom node `_id` | Supported (`NodeData.id`) | Supported (`NodeData.id` → `_id`) |
+| Custom edge `_id` | Supported (`EdgeData.id`) | Supported (`EdgeData.id` → `_id`) |
+| Insert modes | NORMAL, OVERWRITE | NORMAL, OVERWRITE, UPSERT |
+| Use case | ETL, data migration, bulk loading | Scripts, small batches, UPSERT |
+
+> **Custom edge `_id` requires `WITH EDGE_ID` on the target graph.** This is a server-side prerequisite, not driver-specific — the graph must have been created with `CREATE GRAPH <name> WITH EDGE_ID` for user-supplied edge `_id`s to be honored on either path. Without it, the server auto-generates edge `_id`s and any value passed via `EdgeData.id` is ignored. See [Closed Graphs](../../../gql/pages/graph-management/closed-graphs.md) for the `WITH EDGE_ID` option.
 
 ## Inserting Nodes (gRPC Batch)
 
@@ -60,21 +73,30 @@ public void insertNodesExample(GqldbClient client) {
 
 ```java
 public class NodeData {
-    // Constructor
+    // Constructors
     public NodeData(List<String> labels, Map<String, Object> properties);
+    public NodeData(String id, List<String> labels, Map<String, Object> properties);
 
     // Factory methods
     static NodeData create(String label);
     static NodeData create(String label, Map<String, Object> properties);
     static NodeData create(List<String> labels, Map<String, Object> properties);
 
+    // Factories that set a custom _id
+    static NodeData createWithId(String id, String label);
+    static NodeData createWithId(String id, String label, Map<String, Object> properties);
+    static NodeData createWithId(String id, List<String> labels, Map<String, Object> properties);
+
     // Fluent builder
     NodeData withProperty(String key, Object value);
 
+    String getId();                          // empty string when unset
     List<String> getLabels();
     Map<String, Object> getProperties();
 }
 ```
+
+A non-empty `id` is written as `_id` on the inserted node (both gRPC and GQL paths).
 
 ### InsertNodesResult Class
 
@@ -156,13 +178,32 @@ public void insertEdgesExample(GqldbClient client) {
 public class EdgeData {
     public EdgeData(String label, String fromNodeId, String toNodeId,
                     Map<String, Object> properties);
+    public EdgeData(String id, String label, String fromNodeId, String toNodeId,
+                    Map<String, Object> properties);
 
+    // Factory methods
+    static EdgeData create(String label, String fromNodeId, String toNodeId);
+    static EdgeData create(String label, String fromNodeId, String toNodeId,
+                           Map<String, Object> properties);
+
+    // Factories that set a custom _id
+    static EdgeData createWithId(String id, String label,
+                                 String fromNodeId, String toNodeId);
+    static EdgeData createWithId(String id, String label,
+                                 String fromNodeId, String toNodeId,
+                                 Map<String, Object> properties);
+
+    EdgeData withProperty(String key, Object value);
+
+    String getId();                          // empty string when unset
     String getLabel();
     String getFromNodeId();
     String getToNodeId();
     Map<String, Object> getProperties();
 }
 ```
+
+A non-empty `id` is written as `_id` on the inserted edge (both gRPC and GQL paths). The target graph must have been created with `WITH EDGE_ID` for the server to honor user-supplied edge `_id`s.
 
 ### InsertEdgesResult Class
 
@@ -188,9 +229,9 @@ System.out.println("Skipped: " + result.getSkippedCount());
 
 ## GQL-based Insert (Convenience)
 
-### insertNodes() / insertEdges()
+### insertNodes(nodes) / insertEdges(edges)
 
-These convenience methods generate and execute GQL `INSERT` statements. They don't require a bulk import session and use the session's current graph:
+These overloads generate and execute GQL `INSERT` statements and return the raw `Response`. They don't require a bulk import session and use the session's current graph (override via `InsertConfig.graphName`):
 
 ```java
 import com.gqldb.*;
@@ -201,19 +242,25 @@ client.useGraph("myGraph");
 
 List<NodeData> nodes = Arrays.asList(
     new NodeData(Arrays.asList("Person"), Map.of("name", "Alice", "age", 30)),
-    new NodeData(Arrays.asList("Person"), Map.of("name", "Bob", "age", 25))
+    new NodeData(Arrays.asList("Person"), Map.of("name", "Bob", "age", 25)),
+    // Custom _id via the 3-arg constructor
+    new NodeData("p3", Arrays.asList("Person"), Map.of("name", "Charlie"))
 );
 client.insertNodes(nodes);
 
 List<EdgeData> edges = Arrays.asList(
-    new EdgeData("Knows", "id1", "id2", Map.of("since", 2024))
+    new EdgeData("Knows", "id1", "id2", Map.of("since", 2024)),
+    // Custom _id via the 5-arg constructor (requires graph created WITH EDGE_ID)
+    new EdgeData("tx-001", "Knows", "id1", "id3", Map.of("since", 2025))
 );
 client.insertEdges(edges);
 ```
 
+> GQL `INSERT` only supports a single label per node; if `NodeData.labels` has multiple entries, only the first is used in the GQL path. Use the gRPC path for multi-label nodes.
+
 ## Per-call Configuration (InsertConfig)
 
-`insertNodes()` and `insertEdges()` accept an optional `InsertConfig` for per-call graph routing and insert mode, without changing session state:
+The GQL-path `insertNodes(nodes, …)` / `insertEdges(edges, …)` accept an optional `InsertConfig` for per-call graph routing and insert mode, without changing session state:
 
 ```java
 import com.gqldb.*;
@@ -222,7 +269,7 @@ import com.gqldb.types.InsertType;
 // Target a specific graph without useGraph()
 InsertConfig cfg = new InsertConfig();
 cfg.setGraphName("myGraph");
-cfg.setInsertType(InsertType.OVERWRITE);  // NORMAL (default) or OVERWRITE
+cfg.setInsertType(InsertType.OVERWRITE);  // NORMAL (default), OVERWRITE, or UPSERT
 cfg.setTimeout(60);                       // Optional per-call timeout (seconds)
 
 client.insertNodes(nodes, cfg);
@@ -236,8 +283,18 @@ client.insertEdges(edges, cfg);
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `graphName` | `String` | `null` | Target graph (uses session default if null) |
-| `insertType` | `InsertType` | `NORMAL` | `NORMAL` or `OVERWRITE` |
+| `insertType` | `InsertType` | `NORMAL` | `NORMAL`, `OVERWRITE`, or `UPSERT` (see below) |
 | `timeout` | `int` | `0` | Per-call timeout in seconds (0 = use client default) |
+
+### InsertType Semantics
+
+| Value | Emitted GQL | On duplicate `_id` |
+|---|---|---|
+| `NORMAL` (default) | `INSERT` | Error |
+| `OVERWRITE` | `INSERT OVERWRITE` | Replaces the entity wholesale — properties not in the write are **lost** |
+| `UPSERT` | `UPSERT` | Merges properties — properties not in the write are **preserved** |
+
+`OVERWRITE` and `UPSERT` are different semantics on existing rows; they are not interchangeable.
 
 All other convenience methods also accept `QueryConfig` for per-call graph routing:
 

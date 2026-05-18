@@ -4,24 +4,39 @@ The GQLDB Go driver provides methods for inserting, updating, and deleting nodes
 
 ## Data Methods
 
+Go does not support method overloading, so the gRPC bulk path and the GQL emitter live under **separate function names**:
+
+| Function | Backed by | Returns |
+|---|---|---|
+| `InsertNodes(ctx, graphName, nodes, config?)` | gRPC `InsertNodes` RPC (high-throughput) | `*InsertNodesResult, error` |
+| `InsertNodesGql(ctx, nodes, config?)` | GQL `INSERT` statement (convenience) | `*Response, error` |
+
+`InsertNodesBatchAuto` / `InsertEdgesBatchAuto` are **deprecated** aliases for `InsertNodes` / `InsertEdges` (the gRPC path) — kept for short-lived callers that adopted the post-6.0.0 rename. New code should call `InsertNodes` / `InsertEdges` directly.
+
 | Method | Description |
 |--------|-------------|
-| `InsertNodes(ctx, nodes, config)` | Insert nodes via GQL INSERT statement |
-| `InsertNodesBatchAuto(ctx, graphName, nodes, config)` | Insert nodes via gRPC (high-throughput) |
-| `InsertEdges(ctx, edges, config)` | Insert edges via GQL INSERT statement |
-| `InsertEdgesBatchAuto(ctx, graphName, edges, config)` | Insert edges via gRPC (high-throughput) |
+| `InsertNodes(ctx, graphName, nodes, config?)` | Insert nodes via gRPC (high-throughput) |
+| `InsertNodesGql(ctx, nodes, config?)` | Insert nodes via GQL INSERT statement |
+| `InsertNodesBatchAuto(ctx, graphName, nodes, config?)` | Deprecated alias for `InsertNodes` |
+| `InsertEdges(ctx, graphName, edges, config?)` | Insert edges via gRPC (high-throughput) |
+| `InsertEdgesGql(ctx, edges, config?)` | Insert edges via GQL INSERT statement |
+| `InsertEdgesBatchAuto(ctx, graphName, edges, config?)` | Deprecated alias for `InsertEdges` |
 | `DeleteNodes(ctx, graphName, nodeIDs, labels, where)` | Delete nodes |
 | `DeleteEdges(ctx, graphName, edgeIDs, label, where)` | Delete edges |
 
-### InsertNodes vs InsertNodesBatchAuto
+### Choosing a path
 
-| | `InsertNodes` | `InsertNodesBatchAuto` |
+| | gRPC path (`InsertNodes`) | GQL path (`InsertNodesGql`) |
 |---|---|---|
-| Method | GQL `INSERT` statement | gRPC `InsertNodes` RPC |
-| Bulk session | Not required | Required (`StartBulkImport`) |
-| Performance | Good for small batches | High-throughput for large imports |
-| Custom node ID | Not supported | Supported (`NodeData.ID`) |
-| Use case | Simple inserts, scripts | ETL, data migration, bulk loading |
+| Backed by | gRPC `InsertNodes` RPC | GQL `INSERT` statement |
+| Bulk session | Required for high throughput (`StartBulkImport`) | Not required |
+| Performance | High-throughput for large imports | Good for small batches |
+| Custom node `_id` | Supported (`NodeData.ID`) | Supported (`NodeData.ID` → `_id`) |
+| Custom edge `_id` | Supported (`EdgeData.ID`) | Supported (`EdgeData.ID` → `_id`) |
+| Insert modes | Normal, Overwrite, Upsert (via `Mode`) | Normal, Overwrite, Upsert (via `InsertConfig.InsertType`) |
+| Use case | ETL, data migration, bulk loading | Scripts, small batches, Upsert |
+
+> **Custom edge `_id` requires `WITH EDGE_ID` on the target graph.** This is a server-side prerequisite — the graph must have been created with `CREATE GRAPH <name> WITH EDGE_ID` for user-supplied edge `_id`s to be honored on either path. Without it, the server auto-generates edge `_id`s and any value passed via `EdgeData.ID` is ignored.
 
 ## Inserting Nodes (gRPC Batch)
 
@@ -83,18 +98,20 @@ fmt.Printf("Node IDs: %v\n", result.NodeIDs)
 
 ```go
 type NodeData struct {
-    ID         string
+    ID         string                  // Optional custom node _id (auto-generated when empty)
     Labels     []string
     Properties map[string]interface{}
 }
 ```
 
+A non-empty `ID` is written as `_id` on the inserted node (both gRPC and GQL paths).
+
 ### Insert Configuration
 
 ```go
 config := &gqldb.InsertNodesConfig{
-    Overwrite:           true,  // Update if exists, insert if not
-    BulkImportSessionID: "",    // Bulk import session ID for auto-checkpoint
+    Mode:                gqldb.InsertTypeOverwrite,  // Normal / Overwrite / Upsert
+    BulkImportSessionID: "",                          // Bulk import session ID for auto-checkpoint
 }
 
 result, err := client.InsertNodes(ctx, "myGraph", nodes, config)
@@ -148,6 +165,7 @@ fmt.Printf("Skipped: %d\n", result.SkippedCount)
 
 ```go
 type EdgeData struct {
+    ID         string                  // Optional custom edge _id; requires WITH EDGE_ID graph
     Label      string
     FromNodeID string
     ToNodeID   string
@@ -155,22 +173,27 @@ type EdgeData struct {
 }
 ```
 
+A non-empty `ID` is written as `_id` on the inserted edge (both gRPC and GQL paths). The target graph must have been created with `WITH EDGE_ID` for the server to honor user-supplied edge `_id`s.
+
 ### Edge Insert Configuration
 
 ```go
 config := &gqldb.InsertEdgesConfig{
-    SkipInvalidNodes:    true,  // Skip edges with missing endpoints
-    BulkImportSessionID: "",    // Bulk import session ID
+    SkipInvalidNodes:    true,                        // Skip edges with missing endpoints
+    Mode:                gqldb.InsertTypeOverwrite,   // Normal / Overwrite / Upsert
+    BulkImportSessionID: "",                          // Bulk import session ID
 }
 
 result, err := client.InsertEdges(ctx, "myGraph", edges, config)
 ```
 
+> Edge `InsertTypeOverwrite` and `InsertTypeUpsert` require `WITH EDGE_ID` enabled on the target graph.
+
 ## GQL-based Insert (Convenience)
 
-### InsertNodes() / InsertEdges()
+### InsertNodesGql() / InsertEdgesGql()
 
-These convenience methods generate and execute GQL `INSERT` statements. They don't require a bulk import session and use the session's current graph:
+These convenience methods generate and execute GQL `INSERT` statements and return the raw `*Response`. They don't require a bulk import session and use the session's current graph (override via `InsertConfig.GraphName`):
 
 ```go
 client.UseGraph(ctx, "myGraph")
@@ -178,28 +201,48 @@ client.UseGraph(ctx, "myGraph")
 nodes := []gqldb.NodeData{
     {Labels: []string{"Person"}, Properties: map[string]interface{}{"name": "Alice", "age": 30}},
     {Labels: []string{"Person"}, Properties: map[string]interface{}{"name": "Bob", "age": 25}},
+    // Custom _id via the ID field
+    {ID: "p3", Labels: []string{"Person"}, Properties: map[string]interface{}{"name": "Charlie"}},
 }
-_, err := client.InsertNodes(ctx, nodes, nil)
+_, err := client.InsertNodesGql(ctx, nodes, nil)
 
 edges := []gqldb.EdgeData{
     {Label: "Knows", FromNodeID: "id1", ToNodeID: "id2", Properties: map[string]interface{}{"since": 2024}},
+    // Custom _id (requires graph created WITH EDGE_ID)
+    {ID: "tx-001", Label: "Knows", FromNodeID: "id1", ToNodeID: "id3", Properties: map[string]interface{}{"since": 2025}},
 }
-_, err = client.InsertEdges(ctx, edges, nil)
+_, err = client.InsertEdgesGql(ctx, edges, nil)
 ```
+
+> GQL `INSERT` only supports a single label per node; if `NodeData.Labels` has multiple entries, only the first is used in the GQL path. Use the gRPC path (`InsertNodes`) for multi-label nodes.
 
 ## Per-call Configuration (InsertConfig)
 
-`InsertNodes()` and `InsertEdges()` accept an optional `InsertConfig` for per-call graph routing and insert mode:
+`InsertNodesGql()` and `InsertEdgesGql()` accept an optional `*InsertConfig` for per-call graph routing and insert mode:
 
 ```go
 cfg := &gqldb.InsertConfig{
-    GraphName:  "myGraph",
-    InsertType: gqldb.InsertTypeOverwrite,  // InsertTypeNormal (default) or InsertTypeOverwrite
-    Timeout:    60,                         // optional per-call timeout (seconds)
+    QueryConfig: gqldb.QueryConfig{
+        GraphName: "myGraph",
+        Timeout:   60,                            // optional per-call timeout (seconds)
+    },
+    InsertType: gqldb.InsertTypeOverwrite,        // Normal (default), Overwrite, or Upsert
 }
-client.InsertNodes(ctx, nodes, cfg)
-client.InsertEdges(ctx, edges, cfg)
+client.InsertNodesGql(ctx, nodes, cfg)
+client.InsertEdgesGql(ctx, edges, cfg)
 ```
+
+`InsertConfig` embeds `QueryConfig`, so query-level fields (`GraphName`, `Timeout`, `TransactionID`, etc.) live on the embedded struct.
+
+### InsertType semantics
+
+| Value | Emitted GQL | On duplicate `_id` |
+|---|---|---|
+| `InsertTypeNormal` (default) | `INSERT` | Error |
+| `InsertTypeOverwrite` | `INSERT OVERWRITE` | Replaces the entity wholesale — properties not in the write are **lost** |
+| `InsertTypeUpsert` | `UPSERT` | Merges properties — properties not in the write are **preserved** |
+
+`InsertTypeOverwrite` and `InsertTypeUpsert` are different semantics on existing rows; they are not interchangeable.
 
 All other convenience methods accept `*QueryConfig` the same way:
 
@@ -375,7 +418,7 @@ func main() {
         {ID: "u4", Labels: []string{"User", "Admin"}, Properties: map[string]interface{}{"name": "Diana", "age": int64(28), "active": true}},
     }
 
-    insertConfig := &gqldb.InsertNodesConfig{Overwrite: true}
+    insertConfig := &gqldb.InsertNodesConfig{Mode: gqldb.InsertTypeOverwrite}
     result, err := client.InsertNodes(ctx, "dataOpsDemo", users, insertConfig)
     if err != nil {
         log.Fatal(err)
@@ -422,7 +465,7 @@ func main() {
         {ID: "u5", Labels: []string{"User"}, Properties: map[string]interface{}{"name": "Eve", "age": int64(22), "active": true}},
     }
 
-    result, _ = client.InsertNodes(ctx, "dataOpsDemo", updatedUsers, &gqldb.InsertNodesConfig{Overwrite: true})
+    result, _ = client.InsertNodes(ctx, "dataOpsDemo", updatedUsers, &gqldb.InsertNodesConfig{Mode: gqldb.InsertTypeOverwrite})
     fmt.Printf("  Upserted %d users\n", result.NodeCount)
 
     // Delete inactive users
