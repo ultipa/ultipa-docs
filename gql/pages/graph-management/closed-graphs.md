@@ -250,16 +250,60 @@ Each label provides the following essential metadata:
 | `label` | The name of the label. |
 | `type` | The type of the label, `NODE` or `EDGE`. |
 
-## Adding Node/Edge Types
+## Creating Node/Edge Types
 
-Add node and edge types to a closed graph: 
+Create new node and edge types in a closed graph using the `CREATE NODE/EDGE [TYPE]` statement:
 
 ```gql
--- Add node type Book to g2
-ALTER GRAPH g2 ADD NODE Book ({name STRING, author STRING})
+-- Add node type Book to the current graph
+CREATE NODE Book ({name STRING, author STRING})
 
--- Add edge type PURCHASED to g2
-ALTER GRAPH g2 ADD EDGE PURCHASED (:User)-[{createdOn TIMESTAMP}]->(:Book)
+-- Add edge type PURCHASED to graph g2
+CREATE EDGE TYPE PURCHASED (:User)-[{createdOn TIMESTAMP}]->(:Book) ON GRAPH g2
+
+-- Skip if a node type with the same name already exists
+CREATE NODE IF NOT EXISTS Book ({name STRING, author STRING})
+
+-- Replace the existing node type with the same name
+CREATE OR REPLACE NODE Book ({name STRING, author STRING, isbn STRING})
+```
+
+## Dropping Node/Edge Types
+
+A node or edge type can only be dropped when it has no dependent objects. Dependents include:
+
+- Existing nodes or edges of that type.
+- Named constraints registered on that type.
+- For node types: any edge type that references it as a source or destination endpoint. Drop such edge types first.
+
+Drop node and edge types from a closed graph using the `DROP NODE/EDGE [TYPE]` statement:
+
+```gql
+-- Drop node type User from the current graph
+DROP NODE User
+
+-- Drop edge type FOLLOWS from graph g2
+DROP EDGE TYPE FOLLOWS ON GRAPH g2
+
+-- Skip if the type does not exist
+DROP NODE IF EXISTS Book
+
+-- Drop the type along with its nodes and any constraints registered on it
+DROP NODE User CASCADE
+```
+
+`CASCADE` removes the dependent nodes/edges and named constraints alongside the type, but does **not** drop other type definitions that depend on it — edge types referencing a node type as endpoint must be dropped explicitly first.
+
+## Renaming Node/Edge Types
+
+Rename node and edge types in the current graph:
+
+```gql
+-- Rename node type User to People
+ALTER NODE User RENAME TO People
+
+-- Rename edge type FOLLOWS to LINKS
+ALTER EDGE FOLLOWS RENAME TO LINKS
 ```
 
 ## Adding Properties
@@ -274,18 +318,6 @@ ALTER NODE User ADD PROPERTY gender STRING
 ALTER EDGE JOINS ADD PROPERTY memberNo INT32
 ```
 
-## Renaming Node/Edge Types
-
-Rename node and edge types in the current graph:
-
-```gql
--- Rename node type User to People
-ALTER NODE User RENAME TO People
-
--- Rename edge type FOLLOWS to LINKS
-ALTER EDGE FOLLOWS RENAME TO LINKS
-```
-
 ## Renaming Properties
 
 Rename node and edge properties in the current graph:
@@ -296,18 +328,6 @@ ALTER NODE Book PROPERTY name RENAME TO title
 
 -- Rename property memberNo to memberNumber for JOINS edge type
 ALTER EDGE JOINS PROPERTY memberNo RENAME TO memberNumber
-```
-
-## Dropping Node/Edge Types
-
-A node or edge type can only be dropped when no nodes or edges of that type exist. Drop node and edge types from a graph:
-
-```gql
--- Drop node type User from g2
-ALTER GRAPH g2 DROP NODE User
-
--- Drop edge type FOLLOWS from g2
-ALTER GRAPH g2 DROP EDGE FOLLOWS
 ```
 
 ## Dropping Properties
