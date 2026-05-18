@@ -53,15 +53,11 @@ You can create a full-text index using the `CREATE FULLTEXT` statement. The inde
 
 - The `<index name>` must be unique among nodes and among edges, but a node full-text index and an edge full-text index may share the same name.
 
-Create a full-text index named `prodDesc` for the `description` property of `product` nodes:
-
 ```gql
+-- Full-text index prodDesc for the description property of product nodes
 CREATE FULLTEXT prodDesc ON NODE product (description)
-```
 
-Create a full-text index named `reviewText` for the `content` and `excerpt` properties of `review` edges:
-
-```gql
+-- Full-text index reviewText for the content and excerpt properties of review edges
 CREATE FULLTEXT reviewText ON EDGE review (content, excerpt)
 ```
 
@@ -71,9 +67,6 @@ Dropping a full-text index does not affect the actual property values.
 
 ```gql
 DROP NODE FULLTEXT prodDesc
-```
-
-```gql
 DROP EDGE FULLTEXT reviewText
 ```
 

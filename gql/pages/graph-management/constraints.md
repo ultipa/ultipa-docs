@@ -55,45 +55,39 @@ Constraints can be created two ways:
 
 ```
 <create constraint statement> ::=
-  "CREATE" < "CONSTRAINT" [ "IF NOT EXISTS" ] | "OR REPLACE CONSTRAINT" > <constraint name> 
-  "FOR" <constraint element pattern> "REQUIRE" <constraint requirement>
+  "CREATE" { "CONSTRAINT" [ "IF NOT EXISTS" ] | "OR REPLACE CONSTRAINT" } <constraint name> 
+  "FOR" { <constraint node pattern> | <constraint edge pattern> } "REQUIRE" <constraint requirement>
 
-<constraint element pattern> ::=
-    "(" <element variable declaration> <label set> ")"
-  | "()-[" <element variable declaration> <label set> "]->()"
+<constraint node pattern> ::= "(" <node variable declaration> [ <label set> ] ")"
+
+<constraint edge pattern> ::= "()-[" <edge variable declaration> [ <label set> ] "]->()"
 
 <label set> ::= < ":" | "IS" > <label name> [ { "&" <label name> }... ]
 
-<constraint requirement> ::= <key value specification> "IS" <constraint type>
+<constraint requirement> ::= <key value components> "IS" <constraint type>
 
-<key value specification> ::=
+<key value components> ::=
     <key value component>
   | "(" <key value component> [ { "," <key value component> }... ] ")"
 
-<key value component> ::= <element variable> "." <property name>
+<key value component> ::= <node/edge variable> "." <property name>
 ```
 
-Create a `NOT NULL` constraint named `nn_user_name` on the property `name` of `User` nodes:
+**Details**
+
+- A constraint can be scoped to a label set — one or more labels joined by `&`.
 
 ```gql
+-- NOT NULL constraint nn_user_name on the property name of User nodes
 CREATE CONSTRAINT nn_user_name FOR (n:User) REQUIRE n.name IS NOT NULL
-```
 
-Create a composite `UNIQUE` constraint named `uq_user_name` on properties `firstName` and `lastName` of `User` nodes:
+-- UNQIUE constraint nn_knows_eid on the property eid of KNOWS edges
+CREATE CONSTRAINT nn_knows_eid FOR ()-[e:KNOWS]->() REQUIRE e.eid IS UNIQUE
 
-```gql
+-- Composite UNIQUE constraint uq_user_name on properties firstName and lastName of User nodes
 CREATE CONSTRAINT uq_user_name FOR (n:User) REQUIRE (n.firstName, n.lastName) IS UNIQUE
-```
 
-Create a `UNQIUE` constraint named `nn_knows_eid` on the property `eid` of `KNOWS` edges:
-
-```gql
-CREATE CONSTRAINT nn_knows_eid FOR ()-[e:KNOWS]->() REQUIRE e.eid IS UNIQUE 
-```
-
-Create a `KEY` constraint named `user_key` on the property `uid` of `User` nodes:
-
-```gql
+-- KEY constraint user_key on the property uid of User nodes
 CREATE CONSTRAINT user_key FOR (n:User) REQUIRE n.uid IS KEY
 ```
 
@@ -119,7 +113,7 @@ Inline form in `CREATE GRAPH`:
 
 ```gql
 CREATE GRAPH myGraph {
-  NODE User ({name STRING NOT NULL UNIQUE, age UINT32}),
+  NODE User ({uid STRING KEY, name STRING NOT NULL UNIQUE, age UINT32}),
   EDGE KNOWS ()-[{createdOn TIMESTAMP NOT NULL, eid STRING}]->()
 }
 ```
@@ -128,7 +122,7 @@ Inline form in `CREATE GRAPH TYPE`:
 
 ```gql
 CREATE GRAPH TYPE gType {
-  NODE User ({name STRING NOT NULL UNIQUE, age UINT32}),
+  NODE User ({uid STRING KEY, name STRING NOT NULL UNIQUE, age UINT32}),
   EDGE KNOWS ()-[{createdOn TIMESTAMP NOT NULL, eid STRING}]->()
 }
 ```

@@ -8,19 +8,11 @@ An index is created on a single property of a label.
 
 ## Showing Index
 
-Retrieve all indexes in the current graph:
+Retrieve indexes in the current graph:
 
 ```gql
 SHOW INDEX
-```
-
-Retrieve only node or edge indexes:
-
-```gql
 SHOW NODE INDEX
-```
-
-```gql
 SHOW EDGE INDEX
 ```
 
@@ -56,21 +48,14 @@ You can create an index using the `CREATE INDEX` statement. The index is built a
 - The `<index name>` is optional. If omitted, the system assigns a generated name.
 - For `STRING` or `TEXT` properties, you can optionally specify `<length>` to limit the number of characters indexed per value. If omitted, the full string is indexed. See <a href="#String-Length-Limitation">String Length Limitation</a>.
 
-Create an index named `cBalance` for the `balance` property of `card` nodes:
-
 ```gql
+-- Index cBalance for the balance property of card nodes
 CREATE INDEX cBalance ON NODE card (balance)
-```
 
-Create an index for the `STRING`-type property `name` of `card` nodes, limiting the indexed length to `10` characters:
-
-```gql
+-- Index for the STRING-type property name of card nodes, limiting the indexed length to 10 characters
 CREATE INDEX name ON NODE card (name(10))
-```
 
-Create an edge index `transAmount` for the `amount` property of `transfer` edges:
-
-```gql
+-- Index transAmount for the amount property of transfer edges
 CREATE INDEX transAmount ON EDGE transfer (amount)
 ```
 
@@ -80,15 +65,9 @@ Dropping an index does not affect the actual property values.
 
 ```gql
 DROP INDEX cBalance
-```
 
-You can also specify `NODE` or `EDGE` explicitly:
-
-```gql
+-- You can also specify NODE or EDGE explicitly
 DROP NODE INDEX cBalance
-```
-
-```gql
 DROP EDGE INDEX transAmountNotes
 ```
 

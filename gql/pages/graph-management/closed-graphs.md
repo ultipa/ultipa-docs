@@ -12,29 +12,29 @@ A node type is the schema definition that nodes of a closed graph must conform t
 
 ```
 <node type> ::=
-  "NODE" [ "TYPE" ] <node type name> "(" [ <additional labels> ] [ <property types> ] ")"
+  "NODE" [ "TYPE" ] <node type name> "(" [ <implied labels> ] [ <property types> ] ")"
 
-<additional labels> ::= ":" <label name> [ { "&" <label name> } ... ]
+<implied labels> ::= ":" <label name> [ { "&" <label name> } ... ]
 
 <property types> ::= "{" <property type> [ { "," <property type> } ... ] "}"
 
 <property type> ::= <property name> <property value type> [ <constraint type> ]
 ```
 
-The node type name automatically becomes a label. The **label set** of a node type is the union of its type name and optional additional labels. When no additional labels are specified, the type name is the only label.
+The node type name automatically becomes a label. The **label set** of a node type is the union of its type name and optional implied labels. When no additional labels are specified, the type name is the only label.
 
 <p tit="Node Type"></p>
 
 ```gql
--- No additional labels specified, node type name is the only label
+-- No implied labels specified, node type name is the only label
 -- Label set is :User
 NODE User ({name STRING})
 
--- One additional label specified
+-- One implied label specified
 -- Label set is :User&Employee
 NODE User (:Employee {name STRING})
 
--- Multiple additional labels specified
+-- Multiple implied labels specified
 -- Label set is :User&Employee&Manager
 NODE User (:Employee&Manager {name STRING})
 ```
@@ -61,21 +61,20 @@ An edge type is the schema definition that edges of a closed graph must conform 
   "EDGE" [ "TYPE" ] <edge type name> { <edge type pattern> | <edge type phrase> }
 
 <edge type pattern> ::=
-  <source node label set> "-[" [ <property types> ] "]->" <destination node label set>
+  <source node type reference> "-[" [ <property types> ] "]->" <destination node type reference>
+
+<source/destination node type reference> ::= 
+  "(" [ <node type name> | <node type label set> ] ")"
 
 <edge type phrase> ::=
   [ <property types> ] "CONNECTING" "(" <source node type name> < "->" | "TO" > <destination node type name> ")"
-
-<property types> ::= "{" <property type> [ { "," <property type> } ... ] "}"
-
-<property type> ::= <property name> <property value type> [ <constraint type> ]
 ```
 
-Unlike a node type, an edge type does not support additional labels — the edge type name is its only label. The property types follow the same rules as on <a href="#Node-Types">node types</a>.
+Unlike node types, edge types does not support implied labels — the edge type name is its only label. The property types follow the same rules as on <a href="#Node-Types">node types</a>.
 
-An edge type can also constrain its endpoints. The **pattern form** matches source and destination by label sets, while the **phrase form** references node-type names.
+An edge type can also constrain its endpoints. The **pattern form** matches source and destination by node-type names or label sets, while the **phrase form** references node-type names.
 
-Pattern form examples (endpoints are node-type label sets defined in the same graph type):
+Pattern form examples:
 
 <p tit="Edge Type"></p>
 
@@ -86,14 +85,17 @@ EDGE FOLLOWS ()-[]->()
 -- Connects any node to any node, with property 'since' of type DATE
 EDGE LIKES ()-[{since DATE}]->()
 
--- Both source and destination label sets are :User
+-- Both source and destination node-type names are User
+EDGE FOLLOWS (User)-[{since DATE}]->(User)
+
+-- Both source and destination node-type label sets are :User
 EDGE FOLLOWS (:User)-[{since DATE}]->(:User)
 
--- Source label set is :User&Employee, destination labet set is :Company
+-- Source node-type label set is :User&Employee, destination node-type labet set is :Company
 EDGE WORKS_AT (:User&Employee)-[{title STRING}]->(:Company)
 ```
 
-Phrase form examples (endpoints are node-type names defined in the same graph type):
+Phrase form examples:
 
 <p tit="Edge Type"></p>
 
@@ -126,8 +128,7 @@ Define the node and edge types directly in the `CREATE GRAPH` statement.
 <p tit="Syntax"></p>
 
 ```
-<inline graph type> ::= 
-  "{" [ <element type> [ { "," <element type> }... ] ] "}"
+<inline graph type> ::= "{" [ <element type> [ { "," <element type> }... ] ] "}"
 
 <element type> = <node type> | <edge type>
 ```
@@ -149,8 +150,8 @@ You can also constrain edge type endpoints:
 CREATE GRAPH g2 {
   NODE User (:Player {name STRING, age UINT32}),
   NODE Club ({name STRING}),
-  EDGE FOLLOWS (:User&Player)-[{createdOn TIMESTAMP}]->(:User&Player),
-  EDGE JOINS (:User&Player)-[]->(:Club)
+  EDGE FOLLOWS (User)-[{createdOn TIMESTAMP}]->(User),
+  EDGE JOINS (User)-[]->(Club)
 }
 ```
 

@@ -8,17 +8,11 @@ Show triggers in the current graph:
 
 ```gql
 SHOW TRIGGERS
-```
 
-Filter by node label:
-
-```gql
+-- Filter by node label
 SHOW TRIGGERS ON NODE Student
-```
 
-Filter by edge label:
-
-```gql
+-- Filter by edge label
 SHOW TRIGGERS ON EDGE "ATTENDS"
 ```
 
@@ -39,12 +33,15 @@ Returns a table with the following columns:
 
 ```
 <create trigger statement> ::=
-  "CREATE TRIGGER" <trigger name> "ON" < "NODE" | "EDGE" > <label name> [ "COMMENT" <comment> ]
+  "CREATE TRIGGER" [ "IF NOT EXISTS" ] <trigger name> "ON" < "NODE" | "EDGE" > <label name> 
+  [ "COMMENT" <comment> ]
   "BEFORE" < "INSERT" | "UPDATE" >
   "CALL" <callable body string>
 ```
 
-> `BEFORE INSERT` only fires for nodes. Edge inserts do not invoke triggers in the current implementation.
+**Details**
+
+- `BEFORE INSERT` only fires for nodes. `BEFORE UPDATE` fires normally on both nodes and edges.
 
 ### Callable Body
 
@@ -78,36 +75,35 @@ The `<callable body>` uses the format `$entity call { ... }` and supports `let` 
 | `trim(value)` | Removes leading and trailing whitespace from a string. |
 | `len(value)` / `length(value)` | Returns the length of a string. |
 
+**Limitations of the callable body**
+
+The body language is intentionally narrow. Be aware of the following:
+
+- Only `let entity.<property> = <expression>` assignments are supported. There are no statements for conditionals, loops, explicit `REJECT`/`ABORT`, logging, or calls to user-defined procedures.
+- Only the properties of the triggering entity are reachable via `entity.<property>`. Other nodes, edges, parameters, and graph state cannot be queried from inside the body.
+
 ### Examples
 
-Create a trigger that normalizes a student's `name` and sets a default `status` before insertion:
-
 ```gql
+-- BEFORE INSERT node trigger: normalize student name and set default status
 CREATE TRIGGER "InitStudent" ON NODE "Student"
   COMMENT 'Normalize name and set default status'
   BEFORE INSERT
   CALL " $entity call { let entity.name = upper(trim(entity.name)); let entity.status = 'active' } "
-```
 
-Now inserting a `Student` node will uppercase the `name` and set `status`:
-
-```gql
+-- Now inserting a Student node will uppercase the name and set status
 INSERT (n:Student {name: "John Doe"})
 RETURN n.name, n.status   // "JOHN DOE", "active"
 ```
 
-Create a trigger that normalizes the `email` property before updating a `User` node:
-
 ```gql
+-- BEFORE UPDATE node trigger: normalize user email
 CREATE TRIGGER "NormalizeEmail" ON NODE "User"
   COMMENT 'Normalize email on update'
   BEFORE UPDATE
   CALL " $entity call { let entity.email = lower(trim(entity.email)) } "
-```
 
-Now updating a `User` email will trim whitespace and lowercase it:
-
-```gql
+-- Now updating a User's email will trim whitespace and lowercase it
 MATCH (u:User {_id: 'u1'})
 SET u.email = "  Alice@Example.COM  "
 RETURN u.email   // "alice@example.com"
@@ -135,4 +131,5 @@ This deletes the trigger `InitStudent` only if a trigger with that name does exi
 
 - When multiple triggers are defined on the same label and event, they execute in **creation order**. Each trigger receives the modified properties from the previous trigger.
 - When an entity has multiple labels, triggers execute in the **order the labels appear in the query**. For example, `INSERT (:Student&Person {...})` fires `Student` triggers first, then `Person` triggers. The modified properties from one label's triggers are passed to the next label's triggers.
-- If any trigger fails, the entire operation is aborted. For example, if a trigger calls `upper(entity.name)` and `name` is not a string, the trigger errors and the insert is rejected.
+- There is no practical way to conditionally veto an operation. The built-in functions (`upper`, `lower`, `trim`, `len`/`length`) silently pass through non-string inputs without raising an error, and the body language has no conditional or reject keyword.
+- If the body itself errors (for example, calling an undefined function), the operation is aborted and the error is returned to the client.

@@ -40,7 +40,29 @@ Each graph type provides the following essential metadata:
 
 ## Creating Graph Types
 
+You have three ways to create a graph type:
+
+<p tit="Syntax"></p>
+
+```
+<create graph type statement> ::= 
+  "CREATE" { "GRAPH TYPE" [ "IF NOT EXISTS" ] | "OR REPLACE GRAPH TYPE" } <graph type name>
+  <inline graph type> | <cloned graph type> | <inferred graph type>
+```
+
 ### Inline Specification
+
+Define the node and edge types directly in the `CREATE GRAPH TYPE` statement.
+
+<p tit="Syntax"></p>
+
+```
+<inline graph type> ::= "{" [ <element type> [ { "," <element type> }... ] ] "}"
+
+<element type> = <node type> | <edge type>
+```
+
+Learn more about <a target="_blank" href="/docs/gql/closed-graphs#Node-Types">node types</a> and <a target="_blank" href="/docs/gql/closed-graphs#Edge-Types">edge types</a>.
 
 Create an empty graph type that schema can be added to later:
 
@@ -59,7 +81,13 @@ CREATE GRAPH TYPE gType {
 }
 ```
 
-### Copying a Graph Type
+### Cloning a Graph Type
+
+<p tit="Syntax"></p>
+
+```
+<cloned graph type> ::= "AS COPY OF" <graph type name>
+```
 
 Create a graph type that is a copy of another **graph type**:
 
@@ -68,6 +96,12 @@ CREATE GRAPH TYPE socialType AS COPY OF gType
 ```
 
 ### Inferring a Graph Type
+
+<p tit="Syntax"></p>
+
+```
+<inferred graph type> ::= "LIKE" <graph name>
+```
 
 Create a graph type by inferring the schema from an existing **graph** (the right-hand side is a graph name, not a graph type name). The system reads the labels and properties present in the graph and produces a matching type:
 

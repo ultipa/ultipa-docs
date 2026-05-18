@@ -95,7 +95,7 @@ This creates the graph `myGraph` only if a graph with that name does not exist. 
 
 ```
 <clone graph statement> ::= 
-  "CREATE GRAPH" [ "IF NOT EXISTS" ] <graph name> "AS COPY OF" <original graph name>
+  "CREATE GRAPH" [ "IF NOT EXISTS" ] <graph name> "AS COPY OF" <graph name>
 ```
 
 A new graph can be created from an existing one, cloning both data and schema (if it's a closed graph):
