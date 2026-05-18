@@ -499,6 +499,33 @@ RETURN pi()
 
 Result: 3.141592653589793
 
+## e()
+
+Returns the mathematical constant *e* (Euler's number) approximately equal to 2.71828. *e* is the base of the natural logarithm.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td><code>e()</code></td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td><code>DOUBLE</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN e()
+```
+
+Result: 2.718281828459045
+
 ## random()
 
 Returns a random floating-point number between 0 (inclusive) and 1 (exclusive). `rand()` is an alias for `random()`.

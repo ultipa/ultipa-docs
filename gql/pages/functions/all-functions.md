@@ -88,6 +88,7 @@ SHOW FUNCTIONS FORMAT OPENAI
 | <a href="/docs/gql/mathematical-functions#log">log()</a> | Computes the logarithm of a specified number with respect to a given base. |
 | <a href="/docs/gql/mathematical-functions#log10">log10()</a> | Computes the base 10 logarithm of a given number. |
 | <a href="/docs/gql/mathematical-functions#pi">pi()</a> | Returns the mathematical constant π (pi). |
+| <a href="/docs/gql/mathematical-functions#e">e()</a> | Returns the mathematical constant *e* (Euler's number). |
 | <a href="/docs/gql/mathematical-functions#random">random()</a> | Returns a random floating-point number between 0 and 1. |
 | <a href="/docs/gql/mathematical-functions#sign">sign()</a> | Returns the sign of a number: -1, 0, or 1. |
 

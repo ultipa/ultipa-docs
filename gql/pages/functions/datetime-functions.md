@@ -744,7 +744,7 @@ Result:
 
 ### dateformat()
 
-Formats a temporal value as a string using a Go-style layout pattern.
+Formats a temporal value as a string using a Java SimpleDateFormat-style pattern.
 
 <table style="width: 100%;">
   <colgroup>
@@ -772,7 +772,7 @@ Formats a temporal value as a string using a Go-style layout pattern.
     <tr>
       <td><code>&lt;format&gt;</code></td>
       <td><code>STRING</code></td>
-      <td>The Go reference layout pattern (e.g., <code>"2006-01-02"</code>, <code>"2006-01-02 15:04:05"</code>)</td>
+      <td>A Java SimpleDateFormat-style pattern (e.g., <code>"yyyy-MM-dd"</code>, <code>"yyyy-MM-dd HH:mm:ss"</code>)</td>
     </tr>
     <tr>
       <td><b>Return Type</b></td>
@@ -781,13 +781,33 @@ Formats a temporal value as a string using a Go-style layout pattern.
   </tbody>
 </table>
 
+Supported pattern tokens (case-sensitive; the longest match wins):
+
+| Token | Meaning | Example |
+| -- | -- | -- |
+| `yyyy` / `yy` | 4- or 2-digit year | `2024` / `24` |
+| `MMMMM` / `MMMM` / `MMM` / `MM` / `M` | Month: one-letter abbreviation / full name / short name / 2-digit / 1-digit | `J` / `January` / `Jan` / `01` / `1` |
+| `dd` / `d` | Day of month: padded / unpadded | `02` / `2` |
+| `EEEE` / `EEE` / `EE` / `E` | Day name: full / 3-letter abbreviation | `Monday` / `Mon` |
+| `HH` / `H` | Hour 0-23, always 2-digit padded | `15` |
+| `hh` / `h` | Hour 1-12: padded / unpadded | `03` / `3` |
+| `mm` / `m` | Minute: padded / unpadded | `04` / `4` |
+| `ss` / `s` | Second: padded / unpadded | `05` / `5` |
+| `SSSSSSSSS` / `SSSSSS` / `SSS` / `SS` / `S` | Fractional second: 9 / 6 / 3 / 2 / 1 digits (use after `.` or `,`) | `123456789` / `123456` / `123` / `12` / `1` |
+| `a` | AM/PM marker | `PM` |
+| `XXX` / `XX` / `X` | ISO 8601 zone offset | `-07:00` / `-0700` / `-07` |
+| `Z` | RFC 822 zone offset | `-0700` |
+| `z` | Time zone abbreviation | `MST` |
+
 ```gql
-RETURN dateformat(date("2025-03-15"), "2006-1-2") AS value1,
-       dateformat(local_datetime("2025-03-15T14:30:45"), "2006-01-02 15:04:05") AS value2
+RETURN dateformat(date("2025-03-15"), "yyyy-M-d") AS value1,
+       dateformat(local_datetime("2025-03-15T14:30:45"), "yyyy-MM-dd HH:mm:ss") AS value2
+       dateformat(CURRENT_DATE, "'today is' yyyy-MM-dd") AS value3  // single-quote escape
 ```
 
 Result:
 
-| value1 | value2 |
-| -- | -- |
-| "2025-3-15" | "2025-03-15 14:30:45" |
+| value1 | value2 | value3 |
+| -- | -- | -- |
+| "2025-3-15" | "2025-03-15 14:30:45" | "today is 2026-05-18" |
+
