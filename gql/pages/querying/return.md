@@ -170,35 +170,6 @@ Result:
 | Susan | Art | 2023 |
 | Susan | Literature | 2023 |
 
-## Returning with Aggregation
-
-Aggregation functions, such as `sum()` and `max()`, can be directly applied in the `RETURN` statement. 
-
-```gql
-MATCH (:Student {name:"Susan"})-[]->(c:Course)
-RETURN sum(c.credit)
-```
-
-Result:
-
-| sum(c.credit) |
-| -- |
-| 28 |
-
-## Returning by CASE
-
-```gql
-MATCH (n:Course)
-RETURN n.name, CASE WHEN n.credit > 14 THEN "Y" ELSE "N" END AS Recommended
-```
-
-Result:
-
-| n.name | Recommended |
-| -- | -- |
-| Art | N |
-| Literature | Y |
-
 ## Returning Limited Records
 
 The `LIMIT` statement can be used to restrict the number of records retained for each return item.
@@ -229,6 +200,63 @@ Result:
 | -- | -- | -- |
 | c2 | Literature | 15 |
 | c1 | Art | 13 |
+
+## Returning Computed Values
+
+A `RETURN` item can be any value expression, not only a variable or property reference. The expression is evaluated per row and the result becomes a column in the output. Computed values cover arithmetic, function calls, string concatenation, conditional `CASE` expressions, comparisons, and any composition of these.
+
+Arithmetic on properties:
+
+```gql
+MATCH (n:Course)
+RETURN n.name, n.credit, n.credit * 2 AS double_credit
+```
+
+Result:
+
+| n.name | n.credit | double_credit |
+| -- | -- | -- |
+| Art | 13 | 26 |
+| Literature | 15 | 30 |
+
+Function call on a property:
+
+```gql
+MATCH (n:Student)
+RETURN n.name, upper(n.name) AS upper_name
+```
+
+Result:
+
+| n.name | upper_name |
+| -- | -- |
+| Alex | ALEX |
+| Susan | SUSAN |
+
+```gql
+MATCH (:Student {name:"Susan"})-[]->(c:Course)
+RETURN sum(c.credit)
+```
+
+Result:
+
+| sum(c.credit) |
+| -- |
+| 28 |
+
+Comparison and conditional:
+
+```gql
+MATCH (n:Course)
+RETURN n.name, CASE WHEN n.credit >= 14 THEN 'high' ELSE 'low' END AS credit_level
+```
+
+Result:
+
+| n.name | credit_level |
+| -- | -- |
+| Art | low |
+| Literature | high |
 
 ## Returning with Grouping
 
