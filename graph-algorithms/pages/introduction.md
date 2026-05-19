@@ -31,7 +31,10 @@ SHOW ALGOS CATEGORY centrality
 View details for a specific algorithm:
 
 ```gql
-DESCRIBE ALGOS pagerank
+DESCRIBE ALGO pagerank
+
+-- DESC is a shorthand for DESCRIBE
+DESC ALGO pagerank
 ```
 
 ## All Algorithms
