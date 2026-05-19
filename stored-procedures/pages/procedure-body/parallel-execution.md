@@ -12,8 +12,8 @@ Execute loop iterations across multiple worker goroutines:
 
 ```gql
 -- Auto-detect worker count (uses all CPU cores)
-PARALLEL FOR node IN SCAN(:Person) {
-    node.processed = true
+PARALLEL FOR n IN SCAN(:Person) {
+    n.processed = true
 }
 ```
 
@@ -22,9 +22,9 @@ PARALLEL FOR node IN SCAN(:Person) {
 <p tit="Procedure Body Language"></p>
 
 ```gql
-PARALLEL FOR node IN SCAN(:Person) WORKERS 8 {
-    LET score = OUT_DEGREE(node) * 0.1
-    node.score = score
+PARALLEL FOR n IN SCAN(:Person) WORKERS 8 {
+    LET score = OUT_DEGREE(n) * 0.1
+    n.score = score
 }
 ```
 
@@ -35,9 +35,9 @@ Use `.batch(N)` for better throughput — nodes are fetched in batches of N:
 <p tit="Procedure Body Language"></p>
 
 ```gql
-PARALLEL FOR node IN SCAN(:Person).batch(1000) WORKERS 4 {
-    LET degree = OUT_DEGREE(node)
-    SET_SLICE_PROP(node._internal_id, 'degree', degree)
+PARALLEL FOR n IN SCAN(:Person).batch(1000) WORKERS 4 {
+    LET degree = OUT_DEGREE(n)
+    SET_SLICE_PROP(n._internal_id, 'degree', degree)
 }
 ```
 
@@ -60,9 +60,9 @@ Every node has an `_internal_id`, a system-assigned integer used as the array in
 <p tit="Procedure Body Language"></p>
 
 ```gql
-PARALLEL FOR node IN SCAN() WORKERS 8 {
-    -- node._internal_id is the array index
-    SET_SLICE_PROP(node._internal_id, 'rank', 1.0)
+PARALLEL FOR n IN SCAN() WORKERS 8 {
+    -- n._internal_id is the array index
+    SET_SLICE_PROP(n._internal_id, 'rank', 1.0)
 }
 ```
 
@@ -208,16 +208,31 @@ BATCH_PERSIST_SLICES('hub', 'hub_score', 'auth', 'authority_score')
 - Copies property map only once per node.
 - Encodes and writes only once per node.
 
-### BATCH_SLICE_ADD
+### BATCH_SLICE_ADD_SCALAR
 
-Add a constant value to all elements in a slice:
+Add a constant value to every element in a slice in place:
 
 <p tit="Procedure Body Language"></p>
 
 ```gql
 -- Add teleportation probability to all ranks
-BATCH_SLICE_ADD('rank', (1.0 - damping) / n)
+BATCH_SLICE_ADD_SCALAR('rank', (1.0 - damping) / n)
 ```
+
+`BATCH_SLICE_ADD_SCALAR(sliceName, constant)`: for each node `i`, `slice[i] = slice[i] + constant`.
+
+### BATCH_SLICE_ADD
+
+Element-wise addition of two slices into a third slice:
+
+<p tit="Procedure Body Language"></p>
+
+```gql
+-- result[i] = slice1[i] + slice2[i]
+BATCH_SLICE_ADD('slice1', 'slice2', 'result')
+```
+
+`BATCH_SLICE_ADD(slice1Name, slice2Name, outputSliceName)`. The output slice must already be initialized (e.g., with `INIT_SLICE_PROP`).
 
 ## Pattern: Iterative Algorithm
 
@@ -238,9 +253,9 @@ AS {
         INIT_SLICE_PROP('new_score', 0.0)
 
         -- 2b. Parallel computation
-        PARALLEL FOR node IN SCAN() WORKERS 8 {
-            LET contrib = IN_NEIGHBOR_SUM(node, 'score', 'out_degree')
-            SET_SLICE_PROP(node._internal_id, 'new_score', contrib)
+        PARALLEL FOR n IN SCAN() WORKERS 8 {
+            LET contrib = IN_NEIGHBOR_SUM(n, 'score', 'out_degree')
+            SET_SLICE_PROP(n._internal_id, 'new_score', contrib)
         }
 
         -- 2c. Swap (or normalize then swap)
@@ -251,9 +266,9 @@ AS {
     BATCH_PERSIST_SLICE('score', 'algorithm_score')
 
     -- 4. Return results
-    FOR node IN SCAN() {
-        LET score = GET_SLICE_PROP(node._internal_id, 'score')
-        RETURN node._id AS node_id, score
+    FOR n IN SCAN() {
+        LET score = GET_SLICE_PROP(n._internal_id, 'score')
+        RETURN n._id AS node_id, score
     }
 }
 ```
@@ -264,7 +279,7 @@ AS {
 
 - **CPU-bound** (arithmetic, slice ops): Use `WORKERS N` where N = number of CPU cores
 - **I/O-bound** (property lookups from storage): Use more workers (2x-4x cores)
-- **Default** (no WORKERS specified): Auto-detects CPU count
+- **Default** (no `WORKERS` specified): Auto-detects CPU count
 
 ### Use .batch() for Large Scans
 
@@ -274,10 +289,10 @@ Batching reduces scheduling overhead:
 
 ```gql
 -- Without batching: each node is dispatched individually
-PARALLEL FOR node IN SCAN(:Person) WORKERS 8 { ... }
+PARALLEL FOR n IN SCAN(:Person) WORKERS 8 { ... }
 
 -- With batching: nodes dispatched in chunks of 1000
-PARALLEL FOR node IN SCAN(:Person).batch(1000) WORKERS 8 { ... }
+PARALLEL FOR n IN SCAN(:Person).batch(1000) WORKERS 8 { ... }
 ```
 
 ### Prefer Slice Properties Over Temp Properties
@@ -288,12 +303,12 @@ For algorithms that access properties in `PARALLEL FOR`:
 
 ```gql
 -- FAST: O(1) array access
-SET_SLICE_PROP(node._internal_id, 'rank', value)
-LET rank = GET_SLICE_PROP(node._internal_id, 'rank')
+SET_SLICE_PROP(n._internal_id, 'rank', value)
+LET rank = GET_SLICE_PROP(n._internal_id, 'rank')
 
 -- SLOWER: Map-based property access
-node.rank = value
-LET rank = node.rank
+n.rank = value
+LET rank = n.rank
 ```
 
 ### Use Fused Neighbor Operations
@@ -306,7 +321,7 @@ Instead of manually iterating neighbors:
 -- SLOW: Per-neighbor interpreter overhead
 LET sum = 0
 FOR neighbor IN NEIGHBORS(node, IN) {
-    sum = sum + GET_SLICE_PROP(neighbor._internal_id, 'rank')
+    LET sum = sum + GET_SLICE_PROP(neighbor._internal_id, 'rank')
 }
 
 -- FAST: Single fused operation, direct CSR/CSC access

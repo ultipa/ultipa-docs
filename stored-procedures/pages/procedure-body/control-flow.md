@@ -23,7 +23,7 @@ Conditions can use any expression that evaluates to a boolean:
 <p tit="Procedure Body Language"></p>
 
 ```gql
-IF node.active = true AND OUT_DEGREE(node) > 5 {
+IF n.active = true AND OUT_DEGREE(n) > 5 {
     PRINT 'Active high-degree node'
 }
 
@@ -67,8 +67,8 @@ FOR i IN RANGE(1, 100) {
 <p tit="Procedure Body Language"></p>
 
 ```gql
-FOR node IN SCAN(:Person) {
-    PRINT node.name
+FOR n IN SCAN(:Person) {
+    PRINT n.name
 }
 ```
 
@@ -77,8 +77,8 @@ FOR node IN SCAN(:Person) {
 <p tit="Procedure Body Language"></p>
 
 ```gql
-FOR edge IN EDGES(:KNOWS) {
-    PRINT edge._from || ' -> ' || edge._to
+FOR e IN EDGES(:KNOWS) {
+    PRINT e._from || ' -> ' || e._to
 }
 ```
 
@@ -87,7 +87,7 @@ FOR edge IN EDGES(:KNOWS) {
 <p tit="Procedure Body Language"></p>
 
 ```gql
-FOR neighbor IN NEIGHBORS(node, OUT, :KNOWS) {
+FOR neighbor IN NEIGHBORS(n, OUT, :KNOWS) {
     PRINT neighbor.name
 }
 ```
@@ -102,14 +102,14 @@ Executes loop iterations across multiple worker goroutines:
 
 ```gql
 -- Auto-detect worker count
-PARALLEL FOR node IN SCAN(:Person) {
-    node.processed = true
+PARALLEL FOR n IN SCAN(:Person) {
+    n.processed = true
 }
 
 -- Explicit worker count
-PARALLEL FOR node IN SCAN(:Person) WORKERS 8 {
-    LET score = OUT_DEGREE(node) * 0.1
-    node.score = score
+PARALLEL FOR n IN SCAN(:Person) WORKERS 8 {
+    LET score = OUT_DEGREE(n) * 0.1
+    n.score = score
 }
 ```
 
@@ -123,7 +123,7 @@ See <a href="/docs/stored-procedures/parallel-execution">Parallel Execution</a> 
 LET i = 0
 WHILE i < 10 {
     PRINT i
-    i = i + 1
+    LET i = i + 1
 }
 ```
 
@@ -137,11 +137,11 @@ LET iteration = 0
 WHILE changed > 0 {
     LET changed = 0
 
-    PARALLEL FOR node IN SCAN() WORKERS 8 {
-        LET current = GET_SLICE_PROP(node._internal_id, 'rank')
-        LET new_val = compute_new_rank(node)
+    PARALLEL FOR n IN SCAN() WORKERS 8 {
+        LET current = GET_SLICE_PROP(n._internal_id, 'rank')
+        LET new_val = compute_new_rank(n)
         IF new_val <> current {
-            SET_SLICE_PROP(node._internal_id, 'rank', new_val)
+            SET_SLICE_PROP(n._internal_id, 'rank', new_val)
             LET changed = changed + 1
         }
     }
@@ -171,11 +171,11 @@ Works with `FOR`, `PARALLEL FOR`, `WHILE`, and `FOR...IN MATCH`:
 <p tit="Procedure Body Language"></p>
 
 ```gql
-FOR (node, depth) IN MATCH BFS (start)-[:KNOWS]->{1,10}(node) {
+FOR (n, depth) IN MATCH BFS (start)-[:KNOWS]->{1,10}(n) {
     IF depth > 5 {
         BREAK  -- stop traversal early
     }
-    RETURN node._id, depth
+    RETURN n._id, depth
 }
 ```
 
@@ -197,12 +197,12 @@ FOR i IN RANGE(1, 100) {
 <p tit="Procedure Body Language"></p>
 
 ```gql
-FOR node IN SCAN(:Person) {
-    IF node.active = false {
+FOR n IN SCAN(:Person) {
+    IF n.active = false {
         CONTINUE  -- skip inactive nodes
     }
     -- process only active nodes
-    RETURN node._id AS person_id
+    RETURN n._id AS person_id
 }
 ```
 
@@ -310,7 +310,7 @@ IF $iterations < 1 {
     THROW 'Iterations must be at least 1'
 }
 
-IF node IS NULL {
+IF n IS NULL {
     THROW 'Node not found: ' || $node_id
 }
 ```
@@ -351,11 +351,11 @@ Use cases:
 
 ```gql
 ATOMIC {
-    MATCH (from:Account {_id: $from_id})
-    MATCH (to:Account {_id: $to_id})
-    SET from.balance = from.balance - $amount
-    SET to.balance = to.balance + $amount
-    INSERT (from)-[:TRANSFER {amount: $amount, timestamp: TIMESTAMP_MS()}]->(to)
+    MATCH (src:Account {_id: $from_id})
+    MATCH (dest:Account {_id: $to_id})
+    SET src.balance = src.balance - $amount
+    SET dest.balance = dest.balance + $amount
+    INSERT (src)-[:TRANSFER {amount: $amount, timestamp: TIMESTAMP_MS()}]->(dest)
 }
 ```
 
@@ -366,14 +366,14 @@ Control flow statements can be nested arbitrarily:
 <p tit="Procedure Body Language"></p>
 
 ```gql
-FOR node IN SCAN(:Person) {
-    IF OUT_DEGREE(node) > 10 {
-        FOR neighbor IN NEIGHBORS(node, OUT, :KNOWS) {
+FOR n IN SCAN(:Person) {
+    IF OUT_DEGREE(n) > 10 {
+        FOR neighbor IN NEIGHBORS(n, OUT, :KNOWS) {
             IF neighbor.active = true {
                 TRY {
-                    LET score = JACCARD_SIMILARITY(node, neighbor)
+                    LET score = JACCARD_SIMILARITY(n, neighbor)
                     IF score > 0.5 {
-                        RETURN node._id AS source, neighbor._id AS target, score
+                        RETURN n._id AS source, neighbor._id AS target, score
                     }
                 } CATCH {
                     CONTINUE

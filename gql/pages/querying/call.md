@@ -152,7 +152,10 @@ Result:
 
 ## Calling Named Procedures
 
-A **named procedure** refers to a predefined procedure, such as an algorithm, that is registered in the system and can be invoked by its name using the `CALL` statement.
+A **named procedure** refers to a predefined procedure that is registered in the system and can be invoked by its name using the `CALL` statement. Two kinds of named procedures are supported:
+
+- **Built-in graph algorithms** such as `algo.degree`, `algo.pagerank`. See <a target="_blank" href="/docs/graph-algorithms">Graph Algorithms</a>.
+- **User-defined stored procedures** created with `CREATE PROCEDURE`. See <a target="_blank" href="/docs/stored-procedures">Stored Procedures</a>.
 
 <p tit="Syntax"></p>
 
@@ -166,12 +169,13 @@ A **named procedure** refers to a predefined procedure, such as an algorithm, th
 
 **Details**
 
-- The `YIELD` clause can be used to output variables to the outer query.
-- Prefix with `OPTIONAL` to keep rows from the outer query even when the procedure produces no results (the yielded columns are bound to `NULL` for those rows).
+- The `YIELD` clause outputs the procedure's columns to the outer query.
+- The yielded columns **replace** the outer binding row — variables from earlier clauses (e.g., `n` from a preceding `MATCH (n)`) are not visible after a named `CALL ... YIELD`. To carry variables through, project them in the `RETURN` before the `CALL`, or use the inline `CALL { ... }` form with explicit variable import.
+- Prefix with `OPTIONAL` to suppress the "procedure not found" error when the named procedure does not exist. Unlike the inline `OPTIONAL CALL { ... }` subquery form, named `OPTIONAL CALL` does **not** insert a NULL-padded row when a resolved procedure yields zero rows — the result is an empty table.
 
-### Running an Algorithm
+### Running Algorithms
 
-The following query executes the <a target="_blank" href="/docs/graph-algorithms/degree-centrality">Degree Centrality</a> algorithm:
+Execute the <a target="_blank" href="/docs/graph-algorithms/degree-centrality">Degree Centrality</a> algorithm:
 
 ```gql
 CALL algo.degree({
@@ -179,14 +183,26 @@ CALL algo.degree({
 }) YIELD nodeId, degree
 ```
 
-To learn more about available algorithms, refer to the <a target="_blank" href="/docs/graph-algorithms">Graph Algorithms</a> documentation.
+To learn more about available algorithms, refer to <a target="_blank" href="/docs/graph-algorithms">Graph Algorithms</a>.
+
+### Running Stored Procedures
+
+Given a stored procedure `greet` created with `CREATE PROCEDURE`, invoke it the same way:
+
+```gql
+CALL greet('World') YIELD greeting
+```
+
+For details on defining, listing, and managing user-defined procedures, refer to <a target="_blank" href="/docs/stored-procedures">Stored Procedures</a>.
 
 ### OPTIONAL CALL
 
-`OPTIONAL CALL <namedProcedure>(...)` mirrors the inline `OPTIONAL CALL { ... }` form: the outer rows are preserved even when the named procedure yields nothing, and the yielded columns become `NULL` for those rows.
+For named procedures, `OPTIONAL CALL` only suppresses the "procedure not found" error when the procedure does not exist. It does **not** insert a NULL-padded row when a resolved procedure yields zero rows — the result is simply an empty table. The richer outer-row preservation with NULL columns documented above applies only to the inline `OPTIONAL CALL { ... }` form.
 
 ```gql
-OPTIONAL CALL algo.degree({
-  ids: ["A", "B"]
-}) YIELD degree
+-- Errors if 'maybe_proc' is not defined
+CALL maybe_proc() YIELD result
+
+-- No error; returns an empty result with column 'result'
+OPTIONAL CALL maybe_proc() YIELD result
 ```

@@ -105,14 +105,14 @@ Insert a chain; the end-to-end edge is inferred.
 CREATE OBJECT PROPERTY @ex:ancestorOf DOMAIN @ex:Person RANGE @ex:Person TRANSITIVE 
 
 -- Insert D->C->B->A
-INSERT (:@ex:Person {name: 'D'})-[:@ex:ancestorOf]->(:@ex:Person {name: 'C'})-[:@ex:ancestorOf]->(:@ex:Person {name: 'B'})-[:@ex:ancestorOf]->(:@ex:Person {name: 'A'})
+INSERT (@ex:Person {name: 'D'})-[@ex:ancestorOf]->(@ex:Person {name: 'C'})-[@ex:ancestorOf]->(@ex:Person {name: 'B'})-[@ex:ancestorOf]->(@ex:Person {name: 'A'})
 
 -- Match C->A
-MATCH p = (:@ex:Person {name: 'C'})-[:@ex:ancestorOf]->(:@ex:Person {name: 'A'}) 
+MATCH p = (@ex:Person {name: 'C'})-[@ex:ancestorOf]->(@ex:Person {name: 'A'}) 
 RETURN p  // C->A
 
 -- Match D->A
-MATCH p = (:@ex:Person {name: 'D'})-[:@ex:ancestorOf]->(:@ex:Person {name: 'A'}) 
+MATCH p = (@ex:Person {name: 'D'})-[@ex:ancestorOf]->(@ex:Person {name: 'A'}) 
 RETURN p  // D->A
 ```
 
@@ -147,7 +147,7 @@ INSERT (@ex:Person {name: 'Jeff'})-[:@ex:hasBirthPlace]->(@ex:Location {name: 'B
 -- Insert Jeff -> Boston 
 -- FUNCTIONAL violation error: Jeff cannot have two hasBirthPlace edges
 MATCH (jeff@ex:Person {name: 'Jeff'})
-INSERT (jeff)-[:@ex:hasBirthPlace]->(@ex:Location {name: 'Chicago'})
+INSERT (jeff)-[@ex:hasBirthPlace]->(@ex:Location {name: 'Chicago'})
 ```
 
 ### Inverse Properties

@@ -1,109 +1,12 @@
 # Procedure Management
 
-This page covers the lifecycle of stored procedures: creating, calling, listing, and dropping.
+This page covers the lifecycle of stored procedures: creating, listing, altering, and dropping.
 
-## CREATE PROCEDURE
+## Showing Procedures
 
-### Basic Syntax
-
-<p tit="Syntax"></p>
+Show procedures in the current graph:
 
 ```gql
-CREATE PROCEDURE procedure_name(param1: TYPE, param2: TYPE)
-RETURNS (col1: TYPE, col2: TYPE)
-AS {
-    -- procedure body
-}
-```
-
-### With No Parameters
-
-```gql
-CREATE PROCEDURE count_all_nodes()
-RETURNS (cnt: INTEGER)
-AS {
-    LET cnt = NODE_COUNT()
-    RETURN cnt
-}
-```
-
-### With Default Values
-
-```gql
-CREATE PROCEDURE find_nodes(label: STRING = 'Person', limit: INT = 10)
-RETURNS (node_id: STRING)
-AS {
-    LET i = 0
-    FOR node IN SCAN(:$label) {
-        IF i >= $limit {
-            BREAK
-        }
-        RETURN node._id AS node_id
-        i = i + 1
-    }
-}
-```
-
-### VOID Return Type
-
-Procedures that don't return data use `RETURNS VOID`:
-
-```gql
-CREATE PROCEDURE log_event(message: STRING)
-RETURNS VOID
-AS {
-    PRINT $message
-}
-```
-
-### Dotted Procedure Names
-
-Procedures can be organized using dot notation for logical grouping:
-
-```gql
-CREATE PROCEDURE algo.pagerank(iterations: INT = 20, damping: FLOAT = 0.85)
-RETURNS (node_id: STRING, rank: FLOAT)
-AS {
-    -- algorithm implementation
-}
-
-CREATE PROCEDURE algo.hits(iterations: INT = 20)
-RETURNS (node_id: STRING, hub: FLOAT, authority: FLOAT)
-AS {
-    -- algorithm implementation
-}
-```
-
-The dot notation is purely a naming convention — `algo.pagerank` is stored as a single name string. Use `DROP PROCEDURE algo.pagerank` to remove it.
-
-### CREATE OR REPLACE
-
-Overwrites an existing procedure with the same name:
-
-```gql
-CREATE OR REPLACE PROCEDURE my_proc(x: INTEGER)
-RETURNS (result: INTEGER)
-AS {
-    RETURN $x * 2 AS result
-}
-```
-
-## DROP PROCEDURE
-
-```gql
--- Drop a procedure (error if not found)
-DROP PROCEDURE my_proc
-
--- Drop only if it exists (no error if not found)
-DROP PROCEDURE IF EXISTS my_proc
-```
-
-## SHOW PROCEDURES
-
-Returns a table with columns: `body`, `name`, `parameters`, and `returns`.
-
-```gql
--- List all procedures
 SHOW PROCEDURES
 
 -- Filter by name pattern
@@ -124,6 +27,8 @@ SHOW PROCEDURES LIKE '%rank'
 SHOW PROCEDURES LIKE 'get___'
 ```
 
+Returns a table with columns: `name`, `description`, `tags`, `parameters`, `returns`, and `body`.
+
 The `LIKE` name pattern uses SQL-style matching (case-insensitive):
 
 | Wildcard | Meaning |
@@ -131,70 +36,189 @@ The `LIKE` name pattern uses SQL-style matching (case-insensitive):
 | `%` | Matches any sequence of characters (zero or more) |
 | `_` | Matches exactly one character |
 
-## CALL
+## Creating Procedures
 
-### Call with YIELD
+<p tit="Syntax"></p>
 
-Without `YIELD`, a procedure still returns all its output columns. The `YIELD` clause selects specific columns or renames them:
+```
+<create procedure statement> ::=
+  "CREATE" [ "OR REPLACE" ] "PROCEDURE" <procedure name> [ <comment> ] [ <tags> ] <parameters>
+  "RETURNS" { <return columns> | "VOID" }
+  "AS {" <procedure body> "}"
 
-```gql
-CALL greet('World') YIELD message
+<comment> ::= "COMMENT" <comment string>
+
+<tags> ::= "TAGS [" <tag string> { "," <tag string> }... "]"
+
+<parameters> ::= "(" [ <parameter> { "," <parameter> }... ] ")"
+
+<parameter> ::= <parameter name> ":" <parameter type> [ "=" <default value> ]
+
+<return columns> ::= "(" <return column> { "," <return column> }... ")" 
+
+<return column> ::= <column name> ":" <column type>
 ```
 
-Select specific columns from multi-column output:
+**Details**
+
+- The procedure name must be a unqiue single identifier within a graph. Dotted names like `algo.pagerank` are reserved for GQLDB build-in algorithms which can be referenced in `CALL`, not for user-defined procedures.
+- To write the `<procedure body>`, see <a target="_blank" href="/docs/stored-procedures/procedure-body-language">Procedure Body Language</a>.
+- Parameter and return-column declarations accept the following types:
+
+| Type | Aliases | Description | Example Values |
+|------|---------|-------------|----------------|
+| `STRING` | — | Text value | `'hello'`, `'Alice'` |
+| `INTEGER` | `INT` | 64-bit signed integer | `42`, `-1`, `0` |
+| `FLOAT` | — | 64-bit floating point | `3.14`, `0.85` |
+| `BOOLEAN` | — | Boolean value | `true`, `false` |
+| `NODE` | — | Graph node | Node from `MATCH` |
+| `EDGE` | — | Graph edge | Edge from `MATCH` |
+| `PATH` | — | Graph path | Path from `MATCH` |
+| `LIST<T>` | — | Typed list, `T` is any of the above | `LIST<STRING>`, `LIST<INTEGER>` |
+
+Other GQL value types — `DATE`, `TIME`, `TIMESTAMP`, `ZONED_DATETIME`, `DURATION`, `MAP`, `POINT`, `BYTES`, etc. — cannot be declared as procedure parameters or return columns. They can still appear inside the procedure body as values produced by functions or property reads (e.g., `LET d = date()`).
+
+### With No Parameters
 
 ```gql
-CALL pagerank(20) YIELD node_id, rank
-```
-
-Rename columns using `AS`:
-
-```gql
-CALL pagerank(20) YIELD node_id AS id, rank AS score
-```
-
-### Call without YIELD
-
-Without `YIELD`, all output columns are returned. For VOID procedures, there is no output:
-
-```gql
--- Returns all output columns
-CALL greet('World')
-
--- VOID procedure, no output
-CALL log_event('System started')
-```
-
-### Using Results in Subsequent Queries
-
-Results from YIELD can flow into subsequent query clauses:
-
-```gql
-CALL count_all_nodes() YIELD cnt
-MATCH (n:Person) WHERE n.age > cnt*3
-RETURN n
-```
-
-### CALL ON Projection
-
-Run a procedure on a named graph projection:
-
-```gql
-CALL pagerank(20) ON my_projection YIELD node_id, rank
-```
-
-This executes the procedure using the topology of the specified projection rather than the full graph.
-
-
-### Nested CALL Within Procedures
-
-Procedures can call other procedures:
-
-```gql
-CREATE PROCEDURE analyze_network(person_id: STRING)
-RETURNS (metric: STRING, value: FLOAT)
+CREATE PROCEDURE count_all_nodes()
+RETURNS (cnt: INTEGER)
 AS {
-    CALL pagerank(20, 0.85) YIELD node_id, rank
-    -- Use results from the called procedure
+    LET cnt = NODE_COUNT()
+    RETURN cnt
 }
 ```
+
+### With Parameters
+
+Parameters are declared in the procedure signature with `<name>: <type>` syntax:
+
+```gql
+CREATE PROCEDURE to_sentence(
+    name: STRING,
+    age: INTEGER
+)
+RETURNS (msg: STRING)
+AS {
+    RETURN $name || ' is ' || TOSTRING($age) || ' years old.' AS msg
+}
+```
+
+### With Parameter Default Values
+
+```gql
+CREATE PROCEDURE find_nodes(label: STRING = 'Person', limit: INT = 10)
+RETURNS (node_id: STRING)
+AS {
+    LET i = 0
+    FOR n IN SCAN(:$label) {
+        IF i >= $limit {
+            BREAK
+        }
+        RETURN n._id AS node_id
+        LET i = i + 1
+    }
+}
+```
+
+When calling, arguments are matched to parameters by position. Named arguments are not supported. You can omit trailing parameters that have defaults:
+
+```gql
+CALL find_nodes()            -- label=default, limit=default
+CALL find_nodes('Book')      -- label='Book', limit=default
+CALL find_nodes('Book', 5)   -- label='Book', limit=5
+```
+
+Default values are supported only for the primitive types `STRING`, `INTEGER`/`INT`, `FLOAT`, and `BOOLEAN`. Specifying a default on `NODE`, `EDGE`, `PATH`, or `LIST<T>` is rejected at call time.
+
+### VOID Returns
+
+Use `RETURNS VOID` for procedures that only perform side effects and don't need to return data, such as modifying graph data (`INSERT`, `DELETE`, `SET`), initializing properties, or logging.
+
+```gql
+CREATE PROCEDURE log_event(message: STRING)
+RETURNS VOID
+AS {
+    PRINT $message
+}
+```
+
+### Multiple Returns
+
+Each `RETURN` statement adds a row to the result set. Use `RETURN` inside a loop to stream multiple rows:
+
+```gql
+CREATE PROCEDURE list_labels()
+RETURNS (node_id: STRING, label: STRING)
+AS {
+    FOR n IN SCAN() {
+        FOR lbl IN LABELS(n) {
+            RETURN n._id AS node_id, lbl AS node_label
+        }
+    }
+}
+```
+
+### Commenting and Tags
+
+Attach a human-readable description and a list of tags to a procedure. Both clauses go between the procedure name and the parameter list, and either is optional. They are stored with the definition and surfaced by `SHOW PROCEDURES`:
+
+```gql
+CREATE PROCEDURE greet
+COMMENT 'Build a personalized greeting for a user'
+TAGS ['utility', 'demo']
+(name: STRING)
+RETURNS (greeting: STRING)
+AS {
+    RETURN 'Hello ' || $name AS greeting
+}
+```
+
+After creating it, `SHOW PROCEDURES` reflects both fields:
+
+| name | comment | tags | parameters | returns | body |
+| -- | -- | -- | -- | -- | -- |
+| greet | Build a personalized greeting for a user | utility, demo | (name: STRING) | (greeting: STRING) | RETURN 'Hello ' \|\| $name AS greeting |
+
+### Using OR REPLACE
+
+Overwrites an existing procedure with the same name:
+
+```gql
+CREATE OR REPLACE PROCEDURE my_proc(x: INTEGER)
+RETURNS (result: INTEGER)
+AS {
+    RETURN $x * 2 AS result
+}
+```
+
+## Altering Procedures
+
+Update the comment or tags of an existing procedure without rewriting its body:
+
+```gql
+-- Update comment only
+ALTER PROCEDURE my_proc COMMENT 'Doubles its input'
+
+-- Replace the tag list (an empty list clears the tags)
+ALTER PROCEDURE my_proc TAGS ['math', 'utility']
+
+-- Update both in one statement
+ALTER PROCEDURE my_proc COMMENT 'Doubles its input' TAGS ['math']
+```
+
+## Dropping Procedures
+
+Drop the procedure `my_proc`:
+
+```gql
+DROP PROCEDURE my_proc
+```
+
+The `IF EXISTS` clause is used to prevent errors when attempting to procedure a graph that does not exist. It allows the statement to be safely executed.
+
+```gql
+DROP PROCEDURE IF EXISTS my_proc
+```
+
+This deletes the procedure `my_proc` only if a procedure with that name does exist. If `my_proc` does not exist, the statement is ignored without throwing an error.

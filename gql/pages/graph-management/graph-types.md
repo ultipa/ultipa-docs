@@ -121,7 +121,7 @@ CREATE GRAPH TYPE IF NOT EXISTS socialType {
 }
 ```
 
-### Using REPLACE
+### Using OR REPLACE
 
 You can use `OR REPLACE` to drop the existing graph type with the same name and create a new one in its place:
 

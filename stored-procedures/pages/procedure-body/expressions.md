@@ -55,7 +55,7 @@ IF score > 0.9 OR rank < 10 {
 }
 
 IF NOT visited {
-    node.visited = true
+    n.visited = true
 }
 ```
 
@@ -80,11 +80,11 @@ LET info = 'Count: ' || TOSTRING(count) || ', Score: ' || TOSTRING(score)
 <p tit="Procedure Body Language"></p>
 
 ```gql
-IF node.email IS NOT NULL {
-    PRINT node.email
+IF n.email IS NOT NULL {
+    PRINT n.email
 }
 
-IF path IS NULL {
+IF p IS NULL {
     PRINT 'No path found'
 }
 ```
@@ -96,11 +96,11 @@ Check membership in a list:
 <p tit="Procedure Body Language"></p>
 
 ```gql
-IF node._id IN ['alice', 'bob', 'charlie'] {
+IF n._id IN ['alice', 'bob', 'charlie'] {
     PRINT 'Found known person'
 }
 
-IF label NOT IN excluded_labels {
+IF nodeLabel NOT IN excluded_labels {
     -- process
 }
 ```
@@ -120,7 +120,7 @@ LET category = CASE status
 END
 ```
 
-### Searched CASE
+### General CASE
 
 <p tit="Procedure Body Language"></p>
 
@@ -135,16 +135,25 @@ END
 
 ## List Comprehension
 
+Build a new list from an existing list by iterating and optionally filtering / transforming. The base form names the loop variable, then `IN <list>`, with an optional `WHERE`/`FILTER` clause and an optional `| <expr>` mapping clause.
+
+| Form | Meaning |
+|---|---|
+| `[ <var> IN <list> ]` | Iterate; result is the input list |
+| `[ <var> IN <list> \| <expr> ]` | Map each element through `<expr>` |
+| `[ <var> IN <list> WHERE <condition> ]` | Keep elements matching `<condition>` |
+| `[ <var> IN <list> WHERE <condition> \| <expr> ]` | Filter, then map |
+| `[ <var> IN <list> FILTER <condition> ]` | Same as `WHERE` form |
+| `[ <var> IN <list> FILTER <condition> \| <expr> ]` | Same as `WHERE` + map form |
+
 ### Transform
 
 <p tit="Procedure Body Language"></p>
 
 ```gql
--- [expr FOR var IN list]
-LET doubled = [x * 2 IN RANGE(1, 6)]
-
--- [expr | var IN list]
-LET names = [node.name | node IN friends]
+-- Map each element through an expression
+LET doubled = [x IN RANGE(1, 6) | x * 2]
+LET names = [n IN friends | n.name]
 ```
 
 ### Filter and Transform
@@ -152,12 +161,14 @@ LET names = [node.name | node IN friends]
 <p tit="Procedure Body Language"></p>
 
 ```gql
--- [expr FOR var IN list WHERE condition]
-LET active_names = [node.name | node IN friends WHERE node.active = true]
+-- Filter, then map
+LET active_names = [n IN friends WHERE n.active = true | n.name]
 
--- With complex expressions
-LET scores = [GET_SLICE_PROP(n._internal_id, 'rank') | n IN nodes WHERE OUT_DEGREE(n) > 5]
+-- With complex expressions on either side
+LET scores = [n IN nodes WHERE OUT_DEGREE(n) > 5 | GET_SLICE_PROP(n._internal_id, 'rank')]
 ```
+
+`WHERE` and `FILTER` are interchangeable inside a list comprehension.
 
 ## REDUCE
 
@@ -195,7 +206,7 @@ LET head = myList[0:5]   -- first 5 elements
 <p tit="Procedure Body Language"></p>
 
 ```gql
-LET value = myMap['key']
+LET v = myMap['key']
 LET name = record['name']
 ```
 
@@ -205,20 +216,30 @@ LET name = record['name']
 
 ```gql
 -- Node properties
-LET name = node.name
-LET id = node._id
-LET internal = node._internal_id
-LET labels = node._labels
+LET name = n.name
+LET id = n._id
+LET internal = n._internal_id
+LET nodeLabels = n._labels
 
 -- Edge properties
-LET weight = edge.weight
-LET from = edge._from
-LET to = edge._to
+LET weight = e.weight
+LET src = e._from
+LET dest = e._to
 
--- Path properties
-LET len = path.length
-LET nodes = path.nodes
-LET edges = path.edges
+```
+
+Path values do not support property-style access — use functions instead:
+
+| Built-in | Returns |
+|---|---|
+| `LENGTH(path)` or `PATH_LENGTH(path)` | `INTEGER` hop count |
+| `NODES(path)` | `LIST<NODE>` of nodes along the path |
+| `RELATIONSHIPS(path)` | `LIST<EDGE>` of edges along the path |
+
+```gql
+LET len = LENGTH(p)
+LET ns = NODES(p)
+LET es = RELATIONSHIPS(p)
 ```
 
 ## Subquery Expression

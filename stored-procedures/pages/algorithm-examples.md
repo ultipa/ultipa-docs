@@ -28,10 +28,10 @@ AS {
         INIT_SLICE_PROP('new_rank', (1.0 - $damping) / n)
 
         -- Each node collects rank contributions from in-neighbors
-        PARALLEL FOR node IN SCAN() WORKERS 8 {
-            LET contrib = IN_NEIGHBOR_SUM(node, 'rank', 'out_degree')
-            LET current = GET_SLICE_PROP(node._internal_id, 'new_rank')
-            SET_SLICE_PROP(node._internal_id, 'new_rank', current + $damping * contrib)
+        PARALLEL FOR n IN SCAN() WORKERS 8 {
+            LET contrib = IN_NEIGHBOR_SUM(n, 'rank', 'out_degree')
+            LET current = GET_SLICE_PROP(n._internal_id, 'new_rank')
+            SET_SLICE_PROP(n._internal_id, 'new_rank', current + $damping * contrib)
         }
 
         COPY_SLICE_PROP('new_rank', 'rank')
@@ -41,9 +41,9 @@ AS {
     BATCH_PERSIST_SLICE('rank', 'pagerank_score')
 
     -- Return results
-    FOR node IN SCAN() {
-        LET rank = GET_SLICE_PROP(node._internal_id, 'rank')
-        RETURN node._id AS node_id, rank
+    FOR n IN SCAN() {
+        LET rank = GET_SLICE_PROP(n._internal_id, 'rank')
+        RETURN n._id AS node_id, rank
     }
 }
 ```
@@ -75,35 +75,35 @@ AS {
 
     FOR iter IN RANGE(0, $iterations) {
         -- Update authority: auth(v) = sum of hub scores of in-neighbors
-        PARALLEL FOR node IN SCAN() WORKERS 8 {
-            LET new_auth = SUM_IN_NEIGHBOR_PROP(node, 'hub')
-            SET_SLICE_PROP(node._internal_id, 'new_auth', new_auth)
+        PARALLEL FOR n IN SCAN() WORKERS 8 {
+            LET new_auth = SUM_IN_NEIGHBOR_PROP(n, 'hub')
+            SET_SLICE_PROP(n._internal_id, 'new_auth', new_auth)
         }
 
         -- Update hub: hub(v) = sum of authority scores of out-neighbors
-        PARALLEL FOR node IN SCAN() WORKERS 8 {
-            LET new_hub = SUM_OUT_NEIGHBOR_PROP(node, 'auth')
-            SET_SLICE_PROP(node._internal_id, 'new_hub', new_hub)
+        PARALLEL FOR n IN SCAN() WORKERS 8 {
+            LET new_hub = SUM_OUT_NEIGHBOR_PROP(n, 'auth')
+            SET_SLICE_PROP(n._internal_id, 'new_hub', new_hub)
         }
 
         -- Normalize using L2 norm
         LET auth_norm = SQRT(SUM_SLICE_PROP_SQ('new_auth'))
         LET hub_norm = SQRT(SUM_SLICE_PROP_SQ('new_hub'))
 
-        PARALLEL FOR node IN SCAN() WORKERS 8 {
-            LET a = GET_SLICE_PROP(node._internal_id, 'new_auth')
-            LET h = GET_SLICE_PROP(node._internal_id, 'new_hub')
-            SET_SLICE_PROP(node._internal_id, 'auth', a / auth_norm)
-            SET_SLICE_PROP(node._internal_id, 'hub', h / hub_norm)
+        PARALLEL FOR n IN SCAN() WORKERS 8 {
+            LET a = GET_SLICE_PROP(n._internal_id, 'new_auth')
+            LET h = GET_SLICE_PROP(n._internal_id, 'new_hub')
+            SET_SLICE_PROP(n._internal_id, 'auth', a / auth_norm)
+            SET_SLICE_PROP(n._internal_id, 'hub', h / hub_norm)
         }
     }
 
     BATCH_PERSIST_SLICES('hub', 'hub_score', 'auth', 'authority_score')
 
-    FOR node IN SCAN() {
-        LET hub = GET_SLICE_PROP(node._internal_id, 'hub')
-        LET auth = GET_SLICE_PROP(node._internal_id, 'auth')
-        RETURN node._id AS node_id, hub, auth AS authority
+    FOR n IN SCAN() {
+        LET hub = GET_SLICE_PROP(n._internal_id, 'hub')
+        LET auth = GET_SLICE_PROP(n._internal_id, 'auth')
+        RETURN n._id AS node_id, hub, auth AS authority
     }
 }
 ```
@@ -126,26 +126,26 @@ AS {
 
     FOR iter IN RANGE(0, $iterations) {
         -- Each node's score = sum of neighbors' scores
-        PARALLEL FOR node IN SCAN() WORKERS 8 {
-            LET new_val = SUM_IN_NEIGHBOR_PROP(node, 'score')
-            SET_SLICE_PROP(node._internal_id, 'new_score', new_val)
+        PARALLEL FOR n IN SCAN() WORKERS 8 {
+            LET new_val = SUM_IN_NEIGHBOR_PROP(n, 'score')
+            SET_SLICE_PROP(n._internal_id, 'new_score', new_val)
         }
 
         -- L2 normalize
         LET norm = SQRT(SUM_SLICE_PROP_SQ('new_score'))
         IF norm > 0 {
-            PARALLEL FOR node IN SCAN() WORKERS 8 {
-                LET val = GET_SLICE_PROP(node._internal_id, 'new_score')
-                SET_SLICE_PROP(node._internal_id, 'score', val / norm)
+            PARALLEL FOR n IN SCAN() WORKERS 8 {
+                LET val = GET_SLICE_PROP(n._internal_id, 'new_score')
+                SET_SLICE_PROP(n._internal_id, 'score', val / norm)
             }
         }
     }
 
     BATCH_PERSIST_SLICE('score', 'eigenvector_centrality')
 
-    FOR node IN SCAN() {
-        LET centrality = GET_SLICE_PROP(node._internal_id, 'score')
-        RETURN node._id AS node_id, centrality
+    FOR n IN SCAN() {
+        LET centrality = GET_SLICE_PROP(n._internal_id, 'score')
+        RETURN n._id AS node_id, centrality
     }
 }
 ```
@@ -160,41 +160,49 @@ Label propagation on undirected graphs. Each node adopts the minimum component I
 
 **Complexity**: O(diameter × edges)
 
+`PARALLEL FOR` clones the runtime variables per worker, so a `LET changed = changed + 1` inside the loop is invisible to the outer scope. To detect convergence in a parallel iteration, write a flag to a shared slice and check it after the loop with `SUM_SLICE_PROP`.
+
 ```gql
 CREATE PROCEDURE connected_components()
 RETURNS (node_id: STRING, component: INTEGER)
 AS {
     INIT_SLICE_PROP('comp', 0.0)
+    INIT_SLICE_PROP('changed_flag', 0.0)
 
     -- Initialize each node's component to its internal ID
-    PARALLEL FOR node IN SCAN() WORKERS 8 {
-        SET_SLICE_PROP(node._internal_id, 'comp', node._internal_id)
+    PARALLEL FOR n IN SCAN() WORKERS 8 {
+        SET_SLICE_PROP(n._internal_id, 'comp', n._internal_id)
     }
 
-    LET changed = 1
+    LET continue_loop = 1
     LET iteration = 0
-    WHILE changed > 0 {
-        LET changed = 0
+    WHILE continue_loop = 1 {
+        INIT_SLICE_PROP('changed_flag', 0.0)
 
-        PARALLEL FOR node IN SCAN() WORKERS 8 {
-            LET current = GET_SLICE_PROP(node._internal_id, 'comp')
-            LET min_comp = MIN_BOTH_NEIGHBOR_PROP(node, 'comp', current)
+        PARALLEL FOR n IN SCAN() WORKERS 8 {
+            LET current = GET_SLICE_PROP(n._internal_id, 'comp')
+            LET min_comp = MIN_BOTH_NEIGHBOR_PROP(n, 'comp', current)
 
             IF min_comp < current {
-                SET_SLICE_PROP(node._internal_id, 'comp', min_comp)
-                LET changed = changed + 1
+                SET_SLICE_PROP(n._internal_id, 'comp', min_comp)
+                SET_SLICE_PROP(n._internal_id, 'changed_flag', 1.0)
             }
         }
 
+        LET changes = SUM_SLICE_PROP('changed_flag')
         LET iteration = iteration + 1
-        PRINT 'Iteration ' || TOSTRING(iteration) || ': ' || TOSTRING(changed) || ' nodes changed'
+        PRINT 'Iteration ' || TOSTRING(iteration) || ': ' || TOSTRING(changes) || ' nodes changed'
+
+        IF changes = 0 {
+            LET continue_loop = 0
+        }
     }
 
     BATCH_PERSIST_SLICE('comp', 'component_id')
 
-    FOR node IN SCAN() {
-        LET comp = GET_SLICE_PROP(node._internal_id, 'comp')
-        RETURN node._id AS node_id, TOINTEGER(comp) AS component
+    FOR n IN SCAN() {
+        LET comp = GET_SLICE_PROP(n._internal_id, 'comp')
+        RETURN n._id AS node_id, TOINTEGER(comp) AS component
     }
 }
 ```
@@ -214,27 +222,27 @@ AS {
     INIT_SLICE_PROP('label', 0.0)
 
     -- Initialize each node with a unique label
-    PARALLEL FOR node IN SCAN() WORKERS 8 {
-        SET_SLICE_PROP(node._internal_id, 'label', node._internal_id)
+    PARALLEL FOR n IN SCAN() WORKERS 8 {
+        SET_SLICE_PROP(n._internal_id, 'label', n._internal_id)
     }
 
     FOR iter IN RANGE(0, $iterations) {
         LET changed = 0
 
-        FOR node IN SCAN() {
+        FOR n IN SCAN() {
             -- Count neighbor labels
             LET label_counts = {}
-            FOR neighbor IN NEIGHBORS(node) {
+            FOR neighbor IN NEIGHBORS(n) {
                 LET nlabel = GET_SLICE_PROP(neighbor._internal_id, 'label')
                 LET key = TOSTRING(TOINTEGER(nlabel))
                 LET current_count = MAP_GET(label_counts, key, 0)
                 -- Simple majority: take first neighbor's label for tie-breaking
             }
             -- Simplified: adopt minimum neighbor label
-            LET min_label = MIN_BOTH_NEIGHBOR_PROP(node, 'label', GET_SLICE_PROP(node._internal_id, 'label'))
-            LET current = GET_SLICE_PROP(node._internal_id, 'label')
+            LET min_label = MIN_BOTH_NEIGHBOR_PROP(n, 'label', GET_SLICE_PROP(n._internal_id, 'label'))
+            LET current = GET_SLICE_PROP(n._internal_id, 'label')
             IF min_label <> current {
-                SET_SLICE_PROP(node._internal_id, 'label', min_label)
+                SET_SLICE_PROP(n._internal_id, 'label', min_label)
                 LET changed = changed + 1
             }
         }
@@ -247,9 +255,9 @@ AS {
 
     BATCH_PERSIST_SLICE('label', 'community_id')
 
-    FOR node IN SCAN() {
-        LET label = GET_SLICE_PROP(node._internal_id, 'label')
-        RETURN node._id AS node_id, TOINTEGER(label) AS community
+    FOR n IN SCAN() {
+        LET label = GET_SLICE_PROP(n._internal_id, 'label')
+        RETURN n._id AS node_id, TOINTEGER(label) AS community
     }
 }
 ```
@@ -271,6 +279,7 @@ AS {
     LET INF = 999999999.0
 
     INIT_SLICE_PROP('dist', INF)
+    INIT_SLICE_PROP('changed_flag', 0.0)
 
     -- Set source distance to 0
     MATCH (source {_id: $source_id})
@@ -278,21 +287,22 @@ AS {
 
     -- Bellman-Ford style relaxation
     FOR iter IN RANGE(0, $max_iterations) {
-        LET changed = 0
+        INIT_SLICE_PROP('changed_flag', 0.0)
 
-        PARALLEL FOR node IN SCAN() WORKERS 8 {
-            LET current_dist = GET_SLICE_PROP(node._internal_id, 'dist')
+        PARALLEL FOR n IN SCAN() WORKERS 8 {
+            LET current_dist = GET_SLICE_PROP(n._internal_id, 'dist')
             -- Get minimum (neighbor_dist + 1) -- unweighted
-            LET min_neighbor = MIN_IN_NEIGHBOR_PROP(node, 'dist', current_dist)
+            LET min_neighbor = MIN_IN_NEIGHBOR_PROP(n, 'dist', current_dist)
             LET new_dist = min_neighbor + 1.0
 
             IF new_dist < current_dist {
-                SET_SLICE_PROP(node._internal_id, 'dist', new_dist)
-                LET changed = changed + 1
+                SET_SLICE_PROP(n._internal_id, 'dist', new_dist)
+                SET_SLICE_PROP(n._internal_id, 'changed_flag', 1.0)
             }
         }
 
-        IF changed = 0 {
+        LET changes = SUM_SLICE_PROP('changed_flag')
+        IF changes = 0 {
             PRINT 'Converged at iteration ' || TOSTRING(iter)
             BREAK
         }
@@ -300,10 +310,10 @@ AS {
 
     BATCH_PERSIST_SLICE('dist', 'distance_from_source')
 
-    FOR node IN SCAN() {
-        LET dist = GET_SLICE_PROP(node._internal_id, 'dist')
+    FOR n IN SCAN() {
+        LET dist = GET_SLICE_PROP(n._internal_id, 'dist')
         IF dist < INF {
-            RETURN node._id AS node_id, dist AS distance
+            RETURN n._id AS node_id, dist AS distance
         }
     }
 }
@@ -317,19 +327,17 @@ Uses the built-in FOR...IN MATCH SHORTEST traversal for exact shortest paths.
 
 ```gql
 CREATE PROCEDURE find_path(from_id: STRING, to_id: STRING)
-RETURNS (path_length: INT, route: LIST)
+RETURNS (path_length: INT, route: LIST<STRING>)
 AS {
     MATCH (source {_id: $from_id})
     MATCH (target {_id: $to_id})
 
-    LET path = MATCH SHORTEST (source)-[:CONNECTS]->{1,50}(target)
-
-    IF path IS NOT NULL {
+    FOR path IN MATCH SHORTEST (source)-[:CONNECTS]->{1,50}(target) {
         LET route = []
-        FOR node IN path.nodes {
-            route = route + [node._id]
+        FOR n IN NODES(path) {
+            LET route = route + [n._id]
         }
-        RETURN path.length AS path_length, route
+        RETURN LENGTH(path) AS path_length, route
     }
 }
 ```
@@ -351,7 +359,7 @@ AS {
     -- Get direct friends for exclusion
     LET friends = []
     FOR f IN NEIGHBORS(p, OUT, :KNOWS) {
-        friends = friends + [f]
+        LET friends = friends + [f]
     }
 
     -- Find friends-of-friends via 2-hop

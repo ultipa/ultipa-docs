@@ -41,7 +41,7 @@ Direct neighbor operations that eliminate per-neighbor interpreter overhead. The
 <p tit="Procedure Body Language"></p>
 
 ```gql
-LET contrib = IN_NEIGHBOR_SUM(node, 'rank', 'out_degree')
+LET contrib = IN_NEIGHBOR_SUM(n, 'rank', 'out_degree')
 ```
 
 **HITS authority update** (sum of hub scores from in-neighbors):
@@ -49,7 +49,7 @@ LET contrib = IN_NEIGHBOR_SUM(node, 'rank', 'out_degree')
 <p tit="Procedure Body Language"></p>
 
 ```gql
-LET new_auth = SUM_IN_NEIGHBOR_PROP(node, 'hub')
+LET new_auth = SUM_IN_NEIGHBOR_PROP(n, 'hub')
 ```
 
 **Connected components** (minimum component ID among all neighbors):
@@ -57,7 +57,7 @@ LET new_auth = SUM_IN_NEIGHBOR_PROP(node, 'hub')
 <p tit="Procedure Body Language"></p>
 
 ```gql
-LET min_comp = MIN_BOTH_NEIGHBOR_PROP(node, 'component', current_comp)
+LET min_comp = MIN_BOTH_NEIGHBOR_PROP(n, 'component', current_comp)
 ```
 
 **SSSP relaxation** (minimum distance from outgoing neighbors):
@@ -65,7 +65,7 @@ LET min_comp = MIN_BOTH_NEIGHBOR_PROP(node, 'component', current_comp)
 <p tit="Procedure Body Language"></p>
 
 ```gql
-LET min_dist = MIN_OUT_NEIGHBOR_PROP(node, 'distance', current_dist)
+LET min_dist = MIN_OUT_NEIGHBOR_PROP(n, 'distance', current_dist)
 ```
 
 ## Slice Property Functions
@@ -98,9 +98,9 @@ Aggregate operations over slice properties with automatic parallelization.
 ```gql
 -- L2 normalization
 LET norm = SQRT(SUM_SLICE_PROP_SQ('score'))
-PARALLEL FOR node IN SCAN() WORKERS 8 {
-    LET val = GET_SLICE_PROP(node._internal_id, 'score')
-    SET_SLICE_PROP(node._internal_id, 'score', val / norm)
+PARALLEL FOR n IN SCAN() WORKERS 8 {
+    LET val = GET_SLICE_PROP(n._internal_id, 'score')
+    SET_SLICE_PROP(n._internal_id, 'score', val / norm)
 }
 
 -- Get value range
@@ -161,8 +161,6 @@ O(1) lookup map operations for external data integration.
 | `LIST_TO_GROUPED_MAP(list, keyIndex)` | `MAP` | Group entries by key |
 | `MAP_GET(map, key [, default])` | `Value` | Get value from map |
 
-### LIST_TO_MAP
-
 Converts a list of lists to a map using the element at `keyIndex` as the key. Duplicate keys are overwritten (last wins).
 
 <p tit="Procedure Body Language"></p>
@@ -175,9 +173,7 @@ LET record = MAP_GET(productMap, 'SKU123')
 -- record is [sku, name, price] or NULL
 ```
 
-### LIST_TO_GROUPED_MAP
-
-Like LIST_TO_MAP but groups all entries with the same key into a list:
+`LIST_TO_GROUPED_MAP` is like `Like LIST_TO_MAP` but groups all entries with the same key into a list:
 
 <p tit="Procedure Body Language"></p>
 
@@ -188,8 +184,6 @@ LET rateMap = LIST_TO_GROUPED_MAP($rateData, 0)  -- group by rate_code
 LET rates = MAP_GET(rateMap, 'PRIME')
 -- rates is [[code, rate1, date1], [code, rate2, date2], ...]
 ```
-
-### MAP_GET
 
 <p tit="Procedure Body Language"></p>
 
@@ -219,16 +213,21 @@ BATCH_MAP_TO_SLICE(productMap, 'sku', 'price', 2)
 
 | Function | Return | Description |
 |----------|--------|-------------|
-| `BATCH_PERSIST_SLICE(sliceName, propName)` | - | Persist one slice to storage |
-| `BATCH_PERSIST_SLICES(s1, p1, s2, p2, ...)` | - | Persist multiple in one pass |
-| `BATCH_SLICE_ADD(sliceName, value)` | - | Add constant to all slice values |
+| `BATCH_PERSIST_SLICE(sliceName, propName)` | `INTEGER` | Persist one slice to storage as a node property |
+| `BATCH_PERSIST_SLICES(s1, p1, s2, p2, ...)` | `INTEGER` | Persist multiple slice→property pairs in one pass |
+| `BATCH_SLICE_ADD_SCALAR(sliceName, constant)` | `INTEGER` | Add a constant to every element in a slice |
+| `BATCH_SLICE_ADD(slice1, slice2, output)` | `INTEGER` | Element-wise: `output[i] = slice1[i] + slice2[i]` |
 
 ## Batch Insert
 
+Each function takes a single argument — a list of maps. Labels and endpoints are carried inside each map.
+
 | Function | Return | Description |
 |----------|--------|-------------|
-| `BATCH_INSERT_NODES(label, dataList)` | - | Bulk insert nodes |
-| `BATCH_INSERT_EDGES(edgeType, dataList)` | - | Bulk insert edges |
+| `BATCH_INSERT_NODES(nodeList)` | `INTEGER` | Bulk insert nodes. Each map: `labels: LIST<STRING>`, optional `_id`, other keys as properties |
+| `BATCH_INSERT_EDGES(edgeList)` | `INTEGER` | Bulk insert edges. Each map: `label: STRING`, `_from`, `_to`, other keys as properties |
+
+See <a href="/docs/stored-procedures/data-operations#batch-insert">Data Operations — Batch Insert</a> for worked examples.
 
 ## List Operations
 
@@ -283,13 +282,6 @@ LET now = TIMESTAMP_MS()
 
 ## Standard GQL Functions
 
-In addition to the procedure-specific functions above, all standard GQL functions are also available inside procedure bodies, such as:
-
-- **String**: `UPPER`, `LOWER`, `TRIM`, `SPLIT`, `STARTSWITH`, `ENDSWITH`, `CONTAINS`
-- **Math**: `LOG`, `SIN`, `COS`, `TAN`, `RAND`
-- **Aggregate**: `COUNT`, `SUM`, `AVG`
-- **Type**: `TYPEOF`, `LABELS`
-- **List**: `HEAD`, `TAIL`, `REVERSE`, `RANGE`
-- **Date/Time**: `DATE`, `TIME`, `DATETIME`, `DURATION`
+In addition to the procedure-specific functions above, all standard GQL functions are also available inside procedure bodies. See <a target="_blank" href="/docs/gql/all-functions">All GQL Functions</a> for the full catalog. 
 
 If a function is not recognized as a procedure-specific built-in, it is looked up in the standard GQL function registry. An error is returned if the function name is not found in either.

@@ -23,8 +23,8 @@ Reassign existing variables:
 
 ```gql
 LET count = 0
-FOR node IN SCAN(:Person) {
-    count = count + 1  -- reassignment (without LET)
+FOR n IN SCAN(:Person) {
+    LET count = count + 1  -- LET is required here too
 }
 PRINT 'Total: ' || TOSTRING(count)
 ```
@@ -39,15 +39,7 @@ LET friends = (MATCH (p {_id: 'alice'})-[:KNOWS]->(f) RETURN f)
 
 ## Temp Property (In-Memory Only)
 
-Assign properties to nodes that exist only during procedure execution. These are NOT persisted to storage:
-
-<p tit="Procedure Body Language"></p>
-
-```gql
-node.visited = true
-node.tempScore = 0.5
-node.level = depth
-```
+Assign properties to nodes that exist only during procedure execution. These are NOT persisted to storage.
 
 Use cases:
 - Marking visited nodes during traversal.
@@ -57,13 +49,13 @@ Use cases:
 <p tit="Procedure Body Language"></p>
 
 ```gql
-FOR node IN SCAN(:Person) {
-    node.processed = false
+FOR n IN SCAN(:Person) {
+    n.processed = false
 }
 
 FOR (node, depth) IN MATCH BFS (start)-[:KNOWS]->{1,5}(node) {
-    node.distance = depth
-    node.processed = true
+    n.distance = depth
+    n.processed = true
 }
 ```
 
@@ -144,15 +136,7 @@ DETACH DELETE n
 
 ## RETURN
 
-Return results from the procedure. Each `RETURN` statement adds a row to the output:
-
-### Named Columns
-
-<p tit="Procedure Body Language"></p>
-
-```gql
-RETURN node._id AS node_id, score AS rank_score
-```
+Return results from the procedure. Each `RETURN` statement adds a row to the output.
 
 ### Multiple Columns
 
@@ -160,6 +144,14 @@ RETURN node._id AS node_id, score AS rank_score
 
 ```gql
 RETURN name, age, score
+```
+
+### Named Columns
+
+<p tit="Procedure Body Language"></p>
+
+```gql
+RETURN n._id AS node_id, score AS rank_score
 ```
 
 ### Streaming Returns (Inside Loops)
@@ -170,40 +162,47 @@ Each iteration's `RETURN` adds a row:
 CREATE PROCEDURE list_people()
 RETURNS (name: STRING, age: INTEGER)
 AS {
-    FOR node IN SCAN(:Person) {
-        RETURN node.name AS name, node.age AS age
+    FOR n IN SCAN(:Person) {
+        RETURN n.name AS name, n.age AS age
         -- Each iteration adds one row
     }
 }
 ```
 
-### Empty Return (VOID Procedures)
+### Early Return
+
+A bare `RETURN` (without values) exits the procedure immediately, skipping any remaining statements. This works in both VOID and non-VOID procedures:
 
 ```gql
-CREATE PROCEDURE init_data()
+CREATE PROCEDURE safe_delete(node_id: STRING)
 RETURNS VOID
 AS {
-    -- do work...
-    RETURN  -- explicit early exit (optional)
+    MATCH (n {_id: $node_id})
+    IF IN_DEGREE(n) + OUT_DEGREE(n) > 0 {
+        RETURN  -- Exit early, node has connections
+    }
+    DELETE n
 }
 ```
 
 ## PRINT
 
-Output debug messages to stderr:
+Write a diagnostic message to the **GQLDB server's log** (its standard error stream). `PRINT` output is **not** returned to the caller — drivers and CLI clients receive only the rows produced by `RETURN`. To see `PRINT` output, look at the server's terminal, log file, or `journalctl` / `docker logs` depending on how the server was started.
 
 <p tit="Procedure Body Language"></p>
 
 ```gql
 PRINT 'Starting computation...'
 PRINT 'Count: ' || TOSTRING(count)
-PRINT 'Node ' || node._id || ' score = ' || TOSTRING(score)
+PRINT 'Node ' || n._id || ' score = ' || TOSTRING(score)
 ```
 
 `PRINT` is useful for:
 - Debugging procedure logic.
 - Progress reporting in long-running procedures.
 - Logging iteration counts in convergence loops.
+
+If you need the procedure to return a message to the caller, use `RETURN msg AS something`, not `PRINT`.
 
 ## FLUSH
 
@@ -233,30 +232,43 @@ High-throughput batch insertion for loading data from procedures:
 
 ### BATCH_INSERT_NODES
 
+Takes a single argument — a list of MAP values. Each map carries its own labels and properties:
+
+- `labels: LIST<STRING>` — the label set for this node
+- `_id: STRING` — optional; auto-generated if omitted
+- Any other keys become properties
+
 <p tit="Procedure Body Language"></p>
 
 ```gql
--- Insert nodes from a list of data
--- Arguments: label, list of property maps
 LET node_data = [
-    {_id: 'n1', name: 'Alice', age: 30},
-    {_id: 'n2', name: 'Bob', age: 25}
+    {labels: ['Person'], _id: 'n1', name: 'Alice', age: 30},
+    {labels: ['Person'], _id: 'n2', name: 'Bob', age: 25}
 ]
-BATCH_INSERT_NODES('Person', node_data)
+BATCH_INSERT_NODES(node_data)
 ```
+
+Returns the number of nodes created as an `INTEGER`.
 
 ### BATCH_INSERT_EDGES
 
+Takes a single argument — a list of MAP values. Each map describes one edge:
+
+- `label: STRING` — the edge label
+- `_from: STRING` — source node `_id`
+- `_to: STRING` — target node `_id`
+- Any other keys (apart from `label`, `_from`, `_to`) become properties
+
 <p tit="Procedure Body Language"></p>
 
 ```gql
--- Insert edges from a list
--- Arguments: edge type, list of edge specs
 LET edge_data = [
-    {_from: 'n1', _to: 'n2', weight: 0.8},
-    {_from: 'n2', _to: 'n1', weight: 0.6}
+    {label: 'KNOWS', _from: 'n1', _to: 'n2', weight: 0.8},
+    {label: 'KNOWS', _from: 'n2', _to: 'n1', weight: 0.6}
 ]
-BATCH_INSERT_EDGES('KNOWS', edge_data)
+BATCH_INSERT_EDGES(edge_data)
 ```
+
+Returns the number of edges created as an `INTEGER`.
 
 These batch operations are significantly faster than individual `INSERT` statements for large datasets.

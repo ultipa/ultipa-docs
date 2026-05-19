@@ -10,32 +10,41 @@
       "title": "Procedure Management"
     },
     {
-      "file": "parameters-and-types.md",
-      "title": "Parameters and Types"
+      "file": "calling-procedures.md",
+      "title": "Calling Procedures"
     },
     {
-      "file": "control-flow.md",
-      "title": "Control Flow"
-    },
-    {
-      "file": "data-operations.md",
-      "title": "Data Operations"
-    },
-    {
-      "file": "iterators-and-traversal.md",
-      "title": "Iterators and Traversal"
-    },
-    {
-      "file": "parallel-execution.md",
-      "title": "Parallel Execution"
-    },
-    {
-      "file": "builtin-functions.md",
-      "title": "Built-in Functions"
-    },
-    {
-      "file": "expressions.md",
-      "title": "Expressions"
+      "folder": "procedure-body",
+      "pages": [
+        {
+          "file": "procedure-body-language.md",
+          "title": "Procedure Body Language"
+        },
+        {
+          "file": "data-operations.md",
+          "title": "Data Operations"
+        },
+        {
+          "file": "control-flow.md",
+          "title": "Control Flow"
+        },
+        {
+          "file": "iterators-and-traversal.md",
+          "title": "Iterators and Traversal"
+        },
+        {
+          "file": "parallel-execution.md",
+          "title": "Parallel Execution"
+        },
+        {
+          "file": "builtin-functions.md",
+          "title": "Built-in Functions"
+        },
+        {
+          "file": "expressions.md",
+          "title": "Expressions"
+        }
+      ]
     },
     {
       "file": "algorithm-examples.md",
