@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `MERGE` statement matches a pattern in the graph; if the pattern is not found, it creates the missing nodes and edges. Optional `ON MATCH SET` and `ON CREATE SET` sub-clauses let you apply different property updates depending on whether the entity already existed or was newly created.
+The `MERGE` statement matches a pattern in the graph; if the pattern is not found, it creates the missing nodes and edges. Optional `ON MATCH SET` and `ON INSERT SET` sub-clauses let you apply different property updates depending on whether the entity already existed or was newly created.
 
 `MERGE` differs from <a target="_blank" href="/docs/gql/insert-overwrite">`INSERT OVERWRITE`</a> and <a target="_blank" href="/docs/gql/upsert">`UPSERT`</a> in matching mode: `INSERT OVERWRITE` and `UPSERT` key on `_id` only, while `MERGE` matches on the full pattern including labels and property values.
 
@@ -11,16 +11,16 @@ The `MERGE` statement matches a pattern in the graph; if the pattern is not foun
 ```
 <merge statement> ::=
   "MERGE" <graph pattern>
-  [ "ON CREATE SET" <set item list> ]
+  [ "ON INSERT SET" <set item list> ]
   [ "ON MATCH SET" <set item list> ]
 ```
 
 **Details**
 
 - `MERGE` examines the pattern as a whole. If every node and edge in the pattern can be bound, the existing match is used; otherwise the missing pieces are created.
-- `ON CREATE SET` runs only on rows where the pattern was newly created.
+- `ON INSERT SET` runs only on rows where the pattern was newly created.
 - `ON MATCH SET` runs once per row produced by an existing match.
-- Both `ON MATCH SET` and `ON CREATE SET` are optional and may appear in either order.
+- Both `ON MATCH SET` and `ON INSERT SET` are optional and may appear in either order.
 
 ## Merging Nodes
 
@@ -33,13 +33,13 @@ RETURN p
 
 If no such node exists, a `Person` node named `Alice` is created. If one exists, it is bound to `p` and returned without modification.
 
-### ON CREATE SET
+### ON INSERT SET
 
 Set additional properties only when the node is newly created:
 
 ```gql
 MERGE (p:Person {email: 'alice@example.com'})
-ON CREATE SET p.name = 'Alice', p.createdAt = date()
+ON INSERT SET p.name = 'Alice', p.createdAt = date()
 RETURN p
 ```
 
@@ -57,13 +57,13 @@ RETURN p
 
 A new `Person` carries `email` only. An existing `Person` is added with `lastSeen`.
 
-### Combining ON CREATE SET and ON MATCH SET
+### Combining ON INSERT SET and ON MATCH SET
 
 Differentiate the two paths in a single statement:
 
 ```gql
 MERGE (p:Person {email: 'alice@example.com'})
-ON CREATE SET p.name = 'Alice', p.visits = 1
+ON INSERT SET p.name = 'Alice', p.visits = 1
 ON MATCH SET p.visits = p.visits + 1
 RETURN p
 ```
@@ -77,7 +77,7 @@ Use `MATCH` to bind the endpoints, then `MERGE` the edge:
 ```gql
 MATCH (a:Person {name: 'Alice'}), (b:Person {name: 'Bob'})
 MERGE (a)-[r:Knows]->(b)
-ON CREATE SET r.since = 2024
+ON INSERT SET r.since = 2024
 ON MATCH SET r.interactions = r.interactions + 1
 RETURN r
 ```

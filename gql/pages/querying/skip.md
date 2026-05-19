@@ -2,14 +2,12 @@
 
 ## Overview
 
-The `SKIP` statement allows you to discard a specified number of rows from the start of the intermediate result table or output table. A non-negative integer must be specified in `SKIP`.
-
-> `OFFSET` can be used as a synonym to `SKIP`.
+The `SKIP` statement allows you to discard a specified number of rows from the start of the intermediate result table or output table. `OFFSET` is a synonym to `SKIP`.
 
 <p tit="Syntax"></p>
 
 ```
-<skip statement> ::= "SKIP" <non-negative integer>
+<skip statement> ::= < "SKIP" | "OFFSET" > <non-negative integer>
 ```
 
 ## Example Graph
