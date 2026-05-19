@@ -61,18 +61,15 @@ An edge type is the schema definition that edges of a closed graph must conform 
   "EDGE" [ "TYPE" ] <edge type name> { <edge type pattern> | <edge type phrase> }
 
 <edge type pattern> ::=
-  <source node type reference> "-[" [ <property types> ] "]->" <destination node type reference>
-
-<source/destination node type reference> ::= 
-  "(" [ <node type name> | <node type label set> ] ")"
+  "(" [ <source node type name> ] ")-[" [ <property types> ] "]->(" [ <destination node type name> ] ")"
 
 <edge type phrase> ::=
   [ <property types> ] "CONNECTING" "(" <source node type name> < "->" | "TO" > <destination node type name> ")"
 ```
 
-Unlike node types, edge types does not support implied labels — the edge type name is its only label. The property types follow the same rules as on <a href="#Node-Types">node types</a>.
+Unlike node types, edge types do not support implied labels — the edge type name is its only label. The property types follow the same rules as on <a href="#Node-Types">node types</a>.
 
-An edge type can also constrain its endpoints. The **pattern form** matches source and destination by node-type names or label sets, while the **phrase form** references node-type names.
+An edge type can constrain its endpoints to defined node types. The **pattern form** accepts either `()` (any node) or `(<NodeTypeName>)` on each side; the **phrase form** `CONNECTING (Source -> Destination)` requires a node-type name on both sides. 
 
 Pattern form examples:
 
@@ -85,14 +82,11 @@ EDGE FOLLOWS ()-[]->()
 -- Connects any node to any node, with property 'since' of type DATE
 EDGE LIKES ()-[{since DATE}]->()
 
--- Both source and destination node-type names are User
+-- Both source and destination node type names are User
 EDGE FOLLOWS (User)-[{since DATE}]->(User)
 
--- Both source and destination node-type label sets are :User
-EDGE FOLLOWS (:User)-[{since DATE}]->(:User)
-
--- Source node-type label set is :User&Employee, destination node-type labet set is :Company
-EDGE WORKS_AT (:User&Employee)-[{title STRING}]->(:Company)
+-- Source node type name is User, destination node type name is Company
+EDGE WORKS_AT (User)-[{title STRING}]->(Company)
 ```
 
 Phrase form examples:
@@ -259,7 +253,7 @@ Create new node and edge types in a closed graph using the `CREATE NODE/EDGE [TY
 CREATE NODE Book ({name STRING, author STRING})
 
 -- Add edge type PURCHASED to graph g2
-CREATE EDGE TYPE PURCHASED (:User)-[{createdOn TIMESTAMP}]->(:Book) ON GRAPH g2
+CREATE EDGE TYPE PURCHASED (User)-[{createdOn TIMESTAMP}]->(Book) ON GRAPH g2
 
 -- Skip if a node type with the same name already exists
 CREATE NODE IF NOT EXISTS Book ({name STRING, author STRING})
