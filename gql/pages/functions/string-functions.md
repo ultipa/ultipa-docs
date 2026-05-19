@@ -250,7 +250,7 @@ Result: "Graph"
 
 ## substring()
 
-Returns a substring of a given length from the given string, beginning with a 0-based index start. `substr()` is a synonym.
+Returns a substring of a given length from the given string, beginning at a 1-based start position (SQL convention). Values of `<startIndex>` less than 1 are clamped to 1. `substr()` is a synonym.
 
 <table style="width: 100%;">
   <colgroup>
@@ -278,7 +278,7 @@ Returns a substring of a given length from the given string, beginning with a 0-
     <tr>
       <td><code>&lt;startIndex&gt;</code></td>
       <td>Integer</td>
-      <td>The start position of the new string.</td>
+      <td>The 1-based start position of the new string. Values less than 1 are clamped to 1.</td>
     </tr>
     <tr>
       <td><code>&lt;length&gt;</code></td>
@@ -293,7 +293,7 @@ Returns a substring of a given length from the given string, beginning with a 0-
 </table>
 
 ```gql
-RETURN substring("crystal hawk river", 0, 7)
+RETURN substring("crystal hawk river", 1, 7)
 ```
 
 Result: "crystal"
