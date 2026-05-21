@@ -71,9 +71,9 @@ Unlike node types, edge types do not support implied labels — the edge type na
 
 An edge type can constrain its endpoints to defined node types. The **pattern form** accepts either `()` (any node) or `(<NodeTypeName>)` on each side; the **phrase form** `CONNECTING (Source -> Destination)` requires a node-type name on both sides. 
 
-Pattern form examples:
+<div tab="code">
 
-<p tit="Edge Type"></p>
+<p tit="Edge Type: Pattern Form"></p>
 
 ```gql
 -- Connects any node to any node, no properties
@@ -89,9 +89,7 @@ EDGE FOLLOWS (User)-[{since DATE}]->(User)
 EDGE WORKS_AT (User)-[{title STRING}]->(Company)
 ```
 
-Phrase form examples:
-
-<p tit="Edge Type"></p>
+<p tit="Edge Type: Phrase Form"></p>
 
 ```gql
 -- Source and destination are both node type User
@@ -102,6 +100,26 @@ EDGE JOINS CONNECTING (User TO Club)
 
 -- Properties precede the CONNECTING clause
 EDGE WORKS_AT {title STRING} CONNECTING (Employee -> Company)
+```
+
+</div>
+
+A single declaration constrains an edge type to one (source → target) pair. To allow the **same edge type** between more than one node-type pair, declare it multiple times under the same name with different endpoints. All declarations of the same name must share identical property types — only the endpoints may vary; the engine merges them into one edge type with a list of allowed endpoint pairs.
+
+<p tit="Edge Type"></p>
+
+```gql
+-- WORKS_AT accepts (Employee → Company) and (Contractor → Company)
+EDGE WORKS_AT (Employee)-[{title STRING}]->(Company),
+EDGE WORKS_AT (Contractor)-[{title STRING}]->(Company)
+```
+
+If the bodies differ, the engine will reject:
+
+```gql
+-- Error: property definitions differ
+EDGE WORKS_AT (Employee)-[{title STRING}]->(Company),
+EDGE WORKS_AT (Contractor)-[{title STRING, since DATE}]->(Company)
 ```
 
 ## Creating Closed Graphs
@@ -210,13 +228,17 @@ DESC NODE TYPE Person
 DESC EDGE TYPE Follows
 ```
 
-Each type provides the following metadata:
+Each row provides the following metadata:
 
 | Field | Description |
 | -- | -- |
 | `type` | `NODE` or `EDGE`. |
 | `name` | The name of the type. |
 | `properties` | The associated property definitions. |
+| `source_types` | For edges: a list of source node-type names from one allowed endpoint pair. Empty for nodes and for edges with no endpoint constraint. |
+| `target_types` | For edges: a list of target node-type names from one allowed endpoint pair. Empty for nodes and for edges with no endpoint constraint. |
+
+An edge type declared with multiple endpoint pairs renders as **one row per pair**, sharing the same `type` / `name` / `properties` but with different `source_types` / `target_types`.
 
 ## Showing Labels
 
