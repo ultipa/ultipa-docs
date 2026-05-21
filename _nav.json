@@ -48,6 +48,12 @@
       "name": "Ultipa Drivers",
       "published": true,
       "description": "SDKs for Java, Python, Go, and Node.js"
+    },
+    {
+      "id": "tools",
+      "name": "Ultipa Tools",
+      "published": true,
+      "description": "Ultipa CLI and Transporter"
     }
   ]
 }

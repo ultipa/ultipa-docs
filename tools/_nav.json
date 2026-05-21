@@ -1,0 +1,9 @@
+{
+  "name": "Ultipa Tools",
+  "navigation": [
+    {
+      "file": "cli.md",
+      "title": "Ultipa CLI"
+    }
+  ]
+}
