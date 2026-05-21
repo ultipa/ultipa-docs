@@ -62,24 +62,20 @@ Ultipa supports two kinds of graphs: **Open Graph** and **Closed Graph**. This d
 
 <graph kind> ::= <open graph> | <closed graph>
 
-<open graph> ::= 
-  [ "ANY" ] [ "WITH" < "EDGE_ID" | "ONTOLOGY" | "EDGE_ID, ONTOLOGY" > ]
+<open graph> ::= [ "ANY" ] [ <with features> ]
 
-<closed graph> ::= <graph type specification> [ "WITH EDGE_ID" ]
+<closed graph> ::= <graph type specification> [ "WITH EDGE_ID" [ "DISABLED" ] ]
+
+<with features> ::= 
+  "WITH ONTOLOGY" | "WITH EDGE_ID" [ "DISABLED" ] |
+  "WITH ONTOLOGY, EDGE_ID" [ "DISABLED" ] | "WITH EDGE_ID" [ "DISABLED" ] ", ONTOLOGY"
 ```
 
 **Details**
 
-- If `<graph kind>` is omitted, the graph is an open graph by default.
-- `WITH EDGE_ID` enables custom edge `_id` on the graph.
-- `WITH ONTOLOGY` makes an open graph an ontology graph.
-
-Learn more:
-
-- <a target="_blank" href="/docs/gql/open-graphs">Open graphs</a>
-- <a target="_blank" href="/docs/gql/closed-graphs">Closed graphs</a>
-- <a target="_blank" href="/docs/gql/graphs-with-edge-id">Graphs with Edge ID</a>
-- <a target="_blank" href="/docs/ontology/">Ontology</a>
+- If `<graph kind>` is omitted, creates an open graph by default. Learn more about <a target="_blank" href="/docs/gql/open-graphs">Open graphs</a> and <a target="_blank" href="/docs/gql/closed-graphs">Closed graphs</a>.
+- `WITH ONTOLOGY` makes an open graph an ontology graph. Learn more about <a target="_blank" href="/docs/ontology/">Ontology</a>.
+- Edge ID is enabled by default, `WITH EDGE_ID DISABLED` disables it. Learn more about <a target="_blank" href="/docs/gql/node-and-edge-ids">Node and Edge IDs</a>.
 
 You can use the `IF NOT EXISTS` clause to prevent errors when attempting to create a graph that already exists. It allows the statement to be safely executed.
 

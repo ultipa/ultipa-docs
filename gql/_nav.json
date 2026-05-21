@@ -66,10 +66,6 @@
           "title": "Closed Graphs"
         },
         {
-          "file": "graphs-with-edge-id.md",
-          "title": "Graphs with Edge ID"
-        },
-        {
           "file": "graph-types.md",
           "title": "Graph Types"
         },
@@ -91,8 +87,8 @@
       "folder": "data-manipulation",
       "pages": [
         {
-          "file": "unique-identifiers.md",
-          "title": "Unique Identifiers"
+          "file": "node-and-edge-ids.md",
+          "title": "Node and Edge IDs"
         },
         {
           "file": "insert.md",

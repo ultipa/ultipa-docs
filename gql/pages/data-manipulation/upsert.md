@@ -37,14 +37,11 @@ UPSERT (:User {name: "Brainy"})
 
 ## Upserting Edges
 
-Upserting edges keys on the edge's `_id` and therefore requires `EDGE_ID` to be enabled on the graph. On a graph with `EDGE_ID` disabled, `UPSERT` on an edge is rejected with an error. See <a target="_blank" href="/docs/gql/graphs-with-edge-id">Graphs with Edge ID</a>.
+Upserting edges keys on the edge's `_id` and therefore requires `EDGE_ID` to be enabled on the graph. `EDGE_ID` is enabled by default on newly created graphs; on a graph created with `EDGE_ID` disabled (or toggled off later), `UPSERT` on an edge is rejected. See <a target="_blank" href="/docs/gql/node-and-edge-ids">Node and Edge IDs</a>.
 
 When `EDGE_ID` is enabled, an edge will be updated if `_id` is supplied and that `_id` already exists on an edge in the graph. Otherwise, a new edge will be inserted.
 
 ```gql
--- Enable EDGE_ID on myGraph
-ALTER GRAPH myGraph SET EDGE_ID ENABLED
-
 -- Insert edge with _id as f-123
 MATCH (u1 {_id: 'U1'}), (u2 {_id: 'U2'})
 INSERT (u1)-[:FOLLOWS {_id: 'f-123', year: 2026, score: 2}]->(u2)

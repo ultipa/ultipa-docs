@@ -253,7 +253,7 @@ Create new node and edge types in a closed graph using the `CREATE NODE/EDGE [TY
 CREATE NODE Book ({name STRING, author STRING})
 
 -- Add edge type PURCHASED to graph g2
-CREATE EDGE TYPE PURCHASED (User)-[{createdOn TIMESTAMP}]->(Book) ON GRAPH g2
+CREATE EDGE PURCHASED (User)-[{createdOn TIMESTAMP}]->(Book) ON GRAPH g2
 
 -- Skip if a node type with the same name already exists
 CREATE NODE IF NOT EXISTS Book ({name STRING, author STRING})

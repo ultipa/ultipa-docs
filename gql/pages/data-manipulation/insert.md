@@ -41,7 +41,7 @@ For an **open graph**, you can directly insert nodes and edges, and the labels a
 
 For a **closed graph**, any node or edge inserted must conform to its defined node or edge type:
 
-- **Labels**: The insert label set must exactly match the full label set of a defined type. For example, if node type `User` has labels `[User, Employee]`, you must insert with `:User&Employee`.
+- **Labels**: The insert label set must exactly match the full label set of a defined type. For example, if node type `User` has labels `[User, Employee]`, you must insert with `:User&Employee`. Each edge only supports one label.
 - **Properties**: Only properties defined in the type are allowed. Each property has an explicitly defined value type (e.g., `STRING`, `UINT32`, `FLOAT`), and inserted values are validated against these types. Properties not provided in the insert default to `null`, unless a `NOT NULL` constraint is defined. Inserting an undefined property name results in an error.
 
 <a target="_blank" href="/docs/gql/closed-graphs">Learn more about closed graphs →</a>
@@ -62,7 +62,7 @@ INSERT (n1:User&Employee {_id: "U2", name: "Quasar92"}),
        (n3:Club)
 RETURN n1, n2, n3
 ```
-> **Node `_id` on insert**: You can assign a custom `_id` on nodes at insert time. Nodes receive system-generated `_id` if custom values are not provided during insertion.
+> **Node `_id` on insert**: You can assign a custom `_id` on nodes at insert time; if `_id` is omitted, the node receives a system-generated UUID v4 `_id` value.
 
 ## Inserting Edges
 
@@ -81,7 +81,7 @@ MATCH (user:User {name: 'Quasar92'})
 INSERT (user)-[:Joins]->(:Club {_id: "C2"})
 ```
 
-> **Edge `_id` on insert**: By default, edges receive a system-generated `_id` and supplying `_id` in the edge property specification is rejected. To assign a custom `_id` (or have the system auto-generate a UUID v4) on edges at insert time, the graph must be created with `WITH EDGE_ID` or toggled via `ALTER GRAPH ... SET EDGE_ID ENABLED`. See <a target="_blank" href="/docs/gql/graphs-with-edge-id">Graphs with Edge ID</a>.
+> **Edge `_id` on insert**: `EDGE_ID` is enabled on newly created graphs by default, you can assign a custom `_id` on edges at insert time; if `_id` is omitted, the edge receives a system-generated UUID v4 `_id` value. On graphs created with `EDGE_ID` disabled (or toggled off later), each edge receives a system-assigned `_id` value in the `e:<N>` form, and supplying `_id` in the edge property specification is rejected. See <a target="_blank" href="/docs/gql/node-and-edge-ids">Node and Edge IDs</a>.
 
 ## Inserting Paths
 
