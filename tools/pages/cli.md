@@ -2,13 +2,15 @@
 
 ## Overview
 
-`gqldb-cli` is the official command-line client for connecting to a GQLDB server. It supports three execution modes:
+`gqldb-cli` is the official command-line client for connecting to a GQLDB server. It runs on Linux, macOS, and Windows. It supports three execution modes:
 
 - **Interactive shell:** Launches an interactive shell when no statement source is provided.
 - **Single statement:** Executes one statement with `-e` and exits.
 - **Script file:** Executes statements from a `.gql` file with `-f` and exits.
 
-## Usages
+Download Ultipa CLI from <a target="_blank" href="/download">here</a>. No installation is required.
+
+## Usage
 
 Start a session against a local database server:
 

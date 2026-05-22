@@ -4,6 +4,94 @@
     {
       "file": "cli.md",
       "title": "Ultipa CLI"
+    },
+    {
+      "folder": "transporter",
+      "name": "Ultipa Transporter",
+      "pages": [
+        {
+          "file": "transporter.md",
+          "title": "Overview"
+        },
+        {
+          "file": "importer.md",
+          "title": "Importer"
+        },
+        {
+          "file": "import-configurations.md",
+          "title": "Import Configurations"
+        },
+        {
+          "folder": "data-import",
+          "pages": [
+            {
+              "file": "import-from-csv.md",
+              "title": "Import from CSV"
+            },
+            {
+              "file": "import-from-json.md",
+              "title": "Import from JSON / JSONL"
+            },
+            {
+              "file": "import-from-sql.md",
+              "title": "Import from a Relational Database"
+            },
+            {
+              "file": "import-from-neo4j.md",
+              "title": "Import from Neo4j"
+            },
+            {
+              "file": "import-from-bigquery.md",
+              "title": "Import from BigQuery"
+            },
+            {
+              "file": "import-from-kafka.md",
+              "title": "Import from Kafka"
+            },
+            {
+              "file": "import-from-hive.md",
+              "title": "Import from Hive"
+            },
+            {
+              "file": "import-from-salesforce.md",
+              "title": "Import from Salesforce"
+            },
+            {
+              "file": "import-from-rdf.md",
+              "title": "Import from RDF"
+            },
+            {
+              "file": "import-from-graphml.md",
+              "title": "Import from GraphML"
+            }
+          ]
+        },
+        {
+          "file": "exporter.md",
+          "title": "Exporter"
+        },
+        {
+          "file": "export-configurations.md",
+          "title": "Export Configurations"
+        },
+        {
+          "folder": "data-export",
+          "pages": [
+            {
+              "file": "export-to-csv.md",
+              "title": "Export to CSV"
+            },
+            {
+              "file": "export-to-json.md",
+              "title": "Export to JSON / JSONL"
+            },
+            {
+              "file": "export-to-graphml.md",
+              "title": "Export to GraphML"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
