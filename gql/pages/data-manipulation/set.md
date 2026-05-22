@@ -8,7 +8,7 @@ The `SET` statement allows you to set properties and labels on nodes and edges. 
 
 ## Example Graph
 
-<div align=center drawio-diagram='16681' drawio-name="draw_0b980745308b4ae8884fdf7404df9aa1.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_0b980745308b4ae8884fdf7404df9aa1.jpg?v='1751439955839'"/></div>
+<center><img src="images/set-example.jpg"/></center>
 
 ```gql
 INSERT (rowlock:User {_id: "U01", name: "rowlock"}),

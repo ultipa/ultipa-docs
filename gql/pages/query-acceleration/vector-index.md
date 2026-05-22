@@ -8,7 +8,7 @@ A vector index is designed to efficiently store and manage high-dimensional vect
 
 **Vectors** can be viewed as an ordered list of numbers. For example, the vector `[1, 2]` represents a direction from the origin to the point `(1, 2)` in a two-dimensional space, and the distance (or magnitude) to that point. 
 
-<div align=center drawio-diagram='22178' drawio-name="draw_64e89b56e7eb4f0c87251fa32b4cb531.jpg"><img src="https://img.ultipa.cn/draw/draw_64e89b56e7eb4f0c87251fa32b4cb531.jpg?v='1742890681382'"/></div>
+<center><img src="images/vector-index-1.jpg"/></center>
 
 In the context of machine learning and natural language processing (NLP), the term **embedding** is commonly used when referring vectors. An embedding is a high-dimensional vector that represents data, often with hundreds of dimensions. 
 

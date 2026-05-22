@@ -25,7 +25,7 @@ A quantifier is written as a postfix to either an edge pattern or a parenthesize
 
 ## Example Graph
 
-<div align=center drawio-diagram='16778' drawio-name="draw_a99f62df2adf48359cd1f95077fee319.jpg"><img src="https://img.ultipa.cn/draw/draw_a99f62df2adf48359cd1f95077fee319.jpg?v='1726735600890'"/></div>
+<center><img src="images/quantified-paths-example.jpg"/></center>
 
 ```gql
 INSERT (jack:User {_id: "U01", name: "Jack"}),
@@ -54,13 +54,13 @@ When writing a quantified path to its full form:
 
 Edge patterns can be directly followed by a quantifier, and both the full and abbreviated edge patterns are supported.
 
-<div align=center drawio-diagram='16772' drawio-name="draw_d6da4e2292484b119ed451495473963b.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_d6da4e2292484b119ed451495473963b.jpg?v='1751898702233'"/></div>
+<center><img src="images/quantified-paths-1.jpg"/></center>
 
 ### Quantified Entire Path
 
 You can enclose the entire path pattern in parentheses `()` and append a quantifier.
 
-<div align=center drawio-diagram='16744' drawio-name="draw_552a43cbfded43459fd7af85fdd33f53.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_552a43cbfded43459fd7af85fdd33f53.jpg?v='1751898825680'"/></div>
+<center><img src="images/quantified-paths-2.jpg"/></center>
 
 When a quantifier is applied to an entire path pattern, a step count of `0` produces no result.
 
@@ -68,11 +68,11 @@ When a quantifier is applied to an entire path pattern, a step count of `0` prod
 
 You can enclose part of a path pattern in parentheses `()` and append a quantifier for it.
 
-<div align=center drawio-diagram='26367' drawio-name="draw_89c87bb02dab46c4b819ad5f220ec617.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_89c87bb02dab46c4b819ad5f220ec617.jpg?v='1751898972887'"/></div>
+<center><img src="images/quantified-paths-3.jpg"/></center>
 
 Another example:
 
-<div align=center drawio-diagram='26369' drawio-name="draw_0fa4186dcbb24cbbbee6a431e0a32dc0.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_0fa4186dcbb24cbbbee6a431e0a32dc0.jpg?v='1751899060332'"/></div>
+<center><img src="images/quantified-paths-4.jpg"/></center>
 
 ## Examples
 
@@ -85,7 +85,7 @@ RETURN p
 
 Result: `p`
 
-<div align=center drawio-diagram='20497' drawio-name="draw_c7d7992001da41b8b03f7b5abcf7ce01.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_c7d7992001da41b8b03f7b5abcf7ce01.jpg?v='1751899195646'"/></div>
+<center><img src="images/quantified-paths-5.jpg"/></center>
 
 ### Fixed Length
 
@@ -96,7 +96,7 @@ RETURN p
 
 Result: `p`
 
-<div align=center drawio-diagram='20498' drawio-name="draw_5a4d0d9bf2cd458e9c1c5802b7a88239.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_5a4d0d9bf2cd458e9c1c5802b7a88239.jpg?v='1751939286498'"/></div>
+<center><img src="images/quantified-paths-6.jpg"/></center>
 
 ### Fixed Lowerbound
 
@@ -118,7 +118,7 @@ RETURN p
 
 Result: `p`
 
-<div align=center drawio-diagram='20500' drawio-name="draw_801e34f355084aa993e7eb095c107d28.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_801e34f355084aa993e7eb095c107d28.jpg?v='1751884564863'"/></div>
+<center><img src="images/quantified-paths-7.jpg"/></center>
 
 ```gql
 MATCH p = ({_id: 'Comp1'})-[f:Flows WHERE f.packets > 20]->+()
@@ -127,7 +127,7 @@ RETURN p
 
 Result: `p`
 
-<div align=center drawio-diagram='20501' drawio-name="draw_dfd1117f41f3468b9b3b8dc4a2b9dfa7.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_dfd1117f41f3468b9b3b8dc4a2b9dfa7.jpg?v='1751884599523'"/></div>
+<center><img src="images/quantified-paths-8.jpg"/></center>
 
 ### Fixed Upperbound
 
@@ -138,7 +138,7 @@ RETURN p
 
 Result: `p`
 
-<div align=center drawio-diagram='20502' drawio-name="draw_fe3b7537923d49c8844aeb589f6a97fd.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_fe3b7537923d49c8844aeb589f6a97fd.jpg?v='1751939621381'"/></div>
+<center><img src="images/quantified-paths-9.jpg"/></center>
 
 ## Group Variables
 
@@ -146,7 +146,7 @@ Element variables declared within the repeatable part of a quantified path are b
 
 ### Example Graph
 
-<div align=center drawio-diagram='16773' drawio-name="draw_67664aeb31984c1488a3ddc177146d32.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_67664aeb31984c1488a3ddc177146d32.jpg?v='1751941057585'"/></div>
+<center><img src="images/quantified-paths-10.jpg"/></center>
 
 ```gql
 INSERT (rowlock:User {_id: "U1", name: "rowlock", age: 24}),
@@ -180,14 +180,14 @@ Result:
   <tbody>
     <tr>
       <td>
-<div align=center drawio-diagram='20506' drawio-name="draw_0cb3bcc2da1840f08abb2d898b8376f3.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_0cb3bcc2da1840f08abb2d898b8376f3.jpg?v='1751941080877'"/></div>
+<center><img src="images/quantified-paths-11.jpg"/></center>
       </td>
       <td><pre>[{"id": "U1", "labels": ["User"], "properties": {"name": "rowlock", "age": 24}}]</pre></td>
       <td><pre>[{"id": "U2", "labels": ["User"], "properties": {"name": "Quasar92", "age": 29}}]</pre></td>
     </tr>
     <tr>
       <td>
-<div align=center drawio-diagram='20507' drawio-name="draw_62a7d15f52424dca9a78c12a0ffc1fed.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_62a7d15f52424dca9a78c12a0ffc1fed.jpg?v='1751941102387'"/></div>
+<center><img src="images/quantified-paths-12.jpg"/></center>
       </td>
       <td><pre>[{"id": "U1", "labels": ["User"], "properties": {"name": "rowlock", "age": 24}},
  {"id": "U2", "labels": ["User"], "properties": {"name": "Quasar92", "age": 29}}]</pre></td>
@@ -196,7 +196,7 @@ Result:
     </tr>
     <tr>
       <td>
-<div align=center drawio-diagram='20505' drawio-name="draw_cd873c21fbb44cf381d01cd79b609bb1.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_cd873c21fbb44cf381d01cd79b609bb1.jpg?v='1751941071564'"/></div>
+<center><img src="images/quantified-paths-13.jpg"/></center>
       </td>
       <td><pre>[{"id": "U2", "labels": ["User"], "properties": {"name": "Quasar92", "age": 29}}]</pre></td>
       <td><pre>[{"id": "U3", "labels": ["User"], "properties": {"name": "claire", "age": 35}}]</pre></td>
@@ -228,13 +228,13 @@ Result:
   <tbody>
     <tr>
       <td>
-<div align=center drawio-diagram='20508' drawio-name="draw_186aef45ae2c41f098e73aa85c02e55b.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_186aef45ae2c41f098e73aa85c02e55b.jpg?v='1751941504989'"/></div>
+<center><img src="images/quantified-paths-14.jpg"/></center>
       </td>
       <td>3</td>
     <tr>
     <tr>
       <td>
-<div align=center drawio-diagram='20509' drawio-name="draw_45b766f4b13b401ab829a260fa5dff5f.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_45b766f4b13b401ab829a260fa5dff5f.jpg?v='1751941522201'"/></div>
+<center><img src="images/quantified-paths-15.jpg"/></center>
       </td>
       <td>5</td>
     </tr>
@@ -264,4 +264,4 @@ RETURN p
 
 Result: `p`
 
-<div align=center drawio-diagram='20504' drawio-name="draw_27d322952c484bc69c8ae8bdc751ed08.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_27d322952c484bc69c8ae8bdc751ed08.jpg?v='1751941715657'"/></div>
+<center><img src="images/quantified-paths-16.jpg"/></center>

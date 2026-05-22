@@ -17,7 +17,7 @@ The `MATCH` statement allows you to specify a <a target="_blank" href="/docs/gql
 
 ## Example Graph
 
-<div align=center drawio-diagram='16819' drawio-name="draw_424cccded4bd4528afeef4a4f514e0a8.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_424cccded4bd4528afeef4a4f514e0a8.jpg?v='1751440637006'"/></div>
+<center><img src="images/match-example.jpg"/></center>
 
 ```gql
 INSERT (rowlock:User {_id: 'U01', name: 'rowlock'}),
@@ -186,7 +186,7 @@ RETURN p
 
 Result: `p`
 
-<div align=center drawio-diagram='17009' drawio-name="draw_cb84c2f9b0934edcb3fa1028b8285232.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_cb84c2f9b0934edcb3fa1028b8285232.jpg?v='1751440836394'"/></div>
+<center><img src="images/match-1.jpg"/></center>
 
 ## Matching with WHERE Clauses
 
@@ -203,7 +203,7 @@ RETURN p
 
 Result: `p`
 
-<div align=center drawio-diagram='17010' drawio-name="draw_b8d0a6bf849d4425bdfaf2c01aaa92cf.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_b8d0a6bf849d4425bdfaf2c01aaa92cf.jpg?v='1751440899521'"/></div>
+<center><img src="images/match-2.jpg"/></center>
 
 ### Parenthesized Path Pattern WHERE Clause
 
@@ -216,7 +216,7 @@ RETURN p
 
 Result: `p`
 
-<div align=center drawio-diagram='17011' drawio-name="draw_82881fe33fb6492b86e5fc3927023a76.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_82881fe33fb6492b86e5fc3927023a76.jpg?v='1751441025693'"/></div>
+<center><img src="images/match-3.jpg"/></center>
 
 ### Graph Pattern WHERE Clause
 
@@ -262,7 +262,7 @@ RETURN p
 
 Result: `p`
 
-<div align=center drawio-diagram='17013' drawio-name="draw_3ac0889a47e8431383481910dddb5772.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_3ac0889a47e8431383481910dddb5772.jpg?v='1751441119734'"/></div>
+<center><img src="images/match-4.jpg"/></center>
 
 ## Matching Shortest Paths
 
@@ -278,7 +278,7 @@ RETURN p
 
 Result: `p`
 
-<div align=center drawio-diagram='20306' drawio-name="draw_1291039e2d5c466aaaa75fe99f1de2f5.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_1291039e2d5c466aaaa75fe99f1de2f5.jpg?v='1751441157706'"/></div>
+<center><img src="images/match-5.jpg"/></center>
 
 ## Matching Multiple Paths
 

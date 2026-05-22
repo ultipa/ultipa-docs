@@ -23,7 +23,7 @@ The `NEXT` statement chains multiple linear or composite query statements, where
 
 ## Example Graph
 
-<div align=center drawio-diagram='17169' drawio-name="draw_de9012b244ac483dacabd9ab09435793.jpg"><img src="https://img.ultipa.cn/draw/draw_de9012b244ac483dacabd9ab09435793.jpg?v='1727342377222'"/></div>
+<center><img src="images/next-example.jpg"/></center>
 
 ```gql
 INSERT (rowlock:User {_id: 'U01', name: 'rowlock'}),

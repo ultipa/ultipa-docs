@@ -15,7 +15,7 @@ GQL supports two forms of the `CASE` expression:
 
 ## Example Graph
 
-<div align=center drawio-diagram='17246' drawio-name='draw_f488b7dd47684069a6a187a919ad9667.jpg'><img src="https://img.ultipa.cn/draw/draw_f488b7dd47684069a6a187a919ad9667.jpg?v='1728532237619'"/></div>
+<center><img src="images/case-example.jpg"/></center>
 
 ```gql
 INSERT (p1:Paper {_id:'P1', title:'Efficient Graph Search', score:6, author:'Alex', publisher:'PulsePress'}),

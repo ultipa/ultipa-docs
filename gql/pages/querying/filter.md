@@ -41,7 +41,7 @@ Replacing `FILTER` with `WHERE` in this query will cause syntax error.
 
 ## Example Graph
 
-<div align=center drawio-diagram='16851' drawio-name="draw_f04fe554a1d442009a57dfceb1928bd0.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_f04fe554a1d442009a57dfceb1928bd0.jpg?v='1751441410308'"/></div>
+<center><img src="images/filter-example.jpg"/></center>
 
 ```gql
 INSERT (rowlock:User {_id: 'U01', name: 'rowlock'}),

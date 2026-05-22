@@ -14,7 +14,7 @@ Rows containing `null` values are ignored by all aggregate functions, except `co
 
 ## Example Graph
 
-<div align=center drawio-diagram='17076' drawio-name="draw_d24ae12e56364da0b67f726a6b5e12d1.jpg"><img src="https://img.ultipa.cn/draw/draw_d24ae12e56364da0b67f726a6b5e12d1.jpg?v='1733308261481'"/></div>
+<center><img src="images/paper-example.jpg"/></center>
 
 ```gql
 INSERT (p1:Paper {_id:'P1', title:'Efficient Graph Search', score:6, author:'Alex'}),

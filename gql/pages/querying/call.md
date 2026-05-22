@@ -39,7 +39,7 @@ An **inline procedure** is a user-defined procedure embedded within a query, com
 
 ### Example Graph
 
-<div align=center drawio-diagram='16932' drawio-name="draw_8900c35205e1442fa1a12c929a716edf.jpg"><img src="https://img.ultipa.cn/draw/draw_8900c35205e1442fa1a12c929a716edf.jpg?v='1733216427377'"/></div>
+<center><img src="images/call-example.jpg"/></center>
 
 ```gql
 INSERT (rowlock:User {_id:'U01', name:'rowlock'}),

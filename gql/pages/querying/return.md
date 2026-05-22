@@ -30,7 +30,7 @@ The `RETURN` statement allows you to specify items to include in the query resul
 
 ## Example Graph
 
-<div align=center drawio-diagram='15735' drawio-name="draw_1ba1d5628722444894a94a69c1b18d8c.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_1ba1d5628722444894a94a69c1b18d8c.jpg?v='1738726313830'"/></div>
+<center><img src="images/return-example.jpg"/></center>
 
 ```gql
 INSERT (alex:Student {_id: 's1', name: 'Alex', gender: 'male'}),
@@ -86,7 +86,7 @@ RETURN p
 
 Result: `p`
 
-<div align=center drawio-diagram='17030' drawio-name="draw_b58ea87eac1046d4bffd03ddd1119a86.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_b58ea87eac1046d4bffd03ddd1119a86.jpg?v='1738737362935'"/></div>
+<center><img src="images/return-1.jpg"/></center>
 
 ## Returning Labels
 

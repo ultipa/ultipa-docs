@@ -30,7 +30,7 @@ These algorithms are recommended for computing **weighted shortest paths** (i.e.
 
 ## Example Graph
 
-<div align=center drawio-diagram='16791' drawio-name="draw_1899538f3dd346f4baf2d998287f7820.jpg"><img src="https://img.ultipa.cn/draw/draw_1899538f3dd346f4baf2d998287f7820.jpg?v='1726757651042'"/></div>
+<center><img src="images/shortest-paths-example.jpg"/></center>
 
 ```gql
 INSERT (zenith:City {_id: "Zenith"}),
@@ -64,7 +64,7 @@ RETURN p
 
 Result: `p`
 
-<div align=center drawio-diagram='20510' drawio-name='draw_4c08f39f8a8948ceb5c679b6be77704b.jpg'><img src="https://img.ultipa.cn/draw/draw_4c08f39f8a8948ceb5c679b6be77704b.jpg?v='1738831482457'"/></div>
+<center><img src="images/shortest-paths-1.jpg"/></center>
 
 ## ANY SHORTEST
 
@@ -76,7 +76,7 @@ RETURN p
 
 Result: `p`
 
-<div align=center drawio-diagram='20655' drawio-name='draw_c53037c80cb34a5493e2f65fc1aab702.jpg'><img src="https://img.ultipa.cn/draw/draw_c53037c80cb34a5493e2f65fc1aab702.jpg?v='1739009312358'"/></div>
+<center><img src="images/shortest-paths-2.jpg"/></center>
 
 ## SHORTEST k
 
@@ -88,7 +88,7 @@ RETURN p
 
 Result: `p`
 
-<div align=center drawio-diagram='20511' drawio-name='draw_f637566d653a4a799b762d349b2a69b0.jpg'><img src="https://img.ultipa.cn/draw/draw_f637566d653a4a799b762d349b2a69b0.jpg?v='1738831594485'"/></div>
+<center><img src="images/shortest-paths-3.jpg"/></center>
 
 ```gql
 MATCH p = SHORTEST 3 (a)-[:Links]-{1,10}(b)
@@ -98,7 +98,7 @@ RETURN p
 
 Since only two paths with the shortest length of `2` exist between `Arcadia` and `Eldoria`, one path with the second shortest length needs to be selected. In this example, there is only one path with the second shortest length of `3`, therefore the following three paths are returned:
 
-<div align=center drawio-diagram='20512' drawio-name='draw_ec2947df63df4b22ba5ee7d17d626be2.jpg'><img src="https://img.ultipa.cn/draw/draw_ec2947df63df4b22ba5ee7d17d626be2.jpg?v='1738831765789'"/></div>
+<center><img src="images/shortest-paths-4.jpg"/></center>
 
 ## SHORTEST k GROUP
 
@@ -110,7 +110,7 @@ RETURN p
 
 Two paths with the shortest length of `2`, one path with the second shortest length of `3` and one path with the third shortest length of `4` are returned:
 
-<div align=center drawio-diagram='20513' drawio-name="draw_be26fe25399c444eb88161a7ed9fea5c.jpg"><img src="https://img.ultipa.cn/draw/draw_be26fe25399c444eb88161a7ed9fea5c.jpg?v='1738832019407'"/></div>
+<center><img src="images/shortest-paths-5.jpg"/></center>
 
 ## Partitions
 
@@ -126,7 +126,7 @@ RETURN p
 
 Result: `p`
 
-<div align=center drawio-diagram='20514' drawio-name="draw_a37d5483c3074e659e3bc1baa2051c09.jpg"><img src="https://img.ultipa.cn/draw/draw_a37d5483c3074e659e3bc1baa2051c09.jpg?v='1754297984788'"/></div>
+<center><img src="images/shortest-paths-6.jpg"/></center>
 
 This query finds the shortest paths between `Arcadia` and any other city in the graph: 
 
@@ -137,4 +137,4 @@ RETURN p
 
 There are 8 nodes `Arcadia` can reach in the graph (including itself) except `Nexis`. The following is one of the possible returns:
 
-<div align=center drawio-diagram='20515' drawio-name="draw_cc192c041cb8403d990bcf001a560a2a.jpg"><img src="https://img.ultipa.cn/draw/draw_cc192c041cb8403d990bcf001a560a2a.jpg?v='1752032090890'"/></div>
+<center><img src="images/shortest-paths-7.jpg"/></center>

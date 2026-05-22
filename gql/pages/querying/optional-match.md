@@ -22,7 +22,7 @@ The `OPTIONAL` keyword can be applied to a single `MATCH` statement, or to a blo
 
 ## Example Graph
 
-<div align=center drawio-diagram='27445' drawio-name='draw_5897ed7455b84f7984b24665a71253c6.jpg'><img src="https://img.ultipa.cn/draw/draw_5897ed7455b84f7984b24665a71253c6.jpg?v='1754382908221'"/></div>
+<center><img src="images/optional-match-example.jpg"/></center>
 
 ```gql
 INSERT (rowlock:User {_id: 'U01', name: 'rowlock'}),

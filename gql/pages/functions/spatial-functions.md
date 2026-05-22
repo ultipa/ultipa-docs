@@ -2,7 +2,7 @@
 
 ## Example Graph
 
-<div align=center drawio-diagram='19689' drawio-name="draw_8af35576d1df48828c54ed4dbc548f28.jpg"><img src="https://img.ultipa.cn/draw/draw_8af35576d1df48828c54ed4dbc548f28.jpg?v='1759984566294'"/></div>
+<center><img src="images/spatial-example.jpg"/></center>
 
 ```gql
 INSERT (paris:City {name: "Paris", location: point(2.4, 48.9), landmark: point3d(100, 25.3, 652.1)}),

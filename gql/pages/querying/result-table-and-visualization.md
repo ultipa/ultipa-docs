@@ -8,7 +8,7 @@ The intermediate result table is a conceptual model to understand how queries ar
 
 Example graph:
 
-<div align=center drawio-diagram='25643' drawio-name="draw_a08c0407baa0426b840f458d61b271d7.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_a08c0407baa0426b840f458d61b271d7.jpg?v='1751249910591'"/></div>
+<center><img src="images/result-table-and-visualization-example.jpg"/></center>
 
 ```gql
 INSERT (mochaeach:User {_id: 'U1', name: 'mochaeach', age: 31}),
@@ -230,4 +230,4 @@ While GQL results can be returned in tabular format, one of the defining feature
 
 When running GQL queries in Ultipa products such as **Ultipa Manager** and <a target="_blank" href="https://gql.ultipa.com">GQL Playground</a>, query results of nodes and paths can be rendered in **graph view**, offering an intuitive and interactive way to navigate the result graph.
 
-<div align=center><img src="images/result visualization.png"/><span style="color:#999;">Result Visualization in Ultipa Manager</span></div>
+<div align=center><img src="images/result-visualization.png"/><span style="color:#999;">Result Visualization in Ultipa Manager</span></div>

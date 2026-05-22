@@ -23,7 +23,7 @@ To combine the result sets of multiple linear queries, the `RETURN` statements i
 
 ## Example Graph
 
-<div align=center drawio-diagram='17053' drawio-name="draw_93e533a0a4df40389f5e67f0b8abbde4.jpg"><img src="https://img.ultipa.cn/draw/draw_93e533a0a4df40389f5e67f0b8abbde4.jpg?v='1726718106654'"/></div>
+<center><img src="images/composite-query-example.jpg"/></center>
 
 ```gql
 INSERT (rowlock:User {_id:'U01', name:'rowlock'}),

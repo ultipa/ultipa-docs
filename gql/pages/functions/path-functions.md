@@ -2,7 +2,7 @@
 
 ## Example Graph
 
-<div align=center drawio-diagram='17191' drawio-name="draw_5fb3914b116b4a06ac12fbf6c9d30f68.jpg"><img src="https://img.ultipa.cn/draw/draw_5fb3914b116b4a06ac12fbf6c9d30f68.jpg?v='1733369467835'"/></div>
+<center><img src="images/paper-example.jpg"/></center>
 
 ```gql
 INSERT (p1:Paper {_id:'P1', title:'Efficient Graph Search', score:6, author:'Alex'}),
@@ -55,9 +55,9 @@ Result:
 
 | p | length |
 | -- | -- |
-| <div align=center drawio-diagram='19668' drawio-name="draw_fefc93ef1d1245a39919bf2133d3cbd4.jpg"><img src="https://img.ultipa.cn/draw/draw_fefc93ef1d1245a39919bf2133d3cbd4.jpg?v='1733307011924'"/></div> | 2 |
-| <div align=center drawio-diagram='19669' drawio-name="draw_24c0ac6993314eb99bac44e1e644c3e0.jpg"><img src="https://img.ultipa.cn/draw/draw_24c0ac6993314eb99bac44e1e644c3e0.jpg?v='1733306886856'"/></div> | 1 |
-| <div align=center drawio-diagram='19670' drawio-name="draw_164ef437545f46259711092a3ec32443.jpg"><img src="https://img.ultipa.cn/draw/draw_164ef437545f46259711092a3ec32443.jpg?v='1733306931330'"/></div> | 1 |
+| <center><img src="images/path-functions-1.jpg"/></center> | 2 |
+| <center><img src="images/path-functions-2.jpg"/></center> | 1 |
+| <center><img src="images/path-functions-3.jpg"/></center> | 1 |
 
 ## elements()
 

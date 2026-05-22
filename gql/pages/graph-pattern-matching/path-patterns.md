@@ -23,7 +23,7 @@ A path pattern expression (or *path pattern* for short) defines the nodes and ed
 
 This path pattern starts from the node `Brainy`, connecting to a `Club` node through an outgoing `Joins` edge:
 
-<div align=center drawio-diagram='16734' drawio-name="draw_ddce7cb1245242909c9308404337f7f1.jpg"><img src="https://img.ultipa.cn/draw/draw_ddce7cb1245242909c9308404337f7f1.jpg?v='1723529216793'"/></div>
+<center><img src="images/path-patterns-1.jpg"/></center>
 
 <p tit="Path Pattern"></p>
 
@@ -33,7 +33,7 @@ This path pattern starts from the node `Brainy`, connecting to a `Club` node thr
 
 You can keep on chaining edge and node patterns to create more complex path patterns. This path pattern describes that `Brainy` and `mochaeach` join the same club, with the `Club` node bound to the variable `c`: 
 
-<div align=center drawio-diagram='16735' drawio-name="draw_a737e81c091f4cde93a36dc5834fcecb.jpg"><img src="https://img.ultipa.cn/draw/draw_a737e81c091f4cde93a36dc5834fcecb.jpg?v='1724812297352'"/></div>
+<center><img src="images/path-patterns-2.jpg"/></center>
 
 <p tit="Path Pattern"></p>
 
@@ -43,7 +43,7 @@ You can keep on chaining edge and node patterns to create more complex path patt
 
 This path pattern reuses the variable `a` to form a ring-like structure that starts and ends with the same `Account` node:
 
-<div align=center drawio-diagram='16742' drawio-name="draw_8ec9f70fa96747e7a4111201b98b39af.jpg"><img src="https://img.ultipa.cn/draw/draw_8ec9f70fa96747e7a4111201b98b39af.jpg?v='1723102682987'"/></div>
+<center><img src="images/path-patterns-3.jpg"/></center>
 
 <p tit="Path Pattern"></p>
 
@@ -79,7 +79,7 @@ There are two types of path pattern prefixes:
 
 ### Example Graph
 
-<div align=center drawio-diagram='16782' drawio-name="draw_69a928e0e8cb4d508e7c93b470c4849a.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_69a928e0e8cb4d508e7c93b470c4849a.jpg?v='1751861598938'"/></div>
+<center><img src="images/path-patterns-4.jpg"/></center>
 
 ```gql
 INSERT (c1:default {_id: 'C1'}),
@@ -141,7 +141,7 @@ RETURN p
 
 Result: `p`
 
-<div align=center drawio-diagram='20491' drawio-name="draw_45cc8d70724e4ec69e9f06a1230f559f.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_45cc8d70724e4ec69e9f06a1230f559f.jpg?v='1751862630158'"/></div>
+<center><img src="images/path-patterns-5.jpg"/></center>
 
 ### Path Selector
 
@@ -219,7 +219,7 @@ RETURN p
 
 Result: `p`
 
-<div align=center drawio-diagram='20492' drawio-name="draw_253f54423f4442d2b35afb82c692367e.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_253f54423f4442d2b35afb82c692367e.jpg?v='1751868984077'"/></div>
+<center><img src="images/path-patterns-6.jpg"/></center>
 
 ### Combined Usage
 
@@ -232,7 +232,7 @@ MATCH p = ANY WALK ({_id: 'C1'})->{1,3}()
 RETURN p
 ```
 
-<div align=center drawio-diagram='16790' drawio-name="draw_963965be18bf44398e8f8db458f3e674.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_963965be18bf44398e8f8db458f3e674.jpg?v='1751869832825'"/></div>
+<center><img src="images/path-patterns-7.jpg"/></center>
 
 ## Special Considerations
 

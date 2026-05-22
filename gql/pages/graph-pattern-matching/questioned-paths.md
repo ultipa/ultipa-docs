@@ -24,7 +24,7 @@ Although `?` and `{0,1}` both match zero or one occurrence, they differ in how v
 
 ## Example Graph
 
-<div align=center drawio-diagram='16778' drawio-name="draw_a99f62df2adf48359cd1f95077fee319.jpg"><img src="https://img.ultipa.cn/draw/draw_a99f62df2adf48359cd1f95077fee319.jpg?v='1726735600890'"/></div>
+<center><img src="images/questioned-paths-example.jpg"/></center>
 
 ```gql
 INSERT (jack:User {_id: "U01", name: "Jack"}),

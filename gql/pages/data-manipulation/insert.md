@@ -93,7 +93,7 @@ INSERT (:User {name: 'rowlock'})-[:Follows {since: date('2024-01-05')}]->(:User 
 
 Insert the 4 nodes and 3 edges shown below, consider it as two paths intersecting at the `Club` node:
 
-<div align=center drawio-diagram='20305' drawio-name="draw_b9ada0dd44584302ac547599f89112b3.jpg"><img src="https://img.ultipa.cn/draw/draw_b9ada0dd44584302ac547599f89112b3.jpg?v='1762334095051'"/></div>
+<center><img src="images/insert-1.jpg"/></center>
 
 ```gql
 INSERT (:User {name: 'waveBliss'})-[:Joins]->(c:Club {_id: 'C3'}),

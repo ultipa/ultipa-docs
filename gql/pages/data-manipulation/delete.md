@@ -6,7 +6,7 @@ The `DELETE` statement allows you to delete nodes and edges from a graph. These 
 
 An edge cannot exist when any of its endpoints is removed from the graph. Therefore, by default GQL does not allow to delete a node while it still has edges connected to it. You can bypass this restriction by explicitly using the keyword `DETACH` to enable the deletion of nodes along with their connected edges. For example, when node `B` is deleted by `DETACH DELETE`, edges `1`, `2` and `4` will also be deleted.
 
-<div align=center drawio-diagram='16693' drawio-name="draw_d01257ea48b84ca0b9077ab433dfb328.jpg"><img src="https://img.ultipa.cn/draw/draw_d01257ea48b84ca0b9077ab433dfb328.jpg?v='1726308511020'"/></div>
+<center><img src="images/delete-1.jpg"/></center>
 
 Without `DETACH`, the deletion of node `B` will fail, which can be useful as a security measure to prevent unintended deletions.
 
@@ -14,7 +14,7 @@ The keyword `NODETACH` makes the non-cascading behavior explicit: `NODETACH DELE
 
 ## Example Graph
 
-<div align=center drawio-diagram='16780' drawio-name="draw_6b12dbc2db4f47d9ba29a1ebedd2a588.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_6b12dbc2db4f47d9ba29a1ebedd2a588.jpg?v='1737864364502'"/></div>
+<center><img src="images/delete-example.jpg"/></center>
 
 ```gql
 INSERT (rowlock:User {_id: "U01", name: "rowlock"}),

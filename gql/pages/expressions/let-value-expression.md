@@ -16,7 +16,7 @@ Unlike the <a href="/docs/gql/let">`LET` statement</a> which defines a variable 
 
 ## Example Graph
 
-<div align=center drawio-diagram='17526' drawio-name="draw_f21555f32dd3458395ec106fe00b0ea2.jpg"><img src="https://img.ultipa.cn/draw/draw_f21555f32dd3458395ec106fe00b0ea2.jpg?v='1732517414371'"/></div>
+<center><img src="images/let-value-expression-example.jpg"/></center>
 
 ```gql
 INSERT (p1:Paper {_id:'P1', title:'Efficient Graph Search', score:6}),

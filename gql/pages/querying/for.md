@@ -68,11 +68,11 @@ Result:
 
 In this query, the `FOR` statement unnests the list contained in the `interests` column of the working table into two records. Consequently, the corresponding record in the `user` column is duplicated to two records as well.
 
-<div align=center drawio-diagram='20311' drawio-name='draw_f3cc249b7777458bb08036f0deee6a01.jpg'><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_f3cc249b7777458bb08036f0deee6a01.jpg?v='1737960695700'"/></div>
+<center><img src="images/for-1.jpg"/></center>
 
 ## Unnesting a Group Variable
 
-<div align=center drawio-diagram='16856' drawio-name="draw_781de363a0914e1d85be994f8c4451bb.jpg"><img src="https://img.ultipa.cn/draw/draw_781de363a0914e1d85be994f8c4451bb.jpg?v='1726050412850'"/></div>
+<center><img src="images/for-2.jpg"/></center>
 
 ```gql
 INSERT (c1:Card {_id: 'C1'}),

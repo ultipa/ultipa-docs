@@ -22,7 +22,7 @@ The **path pattern list** consists of one or multiple path patterns. Each path p
 
 ## Example Graph
 
-<div align=center drawio-diagram='16795' drawio-name="draw_775c08aea51f49a4a5bf3ca098da1e47.jpg"><img src="https://img.ultipa.cn/draw/draw_775c08aea51f49a4a5bf3ca098da1e47.jpg?v='1726762246845'"/></div>
+<center><img src="images/graph-patterns-example.jpg"/></center>
 
 ```gql
 INSERT (brainy:User {_id: "U01", name: "Brainy"}),
@@ -57,7 +57,7 @@ RETURN u.name
 
 The two path patterns in `MATCH` declare a common variable `u`. An **equi-join** is performed, joining rows where the values of `u` are equal and discarding the rest.
 
-<div align=center drawio-diagram='16796' drawio-name="draw_d09da6a9e6e840aab701deac2af0a87c.jpg"><img src="https://img.ultipa.cn/draw/draw_d09da6a9e6e840aab701deac2af0a87c.jpg?v='1739417574090'"/></div>
+<center><img src="images/graph-patterns-1.jpg"/></center>
 
 Result:
 
@@ -78,7 +78,7 @@ RETURN u1.name, u2.name
 
 The two path patterns in `MATCH` declare no common variables, resulting in a **Cartesian product**. Each row from the first result set is combined with every row from the second.
 
-<div align=center drawio-diagram='16797' drawio-name="draw_1d9ed62506ed4b72af7f115f64e5c26c.jpg"><img src="https://img.ultipa.cn/draw/draw_1d9ed62506ed4b72af7f115f64e5c26c.jpg?v='1726762319847'"/></div>
+<center><img src="images/graph-patterns-2.jpg"/></center>
 
 Result:
 
@@ -104,7 +104,7 @@ A graph pattern can specify a match mode that applies to all contained path patt
 
 ### Example Graph
 
-<div align=center drawio-diagram='16878' drawio-name="draw_709f4d9805324c598dc65af9d0a25ff2.jpg"><img src="https://img.ultipa.cn/draw/draw_709f4d9805324c598dc65af9d0a25ff2.jpg?v='1726762893725'"/></div>
+<center><img src="images/graph-patterns-3.jpg"/></center>
 
 ```gql
 INSERT (quickfox:User {_id: "U01", name: "QuickFox"}),
@@ -134,7 +134,7 @@ Result:
 | -- |
 | ["U03","U03","C01"] |
 
-<div align=center drawio-diagram='16879' drawio-name="draw_f541c2c7c0da4386be6b144063d04729.jpg"><img src="https://img.ultipa.cn/draw/draw_f541c2c7c0da4386be6b144063d04729.jpg?v='1739417622766'"/></div>
+<center><img src="images/graph-patterns-4.jpg"/></center>
 
 ### REPEATABLE ELEMENTS
 

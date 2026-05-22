@@ -12,7 +12,7 @@ The `SKIP` statement allows you to discard a specified number of rows from the s
 
 ## Example Graph
 
-<div align=center drawio-diagram='16850' drawio-name="draw_48d050d22da344528aa2e26d3ca63913.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_48d050d22da344528aa2e26d3ca63913.jpg?v='1737965734232'"/></div>
+<center><img src="images/skip-example.jpg"/></center>
 
 ```gql
 INSERT (p1:Paper {_id:'P1', title:'Efficient Graph Search', score:6, author:'Alex'}),
@@ -48,4 +48,4 @@ RETURN p
 
 Result: `p`
 
-<div align=center drawio-diagram='20316' drawio-name='draw_09a48c48903d47c8a8d5fb3fdac6cb8c.jpg'><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_09a48c48903d47c8a8d5fb3fdac6cb8c.jpg?v='1737965881010'"/></div>
+<center><img src="images/skip-1.jpg"/></center>

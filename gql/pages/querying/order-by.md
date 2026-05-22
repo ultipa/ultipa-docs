@@ -23,7 +23,7 @@ The `ORDER BY` statement allows you to sort the intermediate result table or out
 
 ## Example Graph
 
-<div align=center drawio-diagram='16841' drawio-name="draw_0665940066934954aa021f12215db8b1.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_0665940066934954aa021f12215db8b1.jpg?v='1737964169285'"/></div>
+<center><img src="images/order-by-example.jpg"/></center>
 
 ```gql
 INSERT (p1:Paper {_id:'P1', title:'Efficient Graph Search', score:6, author:'Alex', publisher:'PulsePress'}),
@@ -85,19 +85,19 @@ Result:
   <tbody>
     <tr>
       <td>
-<div align=center drawio-diagram='20312' drawio-name='draw_2309806628d74e29bfd5540deb08d32e.jpg'><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_2309806628d74e29bfd5540deb08d32e.jpg?v='1737964214144'"/></div>
+<center><img src="images/order-by-1.jpg"/></center>
       </td>
       <td>2</td>
     </tr>
     <tr>
       <td>
-<div align=center drawio-diagram='20313' drawio-name='draw_80c4ffcee72a4579ab79b69aab8766c1.jpg'><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_80c4ffcee72a4579ab79b69aab8766c1.jpg?v='1737964253033'"/></div>
+<center><img src="images/order-by-2.jpg"/></center>
       </td>
       <td>1</td>
     </tr>
     <tr>
       <td>
-        <div align=center drawio-diagram='20314' drawio-name='draw_a589acfb233f4b46bb649a1867206709.jpg'><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_a589acfb233f4b46bb649a1867206709.jpg?v='1737964289838'"/></div>
+        <center><img src="images/order-by-3.jpg"/></center>
       </td>
       <td>1</td>
     </tr>

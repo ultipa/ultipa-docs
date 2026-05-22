@@ -12,7 +12,7 @@ The `LIMIT` statement restricts the maximum number of rows to be retained in the
 
 ## Example Graph
 
-<div align=center drawio-diagram='16847' drawio-name="draw_9c29a4c8e44e459c88db4c719d6442c8.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_9c29a4c8e44e459c88db4c719d6442c8.jpg?v='1737965665438'"/></div>
+<center><img src="images/limit-example.jpg"/></center>
 
 ```gql
 INSERT (p1:Paper {_id:'P1', title:'Efficient Graph Search', score:6, author:'Alex'}),
@@ -46,7 +46,7 @@ RETURN p
 
 Result: `p`
 
-<div align=center drawio-diagram='20315' drawio-name="draw_8a9270b99dea443ab1893d48e2bbd5b2.jpg"><img src="https://www-test-data.oss-cn-hangzhou.aliyuncs.com/draw/draw_8a9270b99dea443ab1893d48e2bbd5b2.jpg?v='1737965642303'"/></div>
+<center><img src="images/limit-1.jpg"/></center>
 
 ## Limiting Ordered Rows
 

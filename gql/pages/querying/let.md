@@ -22,7 +22,7 @@ The `LET` statement allows you to define new variables and adds corresponding co
 
 ## Example Graph
 
-<div align=center drawio-diagram='19567' drawio-name="draw_f63d47fa3ab24298bbe4f596ec2cb349.jpg"><img src="https://img.ultipa.cn/draw/draw_f63d47fa3ab24298bbe4f596ec2cb349.jpg?v='1732517313170'"/></div>
+<center><img src="images/let-example.jpg"/></center>
 
 Create this graph, run the following query against an empty graph:
 

@@ -16,7 +16,7 @@ The value query expression allows you to specify a scalar value derived from a n
 
 ## Example Graph
 
-<div align=center drawio-diagram='19567' drawio-name="draw_f63d47fa3ab24298bbe4f596ec2cb349.jpg"><img src="https://img.ultipa.cn/draw/draw_f63d47fa3ab24298bbe4f596ec2cb349.jpg?v='1732517313170'"/></div>
+<center><img src="images/value-query-expression-example.jpg"/></center>
 
 ```gql
 INSERT (p1:Paper {_id:'P1', title:'Efficient Graph Search', score:6}),
