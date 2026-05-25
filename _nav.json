@@ -1,5 +1,6 @@
 {
   "published": true,
+  "label": "v6.2",
   "products": [
     {
       "id": "gql",
