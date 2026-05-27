@@ -276,6 +276,10 @@
         {
           "file": "list-expressions.md",
           "title": "List Expressions"
+        },
+        {
+          "file": "current-values.md",
+          "title": "Current Values"
         }
       ]
     },

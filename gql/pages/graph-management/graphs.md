@@ -50,6 +50,12 @@ USE GRAPH myGraph
 
 All subsequent queries in the session will run against `myGraph` until another `USE` is issued.
 
+To get the name of the current graph at query time, use the `CURRENT_GRAPH` bare keyword. It returns the graph name as a `STRING`:
+
+```gql
+RETURN CURRENT_GRAPH
+```
+
 ## Creating Graphs
 
 Ultipa supports two kinds of graphs: **Open Graph** and **Closed Graph**. This design offers both flexibility and control, supporting workflows ranging from agile exploration to production-grade applications demanding strict data integrity requirements.

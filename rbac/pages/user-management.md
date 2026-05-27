@@ -27,6 +27,20 @@ Show a specific user:
 SHOW USER alice
 ```
 
+## Identifying the Current User
+
+To get information about the user authenticated for the current session, use the `CURRENT_USER` bare keyword. It returns a record with `username`, `roles`, and `is_admin` fields:
+
+```gql
+RETURN CURRENT_USER
+```
+
+Access individual fields:
+
+```gql
+RETURN CURRENT_USER.username, CURRENT_USER.is_admin
+```
+
 ## Creating Users
 
 User names are unquoted identifiers, they must start with a letter or underscore, and may contain letters, digits, and underscores after the first character. Passwords are string literals (enclosed in single quotes, double quotes, or backticks) and must be 6 to 128 characters.
