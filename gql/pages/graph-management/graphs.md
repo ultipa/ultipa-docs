@@ -166,15 +166,15 @@ You may truncate the entire graph, all nodes or edges, or nodes or edges with a 
 -- Truncate the entire graph
 TRUNCATE GRAPH myGraph
 
--- Truncate all nodes in myGraph, all edges will also be removed
-TRUNCATE NODE * ON myGraph
+-- Truncate all nodes in the current graph
+TRUNCATE NODE *
 
--- Truncate User nodes in myGraph, edges connected to them will also be removed
-TRUNCATE NODE User ON myGraph
+-- Truncate User nodes in the current graph
+TRUNCATE NODE User
 
--- Truncate all edges in myGraph
-TRUNCATE EDGE * ON myGraph
+-- Truncate all edges in the current graph
+TRUNCATE EDGE *
 
--- Truncate Follows edges in myGraph
-TRUNCATE EDGE Follows ON myGraph
+-- Truncate Follows edges in the current graph
+TRUNCATE EDGE Follows
 ```
