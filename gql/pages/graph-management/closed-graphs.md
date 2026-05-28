@@ -268,14 +268,14 @@ Each label provides the following essential metadata:
 
 ## Creating Node/Edge Types
 
-Create new node and edge types in a closed graph using the `CREATE NODE/EDGE [TYPE]` statement:
+Create new node and edge types in the current graph using the `CREATE NODE/EDGE [TYPE]` statement:
 
 ```gql
--- Add node type Book to the current graph
+-- Add node type Book
 CREATE NODE Book ({name STRING, author STRING})
 
--- Add edge type PURCHASED to graph g2
-CREATE EDGE PURCHASED (User)-[{createdOn TIMESTAMP}]->(Book) ON GRAPH g2
+-- Add edge type PURCHASED
+CREATE EDGE PURCHASED (User)-[{createdOn TIMESTAMP}]->(Book)
 
 -- Skip if a node type with the same name already exists
 CREATE NODE IF NOT EXISTS Book ({name STRING, author STRING})
@@ -292,14 +292,14 @@ A node or edge type can only be dropped when it has no dependent objects. Depend
 - Named constraints registered on that type.
 - For node types: any edge type that references it as a source or destination endpoint. Drop such edge types first.
 
-Drop node and edge types from a closed graph using the `DROP NODE/EDGE [TYPE]` statement:
+Drop node and edge types from the current graph using the `DROP NODE/EDGE [TYPE]` statement:
 
 ```gql
--- Drop node type User from the current graph
+-- Drop node type User
 DROP NODE User
 
--- Drop edge type FOLLOWS from graph g2
-DROP EDGE TYPE FOLLOWS ON GRAPH g2
+-- Drop edge type FOLLOWS
+DROP EDGE FOLLOWS
 
 -- Skip if the type does not exist
 DROP NODE IF EXISTS Book
