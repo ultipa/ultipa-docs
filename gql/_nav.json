@@ -121,6 +121,10 @@
         {
           "file": "foreach.md",
           "title": "FOREACH"
+        },
+        {
+          "file": "load-csv.md",
+          "title": "LOAD CSV"
         }
       ]
     },
