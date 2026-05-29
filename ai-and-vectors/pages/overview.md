@@ -41,12 +41,12 @@ Some providers support both embedding and completion, while others support only 
 
 | Function | Description |
 | -- | -- |
-| `ai.setapikey()` | Sets the API key for an AI provider. |
-| `ai.setprovider()` | Sets the active embedding provider. |
+| `ai.set_api_key()` | Sets the API key for an AI provider. |
+| `ai.set_provider()` | Sets the active embedding provider. |
 | `ai.provider()` | Returns the name of the current embedding provider. |
-| `ai.embeddim()` | Returns the embedding dimension of the current provider. |
-| `ai.setCompletionProvider()` | Sets the active completion provider. |
-| `ai.completionProvider()` | Returns the name of the current completion provider. |
+| `ai.embed_dim()` | Returns the embedding dimension of the current provider. |
+| `ai.set_completion_provider()` | Sets the active completion provider. |
+| `ai.completion_provider()` | Returns the name of the current completion provider. |
 
 ### AI Completion
 
@@ -56,8 +56,8 @@ Some providers support both embedding and completion, while others support only 
 | `ai.read()` | Converts natural language to a read-only GQL query and execute it. |
 | `ai.explain()` | Runs the NL-to-GQL pipeline and return the query with a reasoning trace. |
 | `ai.trace()` | Returns the most recent NL-to-GQL pipeline trace. |
-| `ai.aiConfig()` | Returns the current NL-to-GQL pipeline configuration. |
-| `ai.setAIConfig()` | Sets a configuration parameter for the NL-to-GQL pipeline. |
+| `ai.ai_config()` | Returns the current NL-to-GQL pipeline configuration. |
+| `ai.set_ai_config()` | Sets a configuration parameter for the NL-to-GQL pipeline. |
 
 ### Vectors
 

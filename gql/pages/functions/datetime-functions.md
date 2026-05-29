@@ -742,7 +742,7 @@ Result:
 }
 ```
 
-### dateformat()
+### date_format()
 
 Formats a temporal value as a string using a Java SimpleDateFormat-style pattern.
 
@@ -756,7 +756,7 @@ Formats a temporal value as a string using a Java SimpleDateFormat-style pattern
   <tbody>
     <tr>
       <td><b>Syntax</b></td>
-      <td colspan="3"><code>dateformat(&lt;temporal&gt;, &lt;format&gt;)</code></td>
+      <td colspan="3"><code>date_format(&lt;temporal&gt;, &lt;format&gt;)</code></td>
     </tr>
     <tr>
       <td rowspan="3"><b>Arguments</b></td>
@@ -800,9 +800,9 @@ Supported pattern tokens (case-sensitive; the longest match wins):
 | `z` | Time zone abbreviation | `MST` |
 
 ```gql
-RETURN dateformat(date("2025-03-15"), "yyyy-M-d") AS value1,
-       dateformat(local_datetime("2025-03-15T14:30:45"), "yyyy-MM-dd HH:mm:ss") AS value2
-       dateformat(CURRENT_DATE, "'today is' yyyy-MM-dd") AS value3  // single-quote escape
+RETURN date_format(date("2025-03-15"), "yyyy-M-d") AS value1,
+       date_format(local_datetime("2025-03-15T14:30:45"), "yyyy-MM-dd HH:mm:ss") AS value2
+       date_format(CURRENT_DATE, "'today is' yyyy-MM-dd") AS value3  // single-quote escape
 ```
 
 Result:

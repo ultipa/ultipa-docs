@@ -166,7 +166,7 @@ RETURN distance(n1.location, n2.location)
 
 Result: 5570.833653336143
 
-## pointget()
+## point_get()
 
 Extracts a coordinate value from a `POINT` or `POINT3D` value by index.
 
@@ -180,7 +180,7 @@ Extracts a coordinate value from a `POINT` or `POINT3D` value by index.
   <tbody>
     <tr>
       <td><b>Syntax</b></td>
-      <td colspan="3"><code>pointget(&lt;point&gt;, &lt;index&gt;)</code></td>
+      <td colspan="3"><code>point_get(&lt;point&gt;, &lt;index&gt;)</code></td>
     </tr>
     <tr>
       <td rowspan="3"><b>Arguments</b></td>
@@ -207,7 +207,7 @@ Extracts a coordinate value from a `POINT` or `POINT3D` value by index.
 
 ```gql
 MATCH (n {name: "New York"})
-RETURN pointget(n.location, 0) AS longitude, pointget(n.location, 1) AS latitude
+RETURN point_get(n.location, 0) AS longitude, point_get(n.location, 1) AS latitude
 ```
 
 Result:

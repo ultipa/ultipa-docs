@@ -2,6 +2,12 @@
 
 This section contains a summary of all functions supported in GQL.
 
+## Naming Convention
+
+Multi-word function names follow ISO/IEC 39075 `UPPER_SNAKE_CASE` (`to_integer`, `date_add`, `db.node_labels`, ...). Single-word names (`upper`, `cardinality`, `coalesce`, `normalize`, `nullif`, ...) are kept unbroken per the standard; numeric suffixes attach directly (`log10`, `point3d`).
+
+Function lookup is **case-insensitive and underscore-insensitive**. `to_integer`, `TO_INTEGER`, `tointeger`, and `ToInteger` all resolve to the same function. Previous camelCase spellings (`toInteger`, `db.nodeLabels`, ...) and no-separator spellings (`dateformat`, `pointget`, ...) are additionally registered as **deprecated aliases**: they still resolve, but each call emits a per-request warning via `Response.Warnings` on every driver.
+
 ## Showing Functions
 
 To list the functions registered in your running engine, run:
@@ -181,7 +187,7 @@ SHOW FUNCTIONS FORMAT OPENAI
 | <a href="/docs/gql/datetime-functions#minute">minute()</a> | Extracts the minute. |
 | <a href="/docs/gql/datetime-functions#second">second()</a> | Extracts the second. |
 | <a href="/docs/gql/datetime-functions#duration_between">duration_between()</a> | Computes the duration between two temporal values. |
-| <a href="/docs/gql/datetime-functions#dateformat">dateformat()</a> | Formats a temporal value as a string. |
+| <a href="/docs/gql/datetime-functions#date_format">date_format()</a> | Formats a temporal value as a string. |
 
 ## Spatial Functions
 
@@ -190,7 +196,7 @@ SHOW FUNCTIONS FORMAT OPENAI
 | <a href="/docs/gql/spatial-functions/#point">point()</a> | Creates a two-dimensional geographical coordinate. |
 | <a href="/docs/gql/spatial-functions/#point3d">point3d()</a> | Creates a three-dimensional Cartesian coordinate. |
 | <a href="/docs/gql/spatial-functions/#distance">distance()</a> | Computes the distance between two points. |
-| <a href="/docs/gql/spatial-functions/#pointget">pointget()</a> | Extracts a coordinate value from a point by index. |
+| <a href="/docs/gql/spatial-functions/#point_get">point_get()</a> | Extracts a coordinate value from a point by index. |
 
 ## Null Functions
 
@@ -204,7 +210,7 @@ SHOW FUNCTIONS FORMAT OPENAI
 | Function | Description |
 | -- | -- |
 | <a href="/docs/gql/utility-functions#cardinality">cardinality()</a> | Returns the size of a path, list, or record. |
-| <a href="/docs/gql/utility-functions#typeof">typeof()</a> | Returns the type name of a value as a string. |
+| <a href="/docs/gql/utility-functions#type_of">type_of()</a> | Returns the type name of a value as a string. |
 | <a href="/docs/gql/utility-functions#all_different">all_different()</a> | Returns `true` if all arguments are different graph elements. |
 
 ## Type Conversion Functions
@@ -212,12 +218,12 @@ SHOW FUNCTIONS FORMAT OPENAI
 | Function | Description |
 | -- | -- |
 | <a href="/docs/gql/type-conversion-functions#cast">cast()</a> | Converts a value to the specified type. |
-| <a href="/docs/gql/type-conversion-functions#toInteger">toInteger()</a> | Converts a value to an integer. |
-| <a href="/docs/gql/type-conversion-functions#toFloat">toFloat()</a> | Converts a value to a float. |
-| <a href="/docs/gql/type-conversion-functions#toString">toString()</a> | Converts a value to a string. |
-| <a href="/docs/gql/type-conversion-functions#toBoolean">toBoolean()</a> | Converts a value to a boolean. |
-| <a href="/docs/gql/type-conversion-functions#toList">toList()</a> | Converts a value to a list. |
-| <a href="/docs/gql/type-conversion-functions#toMap">toMap()</a> | Creates a record from key-value pairs. |
+| <a href="/docs/gql/type-conversion-functions#to_integer">to_integer()</a> | Converts a value to an integer. |
+| <a href="/docs/gql/type-conversion-functions#to_float">to_float()</a> | Converts a value to a float. |
+| <a href="/docs/gql/type-conversion-functions#to_string">to_string()</a> | Converts a value to a string. |
+| <a href="/docs/gql/type-conversion-functions#to_boolean">to_boolean()</a> | Converts a value to a boolean. |
+| <a href="/docs/gql/type-conversion-functions#to_list">to_list()</a> | Converts a value to a list. |
+| <a href="/docs/gql/type-conversion-functions#to_map">to_map()</a> | Creates a record from key-value pairs. |
 
 ## Table Functions
 
@@ -234,10 +240,10 @@ SHOW FUNCTIONS FORMAT OPENAI
 | <a href="/docs/gql/database-functions#dbplugins">db.plugins()</a> | Returns loaded plugins. |
 | <a href="/docs/gql/database-functions#dbstats">db.stats()</a> | Returns statistics of the current graph. |
 | <a href="/docs/gql/database-functions#dboverview">db.overview()</a> | Returns the current graph overview with label counts and edge patterns. |
-| <a href="/docs/gql/database-functions#dbnodelabels">db.nodeLabels()</a> | Returns all node labels in the current graph. |
-| <a href="/docs/gql/database-functions#dbedgelabels">db.edgeLabels()</a> | Returns all edge labels in the current graph. |
-| <a href="/docs/gql/database-functions#dblabelproperty">db.labelProperty()</a> | Returns properties defined for each label in the current graph. |
-| <a href="/docs/gql/database-functions#dbreloadstats">db.reloadStats()</a> | Rebuilds statistics from storage for the current graph. |
+| <a href="/docs/gql/database-functions#dbnode_labels">db.node_labels()</a> | Returns all node labels in the current graph. |
+| <a href="/docs/gql/database-functions#dbedge_labels">db.edge_labels()</a> | Returns all edge labels in the current graph. |
+| <a href="/docs/gql/database-functions#dblabel_property">db.label_property()</a> | Returns properties defined for each label in the current graph. |
+| <a href="/docs/gql/database-functions#dbreload_stats">db.reload_stats()</a> | Rebuilds statistics from storage for the current graph. |
 | <a href="/docs/gql/backup-and-restore#dbbackup">db.backup()</a> | Creates a backup of the current graph. |
 | <a href="/docs/gql/backup-and-restore#dbrestore">db.restore()</a> | Restores a graph from a backup file. |
 | <a href="/docs/gql/backup-and-restore#dbbackups">db.backups()</a> | Lists backup files found in a directory. |

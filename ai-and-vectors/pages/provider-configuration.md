@@ -2,7 +2,7 @@
 
 Configure AI providers for embedding generation and completion. Use `SHOW AI PROVIDERS` to see all available providers and their current status.
 
-## ai.setapikey()
+## ai.set_api_key()
 
 Sets the API key for an AI provider. Optionally activates it as the current provider.
 
@@ -16,7 +16,7 @@ Sets the API key for an AI provider. Optionally activates it as the current prov
   <tbody>
     <tr>
       <td><b>Syntax</b></td>
-      <td colspan="3"><code>ai.setapikey(&lt;provider&gt;, &lt;apiKey&gt; [, &lt;activate&gt;])</code></td>
+      <td colspan="3"><code>ai.set_api_key(&lt;provider&gt;, &lt;apiKey&gt; [, &lt;activate&gt;])</code></td>
     </tr>
     <tr>
       <td rowspan="4"><b>Arguments</b></td>
@@ -46,23 +46,23 @@ Sets the API key for an AI provider. Optionally activates it as the current prov
   </tbody>
 </table>
 
-By default, calling `ai.setapikey()` both sets the key and activates the provider:
+By default, calling `ai.set_api_key()` both sets the key and activates the provider:
 
 ```gql
-RETURN ai.setapikey("openai", "sk-...")
+RETURN ai.set_api_key("openai", "sk-...")
 ```
 
-Each provider stores one API key. Calling `ai.setapikey()` again for the same provider overwrites the previous key. To set keys for multiple providers without activating them, pass `false` as the third argument, then use `ai.setprovider()` to switch:
+Each provider stores one API key. Calling `ai.set_api_key()` again for the same provider overwrites the previous key. To set keys for multiple providers without activating them, pass `false` as the third argument, then use `ai.set_provider()` to switch:
 
 ```gql
-RETURN ai.setapikey("gemini", "AQ.za...", false)
+RETURN ai.set_api_key("gemini", "AQ.za...", false)
 ```
 
 ## Embedding Provider
 
-### ai.setprovider()
+### ai.set_provider()
 
-Sets the active embedding provider. The provider's API key must have been set first via `ai.setapikey()`.
+Sets the active embedding provider. The provider's API key must have been set first via `ai.set_api_key()`.
 
 <table style="width: 100%;">
   <colgroup>
@@ -74,7 +74,7 @@ Sets the active embedding provider. The provider's API key must have been set fi
   <tbody>
     <tr>
       <td><b>Syntax</b></td>
-      <td colspan="3"><code>ai.setprovider(&lt;provider&gt;)</code></td>
+      <td colspan="3"><code>ai.set_provider(&lt;provider&gt;)</code></td>
     </tr>
     <tr>
       <td rowspan="2"><b>Arguments</b></td>
@@ -95,7 +95,7 @@ Sets the active embedding provider. The provider's API key must have been set fi
 </table>
 
 ```gql
-RETURN ai.setprovider("openai")
+RETURN ai.set_provider("openai")
 ```
 
 ### ai.provider()
@@ -129,7 +129,7 @@ Returns the name of the current embedding provider.
 RETURN ai.provider()
 ```
 
-### ai.embeddim()
+### ai.embed_dim()
 
 Returns the embedding dimension of the current provider. Returns `null` if no embedding provider is active or the provider doesn't support embedding.
 
@@ -143,7 +143,7 @@ Returns the embedding dimension of the current provider. Returns `null` if no em
   <tbody>
     <tr>
       <td><b>Syntax</b></td>
-      <td colspan="3"><code>ai.embeddim()</code></td>
+      <td colspan="3"><code>ai.embed_dim()</code></td>
     </tr>
     <tr>
       <td><b>Arguments</b></td>
@@ -157,14 +157,14 @@ Returns the embedding dimension of the current provider. Returns `null` if no em
 </table>
 
 ```gql
-RETURN ai.embeddim()
+RETURN ai.embed_dim()
 ```
 
 ## Completion Provider
 
-### ai.setCompletionProvider()
+### ai.set_completion_provider()
 
-Sets the active completion provider. The provider's API key must have been set first via `ai.setapikey()`.
+Sets the active completion provider. The provider's API key must have been set first via `ai.set_api_key()`.
 
 <table style="width: 100%;">
   <colgroup>
@@ -176,7 +176,7 @@ Sets the active completion provider. The provider's API key must have been set f
   <tbody>
     <tr>
       <td><b>Syntax</b></td>
-      <td colspan="3"><code>ai.setCompletionProvider(&lt;provider&gt;)</code></td>
+      <td colspan="3"><code>ai.set_completion_provider(&lt;provider&gt;)</code></td>
     </tr>
     <tr>
       <td rowspan="2"><b>Arguments</b></td>
@@ -197,10 +197,10 @@ Sets the active completion provider. The provider's API key must have been set f
 </table>
 
 ```gql
-RETURN ai.setCompletionProvider("anthropic")
+RETURN ai.set_completion_provider("anthropic")
 ```
 
-### ai.completionProvider()
+### ai.completion_provider()
 
 Returns the name of the current completion provider.
 
@@ -214,7 +214,7 @@ Returns the name of the current completion provider.
   <tbody>
     <tr>
       <td><b>Syntax</b></td>
-      <td colspan="3"><code>ai.completionProvider()</code></td>
+      <td colspan="3"><code>ai.completion_provider()</code></td>
     </tr>
     <tr>
       <td><b>Arguments</b></td>
@@ -228,5 +228,5 @@ Returns the name of the current completion provider.
 </table>
 
 ```gql
-RETURN ai.completionProvider()
+RETURN ai.completion_provider()
 ```

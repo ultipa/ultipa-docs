@@ -1,6 +1,6 @@
 # AI Completion
 
-AI completion functions use a large language model to generate or execute GQL queries from natural language. Use `ai.setCompletionProvider()` to set the active completion AI provider.
+AI completion functions use a large language model to generate or execute GQL queries from natural language. Use `ai.set_completion_provider()` to set the active completion AI provider.
 
 ## Example Graph
 
@@ -230,7 +230,7 @@ RETURN ai.trace()
 
 ## Pipeline Configuration
 
-### ai.aiConfig()
+### ai.ai_config()
 
 Returns the current NL-to-GQL pipeline configuration.
 
@@ -244,7 +244,7 @@ Returns the current NL-to-GQL pipeline configuration.
   <tbody>
     <tr>
       <td><b>Syntax</b></td>
-      <td colspan="3"><code>ai.aiConfig()</code></td>
+      <td colspan="3"><code>ai.ai_config()</code></td>
     </tr>
     <tr>
       <td><b>Arguments</b></td>
@@ -258,7 +258,7 @@ Returns the current NL-to-GQL pipeline configuration.
 </table>
 
 ```gql
-RETURN ai.aiConfig()
+RETURN ai.ai_config()
 ```
 
 Result:
@@ -276,7 +276,7 @@ Result:
 }
 ```
 
-### ai.setAIConfig()
+### ai.set_ai_config()
 
 Sets a configuration parameter for the NL-to-GQL pipeline.
 
@@ -290,7 +290,7 @@ Sets a configuration parameter for the NL-to-GQL pipeline.
   <tbody>
     <tr>
       <td><b>Syntax</b></td>
-      <td colspan="3"><code>ai.setAIConfig(&lt;key&gt;, &lt;value&gt;)</code></td>
+      <td colspan="3"><code>ai.set_ai_config(&lt;key&gt;, &lt;value&gt;)</code></td>
     </tr>
     <tr>
       <td rowspan="3"><b>Arguments</b></td>
@@ -329,5 +329,5 @@ Available configuration keys:
 | `pipeline` | `STRING` | Pipeline mode to use |
 
 ```gql
-RETURN ai.setAIConfig("max_refinements", 3)
+RETURN ai.set_ai_config("max_refinements", 3)
 ```

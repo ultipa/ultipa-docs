@@ -1,6 +1,6 @@
 # Vectors
 
-Create and manage vector embeddings for semantic search, recommendations, and AI-powered graph queries. Use `ai.setprovider()` to set the active embedding AI provider.
+Create and manage vector embeddings for semantic search, recommendations, and AI-powered graph queries. Use `ai.set_provider()` to set the active embedding AI provider.
 
 ## What are Vectors?
 
@@ -134,7 +134,7 @@ Generates an embedding vector from text using the configured AI provider.
   </tbody>
 </table>
 
-An AI provider must be configured with `ai.setapikey()` before using this function.
+An AI provider must be configured with `ai.set_api_key()` before using this function.
 
 ```gql
 LET embedding = ai.embed("Introduction to graph databases")

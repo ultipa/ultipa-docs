@@ -60,7 +60,7 @@ RETURN cardinality({x: 1, y: 3, z: 34})
 
 Result: 3
 
-## typeof()
+## type_of()
 
 Returns the type name of a value as a string.
 
@@ -68,7 +68,7 @@ Returns the type name of a value as a string.
   <tbody>
     <tr>
       <td><b>Syntax</b></td>
-      <td colspan="3"><code>typeof(&lt;expr&gt;)</code></td>
+      <td colspan="3"><code>type_of(&lt;expr&gt;)</code></td>
     </tr>
     <tr>
       <td rowspan="2"><b>Arguments</b></td>
@@ -90,22 +90,22 @@ Returns the type name of a value as a string.
 
 ```gql
 MATCH (n:Paper) LIMIT 1
-RETURN typeof(n.author)
+RETURN type_of(n.author)
 ```
 
 Result: 
 
-| typeof |
+| type_of |
 | -- | 
 | STRING |
 
 ```gql
-RETURN typeof(42), typeof("hello"), typeof([1,2,3])
+RETURN type_of(42), type_of("hello"), type_of([1,2,3])
 ```
 
 Result: 
 
-| typeof | typeof | typeof |
+| type_of | type_of | type_of |
 | -- | -- | -- |
 | INTEGER | STRING | LIST<INTEGER> |
 

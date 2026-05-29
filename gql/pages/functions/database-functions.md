@@ -68,38 +68,38 @@ The returned record contains:
 | `labelCounts` | `LIST` | List of `{label, count, type}` records for each node/edge label |
 | `edgePatterns` | `LIST` | List of `{fromLabel, edgeLabel, toLabel, edgeCount}` records describing connection patterns |
 
-## db.nodeLabels()
+## db.node_labels()
 
 Returns all node labels in the current graph.
 
 ```gql
-RETURN db.nodeLabels()
+RETURN db.node_labels()
 ```
 
-## db.edgeLabels()
+## db.edge_labels()
 
 Returns all edge labels in the current graph.
 
 ```gql
-RETURN db.edgeLabels()
+RETURN db.edge_labels()
 ```
 
-## db.labelProperty()
+## db.label_property()
 
 Returns the properties defined for each label in the current graph. For closed graphs, returns schema-defined properties. For open graphs, discovers properties by scanning data.
 
 ```gql
-RETURN db.labelProperty()
+RETURN db.label_property()
 ```
 
 The returned record maps each label name to a `{type, properties}` record, where `type` is `"node"` or `"edge"` and `properties` is a list of property names.
 
-## db.reloadStats()
+## db.reload_stats()
 
-Rebuilds statistics from storage for the current graph.
+Rebuilds statistics from storage for the current graph. Also registered under the aliases `db.rebuild_stats()` and `db.repair_stats()`.
 
 ```gql
-RETURN db.reloadStats()
+RETURN db.reload_stats()
 ```
 
 ## Backup and Restore Functions
