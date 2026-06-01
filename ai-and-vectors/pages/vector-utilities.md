@@ -39,15 +39,14 @@ Returns the number of dimensions in a vector.
 </table>
 
 ```gql
-LET v = ai.vector([3.0, 4.0])
-RETURN ai.dimension(v)
+RETURN ai.dimension(ai.vector([3.0, 4.0]))
 ```
 
 Result: 2
 
 ### ai.magnitude()
 
-Returns the magnitude (L2 norm) of a vector.
+Returns the magnitude (L2 norm) of a vector. `ai.norm()` is a synonym.
 
 <table style="width: 100%;">
   <colgroup>
@@ -80,8 +79,7 @@ Returns the magnitude (L2 norm) of a vector.
 </table>
 
 ```gql
-LET v = ai.vector([3.0, 4.0])
-RETURN ai.magnitude(v)
+RETURN ai.magnitude(ai.vector([3.0, 4.0]))
 ```
 
 Result: 5
@@ -121,8 +119,7 @@ Normalizes a vector to a unit vector (magnitude of 1).
 </table>
 
 ```gql
-LET v = ai.vector([3.0, 4.0])
-RETURN ai.normalize(v)
+RETURN ai.normalize(ai.vector([3.0, 4.0]))
 ```
 
 Result:
@@ -171,8 +168,7 @@ Converts a vector to a list of numbers.
 </table>
 
 ```gql
-LET embedding = ai.embed("Introduction to graph databases")
-RETURN ai.toList(embedding)
+RETURN ai.toList(ai.embed("Introduction to graph databases"))
 ```
 
 Result: [-0.0258026123046875, -0.0126800537109375, …, 0.0162200927734375, -0.017486572265625]
@@ -219,9 +215,7 @@ Adds two vectors element-wise.
 </table>
 
 ```gql
-LET v1 = ai.vector([1.0, 2.0])
-LET v2 = ai.vector([3.0, 4.0])
-RETURN ai.toList(ai.add(v1, v2))
+RETURN ai.toList(ai.add(ai.vector([1.0, 2.0]), ai.vector([3.0, 4.0])))
 ```
 
 Result: [4, 6]
@@ -266,9 +260,7 @@ Subtracts the second vector from the first element-wise.
 </table>
 
 ```gql
-LET v1 = ai.vector([5.0, 3.0])
-LET v2 = ai.vector([1.0, 2.0])
-RETURN ai.toList(ai.subtract(v1, v2))
+RETURN ai.toList(ai.subtract(ai.vector([5.0, 3.0]), ai.vector([1.0, 2.0])))
 ```
 
 Result: [4, 1]
@@ -313,8 +305,7 @@ Multiplies a vector by a scalar value.
 </table>
 
 ```gql
-LET v = ai.vector([1.0, 2.0, 3.0])
-RETURN ai.toList(ai.scale(v, 2))
+RETURN ai.toList(ai.scale(ai.vector([1.0, 2.0, 3.0]), 2))
 ```
 
 Result: [2, 4, 6]

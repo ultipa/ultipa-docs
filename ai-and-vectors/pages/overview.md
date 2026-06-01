@@ -55,7 +55,7 @@ Some providers support both embedding and completion, while others support only 
 | <a href="/docs/ai-and-vectors/ai-completion#ai-gql">ai.gql()</a> | Streaming procedure. Converts natural language to a GQL query. |
 | <a href="/docs/ai-and-vectors/ai-completion#ai-explain">ai.explain()</a> | Runs the NL-to-GQL pipeline and returns the generated query with a full reasoning trace (schema, generation steps, tool calls, validation, token usage). Does not execute. |
 | <a href="/docs/ai-and-vectors/ai-completion#ai-trace">ai.trace()</a> | Returns the most recent NL-to-GQL pipeline trace, or `NULL` if none. |
-| <a href="/docs/ai-and-vectors/ai-completion#ai-traces">ai.traces([n])</a> | Returns the most recent `n` traces (newest first). |
+| <a href="/docs/ai-and-vectors/ai-completion#ai-traces">ai.traces()</a> | Returns the most recent `n` traces (newest first). |
 | <a href="/docs/ai-and-vectors/ai-completion#ai-rate">ai.rate()</a> | Attaches a 1–5 rating and optional comment to the most recent trace. Ratings of 1 or 2 also purge the `(NL, GQL)` pair from per-graph query memory. |
 | <a href="/docs/ai-and-vectors/ai-completion#ai-save_skill">ai.save_skill()</a> | Saves a named NL template. Passing an empty NL deletes the skill. |
 | <a href="/docs/ai-and-vectors/ai-completion#ai-list_skills">ai.list_skills()</a> | Lists every saved skill as records. |
@@ -77,9 +77,12 @@ Some providers support both embedding and completion, while others support only 
 | Function | Description |
 | -- | -- |
 | <a href="/docs/ai-and-vectors/vector-similarity-search#ai-cosine">ai.cosine()</a> | Computes cosine similarity between two vectors. |
-| <a href="/docs/ai-and-vectors/vector-similarity-search#ai-euclidean">ai.euclidean()</a> | Computes Euclidean distance between two vectors. |
+| <a href="/docs/ai-and-vectors/vector-similarity-search#ai-euclidean">ai.euclidean()</a> | Computes Euclidean (L2) distance between two vectors. |
+| <a href="/docs/ai-and-vectors/vector-similarity-search#ai-euclidean_squared">ai.euclidean_squared()</a> | Computes squared Euclidean distance — same ordering as Euclidean but skips the final `sqrt`, faster for nearest-neighbor ranking. |
 | <a href="/docs/ai-and-vectors/vector-similarity-search#ai-dot">ai.dot()</a> | Computes dot product of two vectors. |
 | <a href="/docs/ai-and-vectors/vector-similarity-search#ai-distance">ai.distance()</a> | Computes cosine distance (1 - cosine similarity). |
+| <a href="/docs/ai-and-vectors/vector-similarity-search#ai-manhattan">ai.manhattan()</a> | Computes Manhattan (L1) distance between two vectors. |
+| <a href="/docs/ai-and-vectors/vector-similarity-search#ai-hamming">ai.hamming()</a> | Computes Hamming distance — count of coordinates that differ between two vectors. |
 
 ### Vector Utilities
 

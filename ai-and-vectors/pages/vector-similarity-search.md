@@ -44,16 +44,14 @@ Computes cosine similarity between two vectors. Returns a value between -1 and 1
 </table>
 
 ```gql
-LET v1 = ai.vector([1.0, 0.0, 0.0])
-LET v2 = ai.vector([1.0, 1.0, 0.0])
-RETURN ai.cosine(v1, v2)
+RETURN ai.cosine(ai.vector([1.0, 0.0, 0.0]), ai.vector([1.0, 1.0, 0.0]))
 ```
 
 Result: 0.7071067690849304
 
 ### ai.euclidean()
 
-Computes Euclidean distance between two vectors. Lower values indicate more similarity.
+Computes Euclidean (L2) distance between two vectors. Lower values indicate more similarity. `ai.l2()` is a synonym.
 
 <table style="width: 100%;">
   <colgroup>
@@ -91,12 +89,55 @@ Computes Euclidean distance between two vectors. Lower values indicate more simi
 </table>
 
 ```gql
-LET v1 = ai.vector([1.0, 0.0])
-LET v2 = ai.vector([0.0, 1.0])
-RETURN ai.euclidean(v1, v2)
+RETURN ai.euclidean(ai.vector([1.0, 0.0]), ai.vector([0.0, 1.0]))
 ```
 
 Result: 1.4142135381698608
+
+### ai.euclidean_squared()
+
+Computes the squared Euclidean distance between two vectors — sum of `(Ai − Bi)²` with no final square root. Produces the same ordering as `ai.euclidean()` but is cheaper to compute, so it's preferred when you only need to rank nearest neighbors and don't care about the absolute distance value.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>ai.euclidean_squared(&lt;vector1&gt;, &lt;vector2&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="3"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;vector1&gt;</code></td>
+      <td><code>VECTOR</code></td>
+      <td>The first vector</td>
+    </tr>
+    <tr>
+      <td><code>&lt;vector2&gt;</code></td>
+      <td><code>VECTOR</code></td>
+      <td>The second vector; must have the same dimension as <code>&lt;vector1&gt;</code></td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>FLOAT</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN ai.euclidean_squared(ai.vector([0.0, 0.0]), ai.vector([3.0, 4.0]))
+```
+
+Result: 25
 
 ### ai.dot()
 
@@ -138,9 +179,7 @@ Computes the dot product of two vectors.
 </table>
 
 ```gql
-LET v1 = ai.vector([1.0, 2.0, 3.0])
-LET v2 = ai.vector([4.0, 5.0, 6.0])
-RETURN ai.dot(v1, v2)
+RETURN ai.dot(ai.vector([1.0, 2.0, 3.0]), ai.vector([4.0, 5.0, 6.0]))
 ```
 
 Result: 32
@@ -185,12 +224,100 @@ Computes the cosine distance between two vectors (1 - cosine similarity). Lower 
 </table>
 
 ```gql
-LET v1 = ai.vector([1.0, 0.0, 0.0])
-LET v2 = ai.vector([1.0, 1.0, 0.0])
-RETURN ai.distance(v1, v2)
+RETURN ai.distance(ai.vector([1.0, 0.0, 0.0]), ai.vector([1.0, 1.0, 0.0]))
 ```
 
 Result: 0.2928932309150696
+
+### ai.manhattan()
+
+Computes the Manhattan (L1) distance between two vectors — sum of `|Ai − Bi|`. Lower values indicate more similarity.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>ai.manhattan(&lt;vector1&gt;, &lt;vector2&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="3"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;vector1&gt;</code></td>
+      <td><code>VECTOR</code></td>
+      <td>The first vector</td>
+    </tr>
+    <tr>
+      <td><code>&lt;vector2&gt;</code></td>
+      <td><code>VECTOR</code></td>
+      <td>The second vector; must have the same dimension as <code>&lt;vector1&gt;</code></td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>FLOAT</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN ai.manhattan(ai.vector([0.0, 0.0]), ai.vector([3.0, 4.0]))
+```
+
+Result: 7
+
+### ai.hamming()
+
+Computes the Hamming distance between two vectors — count of coordinates that differ.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>ai.hamming(&lt;vector1&gt;, &lt;vector2&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="3"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;vector1&gt;</code></td>
+      <td><code>VECTOR</code></td>
+      <td>The first vector</td>
+    </tr>
+    <tr>
+      <td><code>&lt;vector2&gt;</code></td>
+      <td><code>VECTOR</code></td>
+      <td>The second vector; must have the same dimension as <code>&lt;vector1&gt;</code></td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>FLOAT</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN ai.hamming(ai.vector([1.0, 2.0, 3.0]), ai.vector([1.0, 9.0, 3.0]))
+```
+
+Result: 1
 
 ## Vector Index Search
 
