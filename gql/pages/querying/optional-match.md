@@ -178,6 +178,6 @@ Result:
 
 | name | u.name | c.\_id |
 | -- | -- | -- |
-| rowlock | `null` | `null` |
+| rowlock | rowlock | `null` |
 | Masterpiece1989 | `null` | `null` |
 | Brainy | Brainy | C01 |
