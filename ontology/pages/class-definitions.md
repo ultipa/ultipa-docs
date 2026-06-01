@@ -112,7 +112,7 @@ CREATE CLASS @ex:Cat
 CREATE CLASS @ex:Dog DISJOINT WITH @ex:Cat
 ```
 
-By default, ontology violations are logged as warnings but the operation proceeds (mode `WARNING`). Switch to `STRICT` to make violations fail with an error:
+By default, ontology violations are logged as warnings but the operation proceeds (`WARNING` mode). Switch to `STRICT` to make violations fail with an error:
 
 ```gql
 SET ONTOLOGY ENFORCEMENT STRICT
@@ -121,7 +121,7 @@ SET ONTOLOGY ENFORCEMENT STRICT
 Now the following insert fails — a node cannot be both `@ex:Cat` and `@ex:Dog`:
 
 ```gql
-// Error: DISJOINT WITH violation
+-- Error: DISJOINT WITH violation
 INSERT (@ex:Cat&@ex:Dog {name: 'Mystery'})
 ```
 
@@ -138,6 +138,40 @@ CREATE CLASS @ex:Fish DISJOINT WITH @ex:Mammal, @ex:Bird
 ```gql
 CREATE CLASS @ex:Contractor
 CREATE CLASS @ex:Intern SUBCLASS OF @ex:Person DISJOINT WITH @ex:Contractor
+```
+
+### EQUIVALENT TO
+
+A **defined class** declares membership by an `EQUIVALENT TO` axiom instead of an explicit label. Members are **inferred at query time** from a property restriction — the database classifies entities automatically, with no labeling and no materialization.
+
+```gql
+-- A SciFiAuteur is any Person who directed at least one science-fiction film
+CREATE CLASS @ex:Film
+CREATE CLASS @ex:ScienceFictionFilm SUBCLASS OF @ex:Film
+CREATE OBJECT PROPERTY @ex:directed
+CREATE CLASS @ex:SciFiAuteur EQUIVALENT TO @ex:Person AND (@ex:directed SOME @ex:ScienceFictionFilm)
+
+-- Bare form
+-- A Director is anything (any node) that directed only film
+CREATE CLASS @ex:Director EQUIVALENT TO (@ex:directed SOME @ex:Film)
+```
+
+**Notes:** Subclass closure flows through the filler: a director of a `@ex:CyberpunkFilm` (which is a subclass of `@ex:ScienceFictionFilm`) is still classified as `@ex:SciFiAuteur`.
+
+Supported restriction operators:
+
+| Operator | OWL equivalent | Meaning |
+| -- | -- | -- |
+| `SOME` | `owl:someValuesFrom` | At least one value of the property is in the filler class. |
+| `ONLY` | `owl:allValuesFrom` | Every value of the property is in the filler class (vacuously true when there are no such edges). |
+
+```gql
+-- A vegetarian restaurant is one whose menu, if it has one, is entirely vegetarian
+CREATE CLASS @ex:Dish
+CREATE CLASS @ex:VegetarianDish SUBCLASS OF @ex:Dish
+CREATE CLASS @ex:Restaurant
+CREATE OBJECT PROPERTY @ex:serves DOMAIN @ex:Restaurant RANGE @ex:Dish
+CREATE CLASS @ex:VegetarianRestaurant EQUIVALENT TO @ex:Restaurant AND (@ex:serves ONLY @ex:VegetarianDish)
 ```
 
 ## Showing Classes

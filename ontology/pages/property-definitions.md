@@ -29,19 +29,35 @@ Object properties define **edge types**.
 
 ```
 <create object property statement> ::=
-  "CREATE OBJECT PROPERTY" <object property name> 
-  [ "DOMAIN" <source class> [ "RANGE" <target class> ] ]
-  [ <property characteristics> | <inverse properties> | <cardinality constraints> ] 
+  "CREATE OBJECT PROPERTY" <object property name> [ <object property body> ]
 
-<property characteristics> ::= 
-    "SYMMETRIC" | "TRANSITIVE" | "FUNCTIONAL"  
-  | "SYMMETRIC TRANSITIVE" | "FUNCTIONAL SYMMETRIC" | "FUNCTIONAL TRANSITIVE"
+<object property body> ::=
+  <structural clause> | <subproperty clause> | <property chain clause>
 
-<inverse properties> ::=
-    "INVERSE OF" <object property> ["TRANSITIVE" ]
-  | "TRANSITIVE" "INVERSE OF" <object property>
+<structural clause> ::=
+  [ "DOMAIN" <source class> ] [ "RANGE" <target class> ]
+  [ <property characteristics and inverse> | <cardinality constraint> ] 
 
-<cardinality constraints> ::= "CARDINALITY" "{" <min> "," <max> "}"
+<property characteristics and inverse> ::=
+    <property characteristics> [ "INVERSE OF" <object property name> ]
+  | "INVERSE OF" <object property name> [ <property characteristics> ]
+
+<property characteristics> ::= <property characteristic> { <property characteristic> }
+
+<property characteristic> ::= "SYMMETRIC" | "TRANSITIVE" | "FUNCTIONAL"  
+
+<cardinality constraint> ::=
+    "CARDINALITY" "{" <min> "," <max> "}"    -- both bounds explicit
+  | "CARDINALITY" "{" <min> "," "*"   "}"    -- min only, unbounded max
+  | "CARDINALITY" "{" <min> ","       "}"    -- min only, unbounded max
+  | "CARDINALITY" "{"       "," <max> "}"    -- max only, min defaults to 0
+  | "CARDINALITY" <n>                        -- exact, equivalent to {n,n}
+
+<subproperty clause> ::=
+  "SUBPROPERTY OF" <object property name> { "," <object property name> }
+
+<property chain clause> ::=
+  "PROPERTY CHAIN" <object property name> "," <object property name> { "," <object property name> }
 ```
 
 The minimal form just registers the property identity:
@@ -150,7 +166,16 @@ MATCH (jeff@ex:Person {name: 'Jeff'})
 INSERT (jeff)-[@ex:hasBirthPlace]->(@ex:Location {name: 'Chicago'})
 ```
 
-### Inverse Properties
+#### Combining Characteristics
+
+A property can carry any non-empty subset of `SYMMETRIC`, `TRANSITIVE`, and `FUNCTIONAL` in **any order**.
+
+```gql
+-- owl:equivalentClass needs both SYMMETRIC and TRANSITIVE
+CREATE OBJECT PROPERTY @ex:equivalentTo SYMMETRIC TRANSITIVE
+```
+
+### INVERSE OF
 
 Define inverse relationships. When you create one edge, the inverse is automatically inferred.
 
@@ -167,42 +192,148 @@ MATCH p = (org)-[@ex:employs]->(person)
 RETURN p  // Acme Inc -> Emily
 ```
 
-### Cardinality Constraints
+### SUBPROPERTY OF
 
-Use `CARDINALITY {min, max}` to limit how many outgoing edges of a property a source node may have. `*` denotes "unbounded". Cardinality is enforced for object properties at insert time.
+`SUBPROPERTY OF` (RDFS `subPropertyOf`) declares that one property is a specialization of another. A `MATCH` on the super-property also returns edges typed with any of its sub-properties — computed at query time, never materialized onto the edges.
 
 ```gql
-// Exactly one: every country has exactly one capital
+-- A general "contributedTo" with three specific roles beneath it
+CREATE OBJECT PROPERTY @ex:contributedTo
+CREATE OBJECT PROPERTY @ex:directed   SUBPROPERTY OF @ex:contributedTo
+CREATE OBJECT PROPERTY @ex:wrote      SUBPROPERTY OF @ex:contributedTo
+CREATE OBJECT PROPERTY @ex:starredIn  SUBPROPERTY OF @ex:contributedTo
+
+-- Insert three Persons, one Film, and one edge per role
+INSERT (lana:@ex:Person {name: 'Lana'}),
+       (zak:@ex:Person {name: 'Zak'}),
+       (keanu:@ex:Person {name: 'Keanu'}),
+       (matrix:@ex:Film {name: 'The Matrix'}),
+       (lana)-[@ex:directed]->(matrix),
+       (zak)-[@ex:wrote]->(matrix),
+       (keanu)-[@ex:starredIn]->(matrix)
+
+-- One MATCH on the super-property surfaces every role
+MATCH (p)-[@ex:contributedTo]->(f@ex:Film {name: 'The Matrix'})
+RETURN p.name        // Lana, Zak, Keanu
+```
+
+Multi-level chains work too — `@ex:coWrote ⊆ @ex:wrote ⊆ @ex:contributedTo` rolls up through all ancestors.
+
+```gql
+CREATE OBJECT PROPERTY @ex:coWrote SUBPROPERTY OF @ex:wrote
+
+-- Lana and Zak co-wrote a sequel
+INSERT (@ex:Film {name: 'The Matrix Reloaded'})
+
+MATCH (lana@ex:Person {name: 'Lana'}),
+      (zak@ex:Person {name: 'Zak'}),
+      (reloaded@ex:Film {name: 'The Matrix Reloaded'})
+INSERT (lana)-[@ex:coWrote]->(reloaded),
+       (zak)-[@ex:coWrote]->(reloaded)
+
+-- The one coWrote edge rolls up through both wrote and contributedTo
+MATCH (p)-[@ex:coWrote]->(f@ex:Film {name: 'The Matrix Reloaded'}) 
+RETURN p.name  // Lana, Zak
+
+MATCH (p)-[@ex:wrote]->(f@ex:Film {name: 'The Matrix Reloaded'}) 
+RETURN p.name  // Lana, Zak (via coWrote)
+
+MATCH (p)-[@ex:contributedTo]->(f@ex:Film {name: 'The Matrix Reloaded'}) 
+RETURN p.name  // Lana, Zak (via wrote → contributedTo)
+```
+
+Multiple super-properties can be specified as a comma-separated list. A `@ex:wroteAndStarredIn` edge surfaces under both `@ex:wrote` and `@ex:starredIn` queries (and through `@ex:contributedTo` since both parents roll up to it):
+
+```gql
+CREATE OBJECT PROPERTY @ex:wroteAndStarredIn SUBPROPERTY OF @ex:wrote, @ex:starredIn
+
+-- Keanu both wrote and starred in this hypothetical film
+MATCH (keanu@ex:Person {name: 'Keanu'})
+INSERT (keanu)-[@ex:wroteAndStarredIn]->(:@ex:Film {name: 'Side Project'})
+
+-- MATCH on either parent surfaces the edge
+MATCH (p)-[@ex:wrote]->(f)
+RETURN f.name   // includes Side Project
+
+MATCH (p)-[@ex:starredIn]->(f)
+RETURN f.name   // includes Side Project
+
+MATCH (p)-[@ex:contributedTo]->(f) 
+RETURN f.name   // also includes Side Project (transitive rollup)
+```
+
+### PROPERTY CHAIN
+
+`PROPERTY CHAIN` (OWL `propertyChainAxiom`) declares that a property is implied by walking an ordered sequence of other properties. The derived property stores no edges of its own; a `MATCH` on it computes the endpoints at query time by walking the chain.
+
+A classic example is **kinship**: a grandparent is your parent's parent. Declare two `hasParent` hops as a single derived `hasGrandparent` property:
+
+```gql
+CREATE OBJECT PROPERTY @ex:hasParent DOMAIN @ex:Person RANGE @ex:Person
+CREATE OBJECT PROPERTY @ex:hasGrandparent PROPERTY CHAIN @ex:hasParent, @ex:hasParent
+
+-- Three-generation family: (alice)-[hasParent]->(bob)-[hasParent]->(carol)
+INSERT (alice@ex:Person {name: 'Alice'}),
+       (bob@ex:Person {name: 'Bob'}),
+       (carol@ex:Person {name: 'Carol'}),
+       (alice)-[@ex:hasParent]->(bob),
+       (bob)-[@ex:hasParent]->(carol)
+
+-- Match Alice's grandparent
+MATCH (a@ex:Person {name: 'Alice'})-[@ex:hasGrandparent]->(g)
+RETURN g.name   // Carol
+```
+
+Chain depth is bounded by `SET ONTOLOGY TRANSITIVE DEPTH n` (default 10), the same setting that bounds plain `TRANSITIVE` properties.
+
+### Cardinality Constraint
+
+Use `CARDINALITY` to limit how many outgoing edges of a property a source node may have. Cardinality is enforced for object properties at insert time.
+
+```gql
+-- Exactly one: every country has exactly one capital
+-- CARDINALITY 1 is the shorthand for {1,1}
 CREATE OBJECT PROPERTY @ex:hasCapital
   DOMAIN @ex:Country
   RANGE @ex:City
-  CARDINALITY {1,1}
-```
+  CARDINALITY 1
 
-```gql
-// Up to N: between 0 and 5 pets
+-- Up to N: between 0 and 5 pets
+-- CARDINALITY {,5} is the shorthand for {0,5}
 CREATE OBJECT PROPERTY @ex:hasPet
   DOMAIN @ex:Person
   RANGE @ex:Pet
-  CARDINALITY {0,5}
-```
+  CARDINALITY {,5}
 
-```gql
-// Unbounded: zero or more friends
+-- Unbounded: one or more friends
+-- CARDINALITY {1,} is the shorthand for {1,*}
 CREATE OBJECT PROPERTY @ex:hasFriend
   DOMAIN @ex:Person
   RANGE @ex:Person
-  CARDINALITY {0,*}
+  CARDINALITY {1,}
 ```
 
 `FUNCTIONAL` is a shorthand for `CARDINALITY {0,1}`:
 
 ```gql
-// A person can have at most one spouse
+-- A person can have at most one spouse
 CREATE OBJECT PROPERTY @ex:hasSpouse
   DOMAIN @ex:Person
   RANGE @ex:Person
   FUNCTIONAL
+```
+
+**Restrictions:**
+
+- `CARDINALITY` **cannot** appear in the same statement as `SYMMETRIC`, `TRANSITIVE`, `FUNCTIONAL`, or `INVERSE OF`.
+- `CARDINALITY` **cannot** combine with `SUBPROPERTY OF` or `PROPERTY CHAIN`.
+
+```gql
+-- ✗ parse error: characteristic + CARDINALITY in the same statement
+CREATE OBJECT PROPERTY @ex:hasFriend
+  DOMAIN @ex:Person
+  RANGE @ex:Person
+  SYMMETRIC CARDINALITY {0,10}
 ```
 
 ## Creating Data Properties
@@ -215,14 +346,14 @@ Data properties define attributes with XSD types. Both `DOMAIN` and `RANGE` are 
 <create data property statement> ::=                      
   "CREATE DATA PROPERTY" <data property name> 
   [ 
-      "DOMAIN" <class> [ "RANGE" <xsd type> [ <cardinality constraints> ] ]
-    | "RANGE" <xsd type> [ <cardinality constraints> ]
-    | <cardinality constraints>
+      "DOMAIN" <class> [ "RANGE" <xsd type> [ <cardinality constraint> ] ]
+    | "RANGE" <xsd type> [ <cardinality constraint> ]
+    | <cardinality constraint>
   ]
 
 <xsd type> ::= "xsd:" <type name>
 
-<cardinality constraints> ::= "CARDINALITY" "{" <min> "," <max> "}"
+<cardinality constraint> ::= -- same five forms as Object Properties above
 ```
 
 ```gql
@@ -241,29 +372,27 @@ CREATE DATA PROPERTY @ex:createdAt DOMAIN @ex:Document RANGE xsd:dateTime
 CREATE DATA PROPERTY @ex:isActive DOMAIN @ex:Account RANGE xsd:boolean
 ```
 
-Data properties accept the same `CARDINALITY {min, max}` clause as object properties:
+Data properties accept the same `CARDINALITY` clause as object properties:
 
 ```gql
 -- Required, single-valued: every Person must have exactly one name
 CREATE DATA PROPERTY @ex:fullName
   DOMAIN @ex:Person
   RANGE xsd:string
-  CARDINALITY {1,1}
+  CARDINALITY 1
 
 -- Multi-valued: a Person may carry up to 3 email addresses
 CREATE DATA PROPERTY @ex:email
   DOMAIN @ex:Person
   RANGE xsd:string
-  CARDINALITY {0,3}
+  CARDINALITY {,3}
 
 -- Unbounded: zero or more tags
 CREATE DATA PROPERTY @ex:tag
   DOMAIN @ex:Document
   RANGE xsd:string
-  CARDINALITY {0,*}
+  CARDINALITY {0,}
 ```
-
-At insert time the engine rejects values that violate the bounds: too few (when `min > 0`) or more than `max` values for the same property on a single node.
 
 ### Supported XSD Types
 
