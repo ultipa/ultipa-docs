@@ -8,15 +8,12 @@ Use ontology class and property labels in `INSERT`, `MATCH`, and `REMOVE` operat
 
 ### Ontology Labels on Nodes
 
-Use the `@prefix:class` syntax to assign ontology class labels to nodes. The leading colon before `@` is optional, both `(:@prefix:class)` and `(@prefix:class)` parse equivalently, with or without a variable.
+Use the `@prefix:class` syntax to assign ontology class labels to nodes. The form works with or without a variable.
 
-Insert node with ontology class label (with or without the leading colon):
+Insert node with ontology class label:
 
 ```gql
 INSERT (@foaf:Person {name: 'Alice', age: 30})
-
--- Equivalent
-INSERT (:@foaf:Person {name: 'Alice', age: 30})
 
 -- Multiple ontology labels using &
 INSERT (@foaf:Person&@foaf:Agent {name: 'Bob'})
@@ -24,19 +21,14 @@ INSERT (@foaf:Person&@foaf:Agent {name: 'Bob'})
 
 ### Ontology Labels on Edges
 
-Edges use the `@prefix:objectProperty` syntax. The same optional-colon rule applies as on nodes: `-[@prefix:objectProperty]->` and `-[:@prefix:objectProperty]->` parse equivalently, with or without an edge variable.
+Edges use the `@prefix:objectProperty` syntax. The form works with or without an edge variable.
 
-Insert edge with ontology label (with or without the leading colon):
+Insert edge with ontology label:
 
 ```gql
 MATCH (a@ex:Person), (b@ex:Person)
 WHERE a.name = 'Alice' AND b.name = 'Bob'
 INSERT (a)-[@ex:knows]->(b)
-
--- Equivalent
-MATCH (a@ex:Person), (b@ex:Person)
-WHERE a.name = 'Alice' AND b.name = 'Bob'
-INSERT (a)-[:@ex:knows]->(b)
 ```
 
 ### Full IRI Form
@@ -73,16 +65,12 @@ The IRI inside the angle brackets is a `IRI_LITERAL` token. It must be a valid I
 
 ## Matching by Ontology Label
 
-Match nodes by their ontology label by writing `@prefix:name` inside the pattern (with or without a leading colon), or filter in a `WHERE` clause using `IS LABELED` or the short colon form `n:@prefix:name`.
+Match nodes by their ontology label by writing `@prefix:name` inside the pattern, or filter in a `WHERE` clause using `IS LABELED`.
 
 | Syntax | Description |
 | -- | -- |
 | `MATCH (n@prefix:class)` | Match nodes by ontology class inside the pattern |
-| `MATCH (n:@prefix:class)` | Same as above, with a leading colon |
 | `MATCH (n) WHERE n IS LABELED @prefix:class` | Filter by ontology label in a `WHERE` clause |
-| `MATCH (n) WHERE n:@prefix:class` | Short colon form for the same filter |
-
-> The form `WHERE n@prefix:class` (no colon after the variable in a `WHERE` clause) is **not** supported.
 
 Match nodes by ontology class inside the pattern:
 
@@ -100,14 +88,6 @@ WHERE n IS LABELED @ex:Person
 RETURN n.name
 ```
 
-Or with the short colon form:
-
-```gql
-MATCH (n)
-WHERE n:@ex:Person
-RETURN n.name
-```
-
 ## IRI Matching
 
 The `@=` syntax matches nodes by their `_iri` property value, NOT by their label. This is useful for finding specific individuals in semantic web data.
@@ -119,13 +99,13 @@ The two forms below are just different ways to write the same target IRI. The pr
 | `@=prefix:localName` | Parser expands `prefix` via the prefix table, concatenates `localName` (e.g., `ex:alice` → `http://example.org/alice`) |
 | `@=<http://full-iri>` | The literal IRI written directly in angle brackets, no prefix lookup |
 
-The `_iri` is a regular property that you must set explicitly at `INSERT` time. The engine does not auto-populate it from the node's class or any other source. A node inserted without `_iri` (e.g., `INSERT (:@ex:Person {name: 'Alice'})`) will never match an `@=` query. The engine maintains a dedicated property index on `_iri` for fast `@=` lookup, but the value itself is yours to assign.
+The `_iri` is a regular property that you must set explicitly at `INSERT` time. The engine does not auto-populate it from the node's class or any other source. A node inserted without `_iri` (e.g., `INSERT (@ex:Person {name: 'Alice'})`) will never match an `@=` query. The engine maintains a dedicated property index on `_iri` for fast `@=` lookup, but the value itself is yours to assign.
 
 Insert nodes with `_iri` property:
 
 ```gql
-INSERT (:@ex:Person {name: 'Alice', _iri: 'http://example.org/alice'}),
-       (:@ex:Person {name: 'Bob', _iri: 'http://example.org/bob'})
+INSERT (@ex:Person {name: 'Alice', _iri: 'http://example.org/alice'}),
+       (@ex:Person {name: 'Bob', _iri: 'http://example.org/bob'})
 ```
 
 Match by IRI using prefix:
@@ -157,7 +137,7 @@ Result:
 Label match vs IRI match:
 
 ```gql
--- Given: (:@ex:Person {name: 'Alice', _iri: 'http://example.org/alice'})
+-- Given: (@ex:Person {name: 'Alice', _iri: 'http://example.org/alice'})
 
 -- This matches by LABEL (ontology class)
 MATCH (n@ex:Person) RETURN n.name  // Returns Alice

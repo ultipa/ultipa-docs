@@ -8,7 +8,7 @@ A **class** is a globally-identified category that nodes belong to, formally sim
 - **Can sit in a hierarchy** via `SUBCLASS OF`. If `@ex:Employee SUBCLASS OF @foaf:Person`, querying `MATCH (n@foaf:Person)` returns Employees . This is **subclass inference**.
 - **Can be declared disjoint** from others via `DISJOINT WITH`. `@ex:Cat DISJOINT WITH @ex:Dog` means no node may carry both labels.
 - **Can act as a domain/range** for object properties. See <a href="/docs/ontology/property-definitions">Property Definitions</a>.
-- A node can carry **multiple classes** at once (`:@foaf:Person&@foaf:Agent`), unlike single-inheritance OOP.
+- A node can carry **multiple classes** at once (`@foaf:Person&@foaf:Agent`), unlike single-inheritance OOP.
 
 How it compares to what you already know:
 

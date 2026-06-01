@@ -90,10 +90,10 @@ Insert one direction; the reverse is inferred.
 CREATE OBJECT PROPERTY @ex:knows DOMAIN @ex:Person RANGE @ex:Person SYMMETRIC
 
 -- Insert Lee -> Julia
-INSERT (:@ex:Person {name: 'Lee'})-[:@ex:knows]->(:@ex:Person {name: 'Julia'})
+INSERT (@ex:Person {name: 'Lee'})-[@ex:knows]->(@ex:Person {name: 'Julia'})
 
 -- Match knows relationships
-MATCH (a)-[:@ex:knows]->(b) RETURN a.name, b.name  // (Lee, Julia) and (Julia, Lee)
+MATCH (a)-[@ex:knows]->(b) RETURN a.name, b.name  // (Lee, Julia) and (Julia, Lee)
 ```
 
 #### TRANSITIVE
@@ -142,7 +142,7 @@ SET ONTOLOGY ENFORCEMENT STRICT
 CREATE OBJECT PROPERTY @ex:hasBirthPlace DOMAIN @ex:Person RANGE @ex:Location FUNCTIONAL
 
 -- Insert Jeff -> Boston
-INSERT (@ex:Person {name: 'Jeff'})-[:@ex:hasBirthPlace]->(@ex:Location {name: 'Boston'})
+INSERT (@ex:Person {name: 'Jeff'})-[@ex:hasBirthPlace]->(@ex:Location {name: 'Boston'})
 
 -- Insert Jeff -> Boston 
 -- FUNCTIONAL violation error: Jeff cannot have two hasBirthPlace edges
