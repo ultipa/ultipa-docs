@@ -57,10 +57,10 @@
       "description": "Ultipa CLI and Transporter"
     },
     {
-      "id": "troubleshooting",
-      "name": "Troubleshooting",
+      "id": "maintenance-ops",
+      "name": "Maintenance & Ops",
       "published": true,
-      "description": "Common GQLDB issues, diagnostics, and fixes"
+      "description": "Database administration: health, backups, statistics, indexes, tasks"
     }
   ]
 }

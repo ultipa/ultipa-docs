@@ -688,3 +688,72 @@ Enable per-graph query memory:
 ```gql
 RETURN ai.set_ai_config("query_memory_enabled", true)
 ```
+
+## Troubleshooting
+
+### CALL ai.gql(...) returns nothing / errors with "no completion provider"
+
+**Symptom:** Either the call returns an empty result or the first row has `stage = "error"` with detail `no completion provider configured`.
+
+**Cause:** No completion provider has been activated for the session.
+
+**How to confirm:**
+
+```gql
+SHOW AI PROVIDERS
+```
+
+The `status` column should show `configured` for at least one row with `supports = completion`. If everything is `unconfigured`, no provider is active.
+
+**Fix:**
+
+```gql
+RETURN ai.set_api_key("openai", "sk-...")
+RETURN ai.set_completion_provider("openai")
+```
+
+The API key persists to disk encrypted (`ai.set_api_key` survives restart). The completion-provider selection is also persisted per-graph.
+
+### Generation hits max_steps and returns a wrong-shape query
+
+**Symptom:** The last `generation` row's `data.termination` is `"max_steps"` (not `"final"`), and the returned `data.gql` is a best-guess top-N preview instead of, e.g., a `count(...)` aggregation the question asked for.
+
+**Cause:** The LLM used up its step budget exploring tools (`get_label_property`, `get_overview`, `sample_query`, `validate_gql`) before producing a final candidate, so it returned the most recent partial.
+
+**Fix:** Raise the step budget
+
+```gql
+RETURN ai.set_ai_config("max_steps", 8)
+```
+
+Default is `4`. Tool-heavy domains (large schemas, ambiguous questions) typically want 6–10. Check current config with `RETURN ai.ai_config()`.
+
+### "How many" questions return a top-N list, not a count
+
+**Symptom:** `CALL ai.gql({nl: "How many papers did Alex write?"})` returns `MATCH (p:Paper) WHERE p.author = 'Alex' RETURN p.title, p.score ORDER BY p.score DESC LIMIT 5` instead of a `count()`.
+
+**Cause:** The model is sometimes biased toward "show me" templates over aggregation, especially when the schema has rich properties. The `final.data.count` field reports **rows in the result set** (5 here), not the answer to the question.
+
+**Fix:** Phrase the prompt to be explicit about the aggregation
+
+```gql
+CALL ai.gql({nl: "Return the COUNT of papers by Alex"})
+```
+
+Or capture the generated query and inspect it before running.
+
+### Skill or trace lookup returns NULL
+
+**Symptom:** `RETURN ai.skill_nl("top_authors")` returns `NULL` even though you ran `ai.save_skill("top_authors", "...")` earlier.
+
+**Cause:** Skills are scoped to the current graph. If you switched graphs or restarted the server, the per-graph skill store doesn't surface skills from the previous graph.
+
+**How to confirm:**
+
+```gql
+RETURN ai.list_skills()
+```
+
+If the list is empty, the current graph has no skills.
+
+**Fix:** Re-issue `ai.save_skill(...)` in the current graph, or `USE` the graph that had the original skill.
