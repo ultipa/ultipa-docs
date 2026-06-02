@@ -235,8 +235,8 @@ SHOW FUNCTIONS FORMAT OPENAI
 
 Database functions report on the running server and the current graph: version, license, loaded plugins, statistics, schema, and backups.
 
-- **Introspection:** `db.version()`, `db.license()`, `db.stats()`, `db.overview()`, `db.node_labels()`, `db.edge_labels()`, `db.label_property()`, `db.reload_stats()`, etc. See <a target="_blank" href="/docs/maintenance-ops/database-info">Maintenance & Ops → Database Info</a>.
-- **Backup and Restore:** `db.backup()`, `db.restore()`, `db.backups()`, etc. See <a target="_blank" href="/docs/maintenance-ops/backup-restore">Maintenance & Ops → Backup & Restore</a>.
+- **Introspection:** `db.version()`, `db.license()`, `db.stats()`, `db.overview()`, `db.node_labels()`, `db.edge_labels()`, `db.label_property()`, `db.reload_stats()`, etc. See <a target="_blank" href="/docs/operations/database-info">Operations → Database Info</a>.
+- **Backup and Restore:** `db.backup()`, `db.restore()`, `db.backups()`, etc. See <a target="_blank" href="/docs/operations/backup-restore">Operations → Backup & Restore</a>.
 
 ## AI & Vector Functions
 

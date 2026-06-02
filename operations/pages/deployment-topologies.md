@@ -33,7 +33,7 @@ The simplest deployment. GQLDB runs as a standalone database service with file-s
 Single-node recovery story:
 
 - **Process crash on healthy disk:** WAL replay restores up to the last fsync; loss bounded by the WAL sync mode (`Every` = 0 loss, `SyncAsync` = ~100 ms, `Batch` = group-commit window, `None` = whole memtable).
-- **Host failure / disk failure:** restore from the most recent `db.backup()` or offline snapshot. See <a href="/docs/maintenance-ops/backup-restore" target="_blank">Backup & Restore</a>.
+- **Host failure / disk failure:** restore from the most recent `db.backup()` or offline snapshot. See <a href="/docs/operations/backup-restore" target="_blank">Backup & Restore</a>.
 
 This is appropriate for non-production workloads and for production deployments where the operator explicitly accepts host-level downtime in exchange for simpler operations.
 
@@ -124,7 +124,7 @@ Both HA shapes give the same safety guarantee. The choice is cost and read-capac
 
 ## HA Admin Surface
 
-When `-ha-mode` is enabled, additional administration becomes available. The full details belong in <a href="/docs/maintenance-ops/clustering" target="_blank">Clustering</a>; the headline pieces:
+When `-ha-mode` is enabled, additional administration becomes available. The full details belong in <a href="/docs/operations/clustering" target="_blank">Clustering</a>; the headline pieces:
 
 - `SHOW HA STATUS` — current leader, follower lag, quorum state.
 - `SHOW HA LOG TAIL` — last N Raft log entries.

@@ -1,6 +1,6 @@
 # Clustering
 
-Operating a GQLDB HA cluster, including observing topology, draining a node for maintenance, adding or removing voters, and recovering from quorum loss. Cluster bring-up (number of nodes, peer lists, witness placement) is covered in <a href="/docs/maintenance-ops/deployment-topologies" target="_blank">Deployment Topologies</a>; this page is about what to do once the cluster is up.
+Operating a GQLDB HA cluster, including observing topology, draining a node for maintenance, adding or removing voters, and recovering from quorum loss. Cluster bring-up (number of nodes, peer lists, witness placement) is covered in <a href="/docs/operations/deployment-topologies" target="_blank">Deployment Topologies</a>; this page is about what to do once the cluster is up.
 
 > HA is a paid feature. A Community / Free Tier server refuses to start in HA mode. Confirm your license entitles HA by checking `db.license()`, the `edition` should be `Licensed` and the license payload must include HA membership.
 
@@ -140,7 +140,7 @@ HA protects against **host or rack failure within the quorum**. It does **not** 
 
 | Threat | Why HA doesn't help | What does |
 | -- | -- | -- |
-| Accidental `TRUNCATE` or destructive query | Replication propagates the destructive change to every follower. | <a href="/docs/maintenance-ops/backup-restore" target="_blank">Backup & Restore</a> — restore from the most recent backup. |
+| Accidental `TRUNCATE` or destructive query | Replication propagates the destructive change to every follower. | <a href="/docs/operations/backup-restore" target="_blank">Backup & Restore</a> — restore from the most recent backup. |
 | Logical data corruption (bad app code, schema mistake) | Same — every follower has the bad data. | Backups + integrity tooling (`db.validate_graph()`). |
 | Data center loss | All voters likely in one DC in v1.0. | Off-site copies of backups; wait for v1.x multi-region. |
 | Operator error in HA admin | E.g., `ForceFailover` on a network partition rather than true quorum loss. | Documented procedures, audit logging on HA RPCs, manager UI confirmations. |

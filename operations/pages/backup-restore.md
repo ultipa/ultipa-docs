@@ -372,7 +372,7 @@ Internal format details:
 | **First entry** | `backup_meta.json` — backup format version, GQLDB version, type (`full`/`incremental`), scope (`graph`/`database`), graph name, WAL sequence, node/edge counts, optional `base_backup` path for incrementals. |
 | **Body** | The SST files and metadata sidecars for the source graph. |
 
-The format is forward-compatible across patch releases. Across minor versions, a backup taken on `1.x` restores cleanly on `1.y`; the engine may run a one-shot migration on first read of older SSTs (transparent to callers — see <a href="/docs/maintenance-ops/installation#updating" target="_blank">Installation → Updating</a>).
+The format is forward-compatible across patch releases. Across minor versions, a backup taken on `1.x` restores cleanly on `1.y`; the engine may run a one-shot migration on first read of older SSTs (transparent to callers — see <a href="/docs/operations/database-installation#updating" target="_blank">Installation → Updating</a>).
 
 ## Operational Patterns
 
@@ -394,5 +394,5 @@ The format is forward-compatible across patch releases. Across minor versions, a
 ## What's Not Here
 
 - **Point-in-time recovery (PITR).** GQLDB does not yet support replay from arbitrary timestamps; the recovery unit is a backup file's WAL cutoff. For tighter RPO, increase backup frequency.
-- **HA failover as a backup substitute.** HA protects against host failure within the quorum; it does **not** protect against logical corruption, an accidental `TRUNCATE`, or operator error. Always keep offline backups even in a 3-node cluster. See <a href="/docs/maintenance-ops/clustering" target="_blank">Clustering</a>.
+- **HA failover as a backup substitute.** HA protects against host failure within the quorum; it does **not** protect against logical corruption, an accidental `TRUNCATE`, or operator error. Always keep offline backups even in a 3-node cluster. See <a href="/docs/operations/clustering" target="_blank">Clustering</a>.
 - **WAL archiving.** The WAL is internal; there is no public consumer-side WAL archive API at this time.

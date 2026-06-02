@@ -1,8 +1,6 @@
-# Installation
+# Database Installation
 
 Install GQLDB on a Linux or macOS host by downloading the distribution, placing the license file, and starting the database service. The distribution is delivered as a native executable for the target platform, there is no container runtime required and no separate service stack to install.
-
-**Prefer a managed service?** Ultipa Cloud is available at <a href="https://dbaas.ultipa.com" target="_blank">dbaas.ultipa.com</a>. Provisioned instances, automated backups, and HA handled for you. If you go that route, the rest of this page is optional; pick up at the driver / GQL docs once your instance endpoint is live.
 
 ## System Requirements
 
@@ -13,9 +11,9 @@ Install GQLDB on a Linux or macOS host by downloading the distribution, placing 
 | **Memory** | 4 GB RAM | 32 GB+ RAM (sized to graph + compute cache) |
 | **Disk** | 10 GB free, local SSD strongly preferred | NVMe SSD; size = 3× raw data for headroom (LSM compaction + WAL + backups) |
 | **File descriptors** | `ulimit -n 4096` | `ulimit -n 65536` |
-| **Network** | One open TCP port for the gRPC service (default 60061) | Same; additional ports if running HA, see <a href="/docs/maintenance-ops/deployment-topologies" target="_blank">Deployment Topologies</a> |
+| **Network** | One open TCP port for the gRPC service (default 60061) | Same; additional ports if running HA, see <a href="/docs/operations/deployment-topologies" target="_blank">Deployment Topologies</a> |
 
-Witness nodes in HA mode have far smaller resource needs (~50 MB RSS, tens of MB to a few GB disk depending on write rate), see <a href="/docs/maintenance-ops/deployment-topologies" target="_blank">Deployment Topologies</a> for the full sizing matrix.
+Witness nodes in HA mode have far smaller resource needs (~50 MB RSS, tens of MB to a few GB disk depending on write rate), see <a href="/docs/operations/deployment-topologies" target="_blank">Deployment Topologies</a> for the full sizing matrix.
 
 ## Quick Install (Community Edition)
 
@@ -172,7 +170,7 @@ Send SIGTERM to the process. Under `nohup` / shell-launched setups, the simplest
 pkill -f ultipa-gqldb
 ```
 
-Under a service manager, use the service-manager's stop command (e.g., `systemctl stop gqldb`). The database flushes outstanding writes and exits cleanly on SIGTERM. SIGKILL is only safe in HA mode where another replica holds the durable state — on a single-node install, SIGKILL can lose the last `SyncAsync` window (typically ~100 ms of writes; see <a href="/docs/maintenance-ops/backup-restore" target="_blank">Backup & Restore</a> for durability options).
+Under a service manager, use the service-manager's stop command (e.g., `systemctl stop gqldb`). The database flushes outstanding writes and exits cleanly on SIGTERM. SIGKILL is only safe in HA mode where another replica holds the durable state — on a single-node install, SIGKILL can lose the last `SyncAsync` window (typically ~100 ms of writes; see <a href="/docs/operations/backup-restore" target="_blank">Backup & Restore</a> for durability options).
 
 ## Updating
 
@@ -188,7 +186,7 @@ curl -fsSL https://download.ultipa.com/gqldb/install.sh | sh
 
 In both cases: stop the running database, replace the server executable, and restart with the same flags. Storage and on-disk format are backward-compatible across minor versions; major-version upgrades occasionally require a lazy migration.
 
-For HA clusters, perform rolling upgrades. Update followers one at a time, then step down the leader. See <a href="/docs/maintenance-ops/deployment-topologies" target="_blank">Deployment Topologies</a>.
+For HA clusters, perform rolling upgrades. Update followers one at a time, then step down the leader. See <a href="/docs/operations/deployment-topologies" target="_blank">Deployment Topologies</a>.
 
 ## Where Things Live on Disk
 
@@ -201,4 +199,4 @@ Inside `-db <path>`:
 | `license/` | Cached license artifacts |
 | `meta/` | Cluster metadata, RBAC store, ontology prefix table |
 
-The `.gdb` directory is the entire authoritative state. Backing it up offline (with the process stopped or after a `FLUSH`) is a valid disaster-recovery strategy alongside `db.backup()` — see <a href="/docs/maintenance-ops/backup-restore" target="_blank">Backup & Restore</a>.
+The `.gdb` directory is the entire authoritative state. Backing it up offline (with the process stopped or after a `FLUSH`) is a valid disaster-recovery strategy alongside `db.backup()` — see <a href="/docs/operations/backup-restore" target="_blank">Backup & Restore</a>.

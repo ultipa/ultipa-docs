@@ -1,13 +1,13 @@
 {
-  "name": "Maintenance & Ops",
+  "name": "Operations",
   "navigation": [
     {
       "file": "introduction.md",
       "title": "Introduction"
     },
     {
-      "file": "installation.md",
-      "title": "Installation"
+      "file": "database-installation.md",
+      "title": "Database Installation"
     },
     {
       "file": "deployment-topologies.md",
@@ -18,12 +18,24 @@
       "title": "Clustering"
     },
     {
+      "file": "cloud-deployments.md",
+      "title": "Cloud Deployments"
+    },
+    {
       "file": "database-info.md",
       "title": "Database Info"
     },
     {
       "file": "backup-restore.md",
       "title": "Backup & Restore"
+    },
+    {
+      "file": "monitoring.md",
+      "title": "Monitoring"
+    },
+    {
+      "file": "performance.md",
+      "title": "Performance"
     }
   ]
 }

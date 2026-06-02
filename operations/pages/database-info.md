@@ -33,7 +33,7 @@ Returns a map describing the licensing state actually in effect at runtime — n
 
 Cross-check the result against `-license-file` at startup: if you passed a path but `edition` still shows Community Edition, the file failed to parse — re-check the path and that the file is the signed `.lic` distributed by Ultipa, not a placeholder.
 
-See <a href="/docs/maintenance-ops/installation#license" target="_blank">Installation → License</a> for the full Free Tier vs Paid Tier comparison.
+See <a href="/docs/operations/database-installation#license" target="_blank">Installation → License</a> for the full Free Tier vs Paid Tier comparison.
 
 ## Loaded Plugins
 

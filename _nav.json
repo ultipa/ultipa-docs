@@ -57,8 +57,8 @@
       "description": "Ultipa CLI and Transporter"
     },
     {
-      "id": "maintenance-ops",
-      "name": "Maintenance & Ops",
+      "id": "operations",
+      "name": "Operations",
       "published": true,
       "description": "Database deployment and administration"
     }
