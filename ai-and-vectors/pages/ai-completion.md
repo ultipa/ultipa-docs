@@ -18,13 +18,39 @@ INSERT (p1:Paper {_id:'P1', title:'Efficient Graph Search', score:6, author:'Ale
 
 ### ai.gql()
 
-`ai.gql()` is a streaming procedure invoked with `CALL ... YIELD`. It converts a natural language question into a GQL query using the configured completion provider. 
+`ai.gql()` converts a natural language question into a GQL query using the configured completion provider. It is registered in **two forms** — pick the one that matches what you want back:
+
+| Form | Returns | When to use |
+| -- | -- | -- |
+| **Function:** `RETURN ai.gql("...")` | The generated GQL string (blocks until the pipeline finishes) | You only need the query string and don't care about per-stage timing, token counts, or tool calls. Up to 3 positional args: `ai.gql(nl [, instruction [, timeout_ms]])`. |
+| **Procedure:** `CALL ai.gql({nl: "..."}) YIELD stage, data, ...` | One row per pipeline stage (start, routing, grounding, generation, tool, validation, final, ...) | You want a live trace — latency per stage, token usage, which tools the model called, what it tried before settling. |
+
+The two share the same underlying pipeline; the scalar form just blocks and returns the final row's `data.gql`.
+
+#### Function Form
+
+```gql
+-- Simplest: NL in, GQL string out
+RETURN ai.gql("Find all papers written by Alex")
+-- Result: "MATCH (p:Paper) WHERE p.author = 'Alex' RETURN p"
+```
+
+```gql
+-- With extra guidance and a 15-second cap
+RETURN ai.gql(
+  "friends of friends of Alice",
+  "FRIEND edges are bidirectional even though stored directed; consider both directions.",
+  15000
+)
+```
+
+#### Procedure Form
 
 Parameters are passed as a single map literal:
 
 | Parameter | Type | Description |
 | -- | -- | -- |
-| `nl` | `STRING` | ✓ | **Required.** The natural-language question to translate. |
+| `nl` | `STRING` | **Required.** The natural-language question to translate. |
 | `instruction` | `STRING` | Extra guidance for the LLM on top of the auto-loaded schema (e.g. multi-hop relationship hints, domain rules). Falls back to the session-level value set via `ai.set_ai_config('instruction', '...')` when omitted. Empty string disables it. |
 | `timeout_ms` | `INTEGER` | Per-call timeout bounding the entire pipeline. On expiry, an `error` row is emitted and the stream closes. `0` or missing = no timeout. |
 | `conversation_id` | `STRING` | Thread id for multi-turn refinement. Prior turns sharing this id are surfaced in the LLM prompt; successful turns are appended back automatically, so follow-ups like *"now filter to Bologna"* refine the previous query instead of starting fresh. |
@@ -63,7 +89,7 @@ Result:
 
 `ai.gql()` produces multiple rows of output as the **NL-to-GQL pipeline** executes. The pipeline automatically includes the current graph's schema (labels, properties, edge patterns) as context for the LLM.
 
-**Pipeline Stages**
+### Pipeline Stages
 
 | Stage | Description |
 | -- | -- |
@@ -103,7 +129,7 @@ FILTER stage = "final"
 RETURN tokens_input, tokens_output, tokens_cached
 ```
 
-**Agent Tools**
+### Agent Tools
 
 During the `generation` stage the LLM can call any of the following tools. Each call surfaces as a `tool` row in the stream with `data.name`, `data.args`, and `data.result`:
 
