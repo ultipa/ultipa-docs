@@ -55,6 +55,12 @@
       "name": "Ultipa Tools",
       "published": true,
       "description": "Ultipa CLI and Transporter"
+    },
+    {
+      "id": "troubleshooting",
+      "name": "Troubleshooting",
+      "published": true,
+      "description": "Common GQLDB issues, diagnostics, and fixes"
     }
   ]
 }
