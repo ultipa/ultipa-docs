@@ -1,17 +1,19 @@
 # Installation
 
-Install GQLDB on a Linux or macOS host by downloading the distribution, placing the license file, and starting the database service. The distribution is delivered as a native executable for the target platform — there is no container runtime required and no separate service stack to install.
+Install GQLDB on a Linux or macOS host by downloading the distribution, placing the license file, and starting the database service. The distribution is delivered as a native executable for the target platform, there is no container runtime required and no separate service stack to install.
+
+**Prefer a managed service?** Ultipa Cloud is available at <a href="https://dbaas.ultipa.com" target="_blank">dbaas.ultipa.com</a>. Provisioned instances, automated backups, and HA handled for you. If you go that route, the rest of this page is optional; pick up at the driver / GQL docs once your instance endpoint is live.
 
 ## System Requirements
 
 | Resource | Minimum (single-node, evaluation) | Recommended (production, single-node) |
 | -- | -- | -- |
-| OS | Linux (kernel ≥ 4.x) or macOS (Darwin) | Linux x86_64 or arm64 |
-| CPU | 2 cores | 8+ cores |
-| Memory | 4 GB RAM | 32 GB+ RAM (sized to graph + compute cache) |
-| Disk | 10 GB free, local SSD strongly preferred | NVMe SSD; size = 3× raw data for headroom (LSM compaction + WAL + backups) |
-| File descriptors | `ulimit -n 4096` | `ulimit -n 65536` |
-| Network | One open TCP port for the gRPC service (default 60061) | Same; additional ports if running HA — see <a href="/docs/maintenance-ops/deployment-topologies" target="_blank">Deployment Topologies</a> |
+| **OS** | Linux (kernel ≥ 4.x) or macOS (Darwin) | Linux x86_64 or arm64 |
+| **CPU** | 2 cores | 8+ cores |
+| **Memory** | 4 GB RAM | 32 GB+ RAM (sized to graph + compute cache) |
+| **Disk** | 10 GB free, local SSD strongly preferred | NVMe SSD; size = 3× raw data for headroom (LSM compaction + WAL + backups) |
+| **File descriptors** | `ulimit -n 4096` | `ulimit -n 65536` |
+| **Network** | One open TCP port for the gRPC service (default 60061) | Same; additional ports if running HA, see <a href="/docs/maintenance-ops/deployment-topologies" target="_blank">Deployment Topologies</a> |
 
 Witness nodes in HA mode have far smaller resource needs (~50 MB RSS, tens of MB to a few GB disk depending on write rate), see <a href="/docs/maintenance-ops/deployment-topologies" target="_blank">Deployment Topologies</a> for the full sizing matrix.
 
@@ -35,7 +37,7 @@ On macOS the executable is flagged by Gatekeeper on first download; if the comma
 xattr -d com.apple.quarantine "$(command -v ultipa-gqldb)" 2>/dev/null
 ```
 
-This installs the **Community Edition** of GQLDB, intended for evaluation, learning, and non-commercial use. For commercial deployments, obtain the appropriate licensed distribution from your Ultipa account team. See <a href="#commercial-install">Commercial Install</a> below.
+This installs the **Community Edition** of GQLDB, intended for evaluation, learning, and non-commercial use. For commercial deployments, obtain the appropriate licensed distribution from your Ultipa account team. See <a href="#Commercial-Install">Commercial Install</a> below.
 
 ## Commercial Install
 
@@ -75,13 +77,13 @@ This is informational, not an error; the database is running. If you intend to s
 
 The minimal launch command. The executable name depends on how you installed.
 
-1. **Community Edition:** the script installs `ultipa-gqldb` as a command, so invoke it directly:
+**1. Community Edition:** the script installs `ultipa-gqldb` as a command, so invoke it directly:
 
 ```bash
 ultipa-gqldb -db ./my.gdb -rbac -admin-pass <strong-password> -port 60123
 ```
 
-2. **Direct Download / Commercial Distribution:** the executable arrives with a versioned name (`ultipa-gqldb-<version>-<platform>`); launch it from its directory:
+**2. Direct Download / Commercial Distribution:** the executable arrives with a versioned name (`ultipa-gqldb-<version>-<platform>`); launch it from its directory:
 
 ```bash
 ./ultipa-gqldb-1.x.y-linux-amd64 \
@@ -176,13 +178,13 @@ Under a service manager, use the service-manager's stop command (e.g., `systemct
 
 The update procedure differs between editions:
 
-1. **Community Edition:** re-run the install script. It's idempotent and pulls the latest Community release:
+**1. Community Edition:** re-run the install script. It's idempotent and pulls the latest Community release:
 
 ```bash
 curl -fsSL https://download.ultipa.com/gqldb/install.sh | sh
 ```
 
-2. **Commercial Edition:** obtain the new distribution from your account team and replace the existing executable in place.
+**2. Commercial Edition:** obtain the new distribution from your account team and replace the existing executable in place.
 
 In both cases: stop the running database, replace the server executable, and restart with the same flags. Storage and on-disk format are backward-compatible across minor versions; major-version upgrades occasionally require a lazy migration.
 

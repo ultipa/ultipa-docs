@@ -12,6 +12,18 @@
     {
       "file": "deployment-topologies.md",
       "title": "Deployment Topologies"
+    },
+    {
+      "file": "clustering.md",
+      "title": "Clustering"
+    },
+    {
+      "file": "database-info.md",
+      "title": "Database Info"
+    },
+    {
+      "file": "backup-restore.md",
+      "title": "Backup & Restore"
     }
   ]
 }

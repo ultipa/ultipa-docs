@@ -247,10 +247,6 @@
         {
           "file": "table-functions.md",
           "title": "Table Functions"
-        },
-        {
-          "file": "database-functions.md",
-          "title": "Database Functions"
         }
       ]
     },
@@ -319,10 +315,6 @@
     {
       "file": "execution-plan.md",
       "title": "Execution Plan"
-    },
-    {
-      "file": "backup-and-restore.md",
-      "title": "Backup and Restore"
     },
     {
       "folder": "syntax",

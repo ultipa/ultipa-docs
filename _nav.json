@@ -60,7 +60,7 @@
       "id": "maintenance-ops",
       "name": "Maintenance & Ops",
       "published": true,
-      "description": "Database administration: health, backups, statistics, indexes, tasks"
+      "description": "Database deployment and administration"
     }
   ]
 }

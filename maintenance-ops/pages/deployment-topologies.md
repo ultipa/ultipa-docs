@@ -1,6 +1,12 @@
 # Deployment Topologies
 
-GQLDB supports three deployment shapes — single-node, 3-node HA, and 2-data + 1 witness HA. All three run the same server distribution; HA mode is enabled with a single flag and a peer list. There is no separate "cluster edition" of the database.
+GQLDB supports three deployment shapes:
+
+- Single-node
+- 3-node HA
+- 2-data + 1 witness HA
+
+All three run the same server distribution; HA mode is enabled with a single flag and a peer list. There is no separate "cluster edition" of the database.
 
 ## Topology Overview
 
@@ -8,7 +14,7 @@ GQLDB supports three deployment shapes — single-node, 3-node HA, and 2-data + 
 | -- | -- | -- | -- | -- |
 | **Single-node** | 1 data | None | n/a | Development, evaluation, batch workloads where the host is the unit of recovery (offline backup is the redundancy story). |
 | **3-node HA** | 3 full data | 1 of 3 | 2/3 | Production. Most read capacity. Three full-spec boxes. |
-| **2-data + 1 witness** | 2 full data + 1 witness | 1 of 3 | 2/3 | Production at near-2-node cost. The witness is a lightweight companion service (~50 MB RSS) that holds the Raft log only — no FSM, no graph data. |
+| **2-data + 1 witness** | 2 full data + 1 witness | 1 of 3 | 2/3 | Production at near-2-node cost. The witness is a lightweight companion service (~50 MB RSS) that holds the Raft log only, no FSM, no graph data. |
 
 Both HA topologies provide **zero data loss inside the quorum** and **automatic sub-second failover**. The Raft safety guarantee is identical between them — the witness counts toward the quorum exactly like a third data replica would.
 
@@ -26,8 +32,8 @@ The simplest deployment. GQLDB runs as a standalone database service with file-s
 
 Single-node recovery story:
 
-- **Process crash on healthy disk** — WAL replay restores up to the last fsync; loss bounded by the WAL sync mode (`Every` = 0 loss, `SyncAsync` = ~100 ms, `Batch` = group-commit window, `None` = whole memtable).
-- **Host failure / disk failure** — restore from the most recent `db.backup()` or offline snapshot. See <a href="/docs/maintenance-ops/backup-restore" target="_blank">Backup & Restore</a>.
+- **Process crash on healthy disk:** WAL replay restores up to the last fsync; loss bounded by the WAL sync mode (`Every` = 0 loss, `SyncAsync` = ~100 ms, `Batch` = group-commit window, `None` = whole memtable).
+- **Host failure / disk failure:** restore from the most recent `db.backup()` or offline snapshot. See <a href="/docs/maintenance-ops/backup-restore" target="_blank">Backup & Restore</a>.
 
 This is appropriate for non-production workloads and for production deployments where the operator explicitly accepts host-level downtime in exchange for simpler operations.
 
@@ -47,14 +53,14 @@ Three identical data replicas running on three hosts. Each holds a full copy of 
 
 Sizing:
 
-- **CPU / memory** — each node is sized identically; plan as 3× a single-node production install.
-- **Disk** — 3× the raw data size, plus headroom for LSM compaction and WAL.
-- **Network** — low-latency LAN between replicas (sub-millisecond ideal); Raft is sensitive to RTT. The same DC is the default assumption; cross-DC HA is deferred to a later release.
+- **CPU / memory:** each node is sized identically; plan as 3× a single-node production install.
+- **Disk:** 3× the raw data size, plus headroom for LSM compaction and WAL.
+- **Network:** low-latency LAN between replicas (sub-millisecond ideal); Raft is sensitive to RTT. The same DC is the default assumption; cross-DC HA is deferred to a later release.
 
 Failure handling:
 
-- **Single node loss** — the remaining two form a quorum; automatic failover completes in under a second. Writes resume immediately on the new leader.
-- **Two nodes lost** — quorum is lost; the surviving node serves nothing until at least one peer returns. This is correct behavior — proceeding would risk split-brain.
+- **Single node loss:** the remaining two form a quorum; automatic failover completes in under a second. Writes resume immediately on the new leader.
+- **Two nodes lost:** quorum is lost; the surviving node serves nothing until at least one peer returns. This is correct behavior — proceeding would risk split-brain.
 
 ## 2-Data + 1 Witness
 
@@ -95,11 +101,13 @@ Where to host the witness:
 
 Failure handling:
 
-- **Loss of the witness alone** — the two data nodes still form a 2/3 quorum; the cluster keeps serving reads and writes normally.
-- **Loss of one data node** — the surviving data node plus the witness form quorum. Writes continue; reads continue. Failover completes in under a second.
-- **Loss of one data node + the witness** — quorum is lost. The surviving data node is correct but stalled until at least one peer returns.
+- **Loss of the witness alone:** the two data nodes still form a 2/3 quorum; the cluster keeps serving reads and writes normally.
+- **Loss of one data node:** the surviving data node plus the witness form quorum. Writes continue; reads continue. Failover completes in under a second.
+- **Loss of one data node + the witness:** quorum is lost. The surviving data node is correct but stalled until at least one peer returns.
 
 ## Choosing a Topology
+
+<p tit="Decision Tree"></p>
 
 ```
 Need HA?

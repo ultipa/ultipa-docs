@@ -233,20 +233,10 @@ SHOW FUNCTIONS FORMAT OPENAI
 
 ## Database Functions
 
-| <div table-width="20">Function</div> | Description |
-| -- | -- |
-| <a href="/docs/gql/database-functions#dbversion">db.version()</a> | Returns the database version. |
-| <a href="/docs/gql/database-functions#dblicense">db.license()</a> | Returns license information. |
-| <a href="/docs/gql/database-functions#dbplugins">db.plugins()</a> | Returns loaded plugins. |
-| <a href="/docs/gql/database-functions#dbstats">db.stats()</a> | Returns statistics of the current graph. |
-| <a href="/docs/gql/database-functions#dboverview">db.overview()</a> | Returns the current graph overview with label counts and edge patterns. |
-| <a href="/docs/gql/database-functions#dbnode_labels">db.node_labels()</a> | Returns all node labels in the current graph. |
-| <a href="/docs/gql/database-functions#dbedge_labels">db.edge_labels()</a> | Returns all edge labels in the current graph. |
-| <a href="/docs/gql/database-functions#dblabel_property">db.label_property()</a> | Returns properties defined for each label in the current graph. |
-| <a href="/docs/gql/database-functions#dbreload_stats">db.reload_stats()</a> | Rebuilds statistics from storage for the current graph. |
-| <a href="/docs/gql/backup-and-restore#dbbackup">db.backup()</a> | Creates a backup of the current graph. |
-| <a href="/docs/gql/backup-and-restore#dbrestore">db.restore()</a> | Restores a graph from a backup file. |
-| <a href="/docs/gql/backup-and-restore#dbbackups">db.backups()</a> | Lists backup files found in a directory. |
+Database functions report on the running server and the current graph: version, license, loaded plugins, statistics, schema, and backups.
+
+- **Introspection:** `db.version()`, `db.license()`, `db.stats()`, `db.overview()`, `db.node_labels()`, `db.edge_labels()`, `db.label_property()`, `db.reload_stats()`, etc. See <a target="_blank" href="/docs/maintenance-ops/database-info">Maintenance & Ops → Database Info</a>.
+- **Backup and Restore:** `db.backup()`, `db.restore()`, `db.backups()`, etc. See <a target="_blank" href="/docs/maintenance-ops/backup-restore">Maintenance & Ops → Backup & Restore</a>.
 
 ## AI & Vector Functions
 
