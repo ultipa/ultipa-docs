@@ -16,6 +16,8 @@ INSERT (p1:Paper {_id:'P1', title:'Efficient Graph Search', score:6, author:'Ale
 
 Gets the unique identifier `_id` of a graph element. `element_id()` is a synonym.
 
+> On an `EDGE_ID DISABLED` graph (see <a href="/docs/gql/node-and-edge-ids" target="_blank">Node and Edge IDs</a>) edges have no user-visible `_id`, so `id(e)` raises an error.
+
 <table style="width: 100%;">
   <tbody>
     <tr>
@@ -47,10 +49,59 @@ RETURN id(n), id(e)
 
 Result:
 
-| element_id | id |
+| id(n) | id(e) |
 | -- | -- |
-|	P2 | e:2 |
-|	P1 | e:1 |
+|	P2 | 52ade0a7-0247-4e68-bafb-32d2b2fbaa8b |
+|	P1 | 22b49ab0-95ab-4591-bfd9-ff5cc5f9c633 |
+
+## internal_id()
+
+Returns the system-internal numeric identifier (the `_uuid`) of a node or edge as a decimal string. 
+
+> Unlike `id()` which can error on edges in an `EDGE_ID DISABLED` graph, `internal_id()` **always resolves**. It's the function form of the built-in `_uuid` property and works on both `EDGE_ID`-enabled and disabled graphs.
+
+<table style="width: 100%;">
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>internal_id(&lt;elemVar&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;elemVar&gt;</code></td>
+      <td><code>NODE</code>, <code>EDGE</code></td>
+      <td>Element variable reference.</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>STRING</code> — the `_uuid` formatted as a decimal string. Returned as a string because the underlying value is a 64-bit unsigned integer that can exceed the signed-int range.</td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+MATCH (n)-[e]->()
+RETURN internal_id(n), internal_id(e)
+```
+
+Result:
+
+| internal_id(n) | internal_id(e) |
+| -- | -- |
+|	667260654663678695 | 2 |
+|	667261754175306906 | 1 |
+
+Equivalent property-form access:
+
+```gql
+MATCH (n)-[e]->()
+RETURN n._uuid, e._uuid
+```
 
 ## labels()
 

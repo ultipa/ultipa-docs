@@ -19,9 +19,9 @@ The single largest lever for read latency. GQLDB supports three index families:
 
 | Index | What it accelerates | Reference |
 | -- | -- | -- |
-| **Property index** | Equality and range predicates on node / edge properties, anywhere a `MATCH` filters by a non-key property. | <a href="/docs/gql/query-acceleration/index" target="_blank">Index</a> |
-| **Full-text index** | `CONTAINS` / phrase search on string properties, with tokenizer-aware matching. | <a href="/docs/gql/query-acceleration/fulltext-index" target="_blank">Full-text Index</a> |
-| **Vector index** | Approximate-nearest-neighbor search over dense vector properties: embeddings, image features, etc. | <a href="/docs/gql/query-acceleration/vector-index" target="_blank">Vector Index</a> |
+| **Property index** | Equality and range predicates on node / edge properties, anywhere a `MATCH` filters by a non-key property. | <a href="/docs/gql/index" target="_blank">Index</a> |
+| **Full-text index** | `CONTAINS` / phrase search on string properties, with tokenizer-aware matching. | <a href="/docs/gql/fulltext-index" target="_blank">Full-text Index</a> |
+| **Vector index** | Approximate-nearest-neighbor search over dense vector properties: embeddings, image features, etc. | <a href="/docs/gql/vector-index" target="_blank">Vector Index</a> |
 
 If a query scans the whole graph but only returns a handful of rows, you almost certainly want an index. Confirm with `EXPLAIN` before and after to see the operator change.
 
@@ -43,7 +43,7 @@ Rule of thumb: if a query runs `CALL algo.*`, it needs the compute engine. If it
 
 The lookup is real overhead: roughly **50 bytes per edge** in the in-memory cache (≈5 GB for 100M edges, ≈50 GB for 1B), plus the hidden index on disk and a uniqueness check on every write. Turn it off when the workload never addresses edges by `_id` — typically pure-topology workloads (graph algorithms, k-hop traversal, recommendation engines) and bulk ETL pipelines where insert throughput matters more than per-edge addressability. Nodes don't have an equivalent switch because node `_id` lookup is free (nodes are stored by their `_id` directly).
 
-Toggling on a populated graph runs a background converter that walks every edge; inspect progress with `SHOW EDGE_ID STATUS`. See <a href="/docs/gql/data-manipulation/node-and-edge-ids" target="_blank">Node and Edge IDs</a> for the syntax, toggle states, and what happens to existing `_id` values after a transition.
+Toggling on a populated graph runs a background converter that walks every edge; inspect progress with `SHOW EDGE_ID STATUS`. See <a href="/docs/gql/node-and-edge-ids" target="_blank">Node and Edge IDs</a> for the syntax, toggle states, and what happens to existing `_id` values after a transition.
 
 ## Memory & Cache Sizing
 
@@ -99,7 +99,7 @@ Imports are usually faster as a series of large transactions than as one giant t
 
 | Path | Best for | Reference |
 | -- | -- | -- |
-| `LOAD CSV` | Files already on disk on the server. Supports dump form and inline import. | <a href="/docs/gql/data-manipulation/load-csv" target="_blank">LOAD CSV</a> |
+| `LOAD CSV` | Files already on disk on the server. Supports dump form and inline import. | <a href="/docs/gql/load-csv" target="_blank">LOAD CSV</a> |
 | Driver batched `INSERT` | Data arriving from the application side. Pack 1k–10k entities per transaction. | <a href="/docs/drivers" target="_blank">Ultipa Drivers</a> |
 
 Before a bulk import: disable indexes you'll rebuild after, optionally lower `-wal-sync-mode` to `1` (Batch) for the import window, and run `db.reload_stats()` once the import completes so the planner sees current data.

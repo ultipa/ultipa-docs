@@ -41,6 +41,7 @@ SHOW FUNCTIONS FORMAT OPENAI
 | Function | Description |
 | -- | -- |
 | <a href="/docs/gql/element-functions#id">id()</a> | Gets the unique identifier `_id` of a graph element. |
+| <a href="/docs/gql/element-functions#internal_id">internal_id()</a> | Returns the system-internal numeric id (`_uuid`) as a string. |
 | <a href="/docs/gql/element-functions#labels">labels()</a> | Gets the labels of a graph element. |
 | <a href="/docs/gql/element-functions#type">type()</a> | Gets the label of an edge. |
 | <a href="/docs/gql/element-functions#keys">keys()</a> | Returns the property names of a node, edge, or the key names of a record. |
