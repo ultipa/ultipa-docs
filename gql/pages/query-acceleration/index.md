@@ -45,12 +45,13 @@ You can create an index using the `CREATE INDEX` statement. The index is built a
 
 **Details**
 
-- The `<index name>` is optional. If omitted, the system assigns a generated name.
+- The `<index name>` is optional. If omitted, the system assigns a generated name of the form `idx_<label>_<property>` (e.g., `CREATE INDEX ON NODE card (balance)` yields `idx_card_balance`). If that name is already taken, a numeric suffix is appended (`idx_card_balance_2`, `_3`, …) so repeated unnamed creates on the same column don't collide.
 - For `STRING` or `TEXT` properties, you can optionally specify `<length>` to limit the number of characters indexed per value. If omitted, the full string is indexed. See <a href="#String-Length-Limitation">String Length Limitation</a>.
 
 ```gql
--- Index cBalance for the balance property of card nodes
-CREATE INDEX cBalance ON NODE card (balance)
+-- Index for the balance property of card nodes
+-- Index name auto-generated as idx_card_balance
+CREATE INDEX ON NODE card (balance)
 
 -- Index for the STRING-type property name of card nodes, limiting the indexed length to 10 characters
 CREATE INDEX name ON NODE card (name(10))
@@ -64,17 +65,17 @@ CREATE INDEX transAmount ON EDGE transfer (amount)
 Dropping an index does not affect the actual property values.
 
 ```gql
-DROP INDEX cBalance
+DROP INDEX idx_card_balance
 
 -- You can also specify NODE or EDGE explicitly
-DROP NODE INDEX cBalance
+DROP NODE INDEX idx_card_balance
 DROP EDGE INDEX transAmountNotes
 ```
 
 Use `IF EXISTS` to avoid errors when the index doesn't exist:
 
 ```gql
-DROP INDEX IF EXISTS cBalance
+DROP INDEX IF EXISTS idx_card_balance
 ```
 
 ## Using Indexes
