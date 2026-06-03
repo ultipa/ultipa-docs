@@ -64,16 +64,7 @@ The `<callable body>` uses the format `$entity call { ... }` and supports `let` 
 | String literal | `'active'`, `"active"` | A quoted string value. |
 | Numeric literal | `18`, `3.14` | An integer or float value. |
 | Property access | `entity.name` | Reads a property from the current entity. |
-| Function call | `upper(entity.name)` | Applies a built-in function to an expression. |
-
-**Built-in functions:**
-
-| <div table-width="30">Function</div> | Description |
-| -- | -- |
-| `upper(value)` | Converts a string to uppercase. |
-| `lower(value)` | Converts a string to lowercase. |
-| `trim(value)` | Removes leading and trailing whitespace from a string. |
-| `len(value)` / `length(value)` | Returns the length of a string. |
+| Function call | `upper(entity.name)` | Applies a built-in function to an expression. See <a target="_blank" href="/docs/gql/all-functions">All Functions</a>. |
 
 **Limitations of the callable body**
 
@@ -107,6 +98,18 @@ CREATE TRIGGER "NormalizeEmail" ON NODE "User"
 MATCH (u:User {_id: 'u1'})
 SET u.email = "  Alice@Example.COM  "
 RETURN u.email   // "alice@example.com"
+```
+
+```gql
+-- BEFORE INSERT trigger: stamp creation time and capture the logged-in user
+CREATE TRIGGER "InitEmployee" ON NODE "Employee"
+  COMMENT 'Audit fields on creation'
+  BEFORE INSERT
+  CALL " $entity call { let entity.creationDate = now(); let entity.creatorName = CURRENT_USER.username } "
+
+-- Inserting an Employee now auto-stamps audit fields
+INSERT (e:Employee {name: 'Alice'})
+RETURN e.creationDate, e.creatorName   // 2026-06-03T..., "admin"
 ```
 
 ## Dropping Triggers
