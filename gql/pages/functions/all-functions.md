@@ -36,7 +36,9 @@ SHOW FUNCTIONS FORMAT JSON_SCHEMA
 SHOW FUNCTIONS FORMAT OPENAI
 ```
 
-## Element Functions
+## Function Categories
+
+### Element Functions
 
 | Function | Description |
 | -- | -- |
@@ -49,7 +51,7 @@ SHOW FUNCTIONS FORMAT OPENAI
 | <a href="/docs/gql/element-functions#properties">properties()</a> | Returns the properties of a node or edge as a record. |
 | <a href="/docs/gql/element-functions#property_exists">property_exists()</a> | Checks whether a property exists on a node or edge. |
 
-## Path Functions
+### Path Functions
 
 | Function | Description |
 | -- | -- |
@@ -61,7 +63,7 @@ SHOW FUNCTIONS FORMAT OPENAI
 | <a href="/docs/gql/path-functions#edge_ids">edge_ids()</a> | Collects the `_id` values of edges in a path into a list. |
 | <a href="/docs/gql/path-functions#ids">ids()</a> | Generic `_id` accessor for a path, node/edge, or list of nodes/edges. |
 
-## Aggregate Functions
+### Aggregate Functions
 
 | Function | Description |
 | -- | -- |
@@ -79,7 +81,7 @@ SHOW FUNCTIONS FORMAT OPENAI
 | <a href="/docs/gql/aggregate-functions#var_samp">var_samp()</a> | Computes the sample variance of a set of numeric values. |
 | <a href="/docs/gql/aggregate-functions#var_pop">var_pop()</a> | Computes the population variance of a set of numeric values. |
 
-## Mathematical Functions
+### Mathematical Functions
 
 | Function | Description |
 | -- | -- |
@@ -99,7 +101,7 @@ SHOW FUNCTIONS FORMAT OPENAI
 | <a href="/docs/gql/mathematical-functions#random">random()</a> | Returns a random floating-point number between 0 and 1. |
 | <a href="/docs/gql/mathematical-functions#sign">sign()</a> | Returns the sign of a number: -1, 0, or 1. |
 
-## Trigonometric Functions
+### Trigonometric Functions
 
 | <div table-width="15">Function</div> | Description |
 | -- | -- |
@@ -117,7 +119,7 @@ SHOW FUNCTIONS FORMAT OPENAI
 | <a href="/docs/gql/trigonometric-functions#tan">tan()</a> | Computes the tangent of an angle expressed in radian. |
 | <a href="/docs/gql/trigonometric-functions#tanh">tanh()</a> | Computes the angle in radians whose cosine is a given number. |
 
-## String Functions
+### String Functions
 
 | Function | Description |
 | -- | -- |
@@ -147,7 +149,7 @@ SHOW FUNCTIONS FORMAT OPENAI
 | <a href="/docs/gql/string-functions#base64">base64()</a> | Encodes a string to a Base64 string. |
 | <a href="/docs/gql/string-functions#unbase64">unbase64()</a> | Decodes a Base64 string to bytes. |
 
-## List Functions
+### List Functions
 
 | Function | Description |
 | -- | -- |
@@ -167,7 +169,7 @@ SHOW FUNCTIONS FORMAT OPENAI
 | <a href="/docs/gql/list-functions#reduce">reduce()</a> | Performs a calculation iteratively using each element in a list. |
 
 
-## Datetime Functions
+### Datetime Functions
 
 | <div table-width="20">Function</div> | Description |
 | -- | -- |
@@ -190,7 +192,7 @@ SHOW FUNCTIONS FORMAT OPENAI
 | <a href="/docs/gql/datetime-functions#duration_between">duration_between()</a> | Computes the duration between two temporal values. |
 | <a href="/docs/gql/datetime-functions#date_format">date_format()</a> | Formats a temporal value as a string. |
 
-## Spatial Functions
+### Spatial Functions
 
 | <div table-width="16">Function</div> | Description |
 | -- | -- |
@@ -199,14 +201,14 @@ SHOW FUNCTIONS FORMAT OPENAI
 | <a href="/docs/gql/spatial-functions/#distance">distance()</a> | Computes the distance between two points. |
 | <a href="/docs/gql/spatial-functions/#point_get">point_get()</a> | Extracts a coordinate value from a point by index. |
 
-## Null Functions
+### Null Functions
 
 | Function | Description |
 | -- | -- |
 | <a href="/docs/gql/null-functions#coalesce">coalesce()</a> | Returns the first non-null value from the argument list. |
 | <a href="/docs/gql/null-functions#nullif">nullif()</a> | Returns `null` if two arguments are equal; otherwise returns the first. |
 
-## Utility Functions
+### Utility Functions
 
 | Function | Description |
 | -- | -- |
@@ -214,7 +216,7 @@ SHOW FUNCTIONS FORMAT OPENAI
 | <a href="/docs/gql/utility-functions#type_of">type_of()</a> | Returns the type name of a value as a string. |
 | <a href="/docs/gql/utility-functions#all_different">all_different()</a> | Returns `true` if all arguments are different graph elements. |
 
-## Type Conversion Functions
+### Type Conversion Functions
 
 | Function | Description |
 | -- | -- |
@@ -226,19 +228,19 @@ SHOW FUNCTIONS FORMAT OPENAI
 | <a href="/docs/gql/type-conversion-functions#to_list">to_list()</a> | Converts a value to a list. |
 | <a href="/docs/gql/type-conversion-functions#to_map">to_map()</a> | Creates a record from key-value pairs. |
 
-## Table Functions
+### Table Functions
 
 | <div table-width="16">Function</div> | Description |
 | -- | -- |
 | <a href="/docs/gql/table-functions#table">table()</a> | Constructs a table. |
 
-## Database Functions
+### Database Functions
 
 Database functions report on the running server and the current graph: version, license, loaded plugins, statistics, schema, and backups.
 
 - **Introspection:** `db.version()`, `db.license()`, `db.stats()`, `db.overview()`, `db.node_labels()`, `db.edge_labels()`, `db.label_property()`, `db.reload_stats()`, etc. See <a target="_blank" href="/docs/operations/database-info">Operations → Database Info</a>.
 - **Backup and Restore:** `db.backup()`, `db.restore()`, `db.backups()`, etc. See <a target="_blank" href="/docs/operations/backup-restore">Operations → Backup & Restore</a>.
 
-## AI & Vector Functions
+### AI & Vector Functions
 
 AI and vector functions (vector creation, embeddings, similarity, vector index ops, NL→GQL pipeline) are documented in <a href="/docs/ai-and-vectors">AI &amp; Vectors</a>.
