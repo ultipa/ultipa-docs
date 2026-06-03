@@ -178,7 +178,7 @@ RETURN type(e)
 
 Result: 
 
-| type |
+| type(e) |
 | -- |
 | "Cites" |
 | "Cites" |
@@ -218,7 +218,7 @@ RETURN keys(n)
 
 Result:
 
-| keys |
+| keys(n) |
 | -- |
 | ["score", "author", "title"] |
 | ["score", "author", "title"] |
@@ -231,7 +231,7 @@ RETURN keys(myRecord)
 
 Result:
 
-| keys |
+| keys(myRecord) |
 | -- |
 | ["x", "y", "z"] |
 
@@ -270,7 +270,7 @@ RETURN values(myRecord)
 
 Result:
 
-| values |
+| values(myRecord) |
 | -- |
 | [1, 3, 34] |
 
@@ -309,7 +309,7 @@ RETURN properties(n)
 
 Result:
 
-| properties |
+| properties(n) |
 | -- |
 | {"score": 7, "author": "Zack", "title": "Path Patterns"} |
 | {"score": 9, "author": "Alex", "title": "Optimizing Queries"} |

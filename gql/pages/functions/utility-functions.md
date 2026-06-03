@@ -95,7 +95,7 @@ RETURN type_of(n.author)
 
 Result: 
 
-| type_of |
+| type_of(n.author) |
 | -- | 
 | STRING |
 
@@ -105,7 +105,7 @@ RETURN type_of(42), type_of("hello"), type_of([1,2,3])
 
 Result: 
 
-| type_of | type_of | type_of |
+| type_of(42) | type_of("hello") | type_of([1,2,3]) |
 | -- | -- | -- |
 | INTEGER | STRING | LIST<INTEGER> |
 

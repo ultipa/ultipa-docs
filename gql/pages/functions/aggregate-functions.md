@@ -110,7 +110,7 @@ RETURN collect_distinct(n.author)
 
 Result:
 
-| collect_distinct(n.publisher) |
+| collect_distinct(n.author) |
 | -- |
 | ["Zack","Alex"] |
 

@@ -73,6 +73,6 @@ RETURN nullif(5, 5), nullif(5, 3)
 
 Result:
 
-| nullif | nullif |
+| nullif(5, 5) | nullif(5, 3) |
 | -- | -- |
 | `null` | 5 |

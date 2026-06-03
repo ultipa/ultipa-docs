@@ -262,7 +262,7 @@ RETURN node_ids(p)
 
 Result:
 
-| pnodeIds(p) |
+| node_ids(p) |
 | -- |
 | ["P1","P2"] |
 | ["P1","P2","P3"] |
@@ -308,7 +308,7 @@ RETURN edge_ids(p)
 
 Result:
 
-| pedgeUuids(p) |
+| edge_ids(p) |
 | -- |
 | ["e:1"] |
 | ["e:1","e:2"] |
