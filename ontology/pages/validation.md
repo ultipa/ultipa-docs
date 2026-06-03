@@ -209,4 +209,11 @@ For a chain `A → B → C → D → E → F → G` (each `→` a real `TRANSITI
 | A | F | 5 | ✓ |
 | A | G | 6 | ✗ |
 
-The value must be a positive integer (`>= 1`); `0` or negative values are rejected. The default when never set is `10`. There is no "unlimited" sentinel — to allow deeper chains, set a larger explicit value.
+The value must be a positive integer (`>= 1`), or the sentinel `-1` for unbounded expansion. `0` and any other negative value are rejected. The default when never set is `10`.
+
+```gql
+-- Unbounded expansion (no depth cap)
+SET ONTOLOGY TRANSITIVE DEPTH -1
+```
+
+Use `-1` deliberately — unbounded expansion on a deep graph can be expensive.

@@ -10,8 +10,12 @@
       "title": "Class Definitions"
     },
     {
-      "file": "property-definitions.md",
-      "title": "Property Definitions"
+      "file": "object-properties.md",
+      "title": "Object Properties"
+    },
+    {
+      "file": "data-properties.md",
+      "title": "Data Properties"
     },
     {
       "file": "label-syntax.md",

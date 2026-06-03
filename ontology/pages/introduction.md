@@ -4,58 +4,55 @@ GQLDB supports ontology features that bring semantic web capabilities to your gr
 
 ## Key Concepts
 
-- **Classes**: Define types for nodes with inheritance (`SUBCLASS OF`) and exclusivity (`DISJOINT WITH`).
-- **Object Properties**: Define edge types with domain/range constraints and characteristics (SYMMETRIC, TRANSITIVE).
+- **Classes**: Define node labels with hierarchy, exclusivity, or inference.
+- **Object Properties**: Define edge labels with domain / range constraints and other features.
 - **Data Properties**: Define typed properties on nodes with XSD types.
 - **Prefixes**: Shorthand for IRI namespaces (like `foaf:` for FOAF vocabulary).
-- **Inference**: Automatic classification based on class hierarchies.
 
 ## LPG vs Ontology Graph
 
 | Feature | LPG (Labeled Property Graph) | Ontology Graph |
 | -- | -- | -- |
-| Node labels | Free-form labels | Ontology class labels (`@prefix:Class`) |
-| Edge types | Free-form types | Object properties with domain/range |
-| Schema | Optional (open graph) or defined (closed graph) | Class and property definitions |
-| Inference | None | Subclass inference, property characteristics |
-| Validation | Type checking only | Domain, range, cardinality, disjoint checks |
+| **Identity** | Local identifier | Global IRI (`foaf`, `ex`), see <a href="#Loading-Prefixes">Loading Prefixes</a> |
+| **Node labels** | Free-form labels | Ontology class labels (`@prefix:Class`), see <a href="/docs/ontology/class-definitions" target="_blank">Class Definitions</a> |
+| **Edge labels** | Free-form labels | Object properties, see <a href="/docs/ontology/object-properties" target="_blank">Object Properties</a> |
+| **Node attributes** | Free-form key / value | Data properties with XSD-typed values, see <a href="/docs/ontology/data-properties" target="_blank">Data Properties</a> |
+| **Edge attributes** | Free-form key / value | None |
+| **Schema** | Optional (open graph) or defined (closed graph) | Class and property definitions |
+| **Inference** | None | Subclass inference, property characteristics |
 
 ## Creating Ontology Graphs
 
 Create a graph with ontology support enabled:
 
 ```gql
-CREATE GRAPH my_ontology_graph WITH ONTOLOGY
+CREATE GRAPH myOntology WITH ONTOLOGY
 ```
 
 ## Loading Prefixes
 
-A **prefix** is a short alias for a long IRI (Internationalized Resource Identifier — a URL used as a globally unique identifier). Ontology terms are identified by full IRIs, a prefix lets you write a short name instead.
+A **prefix** is a short alias for a long IRI (Internationalized Resource Identifier). Ontology terms are identified by full IRIs, a prefix lets you write a short name instead.
 
-For example, after loading `foaf` as an alias for `http://xmlns.com/foaf/0.1/`, the term `<http://xmlns.com/foaf/0.1/Person>` can be written as the ontology label `@foaf:Person` in GQLDB patterns.
+For example, after loading `foaf` as an alias for `http://xmlns.com/foaf/0.1/`, the term `<http://xmlns.com/foaf/0.1/Person>` can be written as the ontology label `@foaf:Person` in GQL graph patterns.
 
-A few things follow from this:
-
-- Prefixes are **per-graph** state. After `CREATE GRAPH … WITH ONTOLOGY` you start with no prefixes loaded; load the built-ins with `LOAD ALL PREFIX` and any others you need with `LOAD PREFIX ... FROM …`.
-- The prefix name is just a local handle. Convention reuses the names the rest of the semantic-web community uses (`foaf`, `rdfs`, `schema`, `ex`) so that snippets translate between systems, but the choice is yours.
-- Two graphs from different sources can both define a class named `Person`, but `http://xmlns.com/foaf/0.1/Person` and `http://schema.org/Person` are distinct concepts. Prefixes are how you keep them apart while still writing readable queries.
-
-Load common vocabularies one at a time:
+Load common vocabularies:
 
 ```gql
-// Load common prefixes
 LOAD PREFIX foaf FROM 'http://xmlns.com/foaf/0.1/'
 LOAD PREFIX ex FROM 'http://example.org/'
 LOAD PREFIX rdfs FROM 'http://www.w3.org/2000/01/rdf-schema#'
-```
 
-The `FROM` clause also accepts an IRI literal (angle-bracketed) instead of a quoted string:
-
-```gql
+-- The FROM clause also accepts an IRI literal (angle-bracketed) instead of a quoted string
 LOAD PREFIX foaf FROM <http://xmlns.com/foaf/0.1/>
 ```
 
-Or load all built-in standard prefixes (foaf, rdf, rdfs, owl, xsd, etc.) in one statement:
+A few things follow from this:
+
+- Prefixes are **per-graph** state. After creating an ontology graph, you start with no prefixes loaded.
+- The prefix is just your local nickname for the full IRI. `LOAD PREFIX bigbird FROM 'http://xmlns.com/foaf/0.1/'` works, and `@bigbird:Person` then means the same FOAF Person that `@foaf:Person` would. By convention, reuse the community-standard names (`foaf`, `rdfs`, `schema`, `ex`).
+- Identity is by full IRI, not by short name. FOAF's `Person` (`http://xmlns.com/foaf/0.1/Person`) and Schema.org's `Person` (`http://schema.org/Person`) are distinct classes in the database even though both spell their local name "Person" — the prefix is what keeps them apart. A single node can be tagged as both without contradiction.
+
+Load all built-in standard prefixes (`foaf`, `rdf`, `rdfs`, `owl`, `xsd`, etc.):
 
 ```gql
 LOAD ALL PREFIX
@@ -75,11 +72,19 @@ View loaded prefixes:
 SHOW PREFIX
 ```
 
+Drop a prefix:
+
+```gql
+DROP PREFIX foaf
+```
+
+After dropping a prefix, ontology labels that referenced it (`@foaf:Person`, etc.) no longer resolve at parse time and queries using the short form fail. Any nodes / edges already stored under the prefix's full IRIs remain in the graph (the database stores IRIs, not the short name); re-`LOAD PREFIX foaf FROM '…'` to address them by short form again.
+
 ## Loading External Ontologies
 
 An **external ontology** is a vocabulary file authored outside of GQLDB, typically published by a standards body or community containing class hierarchies, property definitions, prefix declarations, and constraints in a serialization like OWL, Turtle, RDF/XML, or JSON-LD. Common examples include FOAF (people and social relations), Schema.org (web-structured-data terms used by Google), SKOS (concept schemes), Dublin Core (metadata terms), and PROV-O (provenance).
 
-`LOAD ONTOLOGY FROM 'file:///<path>'` reads such a file and registers everything inside in one shot, saving you from defining classes and properties for each term by hand. `<path>` is resolved by the GQLDB server: the file must exist on the **server's** filesystem (and the GQLDB process must have read permission). Loading from a server-local file is the most reliable form as it avoids network and TLS variability.
+`LOAD ONTOLOGY` reads such a file and registers everything inside in one shot, saving you from defining classes and properties for each term by hand. The file path is resolved by the GQLDB server: the file must exist on the **server's** filesystem (and the GQLDB process must have read permission). Loading from a server-local file is the most reliable form as it avoids network and TLS variability.
 
 Load from a file on the GQLDB server, format auto-detected from the `.ttl` extension:
 
@@ -95,7 +100,7 @@ LOAD ONTOLOGY FROM 'file:///srv/onto/data.txt' FORMAT TURTLE
 
 Supported `FORMAT` keywords: `OWL`, `TURTLE`, `RDFXML`, `JSONLD`.
 
-`VERBOSE` surfaces parser warnings (unknown constructs, malformed triples) in the result message — useful when integrating a new ontology to surface silent compatibility issues:
+`VERBOSE` surfaces parser warnings (unknown constructs, malformed triples) in the result message, useful when integrating a new ontology to surface silent compatibility issues:
 
 ```gql
 LOAD ONTOLOGY FROM 'file:///srv/onto/foaf.ttl' VERBOSE
@@ -126,16 +131,16 @@ Example output:
 | name | iri | classes | objectProperties | dataProperties |
 | -- | -- | -- | -- | -- |
 | FOAF | http://xmlns.com/foaf/0.1/ | 14 | 25 | 19 |
-| local | urn:local:my_ontology_graph | 3 | 1 | 2 |
+| local | urn:local:myOntology | 3 | 1 | 2 |
 
 It lists every ontology in the current graph with summary counts. It covers **both** imports and inline definitions:
 
 - One row per `LOAD ONTOLOGY` import, named after the source IRI.
-- One additional `"local"` row (IRI `urn:local:<graphName>`) if you've defined any classes and properties.
+- The `local` row is added if you've created any classes or properties **inline** (`CREATE CLASS`, `CREATE OBJECT PROPERTY`, `CREATE DATA PROPERTY`) instead of importing them. It groups all your inline definitions under one synthetic ontology.
 
-Related `SHOW` commands for finer views:
+Related `SHOW` statements for finer views:
 
-| Command | Returns |
+| Statement | Returns |
 | -- | -- |
 | `SHOW PREFIX` | Loaded prefix → IRI mappings |
 | `SHOW CLASSES` | Every class, with `localName`, `superClasses`, `label` |
