@@ -81,7 +81,7 @@ MATCH (user:User {name: 'Quasar92'})
 INSERT (user)-[:Joins]->(:Club {_id: "C2"})
 ```
 
-> **Edge `_id` on insert**: `EDGE_ID` is enabled on newly created graphs by default, you can assign a custom `_id` on edges at insert time; if `_id` is omitted, the edge receives a system-generated UUID v4 `_id` value. On graphs created with `EDGE_ID` disabled (or toggled off later), each edge receives a system-assigned `_id` value in the `e:<N>` form, and supplying `_id` in the edge property specification is rejected. See <a target="_blank" href="/docs/gql/node-and-edge-ids">Node and Edge IDs</a>.
+> **Edge `_id` on insert**: edge `_id` is enabled on newly created graphs by default, you can assign a custom `_id` on edges at insert time; if `_id` is omitted, the edge receives a system-generated UUID v4 `_id` value. On graphs created with edge `_id` disabled (or toggled off later), each edge receives a system-assigned `_id` value in the `e:<N>` form, and supplying `_id` in the edge property specification is rejected. See <a target="_blank" href="/docs/gql/node-and-edge-ids">Node and Edge IDs</a>.
 
 ## Inserting Paths
 

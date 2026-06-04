@@ -37,9 +37,9 @@ INSERT OVERWRITE (:User {name: "Brainy"})
 
 ## Overwriting Edges
 
-Overwriting edges keys on the edge's `_id` and therefore requires `EDGE_ID` to be enabled on the graph. `EDGE_ID` is enabled by default on newly created graphs; on a graph created with `EDGE_ID` disabled (or toggled off later), `INSERT OVERWRITE` on an edge is rejected. See <a target="_blank" href="/docs/gql/node-and-edge-ids">Node and Edge IDs</a>.
+Overwriting edges keys on the edge's `_id` and therefore requires edge `_id` to be enabled on the graph. Edge `_id` is enabled by default on newly created graphs; on a graph created with edge `_id` disabled (or toggled off later), `INSERT OVERWRITE` on an edge is rejected. See <a target="_blank" href="/docs/gql/node-and-edge-ids">Node and Edge IDs</a>.
 
-When `EDGE_ID` is enabled, an edge will be overwritten if `_id` is supplied and that `_id` already exists on an edge in the graph. Otherwise, a new edge will be inserted.
+When edge `_id` is enabled, an edge will be overwritten if `_id` is supplied and that `_id` already exists on an edge in the graph. Otherwise, a new edge will be inserted.
 
 ```gql
 -- Insert edge with _id as f-123

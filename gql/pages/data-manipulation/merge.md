@@ -84,7 +84,7 @@ RETURN r
 
 If a `Knows` edge already runs from `Alice` to `Bob`, its `interactions` counter is incremented; otherwise a new edge is created with `since = 2024`.
 
-> **Edge `_id` in `MERGE`**: If you supply `_id` inside the edge property specification (e.g., `MERGE (a)-[r:Knows {_id: 'tx-123'}]->(b)`), the graph must have `EDGE_ID` enabled. See <a target="_blank" href="/docs/gql/node-and-edge-ids">Node and Edge IDs</a>.
+> **Edge `_id` in `MERGE`**: If you supply `_id` inside the edge property specification (e.g., `MERGE (a)-[r:Knows {_id: 'tx-123'}]->(b)`), the graph must have edge `_id` enabled. See <a target="_blank" href="/docs/gql/node-and-edge-ids">Node and Edge IDs</a>.
 
 ## Merging Whole Patterns
 

@@ -39,7 +39,7 @@ Rule of thumb: if a query runs `CALL algo.*`, it needs the compute engine. If it
 
 ## Edge ID
 
-`EDGE_ID` is a per-graph toggle that controls whether edges carry a fast `_id` lookup path. When enabled (the default), each edge gets a UUID-style `_id`, backed by a hidden on-disk index and an in-memory cache; you can match an edge by `_id` in O(1) and assign custom `_id` values at insertion. When disabled, the index and cache go away, edges fall back to system-assigned `e:<N>` identifiers, and `_id`-based edge lookups are rejected.
+Edge `_id` is a per-graph toggle that controls whether edges carry a fast `_id` lookup path. When enabled (the default), each edge gets a UUID-style `_id`, backed by a hidden on-disk index and an in-memory cache; you can match an edge by `_id` in O(1) and assign custom `_id` values at insertion. When disabled, the index and cache go away, edges fall back to system-assigned `e:<N>` identifiers, and `_id`-based edge lookups are rejected.
 
 The lookup is real overhead: roughly **50 bytes per edge** in the in-memory cache (≈5 GB for 100M edges, ≈50 GB for 1B), plus the hidden index on disk and a uniqueness check on every write. Turn it off when the workload never addresses edges by `_id` — typically pure-topology workloads (graph algorithms, k-hop traversal, recommendation engines) and bulk ETL pipelines where insert throughput matters more than per-edge addressability. Nodes don't have an equivalent switch because node `_id` lookup is free (nodes are stored by their `_id` directly).
 

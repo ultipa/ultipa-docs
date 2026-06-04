@@ -16,7 +16,7 @@ INSERT (p1:Paper {_id:'P1', title:'Efficient Graph Search', score:6, author:'Ale
 
 Gets the unique identifier `_id` of a graph element. `element_id()` is a synonym.
 
-> On an `EDGE_ID DISABLED` graph (see <a href="/docs/gql/node-and-edge-ids" target="_blank">Node and Edge IDs</a>) edges have no user-visible `_id`, so `id(e)` raises an error.
+> On an edge `_id` disabled graph (see <a href="/docs/gql/node-and-edge-ids" target="_blank">Node and Edge IDs</a>) edges have no user-visible `_id`, so `id(e)` raises an error.
 
 <table style="width: 100%;">
   <tbody>
@@ -58,7 +58,7 @@ Result:
 
 Returns the system-internal numeric identifier (the `_uuid`) of a node or edge as a decimal string. 
 
-> Unlike `id()` which can error on edges in an `EDGE_ID DISABLED` graph, `internal_id()` **always resolves**. It's the function form of the built-in `_uuid` property and works on both `EDGE_ID`-enabled and disabled graphs.
+> Unlike `id()` which can error on edges in an edge `_id` disabled graph, `internal_id()` **always resolves**. It's the function form of the built-in `_uuid` property and works on both edge `_id` enabled and disabled graphs.
 
 <table style="width: 100%;">
   <tbody>

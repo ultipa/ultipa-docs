@@ -46,7 +46,7 @@ Connection to the target GQLDB cluster and the destination graph.
 | `password` | string | GQLDB password. Supports env vars: `"${DB_PASSWORD}"`. |
 | `graph` | string | Target graph name. |
 | `graph_type` | string | `open` or `closed`. Used when the importer auto-creates the graph. |
-| `edge_id` | bool | If the importer auto-creates the graph, controls the `EDGE_ID` feature on it. `true` (default) creates the graph with `EDGE_ID` enabled; `false` creates it with `WITH EDGE_ID DISABLED`. Matches the GQLDB default of EDGE_ID-enabled for new graphs. See <a target="_blank" href="/docs/gql/node-and-edge-ids">Node and Edge IDs</a>. |
+| `edge_id` | bool | If the importer auto-creates the graph, controls the edge `_id` feature on it. `true` (default) creates the graph with edge `_id` enabled; `false` creates it with `WITH EDGE_ID DISABLED`. Matches the GQLDB default of edge-`_id`-enabled for new graphs. See <a target="_blank" href="/docs/gql/node-and-edge-ids">Node and Edge IDs</a>. |
 | `timeout` | integer | Per-RPC timeout in seconds. |
 | `tls.enabled` | bool | Enable TLS to the GQLDB server. |
 | `tls.cert_file` | string | Client certificate path. |
@@ -89,7 +89,7 @@ The structure depends on the source category.
 | Field | Required | Description |
 |---|---|---|
 | `labels` (nodes) / `label` (edges) | yes | Target label(s). Nodes accept multiple. |
-| `id_column` | optional | Column / field carrying the entity's `_id`. Default: `_id`. Valid on nodes always; valid on edges **only when the target graph has `EDGE_ID` enabled** (i.e., `server.edge_id: true` or an already-enabled existing graph). Supplying `id_column` on an edge entry against an `EDGE_ID`-disabled graph is rejected. |
+| `id_column` | optional | Column / field carrying the entity's `_id`. Default: `_id`. Valid on nodes always; valid on edges **only when the target graph has edge `_id` enabled** (i.e., `server.edge_id: true` or an already-enabled existing graph). Supplying `id_column` on an edge entry against an edge `_id` disabled graph is rejected. |
 | `from_column` | (edges) | Column / field carrying the source node's `_id`. |
 | `to_column` | (edges) | Column / field carrying the target node's `_id`. |
 | `properties` | optional | Either the **short form** (a map of `name: type`) or the **list form** (a list of objects with `name`, `type`, and optionally `prefix`, `new_name`). See <a href="#property-mapping">Property Mapping</a>. |

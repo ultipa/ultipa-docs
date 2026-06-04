@@ -196,7 +196,7 @@ INTO Person MAPPING (
 
 ### Edge import
 
-For edges, name the endpoint labels and the CSV columns that supply each endpoint's `_id`. Rows whose endpoint `_id` is missing in the graph are skipped and reported in the summary instead of erroring the whole import. Requires the graph to have `EDGE_ID` enabled (default for new graphs).
+For edges, name the endpoint labels and the CSV columns that supply each endpoint's `_id`. Rows whose endpoint `_id` is missing in the graph are skipped and reported in the summary instead of erroring the whole import. Requires the graph to have edge `_id` enabled (default for new graphs).
 
 ```gql
 LOAD CSV FROM 'data/transfers.csv' WITH HEADER

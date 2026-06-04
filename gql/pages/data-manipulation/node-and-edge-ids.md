@@ -2,8 +2,8 @@
 
 Every node and edge in a graph carries two built-in identifiers:
 
-- **`_id`**: the **user-facing** identifier. A string you can assign yourself or let the system generate. Nodes always have it; edges have it only when the per-graph edge `_id` toggle is enabled. Use `_id` for application data models and any identifier you want to control or reference from outside the database.
-- **`_uuid`**: the **system-internal** identifier. A decimal-string-encoded `uint64` automatically assigned by the engine. Always populated for every node and edge, regardless of the edge `_id` toggle. Use `_uuid` (or its function form `internal_id()`) when you need an identifier that's guaranteed to resolve, especially for edges in edge `_id` disabled graphs.
+- **`_id`**: the **user-facing** identifier. A string you can assign yourself or let the system generate. Nodes always have it; edges' `_id` can be toggled off/on. Use `_id` for application data models and any identifier you want to control or reference from outside the database.
+- **`_uuid`**: the **system-internal** identifier. A `UINT64` formatted as a decimal-string automatically assigned by the engine. Always populated for every node and edge. Use `_uuid` when you need an identifier that's guaranteed to resolve, especially for edges in edge `_id` disabled graphs.
 
 ## Node _id
 

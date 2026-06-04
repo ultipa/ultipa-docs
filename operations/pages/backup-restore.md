@@ -338,7 +338,7 @@ A full backup archives the entire graph directory, so all on-disk state is prese
 After restore, in-memory managers and caches are reinitialized from the restored on-disk files:
 
 - The full-text index manager is initialized in the background — searches wait until it finishes loading.
-- The node ID cache (and the edge ID cache, when `EDGE_ID` is enabled) is rebuilt from the restored data.
+- The node ID cache (and the edge ID cache, when edge `_id` is enabled) is rebuilt from the restored data.
 
 The following are **not** in the backup:
 
