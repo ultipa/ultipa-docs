@@ -4,9 +4,9 @@ This section contains a summary of all functions supported in GQL.
 
 ## Naming Convention
 
-Multi-word function names follow ISO/IEC 39075 `UPPER_SNAKE_CASE` (`to_integer`, `date_add`, `db.node_labels`, ...). Single-word names (`upper`, `cardinality`, `coalesce`, `normalize`, `nullif`, ...) are kept unbroken per the standard; numeric suffixes attach directly (`log10`, `point3d`).
+Multi-word function names follow ISO/IEC 39075 snake case (`to_integer`, `date_add`, `db.node_labels`, ...). Single-word names (`upper`, `cardinality`, `coalesce`, `normalize`, `nullif`, ...) are kept unbroken per the standard; numeric suffixes attach directly (`log10`, `point3d`).
 
-Function lookup is **case-insensitive and underscore-insensitive**. `to_integer`, `TO_INTEGER`, `tointeger`, and `ToInteger` all resolve to the same function. Previous camelCase spellings (`toInteger`, `db.nodeLabels`, ...) and no-separator spellings (`dateformat`, `pointget`, ...) are additionally registered as **deprecated aliases**: they still resolve, but each call emits a per-request warning via `Response.Warnings` on every driver.
+In GQLDB, function lookup is **case-insensitive and underscore-insensitive**. `to_integer`, `TO_INTEGER`, `tointeger`, and `ToInteger` all resolve to the same function.
 
 ## Showing Functions
 

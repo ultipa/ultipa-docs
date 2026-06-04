@@ -1,71 +1,135 @@
 # AI Completion
 
-AI completion functions use a large language model to generate or execute GQL queries from natural language. Use `ai.set_completion_provider()` to set the active completion AI provider.
+AI completion functions use a large language model to generate or execute GQL queries from natural language. 
+
+> Use <a target="_blank" href="/docs/ai-and-vectors/provider-configuration#ai-set_completion_provider">ai.set_completion_provider()</a> to set the active completion AI provider.
 
 ## Example Graph
 
-<center><img src="images/ai-completion-example.png"></center>
+<center><img src="images/ai-completion-example.drawio.svg"></center>
 
 ```gql
-INSERT (p1:Paper {_id:'P1', title:'Efficient Graph Search', score:6, author:'Alex'}),
-       (p2:Paper {_id:'P2', title:'Optimizing Queries', score:9, author:'Alex'}),
-       (p3:Paper {_id:'P3', title:'Path Patterns', score:7, author:'Zack'}),
-       (p1)-[:Cites {weight:2}]->(p2),
-       (p2)-[:Cites {weight:1}]->(p3)
+INSERT (alice:Person {_id: 'U1', name: 'Alice', age: 28, city: 'New York'}),
+       (bob:Person {_id: 'U2', name: 'Bob', age: 32, city: 'New York'}),
+       (carol:Person {_id: 'U3', name: 'Carol', age: 25, city: 'Boston'}),
+       (david:Person {_id: 'U4', name: 'David', age: 30, city: 'Boston'}),
+       (eve:Person {_id: 'U5', name: 'Eve', age: 27, city: 'Seattle'}),
+       (alice)-[:FRIEND]->(bob), (alice)-[:FRIEND]->(carol),
+       (bob)-[:FRIEND]->(david), (carol)-[:FRIEND]->(david),
+       (david)-[:FRIEND]->(eve)
 ```
 
-## NL-to-GQL Pipeline
+## NL-to-GQL: ai.gql()
 
-### ai.gql()
-
-`ai.gql()` converts a natural language question into a GQL query using the configured completion provider. It is registered in **two forms** — pick the one that matches what you want back:
+`ai.gql()` converts a natural language question into a GQL query using the configured completion provider. It is registered in **two forms**:
 
 | Form | Returns | When to use |
 | -- | -- | -- |
-| **Function:** `RETURN ai.gql("...")` | The generated GQL string (blocks until the pipeline finishes) | You only need the query string and don't care about per-stage timing, token counts, or tool calls. Up to 3 positional args: `ai.gql(nl [, instruction [, timeout_ms]])`. |
-| **Procedure:** `CALL ai.gql({nl: "..."}) YIELD stage, data, ...` | One row per pipeline stage (start, routing, grounding, generation, tool, validation, final, ...) | You want a live trace — latency per stage, token usage, which tools the model called, what it tried before settling. |
+| **Function:** `RETURN ai.gql()` | The generated GQL string or a `{gql, rows, count}` map | You only need the query string (and optionally its result rows), and don't care about per-stage timing, token counts, or tool calls. |
+| **Procedure:** `CALL ai.gql()` | One row per pipeline stage | You want a live trace: latency per stage, token usage, which tools the model called, what it tried before settling. |
 
-The two share the same underlying pipeline; the scalar form just blocks and returns the final row's `data.gql`.
+### Function Form
 
-#### Function Form
+The function form supports four positional arguments:
+
+| Argument | Type | Default | Description |
+| -- | -- | -- | -- |
+| `nl` | `STRING` | / | **Required.** The natural-language question to translate. |
+| `instruction` | `STRING` | `""` | Extra guidance for the LLM on top of the auto-loaded schema. |
+| `timeout_ms` | `INTEGER` | `0` | Per-call timeout bounding the entire pipeline. `0` means no timeout. |
+| `execute` | `BOOLEAN` | `false` | When `true`, the generated query is also executed and the result is returned as a `{gql, rows, count}` map. Only **read-only queries** are allowed; mutating queries are rejected. |
+
+Simplest: NL in, GQL string out.
 
 ```gql
--- Simplest: NL in, GQL string out
-RETURN ai.gql("Find all papers written by Alex")
--- Result: "MATCH (p:Paper) WHERE p.author = 'Alex' RETURN p"
+RETURN ai.gql("Names of Alice's friends")
 ```
 
+Result: 
+
+| ai.gql("Names of Alice's friends") |
+| -- |
+| `MATCH (a:Person)-[:FRIEND]->(b:Person) WHERE a.name = 'Alice' RETURN b.name` |
+
+Generate and execute:
+
 ```gql
--- With extra guidance and a 15-second cap
-RETURN ai.gql(
-  "friends of friends of Alice",
-  "FRIEND edges are bidirectional even though stored directed; consider both directions.",
-  15000
-)
+RETURN ai.gql("Names of Alice's friends", "", 0, true)
 ```
 
-#### Procedure Form
+Result:
 
-Parameters are passed as a single map literal:
+```json
+{
+  "gql": "MATCH (a:Person)-[:FRIEND]->(b:Person) WHERE a.name = 'Alice' RETURN b.name",
+  "rows": [
+    { "b.name": "Bob" },
+    { "b.name": "Carol" }
+  ],
+  "count": 2
+}
+```
 
-| Parameter | Type | Description |
-| -- | -- | -- |
-| `nl` | `STRING` | **Required.** The natural-language question to translate. |
-| `instruction` | `STRING` | Extra guidance for the LLM on top of the auto-loaded schema (e.g. multi-hop relationship hints, domain rules). Falls back to the session-level value set via `ai.set_ai_config('instruction', '...')` when omitted. Empty string disables it. |
-| `timeout_ms` | `INTEGER` | Per-call timeout bounding the entire pipeline. On expiry, an `error` row is emitted and the stream closes. `0` or missing = no timeout. |
-| `conversation_id` | `STRING` | Thread id for multi-turn refinement. Prior turns sharing this id are surfaced in the LLM prompt; successful turns are appended back automatically, so follow-ups like *"now filter to Bologna"* refine the previous query instead of starting fresh. |
+### Procedure Form
+
+Parameters are passed as a single map literal. The procedure form is a superset of the function form, it accepts the same `nl` / `instruction` / `timeout_ms` / `execute` arguments, plus three procedure-only parameters:
+
+<table>
+  <thead>
+    <tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>nl</code></td>
+      <td colspan="3" rowspan="4">See <a href="#Function-Form">Function Form</a> above.</td>
+    </tr>
+    <tr><td><code>instruction</code></td></tr>
+    <tr><td><code>timeout_ms</code></td></tr>
+    <tr><td><code>execute</code></td></tr>
+    <tr>
+      <td><code>conversation_id</code></td>
+      <td><code>STRING</code></td>
+      <td>/</td>
+      <td>Thread id for multi-turn refinement. Prior turns sharing this id are surfaced in the LLM prompt; successful turns are appended back automatically, so follow-ups like <em>"now filter to Bologna"</em> refine the previous query instead of starting fresh.</td>
+    </tr>
+    <tr>
+      <td><code>dry_run</code></td>
+      <td><code>BOOLEAN</code></td>
+      <td><code>false</code></td>
+      <td>Only meaningful with <code>execute: true</code>. Runs grounding + generation + validation but <strong>skips execution</strong>; the <code>final</code> event carries the generated GQL with <code>data.dry_run = true</code>. Use as a plan-before-execute preview.</td>
+    </tr>
+    <tr>
+      <td><code>max_rows_scanned</code></td>
+      <td><code>INTEGER</code></td>
+      <td><code>0</code></td>
+      <td>Only meaningful with <code>execute: true</code>. <strong>Cost gate</strong>: if the preflight estimate of rows the query would touch exceeds this cap, the pipeline emits an <code>error</code> stage row and does <strong>not</strong> execute. <code>0</code> = no cap.</td>
+    </tr>
+  </tbody>
+</table>
 
 ```gql
-CALL ai.gql({nl: "Find all papers written by Alex"})
+CALL ai.gql({nl: "Names of Alice's friends"})
 YIELD stage, detail, elapsed_ms, tokens_input, tokens_output, tokens_cached, data
 ```
 
-With extra guidance and a 15-second cap:
+Result (one row per pipeline stage):
+
+| stage | detail | elapsed_ms | tokens_input | tokens_output | tokens_cached | data |
+| -- | -- | --: | --: | --: | --: | -- |
+| `start` | Names of Alice's friends | 0 | 0 | 0 | 0 | `{require_read: false}` |
+| `routing` | MATCH intent — using LLM path | 0 | 0 | 0 | 0 | `{}` |
+| `grounding` | 1 labels, 1 patterns selected | 925 | 0 | 0 | 0 | `{pattern_count: 1, node_labels: ["Person"], edge_labels: ["FRIEND"]}` |
+| `generation` | MATCH (a:Person)-[:FRIEND]->(b:Person) WHERE a.name = 'Alice' RETURN b.name | 2165 | 5263 | 27 | 2816 | `{tool_calls: 0, duration_ms: 1240, has_text: true, step: 0}` |
+| `generation` | final candidate: MATCH (a:Person)-[:FRIEND]->(b:Person) WHERE a.name = 'Alice' RETURN b.name | 2165 | 5263 | 27 | 2816 | `{candidate: "MATCH (a:Person)-[:FRIEND]->(b:Person) WHERE a.name = 'Alice' RETURN b.name", steps: 1, termination: "final"}` |
+| `validation` | passed | 2166 | 5263 | 27 | 2816 | `{passed: true, class: "read"}` |
+| `final` | MATCH (a:Person)-[:FRIEND]->(b:Person) WHERE a.name = 'Alice' RETURN b.name | 2166 | 5263 | 27 | 2816 | `{gql: "MATCH (a:Person)-[:FRIEND]->(b:Person) WHERE a.name = 'Alice' RETURN b.name"}` |
+
+With extra guidance and a 15-second cap, filtering down to the final GQL string:
 
 ```gql
 CALL ai.gql({
-  nl: "friends of friends of Alice",
-  instruction: "FRIEND edges are bidirectional even though stored directed; consider both directions.",
+  nl: "Friends of friends of David",
+  instruction: "FRIEND edges are bidirectional even though stored directed; consider both directions",
   timeout_ms: 15000
 })
 YIELD stage, data
@@ -75,17 +139,9 @@ RETURN data.gql
 
 Result:
 
-| stage | detail | elapsed_ms | tokens_input | tokens_output | tokens_cached | data |
-| -- | -- | --: | --: | --: | --: | -- |
-| `start` | Find all papers written by Alex | 0 | 0 | 0 | 0 | `{}` |
-| `routing` | MATCH intent — using LLM path | 0 | 0 | 0 | 0 | `{}` |
-| `grounding` | 2 labels, 1 patterns selected | 1441 | 0 | 0 | 0 | `{node_labels: ["Paper"], edge_labels: ["Cites"], pattern_count: 1}` |
-| `generation` | requested 1 tool call(s) | 10188 | 5267 | 29 | 0 | `{has_text: false, step: 0, tool_calls: 1, duration_ms: 8746}` |
-| `tool` | validate_gql → {"class":"read","valid":true} | 10188 | 5267 | 29 | 0 | `{name: "validate_gql", args: {query: "MATCH (p:Paper) WHERE p.author = 'Alex' RETURN p"}, result: {class: "read", construct: "", valid: true}, is_error: false, duration_ms: 0}` |
-| `generation` | MATCH (p:Paper) WHERE p.author = 'Alex' RETURN p | 18026 | 10573 | 45 | 4864 | `{has_text: true, step: 1, tool_calls: 0, duration_ms: 7838}` |
-| `generation` | final candidate: MATCH (p:Paper) WHERE p.author = 'Alex' RETURN p | 18026 | 10573 | 45 | 4864 | `{candidate: "MATCH (p:Paper) WHERE p.author = 'Alex' RETURN p", steps: 2, termination: "final"}` |
-| `validation` | passed | 18027 | 10573 | 45 | 4864 | `{class: "read", passed: true}` |
-| `final` | MATCH (p:Paper) WHERE p.author = 'Alex' RETURN p | 18027 | 10573 | 45 | 4864 | `{gql: "MATCH (p:Paper) WHERE p.author = 'Alex' RETURN p"}` |
+| data.gql |
+| -- |
+| `MATCH (a:Person {name: 'Alice'})-[:FRIEND]-()-[:FRIEND]-(fof:Person) WHERE fof <> a RETURN DISTINCT fof.name` |
 
 `ai.gql()` produces multiple rows of output as the **NL-to-GQL pipeline** executes. The pipeline automatically includes the current graph's schema (labels, properties, edge patterns) as context for the LLM.
 
@@ -115,12 +171,12 @@ You can omit any column you don't care about. Common patterns:
 
 ```gql
 -- Just the final query
-CALL ai.gql({nl: "Find all papers written by Alex"}) YIELD stage, data
+CALL ai.gql({nl: "Names of Alice's friends"}) YIELD stage, data
 FILTER stage = "final"
 RETURN data.gql
 
 -- Stage trace only, no payload
-CALL ai.gql({nl: "Find all papers written by Alex"}) 
+CALL ai.gql({nl: "Names of Alice's friends"}) 
 YIELD stage, detail, elapsed_ms
 
 -- Just token accounting
@@ -143,7 +199,7 @@ During the `generation` stage the LLM can call any of the following tools. Each 
 | `show_algorithms` | List the 77 built-in algorithms (optionally filtered by `category`). Returns the same payload as `SHOW ALGOS`. |
 | `describe_algorithm` | Look up signature, parameters, and YIELD columns for a specific algorithm. |
 
-**Common Intents → `CALL algo.*`**
+### Common Intents
 
 The system prompt steers algorithm-shaped questions to `CALL algo.<name>(...) YIELD ...` rather than a naive `MATCH ... RETURN`. Common mappings:
 
@@ -156,7 +212,7 @@ The system prompt steers algorithm-shaped questions to `CALL algo.<name>(...) YI
 | Similar nodes | `algo.similarity`, `algo.knn` |
 | Embeddings | `algo.node2vec`, `algo.fastrp` |
 
-Example — asking for "the most important papers" emits:
+Example — asking for "the most influential people" emits:
 
 ```gql
 CALL algo.pagerank() YIELD nodeId, score
@@ -209,21 +265,21 @@ The returned map contains:
 | `trace` | MAP | Pipeline details including schema used, generation steps, tool calls, validation result, and token usage. |
 
 ```gql
-RETURN ai.explain("Find ALL papers written by Alex")
+RETURN ai.explain("Find ALL of Alice's friends")
 ```
 
 Result:
 
 ```json
 {
-  "gql": "MATCH (p:Paper) WHERE p.author = 'Alex' RETURN p",
+  "gql": "MATCH (a:Person {name: 'Alice'})-[:FRIEND]->(f:Person) RETURN f",
   "trace": {
     "total_duration_ms": 4753,
     "schema": {
-      "label_count": 2,
+      "label_count": 1,
       "pattern_count": 1,
-      "node_labels": ["Paper"],
-      "edge_labels": ["Cites"]
+      "node_labels": ["Person"],
+      "edge_labels": ["FRIEND"]
     },
     "generation": {
       "used_tool_use": true,
@@ -235,7 +291,7 @@ Result:
           "tool_calls": [
             {
               "name": "validate_gql",
-              "args": {"query": "MATCH (p:Paper) WHERE p.author = 'Alex' RETURN p"},
+              "args": {"query": "MATCH (a:Person {name: 'Alice'})-[:FRIEND]->(f:Person) RETURN f"},
               "result": {
                 "class": "read",
                 "construct": "",
@@ -247,7 +303,7 @@ Result:
           ]
         },
         {
-          "assistant_text": "MATCH (p:Paper) WHERE p.author = 'Alex' RETURN p",
+          "assistant_text": "MATCH (a:Person {name: 'Alice'})-[:FRIEND]->(f:Person) RETURN f",
           "duration_ms": 1837,
           "tool_calls": []
         }
@@ -272,7 +328,7 @@ Result:
         }
       }
     },
-    "nl": "Find ALL papers written by Alex",
+    "nl": "Find ALL of Alice's friends",
     "termination": "success",
     "examples": [],
     "refinements": []
@@ -400,12 +456,12 @@ Typical loop:
 
 ```gql
 -- 1. Generate a query and inspect the result
-CALL ai.gql({nl: "How many papers did Alex write?"}) YIELD stage, data
+CALL ai.gql({nl: "How many friends does Alice have?"}) YIELD stage, data
 FILTER stage = "final"
 RETURN data.gql
 
 -- 2. Rate it — a low rating purges this NL/GQL pair from memory
-RETURN ai.rate(2, "model returned top-N instead of count")
+RETURN ai.rate(2, "model returned the friend list instead of a count")
 ```
 
 Now any future *"how many ..."* prompt won't recall this bad answer. If you'd rated it `5`, the pair would stick around and be surfaced as a positive example.
@@ -688,72 +744,3 @@ Enable per-graph query memory:
 ```gql
 RETURN ai.set_ai_config("query_memory_enabled", true)
 ```
-
-## Troubleshooting
-
-### CALL ai.gql(...) returns nothing / errors with "no completion provider"
-
-**Symptom:** Either the call returns an empty result or the first row has `stage = "error"` with detail `no completion provider configured`.
-
-**Cause:** No completion provider has been activated for the session.
-
-**How to confirm:**
-
-```gql
-SHOW AI PROVIDERS
-```
-
-The `status` column should show `configured` for at least one row with `supports = completion`. If everything is `unconfigured`, no provider is active.
-
-**Fix:**
-
-```gql
-RETURN ai.set_api_key("openai", "sk-...")
-RETURN ai.set_completion_provider("openai")
-```
-
-The API key persists to disk encrypted (`ai.set_api_key` survives restart). The completion-provider selection is also persisted per-graph.
-
-### Generation hits max_steps and returns a wrong-shape query
-
-**Symptom:** The last `generation` row's `data.termination` is `"max_steps"` (not `"final"`), and the returned `data.gql` is a best-guess top-N preview instead of, e.g., a `count(...)` aggregation the question asked for.
-
-**Cause:** The LLM used up its step budget exploring tools (`get_label_property`, `get_overview`, `sample_query`, `validate_gql`) before producing a final candidate, so it returned the most recent partial.
-
-**Fix:** Raise the step budget
-
-```gql
-RETURN ai.set_ai_config("max_steps", 8)
-```
-
-Default is `4`. Tool-heavy domains (large schemas, ambiguous questions) typically want 6–10. Check current config with `RETURN ai.ai_config()`.
-
-### "How many" questions return a top-N list, not a count
-
-**Symptom:** `CALL ai.gql({nl: "How many papers did Alex write?"})` returns `MATCH (p:Paper) WHERE p.author = 'Alex' RETURN p.title, p.score ORDER BY p.score DESC LIMIT 5` instead of a `count()`.
-
-**Cause:** The model is sometimes biased toward "show me" templates over aggregation, especially when the schema has rich properties. The `final.data.count` field reports **rows in the result set** (5 here), not the answer to the question.
-
-**Fix:** Phrase the prompt to be explicit about the aggregation
-
-```gql
-CALL ai.gql({nl: "Return the COUNT of papers by Alex"})
-```
-
-Or capture the generated query and inspect it before running.
-
-### Skill or trace lookup returns NULL
-
-**Symptom:** `RETURN ai.skill_nl("top_authors")` returns `NULL` even though you ran `ai.save_skill("top_authors", "...")` earlier.
-
-**Cause:** Skills are scoped to the current graph. If you switched graphs or restarted the server, the per-graph skill store doesn't surface skills from the previous graph.
-
-**How to confirm:**
-
-```gql
-RETURN ai.list_skills()
-```
-
-If the list is empty, the current graph has no skills.
-
-**Fix:** Re-issue `ai.save_skill(...)` in the current graph, or `USE` the graph that had the original skill.

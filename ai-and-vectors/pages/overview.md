@@ -45,14 +45,16 @@ Some providers support both embedding and completion, while others support only 
 | <a href="/docs/ai-and-vectors/provider-configuration#ai-set_provider">ai.set_provider()</a> | Sets the active embedding provider. |
 | <a href="/docs/ai-and-vectors/provider-configuration#ai-provider">ai.provider()</a> | Returns the name of the current embedding provider. |
 | <a href="/docs/ai-and-vectors/provider-configuration#ai-embed_dim">ai.embed_dim()</a> | Returns the embedding dimension of the current provider. |
+| <a href="/docs/ai-and-vectors/provider-configuration#ai-set_embedding_model">ai.set_embedding_model()</a> | Overrides the embedding model for a provider at runtime. Warns and requires `ai.rebuild_index()` if the embedding dimension changes. |
 | <a href="/docs/ai-and-vectors/provider-configuration#ai-set_completion_provider">ai.set_completion_provider()</a> | Sets the active completion provider. |
 | <a href="/docs/ai-and-vectors/provider-configuration#ai-completion_provider">ai.completion_provider()</a> | Returns the name of the current completion provider. |
+| <a href="/docs/ai-and-vectors/provider-configuration#ai-set_completion_model">ai.set_completion_model()</a> | Overrides the completion model for a provider at runtime. |
 
 ### AI Completion
 
 | Procedure/Function | Description |
 | -- | -- |
-| <a href="/docs/ai-and-vectors/ai-completion#ai-gql">ai.gql()</a> | Streaming procedure. Converts natural language to a GQL query. |
+| <a href="/docs/ai-and-vectors/ai-completion#NL-to-GQL-ai-gql">ai.gql()</a> | Streaming procedure. Converts natural language to a GQL query. |
 | <a href="/docs/ai-and-vectors/ai-completion#ai-explain">ai.explain()</a> | Runs the NL-to-GQL pipeline and returns the generated query with a full reasoning trace (schema, generation steps, tool calls, validation, token usage). Does not execute. |
 | <a href="/docs/ai-and-vectors/ai-completion#ai-trace">ai.trace()</a> | Returns the most recent NL-to-GQL pipeline trace, or `NULL` if none. |
 | <a href="/docs/ai-and-vectors/ai-completion#ai-traces">ai.traces()</a> | Returns the most recent `n` traces (newest first). |
