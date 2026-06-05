@@ -1,10 +1,10 @@
 # Graph Types
 
+> **Scope of this page.** This page covers **named graph types**, the catalog objects created via `CREATE GRAPH TYPE`.<br><br>The inline (`CREATE GRAPH <graph> { … }`), `LIKE`, and `AS COPY OF` forms produce closed graphs whose graph type is embedded directly in the graph, they do not create a named graph type. For those, see <a href="/docs/gql/closed-graphs" target="_blank">Closed Graphs</a>.
+
 ## Overview
 
-A **graph type** is a reusable schema definition — a list of node types and edge types — that one or more graphs can be instantiated from. Graph types let multiple graphs share the same shape without redeclaring the schema each time.
-
-Graph types are independent objects: dropping a graph type does not affect graphs that were created from it, and conversely.
+A **graph type** is a **named, reusable schema definition**, including a list of node types and edge types. Named graph types let multiple graphs share the same shape without redeclaring the schema each time.
 
 ## Showing Graph Types
 
@@ -185,10 +185,11 @@ The `IF EXISTS` clause is used to prevent errors when attempting to delete a gra
 DROP GRAPH TYPE IF EXISTS socialType
 ```
 
-Dropping a graph type does not affect graphs that were already instantiated from it.
+## Bounding to Graphs
 
-## Instantiating Closed Graphs
+Create a graph using a named graph type, see <a target="_blank" href="/docs/gql/closed-graphs">Closed Graphs</a>. Once a graph is bound to a graph type, the binding semantics are strict:
 
-Create a graph using a named graph type, see <a target="_blank" href="/docs/gql/closed-graphs#Named-Graph-Type">Named Graph Type</a>. The instantiatized graph is a **closed graph**: inserts must conform to one of the node or edge types defined by the referenced graph type.
-
-> The link between a closed graph and its graph type is established only at instantiation time where the schema is copied from the type into the graph. After that, the two are independent: subsequent `ALTER GRAPH TYPE` changes do not propagate to graphs already created from it, and the bound graph can independently `ALTER GRAPH ... ADD/DROP NODE/EDGE` to evolve its own schema without affecting the type.
+- The binding is immutable for the bound graph's lifetime. You can unbound it, but there is no rebind to switch types.
+- Any changes on a graph type propagates automatically to every bound graph. Altering a node or edge type on the named graph type immediately re-shapes the schema of every graph bound to it.
+- Direct schema evolution is rejected on a bound graph. Detach it first if you want this graph to diverge.
+- A graph type cannot be dropped while any graph is bound to it.

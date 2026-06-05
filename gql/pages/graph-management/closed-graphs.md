@@ -2,11 +2,11 @@
 
 ## Overview
 
-A **closed graph** is constrained by its **graph type**, which is a list of node types and edge types. It imposes a strict framework that governs data insertion: each node or edge belongs to exactly one **node type** or **edge type**. The graph type ensures consistent structure and guarantees high data integrity and consistency.
+A **closed graph** is constrained by its **graph type** (or **schema**), which contains a list of **node types** and **edge types**. It imposes a strict framework that governs data writing: each node or edge belongs to exact one node or edge type. Closed graphs ensure consistent structure and guarantees high data integrity and consistency.
 
 ### Node Types
 
-A node type is the schema definition that nodes of a closed graph must conform to. Each node type is identified by a unique node type name and consists of a label set and a set of property types. **Each node belongs to one node type.**
+A node type is a schema definition of nodes. Each node type is identified by a unique node type name and consists of a label set and a set of property types. **Each node belongs to exact one node type.**
 
 <p tit="Syntax"></p>
 
@@ -52,7 +52,7 @@ NODE User ({name STRING NOT NULL, age INTEGER})
 
 ### Edge Types
 
-An edge type is the schema definition that edges of a closed graph must conform to. Each edge type is identified by a unique edge type name and consists of one label and a set of property types. **Each edge belongs to one edge type.**
+An edge type is a schema definition of edges. Each edge type is identified by a unique edge type name and consists of one label and a set of property types. **Each edge belongs to exact one edge type.**
 
 <p tit="Syntax"></p>
 
@@ -124,18 +124,31 @@ EDGE WORKS_AT (Contractor)-[{title STRING, since DATE}]->(Company)
 
 ## Creating Closed Graphs
 
-You have three ways to specify the graph type when creating a closed graph:
+A closed graph's graph type can come from three sources:
 
 <p tit="Syntax"></p>
 
 ```
 <graph type specification> ::= 
-  <inline graph type> | <named graph type> | <inferred graph type>
+  <inline graph type> | <inferred graph type> | <named graph type>
 ```
+
+| Source | How you create it | Resulting graph |
+| -- | -- | -- |
+| **Inline graph type** | `CREATE GRAPH g1 { … }` | Define the graph type inline and it embeds into the graph. |
+| **Inferred graph type** | `CREATE GRAPH g1 LIKE g2` | Copy `g2`'s current graph type for `g1`. No binding. |
+| **Named graph type** | `CREATE GRAPH g1 TYPED gType` | Bound to a named graph type. The graph's schema is owned by `gType`. |
+
+The inline and `LIKE` forms do not create a named graph type in the database. To create a named graph type that other graphs can bind to. See <a target="_blank" href="/docs/gql/graph-types">Graph Types</a>.
+
+The two operational flavors evolve their schema very differently:
+
+- For graphs created with **inline graph type or `LIKE`**, their schema can be altered directly on the graph. Changes apply only to this graph.
+- For graphs that **bound to named graph type**, direct schema alteration is rejected, because the schema is owned by the named graph type. The error message points you to either alter the named graph type (which propagates to every bound graph) or detach from that graph type first.
 
 ### Inline Graph Type
 
-Define the node and edge types directly in the `CREATE GRAPH` statement.
+Define node and edge types directly in the `CREATE GRAPH` statement.
 
 <p tit="Syntax"></p>
 
@@ -145,7 +158,7 @@ Define the node and edge types directly in the `CREATE GRAPH` statement.
 <element type> = <node type> | <edge type>
 ```
 
-Create a closed graph `g1` with inline graph type specification:
+Create a graph with inline graph type specification:
 
 ```gql
 CREATE GRAPH g1 {
@@ -167,9 +180,27 @@ CREATE GRAPH g2 {
 }
 ```
 
+### Inferred Graph Type
+
+Copy the graph type from another closed graph. Only the schema (node and edge types) is copied, no data is included.
+
+<p tit="Syntax"></p>
+
+```
+<cloned graph type> ::= "LIKE" <graph name>
+```
+
+Create a graph with the same schema as `g1`:
+
+```gql
+CREATE GRAPH g3 LIKE g1
+```
+
+To clone both the schema and the data, use `AS COPY OF` instead (see <a target="_blank" href="/docs/gql/graphs#cloning-graphs">Cloning Graphs</a>). `AS COPY OF` does not bound the new graph to any named graph type. Same as `LIKE`.
+
 ### Named Graph Type
 
-Bind the graph to a pre-defined, reusable <a target="_blank" href="/docs/gql/graph-types">graph type</a>. The graph type lives as a separate object and can be shared by multiple graphs.
+Bind the graph to a named graph type. To create a named graph type, see <a target="_blank" href="/docs/gql/graph-types">graph types</a>.
 
 <p tit="Syntax"></p>
 
@@ -177,7 +208,7 @@ Bind the graph to a pre-defined, reusable <a target="_blank" href="/docs/gql/gra
 <named graph type> ::= [ "::" | "TYPED" ] <graph type name>
 ```
 
-Create a closed graph `g3` with all the node and edge types and properties defined within the graph type `gType`:
+Create a graph and bound its schema to the graph type `gType`:
 
 ```gql
 -- Bare reference
@@ -190,25 +221,9 @@ CREATE GRAPH g3 :: gType
 CREATE GRAPH g3 TYPED gType
 ```
 
-### Inferred Graph Type
+## Schema Inspection
 
-Copy the graph type from another closed graph. Only the schema (node and edge types) is copied, no data is included.
-
-<p tit="Syntax"></p>
-
-```
-<cloned graph type> ::= "LIKE" <graph name>
-```
-
-Create a closed graph `g4` whose schema matches `g2`:
-
-```gql
-CREATE GRAPH g4 LIKE g2
-```
-
-To clone both the schema and the data, use `AS COPY OF` instead (see <a target="_blank" href="/docs/gql/graphs#cloning-graphs">Cloning Graphs</a>).
-
-## Showing Node/Edge Types
+### Showing Node/Edge Types
 
 Show node or edge types defined in the current graph:
 
@@ -240,7 +255,7 @@ Each row provides the following metadata:
 
 An edge type declared with multiple endpoint pairs renders as **one row per pair**, sharing the same `type` / `name` / `properties` but with different `source_types` / `target_types`.
 
-## Showing Labels
+### Showing Labels
 
 Show labels in the current graph:
 
@@ -266,9 +281,11 @@ Each label provides the following essential metadata:
 | `label` | The name of the label. |
 | `type` | The type of the label, `NODE` or `EDGE`. |
 
-## Creating Node/Edge Types
+## Schema Evolution
 
-Create new node and edge types in the current graph using the `CREATE NODE/EDGE [TYPE]` statement:
+### Creating Node/Edge Types
+
+Create new node and edge types in the current graph:
 
 ```gql
 -- Add node type Book
@@ -284,7 +301,7 @@ CREATE NODE IF NOT EXISTS Book ({name STRING, author STRING})
 CREATE OR REPLACE NODE Book ({name STRING, author STRING, isbn STRING})
 ```
 
-## Dropping Node/Edge Types
+### Dropping Node/Edge Types
 
 A node or edge type can only be dropped when it has no dependent objects. Dependents include:
 
@@ -292,7 +309,7 @@ A node or edge type can only be dropped when it has no dependent objects. Depend
 - Named constraints registered on that type.
 - For node types: any edge type that references it as a source or destination endpoint. Drop such edge types first.
 
-Drop node and edge types from the current graph using the `DROP NODE/EDGE [TYPE]` statement:
+Drop node and edge types from the current graph:
 
 ```gql
 -- Drop node type User
@@ -310,7 +327,7 @@ DROP NODE User CASCADE
 
 `CASCADE` removes the dependent nodes/edges and named constraints alongside the type, but does **not** drop other type definitions that depend on it — edge types referencing a node type as endpoint must be dropped explicitly first.
 
-## Renaming Node/Edge Types
+### Renaming Node/Edge Types
 
 Rename node and edge types in the current graph:
 
@@ -322,7 +339,7 @@ ALTER NODE User RENAME TO People
 ALTER EDGE FOLLOWS RENAME TO LINKS
 ```
 
-## Adding Properties
+### Adding Properties
 
 Add properties to node and edge types in the current graph:
 
@@ -334,7 +351,7 @@ ALTER NODE User ADD PROPERTY gender STRING
 ALTER EDGE JOINS ADD PROPERTY memberNo INT32
 ```
 
-## Renaming Properties
+### Renaming Properties
 
 Rename node and edge properties in the current graph:
 
@@ -346,7 +363,7 @@ ALTER NODE Book PROPERTY name RENAME TO title
 ALTER EDGE JOINS PROPERTY memberNo RENAME TO memberNumber
 ```
 
-## Dropping Properties
+### Dropping Properties
 
 When a property is dropped, all related data - including the property values, associated indexes, and cached values - is permanently removed. Drop node and edge properties from the current graph:
 
@@ -356,4 +373,12 @@ ALTER NODE User DROP PROPERTY name
 
 -- Drop property createdOn from edge type FOLLOWS
 ALTER EDGE FOLLOWS DROP PROPERTY createdOn
+```
+
+### Detaching from Named Graph Type
+
+The operations above apply to graphs created with inline or inferred graph type. On a graph bound to a named graph type, these direct ops are rejected. To evolve only this graph independently, detach it from the bounded graph type first:
+
+```gql
+ALTER GRAPH g4 DETACH GRAPH TYPE
 ```

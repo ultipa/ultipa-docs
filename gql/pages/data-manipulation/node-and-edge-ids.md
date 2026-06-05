@@ -25,17 +25,7 @@ Each edge has a unique identifier `_id` and two endpoint references.
 
 ### Edge _id on Graph Creation
 
-The edge `_id` is enabled by default at graph creation:
-
-```gql
--- Edge _id is enabled by default
-CREATE GRAPH myGraph
-
--- WITH EDGE_ID is accepted but is a no-op since enabled is the default
-CREATE GRAPH myGraph WITH EDGE_ID
-```
-
-The edge `_id` can be disabled at graph creation:
+Edge `_id` is enabled by default for new graphs. To disable edge `_id` at graph creation:
 
 ```gql
 CREATE GRAPH myGraph WITH EDGE_ID DISABLED

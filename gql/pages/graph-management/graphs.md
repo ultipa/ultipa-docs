@@ -26,7 +26,8 @@ Each graph provides the following metadata:
 | `graph_id` | The ID of the graph. |
 | `graph_name` | The unique name of the graph. |
 | `current` | Whether the graph is the current graph. |
-| `graph_type` | The type of the graph (`OPEN` or `CLOSED`). |
+| `graph_mode` | The mode of the graph (`OPEN`, `CLOSED` or `ONTOLOGY`). |
+| `bounded_graph_type` | The named graph type this graph is bound to. |
 | `node_count` | The number of nodes in the graph. |
 | `edge_count` | The number of edges in the graph. |
 | `node_label_count` | The number of node labels in the graph. |
@@ -36,6 +37,10 @@ Each graph provides the following metadata:
 | `trigger_count` | The number of triggers in the graph. |
 | `created_at` | The creation time of the graph. |
 | `comment` | The comment of the graph. |
+| `status` | Lifecycle status. `READY` (the common case) means the graph accepts queries and writes; other values (e.g. `COPYING`, `FAILED`) surface in-flight or failed background operations. While not `READY`, queries and writes against this graph are rejected. |
+| `copy_source` | When the graph was created by `CREATE GRAPH … AS COPY OF …` and the data copy is still in progress, the name of the source graph. Empty otherwise. |
+| `copy_progress_pct` | Background-copy completion percentage (`0`–`100`). Empty / `0` when no background copy is in progress. |
+| `copy_started_at` | Timestamp when the background copy began. Empty when no background copy is in progress. |
 
 ## Selecting Current Graph
 
@@ -58,30 +63,27 @@ RETURN CURRENT_GRAPH
 
 ## Creating Graphs
 
-Ultipa supports two kinds of graphs: **Open Graph** and **Closed Graph**. This design offers both flexibility and control, supporting workflows ranging from agile exploration to production-grade applications demanding strict data integrity requirements.
+You can create an **open graph** or a **closed graph**. This design offers both flexibility and control, supporting workflows ranging from agile exploration to production-grade applications demanding strict data integrity.
+
+> GQLDB also supports the **ontology graph** for modeling RDF data with OWL semantics (classes, object/data properties, characteristics, etc.). See <a target="_blank" href="/docs/ontology/">Ontology</a> for details.
 
 <p tit="Syntax"></p>
 
 ```
 <create graph statement> ::= 
-  "CREATE GRAPH" [ "IF NOT EXISTS" ] <graph name> [ <graph kind> ]
+  "CREATE GRAPH" [ "IF NOT EXISTS" ] <graph name> [ <graph mode> ]
 
-<graph kind> ::= <open graph> | <closed graph>
+<graph mode> ::= <open graph> | <closed graph> | <ontology graph>
 
-<open graph> ::= [ "ANY" ] [ <with features> ]
+<open graph> ::= [ "ANY" ] [ "WITH EDGE_ID DISABLED" ]
 
-<closed graph> ::= <graph type specification> [ "WITH EDGE_ID" [ "DISABLED" ] ]
-
-<with features> ::= 
-  "WITH ONTOLOGY" | "WITH EDGE_ID" [ "DISABLED" ] |
-  "WITH ONTOLOGY, EDGE_ID" [ "DISABLED" ] | "WITH EDGE_ID" [ "DISABLED" ] ", ONTOLOGY"
+<closed graph> ::= <graph type specification> [ "WITH EDGE_ID DISABLED" ]
 ```
 
 **Details**
 
-- If `<graph kind>` is omitted, creates an open graph by default. Learn more about <a target="_blank" href="/docs/gql/open-graphs">Open graphs</a> and <a target="_blank" href="/docs/gql/closed-graphs">Closed graphs</a>.
-- `WITH ONTOLOGY` makes an open graph an ontology graph. Learn more about <a target="_blank" href="/docs/ontology/">Ontology</a>.
-- Edge ID is enabled by default, `WITH EDGE_ID DISABLED` disables it. Learn more about <a target="_blank" href="/docs/gql/node-and-edge-ids">Node and Edge IDs</a>.
+- If `<graph mode>` is omitted, creates an open graph by default. Learn more about <a target="_blank" href="/docs/gql/open-graphs">Open graphs</a> and <a target="_blank" href="/docs/gql/closed-graphs">Closed graphs</a>.
+- Edge `_id` is enabled by default, `WITH EDGE_ID DISABLED` disables it. Learn more about <a target="_blank" href="/docs/gql/node-and-edge-ids">Node and Edge IDs</a>.
 
 You can use the `IF NOT EXISTS` clause to prevent errors when attempting to create a graph that already exists. It allows the statement to be safely executed.
 
