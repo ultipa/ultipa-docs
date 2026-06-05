@@ -6,7 +6,7 @@ Inspect, transform, and perform arithmetic operations on vectors, and manage vec
 
 ### ai.dimension()
 
-Returns the number of dimensions in a vector.
+Returns the number of dimensions in a vector. `vector_dimension_count()` is a synonym.
 
 <table style="width: 100%;">
   <colgroup>
@@ -172,6 +172,91 @@ RETURN ai.toList(ai.embed("Introduction to graph databases"))
 ```
 
 Result: [-0.0258026123046875, -0.0126800537109375, …, 0.0162200927734375, -0.017486572265625]
+
+### vector_norm()
+
+Returns the norm (length) of a vector under the given metric. `vector_norm(v, EUCLIDEAN)` is identical to `ai.magnitude(v)`; the `MANHATTAN` form returns the L1 norm (sum of `|Ai|`) and has no `ai.*` equivalent.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>vector_norm(&lt;vector&gt;, &lt;metric&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="3"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;vector&gt;</code></td>
+      <td><code>VECTOR</code></td>
+      <td>A vector value.</td>
+    </tr>
+    <tr>
+      <td><code>&lt;metric&gt;</code></td>
+      <td><code>STRING</code> or bare keyword</td>
+      <td>One of <code>EUCLIDEAN</code> (L2 norm) or <code>MANHATTAN</code> (L1 norm). Bare-keyword and quoted-string forms are equivalent.</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>FLOAT</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN vector_norm(ai.vector([3.0, 4.0]), EUCLIDEAN)
+```
+
+Result: 5
+
+### vector_serialize()
+
+Converts a vector to its textual list form (`"[N1, N2, …]"`). The string counterpart to `ai.toList()`, which returns a `LIST<FLOAT>`.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>vector_serialize(&lt;vector&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="2"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;vector&gt;</code></td>
+      <td><code>VECTOR</code></td>
+      <td>A vector value.</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>STRING</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN vector_serialize(ai.vector([0.1, 0.2, 0.3]))
+```
+
+Result: `"[0.1, 0.2, 0.3]"`
 
 ## Vector Arithmetic
 

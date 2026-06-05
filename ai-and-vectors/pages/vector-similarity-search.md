@@ -319,6 +319,67 @@ RETURN ai.hamming(ai.vector([1.0, 2.0, 3.0]), ai.vector([1.0, 9.0, 3.0]))
 
 Result: 1
 
+### vector_distance()
+
+A single function call covers all six distance metrics, with all results in the **distance form** ("smaller = more similar"). 
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>vector_distance(&lt;vector1&gt;, &lt;vector2&gt;, &lt;metric&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="4"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;vector1&gt;</code></td>
+      <td><code>VECTOR</code></td>
+      <td>The first vector.</td>
+    </tr>
+    <tr>
+      <td><code>&lt;vector2&gt;</code></td>
+      <td><code>VECTOR</code></td>
+      <td>The second vector; must have the same dimension as <code>&lt;vector1&gt;</code>.</td>
+    </tr>
+    <tr>
+      <td><code>&lt;metric&gt;</code></td>
+      <td><code>STRING</code> or bare keyword</td>
+      <td>One of <code>EUCLIDEAN</code>, <code>EUCLIDEAN_SQUARED</code>, <code>MANHATTAN</code>, <code>COSINE</code>, <code>DOT</code>, <code>HAMMING</code>. Bare-keyword and quoted-string forms are equivalent.</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>FLOAT</code></td>
+    </tr>
+  </tbody>
+</table>
+
+```gql
+RETURN vector_distance(ai.vector([0.0, 0.0]), ai.vector([3.0, 4.0]), EUCLIDEAN)
+```
+
+Result: 5
+
+Mapping to the per-metric `ai.*` aliases on the same `(v1, v2)`:
+
+| Metric | Equivalent `ai.*` expression |
+| -- | -- |
+| `EUCLIDEAN` | `ai.euclidean(v1, v2)` |
+| `EUCLIDEAN_SQUARED` | `ai.euclidean_squared(v1, v2)` |
+| `MANHATTAN` | `ai.manhattan(v1, v2)` |
+| `HAMMING` | `ai.hamming(v1, v2)` |
+| `COSINE` | `ai.distance(v1, v2)` — i.e. `1 − ai.cosine(v1, v2)`, **not** `ai.cosine(v1, v2)` |
+| `DOT` | `-ai.dot(v1, v2)` — **negates** the dot product so "smaller = more similar" ordering matches the other metrics |
+
 ## Vector Index Search
 
 For large datasets, create a vector index for efficient approximate nearest neighbor (ANN) search. See <a href="/docs/gql/vector-index">Vector Index</a> for full syntax.
