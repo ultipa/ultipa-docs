@@ -183,7 +183,7 @@ Standard-defined optional GQL features are referenced by a Feature ID that compr
 | 112 | GL08 | Approximate number in scientific notation with suffix | No |
 | 113 | GL09 | Optional float number suffix | No |
 | 114 | GL10 | Optional double number suffix | No |
-| 115 | GL11 | Opt-out character escaping | No |
+| 115 | GL11 | Opt-out character escaping | Yes |
 | 116 | GL12 | SQL datetime and interval formats | Yes |
 | 117 | GP01 | Inline procedure | Yes |
 | 118 | GP02 | Inline procedure with implicit nested variable scope | Yes |

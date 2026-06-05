@@ -29,6 +29,29 @@ A property value type refers to the data type of the values of a property. In a 
 | `STRING`/<br>`CHAR`/<br>`VARCHAR` | A sequence of characters enclosed in quotes, with a maximum size of `60,000` bytes. |
 | `TEXT` | A sequence of characters enclosed in quotes with no length limit. |
 
+**String literal forms.** Five quote styles are accepted:
+
+| Form | Notes |
+| -- | -- |
+| `'…'` | Single-quoted. Most common. |
+| `"…"` | Double-quoted. |
+| `` `…` `` | Backtick-quoted. |
+| `'''…'''`, `"""…"""`, `` ```…``` `` | **Triple-quoted.** Newlines and single embedded quotes are accepted as-is — the terminator is three of the same quote in a row. Escape processing is identical to single-quoted strings. |
+| `@'…'` | **Raw string.** No escape processing; a doubled `''` represents a single quote. Useful for regex patterns and Windows paths. |
+
+**Escape sequences.** Inside non-raw strings, the following escapes are recognized:
+
+| Escape | Result |
+| -- | -- |
+| `\\` `\'` `\"` `` \` `` | Literal backslash / single quote / double quote / backtick |
+| `\n` `\r` `\t` `\b` `\f` `\v` `\a` | LF / CR / TAB / BS / FF / VT / BEL |
+| `\0` | NUL |
+| `\xNN` | Byte from 2 hex digits |
+| `\uNNNN` to `\uNNNNNN` | Unicode codepoint from 4–6 hex digits (greedy: keeps reading hex up to 6) |
+| `\UNNNNNNNN` | Unicode codepoint from exactly 8 hex digits |
+
+> **Strict escape policy.** Any unrecognized escape sequence (e.g. `\z`) is a **parse error** — the lexer does not silently drop the backslash. Use the raw-string form `@'…'` if you need a literal backslash followed by an arbitrary character without escaping.
+
 ### Temporal Instant
 
 | Type | Description |
