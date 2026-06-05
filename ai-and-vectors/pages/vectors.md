@@ -52,7 +52,7 @@ LIMIT 5
 
 ### ai.vector()
 
-Converts a list of numbers to a `VECTOR` type. Values are stored as 32-bit floats, so minor precision differences may occur (e.g., `0.1` becomes `0.10000000149011612`). This is useful when you need to explicitly create a `VECTOR` value for storing in a `VECTOR` property or passing to similarity functions.
+Converts a list of numbers to a `VECTOR(N)` type. This is useful when you need to explicitly create a value for storing in a `VECTOR(N)` property or passing to similarity functions. `vector()` is a synonym.
 
 <table style="width: 100%;">
   <colgroup>
@@ -75,7 +75,7 @@ Converts a list of numbers to a `VECTOR` type. Values are stored as 32-bit float
     <tr>
       <td><code>&lt;list&gt;</code></td>
       <td><code>LIST</code></td>
-      <td>A list of numeric values</td>
+      <td>A list of numeric values.</td>
     </tr>
     <tr>
       <td><b>Return Type</b></td>
@@ -85,6 +85,7 @@ Converts a list of numbers to a `VECTOR` type. Values are stored as 32-bit float
 </table>
 
 ```gql
+-- Each dimension value is stored as 32-bit floats, so minor precision differences may occur (e.g., `0.1` becomes `0.10000000149011612`)
 RETURN ai.vector([0.1, 0.2, 0.3])
 ```
 
