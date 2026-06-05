@@ -116,8 +116,9 @@ For `ZONED DATETIME` and `ZONED TIME`, timezone is specified as an RFC 3339 UTC 
 
 | Type | Description |
 | -- | -- |
-| `VECTOR` | A fixed-length array of floating-point numbers, used for vector similarity search. Accepts vectors of any dimension. |
-| `VECTOR(N)` | A vector with a declared dimension `N`. Every value written to this property must have exactly `N` coordinates; mismatched-dimension inserts are rejected at write time. Use this for embedding columns where every row must share the same model's output shape (e.g. `VECTOR(1536)` for OpenAI `text-embedding-3-small`). |
+| `VECTOR(N)` | A fixed-length array of floating-point numbers, used for vector similarity search. Every value written to this property must have exactly `N` dimensions. |
+
+> **A vector column must declare its dimension.** Bare `VECTOR` (no `(N)`) is rejected. For genuinely variable-length use cases, declare `LIST<FLOAT>` instead. Note that `LIST<FLOAT>` columns are not compatible with vector indexes or `ai.*` similarity functions, which require a `VECTOR` value.
 
 ### Open Graph Property Types
 
