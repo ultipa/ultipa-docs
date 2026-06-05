@@ -91,9 +91,7 @@ The result includes the following fields:
 
 You can create a vector index using the `CREATE VECTOR INDEX` statement for a vector-type node or edge property. The index is built asynchronously — use `SHOW VECTOR INDEX` to check build progress.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <create vector index statement> ::=
   "CREATE VECTOR INDEX" [ "IF NOT EXISTS" ] <index name> "ON" < "NODE" | "EDGE" >
   <label name> "(" <vector property name> ")" 

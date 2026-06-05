@@ -4,9 +4,7 @@
 
 The `NEXT` statement chains multiple linear or composite query statements, where the result of one query is carried forward to the next. This allows for advanced linear composition, enabling more complex queries.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <advanced linear query> ::= <query> <next statement> <query> ...
 
 <next statement> ::= "NEXT" [ <yield clause> ]

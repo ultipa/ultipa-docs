@@ -4,9 +4,7 @@
 
 The `FILTER` statement allows you to discard records in the intermediate result table that do not satisfy the search conditions.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <filter statement> ::= "FILTER" <search condition>
 ```
 

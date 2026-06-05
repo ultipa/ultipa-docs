@@ -35,9 +35,7 @@ The result includes the following fields:
 
 You can create an index using the `CREATE INDEX` statement. The index is built asynchronously in the background, use `SHOW INDEX` to check build progress.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <create index statement> ::=
   "CREATE INDEX" [ <index name> ] "ON" < "NODE" | "EDGE" > <label name>
   "(" <property name> [ "(" <length> ")" ] ")"

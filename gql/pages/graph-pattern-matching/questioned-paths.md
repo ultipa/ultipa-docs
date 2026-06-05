@@ -6,9 +6,7 @@ A questioned path makes a path pattern **optional** — it matches zero or one o
 
 A questioned path is written by appending `?` to a parenthesized path pattern expression.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <questioned path pattern> ::=
   "(" <path pattern expression> ")" "?"
 ```

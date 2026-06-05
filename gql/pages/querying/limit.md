@@ -4,9 +4,7 @@
 
 The `LIMIT` statement restricts the maximum number of rows to be retained in the intermediate result table or output table. A non-negative integer must be specified in the `LIMIT` statement.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <limit statement> ::= "LIMIT" <non-negative integer>
 ```
 

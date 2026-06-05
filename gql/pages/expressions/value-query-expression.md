@@ -2,9 +2,7 @@
 
 The value query expression allows you to specify a scalar value derived from a nested query specification. The output of this expression is expected to be either a single value or `null`.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <value query expression> ::= "VALUE" "{" <query> "}"
 ```
 

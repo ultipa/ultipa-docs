@@ -124,9 +124,7 @@ REVOKE ROLE data_reader FROM USER alice
 
 ## Granting Permissions to Roles
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <grant statement> ::=
   "GRANT" <operation> [ { "," <operation> } ...] "ON" <scope> "TO" [ "ROLE" ] <role name>
 ```
@@ -179,9 +177,7 @@ GRANT EXECUTE_PROCEDURE ON GRAPH sales PROCEDURE * TO ROLE proc_runner
 
 ## Revoking Permissions from Roles
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <revoke statement> ::=
   "REVOKE" <operation> [ { "," <operation> } ...] "ON" <scope> "FROM" [ "ROLE" ] <role name>
 ```

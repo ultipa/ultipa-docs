@@ -8,9 +8,7 @@ A path pattern is to match paths in the graph. It is composed of three parts:
 - <a href="#Path-Pattern-Prefix">Path Pattern Prefix</a> (Optional)
 - <a href="#Path-Pattern-Expression">Path Pattern Expression</a>
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <path pattern> ::=
   [ <path variable declaration> ] [ <path pattern prefix> ] <path pattern expression>
 ```

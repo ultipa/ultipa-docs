@@ -29,9 +29,7 @@ Returns a table with the following columns:
 
 ## Creating Triggers
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <create trigger statement> ::=
   "CREATE TRIGGER" [ "IF NOT EXISTS" ] <trigger name> "ON" < "NODE" | "EDGE" > <label name> 
   [ "COMMENT" <comment> ]
@@ -47,9 +45,7 @@ Returns a table with the following columns:
 
 The `<callable body>` uses the format `$entity call { ... }` and supports `let` assignments to modify entity properties. The `let` keyword must be lowercase.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <callable body> ::=
   "$entity call {" <let assignment>, { ";" <let assignment> }... "}"
 

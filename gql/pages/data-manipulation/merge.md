@@ -6,9 +6,7 @@ The `MERGE` statement matches a pattern in the graph; if the pattern is not foun
 
 `MERGE` differs from <a target="_blank" href="/docs/gql/insert-overwrite">`INSERT OVERWRITE`</a> and <a target="_blank" href="/docs/gql/upsert">`UPSERT`</a> in matching mode: `INSERT OVERWRITE` and `UPSERT` key on `_id` only, while `MERGE` matches on the full pattern including labels and property values.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <merge statement> ::=
   "MERGE" <graph pattern>
   [ "ON INSERT SET" <set item list> ]

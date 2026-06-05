@@ -19,9 +19,7 @@ The cheapest path selectors are typically used with variable-length <a target="_
 
 The `COST` clause appears inside an edge pattern and provides the per-edge cost expression. The expression is evaluated for each matched edge, and the path's total cost is the sum of these per-edge costs.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <cheapest path edge pattern> ::=
     "<-[" <cheapest edge pattern filter> "]-"
   | "-[" <cheapest edge pattern filter> "]->"

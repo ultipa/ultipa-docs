@@ -11,9 +11,7 @@ GQL has two expression forms that iterate over a list. They share the `<variable
 
 A list comprehension creates a new list by iterating over an existing list, optionally filtering elements and transforming them.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <list comprehension> ::=
   "[" <variable> "IN" <list> [ < "WHERE" | "FILTER" > <condition> ] [ "|" <expr> ] "]"
 ```
@@ -52,9 +50,7 @@ Result: [30, 40, 50]
 
 Quantifiers reduce a list to a single boolean by testing a condition against its elements.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <list quantifier> ::=
   < "ANY" | "ALL" | "NONE" | "SINGLE" > "(" <variable> "IN" <list> "WHERE" <condition> ")"
 ```

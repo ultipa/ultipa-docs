@@ -15,9 +15,7 @@ Key properties of K-hop neighbors:
 
 Ultipa provides the `KHOP` path mode for K-hop neighbor search, finding the distinct destination nodes reachable from a starting node within a given hop range. `KHOP` is well suited for reachability queries (Who can `A` reach in `n` hops?) and neighbor counts, where the question is about *which nodes* rather than *how many distinct paths*.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <k-hop traversal statement> ::= "MATCH KHOP" <quantified path pattern>
 ```
 

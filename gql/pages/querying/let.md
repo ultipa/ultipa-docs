@@ -4,9 +4,7 @@
 
 The `LET` statement allows you to define new variables and adds corresponding columns to the intermediate result table. Each variable is assigned a value using the `=` operator.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <let statement> ::= 
   "LET" <let variable definition> [ { "," <let variable definition> }... ]
 

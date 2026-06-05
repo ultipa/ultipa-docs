@@ -4,9 +4,7 @@
 
 The `CALL` statement is used to invoke an **inline procedure** or a **named procedure**.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <call statement> ::= <call inline procedure> | <call named procedure>
 ```
 
@@ -14,9 +12,7 @@ The `CALL` statement is used to invoke an **inline procedure** or a **named proc
 
 An **inline procedure** is a user-defined procedure embedded within a query, commonly used to execute subqueries or perform data modifications. It enables complex logic such as looping and enhances efficiency by managing resources more effectively, especially when working with large graphs, thereby reducing memory overhead.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <call inline procedure> ::= 
   [ "OPTIONAL" ] "CALL" [ <variable reference list> ] <procedure specification>
 
@@ -157,9 +153,7 @@ A **named procedure** refers to a predefined procedure that is registered in the
 - **Built-in graph algorithms** such as `algo.degree`, `algo.pagerank`. See <a target="_blank" href="/docs/graph-algorithms">Graph Algorithms</a>.
 - **User-defined stored procedures** created with `CREATE PROCEDURE`. See <a target="_blank" href="/docs/stored-procedures">Stored Procedures</a>.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <call named procedure> ::= [ "OPTIONAL" ] "CALL" <procedure reference> [ <yield clause> ]
 
 <yield clause> ::= "YIELD" <yield item> [ { "," <yield item> }... ]

@@ -124,9 +124,7 @@ RETURN "42" > 10 // cannot compare STRING with INTEGER
 
 The `EXISTS` predicate evaluates whether a specified subquery returns any results. If it finds matching data, the predicate evaluates to true; otherwise, it evaluates to false.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <exists predicate> ::= "EXISTS" "{" <query> "}"
 ```
 

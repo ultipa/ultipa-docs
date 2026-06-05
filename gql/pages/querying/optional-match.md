@@ -9,9 +9,7 @@
 
 The `OPTIONAL` keyword can be applied to a single `MATCH` statement, or to a block of `MATCH` statements.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <optional match statement> ::=
     "OPTIONAL" <match statement> 
   | "OPTIONAL" "(" <match statement block> ")"

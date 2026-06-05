@@ -4,9 +4,7 @@
 
 The `ORDER BY` statement allows you to sort the intermediate result table or output table based on the specified items.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <order by statement> ::= 
   "ORDER BY" <sort specification> [ { "," <sort specification> }... ]
 

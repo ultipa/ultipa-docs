@@ -4,9 +4,7 @@ The LET value expression allows you to define variables and use them immediately
 
 Unlike the <a href="/docs/gql/let">`LET` statement</a> which defines a variable for use in subsequent statements, the LET value expression is a self-contained inline expression, the variables are scoped to the `IN ... END` block and produce a single value.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <let value expression> ::= "LET" <variable definitions> "IN" <value expression> "END"
 
 <variable definitions> ::= <variable definition> [ { "," <variable definition> }... ]

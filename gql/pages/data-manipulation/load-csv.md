@@ -9,9 +9,7 @@
 
 Both forms read a local filesystem path or a `file://` URI. Remote schemes (`http://`, `https://`, `s3://`, ...) are not supported.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <load csv statement> ::= 
   "LOAD CSV FROM" <single-quoted file source> { <dump csv> | <import from csv> }
 

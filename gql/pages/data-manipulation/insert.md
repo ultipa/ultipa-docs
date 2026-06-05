@@ -4,9 +4,7 @@
 
 The `INSERT` statement allows you to add new nodes and edges into the graph using node and edge patterns.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <insert statement> ::=
   "INSERT" <insert path pattern> [ { "," <insert path pattern> } ... ]
 

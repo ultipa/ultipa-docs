@@ -8,9 +8,7 @@ Data properties attach to **nodes only**. Edge attributes (e.g., `weight: 0.7` o
 
 ## Creating Data Properties
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <create data property statement> ::=                      
   "CREATE DATA PROPERTY" <data property name> 
   [ "DOMAIN" <class> ] [ "RANGE" <xsd type> ] [ "FUNCTIONAL" | <cardinality> ]

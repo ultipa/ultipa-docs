@@ -49,9 +49,7 @@ The returned properties are:
 
 ## Creating Projections
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <create projection statement> ::=
   "CREATE PROJECTION" <projection name> 
   "WITH NODE" <label specifications> [ "EDGE" <label specifications> ]

@@ -42,9 +42,7 @@ Each graph type provides the following essential metadata:
 
 You have three ways to create a graph type:
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <create graph type statement> ::= 
   "CREATE" { "GRAPH TYPE" [ "IF NOT EXISTS" ] | "OR REPLACE GRAPH TYPE" } <graph type name>
   <inline graph type> | <cloned graph type> | <inferred graph type>
@@ -54,9 +52,7 @@ You have three ways to create a graph type:
 
 Define the node and edge types directly in the `CREATE GRAPH TYPE` statement.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <inline graph type> ::= "{" [ <element type> [ { "," <element type> }... ] ] "}"
 
 <element type> = <node type> | <edge type>
@@ -83,9 +79,7 @@ CREATE GRAPH TYPE gType {
 
 ### Cloning a Graph Type
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <cloned graph type> ::= "AS COPY OF" <graph type name>
 ```
 
@@ -97,9 +91,7 @@ CREATE GRAPH TYPE socialType AS COPY OF gType
 
 ### Inferring a Graph Type
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <inferred graph type> ::= "LIKE" <graph name>
 ```
 

@@ -8,9 +8,7 @@ A graph pattern is composed of three parts:
 - Path Pattern List
 - `WHERE` Clause (Optional)
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <graph pattern> ::= 
   [ <match mode> ] <path pattern list> [ <where clause> ]
 

@@ -4,9 +4,7 @@
 
 The `RETURN` statement allows you to specify items to include in the query result. Each item is defined by an expression that can include variables, properties, functions, constants, etc.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <return statement> ::= 
   "RETURN" [ "DISTINCT" | "ALL" ] { < "*" > | <return items> } [ <group by clause> ]
                           

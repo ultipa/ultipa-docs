@@ -41,9 +41,7 @@ The result includes the following fields:
 
 You can create a full-text index using the `CREATE FULLTEXT` statement. The index is built asynchronously, use `SHOW FULLTEXT` to check build progress.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <create full-text index statement> ::=
   "CREATE FULLTEXT" <index name> "ON" < "NODE" | "EDGE" > <label>
   "(" <property name> [ { "," <property name> }... ] ")"

@@ -4,9 +4,7 @@
 
 The `MATCH` statement allows you to specify a <a target="_blank" href="/docs/gql/graph-pattern-matching">graph pattern</a> to search for in the graph. It is the fundamental statement for retrieving data from the graph database and binding them to variables for use in subsequent parts of the query. 
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <match statement> ::=
   "MATCH" <graph pattern> 
   [ "YIELD" <graph pattern yield item> [ { "," <graph pattern yield item> } ... ] ]

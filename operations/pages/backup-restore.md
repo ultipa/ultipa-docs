@@ -17,9 +17,7 @@ Both write the same on-disk format and use the same internal code path — inter
 
 Use `BACKUP GRAPH` to create a backup of a single graph as a compressed archive.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <backup graph statement> ::=
   "BACKUP GRAPH" [ <graph name>] "TO" <directory and prefix string>
 
@@ -66,9 +64,7 @@ The backup is **hot**. The server flushes outstanding writes to disk first (so t
 
 Use `RESTORE GRAPH` to restore a graph from a backup archive.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <restore graph statement> ::=
   "RESTORE GRAPH FROM" <filepath string> [ "OVERWRITE" ]
 ```
@@ -141,9 +137,7 @@ Missing an incremental in the chain is a fatal error at restore time. A weekly f
 
 Use `BACKUP DATABASE` to back up all graphs at once. The system graph (`__system__`, holding RBAC users / roles) is included.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <backup database statement> ::=
   "BACKUP DATABASE TO" <directory string>
 ```

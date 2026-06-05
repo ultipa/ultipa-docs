@@ -22,9 +22,7 @@ CREATE CLASS @ex:Film
 
 ## Creating Object Properties
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <create object property statement> ::=
   "CREATE OBJECT PROPERTY" <object property name> [ <object property body> ]
 
@@ -51,9 +49,7 @@ With no `DOMAIN` or `RANGE`, the engine performs no endpoint validation: `@ex:li
 
 ### DOMAIN and RANGE
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <endpoints> ::= [ "DOMAIN" <source class> ] [ "RANGE" <target class> ]
 ```
 
@@ -79,9 +75,7 @@ CREATE OBJECT PROPERTY @ex:sings RANGE @ex:Song
 
 Object properties can have special characteristics that affect behavior. 
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <characteristics> ::= <characteristic> { <characteristic> }...
 
 <characteristic> ::=
@@ -323,9 +317,7 @@ CREATE OBJECT PROPERTY @ex:equivalentTo SYMMETRIC TRANSITIVE
 
 Define inverse relationships. When you create one edge, the inverse is automatically inferred.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <inverse of> ::= "INVERSE OF" <object property name>
 ```
 
@@ -346,9 +338,7 @@ RETURN p  // Acme Inc -> Emily
 
 Use `CARDINALITY` to limit how many outgoing edges of a property a source node may have. Cardinality is enforced at insert time.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <cardinality> ::= "CARDINALITY" <cardinality range>
 
 <cardinality range> ::=
@@ -396,9 +386,7 @@ CREATE OBJECT PROPERTY @ex:hasSpouse
 
 `SUBPROPERTY OF` declares that one property is a specialization of another. A `MATCH` on the super-property also returns edges typed with any of its sub-properties — computed at query time, never materialized onto the edges.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <subproperty of> ::=
   "SUBPROPERTY OF" <object property name> { "," <object property name> }
 ```
@@ -490,9 +478,7 @@ RETURN f.name   // Side Project (transitive rollup)
 
 `PROPERTY CHAIN` declares that a property is implied by walking an ordered sequence of other properties. The derived property stores no edges of its own; a `MATCH` on it computes the endpoints at query time by walking the chain.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <property chain> ::=
   "PROPERTY CHAIN" <object property name> "," <object property name> { "," <object property name> }...
 ```

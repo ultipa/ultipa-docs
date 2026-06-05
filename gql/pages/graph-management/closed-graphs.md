@@ -8,9 +8,7 @@ A **closed graph** is constrained by its **graph type** (or **schema**), which c
 
 A node type is a schema definition of nodes. Each node type is identified by a unique node type name and consists of a label set and a set of property types. **Each node belongs to exact one node type.**
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <node type> ::=
   "NODE" [ "TYPE" ] <node type name> "(" [ <implied labels> ] [ <property types> ] ")"
 
@@ -54,9 +52,7 @@ NODE User ({name STRING NOT NULL, age INTEGER})
 
 An edge type is a schema definition of edges. Each edge type is identified by a unique edge type name and consists of one label and a set of property types. **Each edge belongs to exact one edge type.**
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <edge type> ::= 
   "EDGE" [ "TYPE" ] <edge type name> { <edge type pattern> | <edge type phrase> }
 
@@ -126,9 +122,7 @@ EDGE WORKS_AT (Contractor)-[{title STRING, since DATE}]->(Company)
 
 A closed graph's graph type can come from three sources:
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <graph type specification> ::= 
   <inline graph type> | <inferred graph type> | <named graph type>
 ```
@@ -150,9 +144,7 @@ The two operational flavors evolve their schema very differently:
 
 Define node and edge types directly in the `CREATE GRAPH` statement.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <inline graph type> ::= "{" [ <element type> [ { "," <element type> }... ] ] "}"
 
 <element type> = <node type> | <edge type>
@@ -173,7 +165,7 @@ You can also constrain edge type endpoints:
 
 ```gql
 CREATE GRAPH g2 {
-  NODE User (:Player {name STRING, age UINT32}),
+  NODE User (:Player {name STRING, bio VECTOR(1536)}),
   NODE Club ({name STRING}),
   EDGE FOLLOWS (User)-[{createdOn TIMESTAMP}]->(User),
   EDGE JOINS (User)-[]->(Club)
@@ -184,9 +176,7 @@ CREATE GRAPH g2 {
 
 Copy the graph type from another closed graph. Only the schema (node and edge types) is copied, no data is included.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <cloned graph type> ::= "LIKE" <graph name>
 ```
 
@@ -202,9 +192,7 @@ To clone both the schema and the data, use `AS COPY OF` instead (see <a target="
 
 Bind the graph to a named graph type. To create a named graph type, see <a target="_blank" href="/docs/gql/graph-types">graph types</a>.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <named graph type> ::= [ "::" | "TYPED" ] <graph type name>
 ```
 

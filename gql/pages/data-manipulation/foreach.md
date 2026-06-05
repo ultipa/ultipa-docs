@@ -6,9 +6,7 @@ The `FOREACH` statement iterates over a list and runs a write block once for eac
 
 > For row-by-row reading without writes, use the <a target="_blank" href="/docs/gql/for">`FOR`</a> statement instead. `FOR` unnests a list into rows of the intermediate result table; `FOREACH` does not produce rows and only performs side effects.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <foreach statement> ::=
   "FOREACH" "(" <variable> "IN" <list value expression> "|" <foreach body> ")"
 

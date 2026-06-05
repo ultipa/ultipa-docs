@@ -4,9 +4,7 @@
 
 The `SKIP` statement allows you to discard a specified number of rows from the start of the intermediate result table or output table. `OFFSET` is a synonym to `SKIP`.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <skip statement> ::= < "SKIP" | "OFFSET" > <non-negative integer>
 ```
 

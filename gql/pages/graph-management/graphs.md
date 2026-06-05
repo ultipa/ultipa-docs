@@ -67,9 +67,7 @@ You can create an **open graph** or a **closed graph**. This design offers both 
 
 > GQLDB also supports the **ontology graph** for modeling RDF data with OWL semantics (classes, object/data properties, characteristics, etc.). See <a target="_blank" href="/docs/ontology/">Ontology</a> for details.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <create graph statement> ::= 
   "CREATE GRAPH" [ "IF NOT EXISTS" ] <graph name> [ <graph mode> ]
 
@@ -95,9 +93,7 @@ This creates the graph `myGraph` only if a graph with that name does not exist. 
 
 ## Cloning Graphs
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <clone graph statement> ::= 
   "CREATE GRAPH" [ "IF NOT EXISTS" ] <graph name> "AS COPY OF" <graph name>
 ```

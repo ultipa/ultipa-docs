@@ -38,9 +38,7 @@ The `LIKE` name pattern uses SQL-style matching (case-insensitive):
 
 ## Creating Procedures
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <create procedure statement> ::=
   "CREATE" [ "OR REPLACE" ] "PROCEDURE" <procedure name> [ <comment> ] [ <tags> ] <parameters>
   "RETURNS" { <return columns> | "VOID" }

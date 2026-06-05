@@ -4,9 +4,7 @@
 
 The `FOR` statement unnests a list into individual records and expands the intermediate result table accordingly.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <for statement> ::= 
   "FOR" <binding variable> "IN" <list value expression> [ <ordinality or offset> ]
 

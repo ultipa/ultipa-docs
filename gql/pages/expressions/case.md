@@ -2,9 +2,7 @@
 
 The `CASE` expression is a conditional expression that allows you to evaluate one or more conditions and return different results based on those conditions.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <case expression> ::= <simple case> | <general case>
 ```
 
@@ -29,9 +27,7 @@ INSERT (p1:Paper {_id:'P1', title:'Efficient Graph Search', score:6, author:'Ale
 
 The simple `CASE` expression evaluates a single expression against multiple possible values, returning the result associated with the first matching value.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <simple case> ::=
   "CASE" <expr>
     { "WHEN" <value> "THEN" <expr> }...
@@ -75,9 +71,7 @@ Result:
 
 The general `CASE` expression evaluates multiple conditions, returning the result associated with the first condition that evaluates to true.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <general case> ::=
   "CASE"
     { "WHEN" <condition> "THEN" <expr> }...

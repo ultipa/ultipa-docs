@@ -12,9 +12,7 @@ A node pattern is to match nodes in the graph, represented using a pair of paren
 - <a href="#Label-Expression">Label Expression</a>
 - <a href="#Property-Specification">Property Specification</a> or <a href="#WHERE-Clause">WHERE Clause</a>
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <node pattern> ::=
   "(" [ <node variable declaration> ] [ <label expression> ]
       [ <property specification> | <where clause> ] ")" 
@@ -66,9 +64,7 @@ A full edge pattern is represented using a pair of square brackets `[]` and incl
 - <a href="#Label-Expression">Label Expression</a>
 - <a href="#Property-Specification">Property Specification</a> or <a href="#WHERE-Clause">WHERE Clause</a>
   
-<p tit="Syntax"></p>
-
-```
+```syntax
 <full edge pattern> ::=
   <full edge pointing left> | <full edge pointing right> | <full edge any direction>
 
@@ -114,9 +110,7 @@ Match edges where the property `score` is less than 2, and bind them to the vari
 
 An abbreviated edge pattern only indicates the edge direction (left/incoming, right/outgoing, or any) and does not support variable declaration or pattern filtering.
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <abbreviated edge pattern> ::= "<-" | "->" | "-"
 ```
 

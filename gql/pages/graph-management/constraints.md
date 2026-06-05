@@ -51,9 +51,7 @@ Constraints can be created two ways:
 
 ### CREATE CONSTRAINT
 
-<p tit="Syntax"></p>
-
-```
+```syntax
 <create constraint statement> ::=
   "CREATE" { "CONSTRAINT" [ "IF NOT EXISTS" ] | "OR REPLACE CONSTRAINT" } <constraint name> 
   "FOR" { <constraint node pattern> | <constraint edge pattern> } "REQUIRE" <constraint requirement>
