@@ -19,7 +19,7 @@ Each edge has a unique identifier `_id` and two endpoint references.
 
 | Property | Value Type | Description |
 | -- | -- | -- |
-| `_id` | `STRING` | If the graph's edge `_id` is enabled, value can be either system-generated (UUID v4) or manually assigned during insertion.<br><br> If the graph's edge `_id` is disabled, value is only system-generated (in the `e:<N>` form, where `<N>` is the internal numeric ID, such as `e:1`) during insertion, custom values cannot be assigned. <br><br>Once assigned, a edge's `_id` is immutable while the graph remains in its current edge `_id` status.<br><br>See below for details. |
+| `_id` | `STRING` | If the graph's edge `_id` is enabled, value can be either system-generated (UUID v4) or manually assigned during insertion.<br><br> If the graph's edge `_id` is disabled, edges have no user-facing `_id`: it cannot be assigned on insert and cannot be read in queries. <br><br>Once assigned, an edge's `_id` is immutable while the graph remains in its current edge `_id` status.<br><br>See below for details. |
 | `_from` | `STRING` | The `_id` of the source node. |
 | `_to` | `STRING` | The `_id` of the destination node. |
 
@@ -39,9 +39,7 @@ You can disable edge `_id` on an existing graph at any time:
 ALTER GRAPH myGraph SET EDGE_ID DISABLED
 ```
 
-After disabling edge `_id` on a graph, the hidden edge `_id` index is dropped and the in-memory cache is cleared. 
-
-Disabling edge `_id` does not immediately erase the UUID v4 `_id` values already stored on existing edges. Each edge retains its originally assigned `_id` until it is rewritten by `SET` on one of its properties, at which point the `_id` reverts to the system-assigned `e:<N>` form.
+After disabling edge `_id` on a graph, the hidden edge `_id` index is dropped and the in-memory cache is cleared. Existing edges retain their stored UUID v4 values on disk, but those values are no longer user-readable while edge `_id` is disabled. If edge `_id` is later re-enabled, retained UUIDs become visible again and the background converter assigns fresh UUIDs only to edges that were inserted while edge `_id` was off.
 
 Enable edge `_id` on an existing graph:
 
@@ -87,26 +85,25 @@ MATCH (a {_id: 'a'}), (b {_id: 'b'})
 INSERT (a)-[:Knows]->(b)
 ```
 
-When edge `_id` is disabled, providing `_id` in an `INSERT` on an edge is rejected:
-
-```gql
-ALTER GRAPH myGraph SET EDGE_ID DISABLED
-
--- Auto-generated _id in the e:<N> form (when _id is omitted)
-MATCH (a {_id: 'a'}), (b {_id: 'b'})
-INSERT (a)-[:Knows]->(b)
-```
+When edge `_id` is disabled, providing `_id` in an `INSERT` on an edge is rejected.
 
 ### Matching by Edge _id
 
-Matching an edge by `_id`, whether via `WHERE e._id = 'X'` or the inline form `[e {_id: 'X'}]`, **requires edge `_id` to be enabled** on the graph. When edge `_id` is disabled, GQLDB blocks `_id`-based edge lookups.
+Matching an edge by `_id`, whether via `WHERE e._id = 'X'` or the inline form `[e {_id: 'X'}]`, requires edge `_id` to be enabled on the graph. When edge `_id` is disabled, `_id`-based edge lookups are blocked.
 
 ```gql
 -- Edge _id lookup (requires edge _id enabled)
 MATCH ()-[e WHERE e._id = 'tx-12345']->() RETURN e
 ```
 
-Reading `_id` (e.g., `RETURN e._id`) always works regardless of the edge `_id` status.
+### Reading Edge _id 
+
+When edge `_id` is disabled, reading edge `_id` is blocked, including projection (`RETURN e._id`) and the `id(e)` function.
+
+```gql
+-- Edge _id reading (requires edge _id enabled)
+MATCH ()-[e WHERE e._id = 'tx-12345']->() RETURN e._id
+```
 
 ## Why Edge _id is a Toggle but Node _id is Not
 
