@@ -98,7 +98,7 @@ MATCH ()-[e WHERE e._id = 'tx-12345']->() RETURN e
 
 ### Reading Edge _id 
 
-When edge `_id` is disabled, reading edge `_id` is blocked, including projection (`RETURN e._id`) and the `id(e)` function.
+When edge `_id` is disabled, reading edge `_id` is blocked, including returning it (`RETURN e._id`) and the `id(e)` function.
 
 ```gql
 -- Edge _id reading (requires edge _id enabled)

@@ -30,7 +30,10 @@ Each projection provides the following metadata:
 Show detailed metadata for one projection:
 
 ```gql
-SHOW PROJECTION social_graph
+DESCRIBE PROJECTION social_graph
+
+-- DESC is a shorthand for DESCRIBE
+DESC PROJECTION social_graph
 ```
 
 The returned properties are:
