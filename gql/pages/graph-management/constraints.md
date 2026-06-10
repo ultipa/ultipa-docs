@@ -37,11 +37,10 @@ Each constraint provides the following metadata:
 
 | Field | Description |
 | -- | -- |
-| `entity_type` | `NODE` or `EDGE`. |
-| `type` | The node or edge type where the constraint applies. |
-| `property` | The property where the constraint applies. For composite constraints, properties are comma-separated. |
-| `constraint_type` | Constraint type. |
-| `constraint_name` | The user-supplied name of the constraint. |
+| `name` | The user-supplied name of the constraint. Empty for unnamed inline constraints declared in `CREATE GRAPH` / `CREATE GRAPH TYPE`. |
+| `type` | `node`, `edge`, or `wildcard`. |
+| `matchers` | A list of `<labels>.<properties>` descriptors, one per OR alternative the constraint targets. Single property: `User.email`. Composite tuple: `Person.(firstName, lastName)`. Multi-label key set: `A&B.x`. Wildcard target: `%.status`. Label disjunction (`:A\|B`): one entry per alternative, e.g. `["User.email", "Actor.email"]`. |
+| `constraint_type` | `NOT NULL`, `UNIQUE`, or `KEY`. |
 
 ## Creating Constraints
 
