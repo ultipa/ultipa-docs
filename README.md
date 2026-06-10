@@ -14,13 +14,10 @@ Found a typo, broken link, or unclear section? Contributions are welcome:
 
 ## Reporting Security Issues
 
-For documentation errors (typos, broken links, incorrect descriptions), please
-use [GitHub issues](https://github.com/ultipa/ultipa-docs/issues).
+For documentation errors (typos, broken links, incorrect descriptions), please use [GitHub issues](https://github.com/ultipa/ultipa-docs/issues).
 
-If you have discovered a security vulnerability in the **Ultipa product itself**
-(database engine, drivers, CLI, or hosted services), please do **not** open a
-public issue. Email **support@ultipa.com** with subject line
-`SECURITY: <short description>` and we will respond within five business days.
+If you have discovered a security vulnerability in the **Ultipa product itself** (database engine, drivers, CLI, or hosted services), please do **not** open a
+public issue. Email **support@ultipa.com** with subject line `SECURITY: <short description>` and we will respond within five business days.
 
 ## License
 
