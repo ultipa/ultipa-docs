@@ -134,26 +134,6 @@ Use `IF EXISTS` to avoid errors when the projection may not exist:
 DROP PROJECTION IF EXISTS social_graph
 ```
 
-## Querying on a Projection
-
-Use `[OPTIONAL] MATCH ... ON <projection>` statement to route execution through a projection's cache instead of the full graph:
-
-Pattern matching on a projection:
-
-```gql
-MATCH (a:User)-[:Follows]->(b:User) ON social_graph
-RETURN a.name, b.name
-```
-
-Optional match on a projection:
-
-```gql
-OPTIONAL MATCH (a:User)-[:Follows]->(b:User)
-         WHERE a.age > 30
-         ON social_graph
-RETURN a.name, b.name
-```
-
 ## Running Algorithms on a Projection
 
 Algorithm call on a projection:
