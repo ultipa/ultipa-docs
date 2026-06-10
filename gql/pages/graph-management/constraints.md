@@ -2,7 +2,7 @@
 
 ## Overview
 
-**Constraints** enforce additional rules on the node and edge properties in the graph. Any attempt to insert or update data that violates these rules will result in an error. Constraints are only enforced in **closed graphs**.
+**Constraints** enforce additional rules on the node and edge properties in the graph. Any attempt to insert or update data that violates these rules will result in an error.
 
 Ultipa supports the following constraint types:
 
