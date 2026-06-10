@@ -13,4 +13,6 @@ You may follow the sequence below to learn how to write graph patterns in GQL:
 - <a href="/docs/gql/quantified-paths">Quantified Paths</a>
 - <a href="/docs/gql/questioned-paths">Questioned Paths</a>
 - <a href="/docs/gql/shortest-paths">Shortest Paths</a>
+- <a href="/docs/gql/cheapest-paths">Cheapest Paths</a>
+- <a href="/docs/gql/khop-traversal">K-Hop Traversal</a>
 - <a href="/docs/gql/graph-patterns">Graph Patterns</a>
