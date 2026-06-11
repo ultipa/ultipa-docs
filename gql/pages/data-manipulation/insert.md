@@ -24,7 +24,7 @@ The `INSERT` statement allows you to add new nodes and edges into the graph usin
 - `<insert path pattern>` supports single node pattern or simple concatenation of node and edge patterns.
 - `<insert path pattern>` does not support `WHERE` clause or undirected edges.
 
-Ultipa supports both closed graphs and open graphs. Their data insertion syntax is similar, but with important differences in requirements.
+Ultipa supports open, closed, and ontology graphs. Their data insertion syntax is similar, but with important differences in requirements.
 
 ### Open Graphs
 
@@ -43,6 +43,12 @@ For a **closed graph**, any node or edge inserted must conform to its defined no
 - **Properties**: Only properties defined in the type are allowed. Each property has an explicitly defined value type (e.g., `STRING`, `UINT32`, `FLOAT`), and inserted values are validated against these types. Properties not provided in the insert default to `null`, unless a `NOT NULL` constraint is defined. Inserting an undefined property name results in an error.
 
 <a target="_blank" href="/docs/gql/closed-graphs">Learn more about closed graphs →</a>
+
+### Ontology Graphs
+
+For an **ontology graph**, `INSERT` uses ontology-prefixed class labels (`@prefix:Class`), an optional `_iri` property for stable identity, and participates in OWL semantics (subclass reasoning, property characteristics, validation). Local and ontology labels can be mixed (e.g., `:Employee&@foaf:Person`).
+
+<a target="_blank" href="/docs/ontology">Learn more about ontology graphs →</a>
 
 ## Inserting Nodes
   
