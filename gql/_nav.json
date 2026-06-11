@@ -262,6 +262,10 @@
       "folder": "expressions",
       "pages": [
         {
+          "file": "expressions.md",
+          "title": "Overview"
+        },
+        {
           "file": "case.md",
           "title": "CASE"
         },
