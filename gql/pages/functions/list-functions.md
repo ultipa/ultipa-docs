@@ -562,8 +562,7 @@ Filters a list of records, nodes, or edges by checking a property against a valu
 </table>
 
 ```gql
-MATCH (n:Paper)
-LET papers = collect_list(n)
+LET papers = VALUE { MATCH (n:Paper) RETURN collect_list(n) }
 RETURN list_filter(papers, "score", ">", 7)
 ```
 
