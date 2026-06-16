@@ -42,12 +42,12 @@ RETURN n.title, n.score
 
 ```gql
 LET email = "johndoe@gmail.com"
-RETURN email =~ "[a-zA-Z0-9_.-]+@[a-zA-Z0-9]+\.(com|cn)" // true
+RETURN email =~ "[a-zA-Z0-9_.-]+@[a-zA-Z0-9]+\\.(com|cn)" // true
 ```
 
 ```gql
 LET email = "johndoe@gmail.com"
-RETURN email REGEXP "[a-zA-Z0-9_.-]+@[a-zA-Z0-9]+\.(com|cn)" // true
+RETURN email REGEXP "[a-zA-Z0-9_.-]+@[a-zA-Z0-9]+\\.(com|cn)" // true
 ```
 
 ### Comparing Numeric Values 
@@ -68,7 +68,7 @@ This query returns `false` because the first differing character, `p`, has a hig
 
 ```gql
 LET email = "johndoe@gmail.com"
-RETURN email =~ "[a-zA-Z0-9_.-]+@[a-zA-Z0-9]+\.(com|cn)" // true
+RETURN email =~ "[a-zA-Z0-9_.-]+@[a-zA-Z0-9]+\\.(com|cn)" // true
 ```
 
 ### Comparing Temporal Values
