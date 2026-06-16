@@ -114,10 +114,12 @@ Hash-based O(n) set operations on lists.
 
 | Function | Return | Description |
 |----------|--------|-------------|
-| `INTERSECT(listA, listB)` | `LIST` | A ∩ B |
-| `UNION(listA, listB)` | `LIST` | A ∪ B |
+| `INTERSECTION(listA, listB)` | `LIST` | A ∩ B |
+| `LIST_UNION(listA, listB)` | `LIST` | A ∪ B |
 | `DIFFERENCE(listA, listB)` | `LIST` | A - B |
 | `SIZE(collection)` | `INTEGER` | Size of list, map, or string |
+
+`INTERSECT` and `UNION` are reserved keywords (used by composite-query set operations), so the set-operation functions on lists are spelled `INTERSECTION` and `LIST_UNION`.
 
 <p tit="Procedure Body Language"></p>
 
@@ -125,8 +127,8 @@ Hash-based O(n) set operations on lists.
 LET friends_a = NEIGHBORS(a, OUT, :KNOWS)
 LET friends_b = NEIGHBORS(b, OUT, :KNOWS)
 
-LET common = INTERSECT(friends_a, friends_b)
-LET all_friends = UNION(friends_a, friends_b)
+LET common = INTERSECTION(friends_a, friends_b)
+LET all_friends = LIST_UNION(friends_a, friends_b)
 LET only_a = DIFFERENCE(friends_a, friends_b)
 LET count = SIZE(common)
 ```
@@ -268,7 +270,6 @@ See <a href="/docs/stored-procedures/data-operations#batch-insert">Data Operatio
 | Function | Description |
 |----------|-------------|
 | `COALESCE(a, b, ...)` | Return first non-NULL value |
-| `IF(condition, then, else)` | Inline conditional |
 | `TIMESTAMP_MS()` | Current time in milliseconds |
 | `DATE_DIFF(date1, date2)` | Difference between dates (also `DATEDIFF`) |
 
@@ -276,7 +277,6 @@ See <a href="/docs/stored-procedures/data-operations#batch-insert">Data Operatio
 
 ```gql
 LET name = COALESCE(node.nickname, node.name, 'Unknown')
-LET status = IF(score > 0.5, 'high', 'low')
 LET now = TIMESTAMP_MS()
 ```
 
