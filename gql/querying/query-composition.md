@@ -17,7 +17,7 @@ GQL supports the following statement for querying the database:
 | <a href="/docs/gql/limit">LIMIT</a> | Restricts the number of records to be retained in the intermediate result or output table. |
 | <a href="/docs/gql/skip">SKIP</a> | Discards a specified number of records from the beginning of the intermediate result or output table. |
 | <a href="/docs/gql/call">CALL</a> | Invokes an inline procedure or named procedure. | `YIELD` |
-| <a href="/docs/gql/return">RETURN</a> | Specifies the columns to include in the output table. | `GROUP BY [HAVING]` |
+| <a href="/docs/gql/return">RETURN</a> | Specifies the columns to include in the output table. | `GROUP BY` |
 
 ## Linear Query
 

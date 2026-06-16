@@ -36,7 +36,7 @@ Reserved words cannot be used as identifiers for **variables**, **labels**, or *
 
 ## H
 
-`HAVING`, `HOME_GRAPH`, `HOME_PROPERTY_GRAPH`, `HOME_SCHEMA`, `HOUR`
+`HOME_GRAPH`, `HOME_PROPERTY_GRAPH`, `HOME_SCHEMA`, `HOUR`
 
 ## I
 

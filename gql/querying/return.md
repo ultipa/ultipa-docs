@@ -13,9 +13,7 @@ The `RETURN` statement allows you to specify items to include in the query resul
 <return item> ::= <value expression> [ "AS" <identifier> ]
   
 <group by clause> ::= 
-  "GROUP BY" <grouping key> [ { "," <grouping key> }... ] [ <having clause> ]
-
-<having clause> ::= "HAVING" <search condition>
+  "GROUP BY" <grouping key> [ { "," <grouping key> }... ]
 ```
 
 **Details**
@@ -23,7 +21,6 @@ The `RETURN` statement allows you to specify items to include in the query resul
 - The asterisk `*` returns all columns in the intermediate result table. See <a href="#Returning-All">Returning All</a>.
 - The keyword `AS` can be used to rename a return item. See <a href="#Return-Item-Alias">Return Item Alias</a>.
 - The `RETURN` statement supports the `GROUP BY` clause. See <a href="#Returning-with-Grouping">Returning with Grouping</a>.
-- The `<having clause>` can follow `GROUP BY` to filter groups based on aggregate results. See <a href="#Filtering-Groups-with-HAVING">Filtering Groups with HAVING</a>.
 - The `DISTINCT` operator can be used to deduplicate records. If neither `DISTINCT` nor `ALL` is specified, `ALL` is implicitly applied. See <a href="#Returning-Distinct-Records">Returning Distinct Records</a>.
 
 ## Example Graph
@@ -309,11 +306,7 @@ Result:
 | Spring | 2 |
 | Fall | 1 |
 
-### Filtering Groups with HAVING
-
-The `HAVING` clause filters groups produced by `GROUP BY` based on aggregate results. It must follow `GROUP BY` and is evaluated after grouping and aggregation, allowing the search condition to reference aggregate functions or their aliases.
-
-`HAVING` differs from `WHERE`/`FILTER`: `WHERE` and `FILTER` filter records before grouping and cannot reference aggregate results, while `HAVING` filters groups after aggregation.
+### Filtering Groups with NEXT and FILTER
 
 This query returns terms in which more than one `Take` edge exists:
 
@@ -321,7 +314,9 @@ This query returns terms in which more than one `Take` edge exists:
 MATCH ()-[e:Take]->()
 RETURN e.term AS term, count(e) AS cnt
 GROUP BY e.term
-HAVING cnt > 1
+NEXT
+FILTER cnt > 1
+RETURN term, cnt
 ```
 
 Result:
@@ -329,21 +324,6 @@ Result:
 | term | cnt |
 | -- | -- |
 | Spring | 2 |
-
-This query returns years in which the total credit of taken courses exceeds 20:
-
-```gql
-MATCH ()-[e:Take]->(c:Course)
-RETURN e.year AS year, sum(c.credit) AS totalCredit
-GROUP BY e.year
-HAVING totalCredit > 20
-```
-
-Result:
-
-| year | totalCredit |
-| -- | -- |
-| 2023 | 28 |
 
 ## Returning Distinct Records
 
