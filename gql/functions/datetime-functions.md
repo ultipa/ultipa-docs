@@ -801,7 +801,7 @@ Supported pattern tokens (case-sensitive; the longest match wins):
 
 ```gql
 RETURN date_format(date("2025-03-15"), "yyyy-M-d") AS value1,
-       date_format(local_datetime("2025-03-15T14:30:45"), "yyyy-MM-dd HH:mm:ss") AS value2
+       date_format(local_datetime("2025-03-15T14:30:45"), "yyyy-MM-dd HH:mm:ss") AS value2,
        date_format(CURRENT_DATE, "'today is' yyyy-MM-dd") AS value3  // single-quote escape
 ```
 
