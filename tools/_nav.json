@@ -2,6 +2,10 @@
   "name": "Ultipa Tools",
   "navigation": [
     {
+      "file": "mcp.md",
+      "title": "Ultipa MCP"
+    },
+    {
       "file": "cli.md",
       "title": "Ultipa CLI"
     },

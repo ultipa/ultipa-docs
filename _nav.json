@@ -54,7 +54,7 @@
       "id": "tools",
       "name": "Tools",
       "published": true,
-      "description": "Ultipa CLI and Transporter"
+      "description": "Ultipa MCP, CLI, and Transporter"
     },
     {
       "id": "operations",
