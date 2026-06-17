@@ -12,6 +12,14 @@ Enable computing engine for a graph:
 ALTER GRAPH myGraph SET COMPUTE ENABLED
 ```
 
+Check the compute status of the current graph — whether it's enabled, whether the cache is built, how much memory it's using:
+
+```gql
+SHOW COMPUTE STATUS
+```
+
+See <a target="_blank" href="/docs/computing-engine/monitoring#SHOW-COMPUTE-STATUS">Monitoring</a> for the full row reference.
+
 ## Architecture
 
 The computing engine has three parts that work together:
