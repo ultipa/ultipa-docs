@@ -114,8 +114,8 @@ For `ZONED DATETIME` and `ZONED TIME`, timezone is specified as an RFC 3339 UTC 
 
 | Type | Description |
 | -- | -- |
-| `POINT` | A two-dimensional geographical coordinate. Constructed with `point(longitude, latitude)`. The coordinate values are stored as `DOUBLE`. |
-| `POINT3D` | A three-dimensional Cartesian coordinate. Constructed with `point3d(x, y, z)`. The coordinate values are stored as `DOUBLE`. |
+| `POINT` | A 2D coordinate. Default CRS is `wgs-84` (geographic); `cartesian` is also supported via the map-form constructor. Constructed with `point(longitude, latitude)` or `point({...})`. Coordinate values are stored as `DOUBLE`; the CRS is stored as an SRID. |
+| `POINT3D` | A 3D coordinate. Default CRS is `cartesian-3d`; `wgs-84-3d` is also supported via the map-form constructor. Constructed with `point3d(x, y, z)` or `point3d({...})`. Coordinate values are stored as `DOUBLE`; the CRS is stored as an SRID. |
 
 ### Binary
 

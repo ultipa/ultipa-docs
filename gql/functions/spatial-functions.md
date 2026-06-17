@@ -1,5 +1,18 @@
 # Spatial Functions
 
+## Coordinate Reference Systems
+
+`POINT` and `POINT3D` values carry a **coordinate reference system (CRS)**, identified by an integer SRID. Four CRSs are supported:
+
+| SRID | CRS name | Dimensions | Distance |
+| -- | -- | -- | -- |
+| `4326` | `wgs-84` | 2D (longitude, latitude) | Great-circle (haversine), meters |
+| `4979` | `wgs-84-3d` | 3D (longitude, latitude, height) | Haversine + height, meters |
+| `7203` | `cartesian` | 2D (x, y) | Euclidean, raw coordinate units |
+| `9157` | `cartesian-3d` | 3D (x, y, z) | Euclidean, raw coordinate units |
+
+The CRS determines how [`distance()`](#distance) is computed. Two points must share the same CRS to be compared.
+
 ## Example Graph
 
 <center><img src="images/spatial-example.jpg"/></center>
@@ -15,7 +28,8 @@ INSERT (paris:City {name: "Paris", location: point(2.4, 48.9), landmark: point3d
 
 ## point()
 
-Creates a two-dimensional geographical coordinate.
+Creates a `POINT` (2D) or `POINT3D` (3D when a `z`/`altitude`/`height` key is present in the map form) value.
+
 <table style="width: 100%;">
   <colgroup>
     <col style="width:20%;">
@@ -26,46 +40,66 @@ Creates a two-dimensional geographical coordinate.
   <tbody>
     <tr>
       <td><b>Syntax</b></td>
-      <td colspan="3"><code>point(&lt;longitude&gt;, &lt;latitude&gt;)</code></td>
+      <td colspan="3"><code>point(&lt;longitude&gt;, &lt;latitude&gt;)</code> or <code>point(&lt;map&gt;)</code></td>
     </tr>
     <tr>
       <td rowspan="3"><b>Arguments</b></td>
-      <td><b>Name</b></td>
-      <td><b>Type</b></td>
-      <td><b>Description</b></td>
+      <td><b>Form</b></td>
+      <td><b>Behavior</b></td>
+      <td><b>CRS</b></td>
     </tr>
     <tr>
-      <td><code>&lt;longitude&gt;</code></td>
-      <td>Numeric</td>
-      <td>The longitude value, ranging from <code>-180</code> to <code>180</code></td>
+      <td>Positional <code>(longitude, latitude)</code></td>
+      <td>Two numeric arguments.</td>
+      <td>Always <code>wgs-84</code> (SRID 4326).</td>
     </tr>
     <tr>
-      <td><code>&lt;latitude&gt;</code></td>
-      <td>Numeric</td>
-      <td>The latitude value, ranging from <code>-90</code> to <code>90</code></td>
+      <td>Map <code>({...})</code></td>
+      <td>Single map literal with coordinate keys (and optional <code>crs</code>/<code>srid</code>).</td>
+      <td>Inferred from keys; overridable.</td>
     </tr>
     <tr>
       <td><b>Return Type</b></td>
-      <td colspan="3"><code>POINT</code></td>
+      <td colspan="3"><code>POINT</code>, or <code>POINT3D</code> when the map carries a third coordinate.</td>
     </tr>
   </tbody>
 </table>
 
+**Map form rules**:
+
+- **Coordinate keys** (aliases are interchangeable):
+  - 1st: `x` / `longitude` / `lng`
+  - 2nd: `y` / `latitude` / `lat`
+  - 3rd (optional, promotes to `POINT3D`): `z` / `altitude` / `height`
+- **CRS inference** (when neither `crs` nor `srid` is given):
+  - Any geographic key (`longitude`/`latitude`/`lng`/`lat`/`height`) → `wgs-84` (or `wgs-84-3d` if 3D).
+  - Otherwise → `cartesian` (or `cartesian-3d` if 3D).
+- **Explicit override**: `crs: '<name>'` or `srid: <number>`. CRS must match the dimensionality of the coordinates.
+
 ```gql
-RETURN point(116.3, 39.9) AS point
-```
+-- Positional: WGS-84 by default
+RETURN point(116.3, 39.9)
 
-Result:
+-- Map form, WGS-84 inferred from key names
+RETURN point({longitude: 116.3, latitude: 39.9})
 
-```json
-{
-  "longitude": 116.3, "latitude": 39.9
-}
+-- Map form, cartesian inferred from x/y
+RETURN point({x: 1.5, y: 2.5})
+
+-- Map form with z promotes to POINT3D (cartesian-3d)
+RETURN point({x: 1, y: 2, z: 3})
+
+-- Map form with height promotes to POINT3D (wgs-84-3d)
+RETURN point({longitude: 116.3, latitude: 39.9, height: 100})
+
+-- Explicit CRS override
+RETURN point({x: 1.5, y: 2.5, crs: 'wgs-84'})
+RETURN point({x: 1.5, y: 2.5, srid: 4326})
 ```
 
 ## point3d()
 
-Creates a three-dimensional Cartesian coordinate.
+Creates a `POINT3D` value. Same map-form rules as [`point()`](#point); the map argument must include the third coordinate.
 
 <table style="width: 100%;">
   <colgroup>
@@ -77,28 +111,23 @@ Creates a three-dimensional Cartesian coordinate.
   <tbody>
     <tr>
       <td><b>Syntax</b></td>
-      <td colspan="3"><code>point3d(&lt;x&gt;, &lt;y&gt;, &lt;z&gt;)</code></td>
+      <td colspan="3"><code>point3d(&lt;x&gt;, &lt;y&gt;, &lt;z&gt;)</code> or <code>point3d(&lt;map&gt;)</code></td>
     </tr>
     <tr>
-      <td rowspan="4"><b>Arguments</b></td>
-      <td><b>Name</b></td>
-      <td><b>Type</b></td>
-      <td><b>Description</b></td>
+      <td rowspan="3"><b>Arguments</b></td>
+      <td><b>Form</b></td>
+      <td><b>Behavior</b></td>
+      <td><b>CRS</b></td>
     </tr>
     <tr>
-      <td><code>&lt;x&gt;</code></td>
-      <td>Numeric</td>
-      <td>The x coordinate</td>
+      <td>Positional <code>(x, y, z)</code></td>
+      <td>Three numeric arguments.</td>
+      <td>Always <code>cartesian-3d</code> (SRID 9157).</td>
     </tr>
     <tr>
-      <td><code>&lt;y&gt;</code></td>
-      <td>Numeric</td>
-      <td>The y coordinate</td>
-    </tr>
-    <tr>
-      <td><code>&lt;z&gt;</code></td>
-      <td>Numeric</td>
-      <td>The z coordinate</td>
+      <td>Map <code>({...})</code></td>
+      <td>Single map literal with three coordinate keys (and optional <code>crs</code>/<code>srid</code>).</td>
+      <td>Inferred from keys; overridable.</td>
     </tr>
     <tr>
       <td><b>Return Type</b></td>
@@ -108,20 +137,27 @@ Creates a three-dimensional Cartesian coordinate.
 </table>
 
 ```gql
-RETURN point3d(10, 15, 5) AS point3d
-```
+-- Positional: cartesian-3d by default
+RETURN point3d(10, 15, 5)
 
-Result:
+-- Map form, cartesian-3d inferred from x/y/z
+RETURN point3d({x: 10, y: 15, z: 5})
 
-```json
-{
-  "x": 10, "y": 15, "z": 5
-}
+-- Map form, wgs-84-3d inferred from longitude/latitude/height
+RETURN point3d({longitude: 116.3, latitude: 39.9, height: 100})
+
+-- Explicit CRS override
+RETURN point3d({x: 1, y: 2, z: 3, crs: 'wgs-84-3d'})
 ```
 
 ## distance()
 
-Computes the distance between two points. For `POINT` values, it uses the Haversine formula to calculate the great-circle distance on Earth in kilometers. For `POINT3D` values, it computes the Euclidean distance.
+Computes the distance between two points. The formula is chosen by the **CRS** the points carry (not by Go type):
+
+- Geographic (`wgs-84`, `wgs-84-3d`) — great-circle (haversine) distance in **meters**. The 3D form adds the height difference (Pythagoras).
+- Cartesian (`cartesian`, `cartesian-3d`) — Euclidean distance in the raw coordinate units.
+
+Both points must share the same CRS, otherwise the call errors.
 
 <table style="width: 100%;">
   <colgroup>
@@ -164,7 +200,7 @@ MATCH (n2:City {name: 'London'})
 RETURN distance(n1.location, n2.location)
 ```
 
-Result: 5570.833653336143
+Result: `5570833.653336142` (meters)
 
 ## point_get()
 

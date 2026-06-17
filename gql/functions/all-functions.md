@@ -168,7 +168,6 @@ SHOW FUNCTIONS FORMAT OPENAI
 | <a href="/docs/gql/list-functions#list_filter">list_filter()</a> | Filters a list by a condition. |
 | <a href="/docs/gql/list-functions#reduce">reduce()</a> | Performs a calculation iteratively using each element in a list. |
 
-
 ### Datetime Functions
 
 | <div table-width="20">Function</div> | Description |
@@ -196,8 +195,8 @@ SHOW FUNCTIONS FORMAT OPENAI
 
 | <div table-width="16">Function</div> | Description |
 | -- | -- |
-| <a href="/docs/gql/spatial-functions/#point">point()</a> | Creates a two-dimensional geographical coordinate. |
-| <a href="/docs/gql/spatial-functions/#point3d">point3d()</a> | Creates a three-dimensional Cartesian coordinate. |
+| <a href="/docs/gql/spatial-functions/#point">point()</a> | Creates a `POINT` or `POINT3D` value. |
+| <a href="/docs/gql/spatial-functions/#point3d">point3d()</a> | Creates a `POINT3D` value. |
 | <a href="/docs/gql/spatial-functions/#distance">distance()</a> | Computes the distance between two points. |
 | <a href="/docs/gql/spatial-functions/#point_get">point_get()</a> | Extracts a coordinate value from a point by index. |
 
