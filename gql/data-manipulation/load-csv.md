@@ -7,17 +7,17 @@
 - **Dump CSV** form reads a CSV file and returns each row as a map. Use this to preview a file.
 - **Import from CSV** form writes each CSV row straight into the current graph as a node or edge. Use this to load data. Large files are streamed in batches.
 
-Both forms read a local filesystem path or a `file://` URI. Remote schemes (`http://`, `https://`, `s3://`, ...) are not supported.
+Both forms read a local filesystem path, a `file://` URI, or an `http(s)://` URL. Other remote schemes (`s3://`, `ftp://`, ...) are not supported.
 
 ```syntax
 <load csv statement> ::= 
-  "LOAD CSV FROM" <single-quoted file source> { <dump csv> | <import from csv> }
+  "LOAD CSV FROM" <single-quoted file source> { <dump csv> | <import csv> }
 
 <dump csv> ::=
   [ "AS" <row variable> ]
   [ "WITH HEADER" [ "DELIMITER" <character> [ "QUOTE" <character> ] ] ]
 
-<import from csv> ::=
+<import csv> ::=
   "WITH HEADER" [ "DELIMITER" <character> [ "QUOTE" <character> ] ]
   "INTO" <label name>
   [ "EDGE FROM" <label name> "(" <column> ")" "TO" <label name> "(" <column> ")" ]
@@ -31,7 +31,9 @@ Both forms read a local filesystem path or a `file://` URI. Remote schemes (`htt
 - `<row variable>` defaults to `row` when `AS` is omitted.
 - With `WITH HEADER`, the first row is consumed as column names and each subsequent row is keyed by those names. Without `WITH HEADER`, each row is keyed positionally: `col0`, `col1`, ... .
 - `DELIMITER` accepts a single character (e.g. `','`, `';'`, `'\t'`). `QUOTE` accepts the double quote (`"`) as the field-quote character.
-- Path resolution: absolute paths (`/data/users.csv`) and `file:///` URIs are used as-is. **Relative paths resolve against the server process's working directory**, the directory the database was launched from, not the `.gdb` data folder. Prefer absolute paths in production.
+- About the file source:
+  - Path resolution: absolute paths (`/data/users.csv`) and `file:///` URIs are used as-is. **Relative paths resolve against the server process's working directory**, the directory the database was launched from, not the `.gdb` data folder. Prefer absolute paths in production.
+  - HTTP(S) sources are streamed directly into the CSV reader (no temp file). Connect, TLS-handshake, and response-header waits are bounded (30 s, 30 s, 60 s); the body itself streams without a total deadline and is cancelled if the query is cancelled. Non-`200` responses fail the statement with the HTTP status.
 
 ## Example CSVs
 
@@ -163,6 +165,12 @@ Specify the field-quote character with `QUOTE`. The double quote (`"`) is the su
 LOAD CSV FROM 'data/users.csv' AS u WITH HEADER DELIMITER ',' QUOTE '"'
 ```
 
+Read directly from an HTTP(S) URL — the file is streamed, not downloaded to disk first:
+
+```gql
+LOAD CSV FROM 'https://example.com/data/users.csv' WITH HEADER
+```
+
 The result set has one column (`row` / `u` / whatever name `AS` specified). Each row in that column is a `MAP` — access fields client-side after fetching, e.g. `row['name']` in your driver.
 
 The rows are returned to the client only, they cannot be passed to a following `RETURN`, `INSERT`, or `MATCH` in the same query.
@@ -231,5 +239,4 @@ MAPPING (
 
 ## Limitations
 
-- Only local filesystem paths and `file://` URIs are supported. HTTP(S) and object-storage sources are not yet wired in.
 - Every cell is read as a `STRING` in the dump form; downstream client code is responsible for any type conversion. The inline-import form does its own coercion via `AS <TYPE>` in the `MAPPING` clause.
