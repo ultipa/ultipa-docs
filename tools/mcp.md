@@ -25,7 +25,7 @@ The Ultipa Cloud API key needs scopes matching the tools you'll use:
 | `instances:write` | State changes (create, pause, restart, upgrade, set log level, schedule backups, …). |
 | `instances:delete` | `delete_instance`, `delete_backup`. |
 | `instances:credentials` | `get_instance_credentials`. Also required by the data-plane tools under Ultipa Cloud account mode, because they fetch credentials per call. |
-| `billing:read`, `billing:write` | The billing tools. |
+| `billing:read` | The billing tools (all read-only). |
 
 ## Install
 
@@ -166,7 +166,7 @@ Once the server is connected, talk to the agent in natural language, it picks th
 **Account and billing:**
 
 - "What's my current Ultipa Cloud balance and this month's usage?"
-- "Top up my balance by $50 with the saved card."
+- "Show my balance transactions from the last 30 days."
 
 **Docs:**
 
@@ -246,11 +246,8 @@ Requires Ultipa Cloud (`ULTIPA_CLOUD_API_KEY`).
 | `get_balance` | Current account balance and billing flags. |
 | `list_transactions` | Balance transactions (top-ups, charges, refunds). |
 | `get_usage` | Monthly usage-based billing summary. |
-| `get_payment_method` | Saved card info. |
+| `get_payment_method` | Saved card info. To add or change a card, go to <a target="_blank" href="https://dbaas.ultipa.com">Ultipa Cloud</a> → Billing — the Stripe card flow can't be driven via MCP. |
 | `get_auto_reload` | Current auto-reload settings. |
-| `set_auto_reload` | Update auto-reload settings. |
-| `topup_balance` | Top up balance with a saved card. |
-| `start_payment_method_setup` | Stripe Checkout URL for adding or changing the saved card. |
 
 ### Data plane
 
