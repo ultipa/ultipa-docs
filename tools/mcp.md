@@ -29,11 +29,31 @@ The Ultipa Cloud API key needs scopes matching the tools you'll use:
 
 ## Install
 
-Add an entry to your MCP client's config. The same JSON shape works in any stdio MCP client; only the file path differs:
+How you add Ultipa MCP depends on your client:
+
+- **Claude Desktop** → [one-click extension](#Claude-Desktop-One-click-Extension) (easiest), or [manual config](#Manual-config-any-stdio-client)
+- **Cursor, Windsurf, VS Code, other stdio clients** → [manual config](#Manual-Config)
+
+Every path needs one Ultipa target: either an **Ultipa Cloud** API key or a **Direct instance** (host + username + password). See [Auth](#Auth).
+
+### Claude Desktop (One-click Extension)
+
+1. Download `ultipa-mcp.mcpb` from <a target="_blank" href="https://www.ultipa.com/download">Download Center</a>.
+2. Open the file, or drag it into **Settings → Extensions** in Claude Desktop. The bundle ships its own server runtime, so no Node or npm install is required.
+3. When prompted, enter **either** your Ultipa Cloud API key **or** the direct-instance host / username / password (leave the other fields blank), then enable the extension.
+
+To update, install a newer `.mcpb`; to remove, delete it from **Settings → Extensions**.
+
+> Team / Enterprise admins can upload the `.mcpb` in organization settings to make it a one-click install for the whole org.
+
+### Manual Config
+
+Add an entry under `mcpServers` in your MCP client's config. The same JSON shape works in any stdio MCP client; only the file path differs:
 
 - **Claude Desktop:** `claude_desktop_config.json` via Settings → Developer → Edit Config
 - **Cursor:** `~/.cursor/mcp.json`
-- **Windsurf and VS Code MCP extensions:** see their docs.
+- **Windsurf:** `~/.codeium/windsurf/mcp_config.json`
+- **VS Code MCP extensions:** see the extension's docs.
 
 With an Ultipa Cloud API key:
 
@@ -273,5 +293,6 @@ Works with either Ultipa Cloud or a direct instance.
 | MCP launches but exits immediately with "needs at least one auth mode" | Neither `ULTIPA_CLOUD_API_KEY` nor the direct trio (`ULTIPA_HOST` + `ULTIPA_USERNAME` + `ULTIPA_PASSWORD`) is set. Add them to your MCP client's `env` block. |
 | MCP launches but exits with "Direct instance config is incomplete" | You set one or two of the direct env vars; all three (`ULTIPA_HOST`, `ULTIPA_USERNAME`, `ULTIPA_PASSWORD`) are required together. |
 | `import_data` very slow or truncated in `csv` or arrays mode | The agent's output rate is the bottleneck. Provide a host file path so the MCP uses `filePath` mode (constant tokens), or fall back to Ultipa Manager → Data Integration for very large imports. |
+| Claude Desktop extension installed but no Ultipa tools appear | Credentials weren't entered at install. Open **Settings → Extensions → Ultipa**, add a Cloud API key or the direct-instance host / username / password, and re-enable. |
 
 For agent-side trace debugging, set `ULTIPA_MCP_DEBUG=1` in the MCP env to log every tool call name and latency to stderr.
