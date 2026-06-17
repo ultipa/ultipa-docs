@@ -200,3 +200,7 @@ CALL maybe_proc() YIELD result
 -- No error; returns an empty result with column 'result'
 OPTIONAL CALL maybe_proc() YIELD result
 ```
+
+## Running on a Projection
+
+Append `ON <projection>` to scope any `CALL` to a projection's materialized subset. See <a target="_blank" href="/docs/gql/projections#Running-on-a-Projection">Projections</a>.

@@ -134,12 +134,20 @@ Use `IF EXISTS` to avoid errors when the projection may not exist:
 DROP PROJECTION IF EXISTS social_graph
 ```
 
-## Running Algorithms on a Projection
+## Running on a Projection
 
-Algorithm call on a projection:
+Append `ON <projection>` to scope a `CALL` to the projection's materialized subset. All three `CALL` forms accept it:
 
 ```gql
+-- Built-in procedure (graph algorithm)
 CALL algo.degree() ON social_graph YIELD nodeId, score
-```
 
-The inline `CALL { … }` subquery form does **not** accept `ON`.
+-- User-defined stored procedure
+CALL count_followers('Brainy') ON social_graph YIELD cnt
+
+-- Inline procedure
+CALL {
+  MATCH (n)
+  RETURN count(*) AS nodeCount
+} ON social_graph
+```
