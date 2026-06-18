@@ -72,7 +72,7 @@ SHOW VECTOR INDEX
 
 The result includes the following fields:
 
-| <div table-width="18">Field</div> | Description |
+| Field | Description |
 | -- | -- |
 | `index_name` | Vector index name. |
 | `label` | The label of the indexed nodes (`*` if applied to all labels). |

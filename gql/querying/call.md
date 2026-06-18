@@ -148,9 +148,10 @@ Result:
 
 ## Calling Named Procedures
 
-A **named procedure** refers to a predefined procedure that is registered in the system and can be invoked by its name using the `CALL` statement. Two kinds of named procedures are supported:
+A **named procedure** refers to a predefined procedure that is registered in the system and can be invoked by its name using the `CALL` statement. The following kinds of named procedures are supported:
 
 - **Built-in graph algorithms** such as `algo.degree`, `algo.pagerank`. See <a target="_blank" href="/docs/graph-algorithms">Graph Algorithms</a>.
+- **Built-in full-text procedures** `ft.search` and `ft.analyze`. See <a target="_blank" href="/docs/gql/fulltext-index#Procedures">Full-text Index → Procedures</a>.
 - **User-defined stored procedures** created with `CREATE PROCEDURE`. See <a target="_blank" href="/docs/stored-procedures">Stored Procedures</a>.
 
 ```syntax
@@ -177,7 +178,18 @@ CALL algo.degree({
 }) YIELD nodeId, degree
 ```
 
-To learn more about available algorithms, refer to <a target="_blank" href="/docs/graph-algorithms">Graph Algorithms</a>.
+To learn more about available algorithms, see <a target="_blank" href="/docs/graph-algorithms">Graph Algorithms</a>.
+
+### Running Full-text Procedures
+
+`ft.search` runs a BM25-ranked search over a named full-text index:
+
+```gql
+CALL ft.search('prodDesc', 'graph database', {limit: 10}) YIELD node, score
+RETURN node, score ORDER BY score DESC
+```
+
+To learn more about full-text procedures, see <a target="_blank" href="/docs/gql/fulltext-index#Procedures">Full-text Index → Procedures</a>.
 
 ### Running Stored Procedures
 
