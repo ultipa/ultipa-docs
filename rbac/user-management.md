@@ -20,6 +20,7 @@ Result columns:
 | `status` | Always `ACTIVE` for users created through DCL. |
 | `roles` | List of role names assigned to the user |
 | `created_at` | Timestamp when the user was created |
+| `comment` | Free-form comment attached to the user (empty string if none) |
 
 Show a specific user:
 
@@ -55,12 +56,24 @@ The optional `WITH` keyword is also accepted:
 CREATE USER alice WITH PASSWORD 'secure_password_123'
 ```
 
-## Altering Users
+## Changing User Password
 
 Change a user's password:
 
 ```gql
 ALTER USER alice SET PASSWORD 'new_password_456'
+```
+
+## Setting a Comment
+
+Comments are free-form descriptive metadata attached to a user (e.g., role description, team, contact info).
+
+```gql
+-- Set or update the comment
+ALTER USER alice COMMENT 'Primary data engineer'
+
+-- Clear the comment
+ALTER USER alice COMMENT ''
 ```
 
 ## Dropping Users
