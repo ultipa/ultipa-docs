@@ -18,6 +18,10 @@
       "title": "Grant & Revoke Permissions"
     },
     {
+      "file": "ldap-authentication.md",
+      "title": "LDAP / Active Directory"
+    },
+    {
       "file": "best-practices.md",
       "title": "Best Practices"
     }
