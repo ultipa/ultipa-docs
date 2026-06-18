@@ -235,10 +235,11 @@ SHOW FUNCTIONS FORMAT OPENAI
 
 ### Database Functions
 
-Database functions report on the running server and the current graph: version, license, loaded plugins, statistics, schema, and backups.
+Database functions report on the running server and the current graph: version, license, loaded plugins, statistics, schema, backups, and graph-health diagnostics.
 
-- **Introspection:** `db.version()`, `db.license()`, `db.stats()`, `db.overview()`, `db.node_labels()`, `db.edge_labels()`, `db.label_property()`, `db.reload_stats()`, etc. See <a target="_blank" href="/docs/operations/database-info">Operations → Database Info</a>.
+- **Introspection:** `db.version()`, `db.license()`, `db.stats()`, `db.overview()`, `db.node_labels()`, `db.edge_labels()`, `db.label_property()`, etc. See <a target="_blank" href="/docs/operations/database-info">Operations → Database Info</a>.
 - **Backup and Restore:** `db.backup()`, `db.restore()`, `db.backups()`, etc. See <a target="_blank" href="/docs/operations/backup-restore">Operations → Backup & Restore</a>.
+- **Diagnostics and Repair:** `db.validate_graph()`, `db.storage_health()`, `db.reload_stats()`, `db.repair_label_index()`, `db.repair_storage()`, `db.delete_orphans_edges()`, etc. See <a target="_blank" href="/docs/operations/diagnostics-and-repair">Operations → Diagnostics and Repair</a>.
 
 ### AI & Vector Functions
 

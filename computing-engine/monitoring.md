@@ -82,7 +82,7 @@ The basic form returns a compact `(property, value)` row set. Append `ALL` to ad
 
 > `available=true` while `buildInProgress=true` is normal: in concurrent mode the topology publishes for queries before the property cache finishes loading.
 
-### `ALL`: per-component breakdown
+### ALL: per-component breakdown
 
 Adding `ALL` appends extra rows after the regular output:
 

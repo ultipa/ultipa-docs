@@ -36,6 +36,10 @@
     {
       "file": "performance.md",
       "title": "Performance"
+    },
+    {
+      "file": "diagnostics-and-repair.md",
+      "title": "Diagnostics and Repair"
     }
   ]
 }
