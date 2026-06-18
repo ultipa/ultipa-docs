@@ -25,26 +25,47 @@ The Ultipa Cloud API key needs scopes matching the tools you'll use:
 | `instances:write` | State changes (create, pause, restart, upgrade, set log level, schedule backups, …). |
 | `instances:delete` | `delete_instance`, `delete_backup`. |
 | `instances:credentials` | `get_instance_credentials`. Also required by the data-plane tools under Ultipa Cloud account mode, because they fetch credentials per call. |
-| `billing:read` | The billing tools (all read-only). |
+| `billing:read`, `billing:write` | The billing tools. |
 
 ## Install
 
 How you add Ultipa MCP depends on your client:
 
-- **Claude Desktop** → [one-click extension](#Claude-Desktop-One-click-Extension) (easiest), or [manual config](#Manual-config-any-stdio-client)
+- **Claude Desktop** → [one-click extension](#Claude-Desktop-One-click-Extension) (easiest), or [manual config](#Manual-Config)
+- **Claude Code** → [`claude mcp add`](#Claude-Code)
 - **Cursor, Windsurf, VS Code, other stdio clients** → [manual config](#Manual-Config)
 
 Every path needs one Ultipa target: either an **Ultipa Cloud** API key or a **Direct instance** (host + username + password). See [Auth](#Auth).
 
 ### Claude Desktop (One-click Extension)
 
-1. Download `ultipa-mcp.mcpb` from <a target="_blank" href="https://www.ultipa.com/download">Download Center</a>.
+1. Download `gqldb-mcp.mcpb` from <a target="_blank" href="https://www.ultipa.com/download">Download Center</a>.
 2. Open the file, or drag it into **Settings → Extensions** in Claude Desktop. The bundle ships its own server runtime, so no Node or npm install is required.
 3. When prompted, enter **either** your Ultipa Cloud API key **or** the direct-instance host / username / password (leave the other fields blank), then enable the extension.
 
 To update, install a newer `.mcpb`; to remove, delete it from **Settings → Extensions**.
 
 > Team / Enterprise admins can upload the `.mcpb` in organization settings to make it a one-click install for the whole org.
+
+### Claude Code
+
+Add the server with `claude mcp add` (it runs the published npm package via `npx`):
+
+```bash
+# Ultipa Cloud (API key) — --scope user makes it available in every project
+claude mcp add ultipa-cloud --scope user \
+  --env ULTIPA_CLOUD_API_KEY=uc_... \
+  -- npx -y @ultipa-graph/gqldb-mcp
+
+# Self-managed / direct instance
+claude mcp add ultipa --scope user \
+  --env ULTIPA_HOST=<host>:<port> \
+  --env ULTIPA_USERNAME=admin \
+  --env ULTIPA_PASSWORD=... \
+  -- npx -y @ultipa-graph/gqldb-mcp
+```
+
+Verify with `claude mcp list`.
 
 ### Manual Config
 
@@ -62,7 +83,7 @@ With an Ultipa Cloud API key:
   "mcpServers": {
     "ultipa-cloud": {
       "command": "npx",
-      "args": ["-y", "ultipa-mcp"],
+      "args": ["-y", "@ultipa-graph/gqldb-mcp"],
       "env": {
         "ULTIPA_CLOUD_API_KEY": "uc_..."
       }
@@ -78,7 +99,7 @@ For a direct instance:
   "mcpServers": {
     "ultipa-direct": {
       "command": "npx",
-      "args": ["-y", "ultipa-mcp"],
+      "args": ["-y", "@ultipa-graph/gqldb-mcp"],
       "env": {
         "ULTIPA_HOST": "<host>:<port>",
         "ULTIPA_USERNAME": "admin",
@@ -101,14 +122,14 @@ Each MCP server entry points at one Ultipa target. Add as many entries as you ne
   "mcpServers": {
     "ultipa-cloud": {
       "command": "npx",
-      "args": ["-y", "ultipa-mcp"],
+      "args": ["-y", "@ultipa-graph/gqldb-mcp"],
       "env": {
         "ULTIPA_CLOUD_API_KEY": "uc_..."
       }
     },
     "ultipa-staging": {
       "command": "npx",
-      "args": ["-y", "ultipa-mcp"],
+      "args": ["-y", "@ultipa-graph/gqldb-mcp"],
       "env": {
         "ULTIPA_HOST": "staging.internal:60061",
         "ULTIPA_USERNAME": "admin",
@@ -117,7 +138,7 @@ Each MCP server entry points at one Ultipa target. Add as many entries as you ne
     },
     "ultipa-prod": {
       "command": "npx",
-      "args": ["-y", "ultipa-mcp"],
+      "args": ["-y", "@ultipa-graph/gqldb-mcp"],
       "env": {
         "ULTIPA_HOST": "prod.internal:60061",
         "ULTIPA_USERNAME": "admin",
