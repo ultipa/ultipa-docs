@@ -35,6 +35,7 @@ The `COST` clause appears inside an edge pattern and provides the per-edge cost 
 
 - `COST` cannot be used with property specification or inline `WHERE` within the same edge pattern.
 - The `<value expression>` in `COST` can reference edge properties, including arithmetic combinations of multiple properties.
+- If the `COST` expression evaluates to `NULL` for an edge (for example, the referenced weight property is absent on that edge), the edge is treated as **non-traversable** and is skipped — it is *not* traversed at a default cost. A destination reachable only through `NULL`-cost edges yields no path. This makes it possible to run `CHEAPEST` over a *projected weighted subgraph*: materialize a cost only on the edges that should participate, and every other edge of the same type drops out of the search.
 
 <p tit="Cheapest Path Edge Pattern"></p>
 
