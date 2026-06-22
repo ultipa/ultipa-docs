@@ -29,7 +29,7 @@ The fastest way to get a valid file is to ask the server to generate one:
 
 ```bash
 ultipa-gqldb -generate-config
-# => writes ./gqldb.example.yml
+# => writes ./gqldb.example.yml and exits
 ```
 
 The template lists every recognized key with its default, so you can delete what you don't need and fill in the rest. See <a target="_blank" href="/docs/operations/database-installation#Using-a-Config-File">Operations → Database Installation → Using a Config File</a> for the full config.

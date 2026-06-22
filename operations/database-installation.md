@@ -120,7 +120,8 @@ The remaining examples in this page use `ultipa-gqldb`; substitute the versioned
 | `-log-max-files` | `10` | Max number of rotated log files to keep. |
 | `-tls-cert`, `-tls-key` | — | TLS certificate and private key. Both required for TLS. |
 | `-max-msg-size` | (gRPC default, 4 MB) | Max size in bytes for a single gRPC message, applies to **both** the incoming request and the outgoing response. Raise it if large `INSERT` payloads or `RETURN` result sets are being rejected with `ResourceExhausted`. The matching client-side limit must be raised too. |
-| `-config` | — | YAML or JSON config file. Command-line flags override file values. Recommended for production. |
+| `-config` | — | YAML or JSON config file. Command-line flags override file values. Recommended for production. See <a href="#Using-a-Config-File">Using a Config File</a>. |
+| `-generate-config` | — | Write a template config to `./gqldb.example.yml` (applying any other flags as initial values) and exit. Use this to bootstrap a config file with all keys and defaults visible. |
 | `-cache-size` | `10000` (≈40 MB) | In-memory read cache, sized in 4 KB pages (so `10000` ≈ 40 MB). The cache holds recently read storage pages so repeat lookups skip disk. Raise it for read-heavy workloads on graphs that don't fit in OS page cache; lower it to save RAM on small instances. |
 | `-mem-limit-bytes` | `0` (auto) | Soft memory limit. `0` = auto from cgroup, `-1` = disabled. |
 | `-readonly` | off | Open the database in read-only mode (analysis / migration). |
@@ -134,6 +135,61 @@ The list above covers the flags most operators need to know. For the complete se
 ```bash
 ultipa-gqldb -help
 ```
+
+### Using a Config File
+
+For anything beyond a quick local run, prefer a config file over a long string of CLI flags. The server accepts a YAML or JSON file via `-config <path>`; CLI flags override file values when both are present. Some settings — notably the `rbac.ldap` block — have no flat CLI equivalent and can **only** be configured through the file.
+
+#### Generate a Template
+
+The fastest way to discover the full schema and defaults is to ask the server to print one. `-generate-config` writes a fully-commented template at `./gqldb.example.yml` and exits — no other flags are required:
+
+```bash
+ultipa-gqldb -generate-config
+```
+
+The generated file ships with `database.path: ""` (you must set it before launching) and every other key at its default. To pre-bake your starting values into the template, pass them alongside `-generate-config` — each recognized flag becomes the initial value of its corresponding YAML key:
+
+```bash
+ultipa-gqldb -generate-config \
+  -db /var/lib/gqldb \
+  -port 60123 \
+  -rbac \
+  -log-level info
+```
+
+Open `gqldb.example.yml`, edit the keys you care about (the ones you don't set keep their defaults), then launch:
+
+```bash
+ultipa-gqldb -config ./gqldb.example.yml
+```
+
+#### What's in the File
+
+The template is grouped into top-level sections — overview only; check the generated file for every key and default:
+
+| Section | What it controls |
+| -- | -- |
+| `server` | listen address, port, message size, connection / keepalive / request timeouts, gRPC reflection, graceful shutdown |
+| `database` | `path` (required), `read_only`, cache size, flush interval, license file, WAL sync mode, compaction tuning, plugin directory |
+| `rbac` | `enabled`, admin seed user / password, session and permission-cache TTLs, and the nested `ldap` block — see <a href="/docs/rbac/ldap-authentication" target="_blank">LDAP / Active Directory</a> |
+| `tls` | TLS cert and key paths |
+| `logging` | level, format (`text` / `json`), slow-query threshold, log file path, rotation size and count |
+| `rate_limit` | per-window request quota, window length, cleanup period |
+| `transaction` | server-side transaction TTL and cleanup interval |
+| `bulk_import` | per-session timeout, concurrent session caps per graph and globally |
+| `metrics` | Prometheus endpoint port and path, pprof toggle |
+| `audit` | audit log path and per-event toggles (`login`, `logout`, `query`, `data_modification`, `graph_operation`, `admin_operation`, `permission_denied`) |
+
+### Precedence
+
+When the same setting appears in multiple places, the order is:
+
+1. **CLI flags** (highest — override the file)
+2. **Config file** (`-config <path>`)
+3. **Built-in defaults** (lowest — what the template ships with)
+
+For secrets — admin password seed, the LDAP bind password — prefer environment variables (e.g. `GQLDB_LDAP_BIND_PASSWORD`) or CLI flags over the file so the secret doesn't end up in version control.
 
 For production, foreground it under your service manager (systemd, launchd, supervisord). For ad-hoc local testing, run it under `nohup`:
 
