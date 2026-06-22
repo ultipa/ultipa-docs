@@ -19,6 +19,8 @@ The `FOR` statement unnests a list into individual records and expands the inter
   - `OFFSET` provides the zero-based position of each element, i.e., 0, 1, 2, ...
 - The name of the `<binding variable>` in `<ordinality or offset>` must differ from the `<binding variable>` placed right after `FOR`.
 
+> The `UNWIND <list> AS <variable>` syntax is accepted as a synonym for `FOR <variable> IN <list>` and behaves identically. However, `UNWIND` is not part of the GQL standard (ISO/IEC 39075): queries using it run normally but return an advisory warning recommending the standard `FOR ... IN` form.  
+
 ## Unnesting a Simple List
 
 ```gql
