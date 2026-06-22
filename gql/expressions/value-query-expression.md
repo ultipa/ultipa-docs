@@ -3,14 +3,17 @@
 The value query expression allows you to specify a scalar value derived from a nested query specification. The output of this expression is expected to be either a single value or `null`.
 
 ```syntax
-<value query expression> ::= "VALUE" "{" <query> "}"
+<value query expression> ::= "VALUE {" <query> "}"
 ```
 
 **Details**
 
-- The `<query>` must conclude with a result statement that adheres to the following requirements:
-  - Must include a `RETURN` statement with a single return item, and must not contain `GROUP BY`.
-  - The return item in the `RETURN` statement must either utilize an aggregation function or explicitly include `LIMIT 1`. If neither is specified, `LIMIT 1` will be implicitly applied to ensure only a single result is returned.
+- The `<query>` is executed as a complete query and must end with a `RETURN` that projects exactly one return item (a single column). Returning more than one column raises an error.
+- The query must evaluate to at most one row:
+  - No rows: the expression yields `null`.
+  - Exactly one row: that single value is returned.
+  - More than one row: the query raises an error.
+- To guarantee a single row, have the return item use an aggregation function (e.g. `avg()`, `count()`) or add an explicit `LIMIT 1` to the body.
 
 ## Example Graph
 

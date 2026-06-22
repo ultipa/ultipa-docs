@@ -278,6 +278,10 @@
           "title": "Value Query Expression"
         },
         {
+          "file": "count-query-expression.md",
+          "title": "Count Query Expression"
+        },
+        {
           "file": "list-expressions.md",
           "title": "List Expressions"
         },
