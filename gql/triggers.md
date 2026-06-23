@@ -10,10 +10,10 @@ Show triggers in the current graph:
 SHOW TRIGGERS
 
 -- Filter by node label
-SHOW TRIGGERS ON NODE Student
+SHOW TRIGGERS ON NODE :Student
 
 -- Filter by edge label
-SHOW TRIGGERS ON EDGE "ATTENDS"
+SHOW TRIGGERS ON EDGE :ATTENDS
 ```
 
 Returns a table with the following columns:
@@ -27,11 +27,17 @@ Returns a table with the following columns:
 | `enabled` | Whether the trigger is currently active. |
 | `comment` | The optional description of the trigger. |
 
+To show the `CREATE TRIGGER` statement of a trigger, use `SHOW CREATE TRIGGER`:
+
+```gql
+SHOW CREATE TRIGGER InitStudent
+```
+
 ## Creating Triggers
 
 ```syntax
 <create trigger statement> ::=
-  "CREATE TRIGGER" [ "IF NOT EXISTS" ] <trigger name> "ON" < "NODE" | "EDGE" > <label name> 
+  "CREATE TRIGGER" [ "IF NOT EXISTS" ] <trigger name> "ON" < "NODE" | "EDGE" > ":" <label name> 
   [ "COMMENT" <comment> ]
   "BEFORE" < "INSERT" | "UPDATE" >
   "CALL" <callable body string>
@@ -73,7 +79,7 @@ The body language is intentionally narrow. Be aware of the following:
 
 ```gql
 -- BEFORE INSERT node trigger: normalize student name and set default status
-CREATE TRIGGER "InitStudent" ON NODE "Student"
+CREATE TRIGGER "InitStudent" ON NODE :Student
   COMMENT 'Normalize name and set default status'
   BEFORE INSERT
   CALL " $entity call { let entity.name = upper(trim(entity.name)); let entity.status = 'active' } "
@@ -85,7 +91,7 @@ RETURN n.name, n.status   // "JOHN DOE", "active"
 
 ```gql
 -- BEFORE UPDATE node trigger: normalize user email
-CREATE TRIGGER "NormalizeEmail" ON NODE "User"
+CREATE TRIGGER "NormalizeEmail" ON NODE :User
   COMMENT 'Normalize email on update'
   BEFORE UPDATE
   CALL " $entity call { let entity.email = lower(trim(entity.email)) } "
@@ -98,7 +104,7 @@ RETURN u.email   // "alice@example.com"
 
 ```gql
 -- BEFORE INSERT trigger: stamp creation time and capture the logged-in user
-CREATE TRIGGER "InitEmployee" ON NODE "Employee"
+CREATE TRIGGER "InitEmployee" ON NODE :Employee
   COMMENT 'Audit fields on creation'
   BEFORE INSERT
   CALL " $entity call { let entity.creationDate = now(); let entity.creatorName = CURRENT_USER.username } "
