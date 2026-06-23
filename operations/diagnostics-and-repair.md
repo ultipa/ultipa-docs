@@ -90,8 +90,6 @@ RETURN db.reload_stats()
 
 > `O(N + E)` — not a hot-path operation. Schedule it as maintenance.
 
-### RELOAD STATS
-
 Top-level statement form of the same operation:
 
 ```gql
@@ -104,22 +102,6 @@ Rebuilds the **node label index** (from node records) and the **edge reverse-adj
 
 ```gql
 RETURN db.repair_label_index()
-```
-
-### ALTER INDEX … REBUILD
-
-Rebuild a single property index from the live data. Use when `property_index_drift` flags a specific index, or after schema/data churn that left an index stale.
-
-```gql
-ALTER INDEX idx_user_email REBUILD
-```
-
-### REBUILD VECTOR INDEX
-
-Rebuild a vector index from scratch. The index name is the vector index's identifier from `SHOW INDEXES`.
-
-```gql
-REBUILD VECTOR INDEX vec_user_embedding
 ```
 
 ## Repair: Destructive
