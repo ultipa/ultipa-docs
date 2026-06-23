@@ -4,7 +4,10 @@
 
 Ultipa GQLDB provides 40 fine-grained permission operations organized by category. Each operation can be applied at one or more scopes: the database, a specific graph, a node label, an edge label, or a stored procedure within a graph.
 
-Use `GRANT` to add permissions and `REVOKE` to remove them. Permissions are granted to roles, and roles are then assigned to users.
+When a user attempts an operation, access is allowed only if one of their roles has been granted that permission for the requested scope. Otherwise it is rejected. This is **default-deny**: a user starts with no access and gains only what is explicitly granted.
+
+- `GRANT` allows a permission.
+- `REVOKE` removes a grant, returning that permission to the default-denied state.
 
 ## Scopes
 
