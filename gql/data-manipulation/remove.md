@@ -41,6 +41,10 @@ Remove one label from a node:
 ```gql
 MATCH (n:User {name: 'rowlock'})
 REMOVE n:Player
+
+-- 'IS <Label>' is an ISO-standard synonym for ':<Label>'
+MATCH (n:User {name: 'rowlock'})
+REMOVE n IS Player
 ```
 
 Remove multiple labels from a node:
