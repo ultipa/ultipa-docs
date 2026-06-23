@@ -103,3 +103,24 @@ MERGE (a)-[:Knows]->(b)
 ```
 
 For the example case where `Alice` exists and `Bob` does not, this produces 1 new node (`Bob`) and 1 new edge, no duplicate `Alice`.
+
+## Matching Multiple Elements
+
+`MERGE` inserts only when the pattern matches **nothing**. If the pattern already matches **more than one** element, `MERGE` takes the match branch for all of them: it creates nothing, runs `ON MATCH SET` on every matched element, and binds the variable to each (so `RETURN` yields one row per match). `MERGE` does **not** deduplicate or enforce uniqueness, so pre-existing duplicates remain and the statement fans out across all of them.
+
+This applies to both nodes and edges:
+
+```gql
+-- If two Person nodes named 'Alex' exist, ON MATCH SET runs on both
+MERGE (p:Person {name: 'Alex'})
+ON MATCH SET p.seen = p.seen + 1
+ON INSERT SET p.seen = 1
+
+-- If two Knows edges exist from Alice to Bob (parallel edges), ON MATCH SET runs on both
+MATCH (a:Person {name: 'Alice'}), (b:Person {name: 'Bob'})
+MERGE (a)-[r:Knows]->(b)
+ON MATCH SET r.seen = r.seen + 1
+ON INSERT SET r.seen = 1
+```
+
+Merge on a unique key (such as `_id`) when you need the pattern to match at most one element.
