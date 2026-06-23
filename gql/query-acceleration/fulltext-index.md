@@ -359,3 +359,37 @@ RETURN token
 CALL ft.analyze('mixed', '北京大学') YIELD token, position
 RETURN token, position
 ```
+
+### ft.suggest
+
+Returns indexed terms that start with a given prefix, most frequent first. Suggestions come from the index's term dictionary, so they reflect the analyzed (lower-cased, stemmed, segmented) forms actually stored. A typical search box uses `ft.suggest` for the autocomplete dropdown to complete the word a user is typing.
+
+```syntax
+CALL ft.suggest(<index name>, <prefix> [ , <options> ])
+YIELD <column1>, <column2>, ...
+```
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| -- | -- | -- |
+| `<index name>` | `STRING` | Name of a full-text index. |
+| `<prefix>` | `STRING` | The partial term typed so far. It is lower-cased to match indexed terms; an empty string returns the most frequent terms. |
+| `<options>` | `RECORD` | Optional. `{limit: <n>}` caps the number of suggestions (default `10`, minimum `1`). |
+
+**Return columns**:
+
+| Column | Type | Description |
+| -- | -- | -- |
+| `suggestion` | `STRING` | A matching indexed term. |
+| `docFreq` | `INTEGER` | Number of documents containing the term (popularity). |
+
+```gql
+-- Autocomplete: terms starting with 'grap', most popular first
+CALL ft.suggest('prodDesc', 'grap', {limit: 5}) YIELD suggestion, docFreq
+RETURN suggestion ORDER BY docFreq DESC
+
+-- Works script-agnostically: a CJK prefix returns the segmented terms that start with it
+CALL ft.suggest('zhDesc', '社', {limit: 5}) YIELD suggestion, docFreq
+RETURN suggestion ORDER BY docFreq DESC
+```
