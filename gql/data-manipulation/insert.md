@@ -158,3 +158,17 @@ INSERT (:Person {
   embedding: ai.vector([0.12, 0.45, 0.78, 0.33])
 })
 ```
+
+## NULL Property Semantics
+
+An explicit `null` literal in an `INSERT` (or `UPSERT` / `MERGE`) pattern is a real value: the property is stored as `NULL`, appears in `properties(n)`, and `n.x IS NULL` returns `true`.
+
+In an **open graph** this differs from **omitting** the property: an omitted property is not present on the element at all (it does not appear in `properties(n)`), whereas an explicit `null` is present with a `NULL` value. 
+
+In a **closed graph** every declared column exists regardless, so an omitted nullable column also defaults to `NULL`.
+
+```gql
+INSERT (n:T {name: 'hello', ip: null})
+RETURN properties(n),   // {name: 'hello', ip: null}, 'ip' is present
+       n.ip IS NULL     // true
+```

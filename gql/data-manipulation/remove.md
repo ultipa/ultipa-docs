@@ -34,6 +34,8 @@ REMOVE n.gender, e.createdOn
 RETURN n, e
 ```
 
+`REMOVE n.x` has the same effect as `SET n.x = null`: **delete** the property in an **open graph**, or set it to `NULL` in a **closed graph**.
+
 ## Removing Labels
 
 Remove one label from a node:

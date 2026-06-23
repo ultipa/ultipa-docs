@@ -222,13 +222,13 @@ The `null` value is a special value available in all nullable types. Any non-nul
 
 The `null` values can arise in various contexts, including:
 
-- **Default Assignment:** In a closed graph, when nodes or edges are inserted, properties not explicitly provided default to `null` (unless a `NOT NULL` constraint is defined).
-- **Explicit Null Specification:** During node or edge insertion, nullable properties can be intentionally set to `null`.
-- **Value Removal:** Using `REMOVE` on a property sets its value to `null` in a closed graph. In an open graph, the property is removed from the node or edge.
-- **New Property Assignment:** In a closed graph, when adding a new property to a type, any existing nodes or edges of that type are assigned `null` for the new property by default.
+- **Default Assignment:** In a closed graph, when nodes or edges are inserted, nullable properties not explicitly provided default to `null`.
+- **Explicit Null Specification:** During node or edge insertion, nullable properties can be intentionally set to `null`. In an open graph this stores a real `null` (it appears in `properties(n)`), which differs from omitting the property.
+- **Value Removal:** Using `REMOVE` on a property sets its value to `null` in a closed graph.
+- **New Property Assignment:** In a closed graph, when adding a new nullable property to a type, any existing nodes or edges of that type are assigned `null` for the new property by default.
 - **Nonexistent Property References:** Referencing a property that does not exist returns `null`.
 - **Optional Matching:** When the `OPTIONAL` keyword is used with the `MATCH` statement, if no result is found for the pattern, `MATCH` yields `null` instead of empty return.
-- **NULLIF Expression**: The `NULLIF` expression returns `null` if the two compared values are equal.
+- **NULLIF Expression**: The `nullif()` function returns `null` if the two compared values are equal.
 
 ### Null in Comparisons
 

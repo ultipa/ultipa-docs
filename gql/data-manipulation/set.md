@@ -32,7 +32,7 @@ SET n.gender = 'male', e.createdOn = date('2024-01-07')
 RETURN n.gender, e.createdOn
 ```
 
-Remove the value of a property by setting it to `null`:
+Setting a property to `null` removes it in an **open graph**, or sets its value to `null` (the column remains) in a **closed graph** — the same behavior as <a target="_blank" href="/docs/gql/remove">`REMOVE`</a>:
 
 ```gql
 MATCH (n:User {name: 'mochaeach'})
