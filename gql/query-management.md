@@ -1,8 +1,14 @@
 # Query Management
 
-Most GQL queries are executed as real-time operations: results are returned to the client once execution is complete and are not stored on the server. Some operations — such as algorithm write modes, imports, and exports — run as background tasks instead, returning a `task_id` and persisting their results on the server. The system tracks both, providing commands to list and cancel running queries and to monitor, stop, or delete tasks.
+## Overview
 
-## Showing Queries
+Most GQL queries are executed as **real-time operations**: results are returned to the client once execution is complete and are not stored on the server. A few long-running operations run as **background tasks** instead, returning a `task_id` immediately while the work continues on the server.
+
+The system tracks both real-time queries and tasks, providing commands to list and cancel running queries and to monitor, stop, or delete tasks.
+
+## Real-time Queries
+
+### Showing Queries
 
 Lists all currently running queries across all connections. This command is never blocked by concurrency limits.
 
@@ -26,7 +32,7 @@ Returns a table with the following columns:
 | `duration_ms` | How long the query has been running, in milliseconds. |
 | `status` | Current state of the query: `running` or `canceling`. |
 
-## Killing Queries
+### Killing Queries
 
 Cancels a running query by its ID. The query transitions to `canceling` status and stops at the next cancellation checkpoint.
 
@@ -38,7 +44,30 @@ Use `SHOW QUERIES` to find the `query_id` of the query you want to cancel.
 
 ## Background Tasks
 
-Certain operations run as background tasks, such as algorithm execution. Tasks are tracked by the server and can be monitored, stopped, or deleted.
+The following operations run as tasks automatically:
+
+- **Write-mode algorithms**: `CALL algo.*.write()`
+- **Graph compaction**: `COMPACT GRAPH`
+- **Graph copy**: `CREATE GRAPH … AS COPY OF …`
+
+You can also submit any query as a task explicitly with [`EXEC`](#Submitting-a-Task-with-EXEC).
+
+### Submitting a Task with EXEC
+
+`EXEC <query>` runs a query as an asynchronous background task: it returns immediately with a task id instead of holding the connection open until the query finishes. This suits long-running writes that would otherwise run synchronously, such as large bulk inserts or property backfills.
+
+```gql
+-- Bulk insert: many rows in one statement
+EXEC INSERT (:Person {name: 'Alice'}),
+            (:Person {name: 'Bob'}),
+            (:Person {name: 'Carol'}),
+            ...
+
+-- Backfill embeddings on every Document that lacks one
+EXEC MATCH (n:Document) WHERE n.embedding IS NULL SET n.embedding = ai.embed(n.content)
+```
+
+`EXEC` returns `task_id` and `message`.
 
 ### Showing Tasks
 
