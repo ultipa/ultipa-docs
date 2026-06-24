@@ -1,0 +1,17 @@
+{
+  "name": "Machine Learning",
+  "navigation": [
+    {
+      "file": "machine-learning.md",
+      "title": "Introduction"
+    },
+    {
+      "file": "node-classification.md",
+      "title": "Node Classification"
+    },
+    {
+      "file": "link-prediction-ml.md",
+      "title": "Link Prediction (ML)"
+    }
+  ]
+}

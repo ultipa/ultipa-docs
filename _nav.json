@@ -27,6 +27,12 @@
       "description": "Graph algorithms for analytics and data science"
     },
     {
+      "id": "machine-learning",
+      "name": "Machine Learning",
+      "published": true,
+      "description": "In-database ML pipelines for node classification and link prediction"
+    },
+    {
       "id": "ontology",
       "name": "Ontology",
       "published": true,
