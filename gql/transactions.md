@@ -33,13 +33,14 @@ Starts a new transaction. Returns a `transaction_id` and `status`.
 -- Read-write transaction (default)
 START TRANSACTION
 
+-- Equivalent
+BEGIN TRANSACTION
+
 -- Read-only transaction
 BEGIN TRANSACTION READ ONLY
 ```
 
-`START TRANSACTION` and `BEGIN TRANSACTION` are equivalent. 
-
-A read-only transaction provides snapshot isolation for reads — all queries within the transaction see the same consistent point-in-time view of the data, even if other transactions are writing concurrently. Any write operation (`INSERT`, `SET`, `DELETE`) is rejected. This is useful for reports or analytics across multiple queries where you need consistent data throughout.
+A read-only transaction provides snapshot isolation for reads — all queries within the transaction see the same consistent point-in-time view of the data, even if other transactions are writing concurrently. Any write operation is rejected. This is useful for reports or analytics across multiple queries where you need consistent data throughout.
 
 Once a transaction is started, **all subsequent queries run within that transaction** until an explicit `COMMIT` or `ROLLBACK` is issued. There is no need to pass a transaction handle — every query automatically participates in the active transaction.
 
@@ -109,6 +110,19 @@ STOP TRANSACTION tx_abc123
 - `STOP TRANSACTION` requires an explicit transaction ID, so you can use it to terminate any transaction, including ones you don't own.
 - All uncommitted changes are **discarded** (same as `ROLLBACK`).
 
+### RESET TRANSACTIONS
+
+An administrative escape hatch that **terminates every active transaction at once**, equivalent to running `STOP TRANSACTION` on each one. Each transaction is rolled back (uncommitted changes discarded) and ended; none are left open. Useful for clearing a wedged state.
+
+```gql
+RESET TRANSACTIONS
+
+-- Singular alias, same effect
+RESET TRANSACTION
+```
+
+It returns one row per affected transaction with `transaction_id` and `result` (`stopped`, or `failed: <reason>`). Use it sparingly: it terminates other sessions' in-flight work without warning, discarding all their uncommitted changes.
+
 ## Multi-Statement Transactions
 
 A transaction can span multiple statements. You can either send each statement as a separate query call, or combine them into a single semicolon-separated string. Both approaches are equivalent, semicolons are only needed when packing multiple statements into one query.
@@ -165,6 +179,22 @@ When reading data inside a transaction, the database checks in this order:
 1. **Pending changes** in the current transaction (inserts, updates, deletes not yet committed)
 2. **Snapshot cache** (data already read once in this transaction)
 3. **Storage** (persisted data from before the transaction started)
+
+### Concurrent Writes (Last-Writer-Wins)
+
+`COMMIT` does not detect write-write conflicts, there is no read-set tracking or commit-time version comparison. If two sessions concurrently update the same node or edge, **both commits succeed and the later one wins** (the earlier write is silently overwritten); no conflict error is raised.
+
+```gql
+-- Session A                         
+START TRANSACTION
+MATCH (p:Person {_id: 'alice'}) SET p.value = 1
+COMMIT   -- ok                       
+
+-- Session B (concurrent, same node, commits after A)
+START TRANSACTION
+MATCH (p:Person {_id: 'alice'}) SET p.value = 2
+COMMIT   -- ok, overwrites A's write, no error
+```
 
 ## Savepoints
 
