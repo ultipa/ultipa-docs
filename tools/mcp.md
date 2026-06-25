@@ -4,46 +4,35 @@
 
 Ultipa MCP is a <a target="_blank" href="https://modelcontextprotocol.io">Model Context Protocol</a> server that exposes Ultipa Cloud and self-managed GQLDB instances as tools for MCP-compatible AI clients (Claude, Cursor, Windsurf, VS Code, Cline, etc.). It lets the agent provision and operate instances, run GQL queries, manage backups, view metrics, and more — all through natural language.
 
-The server runs locally as a stdio process launched by the MCP client. Each entry in the client's MCP config points at one Ultipa target.
+Ultipa MCP runs in two shapes: 
 
-## Auth
-
-Each Ultipa MCP server entry uses one of two auth paths:
-
-| Path | Use it if | Env vars |
-| --- | --- | --- |
-| **Ultipa Cloud** | You manage instances via <a target="_blank" href="https://dbaas.ultipa.com">Ultipa Cloud</a> | `ULTIPA_CLOUD_API_KEY` (create at **Ultipa Cloud → Settings → API Keys**) |
-| **Direct instance** | You have admin credentials to a GQLDB instance | `ULTIPA_HOST` + `ULTIPA_USERNAME` + `ULTIPA_PASSWORD`, optional `ULTIPA_GRAPH` |
-
-To target both, or multiple direct instances, add more entries — see [Multiple Targets](#Multiple-Targets).
-
-The Ultipa Cloud API key needs scopes matching the tools you'll use:
-
-| Permission | What it unlocks |
-| --- | --- |
-| `instances:read` | All read tools (list, get, metrics, …). |
-| `instances:write` | State changes (create, pause, restart, upgrade, set log level, schedule backups, …). |
-| `instances:delete` | `delete_instance`, `delete_backup`. |
-| `instances:credentials` | `get_instance_credentials`. Also required by the data-plane tools under Ultipa Cloud account mode, because they fetch credentials per call. |
-| `billing:read`, `billing:write` | The billing tools. |
+- as a **stdio** subprocess launched by clients like Claude Desktop, Claude Code, and Cursor; 
+- or as a **remote HTTP server** at `mcp.ultipa.com` that Claude Web (claude.ai) connects to via OAuth.
 
 ## Install
 
 How you add Ultipa MCP depends on your client:
 
-- **Claude Desktop** → [one-click extension](#Claude-Desktop-One-click-Extension) (easiest), or [manual config](#Manual-Config)
+- **Claude Desktop** → [Connectors directory](#Claude-Desktop) (easiest), or [manual config](#Manual-Config)
 - **Claude Code** → [`claude mcp add`](#Claude-Code)
+- **Claude Web (claude.ai)** → [remote connector](#Claude-Web) (no install, OAuth-based, Ultipa Cloud only)
 - **Cursor, Windsurf, VS Code, other stdio clients** → [manual config](#Manual-Config)
 
-Every path needs one Ultipa target: either an **Ultipa Cloud** API key or a **Direct instance** (host + username + password). See [Auth](#Auth).
+Stdio installs need one Ultipa target, either an **Ultipa Cloud** API key or a **Direct instance** (host + username + password). See [Auth](#Auth). The Claude Web connector uses OAuth and needs no env config.
 
-### Claude Desktop (One-click Extension)
+### Claude Desktop
+
+The simplest path is the **Connectors** directory:
+
+1. Open Claude Desktop → **New Chat → + icon → Connectors → Add connector → Browse connectors**.
+2. Search for **Ultipa** and click **Install**. Then click **Config**.
+3. When prompted, enter **either** your Ultipa Cloud API key **or** the direct-instance host + username + password, then **Save**.
+
+If Ultipa isn't visible in your Connectors directory (older Claude Desktop, enterprise-managed install), you can install the `.mcpb` extension file directly:
 
 1. Download `gqldb-mcp.mcpb` from <a target="_blank" href="https://www.ultipa.com/download">Download Center</a>.
-2. Open the file, or drag it into **Settings → Extensions** in Claude Desktop. The bundle ships its own server runtime, so no Node or npm install is required.
-3. When prompted, enter **either** your Ultipa Cloud API key **or** the direct-instance host / username / password (leave the other fields blank), then enable the extension.
-
-To update, install a newer `.mcpb`; to remove, delete it from **Settings → Extensions**.
+2. Open it, or drag it into **Settings → Extensions** in Claude Desktop.
+3. When prompted, enter your credentials (same as above).
 
 > Team / Enterprise admins can upload the `.mcpb` in organization settings to make it a one-click install for the whole org.
 
@@ -60,12 +49,30 @@ claude mcp add ultipa-cloud --scope user \
 # Self-managed / direct instance
 claude mcp add ultipa --scope user \
   --env ULTIPA_HOST=<host>:<port> \
-  --env ULTIPA_USERNAME=admin \
-  --env ULTIPA_PASSWORD=... \
+  --env ULTIPA_USERNAME=<username> \
+  --env ULTIPA_PASSWORD=<password> \
+  --env ULTIPA_GRAPH=<optional_default_graph_name> \
   -- npx -y @ultipa-graph/gqldb-mcp
 ```
 
 Verify with `claude mcp list`.
+
+### Claude Web
+
+Claude Web supports Ultipa as a remote MCP server. Each user authenticates via OAuth against their own Ultipa Cloud account, so there's no API key to manage and every user only sees their own instances.
+
+1. Open Claude Web → **Settings → Connectors → Add custom connector**.
+2. Fill in:
+   - **Name:** `Ultipa` (or any label you prefer)
+   - **Remote MCP server URL:** `https://mcp.ultipa.com`
+   - **OAuth Client ID:** `oac_b67435362986`
+   - **OAuth Client Secret:** leave blank
+3. Click **Add** to close the modal, then click **Connect**. You'll be redirected to <a target="_blank" href="https://account.ultipa.com">account.ultipa.com</a> to sign in (or create an account) and approve access.
+4. Once authorized, Claude can use any of the Ultipa Cloud tools as your account.
+
+To review or revoke access at any time, visit <a target="_blank" href="https://account.ultipa.com/connected-apps">account.ultipa.com/connected-apps</a>.
+
+> Self-managed (Direct) instances aren't reachable via Claude Web. There's no per-user way to inject `ULTIPA_HOST`/`USERNAME`/`PASSWORD` over OAuth. For Direct instances, use Claude Desktop, Claude Code, or another stdio client.
 
 ### Manual Config
 
@@ -102,9 +109,9 @@ For a direct instance:
       "args": ["-y", "@ultipa-graph/gqldb-mcp"],
       "env": {
         "ULTIPA_HOST": "<host>:<port>",
-        "ULTIPA_USERNAME": "admin",
+        "ULTIPA_USERNAME": "<username>",
         "ULTIPA_PASSWORD": "<password>",
-        "ULTIPA_GRAPH": "default"
+        "ULTIPA_GRAPH": "<optional_default_graph_name>"
       }
     }
   }
@@ -148,6 +155,29 @@ Each MCP server entry points at one Ultipa target. Add as many entries as you ne
   }
 }
 ```
+
+## Auth
+
+**Claude Web** uses OAuth — you sign into Ultipa during the connector setup. No env config needed. See [Claude Web](#Claude-Web).
+
+**Stdio clients** (Claude Desktop, Claude Code, Cursor, etc.) authenticate via env vars. Pick one path per server entry:
+
+| Path | Env vars |
+| --- | --- |
+| **Ultipa Cloud** | `ULTIPA_CLOUD_API_KEY` createed at **<a target="_blank" href="https://dbaas.ultipa.com">Ultipa Cloud</a> → Settings → API Keys** |
+| **Direct instance** | `ULTIPA_HOST` + `ULTIPA_USERNAME` + `ULTIPA_PASSWORD` (+ optional `ULTIPA_GRAPH`) |
+
+To target both, or multiple direct instances, add more entries, see [Multiple Targets](#Multiple-Targets).
+
+**Cloud API key scopes** to grant when creating the key:
+
+| Scope | Needed for |
+| --- | --- |
+| `instances:read` | Any read-only tool |
+| `instances:write` | State changes (create, pause, restart, upgrade, …) |
+| `instances:delete` | `delete_instance`, `delete_backup` |
+| `instances:credentials` | All data-plane tools in Cloud mode (they fetch per-call creds) |
+| `billing:read` | Billing tools |
 
 ## Examples
 
@@ -197,7 +227,7 @@ Once the server is connected, talk to the agent in natural language, it picks th
 
 ### Control Plane
 
-Requires Ultipa Cloud (`ULTIPA_CLOUD_API_KEY`).
+**Auth required:** Ultipa Cloud — either `ULTIPA_CLOUD_API_KEY` (stdio clients) or a Claude Web OAuth session. Direct instances cannot use these tools.
 
 #### Account
 
@@ -272,8 +302,6 @@ Requires Ultipa Cloud (`ULTIPA_CLOUD_API_KEY`).
 
 ### Data plane
 
-Works with either Ultipa Cloud or a direct instance.
-
 | Tool | What it does |
 | --- | --- |
 | `test_connection` | Quick health check on the target GQLDB instance. |
@@ -292,8 +320,6 @@ Works with either Ultipa Cloud or a direct instance.
 | `reload_db_stats` | Rebuild the instance's stored statistics. |
 
 ### Docs
-
-Works with either Ultipa Cloud or a direct instance.
 
 | Tool | What it does |
 | --- | --- |
