@@ -166,7 +166,7 @@ RETURN ai.embed_dim()
 
 Overrides the embedding model for a given provider at runtime. The override is persisted and re-activates the affected provider, so subsequent `ai.embed()`, `ai.embed_batch()`, and vector-index inserts use the new model immediately.
 
-> **Watch out for dimension changes.** Switching models within the same provider often changes the embedding dimension (e.g. OpenAI `text-embedding-3-small` is 1536-dim, `text-embedding-3-large` is 3072-dim). When the dimension changes, GQLDB emits a warning that includes the old and new dimensions; **existing vector indexes were built for the previous dimension and must be rebuilt with <a href="/docs/ai-and-vectors/vector-utilities#ai-rebuild_index">`ai.rebuild_index()`</a>** or query results will silently mismatch.
+> **Watch out for dimension changes.** Switching models within the same provider often changes the embedding dimension (e.g. OpenAI `text-embedding-3-small` is 1536-dim, `text-embedding-3-large` is 3072-dim). When the dimension changes, GQLDB emits a warning that includes the old and new dimensions; **existing vector indexes were built for the previous dimension and must be rebuilt with <a href="/docs/ai-and-vectors/vector-index#Rebuilding-an-Index">`ai.rebuild_index()`</a>** or query results will silently mismatch.
 
 <table style="width: 100%;">
   <colgroup>

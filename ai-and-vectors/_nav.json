@@ -18,12 +18,8 @@
       "title": "Vectors"
     },
     {
-      "file": "vector-similarity-search.md",
-      "title": "Vector Similarity Search"
-    },
-    {
-      "file": "vector-utilities.md",
-      "title": "Vector Utilities"
+      "file": "vector-index.md",
+      "title": "Vector Index"
     }
   ]
 }

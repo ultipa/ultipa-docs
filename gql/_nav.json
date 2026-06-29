@@ -292,7 +292,7 @@
       ]
     },
     {
-      "folder": "query-acceleration",
+      "folder": "indexes",
       "pages": [
         {
           "file": "index.md",

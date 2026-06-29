@@ -25,7 +25,7 @@ Result:
 
 Use this to verify which providers have API keys configured, which are active, and whether they support embedding, completion, or both.
 
-## Embedding vs Completion
+## Embedding and Completion
 
 AI functions rely on two types of AI providers:
 
@@ -73,32 +73,27 @@ Some providers support both embedding and completion, while others support only 
 | <a href="/docs/ai-and-vectors/vectors#ai-vector">ai.vector()</a> | Converts a list of numbers to a `VECTOR` type.  |
 | <a href="/docs/ai-and-vectors/vectors#ai-embed">ai.embed()</a> | Generates an embedding vector from text using the configured AI provider. |
 | <a href="/docs/ai-and-vectors/vectors#ai-embed_batch">ai.embed_batch()</a> | Generates embedding vectors for multiple texts in a single batched call. |
+| <a href="/docs/ai-and-vectors/vectors#ai-cosine">ai.cosine()</a> | Computes cosine similarity between two vectors. |
+| <a href="/docs/ai-and-vectors/vectors#ai-euclidean">ai.euclidean()</a> | Computes Euclidean (L2) distance between two vectors. |
+| <a href="/docs/ai-and-vectors/vectors#ai-euclidean_squared">ai.euclidean_squared()</a> | Computes squared Euclidean distance — same ordering as Euclidean but skips the final `sqrt`, faster for nearest-neighbor ranking. |
+| <a href="/docs/ai-and-vectors/vectors#ai-dot">ai.dot()</a> | Computes dot product of two vectors. |
+| <a href="/docs/ai-and-vectors/vectors#ai-distance">ai.distance()</a> | Computes cosine distance (1 - cosine similarity). |
+| <a href="/docs/ai-and-vectors/vectors#ai-manhattan">ai.manhattan()</a> | Computes Manhattan (L1) distance between two vectors. |
+| <a href="/docs/ai-and-vectors/vectors#ai-hamming">ai.hamming()</a> | Computes Hamming distance — count of coordinates that differ between two vectors. |
+| <a href="/docs/ai-and-vectors/vectors#vector_distance">vector_distance()</a> | A single function call covers all six distance metrics. |
+| <a href="/docs/ai-and-vectors/vectors#ai-dimension">ai.dimension()</a> | Gets the number of dimensions in a vector. |
+| <a href="/docs/ai-and-vectors/vectors#ai-magnitude">ai.magnitude()</a> | Gets the magnitude (L2 norm) of a vector. |
+| <a href="/docs/ai-and-vectors/vectors#ai-normalize">ai.normalize()</a> | Normalizes a vector to unit length. |
+| <a href="/docs/ai-and-vectors/vectors#ai-tolist">ai.toList()</a> | Converts a vector to a list of numbers. |
+| <a href="/docs/ai-and-vectors/vectors#vector_norm">vector_norm()</a> | Returns the L2 or L1 norm of a vector under a metric. |
+| <a href="/docs/ai-and-vectors/vectors#vector_serialize">vector_serialize()</a> | Converts a vector to its textual list form (`"[N1, N2, …]"`). |
+| <a href="/docs/ai-and-vectors/vectors#ai-add">ai.add()</a> | Adds two vectors element-wise. |
+| <a href="/docs/ai-and-vectors/vectors#ai-subtract">ai.subtract()</a> | Subtracts two vectors element-wise. |
+| <a href="/docs/ai-and-vectors/vectors#ai-scale">ai.scale()</a> | Multiplies a vector by a scalar. |
 
-### Vector Similarity Search
+### Vector Index
 
 | Function | Description |
 | -- | -- |
-| <a href="/docs/ai-and-vectors/vector-similarity-search#ai-cosine">ai.cosine()</a> | Computes cosine similarity between two vectors. |
-| <a href="/docs/ai-and-vectors/vector-similarity-search#ai-euclidean">ai.euclidean()</a> | Computes Euclidean (L2) distance between two vectors. |
-| <a href="/docs/ai-and-vectors/vector-similarity-search#ai-euclidean_squared">ai.euclidean_squared()</a> | Computes squared Euclidean distance — same ordering as Euclidean but skips the final `sqrt`, faster for nearest-neighbor ranking. |
-| <a href="/docs/ai-and-vectors/vector-similarity-search#ai-dot">ai.dot()</a> | Computes dot product of two vectors. |
-| <a href="/docs/ai-and-vectors/vector-similarity-search#ai-distance">ai.distance()</a> | Computes cosine distance (1 - cosine similarity). |
-| <a href="/docs/ai-and-vectors/vector-similarity-search#ai-manhattan">ai.manhattan()</a> | Computes Manhattan (L1) distance between two vectors. |
-| <a href="/docs/ai-and-vectors/vector-similarity-search#ai-hamming">ai.hamming()</a> | Computes Hamming distance — count of coordinates that differ between two vectors. |
-| <a href="/docs/ai-and-vectors/vector-similarity-search#vector_distance">vector_distance()</a> | A single function call covers all six distance metrics. |
-
-### Vector Utilities
-
-| Function | Description |
-| -- | -- |
-| <a href="/docs/ai-and-vectors/vector-utilities#ai-dimension">ai.dimension()</a> | Gets the number of dimensions in a vector. |
-| <a href="/docs/ai-and-vectors/vector-utilities#ai-magnitude">ai.magnitude()</a> | Gets the magnitude (L2 norm) of a vector. |
-| <a href="/docs/ai-and-vectors/vector-utilities#ai-normalize">ai.normalize()</a> | Normalizes a vector to unit length. |
-| <a href="/docs/ai-and-vectors/vector-utilities#ai-tolist">ai.toList()</a> | Converts a vector to a list of numbers. |
-| <a href="/docs/ai-and-vectors/vector-utilities#vector_norm">vector_norm()</a> | Returns the L2 or L1 norm of a vector under a metric. |
-| <a href="/docs/ai-and-vectors/vector-utilities#vector_serialize">vector_serialize()</a> | Converts a vector to its textual list form (`"[N1, N2, …]"`). |
-| <a href="/docs/ai-and-vectors/vector-utilities#ai-add">ai.add()</a> | Adds two vectors element-wise. |
-| <a href="/docs/ai-and-vectors/vector-utilities#ai-subtract">ai.subtract()</a> | Subtracts two vectors element-wise. |
-| <a href="/docs/ai-and-vectors/vector-utilities#ai-scale">ai.scale()</a> | Multiplies a vector by a scalar. |
-| <a href="/docs/ai-and-vectors/vector-utilities#ai-rebuild_index">ai.rebuild_index()</a> | Rebuilds an HNSW vector index. |
-| <a href="/docs/ai-and-vectors/vector-utilities#ai-set_index_option">ai.set_index_option()</a> | Updates a runtime vector index option. |
+| <a href="/docs/ai-and-vectors/vector-index#Adjusting-Search-Parameters">ai.set_index_option()</a> | Updates a runtime vector index option. |
+| <a href="/docs/ai-and-vectors/vector-index#Rebuilding-an-Index">ai.rebuild_index()</a> | Rebuilds an HNSW vector index. |

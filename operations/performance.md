@@ -21,7 +21,7 @@ The single largest lever for read latency. GQLDB supports three index families:
 | -- | -- | -- |
 | **Property index** | Equality and range predicates on node / edge properties, anywhere a `MATCH` filters by a non-key property. | <a href="/docs/gql/index" target="_blank">Index</a> |
 | **Full-text index** | `CONTAINS` / phrase search on string properties, with tokenizer-aware matching. | <a href="/docs/gql/fulltext-index" target="_blank">Full-text Index</a> |
-| **Vector index** | Approximate-nearest-neighbor search over dense vector properties: embeddings, image features, etc. | <a href="/docs/gql/vector-index" target="_blank">Vector Index</a> |
+| **Vector index** | Approximate-nearest-neighbor search over dense vector properties: embeddings, image features, etc. | <a href="/docs/ai-and-vectors/vector-index" target="_blank">Vector Index</a> |
 
 If a query scans the whole graph but only returns a handful of rows, you almost certainly want an index. Confirm with `EXPLAIN` before and after to see the operator change.
 
