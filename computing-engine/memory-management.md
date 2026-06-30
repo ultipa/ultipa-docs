@@ -24,6 +24,8 @@ Follow the formula `Memory = 2 * (N + 1) * 8 + 4 * E * 8 bytes`, where `N` = num
 
 The two-times factor on both terms reflects the fact that the engine maintains two parallel indexes — one for outgoing edges and one for incoming edges — so traversal in either direction is equally fast. Roughly, plan for **~16 bytes per node** (one index slot in each direction) and **~32 bytes per edge** (each edge appears in both indexes).
 
+> For graphs under 2³² nodes and edges, <a target='_blank' href='/docs/computing-engine/configuration#Low-Memory-Topology'>low-memory topology</a> uses 32-bit adjacency arrays instead of 64-bit, roughly **halving** these topology figures.
+
 **Property Memory:**
 
 - Integer/Float: 8 bytes per value
@@ -103,35 +105,31 @@ RETURN popular.name, count(audience)
 
 ## Monitoring Memory Usage
 
-Monitor computing engine memory to optimize your configuration:
+Monitor computing engine memory to optimize your configuration. Use `SHOW COMPUTE STATUS` for the full row reference.
 
-**Key Metrics:**
+**Key Rows:**
 
-- **Topology memory used**: Bytes used by the cached graph structure
-- **Property memory used**: Bytes used by cached properties
-- **Cache coverage**: Percentage of graph cached
-- **Cache hit rate**: Percentage of lookups served from cache
+- `topologyMemory`: bytes used by the cached graph structure
+- `propertyMemory`: bytes used by cached properties
+- `totalMemory`: sum of the two (the engine's own footprint)
+- `nodeCount` / `edgeCount`: how much of the graph is currently cached; compare against the graph's totals to gauge coverage under a memory limit
+- `memoryLimit`: the configured cap, when set
+- `goMemLimit` / `memLimitUsedPct`: the process-wide soft memory limit (the `GOMEMLIMIT` ceiling) and how close the process is to it; `> ~90%` warns of an imminent garbage-collection stall (see [Configuration](/docs/computing-engine/configuration#memory-limits))
 
 **Tuning Tips:**
 
-- Low hit rate? Increase memory limit or cache more properties
-- High memory, low benefit? Reduce limit, disable for this graph
-- Frequent rebuilds? Consider ASYNC mode during writes
+- Caching too little of the graph? Increase `MEMORY_LIMIT` or cache fewer properties per label.
+- High memory, low benefit? Reduce the limit, or disable compute for this graph.
+- Frequent rebuilds slowing writes? Consider `ASYNC` mode during write-heavy periods.
 
 View computing engine statistics:
 
 ```gql
--- Check computing engine status
-SHOW GRAPH myGraph COMPUTE STATUS
+-- Current graph
+SHOW COMPUTE STATUS
 
--- Expected output:
--- enabled: true
--- sync_mode: SYNC
--- memory_limit: 4GB
--- memory_used: 3.2GB
--- topology_coverage: 100%
--- property_coverage: 85%
--- cache_hit_rate: 94%
+-- A specific graph
+SHOW COMPUTE STATUS ON GRAPH myGraph
 ```
 
 ## Troubleshooting

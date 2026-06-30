@@ -34,6 +34,8 @@ The basic form returns a compact `(property, value)` row set. Append `ALL` to ad
 | `propertyMemory` | string | Formatted bytes used by the property cache. Always present. |
 | `totalMemory` | string | Sum of topology + property memory. Always present. |
 | `topologyVersion` | integer | Snapshot version, incremented on every rebuild. Present after first build. |
+| `lowMem` | boolean | Whether the low-memory (32-bit topology) preference is set for this graph. |
+| `topologyArrayWidth` | integer | Adjacency-array bit width of the live snapshot, `32` or `64`. Present after first build. `lowMem=true` with `topologyArrayWidth=64` means the preference is set but not yet applied, run `SET COMPUTE REBUILD`. |
 
 **Sync / delta diagnostics** (`ASYNC` mode signals; surfaced for wedge debugging)
 

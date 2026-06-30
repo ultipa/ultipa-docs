@@ -22,6 +22,35 @@ ALTER GRAPH socialNetwork SET COMPUTE DISABLED
 
 It tears the cache down and releases its memory; queries continue to work against disk-backed storage.
 
+## Autoloading at Startup
+
+Restarting the database does not turn the computing engine off, but it does drop the in-memory cache. So after a restart, a graph still reports `ENABLED`, but acceleration is **inactive** until the cache is rebuilt. You have two ways to rebuild it:
+
+- **Manually**: re-issue `ALTER GRAPH … SET COMPUTE ENABLED` to trigger a fresh background build.
+- **Automatically on every startup**: by flagging the graph for autoload (below).
+
+To have a graph's topology build **automatically** at database open, flag it for autoload:
+
+```gql
+-- Build this graph's topology automatically on every database open
+ALTER GRAPH socialNetwork SET COMPUTE AUTOLOAD ON
+
+-- Back to manual (re-issue SET COMPUTE ENABLED after a restart)
+ALTER GRAPH socialNetwork SET COMPUTE AUTOLOAD OFF
+```
+
+`AUTOLOAD` is persisted per graph and takes effect only when compute is also `ENABLED`. Default is **OFF**. Setting it does not trigger a build immediately, it governs what happens at the next open, and that build runs in the background so the open stays fast.
+
+**Process-wide override.** The `GQLDB_COMPUTE_AUTOLOAD` environment variable overrides the per-graph flags for the whole process:
+
+| Value | Effect |
+| -- | -- |
+| unset | Per-graph `AUTOLOAD` flags govern (default: nothing autoloads). |
+| `1` | Autoload every compute-enabled graph, ignoring per-graph flags. |
+| `0` | Disable autoload entirely (operational kill-switch). |
+
+When several graphs autoload at once, loading adapts to the storage device — serial on rotational disks (HDD) to avoid thrashing one spindle, bounded-parallel on flash (SSD/NVMe). The device class is detected automatically. Inside containers, where block-device introspection is unreliable, set `GQLDB_COMPUTE_STORAGE_CLASS` (`hdd` / `ssd` / `nvme` / `auto`) explicitly.
+
 ## Memory Limits
 
 Set memory limits to control how much RAM the computing engine can use per graph. This prevents out-of-memory issues and allows partial caching of large graphs.
@@ -60,6 +89,17 @@ ALTER GRAPH smallGraph SET COMPUTE MEMORY_LIMIT 512MB
 
 The two sub-limits (`TOPOLOGY_LIMIT`, `PROPERTY_LIMIT`) let you reserve memory for one cache without letting the other crowd it out. If only `MEMORY_LIMIT` is set, the engine partitions it internally. Setting `PROPERTY_LIMIT` to `0` disables property caching entirely (topology-only mode).
 
+**`GOMEMLIMIT` is the real ceiling, not physical RAM.** The whole database process runs under a soft memory limit set by the `GOMEMLIMIT` environment variable, not by the machine's physical RAM. This is the absolute outer wall: the GQL limits above (`MEMORY_LIMIT`, `TOPOLOGY_LIMIT`, `PROPERTY_LIMIT`) only partition memory underneath it. A 512 GB host with `GOMEMLIMIT=96GiB` can only grow the process to ~96 GB, no matter how high you set the GQL limits.
+
+**What goes wrong:** as a build nears `GOMEMLIMIT`, the runtime spends almost all CPU on garbage collection trying to stay under the limit, and a large build slows to a crawl. Rather than hang, a build that crosses **~90%** of `GOMEMLIMIT` **fails loudly** with `buildState=FAILED` and an actionable error.
+
+**How to fix it:**
+- Raise or unset `GOMEMLIMIT` if the host has spare RAM, **or**
+- Shrink the cache's footprint with [property caching](#Property-Caching) (cache only the properties you query, or go topology-only) or a `PROPERTY_LIMIT`,
+- then rebuild: `ALTER GRAPH <g> SET COMPUTE REBUILD`.
+
+**Catch it early:** watch `goMemLimit` and `memLimitUsedPct` in `SHOW COMPUTE STATUS`, a `memLimitUsedPct` creeping toward 90% means you're heading for a failed build.
+
 ## Synchronization Modes
 
 The computing engine supports two synchronization modes that control how changes propagate to the cache:
@@ -97,6 +137,26 @@ ALTER GRAPH socialNetwork SET COMPUTE SYNC_MODE SYNC
 ```
 
 > **Warning:** In `ASYNC` mode, recently inserted nodes/edges may not appear in accelerated queries until the background sync completes.
+
+## Rebuilding and Compacting the Cache
+
+As you `INSERT` / `SET` / `DELETE`, mutations accumulate in an in-memory **write-delta** layered over the base topology snapshot. Reads stay fast and correct while a delta is present, it is overlaid on the base, never a fallback to disk, and the delta merges into the base automatically once it grows past an internal threshold.
+
+**Compact** folds the pending write-delta into the base snapshot on demand:
+
+```gql
+ALTER GRAPH socialNetwork SET COMPUTE COMPACT
+```
+
+This is a cheap **in-memory** merge bounded by the delta plus the current snapshot, not a from-disk rebuild. The graph stays readable throughout, and the command reports how many pending mutations were folded in; on an already-empty delta it is an instant no-op. Use it to restore peak read throughput after a burst of writes, or to drain the delta on a now-idle graph. The pending delta size is visible as `deltaSize` in `SHOW COMPUTE STATUS`.
+
+**Rebuild** discards the cache and rebuilds the entire topology from storage:
+
+```gql
+ALTER GRAPH socialNetwork SET COMPUTE REBUILD
+```
+
+Unlike `COMPACT`, this re-reads the whole graph from disk and is orders of magnitude more expensive. Reserve it for two cases: recovering a topology stuck in the `FAILED` build state, or applying a setting that only takes effect on a from-scratch build, such as [low-memory topology](#Low-Memory-Topology). For routine delta merges, prefer `COMPACT`.
 
 ## Property Caching
 
@@ -190,6 +250,39 @@ Pick `RUST`:
 ```gql
 ALTER GRAPH socialNetwork SET COMPUTE ENGINE RUST
 ```
+
+## Low-Memory Topology
+
+By default, the topology cache stores its adjacency arrays as 64-bit (`uint64`) values. For graphs with fewer than 2³² (~4.29 billion) nodes and fewer than 2³² edges, you can switch to a 32-bit (`uint32`) topology, which **roughly halves topology memory** at no cost to query results.
+
+Enable the low-memory topology:
+
+```gql
+ALTER GRAPH socialNetwork SET COMPUTE LOWMEM ON
+```
+
+Return to the default 64-bit topology:
+
+```gql
+ALTER GRAPH socialNetwork SET COMPUTE LOWMEM OFF
+```
+
+**Behavior:**
+
+- **Opt-in.** `LOWMEM OFF` (the default) keeps the unchanged 64-bit topology.
+- **Applied on the next build, not immediately.** Setting `LOWMEM` only records the preference; it does not trigger a rebuild. The new array width takes effect on the next from-scratch build — at database open, on `AUTOLOAD`, or when you force one with `ALTER GRAPH socialNetwork SET COMPUTE REBUILD`.
+- **Persisted.** The preference is saved with the graph and survives restarts.
+- **Fails loud, never truncates.** If a low-memory build's node or edge count reaches 2³², the build fails with an actionable error rather than silently wrapping around. Run `SET COMPUTE LOWMEM OFF` followed by `SET COMPUTE REBUILD` to fall back to the 64-bit topology.
+
+Apply it immediately after enabling:
+
+```gql
+-- Turn on low-memory mode and rebuild now to apply it
+ALTER GRAPH socialNetwork SET COMPUTE LOWMEM ON
+ALTER GRAPH socialNetwork SET COMPUTE REBUILD
+```
+
+Check the active width with `SHOW COMPUTE STATUS`: the `lowMem` row reflects the preference, and `topologyArrayWidth` (`32` or `64`) reflects the live snapshot.
 
 ## Full Configuration Example
 
