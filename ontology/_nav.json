@@ -6,6 +6,10 @@
       "title": "Introduction"
     },
     {
+      "file": "loading.md",
+      "title": "Loading Ontologies & Data"
+    },
+    {
       "file": "class-definitions.md",
       "title": "Class Definitions"
     },
@@ -20,10 +24,6 @@
     {
       "file": "label-syntax.md",
       "title": "Using Ontology Labels"
-    },
-    {
-      "file": "validation.md",
-      "title": "Validation & Enforcement"
     }
   ]
 }
