@@ -24,6 +24,10 @@
     {
       "file": "label-syntax.md",
       "title": "Using Ontology Labels"
+    },
+    {
+      "file": "inspecting.md",
+      "title": "Inspecting & Visualizing Ontologies"
     }
   ]
 }

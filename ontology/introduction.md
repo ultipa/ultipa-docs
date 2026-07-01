@@ -83,35 +83,8 @@ After dropping a prefix, ontology labels that referenced it (`@foaf:Person`, etc
 
 ## Loading Ontologies & Data
 
-Populate an ontology graph from RDF documents, including external schemas, the schema-as-a-graph projection, and instance data. See <a href="/docs/ontology/loading" target="_blank">Loading Ontologies & Data</a>.
+Populate an external ontologies and data from RDF documents. See <a href="/docs/ontology/loading" target="_blank">Loading Ontologies & Data</a>.
 
-## Viewing Ontologies
+## Inspecting & Visualizing
 
-```gql
-SHOW ONTOLOGY
-```
-
-Example output:
-
-| name | iri | classes | objectProperties | dataProperties |
-| -- | -- | -- | -- | -- |
-| FOAF | http://xmlns.com/foaf/0.1/ | 14 | 25 | 19 |
-| local | urn:local:myOntology | 3 | 1 | 2 |
-
-It lists every ontology in the current graph with summary counts. It covers both imports and inline definitions:
-
-- One row per `LOAD ONTOLOGY` import, named after the source IRI.
-- The `local` row is added if you've created any classes or properties inline (`CREATE CLASS`, `CREATE OBJECT PROPERTY`, `CREATE DATA PROPERTY`) instead of importing them. It groups all your inline definitions under one synthetic ontology.
-
-Related `SHOW` statements for finer views:
-
-```gql
--- Loaded prefix → IRI mappings 
-SHOW PREFIX
-
--- Every class, with localName, superClasses, and label
-SHOW CLASSES
-
--- Every object/data property, with localName, type, domain, range, and characteristics
-SHOW PROPERTIES
-```
+Inspect loaded or defined ontologies, or project it as a queryable graph. See <a href="/docs/ontology/inspecting" target="_blank">Inspecting & Visualizing Ontologies</a>.
