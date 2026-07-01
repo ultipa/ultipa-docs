@@ -13,12 +13,23 @@ To inspect or visualize an ontology once it's loaded, see <a href="/docs/ontolog
 
 An **external ontology** is a vocabulary file authored outside of GQLDB (e.g. FOAF, Schema.org, SKOS) in a serialization like OWL, Turtle, RDF/XML, or JSON-LD. `LOAD ONTOLOGY` reads such a file and registers all its classes and properties in one shot. Each `LOAD ONTOLOGY` import is registered as its own ontology and shows up as a row in `SHOW ONTOLOGY`, named after its source IRI.
 
-The document's prefix declarations are registered as part of the import, no separate `LOAD PREFIX` is needed for terms defined in the loaded file. Note:
+### Prefixes & Namespaces
 
-- **A convenience prefix is also derived from the ontology itself.** Beyond the document's `@prefix` lines, `LOAD ONTOLOGY` registers one extra prefix named after the loaded ontology, pointing at its base IRI. For example, an `owl:Ontology` whose IRI is `http://example.org/ontology` yields a prefix `ontology` → `http://example.org/`. So a prefix can appear in `SHOW PREFIX` even when your file has no matching `@prefix` line. (It is skipped if a prefix already maps to that base IRI.)
-- **The default (empty) prefix becomes the graph's default namespace.** When the document declares a default prefix, such as `@prefix : <http://example.org/ontology#> .`, its IRI is recorded as the graph's default namespace, addressable with the `@:Name` shorthand (e.g. `MATCH (n@:Person)`), **not** as a row in `SHOW PREFIX`. Loading a file is the only way to set it: `LOAD PREFIX` always requires a name, so the default namespace can arrive only through `LOAD ONTOLOGY` or `LOAD DATA`. The **first** declaration wins; a later file with a different default namespace is ignored. See <a href="/docs/ontology/rdf-1.2#Default-Prefix-Queries-Name" target="_blank">RDF 1.2 → Default-prefix queries</a>.
+The document's prefix declarations are registered as part of the import, so no separate `LOAD PREFIX` is needed for terms defined in the file. The standard-vocabulary prefixes it references (`owl:` / `rdfs:` / `rdf:` / `xsd:`) are auto-registered too, even when the file doesn't declare them.
 
-`LOAD ONTOLOGY` imports the **schema (T-Box) triples** only: `owl:Ontology`, `owl:Class` / `rdfs:Class`, `owl:DatatypeProperty`, `owl:ObjectProperty` (and the OWL characteristic subclasses), plus their `rdfs:subClassOf` / `rdfs:domain` / `rdfs:range` / `owl:inverseOf` / `owl:Restriction` axioms. Any **instance triples** in the same file (subjects whose `rdf:type` is a user class like `foaf:Person`, e.g. `:alice a foaf:Person`) are silently skipped. To bring instance data into the graph, use [`LOAD DATA`](#Loading-Instance-Data); running both statements over the same mixed file is safe because each ignores the triples the other handles.
+How you address the document's **own** terms depends on how it declares that namespace:
+
+- **Default (empty) prefix**: For example, `@prefix : <http://example.org/ontology#> .`. The IRI becomes the graph's default namespace (the IRI the `@:` shorthand expands to), so you address terms as `@:Person`.
+- **Named prefix**: For example, `@prefix ex: <http://example.org/ontology#> .`. Just a regular prefix; no default namespace is set, and you address terms as `@ex:Person`.
+- **No prefix at all**: the terms are written as full IRIs. GQLDB derives the default namespace from the class IRIs only, when they all share one common, non-standard namespace not already bound to a prefix (a file whose classes span two such namespaces gets none); you then address terms as `@:Person`.
+
+The default namespace is not listed in `SHOW PREFIX`, and the first declaration wins.
+
+### What Gets Imported
+
+`LOAD ONTOLOGY` imports the **schema (T-Box) triples** only: `owl:Ontology`, `owl:Class` / `rdfs:Class`, `owl:DatatypeProperty`, `owl:ObjectProperty` (and the OWL characteristic subclasses), plus their `rdfs:subClassOf` / `rdfs:domain` / `rdfs:range` / `owl:inverseOf` / `owl:Restriction` axioms. Any **instance (A-Box) triples** in the same file are silently skipped. To bring instance data into the graph, use [`LOAD DATA`](#Loading-Instance-Data); running both statements over the same mixed file is safe because each ignores the triples the other handles.
+
+### Loading from a Server File
 
 Load from a file on the GQLDB server, format auto-detected from the `.ttl` extension:
 
@@ -31,6 +42,8 @@ LOAD ONTOLOGY <file:///path/on/server/foaf.ttl>
 
 The file path is resolved by the GQLDB server: the file must exist on the **server's** filesystem (and the GQLDB process must have read permission). Loading from a server-local file is the most reliable form as it avoids network and TLS variability.
 
+#### Specifying Format
+
 The loader auto-detects from the file extension (`.ttl` → TURTLE, `.owl`/`.rdf`/`.xml` → RDFXML, `.nt` → NTriples). Pass `FORMAT` explicitly only when auto-detection would guess wrong (e.g. a `.txt` file containing Turtle, or a server that returns a generic content type):
 
 ```gql
@@ -38,6 +51,8 @@ LOAD ONTOLOGY FROM 'file:///srv/onto/data.txt' FORMAT TURTLE
 ```
 
 Supported `FORMAT` keywords: `OWL`, `RDFXML`, `TURTLE`, `NTRIPLES` (`OWL` and `RDFXML` both select the RDF/XML parser). `LOAD ONTOLOGY` does **not** accept `JSONLD`, `NQUADS`, or `TRIG`, use [`LOAD DATA`](#Loading-Instance-Data) for JSON-LD and quad formats.
+
+#### Surfacing Parser Warnings
 
 `VERBOSE` surfaces parser warnings (unknown constructs, malformed triples) in the result message, useful when integrating a new ontology to surface silent compatibility issues:
 
@@ -51,17 +66,24 @@ LOAD ONTOLOGY FROM 'file:///srv/onto/foaf.ttl' VERBOSE
 LOAD ONTOLOGY FROM 'file:///srv/onto/data.txt' FORMAT TURTLE VERBOSE
 ```
 
+### Loading from a URL
+
 Loading from a URL is also supported. For `https://` URLs the host's TLS certificate must be trusted by the system trust store; plain `http://` skips TLS entirely. When `FORMAT` is omitted, the loader checks the response `Content-Type` header first, then the URL's file extension, and falls back to `RDFXML` if neither gives a hint.
 
 ```gql
 LOAD ONTOLOGY FROM 'https://schema.org/version/latest/schemaorg-current-https.rdf'
+
+-- Load the real FOAF vocabulary (schema) from its published RDF/XML
+LOAD ONTOLOGY FROM 'http://xmlns.com/foaf/spec/index.rdf'
 ```
+
+A vocabulary's **namespace IRI** is usually not the loadable document. FOAF's namespace is `http://xmlns.com/foaf/0.1/`, but its schema file is published at `http://xmlns.com/foaf/spec/index.rdf` (RDF/XML). Loading it registers the `foaf` prefix and brings in FOAF's classes and hierarchy, so `@foaf:Person` resolves and subclass inference works with no `CREATE` needed.
 
 > If a URL fetch fails with a TLS error, download the file once onto the GQLDB server and load.
 
 ## Loading Instance Data
 
-`LOAD DATA` imports RDF **instance (A-Box) triples** as graph nodes and edges. Use it to populate an ontology graph from an RDF file in one statement. Supported formats: `TURTLE`, `NTRIPLES`, `NQUADS`, `TRIG`, `JSONLD`.
+`LOAD DATA` imports **instance (A-Box) triples** from RDF documents as graph nodes and edges. Supported formats: `TURTLE`, `NTRIPLES`, `NQUADS`, `TRIG`, `JSONLD`.
 
 ```gql
 LOAD DATA FROM 'file:///path/on/server/instances.ttl' FORMAT TURTLE
@@ -83,18 +105,10 @@ Every node is keyed by its subject IRI (stored as `_iri`), so repeated mentions 
 
 > **RDF 1.2 details.** `LOAD DATA` preserves RDF 1.2 literal metadata (language tags, base direction, datatype IRIs), handles blank nodes and collections, imports named graphs (N-Quads / TriG) and JSON-LD, and supports triple terms (RDF-star). The graph also exports back to RDF with `EXPORT … FORMAT`. See <a href="/docs/ontology/rdf-1.2" target="_blank">RDF 1.2 Features</a> for the full reference.
 
-## Combined Usage
+## Do You Need LOAD ONTOLOGY First?
 
-A typical workflow keeps the schema file separate from the data file and loads them in order:
+Not to load the data. `LOAD DATA` runs standalone and auto-registers any undeclared classes (under `WARNING` / `OFF` enforcement).
 
-```gql
-LOAD ONTOLOGY FROM 'file:///srv/onto/personinfo.owl.ttl'
-LOAD DATA FROM 'file:///srv/onto/instances.ttl'
-```
+But the ontology's **inference and validation** come from the schema (T-Box) axioms, which `LOAD DATA` does not import. Without a loaded schema you get the individuals as a plain labeled graph, with no subclass inference, OWL characteristics, defined classes, or `DOMAIN` / `RANGE` checks.
 
-If schema and data live in the same file, run both statements over it. `LOAD ONTOLOGY` picks up the schema triples and ignores the rest, while `LOAD DATA` picks up the instances. Each ignores what the other handles, so there's no double-import.
-
-```gql
-LOAD ONTOLOGY FROM 'file:///srv/onto/example.ttl'
-LOAD DATA FROM 'file:///srv/onto/example.ttl'
-```
+For those, `LOAD ONTOLOGY` first, then `LOAD DATA`. Under `STRICT` enforcement the schema must be in place first, since undeclared classes are rejected rather than auto-registered.

@@ -28,6 +28,10 @@
     {
       "file": "inspecting.md",
       "title": "Inspecting & Visualizing Ontologies"
+    },
+    {
+      "file": "validation.md",
+      "title": "Validation & Enforcement"
     }
   ]
 }
