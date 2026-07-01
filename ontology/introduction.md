@@ -23,7 +23,7 @@ GQLDB supports ontology features that bring semantic web capabilities to your gr
 | **Node Attributes** | Free-form key / value | Data properties |
 | **Edge attributes** | Free-form key / value | None |
 | **Schema** | Schemaless (open) or label-typed (closed) | Classes and properties with OWL axioms |
-| **Inference** | None; what you store is what you query | Subclass closure and OWL characteristics, at query time |
+| **Inference** | None; what you store is what you query | Subclass closure, OWL characteristics, and class / property constructors (union, intersection, oneOf, equivalence), at query time |
 
 ## Creating Ontology Graphs
 

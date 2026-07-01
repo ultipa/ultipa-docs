@@ -61,7 +61,7 @@ It projects every class and property currently registered in the graph, whether 
 
 Each node carries `_iri`, `name` (the local name), and `prefix`.
 
-> **It projects a structural skeleton, not every axiom.** The table above is the complete set of what the projection materializes. Other features are not drawn as nodes or edges (such as `DISJOINT WITH`, property characteristics, `CARDINALITY`, data-property `DOMAIN` / `RANGE`, etc.). Those are still registered and still drive inference and validation, they just don't appear in the projection.
+> **It projects a structural skeleton, not every axiom.** The table above is the complete set of what the projection materializes. Other features are not drawn as nodes or edges (such as `DISJOINT WITH`, property characteristics, `CARDINALITY`, data-property `DOMAIN` / `RANGE`, etc.). Those are still registered and still do their job, they just don't appear in the projection.
 
 ### Example: a local ontology
 
