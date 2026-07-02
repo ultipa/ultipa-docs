@@ -4,12 +4,12 @@
 
 A **data property** is an ontology-typed **node attribute** with a typed value. It has an optional `DOMAIN` (the class that may carry the attribute) and an optional `RANGE` that is an XSD datatype (`xsd:string`, `xsd:integer`, etc.).
 
-Data properties attach to **nodes only**. Edge attributes (e.g., `weight: 0.7` on a `:Knows` edge) are stored as plain LPG properties — the ontology validator doesn't type-check them. This matches OWL DL semantics, where `owl:DatatypeProperty` has `rdfs:domain` ranging over `owl:Class`, which is instantiated by node-equivalent individuals.
+Data properties attach to **nodes only**. Edge attributes (e.g., `weight: 0.7` on a `:Knows` edge) are stored as plain LPG properties. This matches OWL DL semantics, where `owl:DatatypeProperty` has `rdfs:domain` ranging over `owl:Class`, which is instantiated by node-equivalent individuals.
 
 ## Creating Data Properties
 
 ```syntax
-<create data property statement> ::=                      
+<create data property statement> ::=
   "CREATE DATA PROPERTY" <data property name> 
   [ "DOMAIN" <class> ] [ "RANGE" <xsd type> ] [ "FUNCTIONAL" | <cardinality> ]
 
@@ -44,7 +44,22 @@ CREATE DATA PROPERTY @ex:tag RANGE xsd:string
 CREATE DATA PROPERTY @ex:metadata DOMAIN @ex:Document
 ```
 
-### Cardinality Constraint
+### Supported XSD Types
+
+| Type | Description | Example |
+| -- | -- | -- |
+| `xsd:string` | Text | `"Alice"` |
+| `xsd:integer` | Whole number | `42` |
+| `xsd:decimal` | Decimal number | `3.14` |
+| `xsd:float` | Floating point | `1.5e10` |
+| `xsd:double` | Double precision | `1.5e100` |
+| `xsd:boolean` | True / false | `true` |
+| `xsd:date` | Date | `2024-03-15` |
+| `xsd:dateTime` | Date and time | `2024-03-15T10:30:00` |
+| `xsd:time` | Time | `10:30:00` |
+| `xsd:duration` | ISO 8601 duration | `P1Y2M3D` |
+
+### CARDINALITY
 
 Data properties accept the same `CARDINALITY` clause as <a target="_blank" href="/docs/ontology/object-properties#Cardinality-Constraint">object properties</a>:
 
@@ -65,22 +80,7 @@ CREATE DATA PROPERTY @ex:tag
   CARDINALITY {0,}
 ```
 
-### Supported XSD Types
-
-| Type | Description | Example |
-| -- | -- | -- |
-| `xsd:string` | Text | `"Alice"` |
-| `xsd:integer` | Whole number | `42` |
-| `xsd:decimal` | Decimal number | `3.14` |
-| `xsd:float` | Floating point | `1.5e10` |
-| `xsd:double` | Double precision | `1.5e100` |
-| `xsd:boolean` | True / false | `true` |
-| `xsd:date` | Date | `2024-03-15` |
-| `xsd:dateTime` | Date and time | `2024-03-15T10:30:00` |
-| `xsd:time` | Time | `10:30:00` |
-| `xsd:duration` | ISO 8601 duration | `P1Y2M3D` |
-
-### Property Characteristics
+### FUNCTIONAL
 
 `FUNCTIONAL` is the only OWL characteristic that applies to data properties. It's the shorthand for `CARDINALITY {0,1}` (at most one value):
 
@@ -91,11 +91,9 @@ CREATE DATA PROPERTY @ex:primaryEmail
   FUNCTIONAL
 ```
 
-The remaining characteristics (`SYMMETRIC`, `TRANSITIVE`, `INVERSE_FUNCTIONAL`, `REFLEXIVE`, `IRREFLEXIVE`, `ASYMMETRIC`) describe relations between two individuals and don't apply to scalar attributes — they're reserved for <a target="_blank" href="/docs/ontology/object-properties#property-characteristics">object properties</a>.
-
 ## Using Data Properties
 
-A data property is used as a key in the node's property map, using its **local name** (not the prefixed form). The value is validated against the property's `RANGE`.
+A data property is written by its **local name**, with the prefix omitted. So the data property `@ex:age` becomes the plain attribute key `age`, the same on `INSERT` and in `MATCH` (`RETURN n.age`). The value is validated against the property's `RANGE`.
 
 ```gql
 -- Every Person must have exactly one integer-valued age
@@ -133,8 +131,6 @@ Example output:
 | http://example.org/age | age | DatatypeProperty | http://example.org/Person | http://www.w3.org/2001/XMLSchema#integer | |
 | http://example.org/primaryEmail | primaryEmail | DatatypeProperty | http://example.org/Person | http://www.w3.org/2001/XMLSchema#string | Functional |
 | http://example.org/birthDate | birthDate | DatatypeProperty | http://example.org/Person | http://www.w3.org/2001/XMLSchema#date | |
-
-To see both data **and** object properties in one result, use `SHOW PROPERTIES` (covered in <a href="/docs/ontology/introduction#viewing-ontologies" target="_blank">Introduction → Viewing Ontologies</a>).
 
 ## Dropping Data Properties
 
