@@ -1,4 +1,4 @@
-# Inspecting & Visualizing Ontologies
+# Inspecting Ontologies
 
 After loading or defining an ontology, you can inspect it two ways:
 

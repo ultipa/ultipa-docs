@@ -1,4 +1,4 @@
-# Class Definitions
+# Classes
 
 ## Overview
 
@@ -136,7 +136,7 @@ CREATE CLASS @ex:Intern SUBCLASS OF @ex:Person DISJOINT WITH @ex:Contractor
 
 In GQLDB, `DISJOINT WITH` is a **write-time validation**; it is not an inference rule. It does not expand the subclass hierarchy or any inferred membership: a node carrying both `@ex:Cat` and `@ex:Dog` is caught, but one carrying `@ex:Kitten` (a subclass of `@ex:Cat`) alongside `@ex:Dog` is not.
 
-This is a deliberate design choice. GQLDB gives `owl:disjointWith` a closed-world, constraint reading, the same approach as [SHACL](https://www.w3.org/TR/shacl/) validation rather than the open-world OWL entailment reading, where a Cat-and-Dog node would instead render the whole model logically inconsistent. The constraint reading is what data-ingestion workflows typically want: reject the offending write, pinpointed to the node, rather than a global inconsistency. The [`STRICT` / `WARNING` / `OFF` enforcement modes](/docs/ontology/validation) tune how strictly it's applied.
+This is a deliberate design choice. GQLDB gives `owl:disjointWith` a closed-world, constraint reading, the same approach as [SHACL](https://www.w3.org/TR/shacl/) validation rather than the open-world OWL entailment reading, where a Cat-and-Dog node would instead render the whole model logically inconsistent. The constraint reading is what data-ingestion workflows typically want: reject the offending write, pinpointed to the node, rather than a global inconsistency. The [`STRICT` / `WARNING` / `OFF` enforcement modes](/docs/ontology/inference-and-validation) tune how strictly it's applied.
 
 ### EQUIVALENT TO
 

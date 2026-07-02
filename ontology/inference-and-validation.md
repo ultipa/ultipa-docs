@@ -1,17 +1,31 @@
-# Validation & Enforcement
+# Inference & Validation
 
 ## Overview
 
-Control how strictly ontology rules are enforced and validate data against ontology constraints.
+An ontology in GQLDB does two jobs at runtime: it **infers** extra facts when you query, and it **validates** your data against constraints when you write. The two are independent: inference always runs, while validation is what the enforcement modes control.
+
+This page draws that distinction, then covers the enforcement modes that tune validation, how to surface violations, and the transitive-inference depth control.
+
+## Inference vs. Validation
+
+GQLDB acts on ontology axioms in two distinct ways, on opposite sides of a query:
+
+- **Inference (read side).** The engine derives facts at query time. Nothing is written to disk, the extra results are computed on read. Inference is always applied.
+- **Validation (write side).** The engine checks data against constraints at write time. The [enforcement mode](#Enforcement-Modes) decides what happens when a violation is detected.
+
+| Side | Ontology features |
+| -- | -- |
+| **Inference** | `SUBCLASS OF`, `EQUIVALENT TO`, `owl:unionOf`/`intersectionOf`/`oneOf`/`equivalentClass`, `SYMMETRIC`, `TRANSITIVE`, `REFLEXIVE`, `INVERSE OF`, `SUBPROPERTY OF`, `PROPERTY CHAIN`, `owl:equivalentProperty` |
+| **Validation** | `DISJOINT WITH`, `DOMAIN`/`RANGE`, `ASYMMETRIC`, `FUNCTIONAL`, `INVERSE_FUNCTIONAL`, `IRREFLEXIVE`, `CARDINALITY`, data-property XSD type |
 
 ## Enforcement Modes
 
-Control how strictly ontology rules are enforced with three modes:
+Control how strictly ontology rules are validated with three modes:
 
 | Mode | Behavior |
 | -- | -- |
 | `STRICT` | Violations cause errors and block operations |
-| `WARNING` (default) | Violations are logged but operations proceed |
+| `WARNING` | **Default.** Violations are logged but operations proceed |
 | `OFF` | No validation (useful for bulk imports) |
 
 ```gql
@@ -28,7 +42,7 @@ SET ONTOLOGY ENFORCEMENT WARNING
 SET ONTOLOGY ENFORCEMENT OFF
 ```
 
-### Strict Mode
+### STRICT
 
 In `STRICT` mode, any ontology constraint violation will cause an error and block the operation. Use this in production to ensure data quality.
 
@@ -45,7 +59,7 @@ INSERT (@ex:Person {name: 'Alice'})-[@ex:worksFor]->(@ex:Organization {name: 'Ac
 INSERT (@ex:Organization {name: 'Org1'})-[@ex:worksFor]->(@ex:Organization {name: 'Org2'})
 ```
 
-### Warning Mode
+### WARNING
 
 In `WARNING` mode, constraint violations are logged but operations proceed. Use this during migration or development to identify issues without blocking work.
 
@@ -69,30 +83,29 @@ Result:
 | -- | -- | -- |
 | DOMAIN_MISMATCH | Source node does not match domain constraint for @ex:worksFor (expected: [http://example.org/Person]) | 1779101828 |
 
-## Bulk Import Workflow
+### Bulk Import Note
 
-For large data imports, disable enforcement during import and validate afterward for better performance.
+For large imports, use `WARNING` mode: constraint violations are logged (not blocking) as each row is written, so the import runs to completion and you can review the issues afterward.
 
 ```gql
--- Disable enforcement for bulk import
-SET ONTOLOGY ENFORCEMENT OFF
+SET ONTOLOGY ENFORCEMENT WARNING
 
--- Perform bulk import operations
+-- Bulk import; violations are logged, not blocked
 INSERT (@ex:Person {name: 'Alice'})
 INSERT (@ex:Person {name: 'Bob'})
 INSERT (@ex:Organization {name: 'Acme'})
 // thousands more inserts ...
 
--- Re-enable enforcement
-SET ONTOLOGY ENFORCEMENT WARNING
-
--- Validate the imported data
+-- Review what was flagged during the import
+SHOW ONTOLOGY WARNINGS
 VALIDATE ONTOLOGY
 ```
 
+`OFF` is faster still as it skips the constraint checks entirely, but no warnings are logged. Use `OFF` only for data you already trust; to check `OFF`-imported data you must re-run the writes under `WARNING` or `STRICT`.
+
 ## Validating Ontology
 
-`VALIDATE ONTOLOGY` returns a one-row snapshot of the current ontology and the count of accumulated warnings. It does **not** rescan data — to find individual violations, look at `SHOW ONTOLOGY WARNINGS` (populated as INSERTs run under `WARNING` mode).
+`VALIDATE ONTOLOGY` returns a one-row snapshot: the ontology counts plus the number of warnings currently in the warning store. It does not rescan stored data, it just reports the violations already logged at write time (as `INSERT`s ran under `WARNING` mode), not a fresh audit of the graph. So it never surfaces problems in data written under `OFF`, or in data that predates the constraint. For the individual violations, use `SHOW ONTOLOGY WARNINGS`.
 
 ```gql
 VALIDATE ONTOLOGY
@@ -140,13 +153,17 @@ VALIDATE ONTOLOGY WARNING
 
 The ontology validator checks for the following types of constraint violations. The same types appear in `SHOW ONTOLOGY WARNINGS` and in `VALIDATE ONTOLOGY` output.
 
-| Type | Description |
+| Type | Triggered by |
 | -- | -- |
 | `CLASS_NOT_FOUND` | Node has an ontology label for an undefined class |
 | `DOMAIN_MISMATCH` | Edge source doesn't match the property's `DOMAIN` |
 | `RANGE_MISMATCH` | Edge target doesn't match the property's `RANGE` |
-| `DISJOINT_VIOLATION` | Node has labels from two `DISJOINT WITH` classes |
-| `FUNCTIONAL_VIOLATION` | Multiple outgoing edges for a `FUNCTIONAL` (or `CARDINALITY {0,1}`) property |
+| `DISJOINT_VIOLATION` | Node carries labels from two `DISJOINT WITH` classes |
+| `ASYMMETRIC_VIOLATION` | An `ASYMMETRIC` property has the reverse edge, or a self-loop |
+| `IRREFLEXIVE_VIOLATION` | An `IRREFLEXIVE` property has a self-loop |
+| `FUNCTIONAL_VIOLATION` | More than one outgoing edge for a `FUNCTIONAL` (i.e. `CARDINALITY {0,1}`) property |
+| `INVERSE_FUNCTIONAL_VIOLATION` | An `INVERSE_FUNCTIONAL` property's target already has a different source |
+| `CARDINALITY_VIOLATION` | Value/edge count falls outside the declared `CARDINALITY` bounds |
 | `TYPE_MISMATCH` | Data property value doesn't match the declared XSD type |
 
 Domain violation example:
@@ -169,7 +186,7 @@ INSERT (@ex:Organization {name: 'Acme'})-[@ex:employs]->(@ex:Organization {name:
 
 ## Viewing Warnings
 
-When using WARNING mode, violations are stored in a warnings log that you can query.
+When using `WARNING` mode, violations are stored in a warnings log that you can query.
 
 ```gql
 SHOW ONTOLOGY WARNINGS
@@ -216,4 +233,4 @@ The value must be a positive integer (`>= 1`), or the sentinel `-1` for unbounde
 SET ONTOLOGY TRANSITIVE DEPTH -1
 ```
 
-Use `-1` deliberately — unbounded expansion on a deep graph can be expensive.
+Use `-1` deliberately;1 unbounded expansion on a deep graph can be expensive.

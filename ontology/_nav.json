@@ -10,8 +10,8 @@
       "title": "Loading Ontologies & Data"
     },
     {
-      "file": "class-definitions.md",
-      "title": "Class Definitions"
+      "file": "classes.md",
+      "title": "Classes"
     },
     {
       "file": "object-properties.md",
@@ -27,11 +27,11 @@
     },
     {
       "file": "inspecting.md",
-      "title": "Inspecting & Visualizing Ontologies"
+      "title": "Inspecting Ontologies"
     },
     {
-      "file": "validation.md",
-      "title": "Validation & Enforcement"
+      "file": "inference-and-validation.md",
+      "title": "Inference & Validation"
     }
   ]
 }
