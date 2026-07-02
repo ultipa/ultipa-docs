@@ -27,6 +27,7 @@ The basic form returns a compact `(property, value)` row set. Append `ALL` to ad
 | `graph` | string | Graph name. Always present. |
 | `enabled` | boolean | Whether compute is enabled. Always present. |
 | `syncMode` | string | `SYNC` or `ASYNC`. Always present. |
+| `autoLoad` | boolean | Whether this graph's topology auto-rebuilds at database open (set via `ALTER GRAPH ... SET COMPUTE AUTOLOAD ON/OFF`). Persisted per graph; the `GQLDB_COMPUTE_AUTOLOAD` environment variable force-overrides it globally. Always present. |
 | `available` | boolean | `true` once the topology snapshot is ready for queries. Poll this to detect build completion. Always present. |
 | `nodeCount` | integer | Nodes currently in the cache. During a build, falls back to the in-flight build's estimate when the snapshot is not yet published. Always present (`0` if neither is available). |
 | `edgeCount` | integer | Edges currently in the cache. Same fallback rule as `nodeCount`. |
