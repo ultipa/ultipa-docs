@@ -22,8 +22,8 @@
       "title": "Data Properties"
     },
     {
-      "file": "label-syntax.md",
-      "title": "Using Ontology Labels"
+      "file": "using-ontology-labels-and-iris.md",
+      "title": "Using Ontology Labels & IRIs"
     },
     {
       "file": "inspecting.md",
