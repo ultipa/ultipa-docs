@@ -26,11 +26,9 @@ CREATE CLASS @ex:Film
 <create object property statement> ::=
   "CREATE OBJECT PROPERTY" <object property name> [ <object property body> ]
 
-<object property body> ::=
-  <structural constraints> | <subproperty of> | <property chain>
+<object property body> ::= <structural features> | <subproperty of> | <property chain>
 
-<structural constraints> ::=
-  <endpoints> [ <characteristics and inverse of> | <cardinality> ] 
+<structural features> ::= <endpoints> [ <characteristics and inverse of> | <cardinality> ]
 
 <characteristics and inverse of> ::=
     <characteristics> [ <inverse of> ]
@@ -222,7 +220,7 @@ CREATE OBJECT PROPERTY @ex:hasBirthPlace
 INSERT (@ex:Person {name: 'Jeff'})-[@ex:hasBirthPlace]->(@ex:Location {name: 'Boston'})
 
 -- Insert Jeff -> Chicago
--- FUNCTIONAL violation error: Jeff cannot have more than two outgoing hasBirthPlace edges
+-- FUNCTIONAL violation error: Jeff cannot have more than one outgoing hasBirthPlace edge
 MATCH (jeff@ex:Person {name: 'Jeff'})
 INSERT (jeff)-[@ex:hasBirthPlace]->(@ex:Location {name: 'Chicago'})
 ```
@@ -334,7 +332,7 @@ MATCH p = (org)-[@ex:employs]->(person)
 RETURN p  // Acme Inc -> Emily
 ```
 
-### Cardinality Constraint
+### CARDINALITY
 
 Use `CARDINALITY` to limit how many outgoing edges of a property a source node may have. Cardinality is enforced at insert time.
 
@@ -369,7 +367,7 @@ CREATE OBJECT PROPERTY @ex:hasFriend
   CARDINALITY {1,}
 ```
 
-`FUNCTIONAL` is a shorthand for `CARDINALITY {0,1}`:
+`FUNCTIONAL` constrains a source node to at most one outgoing edge of this property — the same effect as `CARDINALITY {0,1}`. (For object properties `FUNCTIONAL` is the OWL characteristic; it is a distinct clause from `CARDINALITY`, so the two cannot be combined in one statement.)
 
 ```gql
 -- A person can have at most one spouse
@@ -509,6 +507,36 @@ RETURN gg.name   // Sam
 ```
 
 Chain depth is bounded by `SET ONTOLOGY TRANSITIVE DEPTH n` (default 10), the same setting that bounds plain `TRANSITIVE` properties.
+
+### Equivalent Properties (Load-Only)
+
+GQLDB recognizes one OWL object-property constructor carried in a <a href="/docs/ontology/loading" target="_blank"><code>LOAD ONTOLOGY</code></a> file: `owl:equivalentProperty`. It has no inline DDL keyword.
+
+`owl:equivalentProperty` makes two properties interchangeable: a `MATCH` on either one also returns edges typed with the other, computed at query time and never materialized. It behaves like a mutual `SUBPROPERTY OF` (`p ≡ q ⟺ p ⊑ q ∧ q ⊑ p`), and the equivalence composes transitively with the sub-property hierarchy:
+
+<p tit="props.ttl"></p>
+
+```ttl
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix ex:  <http://example.org/> .
+
+ex:likes  a owl:ObjectProperty .
+ex:enjoys a owl:ObjectProperty ; owl:equivalentProperty ex:likes .
+```
+
+```gql
+LOAD ONTOLOGY FROM 'file:///srv/onto/props.ttl'
+```
+
+With only an `enjoys` edge stored, a `MATCH` on `@ex:likes` still finds it, and vice versa:
+
+```gql
+-- Only an enjoys edge exists on disk
+INSERT (@ex:Person {name: 'Alice'})-[@ex:enjoys]->(@ex:Person {name: 'Bob'})
+
+MATCH (a)-[@ex:likes]->(b)  RETURN a.name, b.name   // Alice, Bob — via equivalentProperty
+MATCH (a)-[@ex:enjoys]->(b) RETURN a.name, b.name   // Alice, Bob — the stored edge
+```
 
 ## Showing Object Properties
 

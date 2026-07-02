@@ -142,7 +142,7 @@ This is a deliberate design choice. GQLDB gives `owl:disjointWith` a closed-worl
 
 A **defined class** declares membership by an `EQUIVALENT TO` axiom instead of an explicit label. Members are **inferred at query time** from a property restriction. The database classifies entities automatically, with no labeling and no materialization.
 
-`EQUIVALENT TO` classification is **one-directional**: entities matching the axiom are classified into the defined class, but the class itself stays virtual (never a stored label) and adds nothing back to those entities. This differs from a loaded `owl:equivalentClass` axiom, which makes two classes **mutually** inclusive. See [Class Constructors from Loaded Ontologies](#Class-Constructors-from-Loaded-Ontologies).
+`EQUIVALENT TO` classification is **one-directional**: entities matching the axiom are classified into the defined class, but the class itself stays virtual (never a stored label) and adds nothing back to those entities. This differs from a loaded `owl:equivalentClass` axiom, which makes two classes **mutually** inclusive. See [Class Constructors (Load-Only)](#Class-Constructors-(Load-Only)).
 
 To see the contrast, compare a **primitive** class (you tag the node) with a **defined** class (the rule tags it for you):
 
@@ -198,7 +198,7 @@ CREATE OBJECT PROPERTY @ex:serves DOMAIN @ex:Restaurant RANGE @ex:Dish
 CREATE CLASS @ex:VegetarianRestaurant EQUIVALENT TO @ex:Restaurant AND (@ex:serves ONLY @ex:VegetarianDish)
 ```
 
-### Class Constructors from Loaded Ontologies
+### Class Constructors (Load-Only)
 
 GQLDB recognizes four OWL class constructors carried in a <a href="/docs/ontology/loading" target="_blank"><code>LOAD ONTOLOGY</code></a> file. They classify members **at query time**: the constructed class label is never stored on the node — a node inserted as `@ex:Cat` keeps only that label, yet still matches `@ex:Pet` if `Pet` is the union of `Cat` and `Dog`.
 
@@ -208,6 +208,8 @@ GQLDB recognizes four OWL class constructors carried in a <a href="/docs/ontolog
 | `owl:intersectionOf` | carries **every** one of the member classes (subclass-aware) |
 | `owl:oneOf` | is **one of the enumerated individuals** (matched by `_iri`) |
 | `owl:equivalentClass` | carries the equivalent class (equivalence is **mutual**) |
+
+They have no inline DDL keywords.
 
 Load this vocabulary:
 
