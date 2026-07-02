@@ -19,11 +19,11 @@ The document's prefix declarations are registered as part of the import, so no s
 
 How you address the document's **own** terms depends on how it declares that namespace:
 
-- **Default (empty) prefix**: For example, `@prefix : <http://example.org/ontology#> .`. The IRI becomes the graph's default namespace (the IRI the `@:` shorthand expands to), so you address terms as `@:Person`.
+- **Default (empty) prefix**: For example, `@prefix : <http://example.org/ontology#> .`. The IRI becomes the graph's default namespace (the IRI the `@:name` shorthand expands to), so you address terms as `@:Person`.
 - **Named prefix**: For example, `@prefix ex: <http://example.org/ontology#> .`. Just a regular prefix; no default namespace is set, and you address terms as `@ex:Person`.
 - **No prefix at all**: the terms are written as full IRIs. GQLDB derives the default namespace from the class IRIs only, when they all share one common, non-standard namespace not already bound to a prefix (a file whose classes span two such namespaces gets none); you then address terms as `@:Person`.
 
-The default namespace is not listed in `SHOW PREFIX`, and the first declaration wins.
+The default namespace appears in `SHOW PREFIX` as a row with an empty prefix name pointing at its IRI, and the first declaration wins.
 
 ### What Gets Imported
 
