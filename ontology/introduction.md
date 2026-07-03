@@ -6,6 +6,7 @@ GQLDB supports ontology features that bring semantic web capabilities to your gr
 
 ### Key Concepts
 
+- **RDF**: The Resource Description Framework — the W3C data model this builds on. Every fact is a triple (subject–predicate–object, e.g. `ex:alice ex:knows ex:bob`); subjects and predicates are IRIs, objects are IRIs or literals, and a set of triples forms a graph.
 - **IRI Identity**: Classes, properties, and individuals are identified by globally unique IRIs, addressed in queries via the `@prefix:LocalName` shorthand.
 - **Prefixes**: Local aliases for IRI namespaces, such as `foaf:` → `http://xmlns.com/foaf/0.1/`.
 - **Classes**: Node types organized by `SUBCLASS OF` hierarchy, `DISJOINT WITH` exclusivity, `EQUIVALENT TO` membership etc..
@@ -81,9 +82,13 @@ DROP PREFIX foaf
 
 After dropping a prefix, ontology labels that referenced it (`@foaf:Person`, etc.) no longer resolve at parse time and queries using the short form fail. Any nodes / edges already stored under the prefix's full IRIs remain in the graph (the database stores IRIs, not the short name); re-`LOAD PREFIX foaf FROM '…'` to address them by short form again.
 
-## Loading Ontologies & Data
+## RDF
 
-Populate an external ontologies and data from RDF documents. See <a href="/docs/ontology/loading" target="_blank">Loading Ontologies & Data</a>.
+Import external ontologies and RDF data into a graph and export it back out, and work with RDF data-model features (literals, blank nodes, named graphs, triple terms, etc.). See <a href="/docs/ontology/rdf-import-and-export" target="_blank">RDF Import & Export</a> and <a href="/docs/ontology/working-with-rdf" target="_blank">Working with RDF</a>.
+
+## Classes & Properties
+
+Define the ontology's building blocks: classes and their object / data properties, with hierarchy, characteristics, and constraints. See <a href="/docs/ontology/classes" target="_blank">Classes</a>, <a href="/docs/ontology/object-properties" target="_blank">Object Properties</a>, and <a href="/docs/ontology/data-properties" target="_blank">Data Properties</a>.
 
 ## Inspecting & Visualizing
 

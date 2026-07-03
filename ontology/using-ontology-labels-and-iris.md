@@ -115,7 +115,7 @@ The `@=` syntax matches nodes by their `_iri` property value. This is useful for
 
 **What is the `_iri` property?**
 
-The `_iri` is a regular property that you can optionally set yourself at `INSERT` time. The engine never automatically derives it from the node's class or name. The one path that populates it automatically is <a target="_blank" href="/docs/ontology/loading#Loading-Instance-Data">`LOAD DATA`</a>, which sets it from each RDF subject IRI. A node inserted without `_iri` (e.g., `INSERT (@ex:Person {name: 'Alice'})`) is perfectly valid; it just won't match any `@=` query. The engine maintains a dedicated property index on `_iri` for fast `@=` lookup, but the value itself is yours to assign. 
+The `_iri` is a regular property that you can optionally set yourself at `INSERT` time. The engine never automatically derives it from the node's class or name. The one path that populates it automatically is <a target="_blank" href="/docs/ontology/rdf-import-and-export#Loading-Instance-Data">`LOAD DATA`</a>, which sets it from each RDF subject IRI. A node inserted without `_iri` (e.g., `INSERT (@ex:Person {name: 'Alice'})`) is perfectly valid; it just won't match any `@=` query. The engine maintains a dedicated property index on `_iri` for fast `@=` lookup, but the value itself is yours to assign. 
 
 `_iri` is set once at `INSERT` or by `LOAD DATA`; it is **immutable via `SET`**. `SET n._iri = …` is rejected, and you cannot add one to a node that was inserted without it. To change it, delete and re-insert the node. `_iri` is **node-only**. Edges don't carry one, and setting `_iri` on an edge is rejected as an error.
 

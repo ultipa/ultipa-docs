@@ -200,7 +200,7 @@ CREATE CLASS @ex:VegetarianRestaurant EQUIVALENT TO @ex:Restaurant AND (@ex:serv
 
 ### Class Constructors (Load-Only)
 
-GQLDB recognizes four OWL class constructors carried in a <a href="/docs/ontology/loading" target="_blank"><code>LOAD ONTOLOGY</code></a> file. They classify members **at query time**: the constructed class label is never stored on the node — a node inserted as `@ex:Cat` keeps only that label, yet still matches `@ex:Pet` if `Pet` is the union of `Cat` and `Dog`.
+GQLDB recognizes four OWL class constructors carried in a <a href="/docs/ontology/rdf-import-and-export" target="_blank"><code>LOAD ONTOLOGY</code></a> file. They classify members **at query time**: the constructed class label is never stored on the node — a node inserted as `@ex:Cat` keeps only that label, yet still matches `@ex:Pet` if `Pet` is the union of `Cat` and `Dog`.
 
 | Constructor | A node is a member of the class when it… |
 | -- | -- |

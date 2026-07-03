@@ -6,20 +6,36 @@
       "title": "Introduction"
     },
     {
-      "file": "loading.md",
-      "title": "Loading Ontologies & Data"
+      "folder": "rdf",
+      "name": "RDF",
+      "pages": [
+        {
+          "file": "rdf-import-and-export.md",
+          "title": "RDF Import & Export"
+        },
+        {
+          "file": "working-with-rdf.md",
+          "title": "Working with RDF"
+        }
+      ]
     },
     {
-      "file": "classes.md",
-      "title": "Classes"
-    },
-    {
-      "file": "object-properties.md",
-      "title": "Object Properties"
-    },
-    {
-      "file": "data-properties.md",
-      "title": "Data Properties"
+      "folder": "classes-and-properties",
+      "name": "Classes & Properties",
+      "pages": [
+        {
+          "file": "classes.md",
+          "title": "Classes"
+        },
+        {
+          "file": "object-properties.md",
+          "title": "Object Properties"
+        },
+        {
+          "file": "data-properties.md",
+          "title": "Data Properties"
+        }
+      ]
     },
     {
       "file": "using-ontology-labels-and-iris.md",

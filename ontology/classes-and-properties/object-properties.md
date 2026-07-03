@@ -510,7 +510,7 @@ Chain depth is bounded by `SET ONTOLOGY TRANSITIVE DEPTH n` (default 10), the sa
 
 ### Equivalent Properties (Load-Only)
 
-GQLDB recognizes one OWL object-property constructor carried in a <a href="/docs/ontology/loading" target="_blank"><code>LOAD ONTOLOGY</code></a> file: `owl:equivalentProperty`. It has no inline DDL keyword.
+GQLDB recognizes one OWL object-property constructor carried in a <a href="/docs/ontology/rdf-import-and-export" target="_blank"><code>LOAD ONTOLOGY</code></a> file: `owl:equivalentProperty`. It has no inline DDL keyword.
 
 `owl:equivalentProperty` makes two properties interchangeable: a `MATCH` on either one also returns edges typed with the other, computed at query time and never materialized. It behaves like a mutual `SUBPROPERTY OF` (`p ≡ q ⟺ p ⊑ q ∧ q ⊑ p`), and the equivalence composes transitively with the sub-property hierarchy:
 

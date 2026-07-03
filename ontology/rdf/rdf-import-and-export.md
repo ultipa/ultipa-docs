@@ -1,11 +1,12 @@
-# Loading Ontologies & Data
+# RDF Import & Export
 
 ## Overview
 
-Populate an ontology graph from RDF documents using the `LOAD` family of statements: 
+Move RDF in and out of an ontology graph:
 
-- `LOAD ONTOLOGY` brings in external **schema (T-Box) triples** 
+- `LOAD ONTOLOGY` brings in external **schema (T-Box) triples**
 - `LOAD DATA` brings in **instance (A-Box) triples**
+- `EXPORT` serializes the graph's instance data back out to RDF
 
 To inspect or visualize an ontology once it's loaded, see <a href="/docs/ontology/inspecting" target="_blank">Inspecting & Visualizing Ontologies</a>.
 
@@ -19,11 +20,11 @@ The document's prefix declarations are registered as part of the import, so no s
 
 How you address the document's **own** terms depends on how it declares that namespace:
 
-- **Default (empty) prefix**: For example, `@prefix : <http://example.org/ontology#> .`. The IRI becomes the graph's default namespace (the IRI the `@:name` shorthand expands to), so you address terms as `@:Person`.
+- **Default (empty) prefix**: For example, `@prefix : <http://example.org/ontology#> .`. The IRI becomes the graph's default namespace, so you address terms without the prefix, such as `@:Person`.
 - **Named prefix**: For example, `@prefix ex: <http://example.org/ontology#> .`. Just a regular prefix; no default namespace is set, and you address terms as `@ex:Person`.
 - **No prefix at all**: the terms are written as full IRIs. GQLDB derives the default namespace from the class IRIs only, when they all share one common, non-standard namespace not already bound to a prefix (a file whose classes span two such namespaces gets none); you then address terms as `@:Person`.
 
-The default namespace appears in `SHOW PREFIX` as a row with an empty prefix name pointing at its IRI, and the first declaration wins.
+> The default namespace appears in `SHOW PREFIX` as a row with an empty prefix name pointing at its IRI, and the first declaration wins.
 
 ### What Gets Imported
 
@@ -50,7 +51,7 @@ The loader auto-detects from the file extension (`.ttl` → TURTLE, `.owl`/`.rdf
 LOAD ONTOLOGY FROM 'file:///srv/onto/data.txt' FORMAT TURTLE
 ```
 
-Supported `FORMAT` keywords: `OWL`, `RDFXML`, `TURTLE`, `NTRIPLES` (`OWL` and `RDFXML` both select the RDF/XML parser). `LOAD ONTOLOGY` does **not** accept `JSONLD`, `NQUADS`, or `TRIG`, use [`LOAD DATA`](#Loading-Instance-Data) for JSON-LD and quad formats.
+Supported `FORMAT` keywords: `OWL`, `RDFXML`, `TURTLE`, `NTRIPLES` (`OWL` and `RDFXML` both select the RDF/XML parser).
 
 #### Surfacing Parser Warnings
 
@@ -77,9 +78,7 @@ LOAD ONTOLOGY FROM 'https://schema.org/version/latest/schemaorg-current-https.rd
 LOAD ONTOLOGY FROM 'http://xmlns.com/foaf/spec/index.rdf'
 ```
 
-A vocabulary's **namespace IRI** is usually not the loadable document. FOAF's namespace is `http://xmlns.com/foaf/0.1/`, but its schema file is published at `http://xmlns.com/foaf/spec/index.rdf` (RDF/XML). Loading it registers the `foaf` prefix and brings in FOAF's classes and hierarchy, so `@foaf:Person` resolves and subclass inference works with no `CREATE` needed.
-
-> If a URL fetch fails with a TLS error, download the file once onto the GQLDB server and load.
+A vocabulary's namespace IRI is usually not the loadable document. FOAF's namespace is `http://xmlns.com/foaf/0.1/`, but its schema file is published at `http://xmlns.com/foaf/spec/index.rdf` (RDF/XML). Loading it registers the `foaf` prefix and brings in FOAF's classes and hierarchy, so `@foaf:Person` resolves and subclass inference works with no `CREATE` needed.
 
 ## Loading Instance Data
 
@@ -89,7 +88,7 @@ A vocabulary's **namespace IRI** is usually not the loadable document. FOAF's na
 LOAD DATA FROM 'file:///path/on/server/instances.ttl' FORMAT TURTLE
 ```
 
-The file path resolves on the **GQLDB server**'s filesystem, the same as `LOAD ONTOLOGY`. URL sources are also supported. Format is auto-detected from the `.ttl` / `.nt` extension when `FORMAT` is omitted.
+The file path resolves on the **GQLDB server**'s filesystem, the same as `LOAD ONTOLOGY`. URL sources are also supported. Format is auto-detected from the file extension when `FORMAT` is omitted.
 
 Triple-to-graph mapping:
 
@@ -101,14 +100,37 @@ Triple-to-graph mapping:
 | `(s, p, o)` where `o` is an IRI | edge `(s)-[:p]->(o)` |
 | `rdfs:label` / `dc:title` / `foaf:name` | also copied to a readable `name` / `title` |
 
-Every node is keyed by its subject IRI (stored as `_iri`), so repeated mentions of a subject merge onto one node and edges resolve regardless of triple order. Bare Turtle literals are typed (`30` → integer, `true` → boolean), and a predicate repeated on one subject (a multivalued slot) folds into a list rather than keeping only the last value. Classes named in `rdf:type` that aren't declared yet are auto-registered (under `WARNING` / `OFF` enforcement), and document `@prefix` declarations are registered so `@prefix:Local` labels resolve in `MATCH`. Imported data persists across restart.
+Every node is keyed by its subject IRI (stored in the property `_iri`), so repeated mentions of a subject merge onto one node and edges resolve regardless of triple order. Bare Turtle literals are typed (`30` → integer, `true` → boolean), and a predicate repeated on one subject (a multivalued slot) folds into a list rather than keeping only the last value. Classes named in `rdf:type` that aren't declared yet are auto-registered (under `WARNING` / `OFF` enforcement), and document `@prefix` declarations are registered automatcially.
 
-> **RDF 1.2 details.** `LOAD DATA` preserves RDF 1.2 literal metadata (language tags, base direction, datatype IRIs), handles blank nodes and collections, imports named graphs (N-Quads / TriG) and JSON-LD, and supports triple terms (RDF-star). The graph also exports back to RDF with `EXPORT … FORMAT`. See <a href="/docs/ontology/rdf-1.2" target="_blank">RDF 1.2 Features</a> for the full reference.
+> `LOAD DATA` preserves RDF 1.2 literal metadata (language tags, base direction, datatype IRIs), handles blank nodes, imports named graphs (N-Quads / TriG) and JSON-LD, and supports triple terms (RDF-star). See <a href="/docs/ontology/working-with-rdf" target="_blank">Working with RDF</a> for the full reference.
 
-## Do You Need LOAD ONTOLOGY First?
+### Do You Need LOAD ONTOLOGY First
 
 Not to load the data. `LOAD DATA` runs standalone and auto-registers any undeclared classes (under `WARNING` / `OFF` enforcement).
 
 But the ontology's **inference and validation** come from the schema (T-Box) axioms, which `LOAD DATA` does not import. Without a loaded schema you get the individuals as a plain labeled graph, with no subclass inference, OWL characteristics, defined classes, or `DOMAIN` / `RANGE` checks.
 
 For those, `LOAD ONTOLOGY` first, then `LOAD DATA`. Under `STRICT` enforcement the schema must be in place first, since undeclared classes are rejected rather than auto-registered.
+
+## Exporting RDF
+
+`EXPORT` serializes the current graph back to RDF, i.e., the inverse of `LOAD DATA`. Each node becomes a subject, each ontology label an `rdf:type` triple, each literal property a data-property triple, and each edge an object-property triple. It serializes **instance data only**, the ontology schema (class / property definitions and axioms) lives in metadata and is not exported; to include it, materialize it into the graph first with <a target="_blank" href="/docs/ontology/inspecting#Projecting-Ontologies-as-a-Graph">`LOAD ONTOLOGY GRAPH`</a>.
+
+```gql
+-- The serialized RDF is returned as a single result column named 'rdf'
+EXPORT FORMAT NTRIPLES
+
+-- The RDF is written to a file
+EXPORT TO 'file:///tmp/example.ttl' FORMAT TURTLE
+```
+
+Accepted `FORMAT` keywords:
+
+- `NTRIPLES`: flat one-triple-per-line N-Triples.
+- `TURTLE`: grouped and prefix-compacted (declares only the prefixes it actually uses; `rdf:type` is written as `a`).
+- `NQUADS` / `TRIG`: carry the named-graph dimension
+
+## Notes & Limitations
+
+- **Round-trip.** `LOAD DATA` → `EXPORT` → `LOAD DATA` reproduces the graph. A predicate's IRI is recorded from the document's prefixes at load time (stored on the edge / property label, not flattened to a bare name), so `EXPORT` reconstructs it exactly, no `LOAD ONTOLOGY` needed, even for an A-Box-only graph with no schema.
+- **Predicate IRIs set outside RDF import.** A literal property created directly (e.g. by `INSERT` / `SET`, with no RDF predicate behind it) has no recorded IRI; its predicate is reconstructed from the ontology schema, then the default namespace, then a synthetic `urn:gqldb:property:` base. Load a schema with `LOAD ONTOLOGY` (or use a default namespace) for a meaningful IRI.
