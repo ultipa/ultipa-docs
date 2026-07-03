@@ -106,6 +106,7 @@ for graph in graphs:
 
 ```python
 from dataclasses import dataclass
+from typing import Optional
 from gqldb.types import GraphType
 
 @dataclass
@@ -115,7 +116,10 @@ class GraphInfo:
     node_count: int
     edge_count: int
     description: str
+    bounded_graph_type: Optional[str] = None
 ```
+
+> `bounded_graph_type` surfaces the server's `bounded_graph_type` column (new in 6.2.59). It is the raw string (`''` for normal graphs) and `None` when the server doesn't report it (older versions), so handle both.
 
 ## Getting Graph Information
 

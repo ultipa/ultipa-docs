@@ -170,6 +170,36 @@ config := &gqldb.Config{
 }
 ```
 
+> **Leader-aware routing is automatic.** In an HA (Raft) cluster, writes must land on the leader. When a write reaches a non-leader, the server replies `LEADER_CHANGED`; the driver transparently learns the new leader and re-routes so the write follows the leader across a failover. This is proactive and requires no configuration — just list the cluster's hosts.
+
+## High Availability / Read Preference
+
+By default every query is routed to the **leader**, which preserves read-your-writes consistency. For read-heavy workloads that tolerate bounded staleness, you can opt a read into routing to a **follower** using `QueryConfig.ReadPreference` and `QueryConfig.MaxStaleness`.
+
+```go
+// Default: leader read (read-your-writes). No config needed.
+resp, err := client.Gql(ctx, "MATCH (n:Person) RETURN n", nil)
+
+// Follower read: route to a follower within 100 Raft entries of the leader,
+// falling back to the leader if none qualify.
+cfg := &gqldb.QueryConfig{
+    ReadOnly:       true,
+    ReadPreference: gqldb.ReadPreferenceFollower,
+    MaxStaleness:   100, // 0 = any healthy follower (no freshness bound)
+}
+resp, err = client.Gql(ctx, "MATCH (n:Person) RETURN n", cfg)
+```
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `ReadPreference` | `ReadPreference` | `ReadPreferenceLeader` | `ReadPreferenceLeader` routes to the leader; `ReadPreferenceFollower` routes a read to a qualifying follower |
+| `MaxStaleness` | `uint64` | `0` | Max lag (in Raft entries) a follower may trail the leader when `ReadPreferenceFollower` is set. `0` = any healthy follower. Ignored for `ReadPreferenceLeader` |
+
+**Semantics:**
+
+- **`ReadPreferenceLeader` (default)** — reads observe the latest committed state; read-your-writes holds.
+- **`ReadPreferenceFollower`** — the read routes to a follower that is within `MaxStaleness` entries of the leader. It is **eventually consistent with a freshness bound, NOT read-your-writes** — the result may not reflect this client's most recent write to the leader. The driver **falls back to the leader** when no follower qualifies (none healthy, all too stale, or the cluster is not HA). Opt in only for reads that tolerate bounded staleness.
+
 ## Configuration Validation
 
 The configuration is validated when creating a client:

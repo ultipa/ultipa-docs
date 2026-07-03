@@ -141,8 +141,11 @@ public class GraphInfo {
     String getDescription();
     long getNodeCount();
     long getEdgeCount();
+    String getBoundedGraphType();
 }
 ```
+
+> `getBoundedGraphType()` returns the server's `bounded_graph_type` from `SHOW GRAPHS` (new in 6.2.59); it is `null` when the server doesn't report it (older versions), so null-check.
 
 ## Getting Graph Information
 

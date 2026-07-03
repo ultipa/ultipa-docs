@@ -21,6 +21,7 @@ The GQLDB Node.js driver provides methods for monitoring server health, managing
 | `compact()` | Trigger storage compaction |
 | `waitForComputeTopology()` | Wait for compute engine topology to be ready |
 | `invalidatePermissionCache()` | Invalidate RBAC permission cache |
+| `getHaStatus()` | Get the connected node's high-availability cluster status |
 
 ## Task and Process Methods
 
@@ -267,6 +268,75 @@ async function invalidatePermissions(client: GqldbClient) {
 ```
 
 Use this after changing user permissions to ensure changes take effect immediately.
+
+## High Availability Status
+
+### getHaStatus()
+
+Read the connected node's high-availability (HA) cluster status: whether HA is enabled, this node's raft role and applied/commit index, and the cluster topology (members).
+
+```typescript
+import { GqldbClient, HaStatus } from '@ultipa-graph/ultipa-driver';
+
+async function checkHaStatus(client: GqldbClient) {
+  const status: HaStatus = await client.getHaStatus();
+
+  if (!status.enabled) {
+    console.log('Server is running single-node (HA not enabled)');
+    return;
+  }
+
+  console.log('Node:', status.nodeId, '- state:', status.state);
+  console.log('Is leader:', status.isLeader, '- leader:', status.leaderId);
+  console.log('Applied index:', status.appliedIndex, '/ commit index:', status.commitIndex);
+
+  console.log('Cluster members:');
+  for (const m of status.members) {
+    console.log(`  ${m.nodeId} (${m.role}) @ ${m.address} leader=${m.isLeader} voter=${m.voter}`);
+  }
+}
+```
+
+`enabled === false` means the server is running single-node (no coordinator). A non-HA server build never registers the HA service and answers `UNIMPLEMENTED`, so the promise **rejects** — code that only wants to know "is this an HA cluster?" should treat any rejection as "not HA":
+
+```typescript
+async function isHaCluster(client: GqldbClient): Promise<boolean> {
+  try {
+    const status = await client.getHaStatus();
+    return status.enabled;
+  } catch {
+    // non-HA server build (UNIMPLEMENTED) or transport error
+    return false;
+  }
+}
+```
+
+### HaStatus Interface
+
+```typescript
+interface HaStatus {
+  enabled: boolean;        // false when the server runs single-node (no coordinator)
+  nodeId: string;
+  state: string;           // raft state: Leader / Follower / Candidate / Shutdown
+  isLeader: boolean;
+  leaderId: string;
+  leaderAddr: string;
+  term: number;
+  appliedIndex: number;
+  commitIndex: number;
+  members: HaNodeInfo[];
+  computeReady: boolean;
+}
+
+interface HaNodeInfo {
+  nodeId: string;
+  address: string;         // raft advertise address (peer/transport traffic)
+  role: string;            // NODE_ROLE_LEADER / NODE_ROLE_FOLLOWER / NODE_ROLE_LEARNER / NODE_ROLE_UNKNOWN
+  isLeader: boolean;
+  voter: boolean;
+  clientAddr: string;      // gRPC/client address a driver connects to ("" if not reported)
+}
+```
 
 ## Error Handling
 

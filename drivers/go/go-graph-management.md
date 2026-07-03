@@ -129,8 +129,14 @@ type GraphInfo struct {
     NodeCount   int64
     EdgeCount   int64
     Description string
+    // BoundedGraphType is the server's bounded_graph_type column from
+    // SHOW GRAPHS (new in 6.2.59). Empty string for normal graphs, and
+    // also empty when the server does not report the column (older versions).
+    BoundedGraphType string
 }
 ```
+
+> `BoundedGraphType` is new in server version 6.2.59. It is an empty string on normal graphs and on servers that predate the `bounded_graph_type` column (Go has no nullable string, so absence and empty are indistinguishable).
 
 ## Getting Graph Information
 

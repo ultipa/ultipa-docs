@@ -124,8 +124,11 @@ interface GraphInfo {
   description: string;
   nodeCount: number;
   edgeCount: number;
+  boundedGraphType?: string;  // new in 6.2.59; undefined on older servers
 }
 ```
+
+> `boundedGraphType` carries the server's `bounded_graph_type` column from `SHOW GRAPHS` (added in 6.2.59), passed through as the raw string — `''` for normal graphs. It is `undefined` when the server does not report the column (older versions), so treat it as optional.
 
 ## Getting Graph Information
 

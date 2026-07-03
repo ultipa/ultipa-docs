@@ -55,6 +55,8 @@ queryConfig := &gqldb.QueryConfig{
     Timeout:        60,                  // Query timeout in seconds
     ReadOnly:       true,                // Read-only mode
     MaxPathResults: 1000,               // Max path results (0 = no limit)
+    ReadPreference: gqldb.ReadPreferenceLeader,  // HA routing (see below)
+    MaxStaleness:   0,                   // Follower freshness bound (Raft entries)
 }
 
 response, err := client.Gql(ctx,
@@ -73,6 +75,8 @@ response, err := client.Gql(ctx,
 | `Timeout` | `int` | `0` | Query timeout in seconds (0 = use client default) |
 | `ReadOnly` | `bool` | `false` | Execute as read-only |
 | `MaxPathResults` | `int64` | `0` | Maximum number of path results to return (0 = no limit) |
+| `ReadPreference` | `ReadPreference` | `ReadPreferenceLeader` | HA routing for this query. `ReadPreferenceLeader` (default) routes to the leader; `ReadPreferenceFollower` routes a read to a qualifying follower. See [Configuration → High Availability](go-configuration.md) |
+| `MaxStaleness` | `uint64` | `0` | When `ReadPreference` is `ReadPreferenceFollower`, bounds how far behind the leader a follower may be, in Raft entries (0 = any healthy follower). Ignored for `ReadPreferenceLeader` |
 
 ## Parameterized Queries
 
