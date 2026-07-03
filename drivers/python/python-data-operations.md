@@ -21,8 +21,10 @@ The GQLDB Python driver provides methods for inserting, updating, and deleting n
 | `insert_edges(graph_name, edges, …)` | Insert edges via gRPC (high-throughput) |
 | `insert_edges(edges, config=None)` | Insert edges via GQL INSERT statement |
 | `insert_edges_batch_auto(graph_name, edges, …)` | Alias for `insert_edges(graph_name, …)` |
-| `delete_nodes(graph_name, node_ids, labels, where)` | Delete nodes |
-| `delete_edges(graph_name, edge_ids, label, where)` | Delete edges |
+| `delete_nodes_by_ids(node_ids, config=None)` | Delete nodes by `_id` list |
+| `delete_nodes_by_condition(labels, where, limit=None, config=None)` | Delete nodes by labels and/or WHERE |
+| `delete_edges_by_ids(edge_ids, config=None)` | Delete edges by `_id` list |
+| `delete_edges_by_condition(label, where, limit=None, config=None)` | Delete edges by label and/or WHERE |
 
 ### Choosing a path
 
@@ -238,66 +240,69 @@ Passing a per-call config is thread-safe: multiple threads can target different 
 
 ## Deleting Nodes
 
-### delete_nodes()
+Nodes are deleted either by `_id` list (`delete_nodes_by_ids`) or by labels and/or a WHERE condition (`delete_nodes_by_condition`). Both emit `DETACH DELETE` (attached edges are removed too), return a `Response`, and report the count via `response.rows_affected`. They operate on the session's current graph; pass a `DeleteConfig(graph_name=...)` to target a different graph without `use_graph()`.
 
-Delete nodes from the graph:
+### delete_nodes_by_ids()
 
 ```python
-# Delete by IDs
-result = client.delete_nodes(
-    "myGraph",
-    node_ids=["u1", "u2", "u3"]
-)
-print(f"Deleted: {result.deleted_count} nodes")
+client.use_graph("myGraph")
 
-# Delete by labels
-result = client.delete_nodes(
-    "myGraph",
-    labels=["TempUser"]
-)
-
-# Delete with WHERE clause
-result = client.delete_nodes(
-    "myGraph",
-    labels=["User"],
-    where="n.age < 18"
-)
-
-# Combine filters
-result = client.delete_nodes(
-    "myGraph",
-    node_ids=["u1", "u2"],
-    labels=["User"],
-    where="n.status = 'inactive'"
-)
+# Delete by _id list
+response = client.delete_nodes_by_ids(["u1", "u2", "u3"])
+print(f"Deleted: {response.rows_affected} nodes")
 ```
+
+### delete_nodes_by_condition()
+
+```python
+# Delete by labels
+response = client.delete_nodes_by_condition(labels=["TempUser"])
+
+# Delete with a WHERE clause (omit the WHERE keyword)
+response = client.delete_nodes_by_condition(labels=["User"], where="n.age < 18")
+print(f"Deleted: {response.rows_affected} nodes")
+
+# Cap the number deleted with limit
+response = client.delete_nodes_by_condition(labels=["User"], where="n.active = false", limit=100)
+```
+
+> `delete_nodes_by_condition` raises `ValueError` if both `labels` and `where` are empty. To intentionally delete every node, pass `config=DeleteConfig(allow_delete_all=True)`.
 
 ## Deleting Edges
 
-### delete_edges()
+Edges are deleted either by `_id` list (`delete_edges_by_ids`) or by label and/or a WHERE condition (`delete_edges_by_condition`). Both return a `Response`; use `response.rows_affected` for the count.
 
-Delete edges from the graph:
+### delete_edges_by_ids()
 
 ```python
-# Delete by IDs
-result = client.delete_edges(
-    "myGraph",
-    edge_ids=["e1", "e2"]
-)
-print(f"Deleted: {result.deleted_count} edges")
+# Delete by _id list (requires the graph created WITH EDGE_ID / EDGE_ID ENABLED)
+response = client.delete_edges_by_ids(["e1", "e2"])
+print(f"Deleted: {response.rows_affected} edges")
+```
 
+### delete_edges_by_condition()
+
+```python
 # Delete by label
-result = client.delete_edges(
-    "myGraph",
-    label="TempConnection"
-)
+response = client.delete_edges_by_condition(label="TempConnection")
 
-# Delete with WHERE clause
-result = client.delete_edges(
-    "myGraph",
-    label="Follows",
-    where="e.since < '2020-01-01'"
-)
+# Delete with a WHERE clause (omit the WHERE keyword)
+response = client.delete_edges_by_condition(label="Follows", where="e.since < '2020-01-01'")
+print(f"Deleted: {response.rows_affected} edges")
+```
+
+> `delete_edges_by_condition` raises `ValueError` if both `label` and `where` are empty. To intentionally delete every edge, pass `config=DeleteConfig(allow_delete_all=True)`.
+
+### Targeting a graph with DeleteConfig
+
+`DeleteConfig` extends `QueryConfig`, so per-call `graph_name` works the same as `InsertConfig`. Set `return_deleted=False` on large bulk deletes to skip returning the deleted data (`rows_affected` is still populated):
+
+```python
+from gqldb import DeleteConfig
+
+cfg = DeleteConfig(graph_name="myGraph", return_deleted=False)
+response = client.delete_nodes_by_condition(labels=["TempUser"], config=cfg)
+print(f"Deleted: {response.rows_affected} nodes")
 ```
 
 ## Using GQL for Data Operations
@@ -344,15 +349,7 @@ class InsertEdgesResult:
     skipped_count: int
 ```
 
-### DeleteResult
-
-```python
-@dataclass
-class DeleteResult:
-    success: bool
-    deleted_count: int
-    message: str
-```
+The delete methods do not return a dedicated result class — they return a `Response`. Read the number of affected entities from `response.rows_affected`.
 
 ## Error Handling
 
@@ -448,21 +445,19 @@ def main():
 
         # Delete inactive users
         print("\n=== Delete Inactive Users ===")
-        result = client.delete_nodes(
-            "dataOpsDemo",
+        response = client.delete_nodes_by_condition(
             labels=["User"],
             where="n.active = false"
         )
-        print(f"  Deleted {result.deleted_count} inactive users")
+        print(f"  Deleted {response.rows_affected} inactive users")
 
         # Delete specific edges
         print("\n=== Delete Old Relationships ===")
-        result = client.delete_edges(
-            "dataOpsDemo",
+        response = client.delete_edges_by_condition(
             label="Follows",
             where="e.since < '2023-04'"
         )
-        print(f"  Deleted {result.deleted_count} old relationships")
+        print(f"  Deleted {response.rows_affected} old relationships")
 
         # Final state
         print("\n=== Final Data ===")

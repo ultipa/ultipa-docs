@@ -21,10 +21,10 @@ The GQLDB Java driver provides methods for inserting and deleting nodes and edge
 | `insertEdges(graphName, edges, …)` | Insert edges via gRPC (high-throughput) |
 | `insertEdges(edges, InsertConfig?)` | Insert edges via GQL INSERT statement |
 | `insertEdgesBatchAuto(graphName, edges, …)` | Alias for `insertEdges(graphName, …)` |
-| `deleteNodes(graphName, nodeIds)` | Delete nodes by ID |
-| `deleteNodes(graphName, labels, where)` | Delete nodes by label and condition |
-| `deleteEdges(graphName, edgeIds)` | Delete edges by ID |
-| `deleteEdges(graphName, label, where)` | Delete edges by label and condition |
+| `deleteNodesByIds(nodeIds, DeleteConfig?)` | Delete nodes by `_id` |
+| `deleteNodesByCondition(labels, whereClause, int?, DeleteConfig?)` | Delete nodes by labels and/or condition |
+| `deleteEdgesByIds(edgeIds, DeleteConfig?)` | Delete edges by `_id` |
+| `deleteEdgesByCondition(label, whereClause, int?, DeleteConfig?)` | Delete edges by label and/or condition |
 
 ### Choosing a path
 
@@ -311,74 +311,107 @@ Passing a per-call config is thread-safe: multiple threads can target different 
 
 ## Deleting Nodes
 
-### deleteNodes()
+The delete methods all return a raw `Response`. Get the number of deleted entities from `response.getRowsAffected()`. There is no dedicated result class. Deletion targets the session's current graph unless you route to another graph via a `DeleteConfig` (see [Delete Configuration](#delete-configuration-deleteconfig)).
 
-Delete nodes from a graph:
+### deleteNodesByIds()
+
+Delete nodes by their `_id`. Emits a `MATCH (n) WHERE n._id IN [...] DETACH DELETE n` statement (attached edges are removed too). An empty or `null` id list is a no-op that never contacts the server.
 
 ```java
 import com.gqldb.*;
 import java.util.*;
 
-public void deleteNodesExample(GqldbClient client) {
-    // Delete specific nodes by ID
-    DeleteResult result1 = client.deleteNodes("myGraph", Arrays.asList("user1", "user2"));
-    System.out.println("Deleted " + result1.getDeletedCount() + " nodes");
+public void deleteNodesByIdsExample(GqldbClient client) {
+    client.useGraph("myGraph");
+
+    Response response = client.deleteNodesByIds(Arrays.asList("user1", "user2"));
+    System.out.println("Deleted " + response.getRowsAffected() + " nodes");
+}
+```
+
+### deleteNodesByCondition()
+
+Delete nodes matching a set of labels and/or a `WHERE` clause. Emits `MATCH (n:L1|L2) WHERE <where> DETACH DELETE n` (the label and/or where portions are omitted when empty). The optional `int limit` caps the number of nodes deleted (`limit <= 0` means no cap).
+
+```java
+public void deleteNodesByConditionExample(GqldbClient client) {
+    client.useGraph("myGraph");
 
     // Delete nodes by label and condition
-    DeleteResult result2 = client.deleteNodes(
-        "myGraph",
+    Response response = client.deleteNodesByCondition(
         Arrays.asList("TempUser"),  // labels
         "age < 18"                   // where clause
     );
-    System.out.println("Deleted " + result2.getDeletedCount() + " underage users");
+    System.out.println("Deleted " + response.getRowsAffected() + " underage users");
+
+    // Cap the number deleted with the limit overload
+    Response capped = client.deleteNodesByCondition(
+        Arrays.asList("TempUser"), "", 100
+    );
+    System.out.println("Deleted " + capped.getRowsAffected() + " temp users (max 100)");
 }
 ```
 
-**Method Overloads:**
-
-| Method | Description |
-|--------|-------------|
-| `deleteNodes(graphName, nodeIds)` | Delete by specific IDs |
-| `deleteNodes(graphName, labels, whereClause)` | Delete by labels and condition |
-
-### DeleteResult Class
-
-```java
-public class DeleteResult {
-    boolean isSuccess();
-    long getDeletedCount();
-    String getMessage();
-}
-```
+> **Safety latch:** if both `labels` and `whereClause` are empty, `deleteNodesByCondition` throws `IllegalArgumentException` to prevent an accidental graph-wide delete. To opt in, pass a `DeleteConfig` with `setAllowDeleteAll(true)`.
 
 ## Deleting Edges
 
-### deleteEdges()
+### deleteEdgesByIds()
 
-Delete edges from a graph:
+Delete edges by their `_id`. Emits `MATCH ()-[e]->() WHERE e._id IN [...] DELETE e`. An empty or `null` id list is a no-op.
+
+> **Requires `EDGE_ID ENABLED` on the target graph.** Edge deletion by id is keyed on `e._id`, which only exists on graphs created `WITH EDGE_ID`. On an `EDGE_ID`-disabled graph the server returns error `[5017]`; enable it with `ALTER GRAPH <name> SET EDGE_ID ENABLED`.
 
 ```java
-public void deleteEdgesExample(GqldbClient client) {
-    // Delete specific edges by ID
-    DeleteResult result1 = client.deleteEdges("myGraph", Arrays.asList("e1", "e2"));
-    System.out.println("Deleted " + result1.getDeletedCount() + " edges");
+public void deleteEdgesByIdsExample(GqldbClient client) {
+    client.useGraph("myGraph");
 
-    // Delete edges by label and condition
-    DeleteResult result2 = client.deleteEdges(
-        "myGraph",
-        "Follows",           // label
-        "since < \"2020-01-01\""  // where clause
-    );
-    System.out.println("Deleted " + result2.getDeletedCount() + " old follow relationships");
+    Response response = client.deleteEdgesByIds(Arrays.asList("e1", "e2"));
+    System.out.println("Deleted " + response.getRowsAffected() + " edges");
 }
 ```
 
-**Method Overloads:**
+### deleteEdgesByCondition()
 
-| Method | Description |
-|--------|-------------|
-| `deleteEdges(graphName, edgeIds)` | Delete by specific IDs |
-| `deleteEdges(graphName, label, whereClause)` | Delete by label and condition |
+Delete edges matching a label and/or a `WHERE` clause. Emits `MATCH ()-[e:Label]->() WHERE <where> DELETE e`. The optional `int limit` caps the number deleted (`limit <= 0` means no cap).
+
+```java
+public void deleteEdgesByConditionExample(GqldbClient client) {
+    client.useGraph("myGraph");
+
+    Response response = client.deleteEdgesByCondition(
+        "Follows",                 // label
+        "since < \"2020-01-01\""   // where clause
+    );
+    System.out.println("Deleted " + response.getRowsAffected() + " old follow relationships");
+}
+```
+
+> The same `allowDeleteAll` safety latch applies: an empty label and empty where clause throws `IllegalArgumentException` unless `DeleteConfig.setAllowDeleteAll(true)` is set.
+
+## Delete Configuration (DeleteConfig)
+
+Every delete method accepts an optional trailing `DeleteConfig`. It extends `QueryConfig`, so it carries `graphName` for per-call graph routing (thread-safe, without changing session state), plus two delete-specific knobs:
+
+```java
+import com.gqldb.*;
+
+DeleteConfig cfg = new DeleteConfig();
+cfg.setGraphName("myGraph");        // route to a specific graph (from QueryConfig)
+cfg.setReturnDeleted(false);        // don't return deleted rows; keep only the count
+cfg.setAllowDeleteAll(true);        // permit a graph-wide delete (default false)
+
+Response response = client.deleteNodesByIds(Arrays.asList("user1", "user2"), cfg);
+System.out.println("Deleted " + response.getRowsAffected() + " nodes");
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `graphName` | `String` | `null` | Target graph (uses session default if null) |
+| `returnDeleted` | `boolean` | `true` | Append `RETURN ...` so the response carries the full deleted node/edge data; set `false` on large bulk deletes to save bandwidth (the count via `getRowsAffected()` is still returned) |
+| `allowDeleteAll` | `boolean` | `false` | Safety latch; must be `true` to allow a `*ByCondition` call with no labels/label and no where clause |
+
+When `returnDeleted` is `true` (the default), the deleted entities are available on the response: `response.alias("n").asNodes()` for node deletes and `response.alias("e").asEdges()` for edge deletes. When `returnDeleted` is `false`, only `getRowsAffected()` is populated.
 
 ## Exception Handling
 
@@ -395,7 +428,8 @@ public void safeDataOperations(GqldbClient client, List<NodeData> nodes) {
     }
 
     try {
-        client.deleteNodes("myGraph", Arrays.asList("node1"));
+        client.useGraph("myGraph");
+        client.deleteNodesByIds(Arrays.asList("node1"));
     } catch (GqldbException e) {
         System.err.println("Delete failed: " + e.getMessage());
     }
@@ -448,15 +482,14 @@ public class DataOperationsExample {
             System.out.println("Inserted " + edgeResult.getEdgeCount() + " relationships");
 
             // Delete temporary users
-            DeleteResult deleteResult = client.deleteNodes(
-                "dataOpsDemo",
-                Arrays.asList("TempUser"),
-                null
+            client.useGraph("dataOpsDemo");
+            Response deleteResponse = client.deleteNodesByCondition(
+                Arrays.asList("TempUser"),  // labels
+                ""                           // no where clause
             );
-            System.out.println("Deleted " + deleteResult.getDeletedCount() + " temporary users");
+            System.out.println("Deleted " + deleteResponse.getRowsAffected() + " temporary users");
 
             // Verify remaining data
-            client.useGraph("dataOpsDemo");
             Response countResponse = client.gql("MATCH (n) RETURN count(n)");
             System.out.println("Remaining nodes: " + countResponse.singleLong());
 

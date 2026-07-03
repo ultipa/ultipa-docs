@@ -21,8 +21,10 @@ The GQLDB Node.js driver provides methods for inserting and deleting nodes and e
 | `insertEdges(graphName, edges, config?)` | Insert edges via gRPC (high-throughput) |
 | `insertEdges(edges, config?)` | Insert edges via GQL INSERT statement |
 | `insertEdgesBatchAuto(graphName, edges, config?)` | Alias for `insertEdges(graphName, …)` |
-| `deleteNodes(graphName, nodeIds, labels, where)` | Delete nodes |
-| `deleteEdges(graphName, edgeIds, label, where)` | Delete edges |
+| `deleteNodesByIds(nodeIds, config?)` | Delete nodes by `_id` list |
+| `deleteNodesByCondition(labels, where, limit?, config?)` | Delete nodes by labels and/or `WHERE` condition |
+| `deleteEdgesByIds(edgeIds, config?)` | Delete edges by `_id` list |
+| `deleteEdgesByCondition(label, where, limit?, config?)` | Delete edges by label and/or `WHERE` condition |
 
 ### Choosing a path
 
@@ -315,30 +317,56 @@ await client.gql('MATCH (n) RETURN n', { graphName: 'graphC', timeout: 10 });
 
 ## Deleting Nodes
 
-### deleteNodes()
+There are two delete-node methods. Both are async and resolve to a `Response`; the number of nodes removed is on `response.rowsAffected`. Deletes are always `DETACH DELETE` (attached edges are removed too). The target graph is selected via the optional `config` object (`DeleteConfig`), not a positional argument.
 
-Delete nodes from a graph:
+### deleteNodesByIds()
+
+Delete nodes by their `_id` values:
 
 ```typescript
-import { GqldbClient, DeleteResult } from '@ultipa-graph/ultipa-driver';
+import { GqldbClient } from '@ultipa-graph/ultipa-driver';
 
-async function deleteNodesExample(client: GqldbClient) {
-  // Delete specific nodes by ID
-  const result1 = await client.deleteNodes('myGraph', ['user1', 'user2']);
-  console.log(`Deleted ${result1.deletedCount} nodes`);
-
-  // Delete nodes by label
-  const result2 = await client.deleteNodes('myGraph', undefined, ['TempUser']);
-  console.log(`Deleted ${result2.deletedCount} TempUser nodes`);
-
-  // Delete nodes matching a condition
-  const result3 = await client.deleteNodes(
-    'myGraph',
-    undefined,
-    ['User'],
-    'age < 18'  // WHERE clause
+async function deleteNodesByIdsExample(client: GqldbClient) {
+  const response = await client.deleteNodesByIds(
+    ['user1', 'user2'],
+    { graphName: 'myGraph' }
   );
-  console.log(`Deleted ${result3.deletedCount} underage users`);
+  console.log(`Deleted ${response.rowsAffected} nodes`);
+}
+```
+
+An empty `nodeIds` array short-circuits and contacts no server (0 rows affected).
+
+**Parameters:**
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `nodeIds` | `string[]` | `_id` values of the nodes to delete |
+| `config` | `DeleteConfig` | Optional per-call config (`graphName`, `returnDeleted`, `allowDeleteAll`, `timeout`, …) |
+
+### deleteNodesByCondition()
+
+Delete nodes by labels and/or a `WHERE` condition, with an optional `limit`:
+
+```typescript
+async function deleteNodesByConditionExample(client: GqldbClient) {
+  // Delete nodes by label
+  const response1 = await client.deleteNodesByCondition(
+    ['TempUser'],
+    undefined,
+    undefined,
+    { graphName: 'myGraph' }
+  );
+  console.log(`Deleted ${response1.rowsAffected} TempUser nodes`);
+
+  // Delete nodes matching a condition (at most 100)
+  const response2 = await client.deleteNodesByCondition(
+    ['User'],
+    'n.age < 18',   // WHERE clause; the node is bound as `n`
+    100,            // optional LIMIT
+    { graphName: 'myGraph' }
+  );
+  console.log(`Deleted ${response2.rowsAffected} underage users`);
 }
 ```
 
@@ -346,45 +374,40 @@ async function deleteNodesExample(client: GqldbClient) {
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `graphName` | `string` | Target graph |
-| `nodeIds` | `string[]` | Specific node IDs to delete |
-| `labels` | `string[]` | Delete nodes with these labels |
-| `where` | `string` | Additional filter condition |
+| `labels` | `string[]` | Delete nodes carrying any of these labels |
+| `where` | `string` | `WHERE` condition; the matched node is bound as `n` |
+| `limit` | `number` | Optional cap on the number of nodes deleted |
+| `config` | `DeleteConfig` | Optional per-call config (`graphName`, `returnDeleted`, `allowDeleteAll`, `timeout`, …) |
 
-### DeleteResult Interface
+> Calling `deleteNodesByCondition` with **both** `labels` and `where` empty would delete every node in the graph, so it throws unless you set `allowDeleteAll: true` in the config.
+
+### DeleteConfig
 
 ```typescript
-interface DeleteResult {
-  success: boolean;
-  deletedCount: number;
-  message: string;
+interface DeleteConfig extends QueryConfig {
+  returnDeleted?: boolean;   // default true — emit RETURN so the response carries the deleted data
+  allowDeleteAll?: boolean;  // default false — safety latch for graph-wide deletes
+  // plus QueryConfig fields: graphName, parameters, timeout, ...
 }
 ```
+
+Set `returnDeleted: false` on large bulk deletes to skip returning the deleted rows and save bandwidth; `rowsAffected` still carries the count. When `returnDeleted` is left at its default, the deleted nodes are also available via `response.alias('n').asNodes()`.
 
 ## Deleting Edges
 
-### deleteEdges()
+Edge deletion mirrors node deletion: both methods are async, resolve to a `Response`, and report the count on `response.rowsAffected`. Deleting edges by `_id` requires the graph to have `EDGE_ID` enabled (`ALTER GRAPH <name> SET EDGE_ID ENABLED`).
 
-Delete edges from a graph:
+### deleteEdgesByIds()
+
+Delete edges by their `_id` values:
 
 ```typescript
-async function deleteEdgesExample(client: GqldbClient) {
-  // Delete specific edges by ID
-  const result1 = await client.deleteEdges('myGraph', ['e1', 'e2']);
-  console.log(`Deleted ${result1.deletedCount} edges`);
-
-  // Delete edges by label
-  const result2 = await client.deleteEdges('myGraph', undefined, 'TempRelation');
-  console.log(`Deleted ${result2.deletedCount} TempRelation edges`);
-
-  // Delete edges matching a condition
-  const result3 = await client.deleteEdges(
-    'myGraph',
-    undefined,
-    'Follows',
-    'since < "2020-01-01"'
+async function deleteEdgesByIdsExample(client: GqldbClient) {
+  const response = await client.deleteEdgesByIds(
+    ['e1', 'e2'],
+    { graphName: 'myGraph' }
   );
-  console.log(`Deleted ${result3.deletedCount} old follow relationships`);
+  console.log(`Deleted ${response.rowsAffected} edges`);
 }
 ```
 
@@ -392,10 +415,45 @@ async function deleteEdgesExample(client: GqldbClient) {
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `graphName` | `string` | Target graph |
-| `edgeIds` | `string[]` | Specific edge IDs to delete |
+| `edgeIds` | `string[]` | `_id` values of the edges to delete |
+| `config` | `DeleteConfig` | Optional per-call config (`graphName`, `returnDeleted`, `allowDeleteAll`, `timeout`, …) |
+
+### deleteEdgesByCondition()
+
+Delete edges by label and/or a `WHERE` condition, with an optional `limit`. Note this takes a single `label` (string), not an array:
+
+```typescript
+async function deleteEdgesByConditionExample(client: GqldbClient) {
+  // Delete edges by label
+  const response1 = await client.deleteEdgesByCondition(
+    'TempRelation',
+    undefined,
+    undefined,
+    { graphName: 'myGraph' }
+  );
+  console.log(`Deleted ${response1.rowsAffected} TempRelation edges`);
+
+  // Delete edges matching a condition
+  const response2 = await client.deleteEdgesByCondition(
+    'Follows',
+    'e.since < "2020-01-01"',  // WHERE clause; the edge is bound as `e`
+    undefined,
+    { graphName: 'myGraph' }
+  );
+  console.log(`Deleted ${response2.rowsAffected} old follow relationships`);
+}
+```
+
+**Parameters:**
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
 | `label` | `string` | Delete edges with this label |
-| `where` | `string` | Additional filter condition |
+| `where` | `string` | `WHERE` condition; the matched edge is bound as `e` |
+| `limit` | `number` | Optional cap on the number of edges deleted |
+| `config` | `DeleteConfig` | Optional per-call config (`graphName`, `returnDeleted`, `allowDeleteAll`, `timeout`, …) |
+
+> As with nodes, calling `deleteEdgesByCondition` with **both** `label` and `where` empty throws unless `allowDeleteAll: true` is set. When `returnDeleted` is left at its default, deleted edges are available via `response.alias('e').asEdges()`.
 
 ## Error Handling
 
@@ -420,7 +478,7 @@ async function safeDataOperations(client: GqldbClient) {
   }
 
   try {
-    await client.deleteNodes('myGraph', ['node1']);
+    await client.deleteNodesByIds(['node1'], { graphName: 'myGraph' });
   } catch (error) {
     if (error instanceof DeleteFailedError) {
       console.error('Delete failed:', error.message);
@@ -468,8 +526,13 @@ async function main() {
     console.log(`Inserted ${edgeResult.edgeCount} relationships`);
 
     // Delete temporary users
-    const deleteResult = await client.deleteNodes('dataOpsDemo', undefined, ['TempUser']);
-    console.log(`Deleted ${deleteResult.deletedCount} temporary users`);
+    const deleteResponse = await client.deleteNodesByCondition(
+      ['TempUser'],
+      undefined,
+      undefined,
+      { graphName: 'dataOpsDemo' }
+    );
+    console.log(`Deleted ${deleteResponse.rowsAffected} temporary users`);
 
     // Verify remaining data
     await client.useGraph('dataOpsDemo');

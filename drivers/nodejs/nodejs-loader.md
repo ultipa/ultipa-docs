@@ -304,5 +304,3 @@ interface LoaderCapabilities {
 ```
 
 All load results also carry `timeCostNs`, `diskCostNs`, and `computeCostNs`.
-</content>
-</invoke>

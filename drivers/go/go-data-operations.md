@@ -21,8 +21,10 @@ Go does not support method overloading, so the gRPC bulk path and the GQL emitte
 | `InsertEdges(ctx, graphName, edges, config?)` | Insert edges via gRPC (high-throughput) |
 | `InsertEdgesGql(ctx, edges, config?)` | Insert edges via GQL INSERT statement |
 | `InsertEdgesBatchAuto(ctx, graphName, edges, config?)` | Deprecated alias for `InsertEdges` |
-| `DeleteNodes(ctx, graphName, nodeIDs, labels, where)` | Delete nodes |
-| `DeleteEdges(ctx, graphName, edgeIDs, label, where)` | Delete edges |
+| `DeleteNodesByIDs(ctx, nodeIDs, config?)` | Delete nodes by `_id` list |
+| `DeleteNodesByCondition(ctx, labels, where, limit, config?)` | Delete nodes matching labels and/or a WHERE condition |
+| `DeleteEdgesByIDs(ctx, edgeIDs, config?)` | Delete edges by `_id` list |
+| `DeleteEdgesByCondition(ctx, label, where, limit, config?)` | Delete edges matching a label and/or a WHERE condition |
 
 ### Choosing a path
 
@@ -255,47 +257,85 @@ client.Gql(ctx, "MATCH (n) RETURN n", &gqldb.QueryConfig{GraphName: "graphC", Ti
 
 ## Deleting Nodes
 
-### DeleteNodes()
-
-Delete nodes from the graph:
+Nodes are deleted with `DETACH DELETE` (attached edges are removed too). Both methods return the raw `*Response`; the number of nodes removed is `resp.RowsAffected`. The optional `*DeleteConfig` routes the call to a specific graph and controls a few behaviors:
 
 ```go
-// Delete by IDs
-result, err := client.DeleteNodes(ctx, "myGraph", []string{"u1", "u2", "u3"}, nil, "")
+type DeleteConfig struct {
+    gqldb.QueryConfig      // embedded: GraphName, Timeout, TransactionID, ...
+    ReturnDeleted  bool    // append RETURN so deleted entities come back on the Response (default true)
+    AllowDeleteAll bool    // required to run a condition delete with no labels/label and no WHERE
+}
+```
+
+### DeleteNodesByIDs()
+
+Delete nodes by their `_id` list. An empty/`nil` slice is a no-op that never contacts the server.
+
+```go
+cfg := &gqldb.DeleteConfig{QueryConfig: gqldb.QueryConfig{GraphName: "myGraph"}}
+
+resp, err := client.DeleteNodesByIDs(ctx, []string{"u1", "u2", "u3"}, cfg)
 if err != nil {
     log.Fatal(err)
 }
-fmt.Printf("Deleted: %d nodes\n", result.DeletedCount)
+fmt.Printf("Deleted %d nodes\n", resp.RowsAffected)
+```
 
-// Delete by labels
-result, err = client.DeleteNodes(ctx, "myGraph", nil, []string{"TempUser"}, "")
+### DeleteNodesByCondition()
 
-// Delete with WHERE clause
-result, err = client.DeleteNodes(ctx, "myGraph", nil, []string{"User"}, "n.age < 18")
+Delete nodes matching one or more labels and/or a WHERE condition. `limit` caps the number of nodes removed (`limit <= 0` means no cap). Passing neither labels nor a WHERE would delete every node, so it errors unless `AllowDeleteAll` is set.
 
-// Combine filters
-result, err = client.DeleteNodes(ctx, "myGraph", []string{"u1", "u2"}, []string{"User"}, "n.status = 'inactive'")
+```go
+cfg := &gqldb.DeleteConfig{QueryConfig: gqldb.QueryConfig{GraphName: "myGraph"}}
+
+// Delete by label
+resp, err := client.DeleteNodesByCondition(ctx, []string{"TempUser"}, "", 0, cfg)
+if err != nil {
+    log.Fatal(err)
+}
+fmt.Printf("Deleted %d nodes\n", resp.RowsAffected)
+
+// Delete with a WHERE condition (bind the pattern variable `n`)
+resp, err = client.DeleteNodesByCondition(ctx, []string{"User"}, "n.age < 18", 0, cfg)
+
+// Combine label + WHERE, capped at 100 nodes
+resp, err = client.DeleteNodesByCondition(ctx, []string{"User"}, "n.status = 'inactive'", 100, cfg)
 ```
 
 ## Deleting Edges
 
-### DeleteEdges()
+Edges are removed with `DELETE`. Both methods return the raw `*Response`; the count of removed edges is `resp.RowsAffected`.
 
-Delete edges from the graph:
+### DeleteEdgesByIDs()
+
+Delete edges by their `_id` list. An empty/`nil` slice is a no-op. This path requires `EDGE_ID` enabled on the target graph; on a disabled graph the server returns `[5017]` guiding you to `ALTER GRAPH <g> SET EDGE_ID ENABLED`.
 
 ```go
-// Delete by IDs
-result, err := client.DeleteEdges(ctx, "myGraph", []string{"e1", "e2"}, "", "")
+cfg := &gqldb.DeleteConfig{QueryConfig: gqldb.QueryConfig{GraphName: "myGraph"}}
+
+resp, err := client.DeleteEdgesByIDs(ctx, []string{"e1", "e2"}, cfg)
 if err != nil {
     log.Fatal(err)
 }
-fmt.Printf("Deleted: %d edges\n", result.DeletedCount)
+fmt.Printf("Deleted %d edges\n", resp.RowsAffected)
+```
+
+### DeleteEdgesByCondition()
+
+Delete edges matching a single label and/or a WHERE condition. `limit` caps the number removed (`limit <= 0` means no cap). An empty label with an empty WHERE errors unless `AllowDeleteAll` is set.
+
+```go
+cfg := &gqldb.DeleteConfig{QueryConfig: gqldb.QueryConfig{GraphName: "myGraph"}}
 
 // Delete by label
-result, err = client.DeleteEdges(ctx, "myGraph", nil, "TempConnection", "")
+resp, err := client.DeleteEdgesByCondition(ctx, "TempConnection", "", 0, cfg)
+if err != nil {
+    log.Fatal(err)
+}
+fmt.Printf("Deleted %d edges\n", resp.RowsAffected)
 
-// Delete with WHERE clause
-result, err = client.DeleteEdges(ctx, "myGraph", nil, "Follows", "e.since < '2020-01-01'")
+// Delete with a WHERE condition (bind the pattern variable `e`)
+resp, err = client.DeleteEdgesByCondition(ctx, "Follows", "e.since < '2020-01-01'", 0, cfg)
 ```
 
 ## Using GQL for Data Operations
@@ -339,16 +379,6 @@ type InsertEdgesResult struct {
     EdgeCount    int64
     Message      string
     SkippedCount int64
-}
-```
-
-### DeleteResult
-
-```go
-type DeleteResult struct {
-    Success      bool
-    DeletedCount int64
-    Message      string
 }
 ```
 
@@ -468,21 +498,23 @@ func main() {
     result, _ = client.InsertNodes(ctx, "dataOpsDemo", updatedUsers, &gqldb.InsertNodesConfig{Mode: gqldb.InsertTypeOverwrite})
     fmt.Printf("  Upserted %d users\n", result.NodeCount)
 
+    delCfg := &gqldb.DeleteConfig{QueryConfig: gqldb.QueryConfig{GraphName: "dataOpsDemo"}}
+
     // Delete inactive users
     fmt.Println("\n=== Delete Inactive Users ===")
-    delResult, err := client.DeleteNodes(ctx, "dataOpsDemo", nil, []string{"User"}, "n.active = false")
+    delResp, err := client.DeleteNodesByCondition(ctx, []string{"User"}, "n.active = false", 0, delCfg)
     if err != nil {
         log.Fatal(err)
     }
-    fmt.Printf("  Deleted %d inactive users\n", delResult.DeletedCount)
+    fmt.Printf("  Deleted %d inactive users\n", delResp.RowsAffected)
 
     // Delete specific edges
     fmt.Println("\n=== Delete Old Relationships ===")
-    delResult, err = client.DeleteEdges(ctx, "dataOpsDemo", nil, "Follows", "e.since < '2023-04'")
+    delResp, err = client.DeleteEdgesByCondition(ctx, "Follows", "e.since < '2023-04'", 0, delCfg)
     if err != nil {
         log.Fatal(err)
     }
-    fmt.Printf("  Deleted %d old relationships\n", delResult.DeletedCount)
+    fmt.Printf("  Deleted %d old relationships\n", delResp.RowsAffected)
 
     // Final state
     fmt.Println("\n=== Final Data ===")
