@@ -360,6 +360,7 @@ public class Attr {
 ```java
 import com.gqldb.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ResponseProcessingExample {
     public static void main(String[] args) {

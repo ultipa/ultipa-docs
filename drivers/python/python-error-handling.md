@@ -105,16 +105,16 @@ def ensure_logged_in(client):
 | `TransactionAlreadyOpenError` | Transaction already open |
 
 ```python
-from gqldb.errors import TransactionFailedError, TransactionNotFoundError
+from gqldb.errors import GqldbError, TransactionNotFoundError
 
 def safe_transaction(client, graph_name, fn):
     """Execute a transaction with error handling."""
     try:
         client.with_transaction(graph_name, fn)
-    except TransactionFailedError as e:
-        print(f"Transaction failed: {e}")
     except TransactionNotFoundError:
         print("Transaction timed out before completion")
+    except GqldbError as e:
+        print(f"Transaction failed: {e}")
 ```
 
 ### Query Errors
@@ -152,7 +152,7 @@ def execute_query(client, query):
 | `DropGraphFailedError` | Failed to drop graph |
 
 ```python
-from gqldb.errors import GraphNotFoundError, GraphExistsError
+from gqldb.errors import GqldbError, GraphNotFoundError
 
 def ensure_graph(client, graph_name):
     """Ensure a graph exists."""
@@ -163,8 +163,8 @@ def ensure_graph(client, graph_name):
         try:
             client.create_graph(graph_name)
             print(f"Created graph {graph_name}")
-        except GraphExistsError:
-            # Race condition: another process created it
+        except GqldbError:
+            # Race condition: another process created it (surfaces as the base GqldbError)
             print(f"Graph {graph_name} was created by another process")
 ```
 
@@ -301,7 +301,6 @@ from gqldb.errors import (
     GqldbError,
     LoginFailedError,
     GraphNotFoundError,
-    TransactionFailedError,
     QueryFailedError
 )
 
@@ -346,7 +345,7 @@ def main():
             try:
                 client.with_transaction(graph_name, do_inserts)
                 print("Transaction succeeded")
-            except TransactionFailedError:
+            except GqldbError:
                 print("Transaction failed, changes rolled back")
             except RuntimeError as e:
                 print(f"Error during transaction: {e}")

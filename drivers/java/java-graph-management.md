@@ -236,11 +236,12 @@ client.truncate("myGraph", new QueryConfig());
 import com.gqldb.*;
 
 public void safeGraphOperations(GqldbClient client) {
+    // All driver failures surface as GqldbException; the finer-grained types
+    // (e.g. GraphExistsException, GraphNotFoundException) are not part of the
+    // public API, so branch on e.getMessage() / e.getCode() to distinguish.
     try {
         // Try to create a graph
         client.createGraph("newGraph");
-    } catch (GraphExistsException e) {
-        System.out.println("Graph already exists");
     } catch (GqldbException e) {
         System.err.println("Failed to create graph: " + e.getMessage());
     }
@@ -248,15 +249,13 @@ public void safeGraphOperations(GqldbClient client) {
     try {
         // Try to get graph info
         GraphInfo info = client.getGraphInfo("unknownGraph");
-    } catch (GraphNotFoundException e) {
-        System.out.println("Graph not found");
+    } catch (GqldbException e) {
+        System.out.println("Graph not found: " + e.getMessage());
     }
 
     try {
         // Try to drop a graph
         client.dropGraph("oldGraph");
-    } catch (GraphNotFoundException e) {
-        System.out.println("Graph does not exist");
     } catch (GqldbException e) {
         System.err.println("Failed to drop graph: " + e.getMessage());
     }
@@ -291,7 +290,7 @@ public class GraphManagementExample {
             try {
                 client.createGraph(graphName, GraphType.OPEN, "Demo graph for testing");
                 System.out.println("Created graph: " + graphName);
-            } catch (GraphExistsException e) {
+            } catch (GqldbException e) {
                 System.out.println("Graph " + graphName + " already exists");
             }
 

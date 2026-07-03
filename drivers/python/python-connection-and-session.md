@@ -134,12 +134,12 @@ with GqldbClient(config) as client:
 
 ## Connection Pool
 
-The driver maintains a connection pool for efficient resource usage:
+> **Note:** `pool_size` is currently a **reserved** setting. It is accepted and validated, but the driver does not yet maintain a runtime connection pool keyed off this value — connections are established per host as needed. Set it for forward-compatibility, but it does not change behavior today.
 
 ```python
 config = GqldbConfig(
     hosts=["localhost:9000"],
-    pool_size=20,  # Connections per host
+    pool_size=20,  # Reserved — accepted/validated, not yet wired to a pool
     health_check_interval=30.0  # Health check every 30 seconds
 )
 

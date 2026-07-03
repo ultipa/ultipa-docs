@@ -188,8 +188,8 @@ class BulkImportStatus:
     graph_name: str
     record_count: int
     last_checkpoint_count: int
-    created_at: str
-    last_activity: str
+    created_at: int         # proto timestamp (epoch)
+    last_activity: int      # proto timestamp (epoch)
 ```
 
 ## Error Handling

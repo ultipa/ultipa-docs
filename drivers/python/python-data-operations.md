@@ -35,7 +35,7 @@ The GQLDB Python driver provides methods for inserting, updating, and deleting n
 | Performance | High-throughput for large imports | Good for small batches |
 | Custom node `_id` | Supported (`NodeData.id`) | Supported (`NodeData.id` → `_id`) |
 | Custom edge `_id` | Supported (`EdgeData.id`) | Supported (`EdgeData.id` → `_id`) |
-| Insert modes | NORMAL, OVERWRITE | NORMAL, OVERWRITE, UPSERT |
+| Insert modes | NORMAL, OVERWRITE, UPSERT | NORMAL, OVERWRITE, UPSERT |
 | Use case | ETL, data migration, bulk loading | Scripts, small batches, UPSERT |
 
 > **Custom edge `_id` requires `WITH EDGE_ID` on the target graph.** This is a server-side prerequisite — the graph must have been created with `CREATE GRAPH <name> WITH EDGE_ID` for user-supplied edge `_id`s to be honored on either path. Without it, the server auto-generates edge `_id`s and any value passed via `EdgeData.id` is ignored.
@@ -98,9 +98,10 @@ A non-empty `id` is written as `_id` on the inserted node (both gRPC and GQL pat
 
 ```python
 from gqldb.types import BulkCreateNodesOptions
+from gqldb import InsertType
 
 options = BulkCreateNodesOptions(
-    overwrite=True          # Overwrite if exists
+    mode=InsertType.OVERWRITE   # Duplicate-_id semantics: NORMAL (default), OVERWRITE, or UPSERT
 )
 
 result = client.insert_nodes("myGraph", nodes, options)
@@ -382,7 +383,7 @@ except GqldbError as e:
 ## Complete Example
 
 ```python
-from gqldb import GqldbClient, GqldbConfig, NodeData, EdgeData
+from gqldb import GqldbClient, GqldbConfig, NodeData, EdgeData, InsertType
 from gqldb.types import BulkCreateNodesOptions, BulkCreateEdgesOptions
 from gqldb.errors import GqldbError
 
@@ -406,7 +407,7 @@ def main():
             NodeData(labels=["User", "Admin"], properties={"name": "Diana", "age": 28, "active": True}),
         ]
 
-        options = BulkCreateNodesOptions(overwrite=True)
+        options = BulkCreateNodesOptions(mode=InsertType.OVERWRITE)
         result = client.insert_nodes("dataOpsDemo", users, options)
         print(f"  Inserted {result.node_count} users")
 
@@ -440,7 +441,7 @@ def main():
             NodeData(labels=["User"], properties={"name": "Eve", "age": 22, "active": True}),    # New user
         ]
 
-        result = client.insert_nodes("dataOpsDemo", updated_users, BulkCreateNodesOptions(overwrite=True))
+        result = client.insert_nodes("dataOpsDemo", updated_users, BulkCreateNodesOptions(mode=InsertType.OVERWRITE))
         print(f"  Upserted {result.node_count} users")
 
         # Delete inactive users

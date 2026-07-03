@@ -18,6 +18,7 @@ Export nodes and/or edges in JSON Lines format with streaming:
 ```java
 import com.gqldb.*;
 import java.util.function.Consumer;
+import java.nio.charset.StandardCharsets;
 
 public void exportExample(GqldbClient client) {
     ExportConfig config = ExportConfig.builder()

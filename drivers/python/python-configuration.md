@@ -29,10 +29,12 @@ config = GqldbConfig(
 | `timeout` | `int` | `30` | Query timeout in seconds |
 | `max_recv_size` | `int` | `67108864` | Maximum receive message size (64MB) |
 | `ssl_context` | `ssl.SSLContext` | `None` | SSL context for secure connections |
-| `pool_size` | `int` | `10` | Connection pool size per host |
+| `pool_size` | `int` | `10` | Reserved — accepted and validated but not yet wired to a runtime connection pool |
 | `health_check_interval` | `float` | `30.0` | Health check interval in seconds |
-| `retry_count` | `int` | `3` | Number of retries for failed requests |
-| `retry_delay` | `float` | `0.1` | Delay between retries in seconds |
+| `retry_count` | `int` | `3` | Reserved — accepted and validated but not yet consumed by an automatic retry mechanism |
+| `retry_delay` | `float` | `0.1` | Reserved — pairs with `retry_count`; not yet consumed at runtime |
+
+> **Note:** `pool_size`, `retry_count`, and `retry_delay` are currently reserved settings. They are validated and stored, but the driver does not yet act on them at runtime (no active connection pooling or automatic request retry is performed). Set them for forward-compatibility, but do not rely on them changing behavior today.
 
 ## ConfigBuilder
 
@@ -66,10 +68,10 @@ config = (ConfigBuilder()
 | `timeout(seconds)` | Set query timeout |
 | `max_recv_size(bytes)` | Set max receive message size |
 | `ssl(ssl_context)` | Set SSL context |
-| `pool_size(size)` | Set connection pool size |
+| `pool_size(size)` | Set connection pool size (reserved — not yet wired) |
 | `health_check_interval(seconds)` | Set health check interval |
-| `retry_count(count)` | Set retry count |
-| `retry_delay(seconds)` | Set retry delay |
+| `retry_count(count)` | Set retry count (reserved — not yet consumed) |
+| `retry_delay(seconds)` | Set retry delay (reserved — not yet consumed) |
 | `build()` | Build and validate the configuration |
 
 ## SSL/TLS Configuration

@@ -15,7 +15,7 @@ The GQLDB Python driver provides methods for creating, managing, and querying gr
 | `create_closed_graph(name)` | Create a schema-enforced graph |
 | `create_graph_if_not_exist(name, graph_type, description)` | Create graph only if it doesn't exist |
 | `has_graph(name)` | Check if a graph exists |
-| `alter_graph(old_name, new_name)` | Rename a graph |
+| `alter_graph(graph_name, new_name)` | Rename a graph |
 | `truncate(graph_name)` | Remove all data from a graph |
 
 ## Creating Graphs
@@ -112,9 +112,9 @@ from gqldb.types import GraphType
 class GraphInfo:
     name: str
     graph_type: GraphType
-    description: str
     node_count: int
     edge_count: int
+    description: str
 ```
 
 ## Getting Graph Information
@@ -188,28 +188,29 @@ client.truncate("myGraph")
 from gqldb.errors import (
     GqldbError,
     GraphNotFoundError,
-    GraphExistsError,
     CreateGraphFailedError,
     DropGraphFailedError
 )
 
-# Handle graph already exists
+# Handle graph already exists. Note: create_graph raises the base
+# GqldbError on a duplicate name (there is no dedicated GraphExistsError
+# for this path), so catch GqldbError.
 try:
     client.create_graph("existingGraph")
-except GraphExistsError:
-    print("Graph already exists")
+except GqldbError:
+    print("Graph already exists (or creation failed)")
 
-# Handle graph not found
+# Handle graph not found (get_graph_info DOES raise GraphNotFoundError)
 try:
     client.get_graph_info("nonExistentGraph")
 except GraphNotFoundError:
     print("Graph not found")
 
-# Safe graph creation
-try:
+# Safe graph creation — prefer the built-in helpers over try/except:
+if not client.has_graph("myGraph"):
     client.create_graph("myGraph")
-except GraphExistsError:
-    print("Graph already exists, using existing")
+# ...or:
+client.create_graph_if_not_exist("myGraph")
 
 client.use_graph("myGraph")
 ```
@@ -217,7 +218,7 @@ client.use_graph("myGraph")
 ## Ensure Graph Exists Pattern
 
 ```python
-from gqldb.errors import GraphNotFoundError, GraphExistsError
+from gqldb.errors import GqldbError, GraphNotFoundError
 
 def ensure_graph(client, name, graph_type=None, description=""):
     """Ensure a graph exists, creating it if necessary."""
@@ -230,8 +231,9 @@ def ensure_graph(client, name, graph_type=None, description=""):
             client.create_graph(name, graph_type, description)
             print(f"Created graph '{name}'")
             return client.get_graph_info(name)
-        except GraphExistsError:
-            # Race condition: another process created it
+        except GqldbError:
+            # Race condition: another process created it (create_graph
+            # raises the base GqldbError, not a dedicated exists error)
             return client.get_graph_info(name)
 
 # Usage
@@ -275,7 +277,7 @@ with GqldbClient(config) as client:
 ```python
 from gqldb import GqldbClient, GqldbConfig
 from gqldb.types import GraphType
-from gqldb.errors import GqldbError, GraphNotFoundError, GraphExistsError
+from gqldb.errors import GqldbError, GraphNotFoundError
 
 def main():
     config = GqldbConfig(
@@ -303,7 +305,7 @@ def main():
             try:
                 client.create_graph(name, gtype, desc)
                 print(f"  Created: {name}")
-            except GraphExistsError:
+            except GqldbError:
                 print(f"  Exists: {name}")
 
         # Get detailed info

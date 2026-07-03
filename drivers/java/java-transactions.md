@@ -171,12 +171,12 @@ List<TransactionInfo> allTransactions = client.listAllTransactions();
 ```java
 public class TransactionInfo {
     long getTransactionId();
+    long getSessionId();
     String getGraphName();
     boolean isReadOnly();
     long getCreatedAt();
-    int getDurationMs();
-    String getSessionId();
-    long getInternalTxId();
+    long getDurationMs();
+    String getInternalTxId();
 }
 ```
 
@@ -227,12 +227,15 @@ public void safeTransaction(GqldbClient client) {
             // Transaction operations
             return null;
         });
-    } catch (TransactionFailedException e) {
-        System.err.println("Transaction failed: " + e.getMessage());
-    } catch (TransactionNotFoundException e) {
-        System.err.println("Transaction not found (may have timed out)");
     } catch (GqldbException e) {
-        System.err.println("Error: " + e.getMessage());
+        // All driver errors surface as GqldbException. Branch on the message
+        // or error code to distinguish cases (e.g. a transaction that has
+        // timed out or was not found).
+        if (e.getMessage() != null && e.getMessage().contains("Transaction not found")) {
+            System.err.println("Transaction not found (may have timed out)");
+        } else {
+            System.err.println("Transaction failed: " + e.getMessage());
+        }
     }
 }
 ```

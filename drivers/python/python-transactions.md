@@ -197,7 +197,7 @@ with transaction(client, "myGraph") as tx:
 
 ```python
 import time
-from gqldb.errors import TransactionFailedError
+from gqldb.errors import GqldbError
 
 def execute_with_retry(client, graph_name, fn, max_retries=3):
     """Execute a transactional function with retry logic."""
@@ -207,7 +207,7 @@ def execute_with_retry(client, graph_name, fn, max_retries=3):
         try:
             client.with_transaction(graph_name, fn)
             return  # Success
-        except TransactionFailedError as e:
+        except GqldbError as e:  # base error; a transaction failure surfaces as GqldbError
             last_error = e
             if attempt < max_retries - 1:
                 wait_time = 0.1 * (2 ** attempt)  # Exponential backoff
@@ -230,7 +230,6 @@ execute_with_retry(client, "myGraph", my_transaction)
 ```python
 from gqldb.errors import (
     GqldbError,
-    TransactionFailedError,
     TransactionNotFoundError,
     NoTransactionError
 )
@@ -242,9 +241,6 @@ try:
 
 except TransactionNotFoundError:
     print("Transaction not found (may have timed out)")
-
-except TransactionFailedError as e:
-    print(f"Transaction failed: {e}")
 
 except GqldbError as e:
     print(f"GQLDB error: {e}")

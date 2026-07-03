@@ -421,9 +421,10 @@ import com.gqldb.*;
 public void safeDataOperations(GqldbClient client, List<NodeData> nodes) {
     try {
         client.insertNodes("myGraph", nodes);
-    } catch (GraphNotFoundException e) {
-        System.err.println("Graph does not exist");
     } catch (GqldbException e) {
+        // All driver failures surface as GqldbException; the finer-grained
+        // types (e.g. GraphNotFoundException) are not part of the public API,
+        // so inspect e.getMessage() / e.getCode() to distinguish cases.
         System.err.println("Insert failed: " + e.getMessage());
     }
 

@@ -287,7 +287,7 @@ Wait for the compute engine to be ready:
 
 ```java
 AdminService.ComputeTopologyResult result = client.waitForComputeTopology(
-    "myGraph", Duration.ofSeconds(60)
+    "myGraph", 60000L  // timeout in milliseconds
 );
 System.out.println("Compute topology: " + (result.isReady() ? "ready" : "not ready") +
     " - " + result.getMessage());
@@ -300,6 +300,8 @@ System.out.println("Compute topology: " + (result.isReady() ? "ready" : "not rea
 List running and completed algorithm tasks:
 
 ```java
+import com.gqldb.types.ConvenienceTypes.*;
+
 client.useGraph("myGraph");
 
 List<TaskInfo> tasks = client.showTasks();
@@ -327,6 +329,8 @@ System.out.println("Task deleted");
 List available algorithms:
 
 ```java
+import com.gqldb.types.ConvenienceTypes.*;
+
 List<AlgoInfo> algos = client.showAlgos();
 for (AlgoInfo algo : algos) {
     System.out.println(algo.getName() + ": " + algo.getDescription());
@@ -340,6 +344,8 @@ for (AlgoInfo algo : algos) {
 List currently running queries:
 
 ```java
+import com.gqldb.types.ConvenienceTypes.*;
+
 List<ProcessInfo> processes = client.top();
 for (ProcessInfo proc : processes) {
     System.out.println("Query " + proc.getQueryId() + ": " +
@@ -361,6 +367,8 @@ System.out.println("Query terminated");
 Get graph statistics with node/edge counts by label:
 
 ```java
+import com.gqldb.types.ConvenienceTypes.*;
+
 GraphStats graphStats = client.stats();
 System.out.println("Nodes: " + graphStats.getNodeCount());
 System.out.println("Edges: " + graphStats.getEdgeCount());

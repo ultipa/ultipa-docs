@@ -31,9 +31,9 @@ The GQLDB Go driver provides methods for monitoring server health, managing cach
 | `StopTask(ctx, taskID, config)` | Stop a running task |
 | `DeleteTask(ctx, taskID, config)` | Delete a task |
 | `ShowAlgos(ctx, config)` | List available algorithms |
-| `Top(ctx, config)` | List running queries |
-| `Kill(ctx, queryID, config)` | Terminate a running query |
-| `Stats(ctx, config)` | Get graph statistics (node/edge counts by label) |
+| `Top(ctx)` | List running queries |
+| `Kill(ctx, queryId)` | Terminate a running query |
+| `Stats(ctx)` | Get graph statistics (node/edge counts by label) |
 | `Test(ctx)` | Connectivity test (ping) |
 
 ## Health Checks
@@ -340,7 +340,7 @@ client.UseGraph(ctx, "myGraph")
 
 tasks, err := client.ShowTasks(ctx, nil)
 for _, t := range tasks {
-    fmt.Printf("%s: %s (%s)\n", t.TaskID, t.Status, t.Progress)
+    fmt.Printf("%s: %s (%s)\n", t.TaskId, t.Status, t.Progress)
 }
 ```
 
@@ -369,9 +369,9 @@ for _, a := range algos {
 List currently running queries:
 
 ```go
-procs, err := client.Top(ctx, nil)
+procs, err := client.Top(ctx)
 for _, p := range procs {
-    fmt.Printf("Query %s: %s (%dms)\n", p.QueryID, p.QueryText, p.DurationMs)
+    fmt.Printf("Query %s: %s (%dms)\n", p.QueryId, p.QueryText, p.DurationMs)
 }
 ```
 
@@ -380,7 +380,7 @@ for _, p := range procs {
 Terminate a running query:
 
 ```go
-_, err := client.Kill(ctx, "query-456", nil)
+_, err := client.Kill(ctx, "query-456")
 ```
 
 ### Stats()
@@ -388,7 +388,7 @@ _, err := client.Kill(ctx, "query-456", nil)
 Get graph statistics with node/edge counts by label:
 
 ```go
-stats, err := client.Stats(ctx, nil)
+stats, err := client.Stats(ctx)
 fmt.Printf("Nodes: %d, Edges: %d\n", stats.NodeCount, stats.EdgeCount)
 ```
 

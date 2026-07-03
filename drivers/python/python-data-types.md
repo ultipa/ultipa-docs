@@ -48,8 +48,8 @@ from gqldb.types import PropertyType
 | Type | Description | Python Type |
 |------|-------------|-------------|
 | `TIMESTAMP` | Unix timestamp with nanoseconds | `datetime` |
-| `DATETIME` | Date and time (deprecated) | `datetime` |
-| `DATE` | Date only | `date` |
+| `DATETIME` | Date and time (deprecated; decodes as LOCAL_DATETIME) | `GqldbLocalDateTime` |
+| `DATE` | Date only | `GqldbDate` |
 | `LOCAL_DATETIME` | Local date and time | `GqldbLocalDateTime` |
 | `ZONED_DATETIME` | Date and time with timezone | `GqldbZonedDateTime` |
 | `LOCAL_TIME` | Local time of day | `GqldbLocalTime` |
@@ -211,7 +211,7 @@ class NodeData:
     labels: List[str] = field(default_factory=list)
     properties: Dict[str, Any] = field(default_factory=dict)
 
-# Node from query results (returned by Response.as_nodes() / row.as_node())
+# Node from query results (e.g. response.alias("col").as_nodes())
 @dataclass
 class Node:
     id: str = ""                     # user-facing identifier

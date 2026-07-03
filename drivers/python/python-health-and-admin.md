@@ -19,9 +19,8 @@ The GQLDB Python driver provides methods for monitoring server health, managing 
 | `clear_cache(cache_type)` | Clear specified caches |
 | `get_statistics(graph_name)` | Get database statistics |
 | `invalidate_permission_cache(username)` | Invalidate RBAC permission cache |
-| `compact(graph_name)` | Trigger compaction for a graph |
+| `compact()` | Trigger storage-wide compaction (takes no arguments) |
 | `get_system_metrics()` | Get system-level metrics |
-| `wait_for_compute_topology(graph_name, timeout)` | Wait for compute engine ready |
 
 ## Task and Process Methods
 
@@ -272,16 +271,41 @@ if metrics.storage:
     print(f"Storage - DB size: {metrics.storage.db_size_bytes} bytes")
 ```
 
+## Storage Compaction
+
+### compact()
+
+Trigger a manual, storage-wide compaction. This method takes **no arguments** (it is not scoped to a single graph) and returns a `CompactResult`:
+
+```python
+result = client.compact()
+print(f"Compaction: {'ok' if result.success else 'failed'} - {result.message}")
+```
+
+`CompactResult` fields:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `success` | `bool` | Whether compaction was triggered successfully |
+| `message` | `str` | Server-provided status message |
+
 ## Compute Topology
 
 ### wait_for_compute_topology()
 
-Wait for the compute engine to be ready:
+Waiting for the compute engine to become ready is **not** exposed as a client method. It lives on the internal `AdminService`, reached via `client._admin_service`. The signature is `wait_for_compute_topology(graph_name, timeout_ms=0)` (milliseconds; `0` means "check current status only"), and it returns a `ComputeTopologyResult` — not a tuple:
 
 ```python
-ready, message = client.wait_for_compute_topology("myGraph", timeout=60)
-print(f"Compute topology: {'ready' if ready else 'not ready'} - {message}")
+result = client._admin_service.wait_for_compute_topology("myGraph", timeout_ms=60000)
+print(f"Compute topology: {'ready' if result.ready else 'not ready'} - {result.message}")
 ```
+
+`ComputeTopologyResult` fields:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `ready` | `bool` | Whether the compute topology is ready |
+| `message` | `str` | Server-provided status message |
 
 ## Task Management
 

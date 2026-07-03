@@ -25,7 +25,7 @@ The GQLDB Java driver provides convenience methods for managing labels, properti
 
 ```java
 import com.gqldb.*;
-import com.gqldb.types.*;
+import com.gqldb.types.ConvenienceTypes.*;
 import java.util.List;
 
 client.useGraph("myGraph");
@@ -79,24 +79,24 @@ EdgeTypeInfo knowsLabel = client.getEdgeLabel("KNOWS");
 Create labels with property definitions (required for CLOSED graphs):
 
 ```java
-import com.gqldb.types.*;
+import com.gqldb.types.ConvenienceTypes.*;
 import java.util.*;
 
 // Create a node label with properties
 client.createNodeLabel("Person", Arrays.asList(
-    new PropertyDef("name", PropertyType.STRING),
-    new PropertyDef("age", PropertyType.INT64)
+    new PropertyDef("name", "STRING"),
+    new PropertyDef("age", "INT64")
 ));
 
 // Create an edge label
 client.createEdgeLabel("KNOWS", Arrays.asList(
-    new PropertyDef("since", PropertyType.INT64)
+    new PropertyDef("since", "INT64")
 ));
 
 // Idempotent create — returns true if created, false if already existed
 boolean created = client.createLabelIfNotExist(
     DBType.NODE, "Person",
-    Arrays.asList(new PropertyDef("name", PropertyType.STRING))
+    Arrays.asList(new PropertyDef("name", "STRING"))
 );
 ```
 
@@ -142,13 +142,13 @@ PropertyDef prop = client.getNodeProperty("Person", "name");
 
 // Add properties
 client.createNodeProperty("Person", Arrays.asList(
-    new PropertyDef("email", PropertyType.STRING)
+    new PropertyDef("email", "STRING")
 ));
 
 // Idempotent add — returns true if created
 boolean created = client.createPropertyIfNotExist(
     DBType.NODE, "Person",
-    Arrays.asList(new PropertyDef("email", PropertyType.STRING))
+    Arrays.asList(new PropertyDef("email", "STRING"))
 );
 
 // Drop properties
@@ -168,7 +168,7 @@ client.dropEdgeProperty("KNOWS", "weight", "note");  // Multiple names
 ## Managing Constraints (CLOSED Graph)
 
 ```java
-import com.gqldb.types.DBType;
+import com.gqldb.types.ConvenienceTypes.DBType;
 
 // NOT NULL constraint
 client.createNotNullConstraint(DBType.NODE, "Person", "name");
@@ -194,7 +194,7 @@ client.dropUniqueConstraint(DBType.NODE, "Person", "email");
 ## Managing Indexes
 
 ```java
-import com.gqldb.types.*;
+import com.gqldb.types.ConvenienceTypes.*;
 import java.util.*;
 
 client.useGraph("myGraph");
@@ -237,7 +237,7 @@ client.dropEdgeIndex("idx_since");
 ## Managing Fulltext Indexes
 
 ```java
-import com.gqldb.types.*;
+import com.gqldb.types.ConvenienceTypes.*;
 import java.util.*;
 
 client.useGraph("myGraph");
@@ -289,7 +289,7 @@ client.alterNodeLabel("my.old", "my.new");         // → `my.old` → `my.new`
 
 ```java
 import com.gqldb.*;
-import com.gqldb.types.*;
+import com.gqldb.types.ConvenienceTypes.*;
 import java.util.*;
 
 public class SchemaManagementExample {
@@ -308,12 +308,12 @@ public class SchemaManagementExample {
             // Create node labels with properties
             System.out.println("=== Creating Labels ===");
             client.createNodeLabel("Person", Arrays.asList(
-                new PropertyDef("name", PropertyType.STRING),
-                new PropertyDef("age", PropertyType.INT64),
-                new PropertyDef("email", PropertyType.STRING)
+                new PropertyDef("name", "STRING"),
+                new PropertyDef("age", "INT64"),
+                new PropertyDef("email", "STRING")
             ));
             client.createEdgeLabel("KNOWS", Arrays.asList(
-                new PropertyDef("since", PropertyType.INT64)
+                new PropertyDef("since", "INT64")
             ));
             System.out.println("Labels created");
 
@@ -355,7 +355,7 @@ public class SchemaManagementExample {
             // Add a property later
             System.out.println("\n=== Adding Property ===");
             client.createNodeProperty("Person", Arrays.asList(
-                new PropertyDef("phone", PropertyType.STRING)
+                new PropertyDef("phone", "STRING")
             ));
 
             // Verify

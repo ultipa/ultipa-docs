@@ -148,11 +148,11 @@ async function getCacheStatistics(client: GqldbClient) {
 
   // Get AST cache stats
   const astStats = await client.getCacheStats(CacheType.AST);
-  console.log('AST cache:', astStats.astCache);
+  console.log('AST cache:', astStats.astStats);
 
   // Get plan cache stats
   const planStats = await client.getCacheStats(CacheType.PLAN);
-  console.log('Plan cache:', planStats.planCache);
+  console.log('Plan cache:', planStats.planStats);
 }
 ```
 

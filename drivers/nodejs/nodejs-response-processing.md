@@ -202,7 +202,7 @@ for (const node of nodeResult.nodes) {
 // Extract edges
 const edgeResult = response.alias('r').asEdges();
 for (const edge of edgeResult.edges) {
-  console.log('From:', edge.from, 'To:', edge.to, 'Label:', edge.label);
+  console.log('From:', edge.fromNodeId, 'To:', edge.toNodeId, 'Label:', edge.label);
 }
 ```
 

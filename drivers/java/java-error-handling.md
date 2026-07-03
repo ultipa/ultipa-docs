@@ -1,6 +1,8 @@
 # Error Handling
 
-The GQLDB Java driver provides a comprehensive set of exception classes for handling different failure scenarios. All exceptions extend the base `GqldbException` class.
+The GQLDB Java driver reports all failures through a single base exception, `GqldbException`. Rather than a wide hierarchy of catchable subclasses, the driver exposes just **two** public exception types and distinguishes failure modes through an error **code** and **message**.
+
+> **Note:** Only `GqldbException` and `EmptyQueryException` are part of the public API. The driver defines finer-grained types internally (e.g. for connection, login, transaction, or graph failures), but they are **package-private** and cannot be caught from user code — and most are never thrown. Always catch `GqldbException` and branch on `getCode()` / `getMessage()` when you need to tell cases apart.
 
 ## Base Exception Class
 
@@ -16,19 +18,23 @@ public class GqldbException extends RuntimeException {
 }
 ```
 
-All GQLDB exceptions include:
+Every `GqldbException` carries:
 - `message`: Human-readable error description
-- `code`: Numeric error code
+- `code`: Numeric error code (`0` when unset)
 - `cause`: Original exception that caused this error (if applicable)
 
-## Exception Categories
+`EmptyQueryException extends GqldbException` and is thrown when a query string is empty. Because it is a public subclass, you may catch it directly before the base type.
 
-### Configuration Exceptions
+## Error Conditions
 
-| Exception | Description |
+The driver surfaces the following conditions as a `GqldbException`. Inspect `getMessage()` (or `getCode()`) to react to a specific one.
+
+### Configuration
+
+| Condition | Description |
 |-----------|-------------|
-| `NoHostsException` | No hosts configured in the client |
-| `InvalidTimeoutException` | Invalid timeout value specified |
+| No hosts configured | The client was built without any hosts |
+| Invalid timeout | An invalid timeout value was specified |
 
 ```java
 import com.gqldb.*;
@@ -37,19 +43,19 @@ try {
     GqldbConfig config = GqldbConfig.builder()
         .hosts()  // Empty hosts
         .build();
-} catch (IllegalArgumentException e) {
-    System.err.println("You must configure at least one host");
+} catch (GqldbException e) {
+    System.err.println("You must configure at least one host: " + e.getMessage());
 }
 ```
 
-### Connection Exceptions
+### Connection
 
-| Exception | Description |
+| Condition | Description |
 |-----------|-------------|
-| `NoConnectionException` | No connection available |
-| `ConnectionClosedException` | Connection has been closed |
-| `ConnectionFailedException` | Failed to establish connection |
-| `AllHostsFailedException` | All configured hosts are unreachable |
+| No connection | No connection available |
+| Connection closed | Connection has been closed |
+| Connection failed | Failed to establish a connection |
+| All hosts failed | All configured hosts are unreachable |
 
 ```java
 public boolean connectWithRetry(GqldbClient client, int maxRetries) {
@@ -57,100 +63,101 @@ public boolean connectWithRetry(GqldbClient client, int maxRetries) {
         try {
             client.login("user", "pass");
             return true;
-        } catch (ConnectionFailedException e) {
-            System.out.println("Connection attempt " + (i + 1) + " failed, retrying...");
+        } catch (GqldbException e) {
+            System.out.println("Connection attempt " + (i + 1) + " failed: " + e.getMessage());
             try {
                 Thread.sleep(1000 * (i + 1));  // Exponential backoff
             } catch (InterruptedException ie) {
                 Thread.currentThread().interrupt();
                 return false;
             }
-        } catch (AllHostsFailedException e) {
-            System.err.println("All hosts unreachable");
-            throw e;
         }
     }
     return false;
 }
 ```
 
-### Session Exceptions
+### Session
 
-| Exception | Description |
+| Condition | Description |
 |-----------|-------------|
-| `NotLoggedInException` | Operation requires authentication |
-| `LoginFailedException` | Login failed (wrong credentials) |
-| `SessionExpiredException` | Session has expired |
+| Not logged in | Operation requires authentication |
+| Login failed | Login failed (wrong credentials) |
+| Session expired | Session has expired |
 
 ```java
 public void ensureLoggedIn(GqldbClient client) {
     try {
         client.gql("MATCH (n) RETURN count(n)");
-    } catch (NotLoggedInException | SessionExpiredException e) {
-        System.out.println("Session expired, re-authenticating...");
+    } catch (GqldbException e) {
+        System.out.println("Session issue, re-authenticating: " + e.getMessage());
         client.login("user", "pass");
     }
 }
 ```
 
-### Transaction Exceptions
+### Transactions
 
-| Exception | Description |
+| Condition | Description |
 |-----------|-------------|
-| `TransactionNotFoundException` | Transaction not found (may have timed out) |
-| `TransactionFailedException` | Transaction operation failed |
+| Transaction not found | Transaction not found (may have timed out) |
+| Transaction failed | Transaction operation failed |
 
 ```java
 public void safeTransaction(GqldbClient client, GqldbClient.TransactionFunction<?> fn) {
     try {
         client.withTransaction("myGraph", fn);
-    } catch (TransactionFailedException e) {
-        System.err.println("Transaction failed: " + e.getMessage());
-    } catch (TransactionNotFoundException e) {
-        System.err.println("Transaction timed out before completion");
+    } catch (GqldbException e) {
+        if (e.getMessage() != null && e.getMessage().contains("Transaction not found")) {
+            System.err.println("Transaction timed out before completion");
+        } else {
+            System.err.println("Transaction failed: " + e.getMessage());
+        }
     }
 }
 ```
 
-### Query Exceptions
+### Queries
 
-| Exception | Description |
+| Condition | Description |
 |-----------|-------------|
-| `QueryFailedException` | Query execution failed |
-| `EmptyQueryException` | Query string is empty |
+| Query failed | Query execution failed |
+| Empty query | Query string is empty (`EmptyQueryException`) |
 
 ```java
 public Response executeQuery(GqldbClient client, String query) {
     try {
         return client.gql(query);
     } catch (EmptyQueryException e) {
+        // EmptyQueryException is a public subclass — catch it before the base type.
         System.err.println("Query cannot be empty");
-    } catch (QueryFailedException e) {
+    } catch (GqldbException e) {
         System.err.println("Query failed: " + e.getMessage());
     }
     return null;
 }
 ```
 
-### Graph Exceptions
+### Graphs
 
-| Exception | Description |
+| Condition | Description |
 |-----------|-------------|
-| `GraphNotFoundException` | Graph does not exist |
-| `GraphExistsException` | Graph already exists |
+| Graph not found | Graph does not exist |
+| Graph exists | Graph already exists |
 
 ```java
 public void ensureGraph(GqldbClient client, String graphName) {
     try {
         client.getGraphInfo(graphName);
         System.out.println("Graph " + graphName + " exists");
-    } catch (GraphNotFoundException e) {
+    } catch (GqldbException e) {
+        // Graph not found — try to create it.
         try {
             client.createGraph(graphName);
             System.out.println("Created graph " + graphName);
-        } catch (GraphExistsException e2) {
-            // Race condition: another process created it
-            System.out.println("Graph " + graphName + " was created by another process");
+        } catch (GqldbException e2) {
+            // Race condition: another process created it first.
+            System.out.println("Graph " + graphName + " already exists: " + e2.getMessage());
         }
     }
 }
@@ -166,13 +173,13 @@ public void handleAllErrors(GqldbClient client) {
         client.login("user", "pass");
         client.gql("MATCH (n) RETURN n");
     } catch (GqldbException e) {
-        // All driver exceptions
-        System.err.println("GQLDB Error [" + e.getClass().getSimpleName() + "]: " + e.getMessage());
+        // All driver failures
+        System.err.println("GQLDB Error [code " + e.getCode() + "]: " + e.getMessage());
         if (e.getCause() != null) {
             System.err.println("Caused by: " + e.getCause());
         }
     } catch (Exception e) {
-        // Other exceptions
+        // Other (non-driver) exceptions
         System.err.println("Unexpected error: " + e.getMessage());
     }
 }
@@ -180,10 +187,12 @@ public void handleAllErrors(GqldbClient client) {
 
 ### Error Recovery with Retry
 
+Because failure modes are distinguished by code/message rather than by type, drive retry decisions with a predicate over `GqldbException`:
+
 ```java
 public <T> T withRetry(Supplier<T> operation, int maxRetries,
-                       Class<? extends GqldbException>... retryableExceptions) {
-    Exception lastError = null;
+                       Predicate<GqldbException> isRetryable) {
+    GqldbException lastError = null;
 
     for (int attempt = 1; attempt <= maxRetries; attempt++) {
         try {
@@ -191,15 +200,7 @@ public <T> T withRetry(Supplier<T> operation, int maxRetries,
         } catch (GqldbException e) {
             lastError = e;
 
-            boolean isRetryable = false;
-            for (Class<? extends GqldbException> retryable : retryableExceptions) {
-                if (retryable.isInstance(e)) {
-                    isRetryable = true;
-                    break;
-                }
-            }
-
-            if (!isRetryable || attempt == maxRetries) {
+            if (!isRetryable.test(e) || attempt == maxRetries) {
                 throw e;
             }
 
@@ -216,11 +217,11 @@ public <T> T withRetry(Supplier<T> operation, int maxRetries,
     throw new RuntimeException("Should not reach here", lastError);
 }
 
-// Usage
+// Usage: retry on transient connection errors
 Response result = withRetry(
     () -> client.gql("MATCH (n) RETURN n LIMIT 100"),
     3,
-    ConnectionFailedException.class
+    e -> e.getMessage() != null && e.getMessage().contains("connection")
 );
 ```
 
@@ -231,8 +232,8 @@ public Response getDataWithFallback(GqldbClient client) {
     try {
         // Try the main query
         return client.gql("MATCH (n:User) RETURN n");
-    } catch (QueryFailedException e) {
-        if (e.getMessage().contains("timeout")) {
+    } catch (GqldbException e) {
+        if (e.getMessage() != null && e.getMessage().contains("timeout")) {
             // Fall back to a simpler query
             System.out.println("Full query timed out, using limited query");
             return client.gql("MATCH (n:User) RETURN n LIMIT 100");
@@ -287,8 +288,8 @@ public class ErrorHandlingExample {
             try {
                 client.login("admin", "password");
                 System.out.println("Logged in successfully");
-            } catch (LoginFailedException e) {
-                System.err.println("Invalid credentials");
+            } catch (GqldbException e) {
+                System.err.println("Login failed: " + e.getMessage());
                 System.exit(1);
             }
 
@@ -296,7 +297,7 @@ public class ErrorHandlingExample {
             String graphName = "errorDemo";
             try {
                 client.getGraphInfo(graphName);
-            } catch (GraphNotFoundException e) {
+            } catch (GqldbException e) {
                 client.createGraph(graphName);
                 System.out.println("Created graph");
             }
@@ -317,8 +318,8 @@ public class ErrorHandlingExample {
                     return null;
                 });
                 System.out.println("Transaction succeeded");
-            } catch (TransactionFailedException e) {
-                System.err.println("Transaction failed, changes rolled back");
+            } catch (GqldbException e) {
+                System.err.println("Transaction failed, changes rolled back: " + e.getMessage());
             } catch (RuntimeException e) {
                 System.err.println("Error during transaction: " + e.getMessage());
             }
@@ -330,8 +331,8 @@ public class ErrorHandlingExample {
 
                 Response response = client.gql("MATCH (n) RETURN n", queryConfig);
                 System.out.println("Found " + response.getRowCount() + " results");
-            } catch (QueryFailedException e) {
-                if (e.getMessage().contains("timeout")) {
+            } catch (GqldbException e) {
+                if (e.getMessage() != null && e.getMessage().contains("timeout")) {
                     System.out.println("Query timed out, trying with limit");
                     Response limited = client.gql("MATCH (n) RETURN n LIMIT 10");
                     System.out.println("Found " + limited.getRowCount() + " results (limited)");
@@ -345,7 +346,7 @@ public class ErrorHandlingExample {
 
         } catch (GqldbException e) {
             // Catch-all for unexpected errors
-            System.err.println("GQLDB Error: [" + e.getClass().getSimpleName() + "] " + e.getMessage());
+            System.err.println("GQLDB Error [code " + e.getCode() + "]: " + e.getMessage());
             if (e.getCause() != null) {
                 System.err.println("Root cause: " + e.getCause().getMessage());
             }
@@ -356,3 +357,5 @@ public class ErrorHandlingExample {
     }
 }
 ```
+</content>
+</invoke>

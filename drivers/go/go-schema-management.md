@@ -2,6 +2,15 @@
 
 The GQLDB Go driver provides convenience methods for managing labels, properties, constraints, indexes, and fulltext indexes. These methods require a graph to be selected via `UseGraph()` or a `*QueryConfig` with `GraphName`.
 
+> **Note:** `PropertyDef` is re-exported by the root `gqldb` package, but `DBType` (`DBTypeNode` / `DBTypeEdge`) and `IndexProperty` are **not** — they live in the `types` subpackage. Import it alongside the root package:
+>
+> ```go
+> import (
+>     gqldb "github.com/ultipa/ultipa-go-driver/v6"
+>     "github.com/ultipa/ultipa-go-driver/v6/types"
+> )
+> ```
+
 ## Label Methods
 
 | Method | Description |
@@ -67,7 +76,7 @@ _, err = client.CreateEdgeLabel(ctx, "KNOWS", []gqldb.PropertyDef{
 }, nil)
 
 // Idempotent create
-created, err := client.CreateLabelIfNotExist(ctx, gqldb.DBTypeNode, "Person", props, nil)
+created, err := client.CreateLabelIfNotExist(ctx, types.DBTypeNode, "Person", props, nil)
 // true = created, false = already existed
 ```
 
@@ -117,10 +126,10 @@ _, err = client.DropNodeProperty(ctx, "Person", nil, "email")
 ## Managing Constraints
 
 ```go
-client.CreateNotNullConstraint(ctx, gqldb.DBTypeNode, "Person", "name", nil)
-client.CreateUniqueConstraint(ctx, gqldb.DBTypeNode, "Person", nil, "email")
-client.DropNotNullConstraint(ctx, gqldb.DBTypeNode, "Person", "name", nil)
-client.DropUniqueConstraint(ctx, gqldb.DBTypeNode, "Person", nil, "email")
+client.CreateNotNullConstraint(ctx, types.DBTypeNode, "Person", "name", nil)
+client.CreateUniqueConstraint(ctx, types.DBTypeNode, "Person", nil, "email")
+client.DropNotNullConstraint(ctx, types.DBTypeNode, "Person", "name", nil)
+client.DropUniqueConstraint(ctx, types.DBTypeNode, "Person", nil, "email")
 ```
 
 ## Index Methods
@@ -143,11 +152,11 @@ indexes, err := client.ShowIndex(ctx, nil)
 
 // Create
 _, err = client.CreateNodeIndex(ctx, "idx_name", "Person",
-    []gqldb.IndexProperty{{Name: "name"}}, nil)
+    []types.IndexProperty{{Name: "name"}}, nil)
 
 // With prefix length
 _, err = client.CreateNodeIndex(ctx, "idx_prefix", "Person",
-    []gqldb.IndexProperty{{Name: "name", PrefixLength: 10}}, nil)
+    []types.IndexProperty{{Name: "name", PrefixLength: 10}}, nil)
 
 // Drop
 _, err = client.DropNodeIndex(ctx, "idx_name", nil)

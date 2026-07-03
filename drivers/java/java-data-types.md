@@ -48,8 +48,8 @@ import com.gqldb.types.PropertyType;
 | Type | Description | Java Type |
 |------|-------------|-----------|
 | `TIMESTAMP` | Unix timestamp with nanoseconds | `java.time.Instant` |
-| `DATETIME` | Date and time (deprecated) | `java.time.Instant` |
-| `DATE` | Date only | `java.time.LocalDate` |
+| `DATETIME` | Date and time (deprecated) | `GqldbLocalDateTime` |
+| `DATE` | Date only | `GqldbDate` |
 | `LOCAL_DATETIME` | Local date and time | `GqldbLocalDateTime` |
 | `ZONED_DATETIME` | Date and time with timezone | `GqldbZonedDateTime` |
 | `LOCAL_TIME` | Local time of day | `GqldbLocalTime` |
@@ -294,8 +294,11 @@ public class YearToMonth {
 }
 
 public class DayToSecond {
-    public DayToSecond(long nanos);
-    long getNanos();
+    public DayToSecond(long seconds, int nanoseconds);
+    public DayToSecond(java.time.Duration duration);
+    long getSeconds();
+    int getNanoseconds();
+    java.time.Duration toDuration();
 }
 ```
 
@@ -349,8 +352,8 @@ client.gql("INSERT (e:Event {" +
 // Query and convert
 Response response = client.gql("MATCH (e:Event) RETURN e.date, e.startTime");
 response.first().ifPresent(row -> {
-    Object date = row.get(0);      // LocalDate or similar
-    Object startTime = row.get(1); // Instant or similar
+    Object date = row.get(0);      // GqldbDate
+    Object startTime = row.get(1); // GqldbLocalDateTime (DATETIME)
     System.out.println("Event date: " + date);
     System.out.println("Start time: " + startTime);
 });

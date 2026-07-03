@@ -11,12 +11,12 @@ The GQLDB Go driver provides methods for creating, managing, and querying graph 
 | `UseGraph(ctx, name)` | Set the current graph for the session |
 | `ListGraphs(ctx)` | List all available graphs |
 | `GetGraphInfo(ctx, name)` | Get information about a specific graph |
-| `CreateOpenGraph(ctx, name)` | Create a schema-less graph |
-| `CreateClosedGraph(ctx, name)` | Create a schema-enforced graph |
+| `CreateOpenGraph(ctx, name, config)` | Create a schema-less graph |
+| `CreateClosedGraph(ctx, name, config)` | Create a schema-enforced graph |
 | `CreateGraphIfNotExist(ctx, name, graphType, description)` | Create graph only if it doesn't exist |
 | `HasGraph(ctx, name)` | Check if a graph exists |
-| `AlterGraph(ctx, oldName, newName)` | Rename a graph |
-| `Truncate(ctx, graphName)` | Remove all data from a graph |
+| `AlterGraph(ctx, graphName, newName, config)` | Rename a graph |
+| `Truncate(ctx, graphName, config)` | Remove all data from a graph |
 
 ## Creating Graphs
 
@@ -168,8 +168,8 @@ fmt.Printf("Description: %s\n", info.Description)
 Shorthand methods for creating graphs with a specific type:
 
 ```go
-client.CreateOpenGraph(ctx, "flexGraph")
-client.CreateClosedGraph(ctx, "strictGraph")
+client.CreateOpenGraph(ctx, "flexGraph", nil)
+client.CreateClosedGraph(ctx, "strictGraph", nil)
 ```
 
 ### CreateGraphIfNotExist()
@@ -201,7 +201,7 @@ fmt.Println("Exists:", exists)
 Rename a graph:
 
 ```go
-_, err := client.AlterGraph(ctx, "oldName", "newName")
+_, err := client.AlterGraph(ctx, "oldName", "newName", nil)
 ```
 
 ### Truncate()
@@ -209,7 +209,7 @@ _, err := client.AlterGraph(ctx, "oldName", "newName")
 Remove all data from a graph while keeping the graph itself:
 
 ```go
-_, err := client.Truncate(ctx, "myGraph")
+_, err := client.Truncate(ctx, "myGraph", nil)
 ```
 
 ## Error Handling

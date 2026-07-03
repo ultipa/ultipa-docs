@@ -61,9 +61,7 @@ Use the session ID with `insertNodes()` and `insertEdges()`:
 
 ```typescript
 async function bulkInsertExample(client: GqldbClient) {
-  const session = await client.startBulkImport('myGraph', {
-    checkpointEvery: 50000
-  });
+  const session = await client.startBulkImport('myGraph');
 
   try {
     // Insert nodes in batches
@@ -216,9 +214,7 @@ Choose appropriate batch sizes for optimal performance:
 const OPTIMAL_BATCH_SIZE = 10000;  // Adjust based on your data
 
 async function efficientBulkImport(client: GqldbClient, allNodes: NodeData[]) {
-  const session = await client.startBulkImport('myGraph', {
-    checkpointEvery: 100000
-  });
+  const session = await client.startBulkImport('myGraph');
 
   try {
     // Process in batches
@@ -244,7 +240,7 @@ async function efficientBulkImport(client: GqldbClient, allNodes: NodeData[]) {
 
 ### Error Recovery
 
-Implement checkpoint-based recovery:
+A bulk import session is all-or-nothing: data becomes durable only when `endBulkImport()` performs its final flush. If an error occurs mid-import, abort the session and re-run the whole import. Track progress in your own code so you can report where the failure happened.
 
 ```typescript
 async function robustBulkImport(client: GqldbClient, data: NodeData[][]) {
@@ -258,28 +254,22 @@ async function robustBulkImport(client: GqldbClient, data: NodeData[][]) {
       });
 
       processedBatches++;
-
-      // Checkpoint every 10 batches for recovery
-      if (processedBatches % 10 === 0) {
-        await client.checkpoint(session.sessionId);
-        console.log(`Checkpoint at batch ${processedBatches}`);
-      }
     }
 
+    // Only endBulkImport() commits the session's data.
     await client.endBulkImport(session.sessionId);
 
   } catch (error) {
     console.error(`Error at batch ${processedBatches}:`, error.message);
 
-    // Data up to last checkpoint is safe
-    const status = await client.getBulkImportStatus(session.sessionId);
-    console.log(`Saved records: ${status.recordCount - status.lastCheckpointCount}`);
-
+    // Abort discards the whole session; re-run the import to recover.
     await client.abortBulkImport(session.sessionId);
     throw error;
   }
 }
 ```
+
+> The deprecated `checkpoint()` method and the `checkpointEvery` option are no-ops — the server ignores them and no intermediate checkpoints are created. Do not rely on partial-checkpoint recovery.
 
 ## Complete Example
 
@@ -299,7 +289,6 @@ async function main() {
 
     // Start bulk import session
     const session = await client.startBulkImport('bulkDemo', {
-      checkpointEvery: 10000,
       estimatedNodes: 100000,
       estimatedEdges: 500000
     });
@@ -331,10 +320,6 @@ async function main() {
     // Check status
     const status = await client.getBulkImportStatus(session.sessionId);
     console.log('Current status:', status);
-
-    // Manual checkpoint
-    const checkpoint = await client.checkpoint(session.sessionId);
-    console.log('Checkpoint:', checkpoint);
 
     // Generate and insert edges
     const edges: EdgeData[] = [];

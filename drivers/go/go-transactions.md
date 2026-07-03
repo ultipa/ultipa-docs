@@ -157,10 +157,10 @@ if err != nil {
 
 for _, txInfo := range transactions {
     fmt.Printf("Transaction %d:\n", txInfo.TransactionID)
-    fmt.Printf("  Internal TX ID: %d\n", txInfo.InternalTxID)
+    fmt.Printf("  Internal TX ID: %s\n", txInfo.InternalTxID)
     fmt.Printf("  Graph: %s\n", txInfo.GraphName)
     fmt.Printf("  Read-only: %v\n", txInfo.ReadOnly)
-    fmt.Printf("  Created: %s\n", txInfo.CreatedAt)
+    fmt.Printf("  Created: %d\n", txInfo.CreatedAt)
     fmt.Printf("  Duration: %dms\n", txInfo.DurationMs)
 }
 ```
@@ -170,11 +170,12 @@ for _, txInfo := range transactions {
 ```go
 type TransactionInfo struct {
     TransactionID uint64
-    InternalTxID  uint64
+    SessionID     uint64
     GraphName     string
     ReadOnly      bool
-    CreatedAt     string
+    CreatedAt     int64
     DurationMs    int64
+    InternalTxID  string
 }
 ```
 

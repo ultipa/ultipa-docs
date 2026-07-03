@@ -29,14 +29,13 @@ All GQLDB errors include:
 | `InvalidTimeoutError` | Invalid timeout value specified |
 
 ```typescript
-import { NoHostsError, InvalidTimeoutError } from '@ultipa-graph/ultipa-driver';
-
 try {
   const config = createConfig({ hosts: [] });
 } catch (error) {
-  if (error instanceof NoHostsError) {
-    console.error('You must configure at least one host');
-  }
+  // Note: createConfig throws a plain Error ("No hosts configured") here, not a
+  // NoHostsError instance — the NoHostsError class is exported but not thrown on
+  // this path, so catch the base Error rather than matching with instanceof.
+  console.error('You must configure at least one host:', (error as Error).message);
 }
 ```
 
@@ -252,17 +251,15 @@ async function safeInsert(client: GqldbClient, nodes: NodeData[]) {
 | `UnsupportedTypeError` | Type is not supported |
 
 ```typescript
-import { TypeConversionError, UnsupportedTypeError } from '@ultipa-graph/ultipa-driver';
-
 function processValue(row: Row, index: number) {
   try {
     return row.getNumber(index);
   } catch (error) {
-    if (error instanceof TypeConversionError) {
-      console.warn(`Value at ${index} is not a number, using string`);
-      return row.getString(index);
-    }
-    throw error;
+    // Note: row.getNumber() throws a plain Error ("Cannot convert ... to number")
+    // on a non-numeric value, not a TypeConversionError instance — that class is
+    // exported but not thrown here, so match on the base Error, not instanceof.
+    console.warn(`Value at ${index} is not a number, using string:`, (error as Error).message);
+    return row.getString(index);
   }
 }
 ```

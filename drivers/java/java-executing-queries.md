@@ -264,13 +264,13 @@ public Response safeQuery(GqldbClient client, String query) {
     try {
         return client.gql(query);
     } catch (EmptyQueryException e) {
+        // EmptyQueryException is one of the two public exception types.
         System.err.println("Query string is empty");
-    } catch (QueryFailedException e) {
-        System.err.println("Query failed: " + e.getMessage());
-    } catch (GraphNotFoundException e) {
-        System.err.println("Graph does not exist");
     } catch (GqldbException e) {
-        System.err.println("Error: " + e.getMessage());
+        // All other failures (query errors, missing graph, etc.) surface as
+        // the base GqldbException; inspect e.getMessage() / e.getCode() to
+        // distinguish cases.
+        System.err.println("Query failed: " + e.getMessage());
     }
     return null;
 }

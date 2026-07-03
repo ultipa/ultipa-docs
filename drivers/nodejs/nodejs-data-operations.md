@@ -115,7 +115,7 @@ interface InsertNodesResult {
 Control node insertion behavior with `InsertNodesConfig`:
 
 ```typescript
-import { BulkCreateNodesOptions } from '@ultipa-graph/ultipa-driver';
+import { BulkCreateNodesOptions, InsertType } from '@ultipa-graph/ultipa-driver';
 
 async function insertWithOptions(client: GqldbClient) {
   const nodes: NodeData[] = [
@@ -125,7 +125,7 @@ async function insertWithOptions(client: GqldbClient) {
   // Overwrite existing nodes with same ID
   const result = await client.insertNodes('myGraph', nodes, {
     options: {
-      overwrite: true
+      mode: InsertType.Overwrite
     }
   });
 }

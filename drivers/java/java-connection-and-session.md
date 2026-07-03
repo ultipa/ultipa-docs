@@ -41,7 +41,7 @@ try (GqldbClient client = new GqldbClient(config)) {
     System.out.println("Session ID: " + session.getId());
     System.out.println("Logged in successfully");
 
-} catch (LoginFailedException e) {
+} catch (GqldbException e) {
     System.err.println("Authentication failed: " + e.getMessage());
 }
 ```
@@ -55,7 +55,7 @@ public void disconnect(GqldbClient client) {
     try {
         client.logout();
         System.out.println("Logged out successfully");
-    } catch (NotLoggedInException e) {
+    } catch (GqldbException e) {
         System.out.println("No active session");
     }
 }
@@ -243,15 +243,15 @@ public class ConnectionExample {
 
 ## Exception Handling
 
-Common connection and session exceptions:
+All driver failures surface as the base `GqldbException` (see [Error Handling](java-error-handling.md)); the finer-grained types below are **not** part of the public API, so catch `GqldbException` and branch on `e.getMessage()` / `e.getCode()`. Common connection and session failure conditions:
 
-| Exception | Description |
+| Condition | Description |
 |-----------|-------------|
-| `LoginFailedException` | Authentication failed (wrong credentials) |
-| `NotLoggedInException` | Operation requires authentication |
-| `SessionExpiredException` | Session has expired |
-| `ConnectionFailedException` | Failed to connect to server |
-| `AllHostsFailedException` | All configured hosts are unreachable |
+| Login failed | Authentication failed (wrong credentials) |
+| Not logged in | Operation requires authentication |
+| Session expired | Session has expired |
+| Connection failed | Failed to connect to server |
+| All hosts failed | All configured hosts are unreachable |
 
 ```java
 import com.gqldb.*;
@@ -259,12 +259,10 @@ import com.gqldb.*;
 public void safeConnect(GqldbClient client) {
     try {
         client.login("username", "password");
-    } catch (LoginFailedException e) {
-        System.err.println("Invalid credentials");
-    } catch (ConnectionFailedException e) {
-        System.err.println("Cannot connect to server");
     } catch (GqldbException e) {
-        System.err.println("Unexpected error: " + e.getMessage());
+        // The driver surfaces all failures as GqldbException. Branch on the
+        // message (or e.getCode()) to react to specific failure modes.
+        System.err.println("Login failed: " + e.getMessage());
     }
 }
 ```

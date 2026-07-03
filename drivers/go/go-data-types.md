@@ -385,7 +385,7 @@ response, _ := client.Gql(ctx, "MATCH (p:Place) RETURN p.location", nil)
 row := response.First()
 if row != nil {
     location, _ := row.Get(0)
-    if pt, ok := location.(*gqldb.Point); ok {
+    if pt, ok := location.(gqldb.Point); ok {
         fmt.Printf("Lat: %f, Lng: %f\n", pt.Latitude, pt.Longitude)
     }
 }

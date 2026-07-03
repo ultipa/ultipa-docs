@@ -1,6 +1,6 @@
 # Quick Start
 
-The GQLDB Java driver is a gRPC-based client library for interacting with GQLDB graph database. It requires **Java 8 or later**.
+The GQLDB Java driver is a gRPC-based client library for interacting with GQLDB graph database. It requires **Java 9 or later**.
 
 ## Install the Driver
 

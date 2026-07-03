@@ -48,8 +48,8 @@ import { PropertyType } from '@ultipa-graph/ultipa-driver';
 | Type | Description | JavaScript Type |
 |------|-------------|-----------------|
 | `TIMESTAMP` | Unix timestamp with nanoseconds | `{ year, month, day, hour, minute, second, nanosecond }` |
-| `DATETIME` | Date and time (deprecated, use TIMESTAMP) | `Date` |
-| `DATE` | Date only | `Date` |
+| `DATETIME` | Date and time (deprecated, use TIMESTAMP) | `{ year, month, day, hour, minute, second, nanosecond }` |
+| `DATE` | Date only | `{ year, month, day }` |
 | `LOCAL_DATETIME` | Local date and time | `{ year, month, day, hour, minute, second, nanosecond }` |
 | `ZONED_DATETIME` | Date and time with timezone | `{ year, month, day, hour, minute, second, nanosecond, offsetMinutes }` |
 | `LOCAL_TIME` | Local time of day | `{ hour, minute, second, nanosecond }` |
@@ -74,7 +74,7 @@ import { PropertyType } from '@ultipa-graph/ultipa-driver';
 | Type | Description | JavaScript Type |
 |------|-------------|-----------------|
 | `LIST` | Ordered list | `any[]` |
-| `SET` | Unordered unique set | `any[]` |
+| `SET` | Unordered unique set | `Set<any>` |
 | `MAP` | Key-value map | `Record<string, any>` |
 | `VECTOR` | Numeric vector | `{ values: number[] }` |
 
@@ -293,7 +293,7 @@ interface TransactionInfo {
   readOnly: boolean;
   createdAt: number;
   durationMs: number;
-  internalTxId: number;
+  internalTxId: string;
 }
 ```
 
@@ -383,11 +383,11 @@ interface TypedValue {
   isNull: boolean;
 }
 
-// Create a TypedValue
-import { createTypedValue, PropertyType } from '@ultipa-graph/ultipa-driver';
+// Create a TypedValue — the PropertyType is inferred from the JavaScript value
+import { createTypedValue } from '@ultipa-graph/ultipa-driver';
 
-const intValue = createTypedValue(PropertyType.INT64, 42);
-const stringValue = createTypedValue(PropertyType.STRING, 'hello');
+const intValue = createTypedValue(42);        // inferred as INT64
+const stringValue = createTypedValue('hello'); // inferred as STRING
 
 // Convert TypedValue to JavaScript value
 import { typedValueToJS } from '@ultipa-graph/ultipa-driver';
@@ -414,9 +414,12 @@ await client.gql(`
 const response = await client.gql('MATCH (e:Event) RETURN e.date, e.startTime');
 const row = response.first();
 if (row) {
-  const date: Date = row.get(0);  // JavaScript Date
-  const startTime: Date = row.get(1);
-  console.log('Event date:', date.toISOString());
+  // DATE decodes to a { year, month, day } component object (not a JS Date);
+  // DATETIME/TIMESTAMP decode to { year, month, day, hour, minute, second, nanosecond }.
+  const date = row.get(0);
+  const startTime = row.get(1);
+  console.log('Event date:', `${date.year}-${date.month}-${date.day}`);
+  console.log('Start time:', `${startTime.year}-${startTime.month}-${startTime.day} ${startTime.hour}:${startTime.minute}:${startTime.second}`);
 }
 ```
 

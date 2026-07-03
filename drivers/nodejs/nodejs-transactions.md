@@ -182,7 +182,7 @@ interface TransactionInfo {
   readOnly: boolean;
   createdAt: number;
   durationMs: number;
-  internalTxId: number;
+  internalTxId: string;
 }
 ```
 
