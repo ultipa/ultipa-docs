@@ -45,6 +45,10 @@
           "title": "Bulk Import"
         },
         {
+          "file": "java-loader.md",
+          "title": "Loading Files"
+        },
+        {
           "file": "java-data-export.md",
           "title": "Data Export"
         },
@@ -106,8 +110,16 @@
           "title": "Bulk Import"
         },
         {
+          "file": "python-loader.md",
+          "title": "Loading Files"
+        },
+        {
           "file": "python-data-export.md",
           "title": "Data Export"
+        },
+        {
+          "file": "python-ml-data-loaders.md",
+          "title": "Graph ML Data Loaders"
         },
         {
           "file": "python-health-and-admin.md",
@@ -165,6 +177,10 @@
         {
           "file": "go-bulk-import.md",
           "title": "Bulk Import"
+        },
+        {
+          "file": "go-loader.md",
+          "title": "Loading Files"
         },
         {
           "file": "go-data-export.md",
@@ -227,6 +243,10 @@
         {
           "file": "nodejs-bulk-import.md",
           "title": "Bulk Import"
+        },
+        {
+          "file": "nodejs-loader.md",
+          "title": "Loading Files"
         },
         {
           "file": "nodejs-data-export.md",
