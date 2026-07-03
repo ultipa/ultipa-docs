@@ -289,6 +289,7 @@ from gqldb.types import Point, Point3D
 class Point:
     latitude: float
     longitude: float
+    srid: int = 0                    # spatial reference system id; 0 = unset
 
     @property
     def x(self) -> float: ...        # alias for longitude
@@ -300,6 +301,7 @@ class Point3D:
     x: float
     y: float
     z: float
+    srid: int = 0                    # spatial reference system id; 0 = unset
 
     @property
     def longitude(self) -> float: ...    # alias for x
@@ -310,6 +312,50 @@ class Point3D:
 ```
 
 The `Point` server validates WGS-84 bounds (longitude ∈ [-180, 180], latitude ∈ [-90, 90]). `Point3D` is Cartesian — the server does **not** enforce geographic bounds on Point3D, even when accessed through the lon/lat aliases.
+
+#### Spatial reference system (`srid`)
+
+Both `Point` and `Point3D` carry an integer `srid` (spatial reference system id). A value of `srid=0` means **unset**: the encoder leaves the CRS unspecified and the server fills in the appropriate default on round-trip — an unset 2D point normalizes to `4326` (WGS-84), an unset 3D point normalizes to `9157` (cartesian). The driver exposes the two client-side defaults as module constants:
+
+```python
+from gqldb.types.data_types import DEFAULT_POINT_2D_SRID, DEFAULT_POINT_3D_SRID
+
+DEFAULT_POINT_2D_SRID   # 4326 — WGS-84 (geographic)
+DEFAULT_POINT_3D_SRID   # 0    — cartesian, no CRS (unset)
+```
+
+Example:
+
+```python
+from gqldb.types import Point, Point3D
+
+p = Point(latitude=39.9, longitude=116.4)          # srid defaults to 0 (unset -> server 4326)
+p_wgs = Point(latitude=39.9, longitude=116.4, srid=4326)
+print(p.srid)                                       # 0
+
+q = Point3D(x=1.0, y=2.0, z=3.0)                    # srid defaults to 0 (unset -> server 9157)
+print(q.srid)                                       # 0
+```
+
+### Temporal Types
+
+The temporal wrapper classes (`GqldbLocalDateTime`, `GqldbZonedDateTime`, `GqldbDate`, `GqldbLocalTime`, `GqldbZonedTime`) render through `__str__` / `str()` in a single canonical form:
+
+- Date-time: `YYYY-MM-DD HH:mm:ss[.fff]` — a **space** separates date and time.
+- Fractional seconds are trailing-zero-trimmed, and **omitted entirely** when the sub-second component is zero.
+- Zoned values append the UTC offset as `±HH:MM`.
+- Date-only is `YYYY-MM-DD`; time-only is `HH:mm:ss[.fff][±HH:MM]`.
+
+This canonical form is also the **JSON representation** (`to_json()` serializes temporal wrappers via `str()`) — a behavior change from earlier releases.
+
+```python
+from gqldb.types import GqldbLocalDateTime, GqldbZonedDateTime, GqldbZonedTime
+
+str(GqldbLocalDateTime(2026, 7, 1, 15, 40, 12, 153000000))   # '2026-07-01 15:40:12.153'
+str(GqldbLocalDateTime(2026, 7, 1, 15, 40, 12, 0))           # '2026-07-01 15:40:12'  (zero fraction omitted)
+str(GqldbZonedDateTime(2026, 7, 1, 15, 40, 12, 153000000, 480))  # '2026-07-01 15:40:12.153+08:00'
+str(GqldbZonedTime(15, 40, 12, 0, -330))                     # '15:40:12-05:30'
+```
 
 ### Duration Types
 
@@ -353,6 +399,46 @@ row = response.first()
 if row:
     for tv in row.values:
         print(f"Type: {tv.type}, Value: {tv.to_python()}")
+```
+
+## Parsing values from strings
+
+`TypedValue` provides a symmetric pair of static/instance helpers for text round-tripping:
+
+```python
+from gqldb.types import TypedValue, PropertyType
+
+# Parse a string into a TypedValue of the given target type
+tv = TypedValue.from_string("point({latitude: 30.5, longitude: 114.3})", PropertyType.POINT)
+point = tv.to_python()
+
+# Serialize a TypedValue back to its canonical string form
+text = tv.format_value()
+```
+
+`TypedValue.from_string(s, target_type)` accepts these forms per type. An empty string parses to a NULL `TypedValue`.
+
+| Target type | Accepted string forms |
+|-------------|-----------------------|
+| `POINT` | Canonical `point({latitude: 30.5, longitude: 114.3})` (keys, any order); lenient positional `30.5,114.3` or `(30.5,114.3)` — **lat,lon** order; WKT `POINT(114.3 30.5)` — **lon FIRST** (OGC order, the opposite of the comma form). Validates latitude ∈ [-90, 90], longitude ∈ [-180, 180]. |
+| `POINT3D` | Canonical `point({x: 1, y: 2, z: 3})` (keys, any order); positional `1,2,3` or `(1,2,3)`; WKT `POINT(1 2 3)` or `POINT Z(1 2 3)` — cartesian x,y,z (no lon/lat swap). |
+| `VECTOR` | `[0.1,0.2,0.3]` or bracket-less `0.1,0.2,0.3`; `[]` yields an empty vector. |
+| `BLOB` | Base64 (standard) by default; a `0x` / `0X` prefix selects hex. |
+
+The distinction is easy to trip over: the positional comma form is **latitude first** (`30.5,114.3`), while WKT `POINT(...)` is **longitude first** (`POINT(114.3 30.5)`) — both describe the same location.
+
+```python
+from gqldb.types import TypedValue, PropertyType
+
+# All three parse to the same 2D point (lat 30.5, lon 114.3):
+TypedValue.from_string("point({latitude: 30.5, longitude: 114.3})", PropertyType.POINT)
+TypedValue.from_string("30.5,114.3", PropertyType.POINT)            # lat,lon
+TypedValue.from_string("POINT(114.3 30.5)", PropertyType.POINT)    # lon lat (WKT)
+
+# Vector and blob
+TypedValue.from_string("[0.1,0.2,0.3]", PropertyType.VECTOR)
+TypedValue.from_string("0x48656c6c6f", PropertyType.BLOB)          # hex
+TypedValue.from_string("SGVsbG8=", PropertyType.BLOB)              # base64
 ```
 
 ## Type Wrapper Classes

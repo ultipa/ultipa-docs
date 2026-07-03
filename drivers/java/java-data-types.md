@@ -55,6 +55,34 @@ import com.gqldb.types.PropertyType;
 | `LOCAL_TIME` | Local time of day | `GqldbLocalTime` |
 | `ZONED_TIME` | Time with timezone | `GqldbZonedTime` |
 
+#### Temporal string and JSON format
+
+The temporal wrapper classes (`GqldbLocalDateTime`, `GqldbZonedDateTime`, `GqldbDate`, `GqldbLocalTime`, `GqldbZonedTime`) render a **canonical string** from `toString()`:
+
+- Date-time uses a **space** separator: `"YYYY-MM-DD HH:mm:ss"`.
+- Fractional seconds are appended only when non-zero, with trailing zeros trimmed: `.153`, `.5`, or omitted entirely.
+- Zoned types append the UTC offset as `+HH:MM` / `-HH:MM`.
+- Date-only is `"YYYY-MM-DD"`; time-only is `"HH:mm:ss[.fff]"` (plus offset for `GqldbZonedTime`).
+
+The same wrappers implement `Comparable`, so they sort chronologically.
+
+**JSON serialization uses this canonical string** (a behavior change): each wrapper's `toString()` is annotated `@JsonValue`, so Jackson emits the string form rather than the field-by-field object.
+
+```java
+GqldbLocalDateTime dt = new GqldbLocalDateTime((short) 2026, (byte) 7, (byte) 1,
+        (byte) 15, (byte) 40, (byte) 12, 153_000_000);
+System.out.println(dt.toString());   // 2026-07-01 15:40:12.153
+
+GqldbDate d = new GqldbDate((short) 2026, (byte) 7, (byte) 1);
+System.out.println(d.toString());    // 2026-07-01
+
+GqldbLocalTime t = new GqldbLocalTime((byte) 15, (byte) 40, (byte) 12, 0);
+System.out.println(t.toString());    // 15:40:12  (no fractional part)
+
+// Jackson serializes to the same string via @JsonValue:
+// new ObjectMapper().writeValueAsString(dt)  ->  "2026-07-01 15:40:12.153"
+```
+
 ### Duration Types
 
 | Type | Description | Java Type |
@@ -267,22 +295,40 @@ public class GqldbPath {
 
 ```java
 public class Point {
-    public Point(double latitude, double longitude);
+    public static final int DEFAULT_POINT_2D_SRID = 4326;  // WGS-84
+
+    public Point(double latitude, double longitude);           // srid defaults to 0 (unset)
+    public Point(double latitude, double longitude, int srid);
     double getLatitude();
     double getLongitude();
+    int getSrid();              // spatial reference system id; 0 = unset
     double getX();              // alias for getLongitude()
     double getY();              // alias for getLatitude()
 }
 
 public class Point3D {
-    public Point3D(double x, double y, double z);
+    public static final int DEFAULT_POINT_3D_SRID = 0;      // cartesian, no CRS
+
+    public Point3D(double x, double y, double z);              // srid defaults to 0 (unset)
+    public Point3D(double x, double y, double z, int srid);
     double getX();
     double getY();
     double getZ();
+    int getSrid();              // spatial reference system id; 0 = unset
     double getLongitude();      // alias for getX()
     double getLatitude();       // alias for getY()
     double getHeight();         // alias for getZ()
 }
+```
+
+Both point types carry a **spatial reference system id (SRID)**. An SRID of `0` means "unset": on the wire the encoder fills the type default (`DEFAULT_POINT_2D_SRID` = `4326` for `Point`, `DEFAULT_POINT_3D_SRID` = `0` for `Point3D`), and the server normalizes an unset SRID to `4326` for 2D points and `9157` for 3D points. Values decoded from older servers that don't report an SRID (the legacy shorter wire form) also fall back to the type default. Read it back with `getSrid()`:
+
+```java
+Point p = new Point(30.5, 114.3);          // srid unset (0)
+System.out.println(p.getSrid());           // 0
+
+Point wgs = new Point(30.5, 114.3, 4326);  // explicit WGS-84
+System.out.println(wgs.getSrid());         // 4326
 ```
 
 ### Duration Types
@@ -334,6 +380,51 @@ for (TypedValue tv : typedValues) {
 }
 ```
 
+### Parsing values from strings
+
+`TypedValue.fromString` builds a typed value by parsing a string against a target `PropertyType`. Its companion is the instance method `formatValue()`, which renders a `TypedValue` back to the canonical string form.
+
+```java
+public static TypedValue fromString(String value, PropertyType targetType);
+public String formatValue();
+```
+
+A `null` or empty string yields an unset value of the target type. Numeric, boolean, decimal, temporal (canonical `"YYYY-MM-DD HH:mm:ss"` and ISO-8601 duration `P...`), and the following non-scalar forms are supported:
+
+**POINT** (`PropertyType.POINT`) accepts three forms:
+
+| Form | Example | Order |
+|------|---------|-------|
+| Canonical keyed | `point({latitude: 30.5, longitude: 114.3})` | keys, any order |
+| Positional | `30.5,114.3` or `(30.5,114.3)` | **latitude, longitude** |
+| OGC/PostGIS WKT | `POINT(114.3 30.5)` | **longitude FIRST**, then latitude |
+
+Latitude is validated to `[-90, 90]` and longitude to `[-180, 180]`. Note the WKT form is `POINT(lon lat)` — the opposite axis order of the lenient comma form.
+
+**POINT3D** (`PropertyType.POINT3D`) accepts `point({x: 1, y: 2, z: 3})`, positional `1,2,3` / `(1,2,3)`, and WKT `POINT(1 2 3)` / `POINT Z(1 2 3)` (cartesian x,y,z — no lon/lat swap).
+
+**VECTOR** (`PropertyType.VECTOR`) accepts `[0.1,0.2,0.3]` or the bracket-less `0.1,0.2,0.3`; `[]` yields an empty vector.
+
+**BLOB** (`PropertyType.BLOB`) decodes standard Base64 by default; a `0x` / `0X` prefix selects hex.
+
+```java
+import com.gqldb.types.TypedValue;
+import com.gqldb.types.PropertyType;
+
+TypedValue pt   = TypedValue.fromString("POINT(114.3 30.5)", PropertyType.POINT);      // WKT: lon lat
+TypedValue pt2  = TypedValue.fromString("point({latitude: 30.5, longitude: 114.3})",
+                                        PropertyType.POINT);
+TypedValue p3d  = TypedValue.fromString("1,2,3", PropertyType.POINT3D);
+TypedValue vec  = TypedValue.fromString("[0.1,0.2,0.3]", PropertyType.VECTOR);
+TypedValue b64  = TypedValue.fromString("SGVsbG8=", PropertyType.BLOB);                // Base64
+TypedValue hex  = TypedValue.fromString("0x48656c6c6f", PropertyType.BLOB);            // hex
+TypedValue dt   = TypedValue.fromString("2026-07-01 15:40:12.153",
+                                        PropertyType.LOCAL_DATETIME);
+
+Point parsed = (Point) pt.toJava();
+System.out.println(parsed.getLatitude() + ", " + parsed.getLongitude());  // 30.5, 114.3
+```
+
 ## Type Conversion Examples
 
 ### Working with Dates
@@ -376,6 +467,7 @@ response.first().ifPresent(row -> {
     if (location instanceof Point) {
         Point pt = (Point) location;
         System.out.println("Lat: " + pt.getLatitude() + ", Lng: " + pt.getLongitude());
+        System.out.println("SRID: " + pt.getSrid());  // e.g. 4326 after server normalization
     }
 });
 ```

@@ -29,9 +29,74 @@ public void queryExample(GqldbClient client) {
 | `getRowCount()` | `long` | Total number of rows |
 | `hasMore()` | `boolean` | Whether more results are available |
 | `getWarnings()` | `List<String>` | Query warnings |
-| `getRowsAffected()` | `long` | Rows affected by write operations |
+| `getRowsAffected()` | `long` | Rows affected by write operations (sum of all `DmlStats` categories) |
+| `getDmlStats()` | `DmlStats` | Per-category DML counts, or `null` for a non-DML query |
+| `getTimeCostNs()` | `long` | Total engine execution time, in nanoseconds |
+| `getDiskCostNs()` | `long` | Engine time spent on disk I/O, in nanoseconds |
+| `getComputeCostNs()` | `long` | Engine time spent on computation, in nanoseconds |
 | `size()` | `int` | Same as `getRows().size()` |
 | `isEmpty()` | `boolean` | Whether response has no rows |
+
+## DML Statistics
+
+For data-modifying queries (`INSERT`, `SET`, `REMOVE`, `DELETE`, `MERGE`, etc.), `getDmlStats()` returns a `DmlStats` with per-category counts. It is `null` for a pure read query or when talking to a pre-`DmlStats` server — so always null-check. `getRowsAffected()` remains the sum across all categories.
+
+```java
+public class DmlStats {
+    long getInsertedNodes();
+    long getInsertedEdges();
+    long getDeletedNodes();
+    long getDeletedEdges();
+    long getSetNodes();
+    long getSetEdges();
+}
+```
+
+| Method | Return Type | Description |
+|--------|-------------|-------------|
+| `getInsertedNodes()` | `long` | Nodes inserted |
+| `getInsertedEdges()` | `long` | Edges inserted |
+| `getDeletedNodes()` | `long` | Nodes deleted |
+| `getDeletedEdges()` | `long` | Edges deleted |
+| `getSetNodes()` | `long` | Nodes updated (`SET`) |
+| `getSetEdges()` | `long` | Edges updated (`SET`) |
+
+A `null` `DmlStats` means "not a data-modifying query", not "changed nothing".
+
+```java
+Response response = client.gql(
+    "INSERT (a:User {_id: 'u1'})-[:Follows]->(b:User {_id: 'u2'})"
+);
+
+DmlStats stats = response.getDmlStats();
+if (stats != null) {
+    System.out.println("Inserted nodes: " + stats.getInsertedNodes());  // 2
+    System.out.println("Inserted edges: " + stats.getInsertedEdges());  // 1
+    System.out.println("Deleted nodes: " + stats.getDeletedNodes());
+    System.out.println("Set nodes: " + stats.getSetNodes());
+    System.out.println("Total rows affected: " + response.getRowsAffected());
+} else {
+    System.out.println("Not a DML query");
+}
+```
+
+## Query Cost
+
+The response exposes engine-side timing for the query, all in nanoseconds. These measure work inside the engine only — network transit and client-side processing are excluded.
+
+| Method | Return Type | Description |
+|--------|-------------|-------------|
+| `getTimeCostNs()` | `long` | Total engine execution time |
+| `getDiskCostNs()` | `long` | Time spent on disk I/O |
+| `getComputeCostNs()` | `long` | Time spent on computation |
+
+```java
+Response response = client.gql("MATCH (n:User) RETURN n LIMIT 100");
+
+System.out.println("Total: "   + response.getTimeCostNs()    / 1_000_000.0 + " ms");
+System.out.println("Disk: "    + response.getDiskCostNs()    / 1_000_000.0 + " ms");
+System.out.println("Compute: " + response.getComputeCostNs() / 1_000_000.0 + " ms");
+```
 
 ## Row Class
 

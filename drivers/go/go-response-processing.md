@@ -36,10 +36,76 @@ fmt.Printf("Rows affected: %d\n", response.RowsAffected)  // For write operation
 | `RowCount` | `int64` | Total number of rows |
 | `HasMore` | `bool` | Whether more results are available |
 | `Warnings` | `[]string` | Query warnings |
-| `RowsAffected` | `int64` | Rows affected by write operations |
+| `RowsAffected` | `int64` | Rows affected by write operations (sum of `DmlStats` categories) |
+| `DmlStats` | `*DmlStats` | Per-category data-modification counts; `nil` for non-DML queries |
+| `TimeCostNs` | `int64` | Server-side total time (ns): parse + plan + execute |
+| `DiskCostNs` | `int64` | Server-side time (ns) in the storage / LSM layer |
+| `ComputeCostNs` | `int64` | Server-side time (ns) in the in-memory compute engine |
 | `IsEmpty()` | `bool` | Whether response has no rows |
 | `First()` | `*Row` | First row or nil |
 | `Last()` | `*Row` | Last row or nil |
+
+## DML Statistics
+
+For data-modifying queries (`INSERT` / `SET` / `REMOVE` / `DELETE` / `MERGE`), `Response.DmlStats` breaks the change down by category. It is a `*DmlStats`:
+
+```go
+type DmlStats struct {
+    InsertedNodes int64
+    InsertedEdges int64
+    DeletedNodes  int64
+    DeletedEdges  int64
+    SetNodes      int64
+    SetEdges      int64
+}
+```
+
+| Field | Description |
+|-------|-------------|
+| `InsertedNodes` | Nodes created |
+| `InsertedEdges` | Edges created |
+| `DeletedNodes` | Nodes deleted |
+| `DeletedEdges` | Edges deleted |
+| `SetNodes` | Nodes whose properties were set/updated |
+| `SetEdges` | Edges whose properties were set/updated |
+
+`DmlStats` is `nil` when the query is not data-modifying (a pure read) or when running against a server that predates this field — treat "absent" as "not a DML query", **not** as "changed nothing". Always nil-check before dereferencing. `Response.RowsAffected` remains the sum across all categories, so use it when you only need the total.
+
+```go
+response, _ := client.Gql(ctx, `
+    INSERT (a:User {_id: 'u1', name: 'Alice'}),
+           (b:User {_id: 'u2', name: 'Bob'}),
+           (a)-[:Follows]->(b)
+`, nil)
+
+if response.DmlStats != nil {
+    s := response.DmlStats
+    fmt.Printf("Inserted nodes: %d\n", s.InsertedNodes) // 2
+    fmt.Printf("Inserted edges: %d\n", s.InsertedEdges) // 1
+    fmt.Printf("Set nodes: %d, set edges: %d\n", s.SetNodes, s.SetEdges)
+}
+fmt.Printf("Total rows affected: %d\n", response.RowsAffected) // 3
+```
+
+## Query Cost
+
+Every response reports server-side timing (in nanoseconds), read from the engine's result set. These measure engine work only — network and client-side time are **not** included.
+
+| Field | Description |
+|-------|-------------|
+| `TimeCostNs` | Total wall-clock time on the server: parse + plan + execute |
+| `DiskCostNs` | Subset spent in the storage / LSM layer |
+| `ComputeCostNs` | Subset spent in the in-memory compute engine (k-hop, shortest path, `algo.*` via the topology accelerator); `0` when compute is disabled or the query didn't invoke the accelerator |
+
+Older servers omit these proto3 fields, so treat a `0` value as "not reported" rather than "took zero time". For streaming queries, the timing is populated only on the final batch (`HasMore == false`).
+
+```go
+response, _ := client.Gql(ctx, "MATCH (n:User)-[:Follows]->{1,3}(m) RETURN m", nil)
+
+fmt.Printf("Total: %.2f ms\n", float64(response.TimeCostNs)/1e6)
+fmt.Printf("Disk:  %.2f ms\n", float64(response.DiskCostNs)/1e6)
+fmt.Printf("Compute: %.2f ms\n", float64(response.ComputeCostNs)/1e6)
+```
 
 ## Row Struct
 

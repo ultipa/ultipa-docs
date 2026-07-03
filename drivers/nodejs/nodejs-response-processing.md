@@ -29,8 +29,78 @@ async function queryExample(client: GqldbClient) {
 | `rowCount` | `number` | Total number of rows |
 | `hasMore` | `boolean` | Whether more results are available |
 | `warnings` | `string[]` | Query warnings |
-| `rowsAffected` | `number` | Rows affected by write operations |
+| `rowsAffected` | `number` | Rows affected by write operations (sum of all DML categories) |
+| `dmlStats` | `DmlStats \| undefined` | Per-category DML counts; `undefined` for non-DML queries |
+| `timeCostNs` | `number` | Engine-side total execution time, in nanoseconds |
+| `diskCostNs` | `number` | Engine-side storage/LSM time, in nanoseconds |
+| `computeCostNs` | `number` | Engine-side compute-engine time, in nanoseconds |
 | `length` | `number` | Same as `rows.length` |
+
+### DML Statistics
+
+For data-modifying queries (`INSERT`, `SET`, `REMOVE`, `DELETE`, `MERGE`), `response.dmlStats` breaks the change down by category. It is `undefined` for a pure read (or when querying a server too old to report the stats) — treat *absent* as "not a data-modifying query", **not** as "changed nothing". `rowsAffected` remains the sum across all categories.
+
+```typescript
+import { DmlStats } from '@ultipa-graph/ultipa-driver';
+
+interface DmlStats {
+  insertedNodes: number;
+  insertedEdges: number;
+  deletedNodes: number;
+  deletedEdges: number;
+  setNodes: number;
+  setEdges: number;
+}
+```
+
+| Field | Description |
+|-------|-------------|
+| `insertedNodes` | Nodes created |
+| `insertedEdges` | Edges created |
+| `deletedNodes` | Nodes deleted |
+| `deletedEdges` | Edges deleted |
+| `setNodes` | Nodes whose properties were set/updated |
+| `setEdges` | Edges whose properties were set/updated |
+
+```typescript
+const response = await client.gql(`
+  INSERT (a:User {_id: 'u1'}), (b:User {_id: 'u2'}), (a)-[:Follows]->(b)
+`);
+
+console.log('Rows affected:', response.rowsAffected);  // total across categories
+
+const stats = response.dmlStats;
+if (stats) {
+  console.log('Inserted nodes:', stats.insertedNodes);  // 2
+  console.log('Inserted edges:', stats.insertedEdges);  // 1
+  console.log('Deleted nodes:', stats.deletedNodes);
+  console.log('Set nodes:', stats.setNodes);
+} else {
+  console.log('Not a data-modifying query');
+}
+```
+
+> For streaming/paginated queries, `dmlStats` (like `rowsAffected`) is populated only on the final batch, where `hasMore` is `false`.
+
+### Query Cost
+
+The `Response` reports the server's own timing for the query, in nanoseconds. These are **engine-side** measurements — network and client-side time are **not** included.
+
+| Property | Description |
+|----------|-------------|
+| `timeCostNs` | Total wall-clock time: parse + plan + execute |
+| `diskCostNs` | Subset spent in the storage / LSM layer |
+| `computeCostNs` | Subset spent in the in-memory compute engine (k-hop, shortest path, `algo.*`); `0` when the query did not use the compute accelerator |
+
+Older servers omit these fields, so a value of `0` means "not reported", not "took zero time". As with `dmlStats`, streaming queries populate these only on the final batch (`hasMore === false`).
+
+```typescript
+const response = await client.gql('MATCH (n:User)-[:Follows]->{1,3}(m) RETURN m LIMIT 100');
+
+console.log(`Total: ${response.timeCostNs / 1e6} ms`);
+console.log(`Disk:  ${response.diskCostNs / 1e6} ms`);
+console.log(`Compute: ${response.computeCostNs / 1e6} ms`);
+```
 
 ## Row Class
 

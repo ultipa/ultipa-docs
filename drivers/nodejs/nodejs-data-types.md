@@ -66,8 +66,8 @@ import { PropertyType } from '@ultipa-graph/ultipa-driver';
 
 | Type | Description | JavaScript Type |
 |------|-------------|-----------------|
-| `POINT` | 2D geographic point | `{ latitude: number, longitude: number }` |
-| `POINT3D` | 3D point | `{ x: number, y: number, z: number }` |
+| `POINT` | 2D geographic point | `{ latitude: number, longitude: number, srid: number }` |
+| `POINT3D` | 3D point | `{ x: number, y: number, z: number, srid: number }` |
 
 ### Collection Types
 
@@ -341,6 +341,7 @@ class Point {
   constructor(
     public readonly latitude: number,
     public readonly longitude: number,
+    public readonly srid: number = 0,   // spatial reference system id; 0 = unset
   );
   get x(): number;                    // alias for longitude
   get y(): number;                    // alias for latitude
@@ -351,6 +352,7 @@ class Point3D {
     public readonly x: number,
     public readonly y: number,
     public readonly z: number,
+    public readonly srid: number = 0,   // spatial reference system id; 0 = unset
   );
   get longitude(): number;            // alias for x
   get latitude(): number;             // alias for y
@@ -359,6 +361,36 @@ class Point3D {
 ```
 
 `Point` validates against WGS-84 bounds server-side (longitude ∈ [-180, 180], latitude ∈ [-90, 90]). `Point3D` is Cartesian — the server does **not** enforce geographic bounds on Point3D, even when accessed through the lon/lat aliases.
+
+### Spatial reference system (`srid`)
+
+Both `Point` and `Point3D` carry a numeric `srid` (spatial reference system identifier). It defaults to `0`, meaning **unset**. An unset SRID resolves to the type's default:
+
+| Type | Unset (`srid === 0`) normalizes to | Constant |
+|------|------------------------------------|----------|
+| `Point` (2D) | `4326` (WGS-84, geographic) | `DEFAULT_POINT_2D_SRID = 4326` |
+| `Point3D` (3D) | `9157` (Cartesian) | `DEFAULT_POINT_3D_SRID = 0` |
+
+The `srid` field round-trips: a point decoded from a query result exposes the server's value. Legacy payloads from older servers (no SRID on the wire) decode to the type's default SRID. Plain object literals may also include `srid`; when omitted it is treated as `0`.
+
+```typescript
+import { Point, Point3D } from '@ultipa-graph/ultipa-driver';
+
+// Unset SRID (server normalizes 2D → 4326)
+const p1 = new Point(37.7749, -122.4194);
+console.log(p1.srid);              // 0 (unset)
+
+// Explicit SRID
+const p2 = new Point(37.7749, -122.4194, 4326);
+
+// 3D point with SRID
+const p3 = new Point3D(1, 2, 3, 9157);
+
+// Reading back a point returned from a query
+const response = await client.gql('MATCH (p:Place) RETURN p.location');
+const loc = response.first()?.get(0);
+console.log(loc.latitude, loc.longitude, loc.srid);
+```
 
 ## Vector Type
 
@@ -393,6 +425,98 @@ const stringValue = createTypedValue('hello'); // inferred as STRING
 import { typedValueToJS } from '@ultipa-graph/ultipa-driver';
 
 const jsValue = typedValueToJS(intValue);  // 42
+```
+
+## Temporal String Formatting
+
+Temporal values decode to plain component objects (`{ year, month, day, ... }`), not JavaScript `Date`s. To render them, the driver exposes canonical string formatters that emit the `"YYYY-MM-DD HH:mm:ss[.fff]"` form: a **space** separates date and time, the fractional second is **trimmed** of trailing zeros (omitted entirely when zero), and zoned types append the UTC offset as `+HH:MM` / `-HH:MM`.
+
+| Function | Input type | Example output |
+|----------|-----------|----------------|
+| `dateToString(d)` | `GqldbDate` | `2026-07-01` |
+| `localTimeToString(t)` | `GqldbLocalTime` | `15:40:12.153` |
+| `zonedTimeToString(t)` | `GqldbZonedTime` | `15:40:12.153+08:00` |
+| `localDateTimeToString(dt)` | `GqldbLocalDateTime` | `2026-07-01 15:40:12.153` |
+| `zonedDateTimeToString(dt)` | `GqldbZonedDateTime` | `2026-07-01 15:40:12.153+08:00` |
+
+`formatValue(tv)` produces the same canonical string directly from a `TypedValue` for any temporal type, including `TIMESTAMP` (rendered in UTC).
+
+```typescript
+import {
+  localDateTimeToString,
+  zonedDateTimeToString,
+  dateToString,
+} from '@ultipa-graph/ultipa-driver/dist/types';
+
+const response = await client.gql('MATCH (e:Event) RETURN e.date, e.startTime');
+const row = response.first();
+if (row) {
+  const date = row.get(0);       // GqldbDate component object
+  const start = row.get(1);      // GqldbLocalDateTime component object
+  console.log(dateToString(date));            // "2024-06-15"
+  console.log(localDateTimeToString(start));  // "2024-06-15 09:00:00"
+}
+```
+
+> Note: The decoded values remain component objects, so `response.toJSON()` / `toObjects()` serialize them as their `{ year, month, ... }` fields. Call the formatter (or `formatValue`) when you need the canonical string form. These formatters — and `fromString` / `formatValue` — are imported from the `@ultipa-graph/ultipa-driver/dist/types` subpath, as they are not yet re-exported from the package root.
+
+## Parsing Values from Strings
+
+`fromString(s, targetType)` parses a string into a `TypedValue` of the requested `PropertyType`; an empty string yields a null `TypedValue`. Its companion `formatValue(tv)` performs the inverse — serializing a `TypedValue` back to its canonical string.
+
+```typescript
+import { PropertyType } from '@ultipa-graph/ultipa-driver';
+import { fromString, formatValue } from '@ultipa-graph/ultipa-driver/dist/types';
+
+function fromString(s: string, targetType: PropertyType): TypedValue;
+function formatValue(tv: TypedValue): string;
+
+const tv = fromString('42', PropertyType.INT64);
+console.log(formatValue(tv));  // "42"
+```
+
+Beyond the scalar and temporal types (which accept the same canonical forms shown above), the spatial, vector, and blob types accept several notations:
+
+### Points (`PropertyType.POINT`)
+
+| Form | Example | Coordinate order |
+|------|---------|------------------|
+| Canonical keyed | `point({latitude: 30.5, longitude: 114.3})` | keys, any order |
+| WKT | `POINT(114.3 30.5)` | **longitude first** (OGC/PostGIS) |
+| Positional | `30.5,114.3` or `(30.5,114.3)` | **latitude first** (opposite of WKT) |
+
+Latitude is validated against `[-90, 90]` and longitude against `[-180, 180]`.
+
+```typescript
+const a = fromString('point({latitude: 30.5, longitude: 114.3})', PropertyType.POINT);
+const b = fromString('POINT(114.3 30.5)', PropertyType.POINT); // WKT: lon first
+const c = fromString('30.5,114.3', PropertyType.POINT);        // positional: lat first
+```
+
+### 3D points (`PropertyType.POINT3D`)
+
+Cartesian `x, y, z` — no coordinate swap. Accepts keyed `point({x: 1, y: 2, z: 3})`, WKT `POINT(1 2 3)` / `POINT Z(1 2 3)`, and positional `1,2,3` / `(1,2,3)`.
+
+```typescript
+const p = fromString('point({x: 1, y: 2, z: 3})', PropertyType.POINT3D);
+```
+
+### Vectors (`PropertyType.VECTOR`)
+
+A comma-separated float list, with or without brackets; `[]` yields an empty vector.
+
+```typescript
+const v = fromString('[0.1, 0.2, 0.3]', PropertyType.VECTOR);
+const w = fromString('0.1,0.2,0.3', PropertyType.VECTOR);  // brackets optional
+```
+
+### Binary (`PropertyType.BLOB`)
+
+Standard Base64 by default; a `0x` / `0X` prefix selects hexadecimal. Invalid encodings throw.
+
+```typescript
+const fromB64 = fromString('SGVsbG8=', PropertyType.BLOB);   // base64 → Buffer
+const fromHex = fromString('0x48656c6c6f', PropertyType.BLOB); // hex → Buffer
 ```
 
 ## Type Conversion Examples

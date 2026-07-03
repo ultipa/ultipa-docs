@@ -34,9 +34,75 @@ with GqldbClient(config) as client:
 | `has_more` | `bool` | Whether more results are available |
 | `warnings` | `List[str]` | Query warnings |
 | `rows_affected` | `int` | Rows affected by write operations |
+| `dml_stats` | `Optional[DmlStats]` | Per-category data-modification counts, or `None` for non-DML queries |
+| `time_cost_ns` | `int` | Engine-side total time (parse + plan + execute), in nanoseconds |
+| `disk_cost_ns` | `int` | Engine-side time spent in the storage layer, in nanoseconds |
+| `compute_cost_ns` | `int` | Engine-side time spent in the in-memory compute engine, in nanoseconds |
 | `is_empty()` | `bool` | Whether response has no rows |
 | `first()` | `Optional[Row]` | First row or None |
 | `last()` | `Optional[Row]` | Last row or None |
+
+### DML statistics
+
+For data-modifying queries (`INSERT` / `SET` / `REMOVE` / `DELETE` / `MERGE`), `response.dml_stats` carries a `DmlStats` breaking the change down by category. It is `None` when the query wasn't data-modifying — a pure read, or an older server that doesn't report the field. `None` means "not a DML query", **not** "changed nothing"; a DML query that matched no rows still returns a populated `DmlStats` with zero counts. `rows_affected` remains the sum across all categories.
+
+`DmlStats` is exported from the top-level `gqldb` package:
+
+```python
+from gqldb import DmlStats
+
+@dataclass
+class DmlStats:
+    inserted_nodes: int = 0
+    inserted_edges: int = 0
+    deleted_nodes: int = 0
+    deleted_edges: int = 0
+    set_nodes: int = 0
+    set_edges: int = 0
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `inserted_nodes` | `int` | Nodes created |
+| `inserted_edges` | `int` | Edges created |
+| `deleted_nodes` | `int` | Nodes deleted |
+| `deleted_edges` | `int` | Edges deleted |
+| `set_nodes` | `int` | Nodes updated (`SET` / `REMOVE`) |
+| `set_edges` | `int` | Edges updated (`SET` / `REMOVE`) |
+
+```python
+response = client.gql("""
+    INSERT (a:User {_id: 'u1', name: 'Alice'}),
+           (b:User {_id: 'u2', name: 'Bob'}),
+           (a)-[:Follows]->(b)
+""")
+
+stats = response.dml_stats
+if stats is not None:
+    print(f"Nodes inserted: {stats.inserted_nodes}")   # 2
+    print(f"Edges inserted: {stats.inserted_edges}")   # 1
+    print(f"Total affected: {response.rows_affected}") # 3
+else:
+    print("Not a data-modifying query")
+```
+
+### Query cost fields
+
+Every `Response` exposes engine-side timing, read from the server's result set. These measure work **inside the engine only** — network transfer and client-side processing are not included. All three are integers in nanoseconds and default to `0`; an old server that doesn't report them (or a streaming query before its final batch) leaves them at `0`, which means "not reported", not "took zero time".
+
+| Field | Meaning |
+|-------|---------|
+| `time_cost_ns` | Total wall-clock time: parse + plan + execute |
+| `disk_cost_ns` | Subset of the total spent in the storage / LSM layer |
+| `compute_cost_ns` | Subset spent in the in-memory compute engine (k-hop, shortest path, `algo.*`); `0` when the query didn't use the compute accelerator |
+
+```python
+response = client.gql("MATCH (n:User) RETURN n LIMIT 100")
+
+print(f"Total engine time: {response.time_cost_ns / 1e6:.2f} ms")
+print(f"  storage:  {response.disk_cost_ns / 1e6:.2f} ms")
+print(f"  compute:  {response.compute_cost_ns / 1e6:.2f} ms")
+```
 
 ## Row Class
 
