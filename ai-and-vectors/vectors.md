@@ -23,7 +23,9 @@ These differ in shape — some retrieve, some group, some label — but all draw
 
 ## Loading Vectors into GQLDB
 
-GQLDB supports the `VECTOR(N)` property type, where `N` is the dimension of the vector. If you already have precomputed vectors, you can import them into `VECTOR(N)` properties. To assign a `VECTOR(N)` value using GQL, use the `ai.vector()` or `ai.embed()` function.
+GQLDB supports the `VECTOR(N)` property type, where `N` is the dimension of the vector. You can optionally declare a coordinate type with `VECTOR(N, <type>)`. See <a target="_blank" href="/docs/gql/values-and-types#Vector">GQL → Values and Types</a>.
+
+If you already have precomputed vectors, you can import them into `VECTOR` properties. To assign a vector value using GQL, use the `vector()` or `ai.embed()` function.
 
 ## Quick Start
 

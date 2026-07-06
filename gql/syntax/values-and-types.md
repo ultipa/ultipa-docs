@@ -139,7 +139,8 @@ For `ZONED DATETIME` and `ZONED TIME`, timezone is specified as an RFC 3339 UTC 
 
 | Type | Description |
 | -- | -- |
-| `VECTOR(N)` | A fixed-length array of floating-point numbers, used for vector similarity search. Every value written to this property must have exactly `N` dimensions. |
+| `VECTOR(N)` | A fixed-length array of 32-bit floating-point numbers, used for vector similarity search. Every value written to this property must have exactly `N` dimensions. |
+| `VECTOR(N, <type>)` | Same as `VECTOR(N)`, with an explicit coordinate type — a numeric keyword such as `INTEGER`, `INT`, `FLOAT`, or `DOUBLE`. The coordinate type is recorded in the schema but **not currently enforced**: only the dimension is validated at insert, and coordinates are always stored as 32-bit floats. |
 
 > **A vector column must declare its dimension.** Bare `VECTOR` (no `(N)`) is rejected. For genuinely variable-length use cases, declare `LIST<FLOAT>` instead. Note that `LIST<FLOAT>` columns are not compatible with vector indexes or `ai.*` similarity functions, which require a `VECTOR` value.
 
