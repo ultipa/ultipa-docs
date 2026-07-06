@@ -106,6 +106,55 @@ Result:
 
 **A blank node's `_iri` is neither unique nor stable, don't use it as a key.** The blank-id counter **resets per document**, so the n-th blank node in each file is `_:b<n>`. Loading a file twice yields two distinct nodes both with `_iri = "_:b1"`, two with `"_:b2"`, and so on (blank nodes never merge). So never treat `_:b1` as a unique id, an `@=` match target, or a cross-load reference.
 
+## RDF Collections
+
+An RDF **collection** (an ordered list, written `( … )` in Turtle/TriG, an `rdf:first`/`rdf:rest` chain in N-Triples/N-Quads, or `@list` in JSON-LD) maps onto the graph by the type of its members.
+
+<p tit="example.ttl"></p>
+
+```ttl
+@prefix ex: <http://example.org/> .
+
+ex:alice a ex:Person ;
+    ex:nicknames ( "Al" "Ally" ) ;         # literal collection → ordered list property
+    ex:visited   ( ex:paris ex:tokyo ) .   # IRI collection → one edge per member
+```
+
+```gql
+LOAD DATA FROM 'file:///path/example.ttl'
+
+MATCH (a@ex:Person)-[@ex:visited]->(b) RETURN a.nicknames, b._iri
+```
+
+Result:
+
+| a.nicknames | b._iri |
+| -- | -- |
+| ["Al", "Ally"] | http://example.org/paris |
+| ["Al", "Ally"] | http://example.org/tokyo |
+
+The mapping:
+
+- **Literal members → an ordered list property.** `ex:nicknames ( "Al" "Ally" )` becomes `nicknames = ["Al", "Ally"]`, with member order preserved.
+- **IRI members → one edge per member.** `ex:visited ( ex:paris ex:tokyo )` becomes two `@ex:visited` edges, and `ex:paris` / `ex:tokyo` are created as nodes even if they appear nowhere else in the data.
+
+Unlike a repeated predicate, a collection always yields a list for literal members, whatever its length:
+
+| Collection | Stored value |
+| -- | -- |
+| `( "a" "b" )` | `["a", "b"]` |
+| `( "only" )` | `["only"]` (a one-element list, not a scalar) |
+| `()` or a bare `rdf:nil` | `[]` (an empty list) |
+| `( "a" ( "b1" "b2" ) "c" )` | `["a", ["b1", "b2"], "c"]` (nested lists) |
+
+This is the key contrast with a **repeated predicate** (`ex:p "a" ; ex:p "b"`), which produces an unordered list and folds a single occurrence to a scalar. A collection preserves order and always produces a list. The three formats above (Turtle/TriG `( … )`, N-Triples/N-Quads first/rest chains, JSON-LD `@list`) load identically, the result survives a database restart, and `EXPORT` writes list properties back out as real RDF collections so ordering round-trips.
+
+Three collection shapes are not imported. They are reported as load warnings (surfaced on the result set, see <a href="/docs/ontology/rdf-import-and-export" target="_blank">RDF Import & Export</a>), never dropped silently:
+
+- a nested collection whose inner list contains **IRI** members,
+- a collection in **subject** position (`( "a" "b" ) ex:p ex:o`),
+- an **RDF-star** annotation attached to a collection.
+
 ## Named Graphs / Quads
 
 An RDF **quad** adds a 4th term, i.e., the named graph a statement belongs to: `(subject, predicate, object, graph)`. GQLDB models the named graph as a logical tag over the single physical graph, not as a separate physical graph.
