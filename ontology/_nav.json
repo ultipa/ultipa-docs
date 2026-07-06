@@ -16,6 +16,10 @@
         {
           "file": "working-with-rdf.md",
           "title": "Working with RDF"
+        },
+        {
+          "file": "linkml.md",
+          "title": "Loading LinkML"
         }
       ]
     },
