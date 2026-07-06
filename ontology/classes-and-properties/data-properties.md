@@ -113,6 +113,19 @@ INSERT (@ex:Person {name: 'Bob', age: 'thirty'})
 INSERT (@ex:Person {name: 'Sam'})
 ```
 
+A **multivalued** data property (`CARDINALITY {,3}`, `{0,}`, etc.) is written as a **list literal**. All values are assigned at once, not one at a time:
+
+```gql
+-- Up to 3 emails (CARDINALITY {,3}): assign them as a list
+INSERT (@ex:Person {name: 'Alice', email: ['alice@work.com', 'alice@home.com']})
+
+-- A 4th value exceeds CARDINALITY {,3}
+-- Cardinality validation error (or warning, depending on enforcement mode)
+INSERT (@ex:Person {name: 'Eve', email: ['e1@x.com', 'e2@x.com', 'e3@x.com', 'e4@x.com']})
+```
+
+The stored shape follows the data, not the declaration: assign several values and the property holds a **list**; assign a single value and it stays a **scalar** (a `{,3}` bound permits a list, it doesn't force one). So `email` may be a string on one `Person` and a list on another; query the scalar case with `n.email = 'x'` and the list case with `'x' IN n.email`. `SET n.email = [...]` replaces the whole value rather than appending, so to add to an existing list, re-assign the full list.
+
 Attributes whose local name doesn't match any declared data property are stored as plain LPG properties without ontology validation.
 
 ## Showing Data Properties
