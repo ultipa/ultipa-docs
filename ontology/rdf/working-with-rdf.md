@@ -169,22 +169,25 @@ Export back to either format. `EXPORT FORMAT NQUADS` writes the 4th term (a 3-te
   "name": "Alice",
   "age": 30,
   "knows": "ex:bob",
-  "ex:greeting": { "@value": "hi", "@language": "en" },
+  "ex:greeting": [
+    { "@value": "hi",    "@language": "en" },
+    { "@value": "salut", "@language": "fr" }
+  ],
   "ex:address": { "ex:city": "NYC" }
 }
 ```
 
-becomes: `ex:alice a ex:Person`; `name "Alice"`; `age 30` (coerced to a native integer via the `xsd:integer` term type); `greeting "hi"@en`; and an `ex:address` edge to an anonymous node holding `city "NYC"` (that node leaks its blank id as `_iri = "_:jb1"`, like any [blank node](#Blank-Nodes)). The `knows` value, however, stays a plain string `"ex:bob"` — `@type: @id` references are not turned into edges (see the note below).
-
 ```gql
 LOAD DATA FROM 'file:///tmp/example.jsonld'
-
-MATCH (a)-[e]->(b) RETURN a, e, b
 ```
 
-**Supported:** a local `@context` (term / prefix maps, **datatype** `@type` coercion and `@language` coercion, `@vocab`, `@base`), `@id`, `@type`, `@graph`, value objects, nested objects (→ an edge to a blank node), blank nodes, arrays. **Not supported:** **`@type: @id` string node references** — a bare-IRI value stays a literal string (not IRI-expanded, no edge); model relationships as **nested objects** instead. Also unsupported: remote or array `@context`, `@reverse`, `@container`, scoped contexts, framing.
+The JSON-LD file loads: 
 
-> **`@type: @id` gotcha.** In the example the `knows` term is declared `{"@type": "@id"}`, so `"knows": "ex:bob"` *should* have become a `knows` **edge** to `ex:bob`. On the current build it is stored as a **literal string** `"ex:bob"` instead — not IRI-expanded, no edge, no `bob` node.
+- an `@ex:Person` node, `name: "Alice"`, `age: 30` (coerced to a native integer via the `xsd:integer` term type), `greeting: ["hi"@en, "salut"@fr]` (the two-element `ex:greeting` array becomes a langString list); 
+- a `@ex:knows` edge from Alice to `http://example.org/bob` (the term's `@type: @id` coerces the bare IRI string into a node reference, so `bob` is created as a node); 
+- an `@ex:address` edge from Alice to an anonymous node holding `city` "NYC" (that node leaks its blank id as `_iri = "_:jb1"`, like any [blank node](#Blank-Nodes)).
+
+**Supported:** a local `@context` (term / prefix maps, **datatype** `@type` coercion, `@language` coercion, **`@type: @id` node references** → edges, `@vocab`, `@base`), `@id`, `@type`, `@graph`, value objects, nested objects (→ an edge to a blank node), blank nodes, and arrays (a repeated term → a list; an array of `@id` references → one edge per element). **Not supported:** remote or array `@context`, `@reverse`, `@container`, scoped contexts, framing.
 
 > JSON-LD is accepted by `LOAD DATA` only. `LOAD ONTOLOGY` does not accept `JSONLD`.
 
