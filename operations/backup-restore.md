@@ -298,7 +298,7 @@ For driver code and automation where you'd rather not parse statement results:
 
 ```gql
 RETURN db.backup("data/backups/myGraph")
-RETURN db.backup("data/backups/myGraph", {compress: true})
+RETURN db.backup("data/backups/myGraph", {compress: false})
 RETURN db.backup("data/backups/myGraph", {incremental: true})
 
 RETURN db.restore("data/backups/myGraph.gqlbackup.tar.gz")
