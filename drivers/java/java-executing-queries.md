@@ -264,7 +264,7 @@ public Response safeQuery(GqldbClient client, String query) {
     try {
         return client.gql(query);
     } catch (EmptyQueryException e) {
-        // EmptyQueryException is one of the two public exception types.
+        // EmptyQueryException is one of the public exception subclasses.
         System.err.println("Query string is empty");
     } catch (GqldbException e) {
         // All other failures (query errors, missing graph, etc.) surface as

@@ -446,7 +446,7 @@ import {
   localDateTimeToString,
   zonedDateTimeToString,
   dateToString,
-} from '@ultipa-graph/ultipa-driver/dist/types';
+} from '@ultipa-graph/ultipa-driver';
 
 const response = await client.gql('MATCH (e:Event) RETURN e.date, e.startTime');
 const row = response.first();
@@ -458,15 +458,14 @@ if (row) {
 }
 ```
 
-> Note: The decoded values remain component objects, so `response.toJSON()` / `toObjects()` serialize them as their `{ year, month, ... }` fields. Call the formatter (or `formatValue`) when you need the canonical string form. These formatters — and `fromString` / `formatValue` — are imported from the `@ultipa-graph/ultipa-driver/dist/types` subpath, as they are not yet re-exported from the package root.
+> Note: The decoded values remain component objects, so `response.toJSON()` / `toObjects()` serialize them as their `{ year, month, ... }` fields. Call the formatter (or `formatValue`) when you need the canonical string form. These formatters — and `fromString` / `formatValue` — are re-exported from the package root (`@ultipa-graph/ultipa-driver`).
 
 ## Parsing Values from Strings
 
 `fromString(s, targetType)` parses a string into a `TypedValue` of the requested `PropertyType`; an empty string yields a null `TypedValue`. Its companion `formatValue(tv)` performs the inverse — serializing a `TypedValue` back to its canonical string.
 
 ```typescript
-import { PropertyType } from '@ultipa-graph/ultipa-driver';
-import { fromString, formatValue } from '@ultipa-graph/ultipa-driver/dist/types';
+import { PropertyType, fromString, formatValue } from '@ultipa-graph/ultipa-driver';
 
 function fromString(s: string, targetType: PropertyType): TypedValue;
 function formatValue(tv: TypedValue): string;

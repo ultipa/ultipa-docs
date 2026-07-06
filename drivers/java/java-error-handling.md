@@ -1,8 +1,19 @@
 # Error Handling
 
-The GQLDB Java driver reports all failures through a single base exception, `GqldbException`. Rather than a wide hierarchy of catchable subclasses, the driver exposes just **two** public exception types and distinguishes failure modes through an error **code** and **message**.
+The GQLDB Java driver reports all failures through a single base exception, `GqldbException`. Rather than a wide hierarchy of catchable subclasses, the driver exposes a small set of public exception types and distinguishes the remaining failure modes through an error **code** and **message**.
 
-> **Note:** Only `GqldbException` and `EmptyQueryException` are part of the public API. The driver defines finer-grained types internally (e.g. for connection, login, transaction, or graph failures), but they are **package-private** and cannot be caught from user code — and most are never thrown. Always catch `GqldbException` and branch on `getCode()` / `getMessage()` when you need to tell cases apart.
+The public API defines **four** exception types:
+
+| Exception | Thrown when |
+|-----------|-------------|
+| `GqldbException` | Base type for every driver failure. Server errors arrive here with a `[code]`-prefixed message; read the code via `getCode()`. |
+| `GraphNotFoundException` | An operation targets a graph that does not exist (e.g. `getGraphInfo`). |
+| `TransactionNotFoundException` | A transaction operation runs with no active transaction. |
+| `EmptyQueryException` | A query string is empty. |
+
+All three specific types extend `GqldbException`, so a single `catch (GqldbException e)` still handles everything; catch a subtype first only when you want to react to that case by class rather than by inspecting the message.
+
+> **Note:** Earlier releases defined many finer-grained internal types (for connection, login, session, etc.). Those were never part of the public API and have been **removed** — the conditions they described now surface as a plain `GqldbException`. Always catch `GqldbException` and branch on `getCode()` / `getMessage()` when you need to tell those cases apart.
 
 ## Base Exception Class
 
@@ -100,19 +111,19 @@ public void ensureLoggedIn(GqldbClient client) {
 
 | Condition | Description |
 |-----------|-------------|
-| Transaction not found | Transaction not found (may have timed out) |
-| Transaction failed | Transaction operation failed |
+| Transaction not found | No active transaction (`TransactionNotFoundException`) |
+| Transaction failed | Transaction operation failed (base `GqldbException`) |
+
+`TransactionNotFoundException` is a public subclass, so you can catch it directly before the base type:
 
 ```java
 public void safeTransaction(GqldbClient client, GqldbClient.TransactionFunction<?> fn) {
     try {
         client.withTransaction("myGraph", fn);
+    } catch (TransactionNotFoundException e) {
+        System.err.println("No active transaction (it may have timed out)");
     } catch (GqldbException e) {
-        if (e.getMessage() != null && e.getMessage().contains("Transaction not found")) {
-            System.err.println("Transaction timed out before completion");
-        } else {
-            System.err.println("Transaction failed: " + e.getMessage());
-        }
+        System.err.println("Transaction failed: " + e.getMessage());
     }
 }
 ```
@@ -142,15 +153,17 @@ public Response executeQuery(GqldbClient client, String query) {
 
 | Condition | Description |
 |-----------|-------------|
-| Graph not found | Graph does not exist |
-| Graph exists | Graph already exists |
+| Graph not found | Graph does not exist (`GraphNotFoundException`) |
+| Graph exists | Graph already exists (base `GqldbException` from the server) |
+
+`getGraphInfo` throws `GraphNotFoundException` — a public subclass — when the graph is missing, so you can catch it directly:
 
 ```java
 public void ensureGraph(GqldbClient client, String graphName) {
     try {
         client.getGraphInfo(graphName);
         System.out.println("Graph " + graphName + " exists");
-    } catch (GqldbException e) {
+    } catch (GraphNotFoundException e) {
         // Graph not found — try to create it.
         try {
             client.createGraph(graphName);

@@ -239,9 +239,10 @@ client.truncate("myGraph", new QueryConfig());
 import com.gqldb.*;
 
 public void safeGraphOperations(GqldbClient client) {
-    // All driver failures surface as GqldbException; the finer-grained types
-    // (e.g. GraphExistsException, GraphNotFoundException) are not part of the
-    // public API, so branch on e.getMessage() / e.getCode() to distinguish.
+    // All driver failures surface as GqldbException. A missing graph throws the
+    // public GraphNotFoundException subclass; "graph already exists" comes back
+    // as a plain GqldbException from the server, so branch on e.getMessage() /
+    // e.getCode() to distinguish it.
     try {
         // Try to create a graph
         client.createGraph("newGraph");

@@ -422,9 +422,10 @@ public void safeDataOperations(GqldbClient client, List<NodeData> nodes) {
     try {
         client.insertNodes("myGraph", nodes);
     } catch (GqldbException e) {
-        // All driver failures surface as GqldbException; the finer-grained
-        // types (e.g. GraphNotFoundException) are not part of the public API,
-        // so inspect e.getMessage() / e.getCode() to distinguish cases.
+        // Data operation failures surface as the base GqldbException, so
+        // inspect e.getMessage() / e.getCode() to distinguish cases. (A few
+        // client-side checks throw public subclasses such as
+        // GraphNotFoundException, all of which extend GqldbException.)
         System.err.println("Insert failed: " + e.getMessage());
     }
 
