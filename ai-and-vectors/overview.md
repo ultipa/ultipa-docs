@@ -70,7 +70,7 @@ Some providers support both embedding and completion, while others support only 
 
 | Function | Description |
 | -- | -- |
-| <a href="/docs/ai-and-vectors/vectors#ai-vector">ai.vector()</a> | Converts a list of numbers to a `VECTOR` type.  |
+| <a href="/docs/ai-and-vectors/vectors#vector">vector()</a> | Converts a list of numbers — or a vector string with an explicit dimension and coordinate type — to a `VECTOR(N)` type. |
 | <a href="/docs/ai-and-vectors/vectors#ai-embed">ai.embed()</a> | Generates an embedding vector from text using the configured AI provider. |
 | <a href="/docs/ai-and-vectors/vectors#ai-embed_batch">ai.embed_batch()</a> | Generates embedding vectors for multiple texts in a single batched call. |
 | <a href="/docs/ai-and-vectors/vectors#ai-cosine">ai.cosine()</a> | Computes cosine similarity between two vectors. |

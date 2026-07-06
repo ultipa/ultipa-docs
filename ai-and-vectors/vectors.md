@@ -102,9 +102,9 @@ This scans every `Book` and scores it (a brute-force search), fine for a small g
 
 ## Vector Creation Functions
 
-### ai.vector()
+### vector()
 
-Converts a list of numbers to a `VECTOR(N)` type. This is useful when you need to explicitly create a value for storing in a `VECTOR(N)` property or passing to similarity functions. `vector()` is a synonym.
+Converts a list of numbers — or a vector string with an explicit dimension and coordinate type — to a `VECTOR(N)` type. This is useful when you need to explicitly create a value for storing in a `VECTOR(N)` property or passing to similarity functions. `ai.vector()` is a synonym.
 
 <table style="width: 100%;">
   <colgroup>
@@ -116,10 +116,10 @@ Converts a list of numbers to a `VECTOR(N)` type. This is useful when you need t
   <tbody>
     <tr>
       <td><b>Syntax</b></td>
-      <td colspan="3"><code>ai.vector(&lt;list&gt;)</code></td>
+      <td colspan="3"><code>vector(&lt;list&gt;)</code> or <code>vector('&lt;string&gt;', &lt;dimension&gt;, &lt;coordinate type&gt;)</code></td>
     </tr>
     <tr>
-      <td rowspan="2"><b>Arguments</b></td>
+      <td rowspan="5"><b>Arguments</b></td>
       <td><b>Name</b></td>
       <td><b>Type</b></td>
       <td><b>Description</b></td>
@@ -127,7 +127,22 @@ Converts a list of numbers to a `VECTOR(N)` type. This is useful when you need t
     <tr>
       <td><code>&lt;list&gt;</code></td>
       <td><code>LIST</code></td>
-      <td>A list of numeric values.</td>
+      <td>A list of numeric values (1-argument form).</td>
+    </tr>
+    <tr>
+      <td><code>&lt;string&gt;</code></td>
+      <td><code>STRING</code></td>
+      <td>The vector as a bracketed string, e.g. <code>'[1.1, 1.2, 1.3]'</code>.</td>
+    </tr>
+    <tr>
+      <td><code>&lt;dimension&gt;</code></td>
+      <td><code>INT</code></td>
+      <td>The number of coordinates in the string.</td>
+    </tr>
+    <tr>
+      <td><code>&lt;coordinate type&gt;</code></td>
+      <td>keyword</td>
+      <td>A float type (<code>FLOAT</code>, <code>FLOAT32</code>, <code>FLOAT64</code>, <code>DOUBLE</code>, <code>REAL</code>) or an integer type (<code>INT</code>, <code>INTEGER</code>, <code>INT8</code>, <code>INT16</code>, <code>INT32</code>, <code>INT64</code>). An integer type requires every coordinate to be whole-numbered.</td>
     </tr>
     <tr>
       <td><b>Return Type</b></td>
@@ -138,7 +153,7 @@ Converts a list of numbers to a `VECTOR(N)` type. This is useful when you need t
 
 ```gql
 -- Each dimension value is stored as 32-bit floats, so minor precision differences may occur (e.g., `0.1` becomes `0.10000000149011612`)
-RETURN ai.vector([0.1, 0.2, 0.3])
+RETURN vector([0.1, 0.2, 0.3])
 ```
 
 Result:
@@ -152,6 +167,21 @@ Result:
   ]
 }
 ```
+
+The 3-argument form takes the vector as a bracketed string. Coordinates are always stored as 32-bit floats regardless of the declared coordinate type (it is a validation constraint, not a separate storage type):
+
+```gql
+-- FLOAT coordinate type accepts decimals
+RETURN vector('[1.1, 1.2, 1.3]', 3, FLOAT)
+
+-- INT requires whole-number coordinates
+RETURN vector('[1, 2, 3]', 3, INT)
+
+-- Error: coordinate 1 (1.1) is not representable as INT
+RETURN vector('[1.1, 1.2, 1.3]', 3, INT)
+```
+
+> The list form `vector([1.1, 1.2, 1.3])` is the recommended, stable syntax. The 3-argument constructor is a draft-standard form that may change, and using it emits a warning.
 
 ### ai.embed()
 
