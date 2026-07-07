@@ -181,13 +181,12 @@ CREATE OBJECT PROPERTY @ex:ancestorOf DOMAIN @ex:Person RANGE @ex:Person TRANSIT
 -- Insert D->C->B->A
 INSERT (@ex:Person {name: 'D'})-[@ex:ancestorOf]->(@ex:Person {name: 'C'})-[@ex:ancestorOf]->(@ex:Person {name: 'B'})-[@ex:ancestorOf]->(@ex:Person {name: 'A'})
 
--- Match C->A
-MATCH p = (@ex:Person {name: 'C'})-[@ex:ancestorOf]->(@ex:Person {name: 'A'}) 
-RETURN p  // C->A
+-- Query descendants
+MATCH (@ex:Person {name: 'C'})-[@ex:ancestorOf]->(p@ex:Person) 
+RETURN p.name  // B, A
 
--- Match D->A
-MATCH p = (@ex:Person {name: 'D'})-[@ex:ancestorOf]->(@ex:Person {name: 'A'}) 
-RETURN p  // D->A
+MATCH (@ex:Person {name: 'C'})-[@ex:ancestorOf]->(p@ex:Person)
+RETURN p.name // C, B, A
 ```
 
 Transitive inference is bounded by a per-graph **maximum expansion depth**; chains longer than the limit are not inferred.
