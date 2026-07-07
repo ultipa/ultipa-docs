@@ -13,16 +13,20 @@ Open graphs do not require explicit definitions of labels and properties; they a
 
 ## Creating Open Graphs
 
-Create an open graph `g1`:
+Create an open graph:
 
 ```gql
+-- The simplest form, a graph is open by default
 CREATE GRAPH g1
-```
 
-The optional `ANY` keyword can be used to explicitly indicate an open graph:
-
-```gql
+-- You can also state the open type explicitly with the ANY keyword
 CREATE GRAPH g1 ANY
+
+-- Use IF NOT EXISTS to prevent errors when attempting to create a graph that already exists
+CREATE GRAPH IF NOT EXISTS g1
+
+-- Disable edge id
+CREATE GRAPH g1 WITH EDGE_ID DISABLED
 ```
 
 ## Showing Labels

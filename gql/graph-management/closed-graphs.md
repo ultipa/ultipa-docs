@@ -120,25 +120,28 @@ EDGE WORKS_AT (Contractor)-[{title STRING, since DATE}]->(Company)
 
 ## Creating Closed Graphs
 
-A closed graph's graph type can come from three sources:
-
 ```syntax
-<graph type specification> ::= 
-  <inline graph type> | <inferred graph type> | <named graph type>
+<create closed graph statement> ::= 
+  "CREATE GRAPH" [ "IF NOT EXISTS" ] <graph name> <of graph type> [ <edge id toggle> ]
+
+<of graph type> ::= 
+  <inline graph type> | <like graph type> | <named graph type>
 ```
+
+A closed graph's graph type has three sources:
 
 | Source | How you create it | Resulting graph |
 | -- | -- | -- |
-| **Inline graph type** | `CREATE GRAPH g1 { … }` | Define the graph type inline and it embeds into the graph. |
-| **Inferred graph type** | `CREATE GRAPH g1 LIKE g2` | Copy `g2`'s current graph type for `g1`. No binding. |
-| **Named graph type** | `CREATE GRAPH g1 TYPED gType` | Bound to a named graph type. The graph's schema is owned by `gType`. |
+| **Inline graph type** | `CREATE GRAPH g1 { … }` | Define the graph type inline. |
+| **Like graph type** | `CREATE GRAPH g1 LIKE g2` | Copy graph `g2`'s current graph type for `g1`. No binding. |
+| **Named graph type** | `CREATE GRAPH g1 TYPED gType` | Bound to a named graph type `gType`. |
 
 The inline and `LIKE` forms do not create a named graph type in the database. To create a named graph type that other graphs can bind to. See <a target="_blank" href="/docs/gql/graph-types">Graph Types</a>.
 
-The two operational flavors evolve their schema very differently:
+The two operational flavors evolve their schema differently:
 
 - For graphs created with **inline graph type or `LIKE`**, their schema can be altered directly on the graph. Changes apply only to this graph.
-- For graphs that **bound to named graph type**, direct schema alteration is rejected, because the schema is owned by the named graph type. The error message points you to either alter the named graph type (which propagates to every bound graph) or detach from that graph type first.
+- For graphs that bound to a **named graph type**, direct schema alteration is rejected, because the schema is owned by the named graph type. You either alter the named graph type (which propagates to every bound graph) or detach from that graph type first.
 
 ### Inline Graph Type
 
@@ -172,7 +175,7 @@ CREATE GRAPH g2 {
 }
 ```
 
-### Inferred Graph Type
+### Like Graph Type
 
 Copy the graph type from another closed graph. Only the schema (node and edge types) is copied, no data is included.
 
@@ -202,10 +205,10 @@ Create a graph and bound its schema to the graph type `gType`:
 -- Bare reference
 CREATE GRAPH g3 gType
 
--- :: separator
+-- Use :: separator
 CREATE GRAPH g3 :: gType
 
--- TYPED keyword
+-- Use TYPED keyword
 CREATE GRAPH g3 TYPED gType
 ```
 

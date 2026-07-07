@@ -1,6 +1,12 @@
 # Overview
 
-An Ultipa instance can host multiple **graphs**, each representing a dataset of interconnected nodes and edges.
+A GQLDB instance can host multiple **graphs**, each representing a dataset of interconnected nodes and edges. 
+
+There are three graph modes:
+
+- **Open graph**: A schema-free labeled property graph (LPG) where nodes and edges can be added with any labels and properties on the fly, no predefined type required, ideal for agile work. This is the default when no graph mode is specified. <a target="_blank" href="/docs/gql/open-graphs">Learn More</a>
+- **Closed graph**: A graph bound to a defined graph type (a set of node and edge types), so all data must conform to the declared, enforcing strict data integrity for production-grade applications. <a target="_blank" href="/docs/gql/closed-graphs">Learn More</a>
+- **Ontology graph**: A graph for modeling RDF data with OWL semantics (classes, object/data properties, characteristics, and inference), enabling semantically rich, standards-based knowledge representation. <a target="_blank" href="/docs/ontology">Learn More</a>
 
 ## Showing Graphs
 
@@ -21,7 +27,7 @@ DESC GRAPH myGraph
 
 Each graph provides the following metadata:
 
-| <div table-width="20">Field</div> | Description |
+| Field | Description |
 | -- | -- |
 | `graph_id` | The ID of the graph. |
 | `graph_name` | The unique name of the graph. |
@@ -44,7 +50,7 @@ Each graph provides the following metadata:
 
 ## Selecting Current Graph
 
-Most GQL queries operate on a specific graph. Use the `USE` statement to set the current graph:
+Most GQL queries operate on the current graph. The `USE` statement allows you to select it:
 
 ```gql
 USE myGraph
@@ -63,33 +69,21 @@ RETURN CURRENT_GRAPH
 
 ## Creating Graphs
 
-You can create an **open graph** or a **closed graph**. This design offers both flexibility and control, supporting workflows ranging from agile exploration to production-grade applications demanding strict data integrity.
-
-> GQLDB also supports the **ontology graph** for modeling RDF data with OWL semantics (classes, object/data properties, characteristics, etc.). See <a target="_blank" href="/docs/ontology/">Ontology</a> for details.
+The `CREATE GRAPH` statement creates a new named graph in the database, optionally specifying its mode (open, closed, or ontology) and schema. Default to an open, schema-free graph when no mode is given.
 
 ```syntax
 <create graph statement> ::= 
-  "CREATE GRAPH" [ "IF NOT EXISTS" ] <graph name> [ <graph mode> ]
+  "CREATE GRAPH" [ "IF NOT EXISTS" ] <graph name> [ <graph mode> ] [ <edge id toggle> ]
 
-<graph mode> ::= <open graph> | <closed graph> | <ontology graph>
+<graph mode> ::= <open> | <closed> | <ontology>
 
-<open graph> ::= [ "ANY" ] [ "WITH EDGE_ID DISABLED" ]
-
-<closed graph> ::= <graph type specification> [ "WITH EDGE_ID DISABLED" ]
+<edge id toggle> ::= "WITH EDGE_ID" < "DISABLED" | "ENABLED" >
 ```
 
 **Details**
 
-- If `<graph mode>` is omitted, creates an open graph by default. Learn more about <a target="_blank" href="/docs/gql/open-graphs">Open graphs</a> and <a target="_blank" href="/docs/gql/closed-graphs">Closed graphs</a>.
+- Learn more about different graph modes: <a target="_blank" href="/docs/gql/open-graphs">open graph</a> (default), <a target="_blank" href="/docs/gql/closed-graphs">closed graph</a>, and <a target="_blank" href="/docs/ontology">ontology graph</a>.
 - Edge `_id` is enabled by default, `WITH EDGE_ID DISABLED` disables it. Learn more about <a target="_blank" href="/docs/gql/node-and-edge-ids">Node and Edge IDs</a>.
-
-You can use the `IF NOT EXISTS` clause to prevent errors when attempting to create a graph that already exists. It allows the statement to be safely executed.
-
-```gql
-CREATE GRAPH IF NOT EXISTS myGraph
-```
-
-This creates the graph `myGraph` only if a graph with that name does not exist. If `myGraph` already exists, the statement is ignored without throwing an error.
 
 ## Cloning Graphs
 
@@ -98,7 +92,7 @@ This creates the graph `myGraph` only if a graph with that name does not exist. 
   "CREATE GRAPH" [ "IF NOT EXISTS" ] <graph name> "AS COPY OF" <graph name>
 ```
 
-A new graph can be created from an existing one, cloning both data and schema (if it's a closed graph):
+A new graph can be created from an existing one, cloning both data and its graph type (if it's a closed graph):
 
 ```gql
 CREATE GRAPH newGraph AS COPY OF myGraph
@@ -144,15 +138,10 @@ Drop the graph `myGraph`:
 
 ```gql
 DROP GRAPH myGraph
-```
 
-The `IF EXISTS` clause is used to prevent errors when attempting to delete a graph that does not exist. It allows the statement to be safely executed.
-
-```gql
+-- Use IF EXISTS to prevent errors when attempting to delete a graph that does not exist
 DROP GRAPH IF EXISTS myGraph
 ```
-
-This deletes the graph `myGraph` only if a graph with that name does exist. If `myGraph` does not exist, the statement is ignored without throwing an error.
 
 ## Truncating Graphs
 
