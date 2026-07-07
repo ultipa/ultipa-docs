@@ -22,11 +22,16 @@ Returns a map describing the licensing state actually in effect at runtime — n
 | -- | -- | -- |
 | `edition` | String | `"Community Edition"` or `"Licensed"`. Reflects whether a real license file was loaded and accepted. |
 | `type` | String | License tier: `free` or `paid`. |
-| `licenseId` | String | License identifier; empty on Community Edition / Free Tier. |
+| `licenseVersion` | Integer | Schema version of the signed license payload. Currently `1`. |
+| `licenseId` | String | License identifier (a UUID for paid licenses). Empty on Community Edition / Free Tier. |
 | `customerId`, `customerName` | String | Customer fields from the signed license payload. Empty on Free Tier. |
-| `maxNodes`, `maxEdges` | Integer | Per-graph caps. `10_000_000_000` (10 billion) each on Free Tier. |
-| `maxDatabases` | Integer | Graph count cap. `3` on Free Tier. |
+| `machineFingerprint` | String | The machine fingerprint the license is bound to. Empty on Free Tier. |
+| `maxNodes`, `maxEdges` | Integer | Per-graph caps. `1_000_000` (1 million) each on Free Tier; `-1` means unlimited (paid). |
+| `maxDatabases` | Integer | Graph count cap. `3` on Free Tier; `-1` means unlimited (paid). |
+| `maxCores` | Integer | CPU core cap. `2` on Free Tier; `-1` means unlimited (paid). |
 | `issuedAt`, `expiresAt` | Integer (epoch seconds) | License validity window. `expiresAt = -1` means no expiry (Free Tier default). |
+| `issuedAtStr`, `expiresAtStr` | String | Human-readable (RFC 3339) mirrors of `issuedAt` / `expiresAt`. `expiresAtStr` is `"Never"` when there is no expiry; `issuedAtStr` is empty on Free Tier. |
+| `daysRemaining` | Integer | Whole days until `expiresAt`. `-1` when the license never expires. |
 | `expired` | Boolean | `true` if the wall-clock has passed `expiresAt` — the enforcer flips the database to read-only at that point. |
 | `readOnly` | Boolean | Whether the enforcer is currently forcing read-only mode (expired license, or cap exceeded). |
 | `violations` | Integer | Running count of attempts to exceed a cap since last restart. |

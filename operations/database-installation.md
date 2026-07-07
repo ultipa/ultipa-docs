@@ -54,8 +54,8 @@ A license file is **optional**. The database starts and runs without one, it fal
 | Limit | Free Tier (no license file) | Paid Tier (with valid license file) |
 | -- | -- | -- |
 | Max databases (graphs) | 3 | Unlimited (or as licensed) |
-| Max nodes per graph | 10 billion | Unlimited (or as licensed) |
-| Max edges per graph | 10 billion | Unlimited (or as licensed) |
+| Max nodes per graph | 1 million | Unlimited (or as licensed) |
+| Max edges per graph | 1 million | Unlimited (or as licensed) |
 | Max CPU cores used | 2 | Unlimited (or as licensed) |
 | HA mode | Not available | Available with HA-entitled license |
 
