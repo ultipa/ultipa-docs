@@ -4,7 +4,7 @@
 
 **Indexing**, or **property indexing**, is a technique used to accelerate the retrieval of nodes and edges with specific properties. By avoiding full graph scans, indexes enable the database to quickly locate relevant data. This is especially advantageous when working with large graphs.
 
-An index is created on a single property of a label.
+An index can be created on a single property, or on multiple properties of a label (a **composite index**).
 
 ## Showing Index
 
@@ -30,8 +30,8 @@ The result includes the following fields:
 | `index_name` | Index name. |
 | `entity_type` | `NODE` or `EDGE`. |
 | `label` | The label of the indexed property. |
-| `property` | The indexed property name. |
-| `prefix_length` | For string/text properties, the maximum indexed byte length. `null` if not set. |
+| `property` | The indexed property name. For a composite index, the property tuple joined by commas (e.g. `lastName, firstName`). |
+| `prefix_length` | For string/text properties, the maximum indexed length. `null` if not set. For a composite index with per-property lengths, a comma-joined list where `-` marks a full (unlimited) property (e.g. `10, -`); `null` if no property has a length. |
 | `status` | Index status: `ready`, `building`, or `error`. |
 | `progress` | Build progress (e.g., `100%`, `50.0% (500/1000)`). |
 | `indexed_count` | Number of entries indexed. |
@@ -51,25 +51,46 @@ You can create an index using the `CREATE INDEX` statement. The index is built a
 ```syntax
 <create index statement> ::=
   "CREATE INDEX" [ <index name> ] "ON" < "NODE" | "EDGE" > <label name>
-  "(" <property name> [ "(" <length> ")" ] ")"
+  "(" <property spec> [ "," <property spec> ]... ")"
+
+<property spec> ::= <property name> [ "(" <length> ")" ]
 ```
 
 **Details**
 
-- The `<index name>` is optional. If omitted, the system assigns a generated name of the form `idx_<label>_<property>` (e.g., `CREATE INDEX ON NODE card (balance)` yields `idx_card_balance`). If that name is already taken, a numeric suffix is appended (`idx_card_balance_2`, `_3`, …) so repeated unnamed creates on the same column don't collide.
+- If the `<index name>` is omitted, the generated name joins all properties: `idx_<label>_<prop1>_<prop2>_…` (e.g. `idx_Person_lastName_firstName`), with a numeric suffix on collision.
 - For `STRING` or `TEXT` properties, you can optionally specify `<length>` to limit the number of characters indexed per value. If omitted, the full string is indexed. See <a href="#String-Length-Limitation">String Length Limitation</a>.
+- For a composite index:
+  - The property order matters: `(lastName, firstName)` and `(firstName, lastName)` are different indexes.
+  - A node or edge is indexed only if it has all the indexed properties. If any property value is missing or `null`, the entity is not indexed and queries on it fall back to a label scan.
+  - One composite index is allowed per exact property tuple on a label. A different tuple, including a prefix like `(lastName)` or a longer `(lastName, firstName, age)`, is a distinct index and can coexist. A property cannot appear twice in the same list.
 
 ```gql
--- Index for the balance property of card nodes
+-- Index on balance of card nodes
 -- Index name auto-generated as idx_card_balance
 CREATE INDEX ON NODE card (balance)
 
--- Index for the STRING-type property name of card nodes, limiting the indexed length to 10 characters
+-- Index on name (STRING-type) of card nodes, limiting the indexed length to 10 characters
 CREATE INDEX name ON NODE card (name(10))
 
--- Index transAmount for the amount property of transfer edges
+-- Named index on amount of transfer edges
 CREATE INDEX transAmount ON EDGE transfer (amount)
 ```
+
+A **composite index** covers two or more properties of a label as an ordered tuple. It serves queries that filter or sort on those properties together, and can replace intersecting several single-property indexes.
+
+List the properties in order inside the parentheses. Each property may carry its own `STRING`/`TEXT` length limit:
+
+```gql
+-- Composite index on (lastName, firstName) of Person nodes
+-- Index name auto-generated as idx_Person_lastName_firstName
+CREATE INDEX ON NODE Person (lastName, firstName)
+
+-- Named composite index with a per-property length limit on the first property
+CREATE INDEX fullName ON NODE Person (lastName(20), firstName)
+```
+
+For which queries a composite index accelerates, see <a href="#Leftmost-Prefix-Matching">Leftmost-Prefix Matching</a> and <a href="#Ordering-and-Grouping">Ordering and Grouping</a> under Using Indexes.
 
 ## Renaming Index
 
@@ -152,6 +173,40 @@ RETURN e
 MATCH (p:Person WHERE p.name STARTS WITH 'Al')
 RETURN p.name
 ```
+
+### Leftmost-Prefix Matching
+
+A composite index on `(a, b, c)` serves a query that constrains a **leftmost prefix** of its properties: equality on the leading properties, optionally followed by a single range or `STARTS WITH` on the next property. Any condition the index does not cover is re-applied to the candidate rows.
+
+Assuming an index on `(a, b, c)`:
+
+| Query condition | Uses the index? |
+| -- | -- |
+| `a = X` | Yes, on `a` |
+| `a = X AND b = Y` | Yes, on `a, b` |
+| `a = X AND b = Y AND c = Z` | Yes, full tuple |
+| `a = X AND b STARTS WITH 'Sm'` | Yes, equality on `a`, prefix on `b` |
+| `a = X AND b > 5` | Yes, equality on `a`, range on `b` (properties after a range are not used) |
+| `a = X AND c = Z` | Partially, on `a` only (`c` is applied as a filter) |
+| `b = Y AND c = Z` (skips leading `a`) | No, falls back to a label scan |
+
+### Ordering and Grouping
+
+A composite index also accelerates `ORDER BY` and `GROUP BY` on a leftmost prefix of its properties, avoiding a separate sort or grouping pass. This requires the index to cover every node or edge of the label (no rows missing due to a null property).
+
+```gql
+-- Ordered walk straight off the (lastName, firstName) index, no sort step
+MATCH (n:Person)
+RETURN n.lastName, n.firstName
+ORDER BY n.lastName, n.firstName
+
+-- Grouped counts read directly from the index
+MATCH (n:Person)
+RETURN n.lastName, COUNT(*)
+GROUP BY n.lastName
+```
+
+All `ORDER BY` properties must share the same direction (all ascending or all descending). A mixed-direction order (e.g. `ORDER BY n.lastName ASC, n.firstName DESC`) falls back to a sort.
 
 ### String Length Limitation
 
