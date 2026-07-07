@@ -351,12 +351,12 @@ Grant via RBAC; see <a href="/docs/rbac" target="_blank">Access Control</a> for 
 
 ## File Extensions & Format
 
-| Type | Extension |
-| -- | -- |
-| Full graph backup | `.gqlbackup.tar.gz` |
-| Incremental backup | `.gqlbackup.inc.tar.gz` |
+| Type | Compressed (default) | Uncompressed (`{compress: false}`) |
+| -- | -- | -- |
+| Full graph backup | `.gqlbackup.tar.gz` | `.gqlbackup.tar` |
+| Incremental backup | `.gqlbackup.inc.tar.gz` | `.gqlbackup.inc.tar` |
 
-> Do not include the extension when specifying the destination path in `BACKUP GRAPH` or `db.backup()` — it is added automatically.
+> Do not include the extension when specifying the destination path in `BACKUP GRAPH` or `db.backup()` — it is added automatically. The compressed `.gz` variants are the default; passing `{compress: false}` produces the plain-tar variants above (e.g. `db.backup("/data/backups/mygraph", {compress: false})` writes `mygraph.gqlbackup.tar`).
 
 Internal format details:
 
