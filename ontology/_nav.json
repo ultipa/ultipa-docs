@@ -46,6 +46,10 @@
       "title": "Using Ontology Labels & IRIs"
     },
     {
+      "file": "federated-querying.md",
+      "title": "Federated Querying"
+    },
+    {
       "file": "inspecting.md",
       "title": "Inspecting Ontologies"
     },
