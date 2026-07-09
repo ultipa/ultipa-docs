@@ -40,20 +40,51 @@ A **prefix** is a short alias for a long IRI (Internationalized Resource Identif
 
 For example, after loading `foaf` as an alias for `http://xmlns.com/foaf/0.1/`, the term `<http://xmlns.com/foaf/0.1/Person>` can be written as the ontology label `@foaf:Person` in GQL graph patterns.
 
-Prefixes are loaded per-graph. After creating an ontology graph, you start with no prefixes loaded. To load prefixes:
+Prefixes are loaded per-graph. After creating an ontology graph, you start with no prefixes loaded.
+
+### Standard Prefixes
+
+Load all built-in standard prefixes:
 
 ```gql
--- Load all built-in standard prefixes (foaf, rdf, rdfs, owl, xsd, etc.)
 LOAD ALL PREFIX
+```
 
--- Load common vocabularies
-LOAD PREFIX foaf FROM 'http://xmlns.com/foaf/0.1/'
+It registers the built-in standard set below in one step. These cover the common RDF, RDFS, OWL, and vocabulary namespaces:
+
+| Prefix | Namespace IRI |
+| -- | -- |
+| `rdf` | `http://www.w3.org/1999/02/22-rdf-syntax-ns#` |
+| `rdfs` | `http://www.w3.org/2000/01/rdf-schema#` |
+| `owl` | `http://www.w3.org/2002/07/owl#` |
+| `xsd` | `http://www.w3.org/2001/XMLSchema#` |
+| `foaf` | `http://xmlns.com/foaf/0.1/` |
+| `schema` | `http://schema.org/` |
+| `dc` | `http://purl.org/dc/elements/1.1/` |
+| `dcterms` | `http://purl.org/dc/terms/` |
+| `skos` | `http://www.w3.org/2004/02/skos/core#` |
+| `prov` | `http://www.w3.org/ns/prov#` |
+| `geo` | `http://www.opengis.net/ont/geosparql#` |
+| `time` | `http://www.w3.org/2006/time#` |
+| `dcat` | `http://www.w3.org/ns/dcat#` |
+| `org` | `http://www.w3.org/ns/org#` |
+
+Any prefix outside this set (e.g. a domain vocabulary like `dbo`) must be loaded explicitly with `LOAD PREFIX`.
+
+### Loading a Prefix
+
+To load a prefix:
+
+```gql
+-- Load a vocabulary outside the standard set (prefix name + namespace IRI)
 LOAD PREFIX ex FROM 'http://example.org/'
-LOAD PREFIX rdfs FROM 'http://www.w3.org/2000/01/rdf-schema#'
+LOAD PREFIX dbo FROM 'http://dbpedia.org/ontology/'
 
 -- FROM also accepts an IRI literal (angle-bracketed)
-LOAD PREFIX foaf FROM <http://xmlns.com/foaf/0.1/>
+LOAD PREFIX dbo FROM <http://dbpedia.org/ontology/>
 ```
+
+### Bulk-Loading from an RDF Document
 
 To bulk-load all prefixes declared in an RDF document at a URL or file path:
 
@@ -63,16 +94,22 @@ LOAD PREFIX ALL FROM <http://xmlns.com/foaf/spec/index.rdf>
 LOAD PREFIX ALL FROM 'file:///srv/onto/foaf.ttl'
 ```
 
-A few things follow from this:
+### Aliases and IRI Identity
+
+A few things follow from prefixes being local aliases:
 
 - The prefix is just your local alias for the full IRI. `LOAD PREFIX bigbird FROM 'http://xmlns.com/foaf/0.1/'` works, and `@bigbird:Person` then means the same FOAF Person that `@foaf:Person` would. By convention, reuse the community-standard names (`foaf`, `rdfs`, `schema`, `ex`).
 - Identity is by full IRI, not by short name. FOAF's `Person` (`http://xmlns.com/foaf/0.1/Person`) and Schema.org's `Person` (`http://schema.org/Person`) are distinct classes in the database even though both spell their local name `Person`; the prefix is what keeps them apart. A single node can be tagged as both without contradiction.
+
+### Viewing Prefixes
 
 View loaded prefixes:
 
 ```gql
 SHOW PREFIX
 ```
+
+### Dropping Prefixes
 
 Drop a prefix:
 
