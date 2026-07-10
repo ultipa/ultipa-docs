@@ -2,7 +2,7 @@
 
 ## Overview
 
-Federation lets a query reach data held in a **remote SPARQL service** (e.g. DBpedia, Wikidata, or an internal triple store) and combine it with local graph data in a single GQL query. A service is registered once with `CREATE SERVICE`, then queried with `FROM SERVICE` placed in the query pipeline. GQLDB translates the `FROM SERVICE` block to SPARQL, sends it to the endpoint, and maps the results back into the query.
+Federation lets a query reach data held in a **remote SPARQL service** (e.g. DBpedia, Wikidata, or an internal triple store) and combine it with local graph data in a single GQL query. A service is registered once with `CREATE SERVICE`, then queried with `FROM SERVICE` placed in the query pipeline; alternatively, `FROM SERVICE` can name an endpoint IRI inline, with no prior registration. GQLDB translates the `FROM SERVICE` block to SPARQL, sends it to the endpoint, and maps the results back into the query.
 
 ## Service Management
 
@@ -95,16 +95,18 @@ The `FROM SERVICE` statement allows you to run a query against a remote service 
 
 ```syntax
 <from service statement> ::=
-  "FROM SERVICE" <service name>
+  "FROM SERVICE" <service reference> 
   [ "GRAPH" <iri> ] [ "NO CACHE" | "REFRESH" ]
   "{" <remote query> "}"
+
+<service reference> ::= <service name> | <endpoint iri>
 
 <remote query> ::= <gql query> | <gql graph pattern>
 ```
 
 **Details**
 
-- `<service name>` is registered with `CREATE SERVICE`.
+- The `<service reference>` is either a `<service name>` registered with `CREATE SERVICE`, or an `<endpoint iri>` given inline (see <a href="#Inline-Endpoint-IRI">Inline Endpoint IRI</a>).
 - `GRAPH <iri>` targets a named graph on the remote endpoint, see <a href="#Targeting-a-Named-Graph">Targeting a Named Graph</a>.
 - `NO CACHE` / `REFRESH` override the response cache (see <a href="#Per-Call-Cache-Control">Per-Call Cache Control</a>).
 - The `<remote query>` is translated to SPARQL: its `MATCH`/`WHERE` become triples and `FILTER`s, `RETURN [DISTINCT]` becomes `SELECT [DISTINCT]`, `ORDER BY` becomes `ORDER BY`, and `LIMIT`/`SKIP` become `LIMIT`/`OFFSET`. All of it runs on the endpoint.
@@ -179,6 +181,19 @@ The block is a self-contained remote query, so its `LIMIT` and `ORDER BY` transl
 FROM SERVICE dbpedia { MATCH (p@foaf:Person) RETURN p ORDER BY p LIMIT 5 }
 RETURN p
 ```
+
+### Inline Endpoint IRI
+
+Instead of a registered service name, `FROM SERVICE` can take the endpoint IRI directly. This is handy for a one-off query against a public endpoint, where registering a service first is unnecessary:
+
+```gql
+FROM SERVICE <https://dbpedia.org/sparql> { MATCH (p@foaf:Person) RETURN p LIMIT 5 }
+RETURN p
+```
+
+The inline endpoint behaves like a service created with only a `URL`: `TYPE SPARQL`, the default 30-second timeout, and the default 5-minute cache TTL. Everything else works the same as a named service, `GRAPH <iri>`, `NO CACHE` / `REFRESH`, push-down, and correlation all apply.
+
+Use a registered service (`CREATE SERVICE`) when you need non-default options (`TIMEOUT`, `CACHE`, `CREDENTIALS`), reusable health and cache metrics under a stable name (`SHOW SERVICES`, `SHOW SERVICE CACHE STATS`), or simply a short name repeated across many queries. An inline IRI cannot carry credentials, so it only fits open, unauthenticated endpoints.
 
 ### Constraining the Remote with Property Specs
 
