@@ -6,7 +6,7 @@ Move RDF in and out of an ontology graph:
 
 - `LOAD ONTOLOGY` brings in external **schema (T-Box) triples**
 - `LOAD DATA` brings in **instance (A-Box) triples**
-- `EXPORT` serializes the graph's instance data back out to RDF
+- `EXPORT` serializes RDF back out, scoped to instance data (`EXPORT`), the schema (`EXPORT ONTOLOGY`), or both (`EXPORT ALL`)
 
 To inspect or visualize an ontology once it's loaded, see <a href="/docs/ontology/inspecting" target="_blank">Inspecting & Visualizing Ontologies</a>.
 
@@ -114,21 +114,32 @@ For those, `LOAD ONTOLOGY` first, then `LOAD DATA`. Under `STRICT` enforcement t
 
 ## Exporting RDF
 
-`EXPORT` serializes the current graph back to RDF, i.e., the inverse of `LOAD DATA`. Each node becomes a subject, each ontology label an `rdf:type` triple, each literal property a data-property triple, and each edge an object-property triple. It serializes **instance data only**, the ontology schema (class / property definitions and axioms) lives in metadata and is not exported; to include it, materialize it into the graph first with <a target="_blank" href="/docs/ontology/inspecting#Projecting-Ontologies-as-a-Graph">`LOAD ONTOLOGY GRAPH`</a>.
+`EXPORT` serializes back to RDF, inverting the `LOAD` statements. For instance data, each node becomes a subject, each ontology label an `rdf:type` triple, each literal property a data-property triple, and each edge an object-property triple; `LIST` properties are written back as real RDF collections, so their order round-trips.
+
+A scope keyword selects what is serialized. Omit it for instance data (A-Box), `ONTOLOGY` for the schema only (T-Box: class and property definitions, hierarchy, and axioms / restrictions, as OWL triples), or `ALL` for both in one document:
 
 ```gql
--- The serialized RDF is returned as a single result column named 'rdf'
+-- Instance data (A-Box), returned as a single result column named 'rdf'
 EXPORT FORMAT NTRIPLES
 
--- The RDF is written to a file
+-- Instance data, written to a file
 EXPORT TO 'file:///tmp/example.ttl' FORMAT TURTLE
+
+-- The ontology schema (T-Box) on its own
+EXPORT ONTOLOGY FORMAT TURTLE
+
+-- Both the T-Box and the A-Box in one document
+EXPORT ALL TO 'file:///tmp/graph.ttl' FORMAT TURTLE
 ```
 
-Accepted `FORMAT` keywords:
+**Details**
 
-- `NTRIPLES`: flat one-triple-per-line N-Triples.
-- `TURTLE`: grouped and prefix-compacted (declares only the prefixes it actually uses; `rdf:type` is written as `a`).
-- `NQUADS` / `TRIG`: carry the named-graph dimension
+- `FORMAT` is required in every form. Accepted formats:
+  - `NTRIPLES`: flat one-triple-per-line N-Triples.
+  - `TURTLE`: grouped and prefix-compacted (declares only the prefixes it actually uses; `rdf:type` is written as `a`).
+  - `NQUADS` / `TRIG`: carry the named-graph dimension
+- `TO <destination>` controls where the RDF file is written to; if omitted, the RDF is returned inline as a single result column named `rdf`.
+- Output is deterministically ordered, so exporting the same graph twice produces byte-for-byte identical results.
 
 ## Notes & Limitations
 
