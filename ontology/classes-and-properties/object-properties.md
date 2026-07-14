@@ -185,7 +185,7 @@ INSERT (@ex:Person {name: 'D'})-[@ex:ancestorOf]->(@ex:Person {name: 'C'})-[@ex:
 MATCH (@ex:Person {name: 'C'})-[@ex:ancestorOf]->(p@ex:Person) 
 RETURN p.name  // B, A
 
-MATCH (@ex:Person {name: 'C'})-[@ex:ancestorOf]->(p@ex:Person)
+MATCH (@ex:Person {name: 'D'})-[@ex:ancestorOf]->(p@ex:Person)
 RETURN p.name // C, B, A
 ```
 
