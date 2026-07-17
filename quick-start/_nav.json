@@ -1,0 +1,33 @@
+{
+  "name": "Quick Start",
+  "navigation": [
+    {
+      "file": "welcome.md",
+      "title": "Introduction"
+    },
+    {
+      "file": "install-and-connect.md",
+      "title": "1. Install & Connect"
+    },
+    {
+      "file": "load-data.md",
+      "title": "2. Load Your Data"
+    },
+    {
+      "file": "query-data.md",
+      "title": "3. Query Your Data"
+    },
+    {
+      "file": "run-algorithms.md",
+      "title": "4. Run Graph Algorithms"
+    },
+    {
+      "file": "work-with-ai.md",
+      "title": "5. Work with an AI Agent"
+    },
+    {
+      "file": "next-steps.md",
+      "title": "6. Next Steps"
+    }
+  ]
+}

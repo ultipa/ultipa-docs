@@ -3,6 +3,12 @@
   "label": "v6.2",
   "products": [
     {
+      "id": "quick-start",
+      "name": "Quick Start",
+      "published": true,
+      "description": "Install, load, query, and analyze your data with GQLDB in 15 minutes"
+    },
+    {
       "id": "gql",
       "name": "ISO GQL",
       "published": true,
