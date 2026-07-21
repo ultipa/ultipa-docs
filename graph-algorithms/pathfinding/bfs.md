@@ -44,6 +44,7 @@ INSERT (A:default {_id: "A"}), (B:default {_id: "B"}),
 | `startNode` | `STRING` | / | **Required.** Starting node `_id`. |
 | `maxDepth` | `INT` | `-1` | Maximum depth to traverse (-1 = unlimited). |
 | `direction` | `STRING` | `out` | Edge direction: `in`, `out`, or `both`. |
+| `maxResults` | `INT` | `-1` | Stop after visiting this many nodes (-1 = unlimited). This bounds the traversal itself, which is useful on very high-degree hubs where an outer `LIMIT` does not short-circuit the walk. |
 
 ## Run Mode
 
