@@ -33,6 +33,8 @@ The basic form returns a compact `(property, value)` row set. Append `ALL` to ad
 | `edgeCount` | integer | Edges currently in the cache. Same fallback rule as `nodeCount`. |
 | `topologyMemory` | string | Formatted bytes used by the topology cache. Always present. |
 | `propertyMemory` | string | Formatted bytes used by the property cache. Always present. |
+| `propertyCacheResident` | integer | Number of nodes whose properties are resident in the compute property cache. Present only when the cache holds properties or is partial. |
+| `propertyCacheComplete` | boolean | `false` when the property cache is PARTIAL, meaning fewer nodes are resident than the topology holds because some were budget-skipped at build time (`PROPERTY_LIMIT` exhausted). Filtered reads on the skipped nodes fall back to storage even though `buildState` is `READY`, which can silently return incomplete results. Alarm on `false`, then raise `PROPERTY_LIMIT` and rebuild. Present only when the cache holds properties or is partial. |
 | `totalMemory` | string | Sum of topology + property memory. Always present. |
 | `topologyVersion` | integer | Snapshot version, incremented on every rebuild. Present after first build. |
 | `lowMem` | boolean | Whether the low-memory (32-bit topology) preference is set for this graph. |
@@ -75,6 +77,7 @@ The basic form returns a compact `(property, value)` row set. Append `ALL` to ad
 | Property | Type | Notes |
 | -- | -- | -- |
 | `buildState` | string | Current build lifecycle state (e.g. `NONE`, `BUILDING`, `READY`). Always present. |
+| `computeHealth` | string | Health summary for an enabled compute graph. Reports `ok` when healthy, a `degraded` message when the build is `READY` but the property cache is PARTIAL (some nodes were budget-skipped and are read from storage), or an `enabled but topology not built` message when compute is on but no snapshot is built or building. Each degraded message includes the remedial action. Present only when compute is enabled. |
 | `buildInProgress` | boolean | Present only when a build is running. |
 | `buildProgress` | float | Present only when `buildInProgress=true`; range `0.0`–`1.0`. |
 | `nodesLoaded` | integer | Nodes scanned so far in the in-flight build. Present only during build. |
