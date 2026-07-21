@@ -58,7 +58,7 @@ The result includes the following fields:
 | `schema_name` | The label of the full-text index. |
 | `properties` | The indexed properties. |
 | `analyzer` | The text analyzer used. |
-| `status` | Index status: `ready`, `loading`, or `building`. |
+| `status` | Index status: `ready`, `loading`, `building`, or `unloaded` (its in-memory structure was released, and reloads on the next search or `ft.load`). |
 | `doc_count` | Number of documents indexed. |
 | `progress` | Build/loading progress. |
 
@@ -392,4 +392,59 @@ RETURN suggestion ORDER BY docFreq DESC
 -- Works script-agnostically: a CJK prefix returns the segmented terms that start with it
 CALL ft.suggest('zhDesc', '社', {limit: 5}) YIELD suggestion, docFreq
 RETURN suggestion ORDER BY docFreq DESC
+```
+
+### ft.unload
+
+Releases a full-text index's in-memory structure (its posting lists, usually the dominant part of the index's memory) back to the operating system. The index stays registered and its on-disk data intact, so it remains searchable; the next search, or a `ft.load` call, streams it back into memory. `SHOW FULLTEXT` then reports the index with `status = unloaded`. This is useful for deployments with many large but rarely searched indexes.
+
+```syntax
+CALL ft.unload(<index name>)
+YIELD <column>
+```
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| -- | -- | -- |
+| `<index name>` | `STRING` | Name of a full-text index (see `SHOW FULLTEXT`). |
+
+**Return columns**:
+
+| Column | Type | Description |
+| -- | -- | -- |
+| `result` | `STRING` | Outcome message. |
+
+```gql
+-- Release a rarely-used index's memory
+CALL ft.unload('prodDesc') YIELD result
+RETURN result
+```
+
+### ft.load
+
+Loads (prewarms) a full-text index's in-memory structure and waits until it is ready to search. Use it to pay the load cost at a chosen moment rather than on the first user query, for example to restore the fast in-memory path after a `ft.unload`, or to warm an index before a query burst.
+
+```syntax
+CALL ft.load(<index name> [ , <timeoutMs> ])
+YIELD <column>
+```
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| -- | -- | -- |
+| `<index name>` | `STRING` | Name of a full-text index (see `SHOW FULLTEXT`). |
+| `<timeoutMs>` | `INTEGER` | Optional. Maximum time to wait for the load, in milliseconds (default `60000`, minimum `1`). |
+
+**Return columns**:
+
+| Column | Type | Description |
+| -- | -- | -- |
+| `result` | `STRING` | Outcome message. |
+
+```gql
+-- Prewarm before a query burst
+CALL ft.load('prodDesc') YIELD result
+RETURN result
 ```
