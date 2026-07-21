@@ -61,6 +61,7 @@ The result includes the following fields:
 | `status` | Index status: `ready`, `loading`, `building`, or `unloaded` (its in-memory structure was released, and reloads on the next search or `ft.load`). |
 | `doc_count` | Number of documents indexed. |
 | `progress` | Build/loading progress. |
+| `memory` | In-memory footprint of the index's posting structure, in bytes. `0` when the index is `unloaded`. |
 
 ## Creating Full-text Index
 

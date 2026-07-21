@@ -34,9 +34,15 @@ SHOW PREFIX
 -- Every class, with localName, superClasses, and label
 SHOW CLASSES
 
--- Every object/data property, with localName, type, domain, range, and characteristics
+-- Every object/data property and its full metadata
 SHOW PROPERTIES
+
+-- Restrict to one kind
+SHOW OBJECT PROPERTIES
+SHOW DATA PROPERTIES
 ```
+
+`SHOW PROPERTIES` returns these columns for each property: `property`, `localName`, `prefix`, `type`, `label`, `comment`, `domain`, `range`, `subPropertyOf`, `equivalentTo`, `inverseOf`, `propertyChain`, `cardinality`, and `characteristics`. `inverseOf` and `propertyChain` apply to object properties only.
 
 ## Projecting Ontologies as a Graph
 

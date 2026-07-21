@@ -34,6 +34,7 @@ The result includes the following fields:
 | `quantized` | Whether the index stores quantized (compressed) vectors. |
 | `quantization` | Quantization scheme: `sq8`, `pq`, or `none` (full precision). |
 | `memory_bytes` | Memory usage of the index in bytes. |
+| `deleted_count` | Number of freed HNSW slots awaiting reuse (left by deleted or re-inserted vectors). A persistently large value means the index would benefit from a `REBUILD VECTOR INDEX` to compact it. |
 | `status` | Index status: `READY` (serving queries), `BUILDING` (initial bulk build in progress), `REBUILDING` (`REBUILD VECTOR INDEX` is running; queries see an empty index until done), or `STALE` (loaded from disk but the on-disk manifest didn't match — usually caused by a crash mid-save; the index serves no results until rebuilt). |
 
 ## Creating Vector Index

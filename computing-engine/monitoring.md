@@ -59,6 +59,8 @@ The basic form returns a compact `(property, value)` row set. Append `ALL` to ad
 | Property | Type | Notes |
 | -- | -- | -- |
 | `nodeIdCacheMemory` | string | Always-resident `_id` → internal-id map. Counts against the heap but not against `topologyMemory` / `propertyMemory`. Present when `> 0`. |
+| `vectorIndexMemory` | string | Total heap used by the current graph's vector (HNSW) indexes. Counts against the heap but not against `topologyMemory` / `propertyMemory`. Present when the graph has vector indexes. |
+| `fulltextIndexMemory` | string | Total heap used by the current graph's full-text indexes' in-memory structures. Counts against the heap but not against `topologyMemory` / `propertyMemory`. Present when the graph has full-text indexes. |
 | `goMemLimit` | string | Effective `GOMEMLIMIT` (`unlimited (GOMEMLIMIT not set)` when unset). The Go runtime's soft memory cap — the actual ceiling on a build, regardless of physical RAM. Always present. |
 | `goMemInUse` | string | Bytes the Go runtime has mapped and not released. Tracks against `goMemLimit`. Always present. |
 | `heapInUse` | string | `runtime.MemStats.HeapInuse` — the in-use heap. Always present. |
