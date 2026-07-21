@@ -18,6 +18,8 @@ GQLDB acts on ontology axioms in two distinct ways, on opposite sides of a query
 | **Inference** | `SUBCLASS OF`, `EQUIVALENT TO`, `owl:unionOf`/`intersectionOf`/`oneOf`/`equivalentClass`, `SYMMETRIC`, `TRANSITIVE`, `REFLEXIVE`, `INVERSE OF`, `SUBPROPERTY OF`, `PROPERTY CHAIN`, `owl:equivalentProperty` |
 | **Validation** | `DISJOINT WITH`, `DOMAIN`/`RANGE`, `ASYMMETRIC`, `FUNCTIONAL`, `INVERSE_FUNCTIONAL`, `IRREFLEXIVE`, `CARDINALITY`, data-property XSD type |
 
+> **Where inference applies.** Inferred facts are derived during `MATCH` traversal, including the `KHOP` and `SHORTEST`/`CHEAPEST` forms, so inferred edges are honored there. Graph algorithms (`algo.*`, such as PageRank and Louvain) and projections operate on the physically stored edges only. Inferred edges are produced at query time and are not materialized into the compute topology or a projection snapshot, so they are not visible to algorithms or projection-scoped runs.
+
 ## Enforcement Modes
 
 Control how strictly ontology rules are validated with three modes:
