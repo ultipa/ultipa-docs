@@ -1,12 +1,12 @@
 # Database Installation
 
-Install GQLDB on a Linux or macOS host by downloading the distribution, placing the license file, and starting the database service. The distribution is delivered as a native executable for the target platform, there is no container runtime required and no separate service stack to install.
+Install GQLDB on a Linux, macOS, or Windows host by downloading the distribution, placing the license file, and starting the database service. The distribution is delivered as a native executable for the target platform, there is no container runtime required and no separate service stack to install. Windows is supported for the Community Edition (Windows 10/11); production deployments run on Linux.
 
 ## System Requirements
 
 | Resource | Minimum (single-node, evaluation) | Recommended (production, single-node) |
 | -- | -- | -- |
-| **OS** | Linux (kernel ≥ 4.x) or macOS (Darwin) | Linux x86_64 or arm64 |
+| **OS** | Linux (kernel ≥ 4.x), macOS (Darwin), or Windows 10/11 (Community Edition) | Linux x86_64 or arm64 |
 | **CPU** | 2 cores | 8+ cores |
 | **Memory** | 4 GB RAM | 32 GB+ RAM (sized to graph + compute cache) |
 | **Disk** | 10 GB free, local SSD strongly preferred | NVMe SSD; size = 3× raw data for headroom (LSM compaction + WAL + backups) |
@@ -17,10 +17,18 @@ Witness nodes in HA mode have far smaller resource needs (~50 MB RSS, tens of MB
 
 ## Quick Install (Community Edition)
 
-The install script downloads the latest GQLDB Community server for your platform and installs it as the `ultipa-gqldb` command:
+The install script downloads the latest GQLDB Community server for your platform and installs it as the `ultipa-gqldb` command.
+
+**Linux / macOS** (in a terminal):
 
 ```bash
 curl -fsSL https://download.ultipa.com/gqldb/install.sh | sh
+```
+
+**Windows 10/11** (in PowerShell):
+
+```powershell
+irm https://download.ultipa.com/gqldb/install.ps1 | iex
 ```
 
 After the script completes, verify the command is on your PATH:
@@ -232,10 +240,18 @@ Under a service manager, use the service-manager's stop command (e.g., `systemct
 
 The update procedure differs between editions:
 
-**1. Community Edition:** re-run the install script. It's idempotent and pulls the latest Community release:
+**1. Community Edition:** re-run the install script. It's idempotent and pulls the latest Community release.
+
+On Linux / macOS:
 
 ```bash
 curl -fsSL https://download.ultipa.com/gqldb/install.sh | sh
+```
+
+On Windows 10/11 (PowerShell):
+
+```powershell
+irm https://download.ultipa.com/gqldb/install.ps1 | iex
 ```
 
 **2. Commercial Edition:** obtain the new distribution from your account team and replace the existing executable in place.

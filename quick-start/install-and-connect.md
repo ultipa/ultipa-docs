@@ -2,20 +2,30 @@
 
 There are two paths to spin up a GQLDB instance:
 
-- **[Run locally](#Option-A-Run-Locally)**: A database running on your machine, requires macOS or Linux (Windows via WSL2).
+- **[Run locally](#Option-A-Run-Locally)**: A database running on your machine, on macOS, Linux, or Windows.
 - **[Ultipa Cloud](#Option-B-Ultipa-Cloud)**: A fully-managed database with nothing to install.
 
 However you launched it, you can use **Ultipa Manager** to connect to it, a visual tool for managing your database and running queries.
 
 ## Option A: Run Locally
 
-Open your terminal and run:
+Open your terminal and run the GQLDB installer for your platform.
+
+**macOS / Linux** (in a terminal):
 
 ```bash
-# Download the latest GQLDB Community Edition
 curl -fsSL https://download.ultipa.com/gqldb/install.sh | sh
+```
 
-# Verify installation
+**Windows 10/11** (in PowerShell):
+
+```powershell
+irm https://download.ultipa.com/gqldb/install.ps1 | iex
+```
+
+Then verify the installation:
+
+```bash
 ultipa-gqldb -version
 ```
 
@@ -25,7 +35,8 @@ Create a database:
 
 ```bash
 # Create a project directory and enter it
-mkdir my-gqldb && cd my-gqldb
+mkdir my-gqldb
+cd my-gqldb
 
 # Create a database
 ultipa-gqldb -db ./my.gdb -rbac -admin-pass myPassword -port 60061
