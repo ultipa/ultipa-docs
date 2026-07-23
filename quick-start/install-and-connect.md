@@ -50,7 +50,9 @@ A few things worth knowing:
 - The admin credential is created as `admin` / `myPassword`.
 - No license file is needed. The database is initialized with a `default` graph, and you may create one more graph. Each graph has up to 1M nodes and 1M edges, plenty for most demo projects.
 
-> Connecting a local instance to Ultipa Manager is coming soon. For now, use the <a href="/docs/tools/cli" target="_blank">CLI</a> to run queries against your local database.
+To connect to the database and run queries with a visual tool, download the **GQLDB Manager** desktop app from <a href="/download" target="_blank">here</a>, choosing the build for your platform (macOS, Windows, or Linux). Open it, add a new connection to your local instance with host `localhost`, port `60061`, and the `admin` / `myPassword` credentials, then save and open the connection. 
+
+<center><img src="./images/manager-desktop-add-connection.png"></center>
 
 ## Option B: Ultipa Cloud
 

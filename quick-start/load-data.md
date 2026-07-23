@@ -44,7 +44,7 @@ For large datasets or data that lives in files (`CSV`, `JSON`) or another system
 
 - **Data Integration** in Ultipa Manager
 
-<center><img src="./images/manager - data integration.png"></center>
+<center><img src="./images/manager-data-integration.png"></center>
 
 - **Ultipa Transporter** tool. <a href="/docs/tools/transporter" target="_blank">Learn more</a>
 
