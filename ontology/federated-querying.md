@@ -52,6 +52,36 @@ CREATE SERVICE primary
 
 > Requests use SPARQL-protocol HTTP GET while the URL stays short, and switch automatically to a form-encoded POST for long queries (e.g. large correlated `VALUES` push-downs), so endpoint URL-length limits are never hit. A request that exceeds the timeout fails with an error naming the service and the effective limit.
 
+### Altering a Service
+
+Change a registered service's `TIMEOUT`, `CACHE`, `TYPE`, or `CREDENTIALS` in place with `ALTER SERVICE`, instead of dropping and re-creating it.
+
+```syntax
+<alter service statement> ::=
+  "ALTER SERVICE" <service name> "SET" <option> [ { <option> }... ]
+
+<option> ::=
+    "TYPE SPARQL"
+  | "TIMEOUT" <integer> < "MILLISECOND" | "SECOND" | "MINUTE" | "HOUR" >
+  | "CACHE" <integer> < "MILLISECOND" | "SECOND" | "MINUTE" | "HOUR" >
+  | "CREDENTIALS" <auth header string>
+```
+
+**Details**
+
+- Only the options you list change; every other setting keeps its current value.
+- At least one option is required after `SET`, and multiple options may be given in any order.
+- `URL` cannot be changed with `ALTER SERVICE`. Drop and re-create the service to point it at a different endpoint.
+- Changes are picked up on the next federated query, so they take effect without a restart.
+
+```gql
+-- Raise the timeout and extend the cache TTL for a slow endpoint
+ALTER SERVICE dbpedia SET TIMEOUT 90 SECOND CACHE 1 HOUR
+
+-- Rotate the credentials in place
+ALTER SERVICE primary SET CREDENTIALS 'Bearer eyJhbGciOiJIUzI1...new...'
+```
+
 ### Dropping a Service
 
 ```gql
@@ -76,7 +106,7 @@ Result columns:
 | `name` | Service name (used in `FROM SERVICE <name> { … }`). |
 | `url` | Endpoint URL. |
 | `type` | Service kind (currently only `SPARQL`). |
-| `timeout` | Configured request timeout; empty when not set (the 30-second default applies at runtime). |
+| `timeout` | Configured request timeout; empty when not set (the 60-second default applies at runtime). |
 | `cache_ttl` | Configured cache TTL; empty when not set (the 5-minute default applies at runtime). |
 | `requests` | Cumulative requests sent to this service since startup. |
 | `errors` | Cumulative errors (HTTP non-2xx or network failure). |
