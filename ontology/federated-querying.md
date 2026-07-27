@@ -12,9 +12,7 @@ Register a remote endpoint with `CREATE SERVICE`. Only a `URL` is required; the 
 
 ```syntax
 <create service statement> ::=
-  "CREATE SERVICE" <service name>
-  "URL" < <iri> | <url string> >
-  [ "TYPE SPARQL" ]
+  "CREATE SERVICE" <service name> "URL" < <iri> | <url string> > [ "TYPE SPARQL" ]
   [ "TIMEOUT" <integer> < "MILLISECOND" | "SECOND" | "MINUTE" | "HOUR" > ]
   [ "CACHE" <integer> < "MILLISECOND" | "SECOND" | "MINUTE" | "HOUR" > ]
   [ "CREDENTIALS" <auth header string> ]
@@ -24,7 +22,7 @@ Register a remote endpoint with `CREATE SERVICE`. Only a `URL` is required; the 
 
 - `URL` points to the service endpoint. Prefer `https://`; a redirecting `http://` endpoint can drop the POSTed query.
 - `TYPE` is the service kind, currently only `SPARQL` (the default).
-- `TIMEOUT` sets the HTTP request timeout. Omit it to use the default of **30 seconds**.
+- `TIMEOUT` sets the HTTP request timeout. Omit it to use the default of **60 seconds**.
 - `CACHE` sets the cache TTL for responses. Responses are cached by default, so omitting `CACHE` uses the default TTL of **5 minutes** (not "no caching"). Use per-call `NO CACHE` to bypass it, see <a href="#Per-Call-Cache-Control">Per-Call Cache Control</a>.
 - `CREDENTIALS` is sent as-is as the `Authorization` header. Use the full header form: `'Bearer <token>'` for OAuth/JWT, `'Basic <base64(user:password)>'` for HTTP Basic. There is no separate username/password form.
 
@@ -191,7 +189,7 @@ FROM SERVICE <https://dbpedia.org/sparql> { MATCH (p@foaf:Person) RETURN p LIMIT
 RETURN p
 ```
 
-The inline endpoint behaves like a service created with only a `URL`: `TYPE SPARQL`, the default 30-second timeout, and the default 5-minute cache TTL. Everything else works the same as a named service, `GRAPH <iri>`, `NO CACHE` / `REFRESH`, push-down, and correlation all apply.
+The inline IRI must be an absolute `http` or `https` URL with a host; a `file:`, relative, or otherwise malformed IRI is rejected before any request is made. The inline endpoint behaves like a service created with only a `URL`: `TYPE SPARQL`, the default 60-second timeout, and the default 5-minute cache TTL. Everything else works the same as a named service, `GRAPH <iri>`, `NO CACHE` / `REFRESH`, push-down, and correlation all apply.
 
 Use a registered service (`CREATE SERVICE`) when you need non-default options (`TIMEOUT`, `CACHE`, `CREDENTIALS`), reusable health and cache metrics under a stable name (`SHOW SERVICES`, `SHOW SERVICE CACHE STATS`), or simply a short name repeated across many queries. An inline IRI cannot carry credentials, so it only fits open, unauthenticated endpoints.
 
