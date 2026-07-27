@@ -51,12 +51,10 @@ This path pattern reuses the variable `a` to form a ring-like structure that sta
 
 ### Advanced Paths
 
-GQL supports the following advanced path patterns:
+GQLDB also supports the following advanced path patterns:
 
 - <a target="_blank" href="/docs/gql/quantified-paths">Quantified Paths</a>
 - <a target="_blank" href="/docs/gql/questioned-paths">Questioned Paths</a>
-- <a target="_blank" href="/docs/gql/shortest-paths">Shortest Paths</a>
-- <a target="_blank" href="/docs/gql/cheapest-paths">Cheapest Paths</a>
 
 ## Path Variable
 
@@ -141,55 +139,13 @@ Result: `p`
 
 A path selector is used to select a limited number of paths from **each partition** of the match results. When a path pattern matches multiple start and end nodes, the results are conceptually partitioned into distinct pairs of start node and end node. The path selection is performed within each partition, and the result is the union of all paths found for each partition.
 
-<table>
-  <thead>
-    <tr>
-      <th style="width:25%;">Path Selector</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>ALL</code></td>
-      <td><b>The default.</b> Non-selective.</td>
-    </tr>
-    <tr>
-      <td><code>ANY</code></td>
-      <td>Selects any one path from each partition.
-</td>
-    </tr>
-    <tr>
-      <td><code>ANY k</code></td>
-      <td>Selects any <code>k</code> (non-negative integer) paths from each partition. If a partition has fewer than <code>k</code> paths, all are retained.</td>
-    </tr>
-    <tr>
-      <td><code>ALL SHORTEST</code></td>
-      <td rowspan="4">See <a target="_blank" href="/docs/gql/shortest-paths">Shortest Paths</a>.</td>
-    </tr>
-    <tr>
-      <td><code>ANY SHORTEST</code></td>
-    </tr>
-    <tr>
-      <td><code>SHORTEST k</code></td>
-    </tr>
-    <tr>
-      <td><code>SHORTEST k GROUP</code></td>
-    </tr>
-    <tr>
-      <td><code>ALL CHEAPEST</code></td>
-      <td rowspan="4">See <a target="_blank" href="/docs/gql/cheapest-paths">Cheapest Paths</a>.</td>
-    </tr>
-    <tr>
-      <td><code>ANY CHEAPEST</code></td>
-    </tr>
-    <tr>
-      <td><code>CHEAPEST</code></td>
-    </tr>
-    <tr>
-      <td><code>CHEAPEST k</code></td>
-    </tr>
-  </tbody>
-</table>
+| Path Selector	| Description |
+| -- | -- |
+| `ALL` |	**The default.** Non-selective. |
+| `ANY` | Selects any one path from each partition. |
+| `ANY k` |	Selects any `k` (non-negative integer) paths from each partition. If a partition has fewer than `k` paths, all are retained. |
+| Shortest path selectors | See <a target="_blank" href="/docs/gql/shortest-paths">Shortest Paths</a>. |
+| Cheapest path selectors | See <a target="_blank" href="/docs/gql/cheapest-paths">Cheapest Paths</a>. |
 
 The following queries find 1- to 3-step paths between `C1` and target nodes `C3` and `C4`, selecting `ALL` or `ANY` paths from each partition:
 
