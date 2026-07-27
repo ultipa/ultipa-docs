@@ -26,7 +26,7 @@ The simplest empty node pattern matches any node in the graph:
 () 
 ```
 
-Match `Person` nodes and bind them to the variable `n`:
+Match nodes labeled `Person` and bind them to the variable `n`:
 
 <p tit="Node Pattern"></p>
 
@@ -42,7 +42,7 @@ Match nodes whose properties `fullname` and `age` with specific values:
 ({fullname: "John Doe", age: 30})
 ```
 
-Match `Person` nodes where the property `age` is greater than 30, and bind these nodes to the variable `n`:
+Match nodes labeled `Person`, where the property `age` is greater than 30, and bind these nodes to the variable `n`:
 
 <p tit="Node Pattern"></p>
 
@@ -68,14 +68,11 @@ A full edge pattern is represented using a pair of square brackets `[]` and incl
 <full edge pattern> ::=
   <full edge pointing left> | <full edge pointing right> | <full edge any direction>
 
-<full edge pointing left> ::=
-  "<-[" <edge pattern filter> "]-"
+<full edge pointing left> ::= "<-[" <edge pattern filter> "]-"
 
-<full edge pointing right> ::=
-  "-[" <edge pattern filter> "]->"
+<full edge pointing right> ::= "-[" <edge pattern filter> "]->"
 
-<full edge any direction> ::=
-  "-[" <edge pattern filter> "]-"
+<full edge any direction> ::= "-[" <edge pattern filter> "]-"
 
 <edge pattern filter> ::=
   [ <edge variable declaration> ] [ <label expression> ] 
@@ -90,12 +87,12 @@ Match all edges in the graph and bind them to the variable `e`:
 ()-[e]->()
 ```
 
-Match `Works_for` edges whose property `role` has a specific value, and bind them to the variable `e`:
+Match edges labeled `WORKS_FOR` whose property `role` has a specific value, and bind them to the variable `e`:
 
 <p tit="Path Pattern"></p>
 
 ```gql
-()-[e:Works_for {role: "Manager"}]->()
+()-[e:WORKS_FOR {role: "Manager"}]->()
 ```
 
 Match edges where the property `score` is less than 2, and bind them to the variable `e`:
@@ -138,7 +135,7 @@ Node variables and edge variables are collectively referred to as **element vari
 
 A **node variable** is declared in a node pattern, placed before any label or property filters. The value of a node variable represents a list of bound nodes.
 
-The variable `n` is bound to `Person` nodes:
+The variable `n` is bound to nodes labeled `Person`:
 
 ```gql
 MATCH (n:Person)
@@ -147,10 +144,10 @@ RETURN n.name
 
 An **edge variable** is declared in a full edge pattern, placed before any label or property filters. The value of an edge variable represents a list of bound edges.
 
-The variable `e` is bound to edges labeled `Follows`:
+The variable `e` is bound to edges labeled `FOLLOWS`:
 
 ```gql
-MATCH ()-[e:Follows]->()
+MATCH ()-[e:FOLLOWS]->()
 RETURN e
 ```
 
@@ -183,7 +180,7 @@ The label expression supports the following operators:
 | `\|` | Disjunction (OR) |
 | `%` | Wildcard |
 
-Match nodes with the label `Movie` or `Country`:
+Match `Movie` or `Country` nodes:
 
 <p tit="Node Pattern"></p>
 
@@ -191,7 +188,7 @@ Match nodes with the label `Movie` or `Country`:
 (n:Movie|Country)
 ```
 
-Match nodes with labels `Teacher` and `Student`:
+Match nodes with both `Teacher` and `Student` labels:
 
 <p tit="Node Pattern"></p>
 
@@ -215,7 +212,7 @@ Match nodes with any label:
 (n:%)
 ```
 
-Match nodes without a label:
+Match nodes with no label:
 
 <p tit="Node Pattern"></p>
 

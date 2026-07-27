@@ -2,13 +2,12 @@
 
 ## Overview
 
-A questioned path makes a path pattern **optional** — it matches zero or one occurrence. This is useful when you want to include a connection in a pattern but it may not always exist.
+A questioned path makes a path pattern **optional**; it matches zero or one occurrence. This is useful when you want to include a connection in a pattern but it may not always exist.
 
 A questioned path is written by appending `?` to a parenthesized path pattern expression.
 
 ```syntax
-<questioned path pattern> ::=
-  "(" <path pattern expression> ")" "?"
+<questioned path pattern> ::= "(" <path pattern expression> ")" "?"
 ```
 
 When the path exists, it is included in the result; when it doesn't, the match still succeeds with the optional part absent.
@@ -17,26 +16,20 @@ When the path exists, it is included in the result; when it doesn't, the match s
 
 Although `?` and `{0,1}` both match zero or one occurrence, they differ in how variables are exposed:
 
-- **`{0,1}`** (quantified path): Variables declared inside become **group variables** — they are exposed as lists (e.g., a single-element list or an empty list).
-- **`?`** (questioned path): Variables declared inside remain **singletons** — they keep their original type but become **conditional singletons** that are null when the optional path is absent.
+- `{0,1}` (quantified path): Variables declared inside become **group variables**; they are exposed as lists (e.g., a single-element list or an empty list).
+- `?` (questioned path): Variables declared inside remain **singletons**; they keep their original type but become **conditional singletons** that are `null` when the optional path is absent.
 
 ## Example Graph
 
 <center><img src="images/questioned-paths-example.jpg"/></center>
 
 ```gql
-INSERT (jack:User {_id: "U01", name: "Jack"}),
-       (mike:User {_id: "U02", name: "Mike"}),
-       (c1:Device {_id: "Comp1"}),
-       (c2:Device {_id: "Comp2"}),
-       (c3:Device {_id: "Comp3"}),
-       (c4:Device {_id: "Comp4"}),
-       (jack)-[:Owns]->(c1),
-       (mike)-[:Owns]->(c4),
-       (c1)-[:Flows {packets: 20}]->(c2),
-       (c1)-[:Flows {packets: 30}]->(c4),
-       (c2)-[:Flows {packets: 34}]->(c3),
-       (c2)-[:Flows {packets: 12}]->(c4),
+INSERT (jack:User {_id: "U01", name: "Jack"}), (mike:User {_id: "U02", name: "Mike"}),
+       (c1:Device {_id: "Comp1"}), (c2:Device {_id: "Comp2"}),
+       (c3:Device {_id: "Comp3"}), (c4:Device {_id: "Comp4"}),
+       (jack)-[:Owns]->(c1), (mike)-[:Owns]->(c4),
+       (c1)-[:Flows {packets: 20}]->(c2), (c1)-[:Flows {packets: 30}]->(c4),
+       (c2)-[:Flows {packets: 34}]->(c3), (c2)-[:Flows {packets: 12}]->(c4),
        (c3)-[:Flows {packets: 74}]->(c4)
 ```
 

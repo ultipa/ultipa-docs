@@ -15,7 +15,7 @@ A path pattern is to match paths in the graph. It is composed of three parts:
 
 ## Path Pattern Expression
 
-A path pattern expression (or *path pattern* for short) defines the nodes and edges that make up a path. Essentially, it is a sequence of node and edge patterns concatenated according to the topological rules of a path - it must **start and end with a node and alternate between nodes and edges**.
+A path pattern expression (or *path pattern* for short) defines the nodes and edges that make up a path. Essentially, it is a sequence of node and edge patterns concatenated according to the topological rules of a path: **must start and end with a node and alternate between nodes and edges**.
 
 ### Basic Paths
 
@@ -56,38 +56,32 @@ GQL supports the following advanced path patterns:
 - <a target="_blank" href="/docs/gql/quantified-paths">Quantified Paths</a>
 - <a target="_blank" href="/docs/gql/questioned-paths">Questioned Paths</a>
 - <a target="_blank" href="/docs/gql/shortest-paths">Shortest Paths</a>
+- <a target="_blank" href="/docs/gql/cheapest-paths">Cheapest Paths</a>
 
 ## Path Variable Declaration
 
 A path variable is declared at the start of a path pattern with `=`.
 
-The variable `p` is bound to paths connecting any two nodes through an outgoing `Follows` edge:
+The variable `p` is bound to paths connecting any two nodes through an outgoing `FOLLOWS` edge:
 
 ```gql
-MATCH p = ()-[:Follows]->()
+MATCH p = ()-[:FOLLOWS]->()
 RETURN p
 ```
 
 ## Path Pattern Prefix
 
-There are two types of path pattern prefixes:
-
-- <a href="#Path-Mode">Path Mode</a>
-- <a href="#Path-Selector">Path Selector</a>
+There are two types of path pattern prefixes: <a href="#Path-Mode">Path Mode</a> and <a href="#Path-Selector">Path Selector</a>.
 
 ### Example Graph
 
 <center><img src="images/path-patterns-4.jpg"/></center>
 
 ```gql
-INSERT (c1:default {_id: 'C1'}),
-       (c2:default {_id: 'C2'}),
-  	   (c3:default {_id: 'C3'}),
-       (c4:default {_id: 'C4'}),
-       (c1)-[:default]->(c2),
-       (c2)-[:default]->(c1),
-       (c2)-[:default]->(c3),
-       (c3)-[:default]->(c4)
+INSERT (c1:default {_id: 'C1'}), (c2:default {_id: 'C2'}),
+  	   (c3:default {_id: 'C3'}), (c4:default {_id: 'C4'}),
+       (c1)-[:LINKS]->(c2), (c2)-[:LINKS]->(c1),
+       (c2)-[:LINKS]->(c3), (c3)-[:LINKS]->(c4)
 ```
 
 ### Path Mode
@@ -240,17 +234,12 @@ RETURN p
 
 Two consecutive edge patterns conceptually have an empty node pattern between them. For example,
 
-<p tit="Path Term"></p>
+<p tit="Path Pattern"></p>
 
 ```gql
 (:User)-[]->-[]->(u)
-```
 
-This path term implicitly extends to:
-
-<p tit="Path Term"></p>
-
-```gql
+-- This path pattern implicitly extends to:
 (:User)-[]->()-[]->(u)
 ```
 
@@ -258,4 +247,4 @@ This path term implicitly extends to:
 
 ### Node Pattern Juxtaposition
 
-Node pattern juxtaposition is only supported for <a target="_blank" href="/docs/gql/quantified-paths">quantified paths</a>.
+Node pattern juxtaposition is only supported in <a target="_blank" href="/docs/gql/quantified-paths">quantified paths</a>.

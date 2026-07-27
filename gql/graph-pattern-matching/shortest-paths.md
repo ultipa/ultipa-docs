@@ -33,25 +33,16 @@ These algorithms are recommended for computing **weighted shortest paths** (i.e.
 <center><img src="images/shortest-paths-example.jpg"/></center>
 
 ```gql
-INSERT (zenith:City {_id: "Zenith"}),
-       (arcadia:City {_id: "Arcadia"}),
-       (verona:City {_id: "Verona"}),
-       (nebula:City {_id: "Nebula"}),
-       (mirage:City {_id: "Mirage"}),
-       (lunaria:City {_id: "Lunaria"}),
-       (solara:City {_id: "Solara"}),
-       (eldoria:City {_id: "Eldoria"}),
+INSERT (zenith:City {_id: "Zenith"}), (arcadia:City {_id: "Arcadia"}),
+       (verona:City {_id: "Verona"}), (nebula:City {_id: "Nebula"}),
+       (mirage:City {_id: "Mirage"}), (lunaria:City {_id: "Lunaria"}),
+       (solara:City {_id: "Solara"}), (eldoria:City {_id: "Eldoria"}),
        (nexis:City {_id: "Nexis"}),
-       (arcadia)-[:Links]->(zenith),
-       (arcadia)-[:Links]->(verona),
-       (arcadia)-[:Links]->(solara),
-       (mirage)-[:Links]->(arcadia),
-       (nebula)-[:Links]->(verona),
-       (mirage)-[:Links]->(nebula),
-       (verona)-[:Links]->(mirage),
-       (mirage)-[:Links]->(eldoria),
-       (solara)-[:Links]->(eldoria),
-       (lunaria)-[:Links]->(solara)
+       (arcadia)-[:Links]->(zenith), (arcadia)-[:Links]->(verona),
+       (arcadia)-[:Links]->(solara), (mirage)-[:Links]->(arcadia),
+       (nebula)-[:Links]->(verona), (mirage)-[:Links]->(nebula),
+       (verona)-[:Links]->(mirage), (mirage)-[:Links]->(eldoria),
+       (solara)-[:Links]->(eldoria), (lunaria)-[:Links]->(solara)
 ```
 
 ## ALL SHORTEST

@@ -2,9 +2,7 @@
 
 ## Overview
 
-A quantified path is a variable-length path where the complete path or a part of it is repeated a specified number of times.
-
-Quantified paths are useful when you:
+A quantified path is a variable-length path where the complete path or a part of it is repeated a specified number of times. Quantified paths are useful when you:
 
 - Don’t know the exact number of hops required between nodes.
 - Need to capture relationships at varying depths. 
@@ -14,7 +12,7 @@ Quantified paths are useful when you:
 
 A quantifier is written as a postfix to either an edge pattern or a parenthesized path pattern to specify how many times the pattern should repeat.
 
-| <div table-width="20">Quantifier</div> | Description |
+| Quantifier | Description |
 | -- | -- |
 | `{m,n}` | Between `m` and `n` repetitions. |
 | `{m}` | Exactly `m` repetitions. |
@@ -23,23 +21,26 @@ A quantifier is written as a postfix to either an edge pattern or a parenthesize
 | `*` | Between `0` and more repetitions. |
 | `+` | Between `1` and more repetitions. |
 
+A quantifier's upper bound must be at least `1`. A quantifier that can only repeat zero times, such as `{0}`, `{0,0}`, or `{,0}`, is not allowed and raises an error.
+
+A lower bound of `0` is allowed when paired with a positive upper bound (`{0,n}`, `{,n}`, or `*`): the pattern may match zero times. In the zero-repetition case, the quantified segment is **skipped entirely**, contributing none of its own nodes or edges, and the node patterns on either side of the quantifier are merged:
+
+- `(a)(...){0,n}(b)`: `a` and `b` collapse onto the same node, combining their conditions with logical `AND`.
+- `(a)(...){0,n}`: binds each `a`.
+- `(...){0,n}(b)`: binds each `b`.
+- A quantifier applied to an entire standalone path pattern (no node pattern outside it) contributes nothing for the zero-repetition case; only its one-or-more-repetition matches are returned.
+
 ## Example Graph
 
 <center><img src="images/quantified-paths-example.jpg"/></center>
 
 ```gql
-INSERT (jack:User {_id: "U01", name: "Jack"}),
-       (mike:User {_id: "U02", name: "Mike"}),
-       (c1:Device {_id: "Comp1"}),
-       (c2:Device {_id: "Comp2"}),
-       (c3:Device {_id: "Comp3"}),
-       (c4:Device {_id: "Comp4"}),
-       (jack)-[:Owns]->(c1),
-       (mike)-[:Owns]->(c4),
-       (c1)-[:Flows {packets: 20}]->(c2),
-       (c1)-[:Flows {packets: 30}]->(c4),
-       (c2)-[:Flows {packets: 34}]->(c3),
-       (c2)-[:Flows {packets: 12}]->(c4),
+INSERT (jack:User {_id: "U01", name: "Jack"}), (mike:User {_id: "U02", name: "Mike"}),
+       (c1:Device {_id: "Comp1"}), (c2:Device {_id: "Comp2"}),
+       (c3:Device {_id: "Comp3"}), (c4:Device {_id: "Comp4"}),
+       (jack)-[:Owns]->(c1), (mike)-[:Owns]->(c4),
+       (c1)-[:Flows {packets: 20}]->(c2), (c1)-[:Flows {packets: 30}]->(c4),
+       (c2)-[:Flows {packets: 34}]->(c3), (c2)-[:Flows {packets: 12}]->(c4),
        (c3)-[:Flows {packets: 74}]->(c4)
 ```
 
@@ -61,8 +62,6 @@ Edge patterns can be directly followed by a quantifier, and both the full and ab
 You can enclose the entire path pattern in parentheses `()` and append a quantifier.
 
 <center><img src="images/quantified-paths-2.jpg"/></center>
-
-When a quantifier is applied to an entire path pattern, a step count of `0` produces no result.
 
 ### Quantified Partial Path
 
@@ -182,24 +181,116 @@ Result:
       <td>
 <center><img src="images/quantified-paths-11.jpg"/></center>
       </td>
-      <td><pre>[{"id": "U1", "labels": ["User"], "properties": {"name": "rowlock", "age": 24}}]</pre></td>
-      <td><pre>[{"id": "U2", "labels": ["User"], "properties": {"name": "Quasar92", "age": 29}}]</pre></td>
+      <td><pre>[
+  {
+    "id": "U1",
+    "uuid": "662445893244688851",
+    "labels": [
+      "User"
+    ],
+    "properties": {
+      "name": "rowlock",
+      "age": 24
+    }
+  }
+]</pre></td>
+      <td><pre>[
+  {
+    "id": "U2",
+    "uuid": "662445893244688872",
+    "labels": [
+      "User"
+    ],
+    "properties": {
+      "name": "Quasar92",
+      "age": 29
+    }
+  }
+]</pre></td>
     </tr>
     <tr>
       <td>
 <center><img src="images/quantified-paths-12.jpg"/></center>
       </td>
-      <td><pre>[{"id": "U1", "labels": ["User"], "properties": {"name": "rowlock", "age": 24}},
- {"id": "U2", "labels": ["User"], "properties": {"name": "Quasar92", "age": 29}}]</pre></td>
-      <td><pre>[{"id": "U2", "labels": ["User"], "properties": {"name": "Quasar92", "age": 29}},
- {"id": "U3", "labels": ["User"], "properties": {"name": "claire", "age": 35}}]</pre></td>
+      <td><pre>[
+  {
+    "id": "U1",
+    "uuid": "662445893244688851",
+    "labels": [
+      "User"
+    ],
+    "properties": {
+      "name": "rowlock",
+      "age": 24
+    }
+  },
+  {
+    "id": "U2",
+    "uuid": "662445893244688872",
+    "labels": [
+      "User"
+    ],
+    "properties": {
+      "name": "Quasar92",
+      "age": 29
+    }
+  }
+]</pre></td>
+      <td><pre>[
+  {
+    "id": "U2",
+    "uuid": "662445893244688872",
+    "labels": [
+      "User"
+    ],
+    "properties": {
+      "name": "Quasar92",
+      "age": 29
+    }
+  },
+  {
+    "id": "U3",
+    "uuid": "662445893244688893",
+    "labels": [
+      "User"
+    ],
+    "properties": {
+      "name": "claire",
+      "age": 35
+    }
+  }
+]</pre></td>
     </tr>
     <tr>
       <td>
 <center><img src="images/quantified-paths-13.jpg"/></center>
       </td>
-      <td><pre>[{"id": "U2", "labels": ["User"], "properties": {"name": "Quasar92", "age": 29}}]</pre></td>
-      <td><pre>[{"id": "U3", "labels": ["User"], "properties": {"name": "claire", "age": 35}}]</pre></td>
+      <td><pre>[
+  {
+    "id": "U2",
+    "uuid": "662445893244688872",
+    "labels": [
+      "User"
+    ],
+    "properties": {
+      "name": "Quasar92",
+      "age": 29
+    }
+  }
+]</pre></td>
+      <td><pre>[
+  {
+    "id": "U3",
+    "uuid": "662445893244688893",
+    "labels": [
+      "User"
+    ],
+    "properties": {
+      "name": "claire",
+      "age": 35
+    }
+  }
+]</pre></td>
     </tr>
   </tbody>
 </table>
