@@ -11,7 +11,7 @@ Ultipa supports the following constraint types:
 | `NOT NULL` | Ensures a property never contains `null` values. | Not supported |
 | `UNIQUE` | Ensures a property contains no duplicate values. | Supported |
 | `KEY` | Combines `NOT NULL` and `UNIQUE`, marking a property as the identifying key of a node type. Available on **node types only**. | Supported |
-| `CHECK` | Ensures a property satisfies a custom predicate on every row, for example `CHECK (price >= 0)`. Declared inline only. | Not supported |
+| `CHECK` | Ensures a property satisfies a custom predicate on every row, for example `CHECK (price >= 0)`. | Not supported |
 
 When a constraint type supports a composite of properties, a row violates the constraint only when **all** listed properties match an existing row.
 
@@ -51,14 +51,14 @@ Each constraint provides the following metadata:
 
 | Field | Description |
 | -- | -- |
-| `name` | The user-supplied or auto-generated name.. |
+| `name` | The user-supplied or auto-generated name. |
 | `type` | `node`, `edge`, or `wildcard`. |
 | `matchers` | A list of `<labels>.<properties>` descriptors, one per OR alternative the constraint targets. <ul><li>Single property: `User.email`.</li><li>Composite tuple: `Person.(firstName, lastName)`.</li><li>Multi-label key set: `A&B.x`.</li><li>Wildcard target: `%.status`.</li><li>Label disjunction (`:A\|B`): one entry per alternative, e.g. `["User.email", "Actor.email"]`.</li></ul> |
-| `constraint_type` | `NOT NULL`, `UNIQUE`, `KEY`, or `CHECK (<predicate>)`. |
+| `constraint_type` | `NOT NULL`, `UNIQUE`, `KEY`, or `CHECK (<search condition>)`. |
 
 ## Creating Constraints
 
-Creating a constraint on a non-empty graph scans existing data to verify compliance, and may take time on large graphs. The creation fails if any existing row violates the constraint.
+Creating a `NOT NULL`, `UNIQUE`, or `KEY` constraint on a non-empty graph scans existing data to verify compliance, and may take time on large graphs. The creation fails if any existing row violates the constraint. A `CHECK` constraint is not validated against existing data; it applies only to writes made after it is created.
 
 Constraints can be created two ways:
 
@@ -81,15 +81,13 @@ Constraints can be created two ways:
 
 <label conjunction> ::= <label name> [ { "&" <label name> }... ]
 
-<constraint requirement> ::= <property references> "IS" <constraint type>
+<constraint requirement> ::=
+    <property references> "IS" < "NOT NULL" | "UNIQUE" | "KEY" >
+  | "CHECK" "(" <search condition> ")"
 
 <property references> ::=
     <property reference>
   | "(" <property reference> [ { "," <property reference> }... ] ")"
-
-<property reference> ::= <node/edge variable> "." <property name>
-
-<constraint type> ::= "NOT NULL" | "UNIQUE" | "KEY"
 ```
 
 **Details**
@@ -97,11 +95,12 @@ Constraints can be created two ways:
 - The constraint name is optional. When omitted, the engine derives the name from `<labels>_<properties>_<type>`, e.g. `User_email_not_null`, `Person_firstName_lastName_unique`. The `IF NOT EXISTS` and `OR REPLACE` variants still require an explicit name as they identify the constraint by name.
 - A constraint scope can be:
   - **Single label** (`:A`): applies to nodes/edges with that label.
-  - **Conjunction** (`:A&B`): applies to nodes/edges whose contains every scope label. `{A, B}` and `{A, B, C}` both satisfy; `{A}` alone does not.
+  - **Conjunction** (`:A&B`): applies to nodes/edges that contain every scope label. `{A, B}` and `{A, B, C}` both satisfy; `{A}` alone does not.
   - **Disjunction** (`:A|B`): applies to nodes/edges that have any of the alternatives. `A`, `B`, or both.
   - **Mixed** (`:A&B|C`): `&` binds tighter than `|`, so this parses as `(A&B) | C`.
   - **Wildcard** (`:%`): applies to every node or edge in the graph.
-- The `CREATE CONSTRAINT` statement creates `NOT NULL`, `UNIQUE`, and `KEY` constraints. `CHECK` constraints cannot be created this way; they are declared inline only (see [Inline in a Type Definition](#Inline-in-a-Type-Definition)).
+- The `CREATE CONSTRAINT` statement creates `NOT NULL`, `UNIQUE`, and `KEY` constraints with the `REQUIRE <property references> IS <type>` form, and `CHECK` constraints with the `REQUIRE CHECK (<search condition>)` form. In the `CHECK` form the `<search condition>` is a boolean expression over the scope variable's properties, the same kind of condition you write in a `WHERE` / `FILTER`, for example `n.price > 0` and `n.price > n.cost`.
+- A `CHECK` follows SQL semantics: a write is rejected only when the condition evaluates to `false`. It passes when the condition is `true` or `unknown`, and a referenced property that is `null` or absent makes the condition `unknown`. Pair `CHECK` with `NOT NULL` when a value is also required. The condition must be deterministic: no subqueries or side-effecting functions.
 
 ```gql
 -- NOT NULL constraint on User nodes' name
@@ -110,30 +109,37 @@ CREATE CONSTRAINT nn_user_name FOR (n:User) REQUIRE n.name IS NOT NULL
 -- UNIQUE constraint on KNOWS edges' eid
 CREATE CONSTRAINT FOR ()-[e:KNOWS]->() REQUIRE e.eid IS UNIQUE
 
--- Composite UNIQUE constraint User nodes' firstName and lastName
-CREATE CONSTRAINT FOR (n:User) REQUIRE (n.firstName, n.lastName) IS UNIQUE
-
 -- KEY constraint on User nodes' uid
 CREATE CONSTRAINT user_key FOR (n:User) REQUIRE n.uid IS KEY
 
--- Composite KEY constraint on Account nodes' tenantId and externalId 
-CREATE CONSTRAINT account_key FOR (n:Account) REQUIRE (n.tenantId, n.externalId) IS KEY
-
--- Wildcard NOT NULL: every node must have a non-null createdAt
+-- Wildcard label: every node must have a non-null createdAt
 CREATE CONSTRAINT FOR (n:%) REQUIRE n.createdAt IS NOT NULL
 
--- Wildcard UNIQUE: every edge's eid must be unique
-CREATE CONSTRAINT FOR ()-[r:%]->() REQUIRE r.eid IS UNIQUE
-
--- Conjunction: email is unique only on nodes that carry BOTH User and Employee labels
+-- Label conjunction: email is unique only on nodes that carry BOTH User and Employee labels
 CREATE CONSTRAINT FOR (n:User&Employee) REQUIRE n.email IS UNIQUE
 
--- Disjunction: email is unique on every User node and every Actor node
+-- Label disjunction: email is unique on every User node and every Actor node
 CREATE CONSTRAINT FOR (n:User|Actor) REQUIRE n.email IS UNIQUE
 
 -- Mixed: parses as (Employee&Manager) | (Contractor&Lead)
 -- Enforces on nodes that are EITHER {Employee, Manager} OR {Contractor, Lead}
 CREATE CONSTRAINT FOR (n:Employee&Manager|Contractor&Lead) REQUIRE n.badgeId IS UNIQUE
+
+-- CHECK constraint: a per-row predicate on Product nodes
+CREATE CONSTRAINT FOR (n:Product) REQUIRE CHECK (n.price > n.cost)
+
+-- CHECK constraint on SHIPS edge's qty
+CREATE CONSTRAINT FOR ()-[r:SHIPS]->() REQUIRE CHECK (r.qty > 0)
+```
+
+Create composite `UNIQUE` or `KEY` constraint:
+
+```gql
+-- Composite UNIQUE constraint User nodes' firstName and lastName
+CREATE CONSTRAINT FOR (n:User) REQUIRE (n.firstName, n.lastName) IS UNIQUE
+
+-- Composite KEY constraint on Account nodes' tenantId and externalId 
+CREATE CONSTRAINT account_key FOR (n:Account) REQUIRE (n.tenantId, n.externalId) IS KEY
 ```
 
 You can use the `IF NOT EXISTS` clause to prevent errors when attempting to create a constraint that already exists. It allows the statement to be safely executed.
@@ -150,9 +156,7 @@ CREATE OR REPLACE CONSTRAINT KNOWS_eid_unique FOR ()-[e:KNOWS]->() REQUIRE e.eid
 
 ### Inline in a Type Definition
 
-Inline declaration attaches constraint type keywords directly to a property in a node or edge type definition, alongside its data type. The constraint takes effect as soon as the type is created. Inline declarations cover `NOT NULL`, `UNIQUE`, `KEY`, and `CHECK`.
-
-Inline declarations are limited to **single-property** constraints. For a composite constraint, use the `CREATE CONSTRAINT` statement instead.
+Inline declaration attaches constraint type keywords directly to a property in a node or edge type definition, alongside its data type. The constraint takes effect as soon as the type is created. Composite `UNIQUE` or `KEY` constraints over a property tuple cannot be declared inline; use `CREATE CONSTRAINT` for those.
 
 Inline constraints get the same auto-generated name as a nameless `CREATE CONSTRAINT FOR …`. For example, `NODE User ({uid STRING KEY})` registers a constraint named `User_uid_key`. A property declared `NOT NULL UNIQUE` registers two separate constraints: `<Label>_<prop>_not_null` and `<Label>_<prop>_unique`.
 
@@ -164,13 +168,16 @@ You can declare inline constraints in any of the following:
 -- In a CREATE GRAPH body
 CREATE GRAPH myGraph {
   NODE User ({uid STRING KEY, name STRING NOT NULL UNIQUE, age UINT32}),
-  EDGE KNOWS ()-[{createdOn TIMESTAMP NOT NULL, eid STRING}]->()
+  NODE Product ({name STRING, costs FLOAT CHECK (cost >= 0), price FLOAT CHECK (price > costs)}),
+  EDGE KNOWS ()-[{createdOn TIMESTAMP NOT NULL, eid STRING}]->(),
+  EDGE Rated ()-[{grade INT32 CHECK (grade >= 0 AND grade <= 5)}]->()
 }
 
 -- In a CREATE GRAPH TYPE body
 CREATE GRAPH TYPE gType {
   NODE User ({uid STRING KEY, name STRING NOT NULL UNIQUE, age UINT32}),
-  EDGE KNOWS ()-[{createdOn TIMESTAMP NOT NULL, eid STRING}]->()
+  NODE Product ({name STRING, costs FLOAT CHECK (cost >= 0), price FLOAT CHECK (price > costs)}),
+  EDGE Rated ()-[{grade INT32 CHECK (grade >= 0 AND grade <= 5)}]->()
 }
 
 -- In CREATE NODE (add a node type to a closed graph)
@@ -179,46 +186,6 @@ CREATE NODE User ({uid STRING KEY, name STRING NOT NULL UNIQUE, age UINT32})
 -- In CREATE EDGE (add an edge type to a closed graph)
 CREATE EDGE KNOWS (User)-[{createdOn TIMESTAMP NOT NULL, eid STRING}]->(User)
 ```
-
-#### CHECK Constraints
-
-A `CHECK` constraint attaches a custom predicate to a property, enforcing a per-row invariant. A write is accepted only when the predicate holds for the row. Unlike `NOT NULL`, `UNIQUE`, and `KEY`, a `CHECK` cannot be created through the `CREATE CONSTRAINT` statement; it is inline only.
-
-Declare a `CHECK` alongside the property's data type:
-
-```gql
-CREATE GRAPH inventory {
-  NODE Product ({
-    name STRING KEY,
-    price FLOAT CHECK (price >= 0),
-    stock INT32 NOT NULL CHECK (stock >= 0)
-  }),
-  EDGE Rated ()-[{ grade INT32 CHECK (grade >= 0 AND grade <= 5) }]->()
-}
-```
-
-The same form works in `CREATE GRAPH TYPE`, `CREATE NODE`, and `CREATE EDGE`.
-
-**Referencing other properties**
-
-A `CHECK` predicate may reference any property of the same node or edge, so cross-property invariants are supported:
-
-```gql
-CREATE NODE Product ({
-  cost  FLOAT,
-  price FLOAT CHECK (price > cost)
-})
-```
-
-**Evaluation semantics**
-
-A `CHECK` follows SQL semantics: a write is rejected only when the predicate evaluates to a definite `false`. It passes when the predicate is `true` or `unknown`, and a predicate is `unknown` whenever a property it references is absent or `null`. To also require that the value is present, pair `CHECK` with `NOT NULL`:
-
-```gql
-CREATE NODE Product ({ stock INT32 NOT NULL CHECK (stock >= 0) })
-```
-
-The predicate must be deterministic: no subqueries and no side-effecting functions.
 
 ## Dropping Constraints
 
