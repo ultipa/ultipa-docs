@@ -8,14 +8,13 @@ Node patterns and edge patterns are conjunctively referred to as **element patte
 
 A node pattern is to match nodes in the graph, represented using a pair of parentheses `()`. A node pattern is composed of three optional parts:
 
-- <a href="#Element-Variable-Declaration">Node Variable Declaration</a>
+- <a href="#Element-Variable">Node Variable</a>
 - <a href="#Label-Expression">Label Expression</a>
 - <a href="#Property-Specification">Property Specification</a> or <a href="#WHERE-Clause">WHERE Clause</a>
 
 ```syntax
 <node pattern> ::=
-  "(" [ <node variable declaration> ] [ <label expression> ]
-      [ <property specification> | <where clause> ] ")" 
+  "(" [ <node variable> ] [ <label expression> ] [ <property specification> | <where clause> ] ")" 
 ```
     
 The simplest empty node pattern matches any node in the graph:
@@ -60,7 +59,7 @@ An edge pattern is either a **full edge pattern** or an **abbreviated edge patte
 
 A full edge pattern is represented using a pair of square brackets `[]` and includes an indication of the edge's direction (left/incoming, right/outgoing, or any). A full edge pattern is composed of three optional parts:
 
-- <a href="#Element-Variable-Declaration">Edge Variable Declaration</a>
+- <a href="#Element-Variable">Edge Variable</a>
 - <a href="#Label-Expression">Label Expression</a>
 - <a href="#Property-Specification">Property Specification</a> or <a href="#WHERE-Clause">WHERE Clause</a>
   
@@ -75,8 +74,7 @@ A full edge pattern is represented using a pair of square brackets `[]` and incl
 <full edge any direction> ::= "-[" <edge pattern filter> "]-"
 
 <edge pattern filter> ::=
-  [ <edge variable declaration> ] [ <label expression> ] 
-  [ <property specification> | <where clause> ]
+  [ <edge variable> ] [ <label expression> ] [ <property specification> | <where clause> ]
 ```
 
 Match all edges in the graph and bind them to the variable `e`:
@@ -129,7 +127,7 @@ p = ()->()
 
 ## Syntactic Elements
 
-### Element Variable Declaration
+### Element Variable
 
 Node variables and edge variables are collectively referred to as **element variables**. 
 

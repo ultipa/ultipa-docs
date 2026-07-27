@@ -4,7 +4,7 @@
 
 Shortest paths between two nodes are those with the fewest number of edges. You can select shortest paths from each **partition** of the match results using the following path selectors. A "partition" refers to a group of paths that share the same start and end nodes.
 
-| Path Selector | Description |
+| Shortest Path Selector | Description |
 | -- | -- |
 | `ALL SHORTEST` | Selects all shortest paths from each partition. |
 | `ANY SHORTEST` | Selects any one shortest path from each partition. |

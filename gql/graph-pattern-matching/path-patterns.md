@@ -4,13 +4,13 @@
 
 A path pattern is to match paths in the graph. It is composed of three parts:
 
-- <a href="#Path-Variable-Declaration">Path Variable Declaration</a> (Optional)
+- <a href="#Path-Variable">Path Variable</a> (Optional)
 - <a href="#Path-Pattern-Prefix">Path Pattern Prefix</a> (Optional)
 - <a href="#Path-Pattern-Expression">Path Pattern Expression</a>
 
 ```syntax
 <path pattern> ::=
-  [ <path variable declaration> ] [ <path pattern prefix> ] <path pattern expression>
+  [ <path variable> "=" ] [ <path pattern prefix> ] <path pattern expression>
 ```
 
 ## Path Pattern Expression
@@ -58,7 +58,7 @@ GQL supports the following advanced path patterns:
 - <a target="_blank" href="/docs/gql/shortest-paths">Shortest Paths</a>
 - <a target="_blank" href="/docs/gql/cheapest-paths">Cheapest Paths</a>
 
-## Path Variable Declaration
+## Path Variable
 
 A path variable is declared at the start of a path pattern with `=`.
 
