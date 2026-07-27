@@ -152,6 +152,12 @@ By default, multiple keywords separated by spaces are combined with AND (all mus
 | Fuzzy | `"graph~2"` | Entries whose tokens are within `N` character edits of the term (`N` is `0`–`2`, default `2`). Catches typos: `"graph~2"` matches `grph`, `garph`, `graphs`. The exact term always matches and ranks highest, with closer edits ranked above farther ones. `"graph~0"` requires an exact match. |
 | Grouped | `"(graph OR network) AND database"` | Entries matching the combined sub-expressions; parentheses control precedence. |
 
+**Notes on fuzzy matching (`term~N`):**
+
+- **A letter swap counts as one edit.** Transposing two adjacent letters (the most common typo) is a single edit, so `"Einstien~1"` matches `Einstein` and `"teh~1"` matches `the`.
+- **The first letter is anchored.** Fuzzy matching only varies characters from the second onward, so a first-letter typo (`graph` → `hraph`) is out of scope. This keeps fuzzy search fast on large term dictionaries; when the first character may vary, use a prefix search (`graph*`) instead.
+- **Edits are measured against the stored token.** Fuzziness compares against the analyzed form held in the index, so under a stemming analyzer `database` is stored as its stem `databas` and edits count against that. Use the `simple` analyzer (no stemming) to fuzzy-match the surface word.
+
 ### Retrieving Nodes or Edges
 
 Find nodes using the full-text index `prodDesc` where their tokens include `graph` and `database`:
