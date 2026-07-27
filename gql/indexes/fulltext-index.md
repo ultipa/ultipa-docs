@@ -249,7 +249,7 @@ YIELD <column1>, <column2>, ...
       <td>The search string. Same syntax as the inline <code>CONTAINS</code> form, see <a href="#Search-Syntax">Search Syntax</a>.</td>
     </tr>
     <tr>
-      <td rowspan="4"><code>&lt;options&gt;</code><br><code>MAP</code></td>
+      <td rowspan="6"><code>&lt;options&gt;</code><br><code>MAP</code></td>
       <td><code>limit</code></td>
       <td><code>INTEGER</code></td>
       <td><code>10</code></td>
@@ -266,6 +266,18 @@ YIELD <column1>, <column2>, ...
       <td><code>FLOAT</code></td>
       <td><code>0</code></td>
       <td>Drop results whose BM25 score is below this floor.</td>
+    </tr>
+    <tr>
+      <td><code>operator</code></td>
+      <td><code>STRING</code></td>
+      <td><code>AND</code></td>
+      <td>Default combinator for the space-separated query clauses: <code>AND</code> (all clauses must match) or <code>OR</code> (any). Also applies to fuzzy (<code>term~N</code>) and wildcard clauses. An invalid value raises an error.</td>
+    </tr>
+    <tr>
+      <td><code>minShouldMatch</code></td>
+      <td><code>INTEGER</code></td>
+      <td><code>0</code></td>
+      <td>Require at least this many of the query clauses to match; overrides <code>operator</code>. <code>0</code> uses <code>operator</code>.</td>
     </tr>
     <tr>
       <td><code>highlight</code></td>
@@ -310,6 +322,16 @@ CALL ft.search('prodDesc', '"graph database" -deprecated', {limit: 10})
 YIELD node, score
 RETURN node, score
 
+-- Match ANY of the terms (operator: OR)
+CALL ft.search('prodDesc', 'graph database nosql', {operator: 'OR', limit: 10})
+YIELD node, score
+RETURN node, score ORDER BY score DESC
+
+-- Require at least 2 of the 3 terms (minShouldMatch overrides operator)
+CALL ft.search('prodDesc', 'graph database nosql', {minShouldMatch: 2})
+YIELD node, score
+RETURN node, score ORDER BY score DESC
+
 -- Search then traverse
 CALL ft.search('prodDesc', 'graph database', {limit: 5}) YIELD node, score
 MATCH (node)-[:WROTE]-(a:Author)
@@ -317,9 +339,7 @@ RETURN node.title, score, collect(a.name) AS authors
 ORDER BY score DESC
 
 -- With highlighted snippet
-CALL ft.search('prodDesc', 'graph database',
-               {limit: 5,
-                highlight: {field: 'description', preTag: '<mark>', postTag: '</mark>', fragmentSize: 150}})
+CALL ft.search('prodDesc', 'graph database', {limit: 5, highlight: {field: 'description', preTag: '<mark>', postTag: '</mark>', fragmentSize: 150}})
 YIELD node, score, highlight
 RETURN node._id, score, highlight
 ```
