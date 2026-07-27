@@ -111,6 +111,27 @@ RETURN ai.set_base_url("lmstudio", "http://192.168.1.50:1234/v1")
 RETURN ai.set_base_url("openai", "http://localhost:8080/v1")
 ```
 
+### Azure OpenAI
+
+The `openai` provider can target an Azure OpenAI resource. Point it at the resource's OpenAI-compatible v1 endpoint, set the resource's API key, and use your **deployment name** as the model. This works for both embeddings and completions.
+
+```gql
+-- 1. Point the openai provider at the resource's v1 endpoint
+RETURN ai.set_base_url("openai", "https://<resource>.openai.azure.com/openai/v1")
+
+-- 2. Set the resource's API key
+RETURN ai.set_api_key("openai", "<azure-api-key>")
+
+-- 3. Use the Azure deployment name as the model (not the base model name)
+RETURN ai.set_embedding_model("openai", "<embedding-deployment-name>")
+RETURN ai.set_completion_model("openai", "<completion-deployment-name>")
+```
+
+The following Azure forms are not supported yet:
+
+- The **deployment-path URL** form (`https://<resource>.openai.azure.com/openai/deployments/<deployment>/...?api-version=...`). Use the `/openai/v1` endpoint shown above instead.
+- **Azure AD (Microsoft Entra ID) token** authentication. Use the resource's API key.
+
 ## Embedding Provider
 
 ### ai.set_provider()
