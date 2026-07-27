@@ -149,7 +149,7 @@ By default, multiple keywords separated by spaces are combined with AND (all mus
 | Proximity | `"\"graph database\"~5"` | Entries whose tokens include both `graph` and `database` within 5 token positions of each other. |
 | Wildcard | `"graph*"` | Entries whose tokens start with `graph` (e.g., `graph`, `graphics`, `graphdb`). |
 | Wildcard | `"grap?"` | Entries whose tokens match with `?` as any single character (e.g., `graph`, `grape`). |
-| Fuzzy | `"graph~2"` | Entries whose tokens are within `N` character edits of the term (default `N=2`). Catches typos — `"graph~2"` matches `grph`, `garph`, `graphs`. |
+| Fuzzy | `"graph~2"` | Entries whose tokens are within `N` character edits of the term (`N` is `0`–`2`, default `2`). Catches typos: `"graph~2"` matches `grph`, `garph`, `graphs`. The exact term always matches and ranks highest, with closer edits ranked above farther ones. `"graph~0"` requires an exact match. |
 | Grouped | `"(graph OR network) AND database"` | Entries matching the combined sub-expressions; parentheses control precedence. |
 
 ### Retrieving Nodes or Edges
