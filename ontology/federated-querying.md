@@ -205,10 +205,12 @@ Because this `LIMIT` is outside the braces, it is not pushed to SPARQL: the endp
 The block is a self-contained remote query, so its `LIMIT` and `ORDER BY` translate directly to SPARQL and run on the endpoint; placed outside the braces they run locally instead, after the endpoint has already returned the whole class.
 
 ```gql
--- Endpoint sorts foaf:Person and applies LIMIT: SELECT ?p … ORDER BY ?p LIMIT 5
-FROM SERVICE dbpedia { MATCH (p@foaf:Person) RETURN p ORDER BY p LIMIT 5 }
+-- Endpoint applies the LIMIT: SELECT ?p WHERE { ?p a foaf:Person } LIMIT 5
+FROM SERVICE dbpedia { MATCH (p@foaf:Person) RETURN p LIMIT 5 }
 RETURN p
 ```
+
+`ORDER BY` pushes down the same way, but sorting an unbounded public class forces the endpoint to sort every resource, which is expensive and can fail. Pair it with a filter that keeps the sorted set small, see <a href="#Constraining-the-Remote-with-Property-Specs">Constraining the Remote with Property Specs</a>.
 
 ### Inline Endpoint IRI
 
@@ -233,26 +235,30 @@ How you write the value decides how it becomes SPARQL. A **typed** value carries
 -- dbo is non-standard, so load it first (xsd is standard, no load needed)
 LOAD PREFIX dbo FROM <http://dbpedia.org/ontology/>
 
-FROM SERVICE dbpedia { MATCH (p@foaf:Person {@dbo:birthDate: '1879-03-14'^^xsd:date}) RETURN p }
+FROM SERVICE dbpedia { 
+  MATCH (p@foaf:Person {@dbo:birthDate: '1879-03-14'^^xsd:date}) 
+  RETURN p ORDER BY p 
+}
 RETURN p
 ```
 
-Translates to SPARQL (the typed value becomes an exact triple object):
+The property spec bounds the result, so `ORDER BY` can safely sort it on the endpoint too. Both translate to SPARQL (the typed value becomes an exact triple object):
 
 ```sparql
 SELECT ?p WHERE {
   ?p a <http://xmlns.com/foaf/0.1/Person> .
   ?p <http://dbpedia.org/ontology/birthDate> "1879-03-14"^^<http://www.w3.org/2001/XMLSchema#date> .
 }
+ORDER BY ?p
 ```
 
-Result (every person DBpedia records with that birth date, so Einstein appears among others; exact rows and order vary):
+Result (each person DBpedia records with that birth date, sorted by resource IRI, so Einstein appears among others):
 
 | p |
 | -- |
+| http://dbpedia.org/resource/Abel_Adams |
 | http://dbpedia.org/resource/Albert_Einstein |
-| http://dbpedia.org/resource/James_DePree |
-| http://dbpedia.org/resource/Tyko_Sallinen |
+| http://dbpedia.org/resource/Alec_Winstone |
 | … |
 
 A **plain** (untagged) value instead becomes a triple to a scratch variable plus a `FILTER` equality, `{@foaf:name: 'Alice'}` → `FILTER(?prop1 = "Alice")`, matching plain or `xsd:string` literals; numbers and booleans are bare literals (`{@dbo:age: 42}` → `FILTER(?v = 42)`). DBpedia tags all its text, so a plain-string constraint returns nothing there; for tagged text use the tagged form, see <a href="#Language-Tagged-and-Typed-Literals">Language-Tagged and Typed Literals</a>.
