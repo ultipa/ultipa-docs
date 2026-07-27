@@ -25,6 +25,8 @@ Result:
 
 Use this to verify which providers have API keys configured, which are active, and whether they support embedding, completion, or both.
 
+The `base_url` shown is each provider's default endpoint. For an OpenAI-compatible provider (one that mirrors OpenAI's API format, such as `openai`, `lmstudio`, `qwen`, or `xai`), you can point it at a custom endpoint with <a target="_blank" href="/docs/ai-and-vectors/provider-configuration#ai-set_base_url">ai.set_base_url()</a>.
+
 ## Embedding and Completion
 
 AI functions rely on two types of AI providers:
@@ -42,6 +44,7 @@ Some providers support both embedding and completion, while others support only 
 | Function | Description |
 | -- | -- |
 | <a href="/docs/ai-and-vectors/provider-configuration#ai-set_api_key">ai.set_api_key()</a> | Sets the API key for an AI provider. |
+| <a href="/docs/ai-and-vectors/provider-configuration#ai-set_base_url">ai.set_base_url()</a> | Points an OpenAI-compatible provider at a custom endpoint (base URL) without an environment variable. |
 | <a href="/docs/ai-and-vectors/provider-configuration#ai-set_provider">ai.set_provider()</a> | Sets the active embedding provider. |
 | <a href="/docs/ai-and-vectors/provider-configuration#ai-provider">ai.provider()</a> | Returns the name of the current embedding provider. |
 | <a href="/docs/ai-and-vectors/provider-configuration#ai-embed_dim">ai.embed_dim()</a> | Returns the embedding dimension of the current provider. |

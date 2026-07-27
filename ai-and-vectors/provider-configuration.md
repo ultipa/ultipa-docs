@@ -60,6 +60,57 @@ Each provider stores one API key. Calling `ai.set_api_key()` again for the same 
 RETURN ai.set_api_key("gemini", "AQ.za...", false)
 ```
 
+## Custom Endpoint
+
+### ai.set_base_url()
+
+Points an OpenAI-compatible provider (one that mirrors OpenAI's API format, so it can be reached by swapping the base URL) at a custom endpoint, such as a local LM Studio on a non-default host or port, a self-hosted gateway, or a proxy, without setting a `*_BASE_URL` environment variable.
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width:20%;">
+    <col style="width:15%;">
+    <col style="width:17%;">
+    <col>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td><b>Syntax</b></td>
+      <td colspan="3"><code>ai.set_base_url(&lt;provider&gt;, &lt;url&gt;)</code></td>
+    </tr>
+    <tr>
+      <td rowspan="3"><b>Arguments</b></td>
+      <td><b>Name</b></td>
+      <td><b>Type</b></td>
+      <td><b>Description</b></td>
+    </tr>
+    <tr>
+      <td><code>&lt;provider&gt;</code></td>
+      <td><code>STRING</code></td>
+      <td>Provider name (see <a href="/docs/ai-and-vectors/overview#Supported-Providers">Supported Providers</a>). An unknown provider raises an error.</td>
+    </tr>
+    <tr>
+      <td><code>&lt;url&gt;</code></td>
+      <td><code>STRING</code></td>
+      <td>The OpenAI-compatible base URL, for example <code>http://localhost:1234/v1</code>. The URL is not validated, so make sure it points at a reachable endpoint.</td>
+    </tr>
+    <tr>
+      <td><b>Return Type</b></td>
+      <td colspan="3"><code>BOOL</code></td>
+    </tr>
+  </tbody>
+</table>
+
+The base URL is stored with the provider, so it survives a restart. If the provider is the active embedding and/or completion provider, the change takes effect immediately; a non-active provider has its configuration updated and applies the URL the next time it is activated.
+
+```gql
+-- Point the local LM Studio provider at a server on another host
+RETURN ai.set_base_url("lmstudio", "http://192.168.1.50:1234/v1")
+
+-- Route the openai provider through a self-hosted gateway or proxy
+RETURN ai.set_base_url("openai", "http://localhost:8080/v1")
+```
+
 ## Embedding Provider
 
 ### ai.set_provider()
