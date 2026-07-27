@@ -59,7 +59,7 @@ The `COST` clause appears inside an edge pattern and provides the per-edge cost 
 -[e:Road COST 1]->
 ```
 
-Negative cost values are allowed.
+Negative cost values are allowed. If negative costs form a cycle that lies on a path to the destination, the cheapest cost is unbounded below (you could loop the cycle forever to lower it), so the query reports an error rather than returning an empty result. A negative cycle that is not on any path to the destination does not affect the query.
 
 ## Example Graph
 
@@ -141,7 +141,7 @@ RETURN p
 
 <center><img src="images/cheapest-paths-4.drawio.svg"></center>
 
-## COST Expressions
+## COST Clause
 
 Cheapest path by `toll` instead of `distance`:
 
