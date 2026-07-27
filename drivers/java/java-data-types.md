@@ -22,6 +22,8 @@ import com.gqldb.types.PropertyType;
 | `DOUBLE` | 64-bit floating point | `Double` |
 | `DECIMAL` | Arbitrary precision decimal | `GqldbDecimal` |
 
+> A native `java.math.BigDecimal` is also accepted on input and maps to `DECIMAL`.
+
 ### String Types
 
 | Type | Description | Java Type |

@@ -22,6 +22,8 @@ from gqldb.types import PropertyType
 | `DOUBLE` | 64-bit floating point | `float` |
 | `DECIMAL` | Arbitrary precision decimal | `GqldbDecimal` |
 
+> A native `decimal.Decimal` is also accepted on input and maps to `DECIMAL`.
+
 ### String Types
 
 | Type | Description | Python Type |

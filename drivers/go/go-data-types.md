@@ -22,6 +22,8 @@ import gqldb "github.com/ultipa/ultipa-go-driver/v6"
 | `PropertyTypeDouble` | 64-bit floating point | `float64` |
 | `PropertyTypeDecimal` | Arbitrary precision decimal | `Decimal` |
 
+> A native `*big.Float` is also accepted on input and maps to `DECIMAL`; construct it from a string for an exact arbitrary-precision value.
+
 ### String Types
 
 | Type | Description | Go Type |
