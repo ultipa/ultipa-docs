@@ -306,6 +306,27 @@ Result:
 | Spring | 2 |
 | Fall | 1 |
 
+### Implicit Grouping
+
+When the `RETURN` list contains an aggregate, every non-aggregate expression in it automatically becomes a grouping key, so the `GROUP BY` clause is optional. The previous query can be written without it and returns the same result:
+
+```gql
+MATCH ()-[e:Take]->()
+RETURN e.term, count(e)
+```
+
+With only aggregates and no other items, all rows form a single group:
+
+```gql
+MATCH ()-[e:Take]->()
+RETURN count(e)
+```
+
+You still need an explicit `GROUP BY` in two cases:
+
+- To group by an expression that is not in the `RETURN` list, for example to return only the count grouped by year: `RETURN count(e) GROUP BY e.year`.
+- When there is **no aggregate**. Implicit grouping applies only alongside an aggregate; without one, `GROUP BY` deduplicates records (each group keeps one). `RETURN e.term` returns every row's `e.term`, so use `RETURN e.term GROUP BY e.term` (or `RETURN DISTINCT e.term`) to collapse duplicates.
+
 ### Filtering Groups with NEXT and FILTER
 
 This query returns terms in which more than one `Take` edge exists:
