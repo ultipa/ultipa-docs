@@ -10,7 +10,7 @@ Additionaly, during each backpropagation step, updates are applied to all output
 
 Another significant computational cost comes from the <i>Softmax</i> function, which involves all words in the vocabulary to compute the normalization denominator.
 
-<center><img width="190" src="https://img.ultipa.cn/img/2023-08-22-15-12-04-softmax.jpg"></center>
+<center><img width="190" src="images/skip-gram-optimization-1.jpg"></center>
 
 T. Mikoliv and colleagues introduced optimization techniques for the Skip-gram model, including <b>subsampling</b> and <b>negative sampling</b>. These approaches help accelerate training and improve the quality of the resulting embedding vectors. 
 
@@ -29,7 +29,7 @@ Subsampling is used to address this issue by randomly discarding words during tr
 
 First, calculate the probability of keeping a word by:
 
-<center><img width="240" src="https://img.ultipa.cn/img/2023-08-29-14-10-47-sub-sample.jpg"></center>
+<center><img width="240" src="images/skip-gram-optimization-2.jpg"></center>
 
 where <math><mi>f</mi><mi>(</mi><msub><mi>w</mi><mi>i</mi></msub><mi>)</mi></math> is the frequency of the <math><mi>i</mi></math>-th word, <math><mi>α</mi></math> is a factor that influences the distribution and is default to <math><mn>0.001</mn></math>.
 
@@ -89,7 +89,7 @@ Consider the scenario where <math><mi>V</mi><mo>=</mo><mn>10000</mn></math> and 
 
 To select negative samples, a probability distribution <math><msub><mi>P</mi><mi>n</mi></msub></math> is required. The fundamental principle is to prioritize frequent words in the corpus. However, using raw frequency can result in an overrepresentation of very common words, while underrepresenting less frequent ones. To address this, an empirical distribution is often used that involves raising the word frequency  to the power of <math><mfrac><mn>3</mn><mn>4</mn></mfrac></math>:
 
-<center><img width="230" src="https://img.ultipa.cn/2022-10-11-14-15-14-Pn.jpg"></center>
+<center><img width="230" src="images/skip-gram-optimization-3.jpg"></center>
 
 where <math><mi>f</mi><mi>(</mi><msub><mi>w</mi><mi>i</mi></msub><mi>)</mi></math> is the frequency of the <math><mi>i</mi></math>-th word, the subscript <math><mi>n</mi></math> of <math><mi>P</mi></math> indicates the concept of <i>noise</i>, the distribution <math><msub><mi>P</mi><mi>n</mi></msub></math> is also called the <i>noise distribution</i>.
 
@@ -103,28 +103,28 @@ However, when working with large corpora, negative sampling can still be computa
 
 We will demonstrate with target word <i>is</i>, positive word <i>a</i>, and negative words <i>graph</i>, <i>data</i> and <i>at</i>:
 
-<center><img width="1000" src="https://img.ultipa.cn/img/2023-08-23-17-36-49-train.jpg"></center>
+<center><img width="1000" src="images/skip-gram-optimization-4.jpg"></center>
 
 With negative sampling, the Skip-gram model uses the following variation of the <i>Softmax</i> function, which is actually the <i>Sigmoid</i> function (<math><mi>σ</mi></math>) of <math><msub><mi>u</mi><mi>j</mi></msub></math>. This function maps all components of <math><mi>u</mi></math> within the range of <math><mn>0</mn></math> and <math><mn>1</mn></math>:
 
-<center><img width="200" src="https://img.ultipa.cn/img/2023-08-23-16-25-07-softmax.jpg"></center>
+<center><img width="200" src="images/skip-gram-optimization-5.jpg"></center>
 
 ### Backpropagation
 
 As explained, the output for the positive word, denoted as <math><msub><mi>y</mi><mn>0</mn></msub></math>, is expected to be <math><mn>1</mn></math>; while the <math><mi>k</mi></math> outputs corresponding to the negative words, denoted as <math><msub><mi>y</mi><mi>i</mi></msub></math>, are expected to be <math><mn>0</mn></math>. Therefore, the objective of the model's training is to maximize both <math><msub><mi>y</mi><mn>0</mn></msub></math> and <math><mn>1</mn><mo>-</mo><msub><mi>y</mi><mi>i</mi></msub></math>, which can be equivalently interpreted as maximizing their product:
 
-<center><img width="500" src="https://img.ultipa.cn/img/2023-08-23-16-53-57-max.jpg"></center>
+<center><img width="500" src="images/skip-gram-optimization-6.jpg"></center>
 
 The loss funtion <math><mi>E</mi></math> is then obtained by transforming the above as a minimization problem:
 
-<center><img width="420" src="https://img.ultipa.cn/img/2023-08-23-16-56-31-E.jpg"></center>
+<center><img width="420" src="images/skip-gram-optimization-7.jpg"></center>
 
 Take the partial derivative of <math><mi>E</mi></math> with respect to <math><msub><mi>u</mi><mn>0</mn></msub></math> and <math><msub><mi>u</mi><mi>i</mi></msub></math>:
 
-<center><img width="580" src="https://img.ultipa.cn/img/2023-08-23-17-25-52-pd.jpg"></center>
+<center><img width="580" src="images/skip-gram-optimization-8.jpg"></center>
 
 <math><mfrac><mrow><mi>∂</mi><mi>E</mi></mrow><mrow><mi>∂</mi><msub><mi>u</mi><mn>0</mn></msub></mrow></mfrac></math> and <math><mfrac><mrow><mi>∂</mi><mi>E</mi></mrow><mrow><mi>∂</mi><msub><mi>u</mi><mi>i</mi></msub></mrow></mfrac></math> hold a similar meaning to <math><mfrac><mrow><mi>∂</mi><mi>E</mi></mrow><mrow><mi>∂</mi><msub><mi>u</mi><mi>j</mi></msub></mrow></mfrac></math> in the original Skip-gram model, which can be understood as subtracting the expected vector from the output vector:
 
-<center><img width="250" src="https://img.ultipa.cn/img/2023-08-23-17-43-12-e.jpg"></center>
+<center><img width="250" src="images/skip-gram-optimization-9.jpg"></center>
 
 The process of updating weights in matrices <math><mi>W</mi><mo>&#x2032;</mo></math> and <math><mi>W</mi></math> is straightforward. You may refer to the <a target="_blank" href="/docs/graph-algorithms/skip-gram">original form</a> of Skip-gram. However, only weights <math><msubsup><mi>w</mi><mn>11</mn><mo>&#x2032;</mo></msubsup></math>, <math><msubsup><mi>w</mi><mn>21</mn><mo>&#x2032;</mo></msubsup></math>, <math><msubsup><mi>w</mi><mn>13</mn><mo>&#x2032;</mo></msubsup></math>, <math><msubsup><mi>w</mi><mn>23</mn><mo>&#x2032;</mo></msubsup></math>, <math><msubsup><mi>w</mi><mn>18</mn><mo>&#x2032;</mo></msubsup></math>, <math><msubsup><mi>w</mi><mn>28</mn><mo>&#x2032;</mo></msubsup></math>, <math><msubsup><mi>w</mi><mrow><mn>1</mn><mi>,</mi><mn>10</mn></mrow><mo>&#x2032;</mo></msubsup></math> and <math><msubsup><mi>w</mi><mrow><mn>2</mn><mi>,</mi><mn>10</mn></mrow><mo>&#x2032;</mo></msubsup></math> in <math><mi>W</mi><mo>&#x2032;</mo></math> and weights <math><msub><mi>w</mi><mn>21</mn></msub></math> and <math><msub><mi>w</mi><mn>21</mn></msub></math> in <math><mi>W</mi></math> are updated.

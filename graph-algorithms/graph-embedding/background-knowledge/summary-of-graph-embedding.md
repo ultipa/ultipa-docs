@@ -15,7 +15,7 @@ For example, in node embeddings, nodes that are more similar in the graph will h
 
 To illustrate, the figure below shows the results (on the right) of applying the node embedding algorithm <a target="_blank" href="https://arxiv.org/pdf/1403.6652.pdf">DeepWalk</a> to Zachary's karate club graph (on the left). In the graph, node colors indicate communities identified through modularity-based clustering. Once all the nodes have been transformed into two-dimensional vectors, it becomes evident that nodes within the same community are positioned relatively closer to each other.
 
-<center><img src="https://img.ultipa.cn/img/2023-05-22-10-46-40-deepwalk.jpg"><span style="color:#999999;">B. Perozzi, et al., DeepWalk: Online Learning of Social Representations (2014)</span></center>
+<center><img src="images/summary-of-graph-embedding-1.jpg"><span style="color:#999999;">B. Perozzi, et al., DeepWalk: Online Learning of Social Representations (2014)</span></center>
 
 ### Closeness of the Embeddings
 

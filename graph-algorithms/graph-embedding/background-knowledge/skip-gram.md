@@ -22,7 +22,7 @@ To better understand the Skip-gram model, we will illustrate it in its original 
 
 The core idea behind the Skip-gram model is to predict surrounding context words given a target word. As illustrated in the diagram below, the input word, denoted as <math><mi>w</mi><mi>(</mi><mi>t</mi><mi>)</mi></math>, is fed into the model. The model then predicts a set of nearby context words related to <math><mi>w</mi><mi>(</mi><mi>t</mi><mi>)</mi></math>: <math><mi>w</mi><mi>(</mi><mi>t</mi><mo>-</mo><mn>2</mn><mi>)</mi></math>, <math><mi>w</mi><mi>(</mi><mi>t</mi><mo>-</mo><mn>1</mn><mi>)</mi></math>, <math><mi>w</mi><mi>(</mi><mi>t</mi><mo>+</mo><mn>1</mn><mi>)</mi></math>, and <math><mi>w</mi><mi>(</mi><mi>t</mi><mo>+</mo><mn>2</mn><mi>)</mi></math>. Here, the symbols <math><mo>+</mo></math>/<math><mo>-</mo></math> signify the words that appear before and after the target word in the sequence. The number of context words can be adjusted as needed.
 
-<center><img width="250" src="https://img.ultipa.cn/2022-09-28-09-41-24-skipgram.jpg"></center>
+<center><img width="250" src="images/skip-gram-1.jpg"></center>
 
 However, it's important to recognize that <b>the ultimate goal</b> of the Skip-gram model is not the prediction task itself. Rather, its primary objective is to <b>derive the weight matrix found within the mapping relationship</b> (indicated as PROJECTION in the diagram), which serves as the learned vector representations of words.
 
@@ -42,7 +42,7 @@ The Skip-gram model uses a sliding window sampling technique to generate <b>trai
 
 Below is an illustration of the sampling process when `window_size`<math><mo>=</mo><mn>1</mn></math>. 
 
-<div align="center" drawio-diagram='3240' drawio-name="draw_1ff197fe01cd406a8bf8d9a6f4bf121b.jpg"><img src="https://img.ultipa.cn/draw/draw_1ff197fe01cd406a8bf8d9a6f4bf121b.jpg?v='1664421619538'"/></div>
+<div align="center" drawio-diagram='3240' drawio-name="draw_1ff197fe01cd406a8bf8d9a6f4bf121b.jpg"><img src="images/skip-gram-2.jpg"/></div>
 
 It's important to note that when `window_size`<math><mo>></mo><mn>1</mn></math>, all context words within the specified window are treated equally, regardless of their distance from the target word.
 
@@ -68,7 +68,7 @@ Below is an example of how one-hot encoding is applied to our vocabulary:
 
 ## Skip-gram Architecture
 
-<div align='center' drawio-diagram='6289' drawio-name="draw_043a4780ed8746f3a04a2e58ebbde9e6.jpg"><img src="https://img.ultipa.cn/draw/draw_043a4780ed8746f3a04a2e58ebbde9e6.jpg?v='1688452021250'"/></div>
+<div align='center' drawio-diagram='6289' drawio-name="draw_043a4780ed8746f3a04a2e58ebbde9e6.jpg"><img src="images/skip-gram-3.jpg"/></div>
 
 The architecture of the Skip-gram model is illustrated above, where:
 
@@ -81,23 +81,23 @@ The architecture of the Skip-gram model is illustrated above, where:
 
 <b>Softmax</b>: The Softmax function serves as an activation function that transforms a vector of real numbers into a probability distribution vector. In the resulting vector, all elements sum to <math><mn>1</mn></math>. The formula for Softmax is as follows:
 
-<center><img width="190" src="https://img.ultipa.cn/img/2023-08-22-15-12-04-softmax.jpg"></center>
+<center><img width="190" src="images/skip-gram-4.jpg"></center>
 
 ## Forward Propagation
 
 In our example, let <math><mi>V</mi><mo>=</mo><mn>10</mn></math>, and set <math><mi>N</mi><mo>=</mo><mn>2</mn></math>. We begin by randomly initializing the weight matrices <math><mi>W</mi></math> and <math><mi>W</mi><mo>&#x2032;</mo></math> as shown below. For demonstration, we will use the sample pairs <i>(is, graph) and  (is, a)</i>.
 
-<center><img width="1000" src="https://img.ultipa.cn/2022-09-29-18-12-32-forward.jpg"></center>
+<center><img width="1000" src="images/skip-gram-5.jpg"></center>
 
 ### Input Layer → Hidden Layer
 
 Get the hidden layer vector <math><mi>h</mi></math> by:
 
-<center><img width="90" src="https://img.ultipa.cn/img/2023-08-22-11-40-05-h.jpg"></center>
+<center><img width="90" src="images/skip-gram-6.jpg"></center>
 
 Given that <math><mi>x</mi></math> is a one-hot encoded vector with only <math><msub><mi>x</mi><mi>k</mi></msub><mo>=</mo><mn>1</mn></math>, <math><mi>h</mi></math> corresponds to the <math><mi>k</mi></math>-th row of the matrix <math><mi>W</mi></math>. This operation is essentially a simple lookup process:
 
-<center><img width="88" src="https://img.ultipa.cn/img/2023-08-22-12-19-44-h.jpg"></center>
+<center><img width="88" src="images/skip-gram-7.jpg"></center>
 
 where <math><msub><mi>v</mi><mrow><mi>w</mi><mi>I</mi></mrow></msub></math> is the <b>input vector</b> of the target word.
 
@@ -107,11 +107,11 @@ In fact, each row of the matrix <math><mi>W</mi></math>, denoted as <math><msub>
 
 Get the vector <math><mi>u</mi></math> by:
 
-<center><img width="90" src="https://img.ultipa.cn/img/2023-08-22-12-01-08-u.jpg"></center>
+<center><img width="90" src="images/skip-gram-8.jpg"></center>
 
 The <math><mi>j</mi></math>-th component of the vector <math><mi>u</mi></math> is computed as the dot product between the vector <math><mi>h</mi></math> and the transpose of the <math><mi>j</mi></math>-th column vector of the matrix <math><mi>W</mi><mo>&#x2032;</mo></math>:
 
-<center><img width="125" src="https://img.ultipa.cn/img/2023-08-22-15-15-45-uj.jpg"></center>
+<center><img width="125" src="images/skip-gram-9.jpg"></center>
 
 where <math><msubsup><mi>v</mi><mrow><msub><mi>w</mi><mi>j</mi></msub></mrow><mo>&#x2032;</mo></msubsup></math> is the <b>output vector</b> of the <math><mi>j</mi></math>-th word in the vocabulary.
 
@@ -119,13 +119,13 @@ where <math><msubsup><mi>v</mi><mrow><msub><mi>w</mi><mi>j</mi></msub></mrow><mo
 
 Get each output panel <math><msub><mi>y</mi><mi>c</mi></msub></math> by:
 
-<center><img width="185" src="https://img.ultipa.cn/img/2023-08-22-12-09-55-yc.jpg"></center>
+<center><img width="185" src="images/skip-gram-10.jpg"></center>
 
 where <math><msub><mi>y</mi><mrow><mi>c</mi><mi>,</mi><mi>j</mi></mrow></msub></math> is the <math><mi>j</mi></math>-th component of <math><msub><mi>y</mi><mi>c</mi></msub></math>, representing the probability of the <math><mi>j</mi></math>-th word within the vocabulary being predicted while considering the given target word. Apparently, the sum of all probabilities is <math><mn>1</mn></math>.
 
 The <math><mn>C</mn></math> words with the highest predicted probabilities are selected as the context words. In our example, where <math><mn>C</mn><mo>=</mo><mn>2</mn></math>, the predicted context words are <i>good</i> and <i>visualize</i>.
 
-<center><img width="200" src="https://img.ultipa.cn/img/2023-08-22-14-53-51-yc.jpg"></center>
+<center><img width="200" src="images/skip-gram-11.jpg"></center>
 
 ## Backpropagation
 
@@ -135,37 +135,37 @@ The <math><mn>C</mn></math> words with the highest predicted probabilities are s
 
 Our goal is to maximize the probabilities of the <math><mn>C</mn></math> context words, which is equivalent to maximizing the product of these probabilities:
 
-<center><img width="180" src="https://img.ultipa.cn/img/2023-08-22-15-54-58-max.jpg"></center>
+<center><img width="180" src="images/skip-gram-12.jpg"></center>
 
 where <math><msubsup><mi>j</mi><mi>c</mi><mo>*</mo></msubsup></math> is the index of the expected <math><mi>c</mi></math>-th output context word.
 
 Because minimizing a function is often more straightforward and practical than maximizing it, we transform the above objective accordingly:
 
-<center><img width="570" src="https://img.ultipa.cn/img/2023-08-22-15-55-10-trans.jpg"></center>
+<center><img width="510" src="images/skip-gram-13.png"></center>
 
 Therefore, the loss function <math><mn>E</mn></math> for the Skip-gram model is defined as:
 
-<center><img width="250" src="https://img.ultipa.cn/img/2023-08-22-15-59-26-E.jpg"></center>
+<center><img width="250" src="images/skip-gram-14.jpg"></center>
 
 Take the partial derivative of <math><mn>E</mn></math> with respect to <math><msub><mi>u</mi><mi>j</mi></msub></math>:
 
-<center><img width="550" src="https://img.ultipa.cn/img/2023-08-22-16-35-04-pd.jpg"></center>
+<center><img width="550" src="images/skip-gram-15.jpg"></center>
 
 To simplify the notaion going forward, we define the following:
 
-<center><img width="295" src="https://img.ultipa.cn/img/2023-08-22-17-52-48-ecj.jpg"></center>
+<center><img width="295" src="images/skip-gram-16.jpg"></center>
 
 where <math><msub><mi>t</mi><mi>c</mi></msub></math> is the one-hot encoding vector of the <math><mi>c</mi></math>-th expected output context word. In our example, <math><msub><mi>t</mi><mi>1</mi></msub></math> and <math><msub><mi>t</mi><mi>2</mi></msub></math> are the one-hot encoded vectors of the words <i>graph</i> and <i>a</i>, respectively. Therefore, the corresponding errors <math><msub><mi>e</mi><mi>1</mi></msub></math> and <math><msub><mi>e</mi><mi>2</mi></msub></math> are calculated as follows:
 
-<center><img width="240" src="https://img.ultipa.cn/img/2023-08-22-16-47-00-e.jpg"></center>
+<center><img width="240" src="images/skip-gram-17.jpg"></center>
 
 Therefore, <math><mfrac><mrow><mi>∂</mi><mi>E</mi></mrow><mrow><mi>∂</mi><msub><mi>u</mi><mi>j</mi></msub></mrow></mfrac></math> can be written as:
 
-<center><img width="135" src="https://img.ultipa.cn/img/2023-08-22-17-54-47-sim.jpg"></center>
+<center><img width="135" src="images/skip-gram-18.jpg"></center>
 
 In our example, it is calculated as:
 
-<center><img width="250" src="https://img.ultipa.cn/img/2023-08-22-16-58-11-e.jpg"></center>
+<center><img width="250" src="images/skip-gram-19.jpg"></center>
 
 ### Output Layer → Hidden Layer
 
@@ -173,11 +173,11 @@ Adjustments are applied to all the weights in matrix <math><mi>W</mi><mo>&#x2032
 
 Calculate the partial derivative of <math><mi>E</mi></math> with respect to <math><msubsup><mi>w</mi><mrow><mi>i</mi><mi>j</mi></mrow><mo>&#x2032;</mo></msubsup></math>:
 
-<center><img width="650" src="https://img.ultipa.cn/img/2023-08-22-17-56-47-pd1.jpg"></center>
+<center><img width="650" src="images/skip-gram-20.jpg"></center>
 
 Adjust <math><msubsup><mi>w</mi><mrow><mi>i</mi><mi>j</mi></mrow><mo>&#x2032;</mo></msubsup></math> according to the <a target="_blank" href="/docs/graph-algorithms/gradient-descent#Basic-Form">learning rate</a> <math><mi>η</mi></math>:
 
-<center><img width="235" src="https://img.ultipa.cn/img/2023-08-22-17-58-47-new1.jpg"></center>
+<center><img width="235" src="images/skip-gram-21.jpg"></center>
 
 Set <math><mi>η</mi><mo>=</mo><mn>0.4</mn></math>. For instance, <math><msubsup><mi>w</mi><mn>14</mn><mo>&#x2032;</mo></msubsup><mo>=</mo><mn>0.86</mn></math> and <math><msubsup><mi>w</mi><mn>24</mn><mo>&#x2032;</mo></msubsup><mo>=</mo><mn>0.67</mn></math> are updated to:
 
@@ -239,15 +239,15 @@ Only the weights in matrix <math><mi>W</mi></math> corresponding to <b>the input
 
 The vector <math><mi>h</mi></math> is obtained by only looking up the <math><mi>k</mi></math>-th row of matrix <math><mi>W</mi></math> (given that <math><msub><mi>x</mi><mi>k</mi></msub><mo>=</mo><mn>1</mn></math>): 
 
-<center><img width="90" src="https://img.ultipa.cn/img/2023-08-23-10-03-02-hi.jpg"></center>
+<center><img width="90" src="images/skip-gram-22.jpg"></center>
 
 Calculate the partial derivative of <math><mi>E</mi></math> with respect to <math><msub><mi>w</mi><mrow><mi>k</mi><mi>i</mi></mrow></msub></math>:
 
-<center><img width="400" src="https://img.ultipa.cn/img/2023-08-23-10-08-08-pd2.jpg"></center>
+<center><img width="400" src="images/skip-gram-23.jpg"></center>
 
 Adjust <math><msub><mi>w</mi><mrow><mi>k</mi><mi>i</mi></mrow></msub></math> according to the <a target="_blank" href="/docs/graph-algorithms/gradient-descent#Basic-Form">learning rate</a> <math><mi>η</mi></math>:
 
-<center><img width="300" src="https://img.ultipa.cn/img/2023-08-23-10-09-55-new2.jpg"></center>
+<center><img width="300" src="images/skip-gram-24.jpg"></center>
 
 In our example, <math><mi>k</mi><mo>=</mo><mn>2</mn></math>, hence, <math><msub><mi>w</mi><mn>21</mn></msub><mo>=</mo><mn>0.65</mn></math> and <math><msub><mi>w</mi><mn>22</mn></msub><mo>=</mo><mn>0.87</mn></math> are updated:
 

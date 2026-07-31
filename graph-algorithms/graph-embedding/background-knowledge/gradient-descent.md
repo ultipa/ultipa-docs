@@ -14,7 +14,7 @@ along the gradient's descent. Conversely, if the aim is to locate the maximum va
 
 Given a function <math><mi>J</mi><mi>(</mi><mi>θ</mi><mi>)</mi></math>, the basic form of gradient descent is:
 
-<center><img width="140" src="https://img.ultipa.cn/2022-09-26-14-29-54-Gardient-Descent.jpg"></center>
+<center><img width="140" src="images/gradient-descent-1.jpg"></center>
 
 where <math><mi>∇</mi><mi>J</mi></math> is the <a href="#Gradient">gradient</a> of the function at the position of <math><mi>θ</mi></math>, <math><mi>η</mi></math> is the <b>learning rate</b>. Since gradient is the steepest ascent direction, a minus symbol is used before <math><mi>η</mi><mi>∇</mi><mi>J</mi></math> to get the steepest descent.
 
@@ -37,7 +37,7 @@ If we start at position <math><msub><mi>θ</mi><mn>0</mn></msub><mo>=</mo><mn>1<
 
 As the number of steps increases, the process gradually converges toward <math><mi>θ</mi><mo>=</mo><mn>0</mn></math>, ultimately reaching the minimum of the function.
 
-<center><img width="700" src="https://img.ultipa.cn/2022-09-22-16-51-03-example.jpg"></center>
+<center><img width="700" src="images/gradient-descent-2.jpg"></center>
 
 ### Example: Multi-Variable Function
 
@@ -69,7 +69,7 @@ Consider a scenario where we are training a neural network model using a set of 
 
 The <b>hypothesis</b> <math><mi>h</mi><mi>(</mi><mi>Θ</mi><mi>)</mi></math> of the model is defined as:
 
-<center><img width="380" src="https://img.ultipa.cn/2022-09-26-14-11-22-Hypothesis.jpg"></center>
+<center><img width="380" src="images/gradient-descent-3.jpg"></center>
   
 Here, <math><mi>Θ</mi></math> represents the model's parameters <math><msub><mi>θ</mi><mn>0</mn></msub></math> ~ <math><msub><mi>θ</mi><mi>n</mi></msub></math>, and <math><msup><mi>x</mi><mrow><mi>(</mi><mi>i</mi><mi>)</mi></mrow></msup></math> is the <math><mi>i</mi></math>-th input vector, consisting of <math><mi>n</mi></math> features. The model computes the output using a function <math><mi>h</mi><mi>(</mi><mi>Θ</mi><mi>)</mi></math>, which performs a weighted combination of the input features.
   
@@ -77,17 +77,17 @@ The objective of model training is to identify the optimal values of <math><msub
 
 During each iteration of model training, after computing the outputs for all samples, the mean squared error (MSE) is used as the <b>loss/cost function</b> <math><mi>J</mi><mi>(</mi><mi>Θ</mi><mi>)</mi></math>. It measures the average squared difference between the predicted output and its corresponding expected value:
 
-<center><img width="280" src="https://img.ultipa.cn/2022-09-26-14-16-56-Loss.jpg"></center>
+<center><img width="280" src="images/gradient-descent-4.jpg"></center>
 
 > In the standard MSE formula, the denominator is usually <math><mfrac><mi>1</mi><mi>m</mi></mfrac></math>. However, <math><mfrac><mi>1</mi><mrow><mn>2</mn><mi>m</mi></mrow></mfrac></math> is often used instead to offset the squared term when taking the derivative. This leads to the elimination of the constant coefficient during gradient calculation, simplifying subsequent computations without affecting the final result.
 
 Subsequently, gradient descent is used to update the parameters <math><msub><mi>θ</mi><mi>j</mi></msub></math>. The partial derivative of the loss function with respect to <math><msub><mi>θ</mi><mi>j</mi></msub></math> is calculated as follows:
 
-<center><img width="480" src="https://img.ultipa.cn/2022-09-26-14-21-41-θj-1.jpg"></center>
+<center><img width="480" src="images/gradient-descent-5.jpg"></center>
 
 Hence, update <math><msub><mi>θ</mi><mi>j</mi></msub></math> as:
 
-<center><img width="320" src="https://img.ultipa.cn/2022-09-26-14-23-56-θj-2.jpg"></center>
+<center><img width="320" src="images/gradient-descent-6.jpg"></center>
 
 The summation from <math><mi>i</mi><mo>=</mo><mn>1</mn></math> to <math><mi>m</mi></math> indicates that all <math><mi>m</mi></math> samples are used in each iteration to update the parameters. This approach is known as <b>Batch Gradient Descent</b> (BGD), the original and most straightforward form of the gradient descent algorithm. In BGD, the entire sample dataset is used to compute the gradient of the cost function during each iteration.
 
@@ -99,15 +99,15 @@ Stochastic gradient descent (SGD) only selects one sample in random to calculate
 
 When employing SGD, the above loss function should be expressed as:
 
-<center><img width="250" src="https://img.ultipa.cn/2022-09-26-14-26-08-θj-2=3.jpg"></center>
+<center><img width="250" src="images/gradient-descent-7.jpg"></center>
 
 The partial derivative with respect to <math><msub><mi>θ</mi><mi>j</mi></msub></math> is:
 
-<center><img width="450" src="https://img.ultipa.cn/2022-09-26-14-27-27-θj-4.jpg"></center>
+<center><img width="450" src="images/gradient-descent-8.jpg"></center>
 
 Update <math><msub><mi>θ</mi><mi>j</mi></msub></math> as:
 
-<center><img width="280" src="https://img.ultipa.cn/2022-09-26-14-27-36-θj-5.jpg"></center>
+<center><img width="280" src="images/gradient-descent-9.jpg"></center>
 
 SGD reduces computational complexity by using only one sample per iteration, eliminating the need for summation and averaging. This leads to faster computation but may sacrifice some accuracy in the gradient estimation.
 
@@ -123,13 +123,13 @@ The derivative of a single-variable function <math><mi>f</mi><mi>(</mi><mi>x</mi
 
 Graphically, <math><mi>f</mi><mo>&#x2032;</mo><mi>(</mi><mi>x</mi><mi>)</mi></math> corresponds to the slope of the tangent line to the function's curve. The derivative at point <math><mi>x</mi></math> is:
 
-<center><img width="320" src="https://img.ultipa.cn/img/2023-08-17-13-31-39-derivative.jpg"></center>
+<center><img width="320" src="images/gradient-descent-10.jpg"></center>
 
 For example, <math><mi>f</mi><mi>(</mi><mi>x</mi><mi>)</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>10</mn></math>, at point <math><mi>x</mi><mo>=</mo><mn>-7</n></math>:
 
-<center><img width="700" src="https://img.ultipa.cn/img/2023-08-17-13-34-49-eg1.jpg"></center>
+<center><img width="700" src="images/gradient-descent-11.jpg"></center>
 
-<center><img width="500" src="https://img.ultipa.cn/img/2023-09-07-11-15-20-fx.jpg"></center>
+<center><img width="500" src="images/gradient-descent-12.jpg"></center>
 
 > A tangent line is a straight line that touches a function's curve at exactly one point and has the same slope (direction) as the curve at that point.
 
@@ -137,13 +137,13 @@ For example, <math><mi>f</mi><mi>(</mi><mi>x</mi><mi>)</mi><mo>=</mo><msup><mi>x
 
 The partial derivative of a multiple-variable function measures how the function changes as one specific variable changes, while all other variables are held constant. For a function <math><mi>f</mi><mi>(</mi><mi>x</mi><mo>,</mo><mi>y</mi><mi>)</mi></math>, its partial derivative with respect to <math><mi>x</mi></math> at a particular point <math><mi>(</mi><mi>x</mi><mo>,</mo><mi>y</mi><mi>)</mi></math> is denoted as <math><mfrac><mrow><mi>∂</mi><mi>f</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac></math> or <math><msubsup><mi>f</mi><mi>x</mi><mo>&#x2032;</mo></msubsup></math>:  
 
-<center><img width="400" src="https://img.ultipa.cn/img/2023-08-17-13-44-03-partial-deriative.jpg"></center>
+<center><img width="400" src="images/gradient-descent-13.jpg"></center>
 
 For example, <math><mi>f</mi><mi>(</mi><mi>x</mi><mo>,</mo><mi>y</mi><mi>)</mi><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></math>, at point <math><mi>x</mi><mo>=</mo><mn>-4</mn></math>, <math><mi>y</mi><mo>=</mo><mn>-6</mn></math>:
   
-<center><img width="750" src="https://img.ultipa.cn/img/2023-08-17-13-46-00-eg2.jpg"></center>
+<center><img width="750" src="images/gradient-descent-14.jpg"></center>
 
-<center><img width="700" src="https://img.ultipa.cn/img/2023-08-17-11-05-44-derivative-2.jpg"><span style="color:#999999;"><br><math><mi>L</mi><mn>1</mn></math> shows how the function changes as you move along the Y-axis, while keeping <math><mi>x</mi></math> constant; <math><mi>L</mi><mn>2</mn></math> shows how the function changes as you move along the X-axis, while keeping <math><mi>y</mi></math> constant.</span></center>
+<center><img width="700" src="images/gradient-descent-15.jpg"><span style="color:#999999;"><br><math><mi>L</mi><mn>1</mn></math> shows how the function changes as you move along the Y-axis, while keeping <math><mi>x</mi></math> constant; <math><mi>L</mi><mn>2</mn></math> shows how the function changes as you move along the X-axis, while keeping <math><mi>y</mi></math> constant.</span></center>
 
 ### Directional Derivative
 
@@ -151,11 +151,11 @@ The <a href="#Partial-Derivative">partial derivative</a> of a function describes
 
 The directional derivative is mathematically expressed as the dot product of the vector <math><mi>∇</mi><mi>f</mi></math> composed of all partial derivatives of the function with the unit vector <math><mover><mi>w</mi><mi>→</mi></mover></math> which indicates the direction of the change:
 
-<center><img width="420" src="https://img.ultipa.cn/img/2023-08-17-16-13-26-directional-derivative.jpg"></center>
+<center><img width="420" src="images/gradient-descent-16.jpg"></center>
 
 where <math><mi>|</mi><mover><mi>w</mi><mi>→</mi></mover><mi>|</mi><mo>=</mo><mn>1</mn></math>, <math><mi>θ</mi></math> is the angle between the two vectors, and 
 
-<center><img width="240" src="https://img.ultipa.cn/img/2023-08-17-16-08-28-gradient.jpg"></center>
+<center><img width="240" src="images/gradient-descent-17.jpg"></center>
 
 ### Gradient
 
@@ -167,14 +167,14 @@ Naturally, the negative gradient points in the direction of the steepest descent
 
 The chain rule describes how to calculate the <a href="#Derivative">derivative</a> of a composite function. In the simpliest form, the derivative of a composite function <math><mi>f</mi><mi>(</mi><mi>g</mi><mi>(</mi><mi>x</mi><mi>)</mi><mi>)</mi></math> can be calculated by multiplying the derivative of <math><mi>f</mi></math> with respect to <math><mi>g</mi></math> by the derivative of <math><mi>g</mi></math> with respect to <math><mi>x</mi></math>:
 
-<center><img width="120" src="https://img.ultipa.cn/img/2023-08-17-14-37-54-chain1.jpg"></center>
+<center><img width="120" src="images/gradient-descent-18.jpg"></center>
 
 For example, <math><mi>s</mi><mi>(</mi><mi>x</mi><mi>)</mi><mo>=</mo><msup><mrow><mi>(</mi><mn>2</mn><mi>x</mi><mo>+</mo><mn>1</mn><mi>)</mi></mrow><mrow><mn>2</mn></mrow></msup></math> is composed of <math><mi>s</mi><mi>(</mi><mi>u</mi><mi>)</mi><mo>=</mo><msup><mi>u</mi><mrow><mn>2</mn></mrow></msup></math> and <math><mi>u</mi><mi>(</mi><mi>x</mi><mi>)</mi><mo>=</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>1</mn></math>:
 
-<center><img width="320" src="https://img.ultipa.cn/img/2023-08-17-14-26-53-eg3.jpg"></center>
+<center><img width="320" src="images/gradient-descent-19.jpg"></center>
 
 In a multi-variable composite function, the <a href="#Partial-Derivative">partial derivatives</a> are obtained by applying the chain rule to each variable.
 
 For example, <math><mi>s</mi><mi>(</mi><mi>x</mi><mo>,</mo><mi>y</mi><mi>)</mi><mo>=</mo><mi>(</mi><mn>2</mn><mi>x</mi><mo>+</mo><mn>y</mn><mi>)</mi><mi>(</mi><mi>y</mi><mo>-</mo><mn>3</mn><mi>)</mi></math> is composed of <math><mi>s</mi><mi>(</mi><mi>f</mi><mo>,</mo><mi>g</mi><mi>)</mi><mo>=</mo><mi>f</mi><mi>g</mi></math> and <math><mi>f</mi><mi>(</mi><mi>x</mi><mo>,</mo><mi>y</mi><mi>)</mi><mo>=</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>y</mn></math> and <math><mi>g</mi><mi>(</mi><mi>x</mi><mo>,</mo><mi>y</mi><mi>)</mi><mo>=</mo><mi>y</mi><mo>-</mo><mn>3</mn></math>:
 
-<center><img width="500" src="https://img.ultipa.cn/img/2023-08-17-14-26-58-eg4.jpg"></center>
+<center><img width="500" src="images/gradient-descent-20.jpg"></center>

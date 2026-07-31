@@ -15,7 +15,7 @@ The iterative adjustment of weights forms the core of the training process of a 
 
 A neural network typically consists of several key components: an <i>input layer</i>, one or more <i>hidden layers</i>, and an <i>output layer</i>. Below is a simple example of a neural network architecture:
 
-<div align="center" drawio-diagram='3220' drawio-name="draw_81e08511959547378d931afff6a9a767.jpg"><img src="https://img.ultipa.cn/draw/draw_81e08511959547378d931afff6a9a767.jpg?v='1664260462545'"/></div>
+<div align="center" drawio-diagram='3220' drawio-name="draw_81e08511959547378d931afff6a9a767.jpg"><img src="images/backpropagation-1.jpg"/></div>
 
 In this example, <math><mi>x</mi></math> is the input vector with 3 features, and <math><mi>y</mi></math> is the output. The hidden layer contains two <i>neurons</i> <math><msub><mi>h</mi><mn>1</mn></msub></math> and <math><msub><mi>h</mi><mn>2</mn></msub></math>, and the <i>sigmoid</i> activation function is applied at the output layer. 
 
@@ -25,15 +25,15 @@ Furthermore, the connections between layers are characterized by weights: <math>
 
 Activation functions enable neural networks to model non-linear relationships. Without them, the network can only represent linear mappings, which greatly limits its expressiveness. There are various activation functions available, each with its specific role. In this context, the <i>sigmoid</i> function is used, defined by the following formula and illustrated in the graph below:
 
-<center><img width="190" src="https://img.ultipa.cn/img/2023-08-21-13-54-58-sigmoid.jpg"></center>
+<center><img width="190" src="images/backpropagation-2.jpg"></center>
 
-<center><img width="300" src="https://img.ultipa.cn/2022-09-21-13-43-36-Sigmoid.jpg"></center>
+<center><img width="300" src="images/backpropagation-3.jpg"></center>
 
 ### Initial Weights
 
 The weights are initialized with random values. For illustration, let's assume the following initial weights:
 
-<div align="center" drawio-diagram='3221' drawio-name="draw_72b30356a2d74577ba9bfa6a81947b83.jpg"><img src="https://img.ultipa.cn/draw/draw_72b30356a2d74577ba9bfa6a81947b83.jpg?v='1664247624446'"/></div>
+<div align="center" drawio-diagram='3221' drawio-name="draw_72b30356a2d74577ba9bfa6a81947b83.jpg"><img src="images/backpropagation-4.jpg"/></div>
 
 ### Training Samples
 
@@ -50,13 +50,13 @@ The primary goal of the training process is to adjust the model's parameters (we
 
 Neurons <math><msub><mi>h</mi><mn>1</mn></msub></math> and <math><msub><mi>h</mi><mn>2</mn></msub></math> are calculated by:
 
-<center><img width="250" src="https://img.ultipa.cn/2022-09-28-09-33-32-h1-h2.jpg"></center>
+<center><img width="250" src="images/backpropagation-5.jpg"></center>
 
 ### Hidden Layer → Output Layer
 
 The output <math><mi>y</mi></math> is calculated by:
 
-<center><img width="250" src="https://img.ultipa.cn/2022-09-28-09-33-41-s-y.jpg"></center>
+<center><img width="250" src="images/backpropagation-6.jpg"></center>
 
 Below is the calculation of the 3 samples:
 
@@ -74,7 +74,7 @@ Apparently, the three computed outputs (<math><mi>y</mi></math>) are very differ
 
 A loss function is used to quantify the error or discrepancy between the model's predicted outputs and the expected outputs. It is also commonly referred to as the objective function or cost function. In this case, we'll use the mean squared error (MSE) as the loss function <math><mi>E</mi></math>:
 
-<center><img width="200" src="https://img.ultipa.cn/2022-09-27-14-51-29-MSE.jpg"></center>
+<center><img width="200" src="images/backpropagation-7.jpg"></center>
 
 where <math><mi>m</mi></math> is the number of samples. Calculate the error of this round of forward propagation as:
 
@@ -106,11 +106,11 @@ Adjust the weights <math><msub><mi>w</mi><mn>1</mn></msub></math> and <math><msu
 
 Calculate the partial derivative of <math><mi>E</mi></math> with respect to <math><msub><mi>w</mi><mn>1</mn></msub></math> with the <a target="_blank" href="/docs/graph-algorithms/gradient-descent#Chain-Rule">chain rule</a>:
 
-<center><img width="180" src="https://img.ultipa.cn/2022-09-27-15-21-41-back1.jpg"></center>
+<center><img width="180" src="images/backpropagation-8.jpg"></center>
 
 where,
 
-<center><img width="480" src="https://img.ultipa.cn/img/2023-08-21-15-46-09-w1.jpg"></center>
+<center><img width="480" src="images/backpropagation-9.jpg"></center>
 
 Calculate with values: <br><br>
 
@@ -221,11 +221,11 @@ Adjust the weights <math><msub><mi>v</mi><mn>11</mn></msub></math> ~ <math><msub
 
 Calculate the partial derivative of <math><mi>E</mi></math> with respect to <math><msub><mi>v</mi><mn>11</mn></msub></math> with the <a target="_blank" href="/docs/graph-algorithms/gradient-descent#Chain-Rule">chain rule</a>:
 
-<center><img width="230" src="https://img.ultipa.cn/2022-09-27-15-55-13-back3.jpg"></center>
+<center><img width="230" src="images/backpropagation-10.jpg"></center>
 
 We already computed <math><mfrac><mrow><mi>∂</mi><mi>E</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac></math> and <math><mfrac><mrow><mi>∂</mi><mi>y</mi></mrow><mrow><mi>∂</mi><mi>s</mi></mrow></mfrac></math>, below are the latter two:
 
-<center><img width="360" src="https://img.ultipa.cn/2022-09-27-15-58-11-back4.jpg"></center>
+<center><img width="360" src="images/backpropagation-11.jpg"></center>
 
 Calculate with values: <br></br>
 
