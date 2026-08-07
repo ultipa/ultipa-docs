@@ -221,7 +221,8 @@ Once the server is connected, talk to the agent in natural language, it picks th
 
 **Docs:**
 
-- "Look up the Ultipa docs on graph algorithms and summarize what's available for community detection."
+- "Search the Ultipa docs for community detection algorithms and summarize what's available."
+- "What's the exact syntax for creating a full-text index? Check the docs first."
 
 ## Tools
 
@@ -321,9 +322,12 @@ Once the server is connected, talk to the agent in natural language, it picks th
 
 ### Docs
 
+These two tools let the agent ground GQLDB features and GQL composition in authoritative reference instead of training-time memory. They pair up: `search_docs` finds which page, `lookup_docs` reads it.
+
 | Tool | What it does |
 | --- | --- |
-| `lookup_docs` | Fetch Ultipa documentation pages by topic. Lets the agent ground GQLDB features and GQL composition in authoritative reference. |
+| `search_docs` | Search the Ultipa documentation by keyword and get back ranked pages, each carrying a `topic` to pass to `lookup_docs`. An optional `product` filter narrows the search to one docs section (`gql`, `graph-algorithms`, `ontology`, …). Results cover the current docs version only. |
+| `lookup_docs` | Fetch the full markdown of one documentation page by its exact `topic` path. This is where real content lives: code examples and full syntax exist here, not in search snippets. Pass `topic: "?"` to list every page in the docs repo. |
 
 ## Troubleshooting
 
@@ -337,6 +341,7 @@ Once the server is connected, talk to the agent in natural language, it picks th
 | MCP launches but exits immediately with "needs at least one auth mode" | Neither `ULTIPA_CLOUD_API_KEY` nor the direct trio (`ULTIPA_HOST` + `ULTIPA_USERNAME` + `ULTIPA_PASSWORD`) is set. Add them to your MCP client's `env` block. |
 | MCP launches but exits with "Direct instance config is incomplete" | You set one or two of the direct env vars; all three (`ULTIPA_HOST`, `ULTIPA_USERNAME`, `ULTIPA_PASSWORD`) are required together. |
 | `import_data` very slow or truncated in `csv` or arrays mode | The agent's output rate is the bottleneck. Provide a host file path so the MCP uses `filePath` mode (constant tokens), or fall back to Ultipa Manager → Data Integration for very large imports. |
+| `search_docs` returns no results for an obvious topic | The search intersects terms, so every word must appear on the page. Drop the least technical term instead of adding more, and use the docs' own vocabulary (`SKIP` / `LIMIT` rather than "pagination"). `lookup_docs` with `topic: "?"` lists every page as a last resort. |
 | Claude Desktop extension installed but no Ultipa tools appear | Credentials weren't entered at install. Open **Settings → Extensions → Ultipa**, add a Cloud API key or the direct-instance host / username / password, and re-enable. |
 
 For agent-side trace debugging, set `ULTIPA_MCP_DEBUG=1` in the MCP env to log every tool call name and latency to stderr.
