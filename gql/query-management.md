@@ -44,30 +44,13 @@ Use `SHOW QUERIES` to find the `query_id` of the query you want to cancel.
 
 ## Background Tasks
 
-The following operations run as tasks automatically:
+Tasks are created only by the operations listed below; there is no way to submit an arbitrary query as a background task.
 
-- **Write-mode algorithms**: `CALL algo.*.write()`
-- **Graph compaction**: `COMPACT GRAPH`
-- **Graph copy**: `CREATE GRAPH … AS COPY OF …`
-
-You can also submit any query as a task explicitly with [`EXEC`](#Submitting-a-Task-with-EXEC).
-
-### Submitting a Task with EXEC
-
-`EXEC <query>` runs a query as an asynchronous background task: it returns immediately with a task id instead of holding the connection open until the query finishes. This suits long-running writes that would otherwise run synchronously, such as large bulk inserts or property backfills.
-
-```gql
--- Bulk insert: many rows in one statement
-EXEC INSERT (:Person {name: 'Alice'}),
-            (:Person {name: 'Bob'}),
-            (:Person {name: 'Carol'}),
-            ...
-
--- Backfill embeddings on every Document that lacks one
-EXEC MATCH (n:Document) WHERE n.embedding IS NULL SET n.embedding = ai.embed(n.content)
-```
-
-`EXEC` returns `task_id` and `message`.
+| Operation | Task type | When it becomes a task |
+| -- | -- | -- |
+| `CALL algo.*.write()` | `algorithm` | Always. Write-mode algorithms compute and write back in the background. |
+| `CREATE GRAPH … AS COPY OF …` | `copy_graph` | Always. The target graph stays in `COPYING` status until the copy finishes. |
+| `COMPACT GRAPH … ASYNC` | `compact_graph` | Only with the `ASYNC` keyword. Without it, compaction runs synchronously and blocks the session. |
 
 ### Showing Tasks
 
@@ -80,7 +63,7 @@ SHOW TASKS
 | Field | Description |
 | -- | -- |
 | `task_id` | Unique task identifier (e.g., `task_550e8400-...`). |
-| `type` | Task type: `algorithm`, `import`, or `export`. |
+| `type` | Task type: `algorithm`, `copy_graph`, or `compact_graph`. |
 | `query` | The query or command that created the task. |
 | `status` | Current status: `pending`, `running`, `completed`, `failed`, or `cancelled`. |
 | `started_at` | When the task started executing. |
