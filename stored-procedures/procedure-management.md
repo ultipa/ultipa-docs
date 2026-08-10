@@ -74,7 +74,7 @@ The `LIKE` name pattern uses SQL-style matching (case-insensitive):
 | `PATH` | — | Graph path | Path from `MATCH` |
 | `LIST<T>` | — | Typed list, `T` is any of the above | `LIST<STRING>`, `LIST<INTEGER>` |
 
-Other GQL value types — `DATE`, `TIME`, `TIMESTAMP`, `ZONED_DATETIME`, `DURATION`, `MAP`, `POINT`, `BYTES`, etc. — cannot be declared as procedure parameters or return columns. They can still appear inside the procedure body as values produced by functions or property reads (e.g., `LET d = date()`).
+Other GQL value types (`DATE`, `TIME`, `TIMESTAMP`, `ZONED_DATETIME`, `DURATION`, `MAP`, `POINT`, `BYTES`, etc.) cannot be declared as procedure parameters or return columns. They can still appear inside the procedure body as values produced by functions or property reads (e.g., `LET d = date()`).
 
 ### With No Parameters
 
@@ -89,7 +89,7 @@ AS {
 
 ### With Parameters
 
-Parameters are declared in the procedure signature with `<name>: <type>` syntax:
+Parameters are declared in the procedure signature with `<name>: <type>` syntax, and multiple parameters must be separated by commas.
 
 ```gql
 CREATE PROCEDURE to_sentence(
@@ -101,6 +101,8 @@ AS {
     RETURN $name || ' is ' || TOSTRING($age) || ' years old.' AS msg
 }
 ```
+
+Note that a parameter is declared **without** the `$` sigil but referenced **with** it inside the body: `age: INTEGER` in the signature is read as `$age` in the body. Parameters are never re-declared with `LET`. See <a target="_blank" href="/docs/stored-procedures/procedure-body-language#Parameter-Substitution">Parameter Substitution</a>.
 
 ### With Parameter Default Values
 
