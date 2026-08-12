@@ -35,7 +35,33 @@ MATCH (n:Person) WHERE n.age > cnt * 3
 RETURN n
 ```
 
-The yielded columns **replace** the outer binding row — variables from earlier clauses are not visible after a named `CALL ... YIELD`. To carry variables through, project them in a `RETURN` before the `CALL`, or use the inline `CALL { ... }` form with explicit variable import (see <a target="_blank" href="/docs/gql/call">CALL</a>).
+The yielded columns are **added** to each incoming row, so variables from earlier clauses remain visible after the `CALL`.
+
+## Per-Row Execution
+
+A named `CALL` executes once for each row of the incoming binding table, and that row's variables are visible inside the call. Arguments can therefore reference them:
+
+```gql
+MATCH (n:Person)
+CALL score_node(n._id) YIELD score
+RETURN n._id, score
+```
+
+Each incoming row is combined with the rows the procedure yields for it. A procedure that yields one row per call leaves the row count unchanged; a procedure that yields several multiplies the rows; a procedure that yields none drops the row unless the call is marked `OPTIONAL`.
+
+Avoid yielding a column whose name is already bound in the query. The collision is not reported: the procedure's column silently overwrites the existing variable for the rest of the query. In `MATCH (n:Person) CALL score_node(n._id) YIELD n`, later clauses see the procedure's `n`, not the matched node.
+
+### VOID Procedures in a Query
+
+A `VOID` procedure produces no columns and leaves the incoming rows untouched, so it can be placed anywhere in a query without affecting the result:
+
+```gql
+MATCH (n)
+CALL log_event('visited')
+RETURN n._id
+```
+
+This returns every `n._id`, and `log_event` runs once per node. Note that `PRINT` writes to the server's log rather than to the query result; see <a target="_blank" href="/docs/stored-procedures/data-operations#PRINT">PRINT</a>.
 
 ## OPTIONAL CALL
 
@@ -53,4 +79,18 @@ OPTIONAL CALL maybe_proc() YIELD result
 RETURN result
 ```
 
-This is the lookup-failure path only. If a named procedure resolves and runs successfully but yields zero rows, the result is still an empty table — `OPTIONAL` does not insert a NULL-padded row in that case. Rich NULL-padding semantics (preserve outer rows when the subquery is empty) apply only to the inline subquery form `OPTIONAL CALL { ... }` documented in <a target="_blank" href="/docs/gql/call#optional-call">CALL</a>.
+`OPTIONAL` also changes what happens when a procedure resolves and runs but yields no rows for a given input row. Without it the row is dropped by the join; with it the row is kept and the yielded columns are filled with NULL:
+
+```gql
+-- Persons for whom score_node yields nothing are dropped
+MATCH (n:Person)
+CALL score_node(n._id) YIELD score
+RETURN n._id, score
+
+-- Every Person is kept; score is NULL where the procedure yielded nothing
+MATCH (n:Person)
+OPTIONAL CALL score_node(n._id) YIELD score
+RETURN n._id, score
+```
+
+The same NULL-padding applies to the inline subquery form `OPTIONAL CALL { ... }`, documented in <a target="_blank" href="/docs/gql/call#OPTIONAL-CALL">CALL</a>.

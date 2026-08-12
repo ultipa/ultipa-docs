@@ -315,6 +315,12 @@ IF n IS NULL {
 }
 ```
 
+A `THROW` with no enclosing `TRY` stops the procedure at that statement and fails the `CALL`. Remaining statements do not run, and the message reaches the caller prefixed with the procedure name:
+
+```
+[5017] CALL assert: Iterations must be at least 1
+```
+
 Re-throw inside a CATCH block (no argument):
 
 <p tit="Procedure Body Language"></p>
@@ -327,6 +333,8 @@ TRY {
     THROW  -- re-throw original error
 }
 ```
+
+A bare `THROW` is only valid inside a `CATCH` body, where it re-raises the error being handled. Elsewhere it is rejected, since there is no error to re-raise.
 
 ## ATOMIC Block
 

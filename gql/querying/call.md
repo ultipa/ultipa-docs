@@ -165,8 +165,9 @@ A **named procedure** refers to a predefined procedure that is registered in the
 **Details**
 
 - The `YIELD` clause outputs the procedure's columns to the outer query.
-- The yielded columns **replace** the outer binding row — variables from earlier clauses (e.g., `n` from a preceding `MATCH (n)`) are not visible after a named `CALL ... YIELD`. To carry variables through, project them in the `RETURN` before the `CALL`, or use the inline `CALL { ... }` form with explicit variable import.
-- Prefix with `OPTIONAL` to suppress the "procedure not found" error when the named procedure does not exist. Unlike the inline `OPTIONAL CALL { ... }` subquery form, named `OPTIONAL CALL` does **not** insert a NULL-padded row when a resolved procedure yields zero rows — the result is an empty table.
+- The yielded columns are **added** to each incoming row, so variables from earlier clauses (e.g., `n` from a preceding `MATCH (n)`) remain visible after a named `CALL ... YIELD`. Avoid yielding a column whose name is already bound: the collision is not reported, and the procedure's column silently overwrites the existing variable.
+- A **user-defined stored procedure** executes once for each row of the incoming binding table, and that row's variables are visible inside the call, so arguments can reference them (e.g., `CALL score_node(n._id)`). Each incoming row is combined with the rows the procedure yields for it. See <a target="_blank" href="/docs/stored-procedures/calling-procedures#Per-Row-Execution">Per-Row Execution</a>.
+- A **built-in algorithm** (`algo.*`) executes once per query, not once per row, since running a graph-wide algorithm per matched node would be prohibitive. Its rows are combined with the incoming rows, so variables from earlier clauses remain visible.
 
 ### Running Algorithms
 
@@ -203,7 +204,7 @@ For details on defining, listing, and managing user-defined procedures, refer to
 
 ### OPTIONAL CALL
 
-For named procedures, `OPTIONAL CALL` only suppresses the "procedure not found" error when the procedure does not exist. It does **not** insert a NULL-padded row when a resolved procedure yields zero rows — the result is simply an empty table. The richer outer-row preservation with NULL columns documented above applies only to the inline `OPTIONAL CALL { ... }` form.
+For named procedures, `OPTIONAL CALL` does two things. It suppresses the "procedure not found" error when the procedure does not exist, and it keeps an incoming row, with `NULL`s in the yielded columns, when a resolved procedure yields no rows for that row. Without `OPTIONAL`, such a row is dropped by the join.
 
 ```gql
 -- Errors if 'maybe_proc' is not defined

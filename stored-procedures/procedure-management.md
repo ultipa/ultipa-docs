@@ -143,6 +143,8 @@ AS {
 }
 ```
 
+A `VOID` procedure produces no columns and leaves the incoming rows untouched, so it can be called mid-query without affecting the result. See <a target="_blank" href="/docs/stored-procedures/calling-procedures#VOID-Procedures-in-a-Query">VOID Procedures in a Query</a>.
+
 ### Multiple Returns
 
 Each `RETURN` statement adds a row to the result set. Use `RETURN` inside a loop to stream multiple rows:
