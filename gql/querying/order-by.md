@@ -18,6 +18,7 @@ The `ORDER BY` statement allows you to sort the intermediate result table or out
 - `NULLS FIRST` and `NULLS LAST` can be used to control whether `null` values appear before or after non-null values. When null ordering is not explicitly specified:
     - `NULLS LAST` is applied by default when ordering in the `ASC` order.
     - `NULLS FIRST` is applied by default when ordering in the `DESC` order.
+- Setting the `GQLDB_LEGACY_NULL_ORDERING` environment variable to `1` inverts both implicit defaults, so `ASC` places nulls first and `DESC` places them last. It is a process-wide compatibility switch for queries written against the earlier placement, read once at startup, and it does not affect an explicit `NULLS FIRST` or `NULLS LAST`.
 
 ## Example Graph
 

@@ -35,6 +35,7 @@ The basic form returns a compact `(property, value)` row set. Append `ALL` to ad
 | `propertyMemory` | string | Formatted bytes used by the property cache. Always present. |
 | `propertyCacheResident` | integer | Number of nodes whose properties are resident in the compute property cache. Present only when the cache holds properties or is partial. |
 | `propertyCacheComplete` | boolean | `false` when the property cache is PARTIAL, meaning fewer nodes are resident than the topology holds because some were budget-skipped at build time (`PROPERTY_LIMIT` exhausted). Filtered reads on the skipped nodes fall back to storage even though `buildState` is `READY`, which can silently return incomplete results. Alarm on `false`, then raise `PROPERTY_LIMIT` and rebuild. Present only when the cache holds properties or is partial. |
+| `propertyEdgeEntries` | integer | Number of edges whose properties are resident in the compute property cache. Always present. `0` while an edge label is configured via `SET COMPUTE PROPERTY` means the edge cache is ready but empty; a large value accounts for the edge share of `propertyMemory`. |
 | `totalMemory` | string | Sum of topology + property memory. Always present. |
 | `topologyVersion` | integer | Snapshot version, incremented on every rebuild. Present after first build. |
 | `lowMem` | boolean | Whether the low-memory (32-bit topology) preference is set for this graph. |

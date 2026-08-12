@@ -100,6 +100,8 @@ The two sub-limits (`TOPOLOGY_LIMIT`, `PROPERTY_LIMIT`) let you reserve memory f
 
 **Catch it early:** watch `goMemLimit` and `memLimitUsedPct` in `SHOW COMPUTE STATUS`, a `memLimitUsedPct` creeping toward 90% means you're heading for a failed build.
 
+**Freeze-time shrink.** When a build completes, the property cache reallocates its append-grown blocks and id arena down to their exact size, releasing the spare capacity that growth left behind. Setting the `GQLDB_DISABLE_FREEZE_SHRINK` environment variable to `1` retains that slack instead, raising resident memory after every build. It exists only as a triage escape hatch for diagnosing the shrink itself, and is read once at startup, so changing it requires a restart.
+
 ## Synchronization Modes
 
 The computing engine supports two synchronization modes that control how changes propagate to the cache:
