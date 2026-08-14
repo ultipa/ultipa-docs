@@ -4,7 +4,10 @@
 
 The `SET` statement allows you to set properties and labels on nodes and edges. These nodes or edges must first be retrieved using the `MATCH` statement.
 
-**Note:** The unique identifier `_id` is immutable.
+**Note:** 
+
+- The unique identifier `_id` is immutable.
+- The target of a `SET` item must be a node or edge variable bound by a graph pattern, i.e., a variable declared in `MATCH` or `OPTIONAL MATCH`, or in the `ON CREATE` / `ON MATCH` clause of `MERGE`. Variables of any other type are not valid targets.
 
 ## Example Graph
 
