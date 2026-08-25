@@ -32,6 +32,8 @@ GRANT EXECUTE_ALGORITHM ON DATABASE TO ROLE data_analyst
 GRANT EXECUTE_PROCEDURE ON GRAPH production PROCEDURE * TO ROLE data_analyst
 ```
 
+The two `EXECUTE_*` grants above express the intended role design, but are **not currently enforced** — they do not restrict what `data_analyst` can `CALL`. See <a target="_blank" href="/docs/rbac/grant-revoke-permissions">Grant and Revoke Permissions</a>.
+
 ## Separate Security from Data Administration
 
 Avoid combining data access with user/role administration in a single role.

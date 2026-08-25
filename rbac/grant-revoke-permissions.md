@@ -18,10 +18,12 @@ Scopes form a hierarchy from broad to specific:
 | `ON DATABASE` | 1 | All graphs and database-wide operations |
 | `ON GRAPH <name>` | 2 | Specific graph |
 | `ON GRAPH *` | 2 | All graphs |
-| `ON GRAPH <name> NODE <label>` | 3 |Specific node label within a graph |
+| `ON GRAPH <name> NODE <label>` | 3 | Specific node label within a graph |
 | `ON GRAPH <name> EDGE <label>` | 3 | Specific edge label within a graph |
 | `ON GRAPH <name> PROCEDURE <name>` | 3 | Specific stored procedure within a graph |
 | `ON GRAPH <name> PROCEDURE *` | 3 | All stored procedures within a graph |
+
+The `NODE <label>` and `EDGE <label>` scope forms are accepted by `GRANT` but are **not currently enforced**: a grant made at graph level exposes every label in that graph, and a label-scoped grant does not narrow it. `ON GRAPH <name>` is the finest granularity that currently restricts data access.
 
 ## Permission Operations
 
@@ -81,6 +83,8 @@ Returns columns `operation`, `description`, and `valid_scopes`.
 | `EXECUTE_PROCEDURE` | Execute stored procedures (`CALL`) | DATABASE, GRAPH, PROCEDURE |
 | `SHOW_PROCEDURE` | View procedure definitions | DATABASE, GRAPH, PROCEDURE |
 | `EXECUTE_ALGORITHM` | Execute built-in algorithms (`CALL algo.*`) | DATABASE |
+
+`EXECUTE_PROCEDURE` and `EXECUTE_ALGORITHM` are accepted by `GRANT` and reported by `SHOW GRANTS`, but are **not currently enforced**: `CALL` is not checked against either operation, so any principal that can reach a graph can execute any stored procedure or built-in algorithm on it. Do not rely on these two operations as an execution boundary.
 
 ### Task & Query Management
 
