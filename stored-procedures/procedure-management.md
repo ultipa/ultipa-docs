@@ -76,6 +76,8 @@ The `LIKE` name pattern uses SQL-style matching (case-insensitive):
 
 Other GQL value types (`DATE`, `TIME`, `TIMESTAMP`, `ZONED_DATETIME`, `DURATION`, `MAP`, `POINT`, `BYTES`, etc.) cannot be declared as procedure parameters or return columns. They can still appear inside the procedure body as values produced by functions or property reads (e.g., `LET d = date()`).
 
+These declarations are **not currently enforced**: an argument is neither type-checked nor coerced against its declared type, and a returned value is not checked against its `RETURNS` column type, so a `STRING` can flow through a column declared `INTEGER`. Treat the declared types as documentation of intent and validate inside the procedure body where the type matters.
+
 ### With No Parameters
 
 ```gql
@@ -86,6 +88,8 @@ AS {
     RETURN cnt
 }
 ```
+
+Note that `NODE_COUNT()` is a topology function and requires the compute engine to be enabled on the graph. Where it is not enabled, topology functions return `0` rather than raising an error, so this procedure yields `0` instead of the actual node count. Enable it with `ALTER GRAPH <graphName> SET COMPUTE ENABLED`. See <a target="_blank" href="/docs/stored-procedures/procedure-body-language#Compute-Engine-Dependency">Compute Engine Dependency</a>.
 
 ### With Parameters
 
