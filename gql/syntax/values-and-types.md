@@ -22,6 +22,29 @@ A property value type refers to the data type of the values of a property. In a 
 | `DOUBLE`/<br>`FLOAT64` | 64-bit double-precision floating-point number supporting up to 15 significant digits. This includes all non-zero digits and any zeros between them, e.g., `0.0123456789012345`. |
 | `DECIMAL`/<br>`NUMERIC` | A fixed-point number with a specified precision (1 to 65, total number of digits) and scale (0 to 30, number of digits after the decimal point). E.g., `DECIMAL(10,4)` represents a number with up to `10` total digits, of which up to `4` can appear after the decimal point. |
 
+**Integer literal forms.** An integer can be written in decimal or with a base prefix. The prefix affects only how the literal is spelled, not the resulting value type.
+
+| Form | Prefix | Example | Value |
+| -- | -- | -- | -- |
+| Decimal | — | `30`, `-5` | `30`, `-5` |
+| Hexadecimal | `0x` | `0xFF` | `255` |
+| Octal | `0o` | `0o17` | `15` |
+| Binary | `0b` | `0b101` | `5` |
+
+The prefix is case-insensitive (`0x` and `0X` are equivalent, as are `0o`/`0O` and `0b`/`0B`), a leading minus sign is allowed (`-0x10` is `-16`), and the full 64-bit signed range is available (`0x7FFFFFFFFFFFFFFF`).
+
+Prefixed literals are genuine integers rather than strings: they take part in arithmetic and comparison, satisfy type predicates, and can appear inside lists.
+
+```gql
+RETURN 0xFF AS hex, 0o17 AS octal, 0b101 AS binary, 0xFF + 0b1 AS sum, 0xFF IS TYPED INTEGER AS isInt
+```
+
+Result:
+
+| hex | octal | binary | sum | isInt |
+| -- | -- | -- | -- | -- |
+| 255 | 15 | 5 | 256 | true |
+
 ### Textual
 
 | Type | Description |
@@ -150,7 +173,7 @@ In an **open graph**, property types are not explicitly defined. Instead, the ty
 
 | Type | Inferred From |
 | -- | -- |
-| `INT` | Integer literals, e.g., `30`, `-5` |
+| `INT` | Integer literals, e.g., `30`, `-5`, `0xFF` |
 | `FLOAT` | Floating-point literals, e.g., `3.14`, `-0.5` |
 | `DECIMAL` | Decimal literals, e.g., `DECIMAL '123.45'` |
 | `STRING` | String literals, e.g., `"hello"`, `'world'` |

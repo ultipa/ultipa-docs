@@ -67,6 +67,8 @@ Mandatory features are not assigned Feature IDs and Feature Names, unlike the <a
 
 Standard-defined optional GQL features are referenced by a Feature ID that comprises a letter “G” and three digits, and a Feature Name. 
 
+This table lists 228 of the 262 optional features defined in the standard. Feature IDs that do not appear below have not been assessed yet; their absence is not a claim that the feature is unsupported. The unlisted IDs fall mainly in constraint management (`GC00`, `GC60`–`GC91`), session management (`GS09`, `GS17`–`GS20`), conditional and `FINISH` statements (`GQ25`–`GQ28`), and a small set of value-type and aggregate features (`F443`, `F444`, `GE10`, `GV42`, `GV51`).
+
 | | Feature ID | Feature Name | Support |
 | -- | -- | -- | -- |
 | 1 | G002 | Different-edges match mode | Yes |
@@ -166,16 +168,16 @@ Standard-defined optional GQL features are referenced by a Feature ID that compr
 | 95 | GG05 | Graph from a graph source | No |
 | 96 | GG20 | Explicit element type names | Yes |
 | 97 | GG21 | Explicit element type key label sets | Yes |
-| 98 | GG22 | Element type key label set inference | No |
+| 98 | GG22 | Element type key label set inference | Yes |
 | 99 | GG23 | Optional element type key label sets | Yes |
 | 100 | GG24 | Relaxed structural consistency | Yes |
 | 101 | GG25 | Relaxed key label set uniqueness for edge types | No |
 | 102 | GG26 | Relaxed property value type consistency | Yes |
 | 103 | GH01 | External object references | No |
 | 104 | GH02 | Undirected edge patterns | No |
-| 105 | GL01 | Hexadecimal literals | No |
-| 106 | GL02 | Octal literals | No |
-| 107 | GL03 | Binary literals | No |
+| 105 | GL01 | Hexadecimal literals | Yes |
+| 106 | GL02 | Octal literals | Yes |
+| 107 | GL03 | Binary literals | Yes |
 | 108 | GL04 | Exact number in common notation without suffix | Yes |
 | 109 | GL05 | Exact number in common notation or as decimal integer with suffix | Yes |
 | 110 | GL06 | Exact number in scientific notation with suffix | Yes |
