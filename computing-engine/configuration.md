@@ -160,6 +160,12 @@ ALTER GRAPH socialNetwork SET COMPUTE REBUILD
 
 Unlike `COMPACT`, this re-reads the whole graph from disk and is orders of magnitude more expensive. Reserve it for two cases: recovering a topology stuck in the `FAILED` build state, or applying a setting that only takes effect on a from-scratch build, such as [low-memory topology](#Low-Memory-Topology). For routine delta merges, prefer `COMPACT`.
 
+> **Stop writing to the graph while a rebuild runs.** A rebuild is safe on a quiet graph and **not safe under live write traffic**. Nodes inserted while one is in progress can be dropped from the graph's node lookup, and the damage is not confined to the new nodes: in testing, 60 inserts during one rebuild removed 400 unrelated nodes — inserted long before and never touched — from traversals served by the compute layer, and property filters over the nodes that remained matched nothing at all.
+>
+> Storage stays correct throughout: the same queries answer correctly with `ALTER GRAPH <name> SET COMPUTE DISABLED`. A second rebuild on a quiet graph restores the correct answers, as does disabling and re-enabling the compute layer — but until then **the wrong answers are served as if they were right**, and `db.validate_graph()` does not reliably report it.
+>
+> Quiesce writes for the length of the rebuild and let it finish before running anything else against the graph. On a database you cannot quiet down, run the rebuild in a maintenance window.
+
 ## Property Caching
 
 By default, only topology (node/edge connections) is cached. For frequently accessed properties, you can enable property caching to avoid disk I/O.
