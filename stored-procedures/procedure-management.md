@@ -76,7 +76,15 @@ The `LIKE` name pattern uses SQL-style matching (case-insensitive):
 
 Other GQL value types (`DATE`, `TIME`, `TIMESTAMP`, `ZONED_DATETIME`, `DURATION`, `MAP`, `POINT`, `BYTES`, etc.) cannot be declared as procedure parameters or return columns. They can still appear inside the procedure body as values produced by functions or property reads (e.g., `LET d = date()`).
 
-These declarations are **not currently enforced**: an argument is neither type-checked nor coerced against its declared type, and a returned value is not checked against its `RETURNS` column type, so a `STRING` can flow through a column declared `INTEGER`. Treat the declared types as documentation of intent and validate inside the procedure body where the type matters.
+These declarations are **checked but not enforced**: a mismatch raises a warning and the value is passed through unchanged rather than coerced or rejected, so a `STRING` can flow through a column declared `INTEGER`. Both the argument and the returned value are checked:
+
+```
+Warning: procedure probe: parameter "n" is declared INTEGER but the argument is STRING — the value is
+passed unchanged; convert it at the call site or correct the declared type, which is what SHOW
+PROCEDURES and the tool schema publish
+```
+
+Convert the value at the call site (`to_integer()`, `to_float()`, `to_string()`), or correct the declared type — the declaration is what `SHOW PROCEDURES` and the generated tool schema publish to callers. Where the type matters for correctness, validate it inside the procedure body as well.
 
 ### With No Parameters
 
