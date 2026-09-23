@@ -16,7 +16,7 @@ The `LET` statement allows you to define new variables and adds corresponding co
 
 - `LET` adds new columns to the intermediate result table without changing the number of rows.
 - Re-defining an existing variable in `LET` overwrites its value. See [Redefining Variables](#Redefining-Variables).
-- Variables defined in the same `LET` cannot reference each other.
+- Variables in a single `LET` are evaluated left to right, so a definition may reference a sibling defined before it. See [Referencing Sibling Variables](#Referencing-Sibling-Variables).
 
 ## Example Graph
 
@@ -45,6 +45,41 @@ Result:
 | p.title | p.score - threshold |
 | -- | -- |
 | Optimizing Queries | 2 |
+
+## Referencing Sibling Variables
+
+Variable definitions in a single `LET` are evaluated **left to right**, so a definition may reference a sibling defined before it in the same statement:
+
+```gql
+MATCH (p:Paper)
+LET base = p.score, doubled = base * 2
+RETURN p.title, base, doubled ORDER BY base
+```
+
+Result:
+
+| p.title | base | doubled |
+| -- | -- | -- |
+| Efficient Graph Search | 6 | 12 |
+| Path Patterns | 7 | 14 |
+| Optimizing Queries | 9 | 18 |
+
+Only backward references resolve. A variable referenced **before** its own definition is not yet bound, and the expression evaluates to `null` rather than raising an error:
+
+```gql
+LET y = x + 1, x = 5
+RETURN x, y        -- x is 5, y is null
+```
+
+Write the definitions in dependency order, or use separate `LET` statements, which are always evaluated in sequence:
+
+```gql
+LET x = 5
+LET y = x + 1
+RETURN x, y        -- 5, 6
+```
+
+> **Portability.** Sibling references are the opposite of SQL's `SELECT` list and Cypher's `WITH`, where a name defined in the same clause is not visible to its siblings (`WITH 1 AS x, x + 1 AS y` is an error in Cypher). GQL's `LET` is a standalone statement rather than a projection list, so the analogy is weak — but a query ported from Cypher that relies on siblings *not* being visible will behave differently here. Separate `LET` statements carry the same meaning everywhere.
 
 ## Redefining Variables
 
