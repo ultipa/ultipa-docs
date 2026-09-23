@@ -58,6 +58,12 @@ Applies all buffered operations atomically to storage.
 COMMIT
 ```
 
+> **A successful `COMMIT` can carry a warning — show it, and do not retry on it.** On a graph with `EDGE_ID` enabled, the lookup of edges by `_id` is written after the transaction's changes are stored. If that write fails, the transaction is already committed, so the `COMMIT` succeeds and a warning says the lookup could not be written and that **the transaction must not be run again**. Retrying it would store its edges a second time.
+>
+> The warning reaches every path: the result's warnings for the `COMMIT` statement, for an auto-commit statement and for a `CALL` of a procedure with an `ATOMIC` block; `Tx.Warnings()` after `Tx.Commit`, which returns no error; and, over gRPC, the commit response's message with `success` true.
+>
+> The database records that the lookup is behind and rebuilds it from the stored edges the next time it opens, so the edges answer to their `_id` after a restart. Until then `RETURN db.validate_graph() AS health` reports `index_rebuild_pending` under `edge_id_cache_drift`.
+
 ### ROLLBACK
 
 Discards all changes in the current transaction.
