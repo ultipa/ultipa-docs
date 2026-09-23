@@ -292,6 +292,33 @@ CREATE NODE IF NOT EXISTS Book ({name STRING, author STRING})
 CREATE OR REPLACE NODE Book ({name STRING, author STRING, isbn STRING})
 ```
 
+### Adding an Endpoint Pair to an Edge Type
+
+An edge type can be declared for several `(source, target)` endpoint pairs. Declaring an existing edge type again with a new pair **appends** that pair, provided the rest of the body is identical:
+
+```gql
+-- PURCHASED is already declared for (User)->(Book)
+CREATE EDGE PURCHASED (User)-[{createdOn TIMESTAMP}]->(Magazine)
+-- PURCHASED is now declared for both pairs
+```
+
+`ALTER GRAPH <graphName> ADD EDGE TYPE PURCHASED (User)-[{createdOn TIMESTAMP}]->(Magazine)` is an equivalent spelling, as are the `ON GRAPH` variants. `SHOW EDGE TYPES` then reports one row per pair.
+
+Two forms look like shorthands and are not:
+
+- `CREATE EDGE IF NOT EXISTS <name> …` sees that the name already exists and **skips**, reporting success without adding the pair. Use the plain form.
+- The body must be repeated in full. `(User)-[]->(Magazine)` is refused against a type declared with `{createdOn TIMESTAMP}` — an empty property list declares no properties rather than inheriting the existing ones, following ISO/IEC 39075.
+
+**`OR REPLACE` replaces the whole declaration.** Every endpoint pair except the one being declared is dropped, so it is refused when — and only when — an existing edge would be left matching no declaration:
+
+```gql
+CREATE OR REPLACE EDGE PURCHASED (User)-[{createdOn TIMESTAMP}]->(Magazine)
+--   error: would leave edge 'e:12' matching no declaration; use ALTER GRAPH ... ADD EDGE TYPE
+--          to add a pair, or DROP EDGE PURCHASED CASCADE to remove the type and its edges
+```
+
+Use the appending form above to add a pair. `OR REPLACE` remains the way to narrow a declaration, and still succeeds when the pairs it drops carry no edges. An edge type with a single endpoint pair — the common case — is unaffected.
+
 ### Dropping Node/Edge Types
 
 A node or edge type can only be dropped when it has no dependent objects. Dependents include:
