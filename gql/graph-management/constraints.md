@@ -15,6 +15,28 @@ Ultipa supports the following constraint types:
 
 When a constraint type supports a composite of properties, a row violates the constraint only when **all** listed properties match an existing row.
 
+### When Constraints Are Checked
+
+`NOT NULL` and `UNIQUE` are enforced both when a node is **created** and when it is **updated** — by `INSERT` and `MERGE`, and by `SET`, `REMOVE`, `UPSERT` and `MERGE … ON MATCH SET`. A violating statement is refused as a whole and changes nothing, so no part of it is left applied:
+
+```gql
+-- email is UNIQUE on User
+MATCH (n:User {_id: 'U02'}) SET n.email = 'alice@example.com'
+--   UNIQUE constraint violation
+
+MATCH (n:User {_id: 'U02'}) REMOVE n.name
+--   NOT NULL constraint violation
+```
+
+Two cases are deliberately not violations, because an update is not a creation:
+
+- **Writing the value a node already holds.** The node being updated is excluded from the uniqueness check, so `SET n.email = n.email` and any re-write of the same value pass.
+- **An update that does not mention a `NOT NULL` property.** Absence in an update means untouched, not missing.
+
+> **Composite `UNIQUE` is not yet enforced on the update paths.** A multi-property `UNIQUE` constraint is checked on creation; an update that would produce a duplicate combination is not currently refused.
+
+Existing duplicates in a graph are untouched by this and stay readable; correct them with an ordinary `SET`. A `UNIQUE` constraint cannot have been created over them in the first place — `CREATE CONSTRAINT` refuses that and names the offending nodes.
+
 ## Showing Constraints
 
 Show constraints in the current graph:
