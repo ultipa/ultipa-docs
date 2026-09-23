@@ -32,6 +32,8 @@ GRANT EXECUTE_ALGORITHM ON DATABASE TO ROLE data_analyst
 GRANT EXECUTE_PROCEDURE ON GRAPH production PROCEDURE * TO ROLE data_analyst
 ```
 
+Note that the right to run an algorithm does not include the right to write its results: `.write` mode needs `UPDATE` on the whole graph. Give an analyst that persists results the `writer` role as well, and leave it off the analysts who only read.
+
 ## Separate Security from Data Administration
 
 Avoid combining data access with user/role administration in a single role.

@@ -6,20 +6,26 @@ Create roles to group permissions, then assign roles to users. Roles make it eas
 
 **Built-in System Roles:**
 
-| Role | Description | Inherits |
+| Role | Description | Permissions held |
 | -- | -- | -- |
-| `admin` | Full superuser access to all operations | — |
-| `reader` | Read-only access to all data | — |
-| `writer` | Read and write access to all data | `reader` |
-| `data_admin` | Full data access (read, insert, update, delete, merge) | `writer` |
-| `analyst` | Read data + execute procedures and algorithms | `reader` |
-| `schema_admin` | Schema administration (all DDL) | — |
-| `backup_admin` | Backup and restore operations | — |
-| `procedure_admin` | Stored procedure lifecycle management | — |
-| `ops_admin` | Operations (task/query management, statistics) | — |
-| `security_admin` | User, role, and grant management | — |
+| `admin` | Full superuser access to all operations | `ADMIN` on database |
+| `reader` | Read-only access to all data | `READ` |
+| `writer` | Write access to all data | `INSERT`, `UPDATE`, `DELETE` |
+| `data_admin` | Full data access (read, insert, update, delete, merge) | `ALL_DATA` |
+| `analyst` | Run procedures and algorithms, and read results | `EXECUTE_PROCEDURE`, `EXECUTE_ALGORITHM`, `SHOW_PROCEDURE`, `SHOW_SCHEMA` |
+| `schema_admin` | Schema administration (DDL) | `ADMIN` on `GRAPH *` |
+| `backup_admin` | Backup and restore operations | `BACKUP`, `RESTORE`, `SHOW_SCHEMA` |
+| `procedure_admin` | Stored procedure lifecycle management | `CREATE_PROCEDURE`, `DROP_PROCEDURE`, `EXECUTE_PROCEDURE`, `SHOW_PROCEDURE` |
+| `ops_admin` | Operations (task/query management, statistics) | `MANAGE_TASK`, `MANAGE_QUERY`, `ANALYZE`, `SHOW_SCHEMA` |
+| `security_admin` | User, role, and grant management | `USER_MANAGEMENT`, `ROLE_MANAGEMENT`, `GRANT_MANAGEMENT`, `SHOW_SCHEMA` |
 
-System roles cannot be deleted.
+Run `SHOW GRANTS FOR ROLE <name>` to see exactly what a built-in role holds. System roles cannot be deleted.
+
+Three of them are narrower than their names suggest, and a role is often combined with another:
+
+- **`analyst` cannot write algorithm results.** It runs, streams and reports, but `.write` mode needs `UPDATE` on the whole graph. Grant an analyst that writes results the `writer` role as well, or `UPDATE` on the graph.
+- **`schema_admin` holds `ADMIN` on `GRAPH *`, which is graph scope.** It does not cover the account statements, `BACKUP`, `RESTORE`, `LOAD CSV`, or seeing other accounts' queries, transactions and tasks — those need the right at **database** scope. Use `security_admin` for accounts, `backup_admin` for backup and restore, and `ops_admin` for queries and tasks.
+- **`backup_admin` is also what `LOAD CSV` needs**, because `LOAD CSV` reads files on the server and fetches URLs: it requires `RESTORE` at database scope, and the `INTO` form additionally requires `INSERT` on the graph.
 
 ## Showing Roles
 

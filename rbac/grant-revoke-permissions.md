@@ -23,6 +23,43 @@ Scopes form a hierarchy from broad to specific:
 | `ON GRAPH <name> PROCEDURE <name>` | 3 | Specific stored procedure within a graph |
 | `ON GRAPH <name> PROCEDURE *` | 3 | All stored procedures within a graph |
 
+### Choosing the Right Scope
+
+A grant at graph scope does not stand in for one at database scope. These operations are checked at **database scope only**, and a grant of `ALL` or `ADMIN` on `GRAPH *` does not cover them:
+
+| Operation | Needed at database scope for |
+| -- | -- |
+| `USER_MANAGEMENT`, `ROLE_MANAGEMENT`, `GRANT_MANAGEMENT` | Every account and permission statement |
+| `BACKUP`, `RESTORE` | `BACKUP DATABASE`, `RESTORE DATABASE`, and `LOAD CSV` (which needs `RESTORE`) |
+| `MANAGE_QUERY`, `MANAGE_TASK` | Seeing, cancelling or stopping **other accounts'** queries, transactions and tasks |
+
+Without `MANAGE_QUERY` or `MANAGE_TASK`, an account still sees, cancels and deletes its **own** queries and tasks, and `COMMIT` / `ROLLBACK` / the savepoint statements act only on its own transaction. Passwords, credentials and API keys appear as `'***'` in the query list.
+
+### How a Label-Scoped Grant Behaves
+
+A grant scoped to `NODE <label>` or `EDGE <label>` narrows what the account can read, and **an unqualified query is narrowed rather than refused**. With `READ ON GRAPH socialNet NODE movie` and nothing else:
+
+```gql
+MATCH (n:movie) RETURN count(n)       -- 92, the movie nodes
+MATCH (n:account) RETURN count(n)     -- permission denied
+MATCH (n) RETURN count(n)             -- 92: narrowed to the permitted label, not an error
+```
+
+The last case is worth knowing: a query that names no label returns **fewer rows** instead of failing, so a result that looks short may be the permission boundary rather than missing data.
+
+### Account Statements and Transactions
+
+Account and permission statements cannot run inside a transaction:
+
+```gql
+START TRANSACTION
+CREATE USER alice PASSWORD 'secure_password_123'
+--   CREATE USER changes accounts or permissions, which cannot be done inside a transaction:
+--   run it outside the transaction
+```
+
+Run them outside the transaction. `DROP USER` and `ALTER USER … RENAME TO` roll back any transactions the account had open.
+
 ## Permission Operations
 
 List all available operations and their valid scopes:
@@ -112,6 +149,29 @@ Returns columns `operation`, `description`, and `valid_scopes`.
 | -- | -- |
 | `*` or `ALL` | Matches all operations |
 | `ADMIN` | Legacy superuser (matches all operations) |
+
+### Functions and Procedures That Need a Right
+
+A function or procedure that changes state is checked against the right the equivalent statement needs, not merely against the right to call it:
+
+| Call | Right needed |
+| -- | -- |
+| `DB.BACKUP` | `BACKUP` |
+| `DB.RESTORE` | `RESTORE` |
+| The repair functions | `ANALYZE` |
+| `DB.DELETE_ORPHANS_EDGES` | `DELETE` on the whole graph |
+| `AI.SET_*`, `AI.SAVE_SKILL`, `AI.DROP_SKILL`, `AI.RATE`, `AI.TRACE`, `AI.TRACES` | `ADMIN` |
+| `ft.load`, `ft.unload` | `CREATE_INDEX` |
+| `ml.create_pipeline`, `ml.add_feature`, `ml.configure_split`, `ml.drop_pipeline`, `ml.drop_model` | `ALTER_GRAPH` |
+| `ml.list_models`, `ml.list_pipelines`, and the prediction calls | `EXECUTE_ALGORITHM` |
+
+Three consequences worth knowing:
+
+- **A `CHECK` constraint cannot call any of them.** The condition must be a plain expression over the row's properties.
+- **A trigger body cannot call a function that needs a right.** A write that fires such a trigger fails, for every account.
+- **A stored procedure runs with its caller's rights**, including the rights needed by the functions its body calls. Creating the procedure still succeeds; the call is what fails.
+
+Because `ml.list_models` and `ml.list_pipelines` need only the right to run an algorithm, any account that may run algorithms can read the model catalog — model names, pipelines, accuracy and training-set sizes.
 
 ## Granting Roles to Users
 
