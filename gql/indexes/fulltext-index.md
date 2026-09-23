@@ -58,10 +58,54 @@ The result includes the following fields:
 | `schema_name` | The label of the full-text index. |
 | `properties` | The indexed properties. |
 | `analyzer` | The text analyzer used. |
-| `status` | Index status: `ready`, `loading`, `building`, or `unloaded` (its in-memory structure was released, and reloads on the next search or `ft.load`). |
+| `status` | Index status — see [Index States](#Index-States) below: `ready`, `loading`, `building`, `pending`, `unloaded`, `degraded`, or `error`. |
 | `doc_count` | Number of documents indexed. |
-| `progress` | Build/loading progress. |
+| `progress` | Build or loading progress; for a `degraded` index the failure count and the last failure, and for an `error` index the reason the build failed. |
 | `memory` | In-memory footprint of the index's posting structure, in bytes. `0` when the index is `unloaded`. |
+
+## Index States
+
+| Status | Meaning | Reads of the index |
+| -- | -- | -- |
+| `ready` | Searchable. | Answered |
+| `building` | Being built by `CREATE FULLTEXT`, or after a restore. | `5020`, retryable |
+| `loading` | Being streamed back into memory after a restart or `ft.unload`. | `5020`, retryable |
+| `pending` | Being rebuilt once after an upgrade (see below). | `5020`, retryable |
+| `unloaded` | Its in-memory structure was released; the next search or `ft.load` reloads it. | Answered, after a reload |
+| `degraded` | Searchable, but it is missing documents. | Answered, **with a warning** |
+| `error` | Its last build failed. | `5017`, naming the index and the statements that rebuild it |
+
+**`5020` is retryable; `5017` is not.** Every read of an index that is not searchable yet — `~prop CONTAINS`, `~index_name CONTAINS`, `CALL ft.search`, `CALL ft.suggest` — fails with `5020` and a message saying what the index is doing and how far along it is:
+
+```
+[5020] fulltext search error: fulltext index loading: index "idx_doc" cannot be searched yet
+because it is being built (1200 of about 5000 documents indexed); it becomes searchable when
+the build finishes
+```
+
+The code is the same however the read is sent — on its own, in a multi-statement script, inside a transaction, as a stream, or under `PROFILE` / `EXPLAIN ANALYZE`. Match on the code rather than the text; the text `fulltext index loading:` is there for clients that can only see the message. **No driver retries this for you:** retry after a short wait, or wait for the index with <a href="#ft.load">`ft.load('<index>', <timeoutMs>)`</a>, which returns at once with the reason for an index whose build failed. A build can take minutes to hours on a large label, so bound the retries by time.
+
+`5017` means something a retry will not fix: a missing index ("no matching index found"), or one whose build failed.
+
+### A `degraded` Index Is Missing Documents
+
+A write to an index can fail after the data itself was written — a disk error on the index's own store, an edge whose internal id could not be resolved. The statement succeeds, because the data is safe, but the index goes on without that document. Such an index is marked `degraded` and stays so across restarts:
+
+- `SHOW FULLTEXT` reports `degraded`, with the failure count and the last failure in `progress`.
+- Every query reading it returns its results **with a warning** that the index may be missing documents (the `warnings` field through a driver).
+- `db.validate_graph()` reports it as a problem.
+
+**Rebuild it when you see it** — `DROP FULLTEXT <name>` then `CREATE FULLTEXT <name> …`. Nothing rebuilds it for you, because the missing documents cannot be known without a full scan.
+
+An index in the `error` state is likewise not rebuilt automatically on the next open: a build is expensive and a failing one usually fails again, so the decision is left to you.
+
+### One-Time Rebuild of Multi-Property Indexes
+
+An index over **two or more properties** — `CREATE FULLTEXT idx_doc ON NODE Document(title, body)` — is cleared and rebuilt once the first time a graph is opened on this version. Such an index could previously store a document's properties in each other's slots, which ranked those documents wrongly. Single-property indexes are not affected.
+
+While it rebuilds, the index reports `pending` with the documents done so far in `progress`, and reads of it return the retryable `5020`. The rebuild costs the time and memory of a `CREATE FULLTEXT` over the same data, so allow for it on the first start after upgrading. Nothing else is needed.
+
+> **Shut the server down cleanly before downgrading.** An index rebuilt since the last start keeps its new data in a separate directory until a clean shutdown moves it where an earlier version reads it. After a crash, start this version again and shut it down cleanly first — an earlier version opened straight after such a crash reports the index as ready and returns no results from it. An earlier version also does not know the `degraded` mark and clears it whenever it rewrites the index's configuration, so note down any degraded index before downgrading.
 
 ## Creating Full-text Index
 

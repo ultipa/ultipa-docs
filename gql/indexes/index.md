@@ -32,7 +32,7 @@ The result includes the following fields:
 | `label` | The label of the indexed property. |
 | `property` | The indexed property name. For a composite index, the property tuple joined by commas (e.g. `lastName, firstName`). |
 | `prefix_length` | For string/text properties, the maximum indexed length. `null` if not set. For a composite index with per-property lengths, a comma-joined list where `-` marks a full (unlimited) property (e.g. `10, -`); `null` if no property has a length. |
-| `status` | Index status: `ready`, `building`, or `error`. |
+| `status` | Index status: `ready`, `building`, `stale` (it missed a write and is not used until rebuilt — see [Rebuilding Index](#Rebuilding-Index)), or `error`. |
 | `progress` | Build progress (e.g., `100%`, `50.0% (500/1000)`). |
 | `indexed_count` | Number of entries indexed. |
 | `total_count` | Total number of entries to index. |
@@ -116,12 +116,28 @@ Rebuild a property index from the current data:
 ALTER INDEX idx_card_balance REBUILD
 ```
 
-Rebuilding is a **recovery action, not routine maintenance**. Property indexes are maintained incrementally on every write, so ordinary data changes keep them in sync automatically. Rebuild only when an index has drifted from the data, which the database surfaces in two ways:
+Rebuilding is a **recovery action, not routine maintenance**. Property indexes are maintained incrementally on every write, so ordinary data changes keep them in sync automatically. Rebuild only when an index has drifted from the data, which the database surfaces in three ways:
 
+- A `status` of **`stale`** in `SHOW INDEX` — see below.
 - A non-zero health column in `SHOW INDEX` → `build_skipped`, `propagation_failures`, or `dangling_pointers`, or a `status` of `error`.
 - The `property_index_drift` check in `db.validate_graph()` flags the index.
 
 Typical causes are a crash mid-write, an IO error, schema-version drift, or a compaction race that left an undecodable record. A crash mid-rebuild is handled automatically at startup, so it needs no manual action.
+
+### A `stale` Index Is Taken Out of Use
+
+When a change to a node or edge cannot be written to one of its property indexes, that index is marked **`stale`**. Queries stop using it and scan the label instead, so they still **return the right rows, only more slowly**. The mark survives a restart, `SHOW INDEX` shows it with the failure, and `db.validate_graph()` lists the index.
+
+`ALTER INDEX <name> REBUILD` fills it from the data and returns it to `ready`. That is the only action needed — and the only time it is needed.
+
+How the failed write itself is reported depends on what was written:
+
+- An edge `SET`, `REMOVE` or `INSERT OVERWRITE` whose index update fails **reports an error** naming the edge, its label and the rebuild. Inside a transaction the `COMMIT` fails and nothing is stored.
+- A **label change** is stored before the indexes follow it, so its `COMMIT` still succeeds and the failure goes to the server log.
+
+A rebuild can run while the label is being written: the replacement index is filled from the data, so a change made during the fill lands in it either way, and the rebuild finishes `ready`. It ends `stale` again only if a write to it genuinely fails while it runs.
+
+> **Queries are slower, not wrong, while an index is unusable.** A count, `GROUP BY`, or `IS NOT NULL` projection that an index would have answered falls back to scanning the label for as long as the index is `stale` or rebuilding.
 
 ## Dropping Index
 
