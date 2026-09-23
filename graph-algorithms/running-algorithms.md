@@ -31,6 +31,42 @@ The same `ON <projectionName>` clause works with the `.stream`, `.stats`, and `.
 
 <a target="_blank" href="/docs/gql/projections">Learn more about projections →</a>
 
+## Weight, Capacity and Cost Properties
+
+Many algorithms read a number from an edge property named by a parameter — `weight` (spelled `edge_weight_property` or `weightProperty` in some algorithms), `capacityProperty`, or `costProperty`.
+
+The property is validated **before the algorithm runs**, and a call that cannot use it is refused rather than falling back to a default:
+
+```gql
+CALL algo.spfa({source: 'A', weight: 'cost_x'}) YIELD nodeId, distance
+--   algo.spfa: weight property 'cost_x' does not exist on any edge in graph 'g'.
+--   Check the spelling, or leave out 'weight' to run unweighted.
+
+CALL algo.spfa({source: 'A', weight: 'cost'}) YIELD nodeId, distance
+--   algo.spfa: weight property 'cost' holds text on ROAD edges in graph 'g'; weights must be
+--   numbers. Store the values as numbers, or choose a property that holds numbers.
+```
+
+The check applies wherever an algorithm runs: a direct `CALL` in any execution mode — `.write` returns the error instead of starting a task — a `CALL` inside a <a target="_blank" href="/docs/stored-procedures/calling-procedures">stored procedure</a> (the procedure fails when it is called; creating it still succeeds), an algorithm feature in an <a target="_blank" href="/docs/machine-learning">ML pipeline</a> (the training call fails), and `CALL … ON <projection>`.
+
+- To run **unweighted**, leave the parameter out. Naming a property that does not exist is an error, not a request to run unweighted.
+- A property holding **numbers stored as text** — the usual result of importing a CSV without a cast — must be converted to numbers before it can be used as a weight, capacity or cost.
+- **Unsigned-integer and decimal** columns are read as their value.
+
+### Weights on a Projection
+
+The path and flow algorithms — `algo.apsp`, `algo.astar`, `algo.deltastepping`, `algo.kspanningtree`, `algo.maxflow`, `algo.mincostflow`, `algo.mst`, `algo.pcst`, `algo.shortestpath`, `algo.spfa`, `algo.steiner`, `algo.yens` — read a weight, capacity or cost **only from the projection's own edges**: edges of its edge types whose two ends are both its nodes.
+
+The other weighted algorithms — `algo.betweenness`, `algo.closeness`, `algo.degree`, `algo.eccentricity`, `algo.eigenvector`, `algo.harmonic`, `algo.katz`, `algo.leiden`, `algo.louvain`, `algo.pagerank`, `algo.similarity`, `algo.textrank` — **refuse a weight property on a projection**. With a weight they read the whole graph, so the answer would ignore the projection. Either run the call on a graph that holds only the nodes and edges you want, or leave out the weight to run unweighted on the projection.
+
+### Weights and Direction
+
+With `direction: 'in'` or `direction: 'both'`, `algo.spfa`, `algo.shortestpath`, `algo.astar`, `algo.apsp` and `algo.yens` weigh each step by the edge actually walked. On a graph where the two directions between a pair of nodes carry different weights, this decides the distances, paths and costs.
+
+`algo.mst` weighs a pair of nodes by the lower of its two directions, and expects every edge to be stored in both directions; a pair joined in one direction only can be left out of the tree.
+
+`algo.maxflow` and `algo.mincostflow` give each parallel edge between two nodes its own capacity and cost.
+
 ## Execution Modes
 
 ### Run Mode
