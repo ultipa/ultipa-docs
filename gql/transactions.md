@@ -13,7 +13,13 @@ Transactions group multiple read/write operations into a single atomic unit. Eit
 | **Isolation** | Each transaction sees a consistent snapshot from the moment it started. |
 | **Durability** | Committed data is persisted to storage. |
 
-> **Without an explicit transaction**, each write takes effect immediately — there is no implicit transaction wrapping your queries. Use transactions when you need to group multiple operations atomically, require rollback capability, or need snapshot isolation.
+> **Without an explicit transaction**, each statement runs in a transaction of its own. `INSERT`, `SET`, `REMOVE`, `DELETE` and `MERGE` are atomic on their own: if any element fails, the statement is rolled back as a whole and nothing is applied, and the outcome does not depend on the order the elements were matched in. Use an explicit transaction when you need to group **several** statements atomically, require rollback capability, or need snapshot isolation.
+>
+> Three things stay outside it. `UPSERT` and `INSERT OVERWRITE` are excluded, because relocating an edge's endpoints works only outside a transaction; so are requests that switch graphs (`USE g INSERT ...`), since a graph cannot be switched inside a transaction; and bulk-import sessions are a separate path, unaffected. A request joining segments with `NEXT` is covered.
+>
+> An auto-commit statement never reports a write conflict. Conflict detection is a property of transactions you open yourself, where you have something to retry with; an auto-commit statement waits for a contended key instead.
+>
+> Setting the environment variable `GQLDB_IMPLICIT_TX=off` restores the previous element-by-element behavior, where a statement could fail with part of its work already applied.
 
 ## Transaction Limits
 
@@ -148,6 +154,27 @@ MATCH (a:Person WHERE a._id = 'alice'), (b:Person WHERE b._id = 'bob')
 INSERT (a)-[:KNOWS]->(b);
 COMMIT
 ```
+
+## Statement Failure Inside a Transaction
+
+When a statement fails inside an explicit transaction, the transaction is left **open in an aborted state**. It holds no partial work, and it must be ended with `ROLLBACK`:
+
+| After a failed statement | Result |
+| -- | -- |
+| Any further statement | Refused |
+| `COMMIT` | Refused |
+| `ROLLBACK` | Succeeds, and is how you end the transaction |
+
+```gql
+START TRANSACTION
+INSERT (:Person {_id: 'alice', name: 'Alice'})
+INSERT (:Person {_id: 'alice', name: 'Duplicate'})   -- fails
+INSERT (:Person {_id: 'carol', name: 'Carol'})       -- refused: the transaction is aborted
+COMMIT                                               -- refused
+ROLLBACK                                             -- ends the transaction
+```
+
+An application that keeps issuing statements after one fails must issue `ROLLBACK` and retry the transaction. Statements sent after a failure are refused rather than applied, so nothing sent after the failure reaches storage.
 
 ## Isolation and Consistency
 
