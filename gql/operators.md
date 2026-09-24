@@ -117,6 +117,26 @@ Performs mathematical operations on numerical values. GQL supports the following
 RETURN 2 + 8
 ```
 
+**Division produces a floating-point result**, including between two integers — it does not truncate:
+
+```gql
+RETURN 7 / 2        -- 3.5, not 3
+```
+
+Use <a target="_blank" href="/docs/gql/mathematical-functions#floor">`floor()`</a> or a cast when you want an integer.
+
+**Arithmetic that leaves the range of its type raises an error** rather than wrapping around or returning a non-finite value:
+
+```gql
+RETURN 9223372036854775807 + 1
+--   INTEGER +: result of 9223372036854775807 + 1 is out of range
+
+RETURN 10 ^ 400
+--   POWER: result of 10 ^ 400 is out of range
+```
+
+The same applies to a function with no real result, such as `sqrt()` of a negative number. A query that would once have produced a silently wrapped integer, `nan` or `inf` now fails instead.
+
 ## Assignment Operators
 
 The `=` operator is used to assign values in statements like `LET` and `SET`, and to declare path variables within `MATCH` statements.
