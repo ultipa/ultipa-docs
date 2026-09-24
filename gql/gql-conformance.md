@@ -174,7 +174,7 @@ This table lists 228 of the 262 optional features defined in the standard. Featu
 | 101 | GG25 | Relaxed key label set uniqueness for edge types | No |
 | 102 | GG26 | Relaxed property value type consistency | Yes |
 | 103 | GH01 | External object references | No |
-| 104 | GH02 | Undirected edge patterns | No |
+| 104 | GH02 | Undirected edge patterns | Yes |
 | 105 | GL01 | Hexadecimal literals | Yes |
 | 106 | GL02 | Octal literals | Yes |
 | 107 | GL03 | Binary literals | Yes |
