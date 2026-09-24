@@ -213,21 +213,25 @@ When reading data inside a transaction, the database checks in this order:
 2. **Snapshot cache** (data already read once in this transaction)
 3. **Storage** (persisted data from before the transaction started)
 
-### Concurrent Writes (Last-Writer-Wins)
+### Write Conflicts
 
-`COMMIT` does not detect write-write conflicts, there is no read-set tracking or commit-time version comparison. If two sessions concurrently update the same node or edge, **both commits succeed and the later one wins** (the earlier write is silently overwritten); no conflict error is raised.
+If two transactions read the same node and then both modify it, the one that commits second is **refused at `COMMIT`** with error `3011`:
 
 ```gql
--- Session A                         
+-- Session A
 START TRANSACTION
 MATCH (p:Person {_id: 'alice'}) SET p.value = 1
-COMMIT   -- ok                       
-
--- Session B (concurrent, same node, commits after A)
-START TRANSACTION
-MATCH (p:Person {_id: 'alice'}) SET p.value = 2
-COMMIT   -- ok, overwrites A's write, no error
+-- (Session B commits its own change to alice here)
+COMMIT
+--   [3011] write conflict: node "…" was modified by another transaction after this one
+--   read it; re-read it and retry
 ```
+
+**This is a normal, retryable outcome, not a database failure.** Re-read the values and run the transaction again. Over gRPC it arrives as the status `Aborted`, which is the standard "retry the transaction" status.
+
+> **`3011` is retryable; `3010` is not.** `3011` is the write conflict above. The other transaction errors under `3010` — a nested `START TRANSACTION`, a rollback of a transaction that has already ended — are caller mistakes, and retrying them will not help. Match on the code rather than the message text.
+
+An **auto-commit** statement never reports a write conflict. Conflict detection belongs to transactions you open yourself, where you have something to retry with; an auto-commit statement waits for a contended key instead.
 
 ## Savepoints
 
