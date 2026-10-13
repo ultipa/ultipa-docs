@@ -67,7 +67,7 @@ Create a fully-managed GQLDB instance on Ultipa Cloud, with nothing to install:
 
 <center><img src="./images/cloud-connection-info.png"></center>
 
-Copy the password and click **Connect to Manager**. This opens the **cloud-hosted Ultipa Manager** (`mgr-us.ultipa.com` or `mgr-eu.ultipa.com`, depending on your instance's region) in a new tab, signed in with your Ultipa account, so there is nothing to download or install. The first time, you will be prompted to add the connection. All fields are auto-filled except the password, paste it and click **Save**:
+Copy the password and click **Connect to Manager**; Ultipa Manager opens in a new tab. The first time, you will be prompted to add the connection. All fields are auto-filled except the password, paste it and click **Save**:
 
 <center><img src="./images/cloud-add-new-connection.png"></center>
 
@@ -83,28 +83,6 @@ RETURN db.version()
 
 <center><img src="./images/first-query.png"></center>
 
-## See Your First Graph
-
-`db.version()` returns a single value. To see a result rendered as a graph, add a couple of connected nodes, then query them back.
-
-In the `default` graph, insert a tiny graph of two people:
-
-```gql
-INSERT (:Person {name: "Alice"})-[:Follows]->(:Person {name: "Bob"})
-```
-
-Then return the relationship as a path:
-
-```gql
-MATCH p = (:Person)-[:Follows]->(:Person) RETURN p
-```
-
-Manager renders the result in **graph view**, two nodes joined by an edge, which you can drag, zoom, and restyle:
-
-<center><img src="./images/first-graph.png"></center>
-
-That is the whole loop, connect, query, and visualize, with nothing installed. Learn more about graph visualization in <a href="/docs/gql/querying/result-table-and-visualization" target="_blank">Result Table and Visualization</a>.
-
 ---
 
-You have a running instance and a client that can reach it. Next, put some real data in it: <a href="/docs/quick-start/load-data" target="_blank">Load Your Data</a>.
+You have a running instance and a client that can reach it. Next, put some data in it: <a href="/docs/quick-start/load-data" target="_blank">Load Your Data</a>.
