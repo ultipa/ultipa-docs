@@ -52,6 +52,8 @@ A few things worth knowing:
 
 To connect to the database and run queries with a visual tool, download the **GQLDB Manager** desktop app from <a href="/download" target="_blank">here</a>, choosing the build for your platform (macOS, Windows, or Linux). Open it, add a new connection to your local instance with host `localhost`, port `60061`, and the `admin` / `myPassword` credentials, then save and open the connection. 
 
+On macOS, the desktop app is not yet notarized, so the first launch may be blocked by Gatekeeper (a "GQLDB Manager" can't be opened / is damaged message). Right-click the app in **Applications** and choose **Open**, then confirm; or clear the quarantine attribute from a terminal: `xattr -dr com.apple.quarantine "/Applications/GQLDB Manager.app"`.
+
 <center><img src="./images/manager-desktop-add-connection.png"></center>
 
 ## Option B: Ultipa Cloud
