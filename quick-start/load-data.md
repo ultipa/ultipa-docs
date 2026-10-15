@@ -1,6 +1,6 @@
 # 2. Load Your Data
 
-In the previous chapter you already ran a simple GQL query through Ultipa Manager. Run the GQL statements in this and all following chapters the same way.
+In the previous chapter you already ran a simple GQL query, through Ultipa Manager or the CLI. Run the GQL statements in this and all following chapters the same way.
 
 A GQLDB instance can host many graphs (the free, unlicensed edition allows up to 2). The built-in `default` graph is ready to use right away, we will just use it to build this graph:
 
