@@ -33,6 +33,7 @@ Both forms read a local filesystem path, a `file://` URI, or an `http(s)://` URL
 - `DELIMITER` accepts a single character (e.g. `','`, `';'`, `'\t'`). `QUOTE` accepts the double quote (`"`) as the field-quote character.
 - About the file source:
   - Path resolution: absolute paths (`/data/users.csv`) and `file:///` URIs are used as-is. **Relative paths resolve against the server process's working directory**, the directory the database was launched from, not the `.gdb` data folder. Prefer absolute paths in production.
+  - On Windows, a native path cannot be pasted straight in: a backslash starts an escape sequence, so `'C:\data\users.csv'` fails to parse, and `'C:\backups'` would quietly become `C:`, a backspace, and `ackups`. Double the backslashes or use forward slashes — `'C:/data/users.csv'`, or `'file:///C:/data/users.csv'`.
   - HTTP(S) sources are streamed directly into the CSV reader (no temp file). Connect, TLS-handshake, and response-header waits are bounded (30 s, 30 s, 60 s); the body itself streams without a total deadline and is cancelled if the query is cancelled. Non-`200` responses fail the statement with the HTTP status.
 
 ## Example CSVs

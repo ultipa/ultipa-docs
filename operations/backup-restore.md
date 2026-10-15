@@ -30,6 +30,7 @@ Use `BACKUP GRAPH` to create a backup of a single graph as a compressed archive.
 - `<graph name>` is optional. If omitted, backs up the current graph.
 - `<directory>` is the absolute path where the backup file is created on the database host. The directory must already exist.
 - The backup file will be named `<prefix>.gqlbackup.tar.gz`.
+- **On Windows, do not paste a native path straight in.** A backslash starts an escape sequence inside a quoted string, so `'C:\backups\monday'` either fails to parse (`unrecognized escape sequence: \m`) or, worse, parses into a different path: `'C:\backups'` is read as `C:`, a backspace, and `ackups`. Double the backslashes (`'C:\\backups\\monday'`) or use forward slashes (`'C:/backups/monday'`). The same applies to `RESTORE` and `LOAD CSV`.
 
 Back up the current graph to `/data/backups/`, creating the file `default.gqlbackup.tar.gz`:
 
