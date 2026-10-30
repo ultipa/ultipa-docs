@@ -23,6 +23,8 @@ This is enough to demonstrate loading, pattern matching, path finding, and a cen
 
 ## How to Use This Guide
 
+**Already started Community Edition?** <a href="/docs/tools/manager" target="_blank">Connect with GQLDB Manager and see your first graph</a>. Download desktop Manager for a local database, or sign in to cloud-hosted Manager for a database its servers can reach.
+
 The chapters are meant to be read in order:
 
 1. <a href="/docs/quick-start/install-and-connect" target="_blank">Install & Connect</a>: get a running instance and connect to it.

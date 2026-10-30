@@ -56,7 +56,9 @@ On macOS, the desktop app is not yet notarized, so the first launch may be block
 
 <center><img src="./images/manager-desktop-add-connection.png"></center>
 
-The desktop app has to run on your own machine, beside the database. The Manager that Ultipa Cloud opens in your browser runs on Ultipa's servers: it is that server, not your browser, that dials the database, so a `localhost` connection added there points at the cloud machine rather than at yours. A local instance needs the desktop app.
+For a database on your computer, run desktop Manager on that computer and connect to `localhost`. Desktop Manager can also connect to another host reachable from your computer. The cloud-hosted Manager connects from Ultipa's servers, so entering `localhost` there points at the cloud server rather than yours. For a hosted endpoint, you can <a href="https://mgr-eu.ultipa.com/connections" target="_blank">open cloud-hosted Manager</a> and sign in or register; the database must be reachable from that service.
+
+See <a href="/docs/tools/manager" target="_blank">GQLDB Manager</a> for download steps, connection troubleshooting, and a small example you can visualize immediately.
 
 Alternatively, use the <a href="/docs/tools/cli" target="_blank">Ultipa CLI</a>, available from the same Download Center for macOS, Linux, and Windows:
 
