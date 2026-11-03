@@ -36,6 +36,8 @@ A grant at graph scope does not stand in for one at database scope. These operat
 
 Without `MANAGE_QUERY` or `MANAGE_TASK`, an account still sees, cancels and deletes its **own** queries and tasks, and `COMMIT` / `ROLLBACK` / the savepoint statements act only on its own transaction. Passwords, credentials and API keys appear as `'***'` in the query list.
 
+`DECLARE_LAKE_GRAPH` is excluded from `ALL_SCHEMA`. For allowed-root policy, example grants, and lake refresh permissions, see <a href="/docs/gql/lakehouse-reference#Permissions">Lakehouse permissions</a>.
+
 ### How a Label-Scoped Grant Behaves
 
 A grant scoped to `NODE <label>` or `EDGE <label>` narrows what the account can read, and **an unqualified query is narrowed rather than refused**. With `READ ON GRAPH socialNet NODE movie` and nothing else:

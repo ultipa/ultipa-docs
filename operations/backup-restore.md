@@ -11,7 +11,7 @@ Two API surfaces are available; pick whichever fits your workflow:
 
 Both write the same on-disk format and use the same internal code path — interchangeable for a basic full backup.
 
-**Lakehouse graphs:** a database backup preserves lake declarations, not the external mapping files or Parquet data. In 6.2.157, database restore reopens those declarations immediately and reports their status in `lake_graphs`; inaccessible sources remain listed as unavailable. See <a href="/docs/gql/lakehouse-graphs#Backup-and-Restore" target="_blank">Lakehouse backup and restore</a> before restoring onto another host.
+**Lakehouse graphs:** a database backup preserves lake declarations, not the external mapping files or Parquet data. Database restore reopens those declarations immediately and reports their status in `lake_graphs`; inaccessible sources remain listed as unavailable. See <a href="/docs/gql/lakehouse-reference#Backup-and-Restore" target="_blank">Lakehouse backup and restore</a> for the recommended version and checks before restoring onto another host.
 
 ## Graph-Level
 

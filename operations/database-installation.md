@@ -146,7 +146,7 @@ ultipa-gqldb -help
 
 ### Using a Config File
 
-To query Parquet files as read-only graphs, configure `database.lake_allowed_roots` in the config file or pass `-lake-allowed-roots /srv/lake` at startup. Lake declarations are disabled by default. See <a href="/docs/gql/lakehouse-graphs" target="_blank">Lakehouse Graphs</a> for mapping files, permissions, and recovery behavior verified with 6.2.157.
+To query Parquet files as read-only graphs, configure `database.lake_allowed_roots` in the config file or pass `-lake-allowed-roots /srv/lake` at startup. Lake declarations are disabled by default. Start with <a href="/docs/gql/lakehouse-graphs" target="_blank">Lakehouse Graphs</a>, then see <a href="/docs/gql/lakehouse-reference" target="_blank">Lakehouse Reference</a> for all mapping options, permissions, and recovery behavior.
 
 For anything beyond a quick local run, prefer a config file over a long string of CLI flags. The server accepts a YAML or JSON file via `-config <path>`; CLI flags override file values when both are present. Some settings — notably the `rbac.ldap` block — have no flat CLI equivalent and can **only** be configured through the file.
 

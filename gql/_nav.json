@@ -70,6 +70,10 @@
           "title": "Lakehouse Graphs"
         },
         {
+          "file": "lakehouse-reference.md",
+          "title": "Lakehouse Reference"
+        },
+        {
           "file": "graph-types.md",
           "title": "Graph Types"
         },
