@@ -66,6 +66,10 @@
           "title": "Closed Graphs"
         },
         {
+          "file": "lakehouse-graphs.md",
+          "title": "Lakehouse Graphs"
+        },
+        {
           "file": "graph-types.md",
           "title": "Graph Types"
         },

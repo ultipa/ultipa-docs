@@ -31,6 +31,7 @@ A grant at graph scope does not stand in for one at database scope. These operat
 | -- | -- |
 | `USER_MANAGEMENT`, `ROLE_MANAGEMENT`, `GRANT_MANAGEMENT` | Every account and permission statement |
 | `BACKUP`, `RESTORE` | `BACKUP DATABASE`, `RESTORE DATABASE`, and `LOAD CSV` (which needs `RESTORE`) |
+| `DECLARE_LAKE_GRAPH` | Declaring a lake graph, in addition to `CREATE_GRAPH`; querying also needs `READ` |
 | `MANAGE_QUERY`, `MANAGE_TASK` | Seeing, cancelling or stopping **other accounts'** queries, transactions and tasks |
 
 Without `MANAGE_QUERY` or `MANAGE_TASK`, an account still sees, cancels and deletes its **own** queries and tasks, and `COMMIT` / `ROLLBACK` / the savepoint statements act only on its own transaction. Passwords, credentials and API keys appear as `'***'` in the query list.
@@ -90,6 +91,7 @@ Returns columns `operation`, `description`, and `valid_scopes`.
 | `ALTER_GRAPH` | Alter graphs (rename, set mode, add/drop types) | GRAPH |
 | `TRUNCATE_GRAPH` | Truncate graph labels | GRAPH |
 | `CREATE_INDEX` | Create indexes (regular, vector, fulltext) | GRAPH |
+| `DECLARE_LAKE_GRAPH` | Declare a lake graph over server-side files, together with `CREATE_GRAPH`; excluded from `ALL_SCHEMA` | DATABASE |
 | `DROP_INDEX` | Drop indexes | GRAPH |
 | `CREATE_CONSTRAINT` | Create constraints | GRAPH |
 | `DROP_CONSTRAINT` | Drop constraints | GRAPH |
